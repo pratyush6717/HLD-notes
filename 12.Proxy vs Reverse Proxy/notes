@@ -1,0 +1,330 @@
+Great — main Proxy Servers ko exactly Evolution of Pain + Feynman method + Sandbox + Analogy + Implementation thinking ke framework me samjhaunga.
+Focus: System Design intuition.
+
+1️⃣ Evolution of Pain (Nightmare Scenario)
+
+Imagine ek company ka backend server hai:
+
+Users → Web Server
+
+Suppose:
+
+1 million users website access karte hain
+
+Har user direct server ko request bhej raha hai
+
+Architecture:
+
+Users → Server
+Disaster 1 — Server Exposure
+
+Har request direct server pe aa rahi hai.
+
+Attacker easily server ka IP dekh sakta hai.
+
+Server IP exposed
+
+Result:
+
+DDoS Attack
+
+Server crash.
+
+Disaster 2 — Latency Problem
+
+User Paris me hai
+Server Singapore me hai.
+
+Request path:
+
+Paris → Singapore → Response
+
+Latency:
+
+300-400ms
+
+Poor UX.
+
+Disaster 3 — Repeated Requests
+
+1000 users same image download karte hain:
+
+logo.png
+
+Server ko 1000 baar serve karna padta hai.
+
+Waste of resources.
+
+Disaster 4 — Scaling Problem
+
+Traffic spike:
+
+100k req/sec
+
+Single server handle nahi kar pa raha.
+
+Summary of Pain
+
+Without proxy:
+
+Server exposed
+High latency
+No caching
+No traffic control
+2️⃣ The Cure — Proxy Server
+
+Solution:
+
+Proxy Server
+
+Architecture:
+
+Client → Proxy → Server
+
+Proxy ek middleman hai.
+
+Flow:
+
+1️⃣ Client request bhejta hai
+2️⃣ Proxy request receive karta hai
+3️⃣ Proxy server se data fetch karta hai
+4️⃣ Proxy response client ko deta hai
+
+Core Mechanism
+
+Proxy ka kaam:
+
+Intercept request
+Process request
+Forward request
+Return response
+
+Proxy control point ban jata hai.
+
+3️⃣ Types of Proxy (Important for Interviews)
+Forward Proxy
+
+Protects clients
+
+Architecture:
+
+Clients → Forward Proxy → Internet → Server
+
+Server ko pata nahi hota real client kaun hai.
+
+Use cases:
+
+Anonymity
+Content filtering
+Caching
+Corporate firewall
+
+Example:
+
+Office network proxy
+Reverse Proxy
+
+Protects servers
+
+Architecture:
+
+Users → Reverse Proxy → Servers
+
+User ko pata nahi hota backend servers kaun se hain.
+
+Use cases:
+
+Load balancing
+Security
+Caching
+DDoS protection
+
+Example:
+
+CDN
+Nginx
+Cloudflare
+4️⃣ What-If Sandbox (Trade-off Questions)
+
+These are interview traps.
+
+❓ What if proxy remove kar diya?
+
+Architecture:
+
+Client → Server
+
+Problems:
+
+No caching
+No load balancing
+Server IP exposed
+No security layer
+❓ What if reverse proxy caching remove kar diya?
+
+Every request goes to server.
+
+Example:
+
+Image request
+1M users → 1M server calls
+
+Server overloaded.
+
+❓ What if forward proxy remove kar diya?
+
+Corporate network example:
+
+Employees directly internet access karenge.
+
+Problems:
+
+No monitoring
+No filtering
+No security control
+5️⃣ Real-World Analogy
+
+Imagine restaurant waiter.
+
+Customer:
+
+Client
+
+Kitchen:
+
+Server
+
+Waiter:
+
+Proxy
+
+Flow:
+
+Customer → Waiter → Kitchen
+Kitchen → Waiter → Customer
+
+Advantages:
+
+Waiter can:
+
+filter orders
+cache drinks
+route orders
+protect kitchen
+
+Exactly proxy ka kaam.
+
+6️⃣ Difference Summary (Important)
+Forward Proxy
+
+Protects:
+
+Client
+
+Flow:
+
+Client → Proxy → Internet
+
+Example:
+
+Corporate internet proxy
+Reverse Proxy
+
+Protects:
+
+Server
+
+Flow:
+
+User → Reverse Proxy → Servers
+
+Example:
+
+CDN
+Cloudflare
+Nginx
+7️⃣ Proxy vs VPN
+Feature	Proxy	VPN
+IP masking	Yes	Yes
+Encryption	No	Yes
+Tunnel	No	Yes
+Security	Medium	High
+
+VPN creates:
+
+Encrypted tunnel
+
+Proxy only hides IP.
+
+8️⃣ Proxy vs Load Balancer
+
+Reverse proxy can do load balancing.
+
+Example:
+
+Nginx
+
+Load balancer only distributes traffic.
+
+Proxy does more:
+
+Caching
+Logging
+Security
+Load balancing
+9️⃣ Proxy vs Firewall
+
+Firewall:
+
+packet filtering
+
+Based on:
+
+IP
+Port
+Protocol
+
+Proxy works at:
+
+Application layer
+
+Proxy can inspect:
+
+HTTP requests
+cookies
+headers
+payload
+10️⃣ HLD Data Flow (What you should draw)
+
+If interviewer asks proxy architecture.
+
+Draw this:
+
+User
+ │
+ ▼
+Reverse Proxy / CDN
+ │
+ ▼
+Load Balancer
+ │
+ ▼
+Application Servers
+ │
+ ▼
+Database
+
+Proxy handles:
+
+caching
+security
+routing
+Final Intuition
+
+Forward proxy:
+
+Protects clients
+
+Reverse proxy:
+
+Protects servers
