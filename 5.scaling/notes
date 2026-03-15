@@ -1,0 +1,972 @@
+Let’s master CDN (Content Delivery Network) using the Evolution of Pain + Feynman method.
+
+1️⃣ Evolution of Pain (Why CDN Exists)
+Nightmare Scenario: One Server Serving the Entire World
+
+Imagine your website server is in India.
+
+Users access it from:
+
+USA
+
+Europe
+
+Australia
+
+Architecture:
+
+Users (worldwide) → India Server
+4
+
+Problem:
+
+Data must travel thousands of kilometers.
+
+Example latency:
+
+Location	Latency
+India	20 ms
+Europe	150 ms
+USA	250 ms
+
+Now imagine loading images, CSS, JS.
+
+Page becomes slow.
+
+Also:
+
+All users hit the same server
+
+Server becomes overloaded.
+
+2️⃣ The Cure: CDN
+
+A CDN stores copies of content across servers worldwide.
+
+4
+
+Architecture:
+
+Users → Nearest CDN Edge Server → Origin Server
+
+Example:
+
+User in USA → US CDN node
+User in Europe → Europe CDN node
+User in India → India CDN node
+
+Now data travels shorter distances.
+
+3️⃣ Core Mechanism (Feynman Explanation)
+
+Think of CDN like regional warehouses.
+
+Without CDN:
+
+All orders → main warehouse
+
+With CDN:
+
+Regional warehouses serve nearby customers
+
+Example:
+
+User requests image
+
+Flow:
+
+1️⃣ Browser → CDN edge server
+2️⃣ If cached → return immediately
+3️⃣ If not cached → fetch from origin
+4️⃣ Store in CDN cache
+
+This is called:
+
+Edge caching
+4️⃣ CDN Data Flow
+User
+  │
+  ▼
+DNS → CDN edge server
+  │
+  ▼
+Cache hit → return content
+Cache miss → origin server
+
+Origin server example:
+
+AWS server
+
+CDN example:
+
+Cloudflare
+
+Akamai
+
+Fastly
+
+5️⃣ What CDN Caches
+
+CDNs mostly cache static content.
+
+Examples:
+
+Content	Cached
+Images	✔
+CSS	✔
+JavaScript	✔
+Videos	✔
+HTML	sometimes
+
+Not usually cached:
+
+dynamic API responses
+
+personalized data
+
+6️⃣ What If Sandbox
+❓ What if CDN didn’t exist?
+
+Every request goes to origin server.
+
+Problems:
+
+High latency
+Server overload
+Slow websites
+❓ What if cached content becomes outdated?
+
+CDNs use:
+
+Cache TTL (time to live)
+
+Example:
+
+Cache for 1 hour
+
+After expiry:
+
+CDN fetches fresh content
+❓ What if origin server goes down?
+
+CDN may still serve:
+
+Cached content
+
+This improves availability.
+
+7️⃣ Real-World Systems Using CDN
+Company	CDN Use
+Netflix	video streaming
+YouTube	video caching
+Amazon	product images
+Facebook	images/videos
+News sites	static assets
+8️⃣ High-Level Architecture (Full Web System)
+
+Modern web architecture:
+
+Users
+   │
+   ▼
+DNS
+   │
+   ▼
+CDN (Edge Servers)
+   │
+   ▼
+Load Balancer
+   │
+   ▼
+Application Servers
+   │
+   ▼
+Database
+
+CDN reduces load before traffic reaches backend.
+
+9️⃣ One Sentence Feynman Definition
+
+A CDN is a globally distributed network of servers that cache and deliver content from the closest location to the user to reduce latency and server load.
+
+🔑 The Key Insight
+
+CDN solves two problems:
+
+Latency
+Server load
+
+By moving content closer to users.
+
+volution of Pain (Why Load Balancers Exist)
+Nightmare Scenario: One Server Handling Everyone
+
+Imagine you build a backend and deploy it on one server.
+
+Architecture:
+
+Users → Server → Database
+4
+
+Now imagine 100,000 users visiting your website.
+
+What happens?
+
+Problem	Result
+CPU overload	Server slows down
+Memory exhaustion	Crashes
+Too many requests	Timeouts
+Server failure	Entire system down
+
+Example:
+
+Instagram spike traffic
+Single server crashes
+
+💥 System becomes unavailable.
+
+2️⃣ The Cure: Load Balancer
+
+Instead of one server, we run multiple servers.
+
+Then a Load Balancer distributes requests among them.
+
+4
+
+Architecture:
+
+Users
+   │
+   ▼
+Load Balancer
+ ┌───┼───┐
+ ▼   ▼   ▼
+Server1 Server2 Server3
+
+Now traffic spreads evenly.
+
+Example:
+
+1000 requests
+
+Server1 → 333
+Server2 → 333
+Server3 → 334
+
+System becomes scalable.
+
+3️⃣ Core Mechanism (Feynman Explanation)
+
+Think of a load balancer as a traffic police officer.
+
+Cars arrive:
+
+Road → Traffic Police → Multiple Roads
+
+Police directs:
+
+Car1 → Road1
+Car2 → Road2
+Car3 → Road3
+
+Similarly:
+
+Request → Load Balancer → Server
+4️⃣ Load Balancing Algorithms
+
+Load balancers decide which server gets the request.
+
+Common strategies:
+
+Round Robin
+
+Requests distributed sequentially.
+
+Req1 → Server1
+Req2 → Server2
+Req3 → Server3
+Req4 → Server1
+Least Connections
+
+Send request to server with fewest active connections.
+
+Good for uneven workloads.
+
+IP Hash
+
+User always routed to same server.
+
+Useful for session persistence.
+
+5️⃣ Types of Load Balancers
+Layer 4 (Transport Layer)
+
+Works with:
+
+TCP / UDP
+
+Uses:
+
+IP
+
+Port
+
+Fast but simple.
+
+Example:
+
+AWS NLB
+
+Layer 7 (Application Layer)
+
+Works with:
+
+HTTP / HTTPS
+
+Can route based on:
+
+URL path
+
+headers
+
+cookies
+
+Example:
+
+/api → API servers
+/images → image servers
+
+Examples:
+
+NGINX
+
+AWS ALB
+
+6️⃣ What If Sandbox
+❓ What if load balancer fails?
+
+Then system breaks.
+
+Solution:
+
+Multiple load balancers
+❓ What if servers have different capacity?
+
+Round-robin may overload weak servers.
+
+Solution:
+
+Weighted load balancing
+❓ What if a server crashes?
+
+Load balancer performs health checks.
+
+If server unhealthy:
+
+Remove from rotation
+
+Traffic goes to healthy servers.
+
+7️⃣ High-Level Data Flow
+
+Typical modern architecture:
+
+Users
+   │
+   ▼
+CDN
+   │
+   ▼
+Load Balancer
+   │
+   ▼
+Application Servers
+   │
+   ▼
+Database
+8️⃣ Real Systems Using Load Balancers
+Company	Example
+Google	global load balancing
+Netflix	distributed load balancers
+Amazon	Elastic Load Balancer
+Facebook	edge load balancers
+9️⃣ One Sentence Feynman Definition
+
+A Load Balancer distributes incoming requests across multiple servers to improve scalability, reliability, and performance.
+
+Let’s master Sharding using the Evolution of Pain + Feynman method.
+
+1️⃣ Evolution of Pain (Why Sharding Exists)
+Nightmare Scenario: One Huge Database
+
+Imagine your application stores all user data in one database.
+
+Architecture:
+
+Users → App Server → Database
+4
+
+Now imagine your app grows like Instagram or Amazon.
+
+Database size becomes:
+
+Users table = 500 million rows
+Orders table = billions of rows
+
+Problems appear:
+
+Problem	Result
+Slow queries	DB scans huge tables
+Storage limit	Disk fills up
+CPU overload	DB cannot process requests
+Write bottleneck	Too many updates
+
+Eventually the database cannot scale vertically anymore.
+
+2️⃣ The Cure: Sharding
+
+Instead of one massive database, we split data across multiple databases.
+
+4
+
+Architecture:
+
+App Server
+   │
+   ├── Shard 1 (Users 1–1M)
+   ├── Shard 2 (Users 1M–2M)
+   └── Shard 3 (Users 2M–3M)
+
+Now each database handles only a portion of the data.
+
+3️⃣ Core Mechanism (Feynman Explanation)
+
+Sharding works by splitting data horizontally.
+
+Example: User table.
+
+Before sharding:
+
+Users table
+1,2,3,4,5,6,7,8,9,10
+
+After sharding:
+
+Shard 1 → Users 1–3
+Shard 2 → Users 4–6
+Shard 3 → Users 7–10
+
+Application decides:
+
+Which shard holds the data?
+
+Usually using:
+
+Shard key
+
+Example:
+
+user_id % 3
+4️⃣ Real-World Analogy
+
+Imagine a library with millions of books.
+
+Without sharding:
+
+All books in one giant room
+
+Hard to find anything.
+
+With sharding:
+
+Room A → A–F
+Room B → G–M
+Room C → N–Z
+
+Now searching becomes faster.
+
+5️⃣ Common Sharding Strategies
+1️⃣ Range-based sharding
+
+Split by ranges.
+
+Shard1 → user_id 1–1000
+Shard2 → user_id 1001–2000
+
+Problem:
+
+Hot shard if many users in same range
+2️⃣ Hash-based sharding
+
+Use hashing.
+
+user_id % number_of_shards
+
+Better distribution.
+
+3️⃣ Geographic sharding
+
+Split by location.
+
+US users → US database
+Europe users → EU database
+Asia users → Asia database
+
+Used by global apps.
+
+6️⃣ What If Sandbox
+❓ What if one shard becomes overloaded?
+
+Example:
+
+Shard1 = heavy traffic
+Shard2 = low traffic
+
+Solution:
+
+Re-sharding
+❓ What if we need data from multiple shards?
+
+Query becomes complex.
+
+Example:
+
+SELECT COUNT(*) FROM users
+
+Now must query all shards.
+
+❓ What if shard fails?
+
+Only part of data unavailable, not entire system.
+
+Better fault isolation.
+
+7️⃣ High-Level Architecture
+
+Typical distributed database system:
+
+Client
+   │
+   ▼
+Application Server
+   │
+   ▼
+Shard Router
+   │
+   ├── DB Shard 1
+   ├── DB Shard 2
+   └── DB Shard 3
+
+Router decides where to send queries.
+
+8️⃣ Systems Using Sharding
+System	Use
+Instagram	user data
+Twitter	tweets
+Amazon	orders
+MongoDB	automatic sharding
+Cassandra	partitioned data
+9️⃣ One Sentence Feynman Definition
+
+Sharding is a database scaling technique that splits large datasets across multiple databases so each server handles only a portion of the data.
+
+SCALING NOTES:-
+PK, this video is basically explaining how a system evolves from 0 users → 1M+ users. I’ll explain it using the Evolution of Pain + Feynman method so the logic behind each step becomes clear.
+
+1️⃣ Evolution of Pain (Nightmare Scenario)
+
+You launch a startup product.
+
+Architecture:
+
+Client → Server (Application + Database)
+
+Everything runs on one machine.
+
+This works when you have:
+
+10 users
+50 users
+
+But suddenly the product goes viral.
+
+Now traffic becomes:
+
+100k requests/min
+
+Problems begin:
+
+💥 Server CPU overload
+💥 Database slow queries
+💥 High latency for users worldwide
+💥 Server crashes
+
+You need scaling architecture.
+
+Your notes show the same single server → scaled architecture evolution.
+
+2️⃣ Step 1 — Single Server
+
+Initial architecture:
+
+Client
+   ↓
+Server (App + DB)
+
+Everything inside one server:
+
+Business Logic
+Database
+Static files
+
+Advantages:
+
+✔ Cheap
+✔ Easy setup
+
+Problems:
+
+❌ Cannot scale
+❌ Single point of failure
+
+3️⃣ Step 2 — Separate Application & Database
+
+Architecture becomes:
+
+Client
+   ↓
+Application Server
+   ↓
+Database Server
+
+Why?
+
+Because:
+
+App scaling ≠ DB scaling
+
+Now you can upgrade them independently.
+
+Example:
+
+More CPU → Application
+More storage → Database
+4️⃣ Step 3 — Load Balancer + Multiple App Servers
+
+When traffic increases:
+
+Client
+   ↓
+Load Balancer
+   ↓
+App Server 1
+App Server 2
+App Server 3
+   ↓
+Database
+
+Load balancer distributes traffic.
+
+Example:
+
+Request 1 → App1
+Request 2 → App2
+Request 3 → App3
+
+Benefits:
+
+✔ Higher throughput
+✔ Fault tolerance
+✔ Horizontal scaling
+
+Your notes also show load balancer distributing traffic across multiple app servers.
+
+5️⃣ Step 4 — Database Replication
+
+Database becomes bottleneck.
+
+Solution:
+
+Master DB
+   ↓
+Slave DB 1
+Slave DB 2
+
+Rule:
+
+Operation	DB
+Write	Master
+Read	Slave
+
+Example:
+
+Write → Order created
+Read → Fetch orders
+
+Advantages:
+
+✔ Better read scalability
+✔ High availability
+
+Your notes mention master-slave replication with reads from slave.
+
+6️⃣ Step 5 — Cache
+
+Database calls are expensive.
+
+Example:
+
+DB query time = 50ms
+Cache query time = 1ms
+
+Architecture:
+
+Application
+   ↓
+Cache (Redis / Memcached)
+   ↓
+Database
+
+Flow:
+
+Request
+   ↓
+Check Cache
+   ↓
+Cache hit → return data
+Cache miss → query DB
+
+Benefits:
+
+✔ Faster response
+✔ Reduced DB load
+
+Your notes describe cache hit / cache miss logic.
+
+7️⃣ Step 6 — CDN (Content Delivery Network)
+
+Problem:
+
+Users are global.
+
+Example latency:
+
+India user → 10ms
+USA user → 300ms
+Japan user → 350ms
+
+Solution: CDN.
+
+Architecture:
+
+User
+   ↓
+Nearest CDN node
+   ↓
+Origin Server
+
+CDN stores static assets:
+
+Images
+CSS
+JS
+Videos
+HTML
+
+Benefits:
+
+✔ Lower latency
+✔ Reduced server load
+✔ Protection against DDoS
+
+Your notes explain CDN nodes near users caching static content.
+
+8️⃣ Step 7 — Multiple Data Centers
+
+Single data center is risky.
+
+Architecture:
+
+Global Load Balancer
+        ↓
+India Data Center
+USA Data Center
+Europe Data Center
+
+If India DC fails:
+
+Traffic → USA DC
+
+Benefits:
+
+✔ Disaster recovery
+✔ Global availability
+
+9️⃣ Step 8 — Messaging Queue
+
+Problem:
+
+Some tasks are slow.
+
+Example:
+
+Send Email
+Send SMS
+Generate report
+Process images
+
+If done synchronously:
+
+User request waits
+
+Solution:
+
+App → Message Queue → Worker
+
+Tools:
+
+Kafka
+RabbitMQ
+SQS
+
+Architecture:
+
+Producer → Queue → Consumer
+
+Benefits:
+
+✔ Asynchronous processing
+✔ Retry mechanism
+✔ Better scalability
+
+Your notes describe producer → exchange → queue → subscriber flow.
+
+🔟 Step 9 — Database Scaling
+
+Two types.
+
+Vertical Scaling
+
+Increase machine power.
+
+More CPU
+More RAM
+More disk
+
+Example:
+
+16GB RAM → 64GB RAM
+
+Problem:
+
+Hardware limit exists
+Horizontal Scaling
+
+Add more servers.
+
+DB1
+DB2
+DB3
+DB4
+
+This is done using sharding.
+
+1️⃣1️⃣ Database Sharding
+Horizontal Sharding
+
+Split rows.
+
+Example:
+
+Users A–M → DB1
+Users N–Z → DB2
+
+Each DB stores different rows.
+
+Vertical Sharding
+
+Split columns.
+
+Example:
+
+Table Users
+
+DB1 → user_id, name
+DB2 → address, phone
+
+Each DB stores different columns.
+
+Your notes describe both row-based and column-based sharding.
+
+1️⃣2️⃣ Problems with Sharding
+Problem 1
+
+Uneven distribution.
+
+Example:
+
+Many users with A–M names
+DB1 overloaded
+
+Solution:
+
+Consistent Hashing
+Problem 2
+
+Joins across shards.
+
+Example:
+
+SELECT * FROM users JOIN orders
+
+Hard when tables are in different shards.
+
+Solution:
+
+Denormalization
+1️⃣3️⃣ Final Scalable Architecture (0 → 1M Users)
+
+Complete architecture becomes:
+
+Users
+   ↓
+CDN
+   ↓
+Load Balancer
+   ↓
+App Servers
+   ↓
+Cache
+   ↓
+Message Queue
+   ↓
+Database Cluster
+   ↓
+Sharded Databases
+
+Across:
+
+Multiple Data Centers
+1️⃣4️⃣ Real System Example
+
+This architecture is used by:
+
+Netflix
+Amazon
+Uber
+Instagram
+1️⃣5️⃣ HLD Interview Insight
+
+Interviewers expect this exact scaling progression.
+
+Typical answer structure:
+
+1️⃣ Single server
+2️⃣ Separate DB
+3️⃣ Load balancer
+4️⃣ DB replication
+5️⃣ Cache
+6️⃣ CDN
+7️⃣ Multiple data centers
+8️⃣ Message queue
+9️⃣ Sharding

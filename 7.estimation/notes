@@ -1,0 +1,302 @@
+PK, main isko Evolution of Pain + Feynman method se explain karta hoon. Tum Java backend dev ho aur system design seekh rahe ho, isliye main ise practical interview thinking ke angle se simplify karunga.
+
+1️⃣ The Evolution of Pain (Agar estimation na karein)
+
+Socho interviewer bolta hai:
+
+Design Facebook
+
+Tum turant bol dete ho:
+
+Client → CDN → Load Balancer → App Servers → Cache → Database
+
+Interviewer poochta hai:
+
+Kitne servers chahiye?
+
+Cache ka size kitna?
+
+Storage kitna lagega?
+
+CDN kyun chahiye?
+
+Agar tum bolte ho:
+
+"Sir bas scalable design hai"
+
+toh problem ho gayi ❌
+
+Kyuki system design guessing game nahi hai.
+Decision numbers se driven hona chahiye.
+
+Example:
+
+Decision	Estimation se decide hota
+Load balancer chahiye?	QPS kitna hai
+Cache size	RAM calculation
+Storage	data growth
+Servers	requests per second
+
+Agar estimation nahi kiya:
+
+System = Over engineered
+Ya
+System = Under capacity
+
+Isi pain ko solve karta hai:
+
+👉 Back of the Envelope Estimation
+2️⃣ The Cure (Concept kya hai)
+
+Simple definition:
+
+Back of the envelope estimation = rough numbers use karke system capacity estimate karna
+
+Exact nahi hota.
+
+Example:
+
+Facebook users ≈ 1 Billion
+Daily active users ≈ 25%
+
+Ye real number nahi hai but design decisions ke liye enough hai.
+
+Important rule:
+
+Use round numbers
+10M
+100M
+1B
+3️⃣ Cheat Sheet (Interview ke liye important)
+
+Ye almost har system design interview mein use hota hai.
+
+Storage units
+1 KB = 10^3
+1 MB = 10^6
+1 GB = 10^9
+1 TB = 10^12
+1 PB = 10^15
+Data assumptions
+
+Common interview assumptions:
+
+1 character = 2 bytes
+1 image = 300 KB
+1 video = few MB
+4️⃣ Facebook Traffic Estimation
+
+Assume:
+
+Total users = 1 Billion
+Daily active users = 25%
+
+So:
+
+DAU = 250 Million
+
+Assume each user:
+
+5 reads
+2 writes
+
+Total queries per user:
+
+7 queries/day
+
+Total queries/day:
+
+250M × 7 = 1.75B queries
+
+Seconds in a day ≈
+
+86400 ≈ 100000
+
+QPS:
+
+1.75B / 100000
+≈ 17,500
+≈ 18K requests/sec
+
+So system ko handle karna hai:
+
+~18K QPS
+5️⃣ Storage Estimation
+
+Assume:
+
+User posts/day = 2
+Post size = 250 characters
+
+Character size:
+
+1 char = 2 bytes
+
+So:
+
+250 × 2 = 500 bytes
+
+Two posts:
+
+1000 bytes ≈ 1 KB
+
+Total storage/day:
+
+250M users × 1 KB
+= 250 GB/day
+Image storage
+
+Assume:
+
+10% users upload image
+
+So:
+
+25M images/day
+
+Image size:
+
+300 KB
+
+Total:
+
+25M × 300 KB
+= 7.5 TB/day
+≈ 8 TB/day
+Storage for 5 years
+
+Days:
+
+≈ 2000
+
+Posts:
+
+2000 × 250GB
+≈ 500 TB
+
+Images:
+
+2000 × 8TB
+≈ 16 PB
+
+So Facebook scale system needs roughly:
+
+Post storage ≈ 500 TB
+Image storage ≈ 16 PB
+6️⃣ RAM Estimation (Cache)
+
+Assume:
+
+Cache last 5 posts per user
+
+Post size:
+
+500 bytes
+
+5 posts:
+
+2500 bytes
+≈ 3 KB
+
+Daily users:
+
+250M
+
+Memory:
+
+250M × 3 KB
+= 750 GB RAM
+
+If one cache server:
+
+75 GB RAM
+
+Servers needed:
+
+750 / 75 = 10 cache servers
+7️⃣ Application Servers Calculation
+
+Assume:
+
+Latency = 500 ms
+
+So per thread:
+
+2 requests/sec
+
+If server has:
+
+50 threads
+
+Capacity:
+
+50 × 2 = 100 requests/sec
+
+Total traffic:
+
+18000 req/sec
+
+Servers needed:
+
+18000 / 100
+≈ 180 servers
+8️⃣ CAP Theorem Tradeoff
+
+Distributed systems mein choose karna padta hai:
+
+Consistency
+Availability
+Partition tolerance
+
+Facebook chooses:
+
+Availability + Partition tolerance
+
+Matlab:
+
+Consistency eventually aayegi
+
+Example:
+
+Friend like count:
+
+Like count = 101
+But kuch seconds baad update ho sakta hai
+9️⃣ Real-World Analogy
+
+Socho tum ek restaurant chain design kar rahe ho.
+
+Estimation ke bina:
+
+Kitne chefs?
+Kitne tables?
+Kitni food storage?
+
+Sab guess hoga.
+
+Estimation ke saath:
+
+Customers/day = 1000
+Meals/customer = 2
+
+Ab tum plan kar sakte ho:
+
+Kitchen size
+Staff
+Inventory
+
+Same concept software systems mein.
+
+🔟 Interview Formula (Most Important)
+
+Almost every system design mein interviewer expect karta hai:
+
+1️⃣ Traffic (QPS)
+2️⃣ Storage
+3️⃣ Cache / RAM
+4️⃣ Servers
+5️⃣ CAP tradeoff
+
+Ye 5 steps bol diye → interviewer ko lagta hai:
+
+"Candidate understands large scale systems"

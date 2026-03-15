@@ -1,0 +1,373 @@
+1️⃣ Evolution of Pain (The Nightmare Scenario)
+
+Imagine your company builds an e-commerce platform.
+
+All features are inside one single application:
+
+Login
+Product
+Order
+Inventory
+Payment
+Billing
+Notifications
+
+Everything is in one codebase.
+
+This is called a Monolithic Architecture.
+
+What starts going wrong?
+1️⃣ Small change → huge deployment
+
+You fix a tiny bug in payment service.
+
+But you must:
+
+Build entire application
+Run full regression tests
+Deploy entire application
+
+Even if the change is one line.
+
+2️⃣ Scaling becomes expensive
+
+Traffic example:
+
+Order service → heavy traffic
+Login service → low traffic
+
+But in monolith you must scale everything.
+
+Add server
+Run whole application
+
+Your notes also describe this issue — the entire application must be deployed and scaled together.
+
+3️⃣ Code becomes gigantic
+
+Large companies often have:
+
+5 million+ lines of code
+
+Developers face:
+
+Slow IDE loading
+Huge debugging complexity
+High coupling
+
+Your notes call this problem overloaded IDE and tightly coupled system.
+
+4️⃣ One bug can break everything
+
+Example:
+
+Payment bug
+
+Suddenly:
+
+Orders fail
+Notifications fail
+Inventory fails
+
+Because everything is tightly coupled.
+
+Result
+
+Development slows down.
+
+Scaling becomes expensive.
+
+Maintenance becomes painful.
+
+This pain created the need for Microservices Architecture.
+
+2️⃣ The Cure (Microservices)
+
+Instead of one big application:
+
+Split the system into independent services.
+
+Example:
+
+Login Service
+Order Service
+Product Service
+Payment Service
+Billing Service
+
+Each service:
+
+Own codebase
+Own deployment
+Own scaling
+
+Your notes show this architecture clearly — small services replacing one large monolith.
+
+3️⃣ Why Microservices Help
+1️⃣ Independent deployment
+
+Fix bug in payment:
+
+Deploy only payment service
+
+No need to deploy whole system.
+
+2️⃣ Independent scaling
+
+Example:
+
+Orders → 1000 requests/sec
+Login → 20 requests/sec
+
+Scale only:
+
+Order Service
+
+Much cheaper.
+
+3️⃣ Smaller codebases
+
+Instead of:
+
+5M LOC
+
+Each service may have:
+
+50k LOC
+
+Much easier to maintain.
+
+4️⃣ But Microservices Also Have Problems
+
+Microservices are not magic.
+
+They introduce new challenges.
+
+1️⃣ Latency
+
+Services talk over network.
+
+Example:
+
+User request
+   ↓
+Order Service
+   ↓
+Payment Service
+   ↓
+Inventory Service
+
+Each network call adds:
+
+Network latency
+
+Your notes mention latency increase if services communicate heavily.
+
+2️⃣ Debugging complexity
+
+Example request flow:
+
+Client → API Gateway
+      → Order Service
+      → Payment Service
+      → Inventory Service
+
+Failure happens.
+
+Now question:
+
+Which service broke?
+
+Debugging becomes harder.
+
+Your notes describe this monitoring difficulty across services.
+
+3️⃣ Distributed transactions
+
+Monolith:
+
+Single database
+ACID transactions
+
+Microservices:
+
+Each service → its own database
+
+Example:
+
+Order service → DB1
+Payment service → DB2
+
+If payment fails after order creation:
+
+Need rollback across services
+
+This becomes complex.
+
+Your notes mention this challenge as transaction management difficulty.
+
+5️⃣ Real World Analogy
+Monolith = One giant restaurant
+
+One kitchen handles:
+
+Pizza
+Burger
+Dessert
+Drinks
+
+If burger section gets busy:
+
+Entire kitchen slows down.
+
+Microservices = Food court
+
+Separate stalls:
+
+Pizza Stall
+Burger Stall
+Coffee Stall
+Dessert Stall
+
+Each stall:
+
+Independent
+Scalable
+Specialized
+6️⃣ Microservices Architecture Phases
+
+When designing microservices, there are four major phases.
+
+Your notes highlight these phases.
+
+1️⃣ Decomposition
+
+Break monolith into services.
+
+How to divide?
+
+Use patterns.
+
+2️⃣ Database Design
+
+Two options:
+
+Shared database
+
+or
+
+Database per service
+3️⃣ Communication
+
+Services communicate via:
+
+REST APIs
+Events (Kafka)
+Message queues
+4️⃣ Integration & Governance
+
+External systems connect through:
+
+API Gateway
+Service discovery
+Monitoring
+
+Your notes list these phases when designing microservices architecture.
+
+7️⃣ Decomposition Patterns (Very Important for Interviews)
+
+The big question:
+
+How small should a microservice be?
+
+Two main patterns exist.
+
+Pattern 1 — Decompose by Business Capability
+
+Divide services by business functions.
+
+Example: E-commerce
+
+Order Service
+Product Service
+Payment Service
+Account Service
+Login Service
+
+Each service handles one business capability.
+
+Your notes show exactly these examples for business capability decomposition.
+
+Pattern 2 — Decompose by Subdomain (DDD)
+
+First define domains.
+
+Example:
+
+Order Domain
+Payment Domain
+Inventory Domain
+
+Then split domain into subservices.
+
+Example:
+
+Order domain
+Order Placement
+Order Tracking
+Order Cancellation
+Payment domain
+Forward Payment
+Refund Payment
+
+Your notes describe this pattern as Domain Driven Design (DDD).
+
+8️⃣ Key Difference (Interview Question)
+Business Capability	Subdomain (DDD)
+Service per function	Domain → multiple services
+Simple systems	Complex systems
+Faster design	More structured design
+9️⃣ Trade-off Sandbox (Think Like Architect)
+What if services are too small?
+
+Problems:
+
+Too many network calls
+High latency
+Complex debugging
+What if services are too big?
+
+Problems:
+
+Back to monolith
+Hard to scale
+Hard to deploy
+What if services share database?
+
+Problems:
+
+Strong coupling
+Data ownership conflicts
+Scaling issues
+🔟 HLD Interview Insight
+
+When interviewer asks:
+
+How will you design microservices?
+
+Answer structure:
+
+1️⃣ Decomposition strategy
+2️⃣ Database strategy
+3️⃣ Communication pattern
+4️⃣ Integration pattern
+
+🔥 PK — Very Important Insight
+
+Most candidates say:
+
+Just break system into microservices
+
+But senior engineers explain HOW to break it.
+
+That’s why Decomposition Patterns are extremely important.

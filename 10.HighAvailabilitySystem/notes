@@ -1,0 +1,218 @@
+1️⃣ Problem se start karte hain
+
+Suppose ek simple system hai:
+
+User → Server → Database
+
+Example:
+
+User → Amazon Server → DB
+
+Agar DB down ho gaya:
+
+User → Server → ❌ DB
+
+Result:
+
+Login fail
+
+Payment fail
+
+Order fail
+
+System down.
+
+Isko bolte hain:
+
+Single Point Of Failure
+
+Interview me ye word bahut important hai.
+
+2️⃣ Solution kya hai?
+
+Simple solution:
+
+Ek DB nahi
+2 DB rakho
+
+Architecture:
+
+User
+ ↓
+Server
+ ↓
+DB1
+DB2
+
+Agar DB1 crash:
+
+Server → DB2
+
+System chalta rahega.
+
+Isko bolte hain:
+
+High Availability
+3️⃣ Active Passive Architecture
+
+Yaha 2 database hote hain.
+
+DB1 → Primary
+DB2 → Backup
+
+Architecture:
+
+User
+ ↓
+Load Balancer
+ ↓
+App Server
+ ↓
+Primary DB → Replica DB
+Write request
+
+Example:
+
+User order place karta hai.
+
+User → Server → Primary DB
+Data copy hoti hai
+Primary DB → Replica DB
+
+Isko bolte hain:
+
+Replication
+
+Replica DB me same data copy ho jata hai.
+
+4️⃣ Agar primary DB crash ho gaya
+Primary DB ❌
+Replica DB → Primary ban jayega
+
+Traffic shift ho jayega.
+
+Server → Replica DB
+
+Is process ko bolte hain:
+
+Failover
+5️⃣ Real world example
+
+Example:
+
+Data Center 1 → Mumbai
+Data Center 2 → Pune
+Mumbai → Primary
+Pune → Backup
+
+Agar Mumbai data center crash:
+
+Traffic → Pune
+
+System still working.
+
+6️⃣ Active Passive problem
+
+Problem:
+
+Replica DB mostly idle hota hai
+
+Example:
+
+Primary → 1000 requests
+Replica → 0 requests
+
+Resource waste.
+
+7️⃣ Active Active Architecture
+
+Solution:
+
+Dono DB active rakho
+
+Architecture:
+
+User
+ ↓
+Load Balancer
+ ↓      ↓
+DC1     DC2
+DB1     DB2
+
+Ab:
+
+Writes → DB1
+Writes → DB2
+Reads → dono
+
+Traffic divide ho jata hai.
+
+Example:
+
+1000 requests
+DB1 → 500
+DB2 → 500
+
+System faster.
+
+8️⃣ Active Active problem
+
+Sabse bada issue:
+
+Data conflict
+
+Example:
+
+User profile update.
+
+Same time:
+
+DC1 → name = PK
+DC2 → name = Pratyush
+
+Ab question:
+
+correct value kaunsi?
+
+Isko solve karne ke liye:
+
+Conflict resolution
+
+algorithm lagta hai.
+
+9️⃣ Interview me simple answer
+
+Agar interviewer bole:
+
+Design High Availability Architecture
+
+Tum bolo:
+
+Step 1
+
+Remove single point of failure
+
+Step 2
+
+Multiple data centers
+
+Step 3
+
+Replication
+
+Step 4
+
+Active Passive OR Active Active
+🔟 Memory trick
+Active Passive
+= 1 active
+= 1 backup
+Active Active
+= both active
+Real systems
+
+Example:
+
+Netflix → Active Active
+Google → Active Active
+Banks → Active Passive

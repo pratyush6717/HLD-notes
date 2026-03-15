@@ -1,0 +1,380 @@
+PK, let’s break down Strangler Pattern, Saga Pattern, and CQRS using your Evolution of Pain + Feynman method. These are core microservice patterns, and Saga especially is very important for backend engineers.
+
+1️⃣ Evolution of Pain (The Nightmare Scenario)
+
+You built a huge monolithic system.
+
+Example: E-commerce platform
+
+Login
+Orders
+Payments
+Inventory
+Notifications
+
+Everything is inside one application.
+
+Now management says:
+
+“We want microservices.”
+
+You try to rewrite the whole system.
+
+What happens?
+
+💥 Disaster.
+
+Problems:
+
+1️⃣ Rewriting entire system takes years
+2️⃣ New system may have unknown bugs
+3️⃣ Downtime risk during migration
+4️⃣ Production traffic cannot stop
+
+Example:
+
+1000 requests/sec production traffic
+
+You cannot just shut it down.
+
+This pain created migration patterns.
+
+One of the most important is the Strangler Pattern.
+
+2️⃣ The Cure #1 — Strangler Pattern
+
+The Strangler Pattern helps migrate monolith → microservices gradually.
+
+Instead of replacing everything at once, you do it piece by piece.
+
+Architecture:
+
+Client
+   ↓
+Controller / API Gateway
+   ↓
+ ┌───────────────┬───────────────┐
+ Monolith        Microservices
+
+Traffic is split between them.
+
+Example:
+
+Traffic	Destination
+90%	Monolith
+10%	Microservices
+
+Over time:
+
+10% → 20% → 50% → 100%
+
+Eventually:
+
+Monolith = 0%
+
+Then it is deleted.
+
+Your notes also describe routing traffic gradually from monolith to microservices using a controller.
+
+Real-World Analogy
+
+Imagine replacing an old bridge.
+
+Instead of destroying it first:
+
+1️⃣ Build new bridge beside it
+2️⃣ Gradually move traffic
+3️⃣ Remove old bridge
+
+Exactly what Strangler Pattern does.
+
+3️⃣ Evolution of Pain #2 (Distributed Transactions)
+
+Now suppose you built microservices.
+
+Example:
+
+Order Service
+Inventory Service
+Payment Service
+
+Each service has its own database.
+
+Your notes highlight this as Database per service architecture.
+
+Now imagine placing an order.
+
+Steps:
+
+1. Create Order
+2. Reduce Inventory
+3. Process Payment
+
+But something goes wrong.
+
+Example:
+
+Order created
+Inventory updated
+Payment failed
+
+Now system is inconsistent.
+
+This problem is distributed transaction failure.
+
+4️⃣ The Cure #2 — Saga Pattern
+
+Saga solves distributed transaction problems.
+
+Instead of one big transaction, we use:
+
+Sequence of local transactions
+
+Each service executes its own transaction.
+
+If something fails, we perform compensation transactions.
+
+Example: Order Placement
+
+Step 1:
+
+Order Service
+Create order
+
+Step 2:
+
+Inventory Service
+Reduce inventory
+
+Step 3:
+
+Payment Service
+Process payment
+
+Now payment fails.
+
+Saga will trigger compensation.
+
+Inventory Service → Restore inventory
+Order Service → Cancel order
+
+System returns to consistent state.
+
+Your notes explain Saga as sequence of local transactions with compensation events.
+
+5️⃣ Two Types of Saga
+1️⃣ Choreography Saga
+
+Services communicate via events.
+
+Example flow:
+
+Order Created Event
+     ↓
+Inventory Service
+     ↓
+Inventory Updated Event
+     ↓
+Payment Service
+
+Failure event triggers rollback.
+
+Advantages:
+
+✔ Simple
+✔ No central controller
+
+Disadvantages:
+
+❌ Hard to debug
+❌ Circular dependencies possible
+
+2️⃣ Orchestration Saga
+
+One central orchestrator controls flow.
+
+Architecture:
+
+Orchestrator
+   ↓
+Order Service
+   ↓
+Inventory Service
+   ↓
+Payment Service
+
+If failure occurs:
+
+Orchestrator triggers rollback
+
+Advantages:
+
+✔ Easier monitoring
+✔ Clear control flow
+
+Disadvantages:
+
+❌ Central coordinator required
+
+Your notes describe both choreography and orchestration Saga models.
+
+6️⃣ Interview Example (Very Common)
+
+Example question:
+
+User A sends ₹10 to User B.
+
+Services:
+
+Balance Service
+Payment Service
+
+Flow:
+
+1️⃣ Deduct ₹10 from balance
+2️⃣ Record payment
+
+Problem:
+
+Balance updated
+Payment record failed
+
+Solution:
+
+Saga compensation:
+
+Balance Service → Add ₹10 back
+
+Transaction restored.
+
+Exactly the example discussed in your notes.
+
+7️⃣ Evolution of Pain #3 (Query Problem)
+
+In microservices:
+
+Order DB
+Inventory DB
+Payment DB
+
+Suppose you want:
+
+Order + Payment + Inventory data
+
+In monolith you could run:
+
+JOIN
+
+But microservices rule:
+
+No service accesses another service DB
+
+So joins become impossible.
+
+8️⃣ The Cure #3 — CQRS Pattern
+
+CQRS =
+
+Command Query Responsibility Segregation
+
+Meaning:
+
+Separate:
+
+Write operations
+Read operations
+Write side
+
+Commands:
+
+Create
+Update
+Delete
+
+Each service writes to its own DB.
+
+Read side
+
+A read database is created.
+
+Example:
+
+Read DB
+
+Contains combined data from:
+
+Order DB
+Inventory DB
+Payment DB
+
+Data is synced using:
+
+Events
+Triggers
+ETL
+
+Your notes describe this as a separate view database for read queries.
+
+9️⃣ Real-World Analogy
+
+Think of a bank system.
+
+Write database:
+
+Transaction ledger
+
+Read database:
+
+Analytics dashboard
+
+Dashboard pulls data from ledger but does not affect transactions.
+
+🔟 Trade-Off Sandbox
+What if we don't use Saga?
+
+Problem:
+
+Distributed transaction inconsistency
+
+Example:
+
+Inventory reduced
+Payment failed
+Order still active
+What if we don't use CQRS?
+
+Problem:
+
+Cross-service joins impossible
+Slow queries
+Complex APIs
+What if we migrate monolith directly?
+
+Problem:
+
+Huge risk
+Production failure
+Long downtime
+
+That’s why Strangler Pattern exists.
+
+1️⃣1️⃣ HLD Interview Cheat Sheet
+Pattern	Purpose
+Strangler	Gradually migrate monolith → microservices
+Saga	Manage distributed transactions
+CQRS	Separate read and write models
+🔥 PK — One Very Important Insight
+
+Real production systems often combine all three.
+
+Example architecture:
+
+API Gateway
+   ↓
+Microservices
+   ↓
+Saga (transactions)
+   ↓
+Kafka Events
+   ↓
+CQRS Read DB

@@ -1,0 +1,337 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .nav-btn {
+    padding: 7px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary);
+    background: var(--color-background-secondary); color: var(--color-text-secondary);
+    font-size: 13px; cursor: pointer; transition: all .15s; font-family: var(--font-sans);
+  }
+  .nav-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .nav-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .card { display: none; }
+  .card.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .box-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-coral { background: #FAECE7; color: #712B13; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+    .tag-purple { background: #3C3489; color: #CECBF6; }
+    .tag-coral { background: #712B13; color: #F5C4B3; }
+  }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .flow-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .flow-step { padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; }
+  .flow-arrow { color: var(--color-text-tertiary); font-size: 16px; }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; }
+  .pain .label, .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .pain .label { color: #A32D2D; }
+  .cure .label { color: #0F6E56; }
+  .pain ul, .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 14px; font-weight: 500; color: var(--color-text-primary); line-height: 1.6; margin-bottom: 16px; text-align: center; }
+
+  .path-diagram { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .path-box { padding: 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .path-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 12px; }
+  .path-label.ws { color: #185FA5; }
+  .path-label.rtc { color: #3B6D11; }
+  .node-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 6px 0; }
+  .node-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+    .node-amber { background: #633806; color: #FAC775; }
+  }
+  .path-arrow { font-size: 18px; color: var(--color-text-tertiary); }
+  .path-note { font-size: 11px; color: var(--color-text-tertiary); text-align: center; margin-top: 10px; font-style: italic; }
+  .decision-strip { display: flex; gap: 12px; margin-bottom: 16px; }
+  .decision-card { flex: 1; padding: 14px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); }
+  .decision-q { font-size: 13px; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 8px; }
+  .decision-yes { font-size: 13px; color: var(--color-text-primary); }
+</style>
+
+<div class="container">
+  <div class="nav">
+    <button class="nav-btn active" onclick="show('protocols')">Protocols</button>
+    <button class="nav-btn" onclick="show('client-server')">Client–Server vs P2P</button>
+    <button class="nav-btn" onclick="show('http-ws')">HTTP vs WebSocket</button>
+    <button class="nav-btn" onclick="show('tcp-udp')">TCP vs UDP</button>
+    <button class="nav-btn" onclick="show('webrtc')">WebRTC</button>
+    <button class="nav-btn" onclick="show('ws-vs-rtc')">WebSocket vs WebRTC</button>
+  </div>
+
+  <!-- PROTOCOLS -->
+  <div class="card active" id="card-protocols">
+    <div class="section-title">Network Protocols</div>
+    <div class="highlight"><strong>Definition:</strong> A network protocol is a set of rules two computers follow to communicate — a language + grammar for machines. Ensures reliable data exchange, ordering, and delivery.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div class="pain">
+        <div class="label">Without protocols</div>
+        <ul><li>Machines can't understand each other</li><li>Data arrives out of order</li><li>Packets are lost</li><li>No standard message format</li></ul>
+      </div>
+      <div class="cure">
+        <div class="label">With protocols</div>
+        <ul><li>Standardised data format</li><li>Reliable delivery guaranteed</li><li>Ordered transmission</li><li>Clients and servers talk reliably</li></ul>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="grid grid-3">
+      <div class="box">
+        <div class="box-label">Application Layer</div>
+        <div style="margin-top:8px">
+          <span class="tag tag-blue">HTTP</span><span style="font-size:12px;color:var(--color-text-tertiary)"> Websites</span><br>
+          <span class="tag tag-teal">WebSocket</span><span style="font-size:12px;color:var(--color-text-tertiary)"> Chat</span><br>
+          <span class="tag tag-amber">SMTP</span><span style="font-size:12px;color:var(--color-text-tertiary)"> Email</span><br>
+          <span class="tag tag-purple">FTP</span><span style="font-size:12px;color:var(--color-text-tertiary)"> File transfer</span><br>
+          <span class="tag tag-coral">WebRTC</span><span style="font-size:12px;color:var(--color-text-tertiary)"> Video</span>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label">Transport Layer</div>
+        <div style="margin-top:8px">
+          <div style="margin-bottom:8px"><span class="tag tag-blue">TCP</span><br><span style="font-size:12px;color:var(--color-text-tertiary)">Reliable, ordered delivery</span></div>
+          <div><span class="tag tag-amber">UDP</span><br><span style="font-size:12px;color:var(--color-text-tertiary)">Fast, no guarantees</span></div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label">One-liner rule</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.6;margin-top:8px">
+          <strong style="color:var(--color-text-primary)">Need accuracy?</strong><br>→ TCP<br><br>
+          <strong style="color:var(--color-text-primary)">Need speed?</strong><br>→ UDP
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENT SERVER -->
+  <div class="card" id="card-client-server">
+    <div class="section-title">Client–Server vs Peer-to-Peer</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label">Client–Server</div>
+        <div class="box-title">Centralised</div>
+        <div class="box-sub" style="margin:8px 0">Clients request → Server responds. Server stores data, processes requests, authenticates users.</div>
+        <div class="flow-row"><span class="flow-step" style="background:#E6F1FB;color:#0C447C">Client</span><span class="flow-arrow">→</span><span class="flow-step" style="background:#E1F5EE;color:#085041">Server</span><span class="flow-arrow">→</span><span class="flow-step" style="background:#E1F5EE;color:#085041">DB</span></div>
+        <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">Analogy: Customer → Waiter → Kitchen</div>
+      </div>
+      <div class="box">
+        <div class="box-label">Peer-to-Peer</div>
+        <div class="box-title">Distributed</div>
+        <div class="box-sub" style="margin:8px 0">Nodes communicate directly. Server only used for discovery. Data flows peer ↔ peer.</div>
+        <div class="flow-row"><span class="flow-step" style="background:#EEEDFE;color:#3C3489">Client A</span><span class="flow-arrow">↔</span><span class="flow-step" style="background:#EEEDFE;color:#3C3489">Client B</span></div>
+        <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">Analogy: Two friends on a direct phone call</div>
+      </div>
+    </div>
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Client–Server</th><th>P2P</th></tr>
+      <tr><td>Control</td><td>Centralised</td><td>Distributed</td></tr>
+      <tr><td>Scalability</td><td>Limited by server</td><td>Scales with peers</td></tr>
+      <tr><td>Latency</td><td>Higher (extra hop)</td><td>Lower</td></tr>
+      <tr><td>Cost</td><td>High infra cost</td><td>Lower infra</td></tr>
+      <tr><td>Security</td><td>Easier to control</td><td>Harder</td></tr>
+    </table>
+    <div class="highlight"><strong>Use P2P when:</strong> Real-time video (WebRTC), file sharing (BitTorrent), blockchain. <strong>Use Client–Server when:</strong> Most APIs, websites, auth-required systems.</div>
+  </div>
+
+  <!-- HTTP VS WEBSOCKET -->
+  <div class="card" id="card-http-ws">
+    <div class="section-title">HTTP vs WebSocket</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label">HTTP</div>
+        <div class="box-title">Request–response</div>
+        <div class="box-sub" style="margin:6px 0">Client sends request → Server responds → Connection closes. Can't push data to client.</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">Analogy: Sending an email — one shot, conversation ends</div>
+      </div>
+      <div class="box">
+        <div class="box-label">WebSocket</div>
+        <div class="box-title">Persistent connection</div>
+        <div class="box-sub" style="margin:6px 0">Single connection stays open. Both sides can send data at any time. No polling needed.</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">Analogy: A phone call — both parties talk freely</div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="section-title">Evolution of polling</div>
+    <div class="grid grid-3">
+      <div class="box"><div class="box-label" style="color:#A32D2D">Polling</div><div class="box-sub">Client asks every N seconds. Thousands of useless requests. Server overload.</div></div>
+      <div class="box"><div class="box-label" style="color:#633806">Long polling</div><div class="box-sub">Server holds request until data arrives. Better, but connection resets frequently. Still HTTP overhead.</div></div>
+      <div class="box"><div class="box-label" style="color:#0F6E56">WebSocket</div><div class="box-sub">Persistent connection. Server pushes instantly. No resets, no overhead per message.</div></div>
+    </div>
+    <hr class="divider">
+    <table class="compare-table">
+      <tr><th>Use case</th><th>Protocol</th></tr>
+      <tr><td>REST APIs / websites</td><td><span class="tag tag-blue">HTTP</span></td></tr>
+      <tr><td>Chat (WhatsApp, Slack)</td><td><span class="tag tag-teal">WebSocket</span></td></tr>
+      <tr><td>Live notifications</td><td><span class="tag tag-teal">WebSocket</span></td></tr>
+      <tr><td>Multiplayer games</td><td><span class="tag tag-teal">WebSocket</span></td></tr>
+    </table>
+    <div class="highlight"><strong>Don't use WebSocket for simple APIs</strong> — connections stay open and consume memory. Use HTTP/REST unless you need real-time bidirectional communication.</div>
+  </div>
+
+  <!-- TCP VS UDP -->
+  <div class="card" id="card-tcp-udp">
+    <div class="section-title">TCP vs UDP</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label">TCP</div>
+        <div class="box-title">Reliable, ordered</div>
+        <div class="box-sub" style="margin:6px 0">Handshake → packets numbered → ACKs sent → missing packets retransmitted. Slower but guaranteed delivery.</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">Analogy: Courier with signature confirmation</div>
+      </div>
+      <div class="box">
+        <div class="box-label">UDP</div>
+        <div class="box-title">Fast, unreliable</div>
+        <div class="box-sub" style="margin:6px 0">Send and forget. No connection setup, no ACKs, no reordering. Dropped packets are ignored.</div>
+        <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">Analogy: Live radio broadcast — lost signal is ignored</div>
+      </div>
+    </div>
+    <table class="compare-table">
+      <tr><th>Feature</th><th>TCP</th><th>UDP</th></tr>
+      <tr><td>Reliability</td><td>Guaranteed</td><td>Not guaranteed</td></tr>
+      <tr><td>Packet order</td><td>Maintained</td><td>Not maintained</td></tr>
+      <tr><td>Speed</td><td>Slower</td><td>Faster</td></tr>
+      <tr><td>Connection</td><td>Required (handshake)</td><td>Connectionless</td></tr>
+      <tr><td>Use case</td><td>Data integrity</td><td>Real-time media</td></tr>
+    </table>
+    <div class="grid">
+      <div class="box"><div class="box-label">TCP used by</div><div style="margin-top:6px"><span class="tag tag-blue">HTTP</span> <span class="tag tag-blue">WebSocket</span> <span class="tag tag-blue">FTP</span> <span class="tag tag-blue">Email</span> <span class="tag tag-blue">Databases</span></div></div>
+      <div class="box"><div class="box-label">UDP used by</div><div style="margin-top:6px"><span class="tag tag-amber">Video calls</span> <span class="tag tag-amber">Gaming</span> <span class="tag tag-amber">Live streaming</span> <span class="tag tag-amber">DNS</span> <span class="tag tag-amber">WebRTC</span></div></div>
+    </div>
+    <div class="highlight"><strong>Why not TCP for video?</strong> If a packet is lost, TCP freezes and waits. In a video call, that gap is worse than just skipping the frame. <strong>QUIC</strong> (used by HTTP/3) builds reliability on top of UDP to get the best of both.</div>
+  </div>
+
+  <!-- WEBRTC -->
+  <div class="card" id="card-webrtc">
+    <div class="section-title">WebRTC</div>
+    <div class="highlight"><strong>Problem it solves:</strong> Video through a server is expensive (all bandwidth passes through it). WebRTC enables direct browser-to-browser communication — server is only needed for setup.</div>
+    <div class="section-title" style="margin-top:4px">3-stage connection process</div>
+    <div class="grid grid-3">
+      <div class="box"><div class="box-label" style="color:#185FA5">1 — Signaling</div><div class="box-sub">Peers exchange IP, network capabilities, and metadata via a signaling server (WebSocket or HTTP). Not part of WebRTC itself — developer implements.</div></div>
+      <div class="box"><div class="box-label" style="color:#3B6D11">2 — ICE / STUN</div><div class="box-sub">Most devices are behind NAT. STUN server helps each peer discover its public IP + port. ICE finds the best network path.</div></div>
+      <div class="box"><div class="box-label" style="color:#854F0B">3 — TURN (fallback)</div><div class="box-sub">If direct connection fails (strict firewall), a TURN server relays traffic. More expensive — avoided when possible.</div></div>
+    </div>
+    <hr class="divider">
+    <table class="compare-table">
+      <tr><th>Trade-off / edge case</th><th>What happens</th></tr>
+      <tr><td>No signaling server</td><td>Peers can't find each other — connection impossible</td></tr>
+      <tr><td>Strict firewall</td><td>Direct path fails → TURN relay needed (expensive)</td></tr>
+      <tr><td>10-person group call</td><td>P2P needs n(n−1)/2 = 45 connections. Zoom/Meet use SFU servers instead.</td></tr>
+    </table>
+    <div class="grid">
+      <div class="box"><div class="box-label">Real-world usage</div><div style="margin-top:6px"><span class="tag tag-purple">Google Meet</span> <span class="tag tag-purple">WhatsApp video</span> <span class="tag tag-purple">Discord</span> <span class="tag tag-purple">Screen share</span></div></div>
+      <div class="box"><div class="box-label">Analogy</div><div class="box-sub" style="margin-top:4px">You introduce two friends (signaling), then step away. They talk directly. <strong style="color:var(--color-text-primary)">Server = matchmaker, peers = conversation.</strong></div></div>
+    </div>
+  </div>
+
+  <!-- WEBSOCKET VS WEBRTC (NEW) -->
+  <div class="card" id="card-ws-vs-rtc">
+    <div class="section-title">WebSocket vs WebRTC</div>
+
+    <div class="insight-box">The only question that matters: does data pass through the server?</div>
+
+    <div class="path-diagram">
+      <div class="path-box">
+        <div class="path-label ws">WebSocket — server always in the middle</div>
+        <div class="node-row"><span class="node-pill node-blue">User A</span></div>
+        <div class="node-row"><span class="path-arrow">↓</span></div>
+        <div class="node-row"><span class="node-pill node-gray">WebSocket server</span></div>
+        <div class="node-row"><span class="path-arrow">↓</span></div>
+        <div class="node-row"><span class="node-pill node-blue">User B</span></div>
+        <div class="path-note">Every message goes through the server</div>
+      </div>
+      <div class="path-box">
+        <div class="path-label rtc">WebRTC — server only introduces, then steps away</div>
+        <div class="node-row"><span class="node-pill node-blue">User A</span><span class="path-arrow" style="margin:0 4px">→</span><span class="node-pill node-amber">Signaling server</span><span class="path-arrow" style="margin:0 4px">←</span><span class="node-pill node-blue">User B</span></div>
+        <div class="node-row" style="margin-top:10px"><span class="path-arrow">↓</span></div>
+        <div class="node-row"><span class="node-pill node-blue">User A</span><span class="path-arrow" style="margin:0 8px">↔</span><span class="node-pill node-blue">User B</span></div>
+        <div class="path-note">Video/audio never touches the server</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="section-title">Analogies</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label ws" style="color:#185FA5">WebSocket</div>
+        <div class="box-sub">Post office model — every message passes through the post office. The operator (server) handles all communication between you and your friend.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#3B6D11">WebRTC</div>
+        <div class="box-sub">Matchmaker model — server introduces you and your friend, then steps away. After that, you talk directly with no middleman.</div>
+      </div>
+    </div>
+    <hr class="divider">
+
+    <table class="compare-table">
+      <tr><th>Feature</th><th>WebSocket</th><th>WebRTC</th></tr>
+      <tr><td>Communication</td><td>Client ↔ Server</td><td>Peer ↔ Peer</td></tr>
+      <tr><td>Protocol</td><td>TCP</td><td>UDP</td></tr>
+      <tr><td>Latency</td><td>Higher (server hop)</td><td>Lower (direct)</td></tr>
+      <tr><td>Bandwidth cost</td><td>Server handles all traffic</td><td>Peers exchange directly</td></tr>
+      <tr><td>Best for</td><td>Messaging, notifications</td><td>Video / audio streaming</td></tr>
+    </table>
+
+    <div class="section-title">10-second interview rule</div>
+    <div class="decision-strip">
+      <div class="decision-card">
+        <div class="decision-q">Does media pass through the server?</div>
+        <div class="decision-yes"><span class="tag tag-blue">YES</span> → WebSocket<br><span style="font-size:12px;color:var(--color-text-tertiary)">Client → Server → Client</span></div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-q">Does media bypass the server?</div>
+        <div class="decision-yes"><span class="tag tag-teal">NO</span> → WebRTC<br><span style="font-size:12px;color:var(--color-text-tertiary)">Client ↔ Client</span></div>
+      </div>
+    </div>
+
+    <div class="section-title">Real apps</div>
+    <table class="compare-table">
+      <tr><th>App / feature</th><th>Technology</th><th>Why</th></tr>
+      <tr><td>WhatsApp messages</td><td><span class="tag tag-blue">WebSocket</span></td><td>Needs message storage on server</td></tr>
+      <tr><td>Slack chat</td><td><span class="tag tag-blue">WebSocket</span></td><td>Centralised message history</td></tr>
+      <tr><td>Google Meet video</td><td><span class="tag tag-teal">WebRTC</span></td><td>Too much bandwidth to route through server</td></tr>
+      <tr><td>Discord voice</td><td><span class="tag tag-teal">WebRTC</span></td><td>Low-latency peer audio</td></tr>
+    </table>
+
+    <div class="highlight">
+      <strong>Why not WebRTC for chat?</strong> Managing many peer connections is complex, and there's no central storage for message history. Chat needs a server in the middle.<br><br>
+      <strong>Why not WebSocket for video?</strong> At 2 Mbps per stream, routing 1M video calls through a server = 2 Tbps. That's where the server explodes.
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('card-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
