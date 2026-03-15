@@ -1,0 +1,289 @@
+Concurrency means:
+
+Multiple users accessing or modifying data at the same time.
+
+PK, ye topic 2-Phase Locking (2PL) kaafi heavy lagta hai jab transcript jaisa sunte ho.
+Main ise clear mental model + simple timeline example se samjhata hoon taaki “feel” aaye.
+
+1️⃣ Two Phase Locking kya hai?
+
+Database rule:
+
+Transaction do phases me locks handle karega
+
+Phase-1 → Growing Phase
+Phase-2 → Shrinking Phase
+
+Phase 1 — Growing Phase
+
+Transaction:
+
+locks acquire kar sakta hai
+locks release nahi kar sakta
+
+Example:
+
+lock(A)
+lock(B)
+lock(C)
+
+Locks badh rahe hain → growing phase.
+
+Phase 2 — Shrinking Phase
+
+Transaction:
+
+locks release karega
+new locks acquire nahi kar sakta
+
+Example:
+
+unlock(A)
+unlock(B)
+unlock(C)
+
+Locks kam ho rahe hain → shrinking phase.
+
+Visual
+Locks
+  ^
+  |        /\
+  |       /  \
+  |      /    \
+  |     /      \
+  |____/        \____
+       Growing   Shrinking
+
+Isliye naam:
+
+Two Phase Locking
+2️⃣ Example (Basic 2PL)
+
+Transaction:
+
+Transfer 10 from A → B
+
+Steps:
+
+lock(A)
+lock(B)
+update A
+update B
+unlock(A)
+unlock(B)
+commit
+
+Phase breakdown:
+
+Growing Phase
+--------------
+lock(A)
+lock(B)
+
+Shrinking Phase
+--------------
+unlock(A)
+unlock(B)
+
+Rule:
+
+Once unlock starts → no new locks allowed
+3️⃣ Problem 1 — Deadlock
+
+Deadlock tab hota hai jab transactions ek dusre ka wait karte hain.
+
+Example:
+
+Transaction1:
+
+lock(A)
+wait lock(B)
+
+Transaction2:
+
+lock(B)
+wait lock(A)
+
+Diagram:
+
+T1 → waiting for B
+T2 → waiting for A
+
+Result:
+
+Deadlock
+
+Dono wait karte rahenge forever.
+
+4️⃣ Deadlock Detection
+Wait-For Graph
+
+Scheduler graph banata hai:
+
+T1 → T2
+T2 → T3
+T3 → T1
+
+Agar cycle mil jaye:
+
+Deadlock detected
+
+System ek transaction abort karta hai.
+
+5️⃣ Problem 2 — Cascading Abort
+
+Example:
+
+Transaction1:
+
+lock(A)
+update A = 11
+unlock(A)
+
+Transaction2:
+
+lock(A)
+read A = 11
+
+Ab suppose:
+
+Transaction1 rollback
+
+A wapas:
+
+A = 10
+
+But transaction2 ne:
+
+11 read kiya
+
+Invalid value.
+
+Isliye:
+
+Transaction2 bhi abort karna padega
+
+Isko bolte hain:
+
+Cascading Abort
+6️⃣ Types of Two Phase Locking
+
+3 important variants.
+
+1 Basic 2PL
+2 Conservative 2PL
+3 Strict 2PL
+7️⃣ Basic Two Phase Locking
+
+Rules:
+
+Growing phase → acquire locks
+Shrinking phase → release locks
+
+But problems:
+
+Deadlock possible
+Cascading abort possible
+8️⃣ Conservative 2PL
+
+Idea:
+
+Start me hi saare locks le lo
+
+Example:
+
+lock(A)
+lock(B)
+lock(C)
+
+Agar koi lock available nahi:
+
+transaction start hi nahi hota
+
+Result:
+
+Deadlock impossible
+
+But drawback:
+
+Low concurrency
+9️⃣ Strict Two Phase Locking (Most Used)
+
+Rule:
+
+All locks release only at commit
+
+Example:
+
+lock(A)
+lock(B)
+
+update A
+update B
+
+commit
+
+unlock(A)
+unlock(B)
+
+Key difference:
+
+unlock before commit allowed nahi
+Benefit
+No cascading abort
+
+Because:
+
+koi dirty data read nahi karega
+Problem
+
+Still possible:
+
+Deadlock
+
+But DB detect kar leta hai.
+
+🔟 Real Databases kya use karte hain?
+
+Most databases use:
+
+Strict 2PL
+
+Example systems:
+
+MySQL InnoDB
+SQL Server
+PostgreSQL (with MVCC hybrid)
+
+Because it guarantees:
+
+ACID + consistency
+1️⃣1️⃣ Interview Mental Model
+
+Agar interviewer pooche:
+
+What is 2-phase locking?
+
+Answer:
+
+Concurrency control technique
+that ensures serializable execution
+using two phases:
+
+1 Growing phase → acquire locks
+2 Shrinking phase → release locks
+1️⃣2️⃣ Real Example (BookMyShow)
+
+Seat booking:
+
+Transaction:
+
+lock(seat)
+check status
+update seat
+commit
+unlock
+
+Guarantee:
+
+no two users book same seat

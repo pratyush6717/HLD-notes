@@ -1,0 +1,367 @@
+Topic: Concurrency Control (Distributed Systems)
+
+1️⃣ Real Problem (Why Concurrency Control Exists)
+
+Imagine BookMyShow seat booking.
+
+Seat status:
+
+Seat A1 = FREE
+
+3 users ek hi time pe click karte hain:
+
+User1 → Book
+User2 → Book
+User3 → Book
+
+Flow:
+
+Step1: Read seat status
+Step2: If FREE → Book
+Step3: Update DB
+
+Parallel execution:
+
+User1 read → FREE
+User2 read → FREE
+User3 read → FREE
+
+All update:
+
+Seat → BOOKED
+
+Result:
+
+User1 success
+User2 success
+User3 success
+
+🚨 Same seat 3 log ko mil gaya
+
+Ye hi hai concurrency problem.
+
+2️⃣ Local Solution (Single Machine)
+
+Agar single server ho:
+
+synchronized block
+
+Example Java:
+
+synchronized(bookSeat){
+   if(seat == FREE){
+       seat = BOOKED;
+   }
+}
+
+Now execution:
+
+User1 enters critical section
+User2 waits
+User3 waits
+
+Result:
+
+User1 success
+User2 fail
+User3 fail
+
+Correct.
+
+3️⃣ Problem in Distributed System
+
+But production system:
+
+Load Balancer
+   |
+   |------ Server1
+   |------ Server2
+   |------ Server3
+
+Requests:
+
+User1 → Server1
+User2 → Server2
+User3 → Server3
+
+Each server has its own memory.
+
+synchronized works only inside one JVM
+
+❌ It cannot coordinate across machines.
+
+So we need:
+
+Distributed Concurrency Control
+4️⃣ Tools Used
+
+Three core concepts:
+
+1️⃣ Transactions
+2️⃣ Locks
+3️⃣ Isolation levels
+5️⃣ Transactions (ACID)
+
+Example bank transfer.
+
+A = 100
+B = 50
+
+Transfer 20.
+
+Steps:
+
+Debit A → 80
+Credit B → 70
+
+If crash happens between steps:
+
+A = 80
+B = 50
+
+Money lost.
+
+Transaction ensures:
+
+Either both succeed
+or none
+
+Rollback happens.
+
+6️⃣ Database Locks
+
+Two types.
+
+Shared Lock (Read Lock)
+
+Multiple readers allowed.
+
+T1 → read
+T2 → read
+T3 → read
+
+But no writes allowed.
+
+Exclusive Lock (Write Lock)
+
+Only one transaction allowed.
+
+T1 → write
+T2 → blocked
+T3 → blocked
+7️⃣ Isolation Levels (How Strict DB Is)
+
+There are 4 levels.
+
+1 Read Uncommitted
+2 Read Committed
+3 Repeatable Read
+4 Serializable
+
+Higher level = more safety = less concurrency.
+
+8️⃣ Problems These Solve
+Dirty Read
+
+Transaction reads uncommitted data.
+
+Example:
+
+T1 updates price → 100 → 200
+T2 reads 200
+T1 rollback → price back to 100
+
+T2 read wrong data.
+
+Non-Repeatable Read
+
+Same query gives different result.
+
+T1 read price = 100
+T2 update price = 200
+T1 read again → 200
+
+Same transaction different value.
+
+Phantom Read
+
+Number of rows change.
+
+Example:
+
+Query:
+
+SELECT * FROM seats WHERE price < 500
+
+First result:
+
+10 rows
+
+Another transaction inserts row.
+
+Second result:
+
+11 rows
+9️⃣ Isolation Level Summary
+Level	Dirty Read	Non-Repeatable	Phantom
+Read Uncommitted	❌ allowed	❌	❌
+Read Committed	✅ solved	❌	❌
+Repeatable Read	✅	✅	❌
+Serializable	✅	✅	✅
+🔟 Two Ways to Handle Concurrency
+
+Two main strategies:
+
+1️⃣ Optimistic Concurrency Control
+2️⃣ Pessimistic Concurrency Control
+1️⃣1️⃣ Optimistic Concurrency Control
+
+Idea:
+
+Conflicts are rare
+
+So:
+
+Don't lock
+Check later
+
+Used in:
+
+High scalability systems
+How It Works
+
+Add version column.
+
+seat_id | status | version
+A1      | FREE   | 1
+
+Two users read:
+
+User1 → version 1
+User2 → version 1
+
+User1 updates:
+
+UPDATE seat
+SET status='BOOKED', version=2
+WHERE id=A1 AND version=1
+
+Success.
+
+User2 tries:
+
+WHERE version=1
+
+But DB version now:
+
+version = 2
+
+Update fails.
+
+User2 retry.
+
+So conflict detected at commit time.
+
+1️⃣2️⃣ Pessimistic Concurrency Control
+
+Idea:
+
+Conflicts likely
+
+So:
+
+Lock resource immediately
+
+Example:
+
+SELECT * FROM seat
+FOR UPDATE
+
+Now row locked.
+
+Other transactions:
+
+must wait
+
+Used in:
+
+Banking systems
+inventory systems
+1️⃣3️⃣ Deadlock Problem
+
+Example:
+
+Transaction1:
+
+lock A
+then lock B
+
+Transaction2:
+
+lock B
+then lock A
+
+Result:
+
+T1 waiting for B
+T2 waiting for A
+
+Deadlock.
+
+DB resolves by killing one transaction.
+
+1️⃣4️⃣ Optimistic vs Pessimistic
+Feature	Optimistic	Pessimistic
+Locking	No	Yes
+Concurrency	High	Low
+Deadlock	No	Possible
+Use case	Rare conflicts	Frequent conflicts
+1️⃣5️⃣ Real Systems Use
+Optimistic
+
+Used in:
+
+REST APIs
+microservices
+high scale systems
+
+Example:
+
+version column
+ETag
+CAS
+Pessimistic
+
+Used in:
+
+bank transfers
+inventory deduction
+seat booking
+🧠 Final Mental Model
+
+Concurrency solutions:
+
+Application Level
+   |
+   |-- synchronized / mutex
+   |
+Database Level
+   |
+   |-- optimistic concurrency
+   |-- pessimistic locking
+⭐ Most Important Interview Answer
+
+If interviewer asks:
+
+How will you handle concurrency in BookMyShow?
+
+Answer:
+
+Use pessimistic locking
+
+SELECT seat
+FOR UPDATE
+
+OR
+
+Use optimistic locking with version column

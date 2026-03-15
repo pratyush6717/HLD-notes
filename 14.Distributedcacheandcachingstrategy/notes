@@ -1,0 +1,418 @@
+PK, ab main Caching ko exactly tumhare framework me samjhaunga:
+
+Evolution of Pain
+
+The Cure
+
+What-If Sandbox
+
+Real-World Analogy
+
+HLD Data Flow
+
+Isse concept feel aayega, sirf definitions nahi.
+
+1️⃣ Evolution of Pain (Nightmare Scenario)
+
+Imagine ek popular website hai.
+
+Architecture:
+
+Users → App Server → Database
+
+Example:
+
+1M users
+
+Har request database ko hit kar rahi hai.
+
+🚨 Disaster 1 — Slow Database
+
+Database read time:
+
+DB read = 100ms
+
+Agar 1M requests aaye:
+
+1M × 100ms
+
+System slow.
+
+User experience:
+
+Page load = 2-3 seconds
+
+Bad UX.
+
+🚨 Disaster 2 — Database Overload
+
+Sab requests DB pe ja rahi hain.
+
+Users → App → DB
+Users → App → DB
+Users → App → DB
+
+DB CPU spike.
+
+DB overloaded
+
+Crash possibility.
+
+🚨 Disaster 3 — Same Data Repeatedly
+
+Example:
+
+Product details
+User profile
+Homepage data
+
+Ye data frequently read hota hai.
+
+Phir bhi har baar DB hit.
+
+Waste of resources.
+
+Pain Summary
+
+Without caching:
+
+❌ High DB load
+❌ High latency
+❌ Poor scalability
+❌ Slow system
+2️⃣ The Cure — Caching
+
+Hero:
+
+Cache
+
+Architecture:
+
+Users
+  ↓
+App Server
+  ↓
+Cache
+  ↓
+Database
+
+Flow:
+
+1️⃣ App first cache check karta hai
+2️⃣ Agar data mil gaya → fast response
+3️⃣ Agar nahi mila → DB se fetch
+4️⃣ Cache me store
+
+Core Idea
+
+Cache =
+
+fast memory
+
+Example technologies:
+
+Redis
+Memcached
+
+Memory speed:
+
+RAM read = ~1ms
+DB read = ~100ms
+
+100× faster.
+
+3️⃣ Distributed Caching
+
+Problem:
+
+Single cache server.
+
+App → Cache → DB
+
+Problems:
+
+Single point of failure
+Limited memory
+
+Solution:
+
+Cache cluster
+
+Architecture:
+
+App Servers
+     │
+Cache Client
+     │
+Cache Pool
+ ┌───┼───┐
+Cache1 Cache2 Cache3
+
+Data distribute hota hai using:
+
+Consistent Hashing
+4️⃣ Caching Strategies
+
+System design me ye very important hai.
+
+🔹 1 Cache-Aside
+
+Most common.
+
+Flow:
+
+Client → App
+         ↓
+       Cache?
+Case 1 — Cache Hit
+Cache → Data
+
+Return immediately.
+
+Case 2 — Cache Miss
+App → DB
+App → Cache
+Return to client
+
+Sequence:
+
+Read request
+→ Cache miss
+→ DB read
+→ Save in cache
+Pros
+Read heavy systems
+Flexible cache structure
+Cache failure safe
+
+Example:
+
+Product catalog
+User profile
+Problem
+
+Cache inconsistency.
+
+Example:
+
+DB value = 11
+Cache value = 10
+
+User gets stale data.
+
+🔹 2 Read-Through Cache
+
+Difference:
+
+Cache khud DB read karta hai.
+
+Flow:
+
+App → Cache
+Cache → DB
+
+Application ko DB access karna nahi padta.
+
+Pros
+Application logic simple
+Cache automatically manage
+Problem
+
+Cache structure same as DB.
+
+Customization possible nahi.
+
+🔹 3 Write-Around Cache
+
+Write directly DB me.
+
+Write → DB
+
+Cache update nahi hota.
+
+But cache invalidate ho jata hai.
+
+Example:
+
+Cache marked dirty
+
+Next read:
+
+Cache miss
+→ DB read
+→ Update cache
+Pros
+Cache consistency improve
+Problem
+
+New data always cache miss.
+
+🔹 4 Write-Through Cache
+
+Write flow:
+
+App → Cache → DB
+
+Both update simultaneously.
+
+Pros
+Cache always fresh
+No stale data
+Problem
+
+Latency increase.
+
+Because:
+
+2 writes
+
+Cache + DB.
+
+Also:
+
+Two phase commit needed
+🔹 5 Write-Back (Write-Behind)
+
+Most advanced.
+
+Flow:
+
+Write → Cache
+Write → Queue
+Queue → DB (async)
+
+Architecture:
+
+Client
+  ↓
+App
+  ↓
+Cache
+  ↓
+Queue
+  ↓
+Database
+Advantage
+
+Very fast writes.
+
+Example:
+
+Social media likes
+Analytics counters
+
+Latency:
+
+< 1ms
+Fault Tolerance
+
+Even if DB down:
+
+Cache still serves data
+Queue stores writes
+
+Later DB update.
+
+Problem
+
+Data loss risk.
+
+Example:
+
+Cache TTL expire before DB write.
+
+5️⃣ What-If Sandbox
+
+Interview thinking.
+
+❓ What if cache remove kar diya?
+
+System becomes:
+
+App → DB
+
+Problems:
+
+High DB load
+Slow performance
+❓ What if write-back cache but queue fail?
+
+Writes lost.
+
+Cache updated
+DB not updated
+
+Data inconsistency.
+
+❓ What if cache TTL small?
+
+Data frequently expire.
+
+Result:
+
+Many cache misses
+DB overload
+6️⃣ Real-World Analogy
+
+Imagine library desk.
+
+Library storage room:
+
+Database
+
+Front desk bookshelf:
+
+Cache
+
+Flow:
+
+Student asks book
+
+Step 1:
+
+Check front desk
+
+If present:
+
+Give immediately
+
+If not:
+
+Go to storage room
+Bring book
+Keep copy at desk
+
+Exactly caching.
+
+7️⃣ HLD Diagram (What you should draw)
+
+Interview architecture:
+
+Users
+   │
+   ▼
+Load Balancer
+   │
+   ▼
+Application Servers
+   │
+   ▼
+Redis Cache Cluster
+   │
+   ▼
+Database
+
+For write-back:
+
+App → Cache → Message Queue → DB
+Final Intuition
+
+Cache is used when:
+
+Reads >> Writes
+
+Goal:
+
+Reduce DB load
+Reduce latency
+Increase scalability

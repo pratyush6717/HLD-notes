@@ -1,0 +1,396 @@
+PK, ab main Distributed Transaction Handling ko exactly tumhare template ke according explain karunga:
+
+Evolution of Pain
+
+The Cure
+
+What-If Sandbox
+
+Real-World Analogy
+
+HLD Data Flow
+
+Ye concept microservices architecture ka core problem hai.
+
+1️⃣ Evolution of Pain (Nightmare Scenario)
+
+Imagine ek e-commerce system.
+
+Architecture:
+
+Order Service → Order DB
+Inventory Service → Inventory DB
+
+User ek product buy karta hai.
+
+2 operations hone chahiye:
+
+1. Order create
+2. Inventory reduce
+
+Example:
+
+Inventory = 10
+
+User buys:
+
+1 item
+🚨 Scenario
+
+Step 1:
+
+Order DB → success
+
+Step 2:
+
+Inventory DB → failed
+
+Final state:
+
+Order created
+Inventory not reduced
+
+System state:
+
+Order exists
+Product still available
+
+Ye data inconsistency hai.
+
+Banking Example
+
+Account A:
+
+₹100
+
+Account B:
+
+₹50
+
+Transfer:
+
+A → B (₹100)
+
+Step 1
+
+Debit A → success
+
+Step 2
+
+Credit B → failed
+
+Result:
+
+A = ₹0
+B = ₹50
+
+₹100 lost.
+
+Pain Summary
+
+In distributed systems:
+
+Multiple DB
+Multiple services
+
+Transaction properties break.
+
+2️⃣ The Cure — Distributed Transaction Protocols
+
+Solution approaches:
+
+1️⃣ Two Phase Commit (2PC)
+2️⃣ Three Phase Commit (3PC)
+3️⃣ Saga Pattern
+3️⃣ Two Phase Commit (2PC)
+
+Actors:
+
+Coordinator
+Participants
+
+Example:
+
+Order Service
+Inventory Service
+Phase 1 — Prepare (Voting)
+
+Coordinator asks:
+
+Can you commit?
+
+Flow:
+
+Coordinator → Order DB
+Coordinator → Inventory DB
+
+Participants respond:
+
+YES
+or
+NO
+Phase 2 — Decision
+
+If all say:
+
+YES
+
+Coordinator sends:
+
+COMMIT
+
+If any says:
+
+NO
+
+Coordinator sends:
+
+ABORT
+Example
+
+Flow:
+
+Coordinator → prepare
+Order → YES
+Inventory → YES
+
+Coordinator decides:
+
+COMMIT
+
+Both commit.
+
+Problem — Blocking
+
+If coordinator crashes:
+
+Participants waiting
+Locks remain
+System blocked
+4️⃣ What-If Sandbox (Trade-off Thinking)
+❓ What if coordinator fails?
+
+Participants stuck.
+
+Example:
+
+Prepared
+But no commit signal
+
+They cannot decide.
+
+System blocked.
+
+❓ What if OK message lost?
+
+Coordinator thinks:
+
+participant failed
+
+Transaction abort.
+
+❓ What if commit message lost?
+
+Participants wait forever.
+
+This is the 2PC blocking problem.
+
+5️⃣ Three Phase Commit (3PC)
+
+Solution to 2PC blocking.
+
+Adds one more phase.
+
+Phases:
+
+1 Prepare
+2 Pre-Commit
+3 Commit
+Phase 1
+
+Same as 2PC.
+
+prepare
+Phase 2
+
+Coordinator announces decision.
+
+PRE-COMMIT
+
+Participants now know final decision.
+
+Phase 3
+
+Actual commit happens.
+
+COMMIT
+Benefit
+
+Even if coordinator crashes:
+
+Participants already know decision.
+
+So they can proceed.
+
+System becomes:
+
+Non-blocking
+Problem
+
+3PC drawbacks:
+
+Complex
+Network assumptions required
+Rarely used
+6️⃣ Saga Pattern
+
+Most used in microservices.
+
+Different idea.
+
+Instead of one big transaction:
+
+Break into small local transactions
+
+Example:
+
+T1 Order create
+T2 Inventory reduce
+T3 Payment
+T4 Shipping
+Flow
+Order Service → success
+Inventory Service → success
+Payment Service → success
+Shipping Service → fail
+
+Now compensation runs.
+
+Compensation
+
+Rollback steps:
+
+Shipping failed
+→ Refund payment
+→ Restore inventory
+→ Cancel order
+Key Idea
+
+Each service has:
+
+forward action
+compensation action
+
+Example:
+
+Inventory reduce
+Inventory restore
+7️⃣ Why Saga is Asynchronous
+
+Saga uses:
+
+Events
+Message queues
+
+Example flow:
+
+Order Service → publish event
+Inventory Service → consume event
+Payment Service → consume event
+
+Architecture:
+
+Services communicate via events
+
+No global transaction lock.
+
+8️⃣ Real-World Analogy
+
+Imagine travel booking.
+
+Steps:
+
+1 Book flight
+2 Book hotel
+3 Book taxi
+
+Scenario:
+
+Flight booked
+Hotel booked
+Taxi failed
+
+Saga solution:
+
+Cancel hotel
+Cancel flight
+
+Compensation actions.
+
+9️⃣ HLD Data Flow (What you should draw)
+2PC Architecture
+Coordinator
+   │
+   ├── Order Service
+   │
+   └── Inventory Service
+
+Coordinator manages commit.
+
+Saga Architecture
+Order Service
+     ↓
+Event Bus
+     ↓
+Inventory Service
+     ↓
+Payment Service
+     ↓
+Shipping Service
+
+Rollback via compensation.
+
+🔟 When to Use What
+2PC
+
+Use when:
+
+Strong consistency required
+Small number of services
+
+Example:
+
+Bank transfers
+3PC
+
+Use when:
+
+Non-blocking protocol required
+
+Rare in practice.
+
+Saga
+
+Use when:
+
+Microservices architecture
+Long running workflows
+Event driven systems
+
+Example:
+
+E-commerce checkout
+Travel booking
+Food delivery
+Final Intuition
+
+Distributed transaction problem:
+
+Multiple DB
+Multiple services
+
+Solutions:
+
+2PC → strong consistency
+3PC → non blocking improvement
+Saga → eventual consistency
