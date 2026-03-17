@@ -1,0 +1,328 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-purple { background: #3C3489; color: #CECBF6; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .pain ul, .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .flow-chain { display: flex; flex-direction: column; gap: 3px; }
+  .flow-node { padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; align-self: flex-start; }
+  .flow-down { font-size: 13px; color: var(--color-text-tertiary); padding-left: 16px; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-purple { background: #EEEDFE; color: #3C3489; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-purple { background: #3C3489; color: #CECBF6; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 10px; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .traffic-bar { height: 10px; border-radius: 5px; background: var(--color-border-tertiary); overflow: hidden; margin: 4px 0 8px; }
+  .traffic-fill { height: 100%; border-radius: 5px; }
+  .retry-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 13px; color: var(--color-text-secondary); }
+  .retry-label { width: 90px; font-size: 12px; }
+  .retry-time { font-family: var(--font-mono); font-size: 12px; font-weight: 500; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('collapse')">Collapse sequence</button>
+    <button class="sub-btn" onclick="show('solutions')">Solutions</button>
+    <button class="sub-btn" onclick="show('architecture')">Production architecture</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="highlight"><strong>Coldplay concert 12:00 PM:</strong> 1,000,000 users click "Book Ticket" at the same second. System capacity = 300 threads + 1500 queue slots. 998,200 requests fail instantly. This is the Thundering Herd Problem.</div>
+
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Normal traffic</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:6px">Requests per second</div>
+        <div class="traffic-bar"><div class="traffic-fill" style="width:15%;background:#1D9E75"></div></div>
+        <div style="font-size:12px;color:#0F6E56">~1,000 req/sec — system handles easily</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Flash sale 12:00 PM</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:6px">Requests per second</div>
+        <div class="traffic-bar"><div class="traffic-fill" style="width:100%;background:#E24B4A"></div></div>
+        <div style="font-size:12px;color:#A32D2D">1,000,000 req/sec — 998k fail immediately</div>
+      </div>
+    </div>
+
+    <div class="section-title">Where it happens</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
+      <span class="tag tag-red">Concert booking</span>
+      <span class="tag tag-red">Flash sales</span>
+      <span class="tag tag-red">IPO trading opens</span>
+      <span class="tag tag-red">IRCTC Tatkal</span>
+      <span class="tag tag-red">Big Billion Day</span>
+      <span class="tag tag-red">Product launch</span>
+    </div>
+
+    <div class="section-title">Why auto scaling doesn't save you</div>
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Auto scaling timeline</div>
+        <ul><li>Scale decision: ~30 seconds</li><li>New instance boot: ~1 minute</li><li>Total: ~90 seconds to help</li></ul>
+      </div>
+      <div class="pain">
+        <div class="label">Traffic spike timeline</div>
+        <ul><li>Spike hits: second 0</li><li>System crashes: second 2–5</li><li>Auto scaling arrives: 90 seconds too late</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLLAPSE SEQUENCE -->
+  <div class="sub-panel" id="sub-collapse">
+    <div class="highlight"><strong>System doesn't just fail — it collapses in a chain reaction. Retries make it worse, not better.</strong></div>
+
+    <div class="section-title">Step-by-step collapse</div>
+    <div class="flow-chain" style="background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);border-radius:10px;padding:14px;margin-bottom:16px">
+      <span class="flow-node node-red">Step 1: 1M requests arrive at 12:00:00</span>
+      <span class="flow-down">↓</span>
+      <span class="flow-node node-red">Step 2: Thread pools full, queues overflow</span>
+      <span class="flow-down">↓</span>
+      <span class="flow-node node-red">Step 3: Requests rejected — HTTP 503, timeouts</span>
+      <span class="flow-down">↓ users + browsers retry automatically</span>
+      <span class="flow-node node-red">Step 4: Retry storm — 1M → 2M → 3M requests</span>
+      <span class="flow-down">↓</span>
+      <span class="flow-node node-red">Step 5: CPU 100%, memory exhausted, latency spikes</span>
+      <span class="flow-down">↓ 10ms → 2000ms</span>
+      <span class="flow-node node-red">Step 6: More timeouts → more retries → full crash</span>
+    </div>
+
+    <div class="highlight"><strong>Retry storm = the killer.</strong> Each failed request triggers a retry. System receives 3× the original traffic. This is the cascading failure pattern — and it's why systems like IRCTC crash even though they have auto-scaling.</div>
+
+    <div class="grid">
+      <div class="box">
+        <div class="box-label">System under normal load</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;font-family:var(--font-mono);font-size:12px">
+          Request time: 10ms<br>
+          Thread pool: 20% used<br>
+          Queue: empty<br>
+          Status: healthy
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">System under thundering herd</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;font-family:var(--font-mono);font-size:12px">
+          Request time: 2000ms+<br>
+          Thread pool: 100% exhausted<br>
+          Queue: full, dropping requests<br>
+          Status: cascade failure
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOLUTIONS -->
+  <div class="sub-panel" id="sub-solutions">
+    <div class="section-title">Solution 1 — Exponential backoff</div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label">Formula</div>
+        <div class="code-block">wait = base × 2^n
+
+retry1 = 200ms
+retry2 = 400ms
+retry3 = 800ms
+retry4 = 1600ms</div>
+      </div>
+      <div class="pain" style="margin-bottom:0;align-self:start">
+        <div class="label">Problem with plain backoff</div>
+        <ul><li>All clients use same formula</li><li>All retry at exactly same time</li><li>Still creates synchronized spike</li></ul>
+      </div>
+    </div>
+
+    <div class="section-title">Solution 2 — Jitter (randomness)</div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label">Formula</div>
+        <div class="code-block">retry_time = random(0, base × 2^n)
+
+Client 1 → retry in 300ms
+Client 2 → retry in 450ms
+Client 3 → retry in 120ms</div>
+        <div style="font-size:12px;color:#0F6E56;margin-top:6px">Traffic spreads → no synchronized spike → system recovers</div>
+      </div>
+      <div class="box" style="display:flex;flex-direction:column;gap:6px">
+        <div class="box-label">Visual — without vs with jitter</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Without jitter</div>
+        <div style="display:flex;gap:2px;align-items:flex-end;height:30px">
+          <div style="width:30px;height:30px;background:#E24B4A;border-radius:3px 3px 0 0"></div>
+          <div style="width:4px"></div>
+          <div style="width:30px;height:30px;background:#E24B4A;border-radius:3px 3px 0 0"></div>
+          <div style="width:4px"></div>
+          <div style="width:30px;height:30px;background:#E24B4A;border-radius:3px 3px 0 0"></div>
+        </div>
+        <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:8px">Synchronized spikes</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">With jitter</div>
+        <div style="display:flex;gap:2px;align-items:flex-end;height:30px">
+          <div style="width:10px;height:18px;background:#1D9E75;border-radius:3px 3px 0 0"></div>
+          <div style="width:10px;height:10px;background:#1D9E75;border-radius:3px 3px 0 0"></div>
+          <div style="width:10px;height:25px;background:#1D9E75;border-radius:3px 3px 0 0"></div>
+          <div style="width:10px;height:8px;background:#1D9E75;border-radius:3px 3px 0 0"></div>
+          <div style="width:10px;height:20px;background:#1D9E75;border-radius:3px 3px 0 0"></div>
+          <div style="width:10px;height:12px;background:#1D9E75;border-radius:3px 3px 0 0"></div>
+        </div>
+        <div style="font-size:11px;color:#0F6E56">Spread out — system handles</div>
+      </div>
+    </div>
+
+    <div class="section-title">Solution 3 — Rate limiter (most important)</div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label">Token bucket algorithm</div>
+        <div class="box-sub" style="margin-bottom:8px">Bucket has fixed tokens (= system capacity). Each request consumes one token. When bucket empty — excess requests wait or are rejected.</div>
+        <div class="code-block">Capacity: 5000 req/sec
+
+12:00:00 → 1M requests arrive
+Token bucket: allows 5000
+Remaining 995,000 → wait / reject
+
+Backend is protected.</div>
+      </div>
+      <div class="cure">
+        <div class="label">Why rate limiter works</div>
+        <ul><li>Backend never receives more than capacity</li><li>Excess requests rejected cleanly (HTTP 429)</li><li>System stays stable under any traffic</li><li>Sits at API Gateway — before backend even sees request</li></ul>
+      </div>
+    </div>
+
+    <div class="section-title">Solution 4 — Virtual waiting room (BookMyShow technique)</div>
+    <div class="arch-flow">
+      <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+        User enters at 12:00 → assigned position: <strong style="color:var(--color-text-primary)">#25342</strong><br>
+        System allows 500 users/second into booking<br>
+        User sees: <em>"Estimated wait: 50 seconds"</em><br>
+        No thundering herd — flow is controlled and metered
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTION ARCHITECTURE -->
+  <div class="sub-panel" id="sub-architecture">
+    <div class="highlight"><strong>Production architecture for flash sale / concert booking.</strong> Every layer adds protection — CDN absorbs static traffic, rate limiter controls flow, queue smooths bursts, workers process at their own pace.</div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:10px">Naive architecture (crashes)</div>
+        <div class="flow-chain">
+          <span class="flow-node node-gray">Users (1M)</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-blue">Load Balancer</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-teal">Ticket Service</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-amber">Database</span>
+          <div style="margin-top:8px;font-size:12px;color:#A32D2D">All 1M hit DB → crash</div>
+        </div>
+      </div>
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:10px">Production architecture (survives)</div>
+        <div class="flow-chain">
+          <span class="flow-node node-gray">Users (1M)</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-teal">CDN (static assets cached)</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-blue">API Gateway</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-red">Rate Limiter (5000/sec max)</span>
+          <span class="flow-down">↓ excess → virtual queue</span>
+          <span class="flow-node node-purple">Kafka / SQS Queue</span>
+          <span class="flow-down">↓ workers consume at own pace</span>
+          <span class="flow-node node-teal">Booking Workers</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-amber">Database</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>When interviewer asks:</strong> "Design a ticket booking system / flash sale / concert booking"<br><br>
+      Immediately say: <strong>Thundering Herd + Retry Storm</strong> → then walk through the solutions.
+    </div>
+
+    <div class="section-title">Mental model triggers</div>
+    <table class="compare-table">
+      <tr><th>You hear</th><th>Immediately think</th><th>Solutions to mention</th></tr>
+      <tr><td>Flash sale, concert booking</td><td>Thundering Herd</td><td>Rate limiter, queue, virtual room</td></tr>
+      <tr><td>System crash under spike</td><td>Retry Storm</td><td>Exponential backoff + jitter</td></tr>
+      <tr><td>Auto scaling mentioned</td><td>Too slow for spikes</td><td>Pre-scale before event + rate limiter</td></tr>
+      <tr><td>Fairness / queue position</td><td>Virtual waiting room</td><td>BookMyShow pattern</td></tr>
+    </table>
+
+    <div class="section-title">4 solutions quick reference</div>
+    <table class="compare-table">
+      <tr><th>Solution</th><th>What it does</th><th>Best for</th></tr>
+      <tr><td><span class="tag tag-blue">Exponential backoff</span></td><td>Retries slow down geometrically</td><td>Clients — reduces retry pressure</td></tr>
+      <tr><td><span class="tag tag-teal">Jitter</span></td><td>Randomises retry time</td><td>Prevents synchronised retry spikes</td></tr>
+      <tr><td><span class="tag tag-red">Rate limiter</span></td><td>Caps requests per second at API Gateway</td><td>Protect backend from any spike</td></tr>
+      <tr><td><span class="tag tag-purple">Queue + virtual room</span></td><td>Absorbs burst, processes at controlled rate</td><td>Fair ordering + backend stability</td></tr>
+    </table>
+
+    <div class="highlight"><strong>Real systems:</strong> <span class="tag tag-blue">BookMyShow</span><span class="tag tag-blue">IRCTC</span><span class="tag tag-blue">Ticketmaster</span><span class="tag tag-blue">Flipkart Big Billion Day</span><span class="tag tag-blue">Amazon Prime Day</span> — all use rate limiting + queues + backoff + jitter. Thundering Herd is one of the most common system design interview patterns.</div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

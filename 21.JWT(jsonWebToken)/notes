@@ -1,0 +1,373 @@
+PK, ab JWT ko bhi same framework me samjhte hain (Evolution of Pain + Feynman).
+JWT tabhi feel aata hai jab Session vs JWT ka pain samajh aata hai.
+
+JWT (JSON Web Token)
+1️⃣ Evolution of Pain (JWT se pehle kya problem thi)
+
+Earlier web apps Session ID authentication use karte the.
+
+Flow
+
+User login karta tha:
+
+username
+password
+
+Server karta tha:
+
+1️⃣ verify user
+2️⃣ session create
+3️⃣ DB me store
+
+Example DB record:
+
+session_id: abc123
+user_id: 45
+roles: admin
+expiry: 2 hours
+
+Client ko milta tha:
+
+session_id = abc123
+
+Aur har request me cookie me send hota tha.
+
+Nightmare Scenario (Distributed Systems)
+
+Ab imagine karo:
+
+10 application servers
+
+Aur:
+
+3 database clusters
+
+Har request me server ko:
+
+DB query karni padegi
+
+To validate session.
+
+Problems:
+
+1️⃣ DB bottleneck
+2️⃣ Latency increase
+3️⃣ Session replication problem
+4️⃣ Horizontal scaling difficult
+
+Yahi pain solve karne ke liye JWT aaya.
+
+2️⃣ The Cure (JWT)
+
+JWT idea simple hai:
+
+Store session data inside token
+
+Instead of DB lookup.
+
+Server token verify karega, DB call nahi karega.
+
+Isliye JWT:
+
+Stateless authentication
+3️⃣ JWT Flow (Real System)
+Step 1 — Login
+
+Client:
+
+username
+password
+
+Authentication server verify karta hai.
+
+Step 2 — Token Generate
+
+Server generate karta hai:
+
+JWT token
+
+Example:
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwiZXhwIjoxNzAwMDAwfQ
+.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+Step 3 — Client stores token
+
+Usually:
+
+localStorage
+cookie
+Step 4 — API Request
+
+Client sends request:
+
+GET /user
+Authorization: Bearer <JWT>
+Step 5 — Server verifies token
+
+Server:
+
+1️⃣ verify signature
+2️⃣ check expiry
+3️⃣ read user info
+
+Agar valid:
+
+Access granted
+4️⃣ JWT Structure
+
+JWT 3 parts se bana hota hai.
+
+HEADER.PAYLOAD.SIGNATURE
+
+Example:
+
+xxxxx.yyyyy.zzzzz
+Part 1 — Header
+
+Metadata.
+
+Example:
+
+{
+ "alg": "HS256",
+ "typ": "JWT"
+}
+
+Meaning:
+
+Field	Meaning
+alg	signing algorithm
+typ	token type
+Part 2 — Payload
+
+User information store hoti hai.
+
+Example:
+
+{
+ "sub": "12345",
+ "email": "pk@gmail.com",
+ "role": "admin",
+ "exp": 1710000000
+}
+
+Payload me claims hote hain.
+
+Types of Claims
+1️⃣ Registered claims
+
+Standard fields.
+
+Examples:
+
+iss → issuer
+sub → subject (user id)
+aud → audience
+exp → expiry
+iat → issued at
+2️⃣ Public claims
+
+Custom but widely understood.
+
+Example:
+
+email
+role
+country
+3️⃣ Private claims
+
+Internal data.
+
+Example:
+
+internal_permission
+auth_server_flag
+
+Sirf internal services use karte hain.
+
+Part 3 — Signature
+
+Signature ensure karti hai:
+
+Token tampered nahi hua
+
+Signature generate hoti hai:
+
+hash(
+ base64(header)
+ +
+ base64(payload)
+ +
+ secret_key
+)
+
+Example:
+
+HMACSHA256(
+ base64UrlEncode(header) + "." +
+ base64UrlEncode(payload),
+ secret
+)
+Important Thing
+
+JWT encoded hota hai.
+
+Base64 encoded
+
+Encrypted nahi.
+
+Isliye payload read ho sakta hai.
+
+Example:
+
+jwt.io
+
+Pe paste karo → payload visible.
+
+Isliye password kabhi JWT me store nahi karna.
+
+5️⃣ JWT Advantages
+Stateless
+
+Server ko DB check nahi karna.
+
+Fast
+
+Validation:
+
+signature check
+expiry check
+Scalable
+
+Perfect for:
+
+microservices
+distributed systems
+Self-contained
+
+Token me already hota hai:
+
+user id
+roles
+permissions
+expiry
+6️⃣ JWT Problems (Important Interview Topic)
+Problem 1 — Token Revocation
+
+User ban ho gaya.
+
+But token valid hai:
+
+exp = tomorrow
+
+Server ko kaise pata chale?
+
+Solution 1 — Blacklist
+
+Store:
+
+revoked_token_ids
+
+Problem:
+
+DB lookup again
+
+JWT ka benefit khatam.
+
+Solution 2 — Short lived tokens
+
+Example:
+
+Access token → 10 minutes
+Refresh token → 7 days
+
+Very common solution.
+
+Problem 2 — Payload visible
+
+JWT:
+
+encoded
+not encrypted
+
+Solution:
+
+JWE (JSON Web Encryption)
+Problem 3 — Key rotation
+
+Agar secret leak ho jaye.
+
+Solution:
+
+kid (key id)
+
+Multiple public keys maintain karte hain.
+
+7️⃣ JWT vs Session
+Feature	Session	JWT
+state	stateful	stateless
+storage	DB	token
+scaling	hard	easy
+speed	slower	faster
+revocation	easy	difficult
+8️⃣ JWT in Real Systems
+
+JWT use hota hai:
+
+OAuth
+Google login
+Facebook login
+Microservices
+
+API gateway JWT verify karta hai.
+
+Single Sign On (SSO)
+
+Login once.
+
+Access:
+
+app1
+app2
+app3
+
+Same token.
+
+9️⃣ Real Architecture (HLD)
+
+Typical flow:
+
+Client
+   │
+   │ login
+   ▼
+Auth Server
+   │
+   │ JWT
+   ▼
+Client
+   │
+   │ request + JWT
+   ▼
+API Gateway
+   │
+   │ verify JWT
+   ▼
+Microservices
+🔟 Mental Model
+
+JWT ko yaad rakhne ka simple rule:
+
+Session → server stores state
+JWT → client carries state
+
+PK agar chaho to main 3 cheeze aur deep explain kar sakta hoon jo JWT + security interviews me bahut puchi jaati hain:
+
+1️⃣ Access Token vs Refresh Token (real production flow)
+2️⃣ How Google / OAuth JWT authentication actually works internally
+3️⃣ JWT security attacks (alg=none, key confusion, replay attack)
+
+Ye system design + backend interviews me direct puchte hain.

@@ -1,0 +1,367 @@
+PK, isko bhi Evolution of Pain + Feynman style me samjhte hain. Yeh actually very common System Design interview question hai:
+
+“Ticket booking / flash sale / concert sale system crash kyun hota hai?”
+
+1️⃣ Evolution of Pain (Disaster Scenario)
+
+Imagine:
+
+Coldplay concert tickets
+Sale opens → 12:00 PM
+
+At exactly 12:00 PM
+
+1 million users click "Book Ticket"
+
+At the same second.
+
+What system looks like normally
+
+Typical architecture:
+
+Users
+   │
+   ▼
+Load Balancer
+   │
+   ▼
+Ticket Service Instances
+   │
+   ▼
+Database
+
+Example:
+
+Ticket Service
+ ├── Instance 1
+ ├── Instance 2
+ └── Instance 3
+
+Each instance has:
+
+Thread pool
+Queue
+
+Example capacity:
+
+100 threads
+500 queue size
+2️⃣ Nightmare Moment (Thundering Herd)
+
+At 12:00 PM
+
+1,000,000 requests arrive instantly
+
+System capacity:
+
+300 threads
+1500 queue slots
+
+So:
+
+Remaining 998,200 requests fail
+
+This problem is called:
+
+Thundering Herd Problem
+
+Meaning:
+
+Huge traffic spike at same instant
+
+Examples where this happens:
+
+concert booking
+
+flash sales
+
+IPO trading
+
+ticket booking
+
+product launch
+
+3️⃣ System Starts Collapsing
+
+Step by step disaster:
+
+Step 1
+
+Queues become full.
+
+Instance1 Queue → FULL
+Instance2 Queue → FULL
+Instance3 Queue → FULL
+Step 2
+
+Requests rejected.
+
+HTTP 503
+timeout
+connection refused
+Step 3 (Very Dangerous)
+
+Clients retry.
+
+Example:
+
+User retry
+Browser retry
+Mobile retry
+SDK retry
+
+Now traffic becomes:
+
+1M original requests
++ 1M retries
++ 1M retries again
+
+Now system receives:
+
+3M requests
+4️⃣ Cascading Failure
+
+Another problem happens.
+
+When system overloaded:
+
+CPU high
+Memory high
+Thread pool exhausted
+
+Latency increases.
+
+Example:
+
+Normal:
+
+Request time = 10 ms
+
+Overloaded:
+
+Request time = 2 sec
+
+Because requests stay in queue.
+
+Then timeouts start
+
+Client waits.
+
+timeout after 3 sec
+
+Client thinks:
+
+Request failed
+
+Client retries.
+
+Now again traffic doubles.
+
+This creates:
+
+Retry Storm
+
+Very common production failure.
+
+5️⃣ Why Auto Scaling Doesn't Save You
+
+You might think:
+
+Auto scaling will fix it
+
+But no.
+
+Reason:
+
+Auto scaling takes time.
+
+Example:
+
+scale decision = 30 sec
+new instance boot = 1 minute
+
+But traffic spike happens in:
+
+1 second
+
+So system crashes before scaling helps.
+
+6️⃣ Solutions (Real Production Solutions)
+Solution 1 — Exponential Backoff
+
+Instead of retrying immediately.
+
+Clients wait.
+
+Formula:
+
+wait = base × 2^n
+
+Example:
+
+retry1 = 200ms
+retry2 = 400ms
+retry3 = 800ms
+retry4 = 1600ms
+
+This slows retries.
+
+Problem with Backoff
+
+If everyone retries with same formula.
+
+All clients retry at same time
+
+Still creates spike.
+
+7️⃣ Solution 2 — Jitter
+
+Add randomness.
+
+Instead of fixed retry.
+
+Use:
+
+retry_time = random(0 , base × 2^n)
+
+Example:
+
+Client 1:
+
+retry in 300ms
+
+Client 2:
+
+retry in 450ms
+
+Client 3:
+
+retry in 120ms
+
+Traffic spreads.
+
+8️⃣ Solution 3 — Rate Limiter (Most Important)
+
+Add API Gateway Rate Limiter.
+
+Architecture becomes:
+
+Users
+  │
+  ▼
+API Gateway
+  │
+  ▼
+Rate Limiter
+  │
+  ▼
+Load Balancer
+  │
+  ▼
+Ticket Services
+Token Bucket Algorithm
+
+Example:
+
+System capacity:
+
+5000 req/sec
+
+Token bucket allows only:
+
+5000 tokens
+
+Only those requests proceed.
+
+Remaining:
+
+wait
+or reject
+
+This protects backend.
+
+9️⃣ Better Architecture for Ticket Booking
+
+Production systems do this:
+
+Users
+   │
+   ▼
+CDN
+   │
+   ▼
+API Gateway
+   │
+   ▼
+Rate Limiter
+   │
+   ▼
+Queue (Kafka/SQS)
+   │
+   ▼
+Ticket Booking Workers
+   │
+   ▼
+Database
+
+Queue smooths traffic.
+
+10️⃣ Best Technique (Used by BookMyShow)
+
+Instead of allowing instant booking.
+
+They create Virtual Queue.
+
+Example:
+
+User enters queue
+Position = 25342
+
+Then users allowed gradually.
+
+Example:
+
+500 users per second
+
+This avoids thundering herd.
+
+11️⃣ Real Systems Using This
+
+Systems that face this problem:
+
+BookMyShow
+
+Ticketmaster
+
+IRCTC
+
+Flipkart Big Billion Day
+
+Amazon Prime Day
+
+All implement:
+
+Rate limiting
+Queues
+Backoff + jitter
+Virtual waiting rooms
+12️⃣ Mental Model (Important for Interviews)
+
+When you see:
+
+Flash sale
+Ticket booking
+Stock trading
+
+Immediately think:
+
+Thundering Herd
+Retry Storm
+Queue overload
+
+Solutions:
+
+Rate limiter
+Backoff + jitter
+Queue buffering
+Virtual waiting room

@@ -1,0 +1,338 @@
+PK, tumne bola tha “pehle jaisa samjhao” (Evolution of Pain + Feynman).
+Toh ab Cryptography ko exactly usi framework me samjhte hain taaki concept feel aaye.
+
+Cryptography
+1️⃣ The Evolution of Pain (Problem Without Cryptography)
+
+Imagine internet without encryption.
+
+Nightmare Scenario
+
+Tum bank website use kar rahe ho:
+
+username = pk123
+password = mypassword
+
+Data internet pe aise travel karega:
+
+PK → Router → ISP → Internet → Bank Server
+
+Agar koi hacker network sniff kare:
+
+Wireshark / packet sniffer
+
+Woh directly read kar lega:
+
+username=pk123
+password=mypassword
+Result
+
+Disaster:
+
+Bank accounts hacked
+
+Credit cards stolen
+
+Chat messages leaked
+
+JWT tokens stolen
+
+HTTPS useless
+
+Internet basically unsafe jungle ban jaata.
+
+Yahi pain solve karne ke liye Cryptography aayi.
+
+2️⃣ The Cure (Cryptography)
+
+Cryptography ka simple idea:
+
+Readable data → unreadable form
+
+Example:
+
+HELLO
+
+Encryption ke baad:
+
+X3$9#@K
+
+Only intended receiver decrypt kar sakta hai.
+
+HELLO → Encrypt → X3$9#@K → Decrypt → HELLO
+3️⃣ Types of Encryption
+
+Do main types hain.
+
+Symmetric Encryption
+
+Same key use hoti hai.
+
+Encrypt(key)
+Decrypt(key)
+
+Example
+
+message = "HELLO"
+key = 5
+HELLO → encryption → 9JFKL@!
+
+Receiver:
+
+cipher + same key → HELLO
+Real Algorithms
+
+AES (most used)
+
+DES (old)
+
+AES used in:
+
+HTTPS data transfer
+
+WhatsApp messages
+
+disk encryption
+
+Problem
+
+Key distribution.
+
+Agar hacker key sun le:
+
+key = 5
+
+Encryption useless ho jaata.
+
+Asymmetric Encryption
+
+Isme 2 keys hoti hain
+
+Public Key
+Private Key
+
+Example
+
+Server:
+
+Public key → sabko pata
+Private key → secret
+
+Encryption:
+
+client encrypt(public key)
+
+Decryption:
+
+server decrypt(private key)
+Example
+HELLO → encrypt(public_key)
+
+Result:
+
+7G#@2L!
+
+Sirf server decrypt karega.
+
+Popular algorithms
+
+RSA
+
+Diffie Hellman
+
+ECC
+
+4️⃣ Trade-off Questions (Important HLD Thinking)
+What if we use only symmetric encryption?
+
+Problem:
+
+key exchange insecure
+
+Hacker key sniff kar lega.
+
+What if we use only asymmetric encryption?
+
+Problem:
+
+very slow
+
+Example:
+
+RSA key size
+
+2048 bits
+
+AES
+
+128 bits
+
+Asymmetric encryption:
+
+10-100x slower
+What if we remove encryption completely?
+
+Disaster:
+
+HTTPS impossible
+JWT insecure
+password sniffing
+bank fraud
+5️⃣ Real World Analogy
+
+Imagine locked box courier system
+
+Symmetric Encryption
+
+Same key.
+
+You lock box
+Friend unlock box
+
+But key share kaise kare?
+
+Courier me bhejo?
+
+Hacker intercept karega.
+
+Asymmetric Encryption
+
+Friend ka system:
+
+Public lock
+Private key
+
+Flow:
+
+You lock box with friend's public lock
+Only friend private key se open karega
+
+Even courier hacker kuch nahi kar sakta.
+
+6️⃣ Why Both Used Together (Most Important)
+
+Real systems:
+
+Asymmetric → key exchange
+Symmetric → actual data encryption
+
+Example HTTPS.
+
+Step 1
+
+Client connects server.
+
+TLS handshake
+Step 2
+
+Asymmetric encryption used
+
+RSA / Diffie Hellman
+
+To exchange secret key.
+
+Step 3
+
+Symmetric encryption used
+
+AES
+
+For all data.
+
+Reason:
+
+AES fast
+RSA secure for key exchange
+7️⃣ Diffie-Hellman (Key Exchange)
+
+Goal:
+
+securely share symmetric key
+
+Even if hacker listening.
+
+Basic idea:
+
+Both sides compute same key but never send it.
+
+Example simplified:
+
+public numbers
+g = 3
+p = 7
+
+Client secret:
+
+a = 4
+
+Server secret:
+
+b = 5
+
+Exchange public values.
+
+Finally both compute:
+
+shared key = 2
+
+Hacker cannot compute without private values.
+
+8️⃣ Digital Signature
+
+Purpose:
+
+1️⃣ Authentication
+2️⃣ Integrity
+
+Example
+
+Sender sends:
+
+message = HELLO
+
+Step 1
+
+Create hash.
+
+hash(HELLO) = 5G78K2
+
+Step 2
+
+Sign with private key.
+
+signature = encrypt(hash, private_key)
+
+Send:
+
+HELLO + signature
+
+Receiver
+
+1️⃣ hash message
+
+hash(HELLO)
+
+2️⃣ decrypt signature with public key
+
+If both match:
+
+✔ message authentic
+✔ message unchanged
+9️⃣ Where Cryptography Used
+
+Real systems:
+
+System	Crypto Used
+HTTPS	TLS
+JWT	Digital signature
+WhatsApp	AES + DH
+Password storage	hashing
+SSH	RSA
+🔟 Mental Model (Very Important)
+
+Think like this:
+
+Symmetric → fast encryption
+Asymmetric → secure key exchange
+Hashing → integrity
+Digital Signature → authentication

@@ -1,0 +1,310 @@
+PK, OAuth ka transcript bahut lamba hai isliye confusing lagta hai. Main OAuth 2.0 ko simple mental model + real example se explain karta hoon taaki feel aaye system design ka.
+
+1️⃣ OAuth 2.0 kya hai?
+
+OAuth ka full form:
+
+Open Authorization
+
+Purpose:
+
+Third-party apps ko limited access dena
+without sharing password
+
+Example:
+
+Login with Google
+Login with GitHub
+Login with Facebook
+
+Tum password Google ko hi dete ho, Instagram ko nahi.
+
+2️⃣ Real Example
+
+Scenario:
+
+User → Instagram login
+Option → Login with Google
+
+Flow:
+
+User → Instagram
+Instagram → Google
+Google → Verify user
+Google → Send token
+Instagram → Fetch user info
+3️⃣ OAuth Actors (4 Roles)
+
+OAuth me 4 components hote hain.
+
+1️⃣ Resource Owner
+
+User.
+
+Example:
+
+You (Gmail account holder)
+2️⃣ Client
+
+Application jo data use karna chahta hai.
+
+Example:
+
+Instagram
+3️⃣ Authorization Server
+
+Server jo permission verify karta hai.
+
+Example:
+
+accounts.google.com
+4️⃣ Resource Server
+
+Server jahan actual data stored hai.
+
+Example:
+
+Google API server
+Visual
+User
+ │
+ │ login
+ ▼
+Client (Instagram)
+ │
+ │ authorization
+ ▼
+Authorization Server (Google Auth)
+ │
+ │ token
+ ▼
+Resource Server (Google API)
+4️⃣ OAuth Authorization Code Flow (Most Important)
+
+Ye most used flow hai.
+
+Steps:
+
+Step 1 — Client Registration
+
+Instagram Google ke OAuth server me register hota hai.
+
+Google deta hai:
+
+client_id
+client_secret
+Step 2 — User Clicks Login with Google
+
+User click karta hai:
+
+Sign in with Google
+
+Instagram redirect karta hai:
+
+Google Authorization Server
+Step 3 — User Authentication
+
+Google user se login karwata hai.
+
+email
+password
+
+Aur consent deta hai.
+
+Example:
+
+Instagram wants to access:
+email
+profile
+
+User:
+
+Allow
+Step 4 — Authorization Code
+
+Google redirect karta hai:
+
+instagram.com/callback
+
+Saath me deta hai:
+
+authorization_code
+
+Example:
+
+code=abc123
+Step 5 — Exchange Code for Token
+
+Instagram Google ko call karta hai:
+
+POST /token
+
+Send karta hai:
+
+authorization_code
+client_id
+client_secret
+
+Google return karta hai:
+
+access_token
+refresh_token
+Step 6 — Access Resource
+
+Instagram Google API call karta hai:
+
+GET /userinfo
+Authorization: Bearer access_token
+
+Google return karta hai:
+
+{
+"name":"Shreyansh",
+"email":"abc@gmail.com"
+}
+
+User login ho jata hai.
+
+5️⃣ Access Token vs Refresh Token
+Access Token
+
+Short-lived token.
+
+Example:
+
+expires_in = 1 hour
+
+Use:
+
+API access
+Refresh Token
+
+Long-lived token.
+
+Use:
+
+new access token generate
+
+Example:
+
+POST /token
+grant_type=refresh_token
+6️⃣ OAuth Security — State Parameter
+
+State use hota hai:
+
+CSRF attack prevent karne ke liye
+
+Flow:
+
+Client send karta hai:
+
+state=random123
+
+Response me same value aani chahiye.
+
+state=random123
+
+Agar match nahi hua:
+
+reject request
+7️⃣ OAuth Grant Types
+
+OAuth me multiple grant types hain.
+
+1️⃣ Authorization Code (Most Used)
+
+Use case:
+
+Web apps
+Mobile apps
+
+Secure.
+
+2️⃣ Implicit Grant
+
+Direct token milta hai.
+
+But:
+
+Less secure
+
+Ab mostly deprecated.
+
+3️⃣ Password Grant
+
+Client directly password leta hai.
+
+Example:
+
+username
+password
+
+Used in trusted apps.
+
+Not recommended.
+
+4️⃣ Client Credentials
+
+Machine-to-machine communication.
+
+Example:
+
+service → service
+
+No user involved.
+
+5️⃣ Refresh Token Grant
+
+Expired access token ko refresh karta hai.
+
+8️⃣ OAuth Flow Summary
+User
+ │
+ │ login
+ ▼
+Client (Instagram)
+ │
+ │ redirect
+ ▼
+Authorization Server (Google)
+ │
+ │ authorization_code
+ ▼
+Client
+ │
+ │ exchange code
+ ▼
+Access Token
+ │
+ │ API request
+ ▼
+Resource Server
+9️⃣ OAuth vs Authentication
+
+OAuth actually:
+
+Authorization
+
+But login systems me use hota hai.
+
+Actual authentication standard hai:
+
+OpenID Connect
+
+OAuth + identity layer.
+
+🔟 Real Companies OAuth Use
+
+Examples:
+
+Google Login
+GitHub Login
+Facebook Login
+Microsoft Login
+🧠 System Design Mental Model
+
+OAuth ka main idea:
+
+Never share password
+Use tokens instead

@@ -1,0 +1,296 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-purple { background: #3C3489; color: #CECBF6; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .pain ul, .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .flow-chain { display: flex; flex-direction: column; gap: 3px; }
+  .flow-node { padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; align-self: flex-start; }
+  .flow-down { font-size: 13px; color: var(--color-text-tertiary); padding-left: 16px; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-purple { background: #EEEDFE; color: #3C3489; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-purple { background: #3C3489; color: #CECBF6; }
+    .node-green { background: #27500A; color: #C0DD9B; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 10px; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .jwt-part { border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; }
+  .step-card { display: flex; gap: 12px; align-items: flex-start; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); margin-bottom: 8px; }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; flex-shrink: 0; margin-top: 2px; }
+  .step-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; flex: 1; }
+  .step-body strong { color: var(--color-text-primary); font-weight: 500; display: block; margin-bottom: 2px; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('structure')">JWT structure</button>
+    <button class="sub-btn" onclick="show('flow')">Auth flow</button>
+    <button class="sub-btn" onclick="show('problems')">Problems + fixes</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="highlight"><strong>Session pain:</strong> 10 app servers, 3 DB clusters. Every API request = DB query to validate session. DB becomes bottleneck. Horizontal scaling breaks. JWT solves this by putting session data inside the token itself — no DB needed.</div>
+
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Session-based auth problems</div>
+        <ul>
+          <li>Server stores session in DB on every login</li>
+          <li>Every request = DB lookup to validate</li>
+          <li>DB becomes bottleneck at scale</li>
+          <li>Session replication across servers = complex</li>
+          <li>Horizontal scaling is hard</li>
+        </ul>
+      </div>
+      <div class="cure">
+        <div class="label">JWT solution</div>
+        <ul>
+          <li>Session data stored inside the token</li>
+          <li>Server just verifies signature + expiry</li>
+          <li>No DB call needed</li>
+          <li>Stateless — any server can verify</li>
+          <li>Perfect for microservices</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <strong>Mental model — one line each:</strong><br><br>
+      Session → server stores state (DB knows who you are)<br>
+      JWT → client carries state (token says who you are)
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Session</th><th>JWT</th></tr>
+      <tr><td>State</td><td>Stateful — stored in DB</td><td>Stateless — inside token</td></tr>
+      <tr><td>DB call per request</td><td>Yes</td><td>No</td></tr>
+      <tr><td>Scaling</td><td>Hard — session replication needed</td><td>Easy — any server verifies</td></tr>
+      <tr><td>Speed</td><td>Slower</td><td>Faster</td></tr>
+      <tr><td>Revocation</td><td>Easy — delete DB record</td><td>Difficult — token valid until expiry</td></tr>
+    </table>
+  </div>
+
+  <!-- STRUCTURE -->
+  <div class="sub-panel" id="sub-structure">
+    <div class="highlight"><strong>JWT = 3 base64-encoded parts separated by dots.</strong> <code style="font-family:var(--font-mono);font-size:11px">HEADER.PAYLOAD.SIGNATURE</code> — Encoded, NOT encrypted. Payload is readable by anyone (paste on jwt.io). Never store passwords in JWT.</div>
+
+    <div class="code-block" style="word-break:break-all;font-size:11px">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.<span style="color:#1D9E75">eyJzdWIiOiIxMjM0NTY3ODkwIiwiZXhwIjoxNzAwMDAwfQ</span>
+.<span style="color:#7F77DD">SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</span></div>
+
+    <div class="jwt-part" style="background:#E6F1FB;border:1px solid #B5D4F4">
+      <div style="font-size:11px;font-weight:500;color:#0C447C;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Part 1 — Header</div>
+      <div class="code-block" style="background:var(--color-background-primary);margin-bottom:6px">{
+  "alg": "HS256",   ← signing algorithm
+  "typ": "JWT"      ← token type
+}</div>
+      <div style="font-size:12px;color:#185FA5">Metadata only. Which algorithm was used to sign.</div>
+    </div>
+
+    <div class="jwt-part" style="background:#E1F5EE;border:1px solid #9FE1CB">
+      <div style="font-size:11px;font-weight:500;color:#085041;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Part 2 — Payload (claims)</div>
+      <div class="code-block" style="background:var(--color-background-primary);margin-bottom:6px">{
+  "sub": "12345",          ← subject (user id)
+  "email": "pk@gmail.com", ← public claim
+  "role": "admin",         ← public claim
+  "iss": "auth.myapp.com", ← issuer
+  "exp": 1710000000,       ← expiry timestamp
+  "iat": 1709990000        ← issued at
+}</div>
+      <div style="font-size:12px;color:#0F6E56">Readable by anyone — base64 not encrypted. Never put passwords here.</div>
+    </div>
+
+    <div class="jwt-part" style="background:#EEEDFE;border:1px solid #AFA9EC">
+      <div style="font-size:11px;font-weight:500;color:#3C3489;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Part 3 — Signature</div>
+      <div class="code-block" style="background:var(--color-background-primary);margin-bottom:6px">HMACSHA256(
+  base64(header) + "." + base64(payload),
+  secret_key
+)</div>
+      <div style="font-size:12px;color:#3C3489">Ensures token wasn't tampered. If payload changes → signature breaks → server rejects. Only server with the secret_key can create valid signatures.</div>
+    </div>
+  </div>
+
+  <!-- FLOW -->
+  <div class="sub-panel" id="sub-flow">
+    <div class="highlight"><strong>5-step JWT auth flow.</strong> Token issued once at login, then client sends it on every request. Server verifies locally — no DB needed.</div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:#E6F1FB;color:#0C447C">1</div>
+      <div class="step-body"><strong>Login</strong> Client sends username + password to Auth Server.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E6F1FB;color:#0C447C">2</div>
+      <div class="step-body"><strong>Token generated</strong> Auth server verifies credentials → creates JWT with user_id, role, expiry → signs with secret key → returns to client.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E1F5EE;color:#085041">3</div>
+      <div class="step-body"><strong>Client stores token</strong> In localStorage or httpOnly cookie. Sent on every subsequent request.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#FAEEDA;color:#633806">4</div>
+      <div class="step-body"><strong>API request with JWT</strong> <code style="font-family:var(--font-mono);font-size:11px">GET /user — Authorization: Bearer eyJhbGci...</code></div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#EAF3DE;color:#27500A">5</div>
+      <div class="step-body"><strong>Server verifies locally</strong> Check signature (not tampered?) → check expiry (not expired?) → read user info from payload. No DB call. Access granted.</div>
+    </div>
+
+    <div class="section-title" style="margin-top:4px">HLD architecture</div>
+    <div class="arch-flow">
+      <div class="flow-chain">
+        <span class="flow-node node-gray">Client</span>
+        <span class="flow-down">↓ login (username + password)</span>
+        <span class="flow-node node-blue">Auth Server</span>
+        <span class="flow-down">↓ JWT issued</span>
+        <span class="flow-node node-gray">Client stores JWT</span>
+        <span class="flow-down">↓ request + JWT</span>
+        <span class="flow-node node-amber">API Gateway (verify JWT)</span>
+        <span class="flow-down">↓ valid → forward</span>
+        <div style="display:flex;gap:8px"><span class="flow-node node-teal" style="font-size:12px">Service A</span><span class="flow-node node-teal" style="font-size:12px">Service B</span><span class="flow-node node-teal" style="font-size:12px">Service C</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROBLEMS -->
+  <div class="sub-panel" id="sub-problems">
+    <div class="section-title">Problem 1 — Token revocation</div>
+    <div class="highlight"><strong>User banned but token still valid until expiry.</strong> JWT is stateless — server has no way to say "ignore this token."</div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Solution: blacklist</div>
+        <div class="box-sub">Store revoked token IDs in DB. Check on every request.</div>
+        <div style="margin-top:8px;font-size:12px;color:#A32D2D">Problem: Requires DB lookup again — defeats JWT's stateless benefit.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Solution: short-lived tokens (recommended)</div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-secondary);line-height:1.8;margin-top:6px">
+          Access token: 10–15 min<br>
+          Refresh token: 7 days
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:#0F6E56">Damage limited to 10 mins. Refresh token revokable — stored in DB.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Problem 2 — Payload visible</div>
+    <div class="highlight"><strong>JWT is base64 encoded — not encrypted.</strong> Anyone can decode and read the payload. Solution: <span class="tag tag-purple">JWE (JSON Web Encryption)</span> — encrypts the payload. Rarely needed unless very sensitive data in token.</div>
+
+    <div class="section-title">Problem 3 — Secret key leak</div>
+    <div class="highlight"><strong>If secret_key leaks, attacker can forge any JWT.</strong> Solution: <span class="tag tag-blue">kid (key ID)</span> — maintain multiple public/private key pairs, rotate them. Each JWT includes which key was used to sign it.</div>
+
+    <div class="section-title">Access token vs refresh token flow</div>
+    <div class="arch-flow">
+      <div class="flow-chain">
+        <span class="flow-node node-gray">Login → Auth Server</span>
+        <span class="flow-down">↓ issues both</span>
+        <div style="display:flex;gap:8px">
+          <span class="flow-node node-blue" style="font-size:12px">Access token (10 min)</span>
+          <span class="flow-node node-teal" style="font-size:12px">Refresh token (7 days)</span>
+        </div>
+        <span class="flow-down">↓ access token expires</span>
+        <span class="flow-node node-amber">Client sends refresh token to /token endpoint</span>
+        <span class="flow-down">↓</span>
+        <span class="flow-node node-green">New access token issued — no re-login needed</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>JWT in one sentence:</strong> JWT is a stateless authentication mechanism where the server encodes user info into a signed token — no DB lookup needed on each request.
+    </div>
+
+    <div class="section-title">JWT claims quick reference</div>
+    <table class="compare-table">
+      <tr><th>Claim</th><th>Meaning</th><th>Type</th></tr>
+      <tr><td><code style="font-family:var(--font-mono)">sub</code></td><td>Subject — user ID</td><td>Registered</td></tr>
+      <tr><td><code style="font-family:var(--font-mono)">iss</code></td><td>Issuer — who created the token</td><td>Registered</td></tr>
+      <tr><td><code style="font-family:var(--font-mono)">aud</code></td><td>Audience — intended recipient</td><td>Registered</td></tr>
+      <tr><td><code style="font-family:var(--font-mono)">exp</code></td><td>Expiry timestamp</td><td>Registered</td></tr>
+      <tr><td><code style="font-family:var(--font-mono)">iat</code></td><td>Issued at timestamp</td><td>Registered</td></tr>
+      <tr><td><code style="font-family:var(--font-mono)">email, role</code></td><td>Custom user data</td><td>Public</td></tr>
+    </table>
+
+    <div class="section-title">Real system usage</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
+      <span class="tag tag-blue">OAuth 2.0</span>
+      <span class="tag tag-blue">Google Login</span>
+      <span class="tag tag-blue">API Gateway auth</span>
+      <span class="tag tag-teal">SSO (login once, access all apps)</span>
+      <span class="tag tag-teal">Microservices auth</span>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>JWT vs Session</td><td>Session = server stores state. JWT = client carries state.</td></tr>
+      <tr><td>Signature purpose</td><td>Ensures payload wasn't tampered — invalid if anything changes</td></tr>
+      <tr><td>Why not encrypted?</td><td>Base64 encoded only. Use JWE if payload needs to be private.</td></tr>
+      <tr><td>Revocation problem</td><td>Token valid until expiry. Fix: short-lived access tokens + refresh tokens</td></tr>
+      <tr><td>Where to store?</td><td>httpOnly cookie (safer than localStorage — XSS resistant)</td></tr>
+      <tr><td>Never store</td><td>Passwords, credit cards, sensitive PII in JWT payload</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

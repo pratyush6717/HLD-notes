@@ -1,0 +1,403 @@
+PK, is topic ko bhi Evolution of Pain + Feynman method se samjhte hain. API Gateway tabhi properly samajh aata hai jab monolith → microservices transition ka pain samjhte hain.
+
+API Gateway
+1️⃣ Evolution of Pain (Problem Without API Gateway)
+
+Imagine ek microservices architecture:
+
+Client
+   │
+   ├── Product Service
+   ├── Order Service
+   ├── Payment Service
+   ├── Review Service
+   └── Recommendation Service
+
+Client ko agar “My Orders” page load karna hai to:
+
+Mobile App ko directly call karna padega:
+
+GET /products
+GET /invoice
+GET /reviews
+GET /recommendations
+Problems
+1️⃣ Too many API calls
+
+Mobile client ko multiple APIs call karne padte hain.
+
+1 screen = 5 API calls
+
+Latency increase.
+
+2️⃣ Client complexity
+
+Client ko pata hona chahiye:
+
+product service location
+invoice service location
+review service location
+
+Agar service change ho jaye:
+
+Client update karna padega
+3️⃣ Security duplication
+
+Har microservice me:
+
+Authentication
+Rate limiting
+Logging
+
+Repeat karna padta hai.
+
+4️⃣ No centralized control
+
+Example:
+
+Rate limit
+Authentication
+Caching
+Monitoring
+
+Sab jagah implement karna padta hai.
+
+2️⃣ The Cure (API Gateway)
+
+API Gateway acts like:
+
+Single entry point for all clients
+
+Architecture becomes:
+
+Client
+   │
+   ▼
+API Gateway
+   │
+   ├── Product Service
+   ├── Order Service
+   ├── Invoice Service
+   └── Review Service
+
+Client sirf API Gateway ko call karega.
+
+Gateway decide karega:
+
+Which microservice to call
+3️⃣ Core Idea (Difference from Load Balancer)
+
+This is the most common interview confusion.
+
+Load Balancer
+
+Distributes traffic between same service instances.
+
+Example:
+
+Request → Load Balancer
+           │
+           ├── Order Service Instance 1
+           ├── Order Service Instance 2
+           └── Order Service Instance 3
+
+Load balancer API endpoint nahi samajhta.
+
+API Gateway
+
+Routes requests to different services.
+
+Example:
+
+/orders  → Order Service
+/invoice → Invoice Service
+/review  → Review Service
+
+So:
+
+API Gateway = intelligent router
+Load Balancer = traffic distributor
+4️⃣ Where Both Fit in Architecture
+
+Typical architecture:
+
+Client
+   │
+   ▼
+API Gateway
+   │
+   ▼
+Load Balancer
+   │
+   ▼
+Service Instances
+
+Example:
+
+Client
+  │
+  ▼
+API Gateway
+  │
+  ├── Order LB → Order Instances
+  └── Invoice LB → Invoice Instances
+5️⃣ Major Features of API Gateway
+1️⃣ API Composition
+
+Very important.
+
+Example:
+
+User opens:
+
+My Orders page
+
+Required data:
+
+Product details
+Invoice details
+Reviews
+Recommendations
+
+Without gateway:
+
+Client → 4 API calls
+
+With gateway:
+
+Client → 1 API
+
+Gateway internally calls:
+
+Product Service
+Invoice Service
+Review Service
+Recommendation Service
+
+Then merges response.
+
+2️⃣ Authentication
+
+Instead of verifying token everywhere:
+
+Order Service
+Payment Service
+Review Service
+
+We do it once at gateway.
+
+Flow:
+
+Client
+   │
+   ▼
+API Gateway
+   │
+Validate JWT
+   │
+   ▼
+Microservices
+3️⃣ Rate Limiting
+
+Gateway can control traffic.
+
+Example rules:
+
+10 requests per minute per user
+
+If exceeded:
+
+HTTP 429 Too Many Requests
+
+Helps prevent:
+
+DDoS attacks
+API abuse
+4️⃣ API Throttling
+
+More granular control.
+
+Example:
+
+/invoice API → max 10 req/min per user
+
+If user sends:
+
+11th request → blocked
+5️⃣ Burst Control
+
+Handles traffic spikes.
+
+Example:
+
+Burst limit = 500 requests
+
+If 1000 requests come instantly:
+
+500 processed
+500 queued/rejected
+6️⃣ Service Discovery
+
+Microservices scale dynamically.
+
+Instances:
+
+Order Service
+ ├── instance1
+ ├── instance2
+ └── instance3
+
+But instances keep changing.
+
+Service discovery tools track them.
+
+Examples:
+
+Eureka
+Consul
+Zookeeper
+
+Gateway asks:
+
+Where is Order Service?
+
+Service discovery returns:
+
+instance2:8080
+6️⃣ Other Capabilities
+
+API Gateway can also do:
+
+Request Transformation
+
+Example:
+
+Client request:
+
+GET /orders
+
+Gateway converts:
+
+GET /orders?userId=123
+Response Transformation
+
+Backend response:
+
+{
+  "name":"phone",
+  "price":500
+}
+
+Gateway converts to mobile friendly format.
+
+Caching
+
+Gateway caches responses.
+
+Example:
+
+Product catalog
+
+Next request served from cache.
+
+Logging & Monitoring
+
+Gateway logs:
+
+request
+response
+latency
+errors
+
+Useful for observability.
+
+7️⃣ How Gateway Handles Millions of Requests
+
+Important interview question.
+
+Answer:
+
+API Gateway is not a single instance
+
+Architecture:
+
+Client
+  │
+  ▼
+DNS Load Balancer
+  │
+  ▼
+API Gateway Cluster
+  │
+  ▼
+Load Balancers
+  │
+  ▼
+Microservices
+8️⃣ Multi-Region Architecture
+
+Large systems deploy gateways in regions.
+
+Example:
+
+Region 1 → Mumbai
+Region 2 → Chennai
+Region 3 → Singapore
+
+Each region has:
+
+API Gateway
+Load Balancers
+Microservices
+
+DNS routes traffic to nearest region.
+
+Example:
+
+User in India → Mumbai region
+User in Singapore → Singapore region
+
+Tools:
+
+AWS Route53
+Azure Traffic Manager
+Cloudflare
+9️⃣ Availability Zones
+
+Each region has multiple data centers.
+
+Example:
+
+Mumbai Region
+   │
+   ├── AZ1 (Data center)
+   └── AZ2 (Data center)
+
+If one AZ fails:
+
+Traffic → other AZ
+
+High availability maintained.
+
+🔟 Real World API Gateway Tools
+
+Examples used in industry:
+
+Kong
+AWS API Gateway
+Netflix Zuul
+NGINX
+Apigee
+Traefik
+11️⃣ Mental Model
+
+Remember this simple chain:
+
+DNS → API Gateway → Load Balancer → Microservices
+
+Where:
+
+API Gateway → routing + security
+Load Balancer → distribute traffic
+
+PK agar chaho to main next 3 super important System Design topics bhi isi style me explain kar sakta hoon:

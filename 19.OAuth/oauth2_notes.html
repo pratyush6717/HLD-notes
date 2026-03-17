@@ -1,0 +1,323 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-purple { background: #3C3489; color: #CECBF6; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .flow-chain { display: flex; flex-direction: column; gap: 3px; }
+  .flow-node { padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; align-self: flex-start; }
+  .flow-down { font-size: 13px; color: var(--color-text-tertiary); padding-left: 16px; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-purple { background: #EEEDFE; color: #3C3489; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-purple { background: #3C3489; color: #CECBF6; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.8; margin-bottom: 10px; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .step-card { display: flex; gap: 12px; align-items: flex-start; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); margin-bottom: 8px; }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; flex-shrink: 0; margin-top: 2px; }
+  .step-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; flex: 1; }
+  .step-body strong { color: var(--color-text-primary); font-weight: 500; display: block; margin-bottom: 2px; }
+  .actor-card { padding: 12px 14px; border-radius: 8px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); text-align: center; }
+  .actor-role { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .actor-who { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 3px; }
+  .actor-ex { font-size: 12px; color: var(--color-text-tertiary); }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('flow')">Auth code flow</button>
+    <button class="sub-btn" onclick="show('tokens')">Tokens + security</button>
+    <button class="sub-btn" onclick="show('grant-types')">Grant types</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="highlight"><strong>Core idea:</strong> OAuth = give a third-party app limited access to your data without sharing your password. You log into Google, Google gives Instagram a token. Instagram never sees your Google password.</div>
+
+    <div class="section-title">4 actors in OAuth</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:16px">
+      <div class="actor-card">
+        <div class="actor-role" style="color:#185FA5">Resource owner</div>
+        <div class="actor-who">You</div>
+        <div class="actor-ex">Gmail account holder</div>
+      </div>
+      <div class="actor-card">
+        <div class="actor-role" style="color:#3B6D11">Client</div>
+        <div class="actor-who">Instagram</div>
+        <div class="actor-ex">App wanting your data</div>
+      </div>
+      <div class="actor-card">
+        <div class="actor-role" style="color:#854F0B">Auth server</div>
+        <div class="actor-who">accounts.google.com</div>
+        <div class="actor-ex">Verifies permission</div>
+      </div>
+      <div class="actor-card">
+        <div class="actor-role" style="color:#3C3489">Resource server</div>
+        <div class="actor-who">Google API</div>
+        <div class="actor-ex">Stores actual data</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:10px">High-level flow</div>
+        <div class="flow-chain">
+          <span class="flow-node node-gray">You (Resource Owner)</span>
+          <span class="flow-down">↓ click Login with Google</span>
+          <span class="flow-node node-teal">Instagram (Client)</span>
+          <span class="flow-down">↓ redirect</span>
+          <span class="flow-node node-amber">Google Auth Server</span>
+          <span class="flow-down">↓ token issued</span>
+          <span class="flow-node node-teal">Instagram uses token</span>
+          <span class="flow-down">↓ API call</span>
+          <span class="flow-node node-purple">Google API (Resource Server)</span>
+          <span class="flow-down">↓ returns</span>
+          <span class="flow-node node-green">name, email → login done</span>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label">Why not just share password?</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:6px">
+          <span style="color:#A32D2D">✗</span> Instagram gets full Google access<br>
+          <span style="color:#A32D2D">✗</span> Instagram can't be trusted with it<br>
+          <span style="color:#A32D2D">✗</span> If Instagram is hacked → Google too<br><br>
+          <span style="color:#1D9E75">✔</span> Token = limited scope only<br>
+          <span style="color:#1D9E75">✔</span> Token expires — reduces damage<br>
+          <span style="color:#1D9E75">✔</span> Revocable — revoke Instagram without changing password
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTH CODE FLOW -->
+  <div class="sub-panel" id="sub-flow">
+    <div class="highlight"><strong>Authorization Code Flow</strong> — most used and most secure. Client never touches your password. Code is exchanged server-to-server for a token.</div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:#E6F1FB;color:#0C447C">1</div>
+      <div class="step-body">
+        <strong>Client registration</strong>
+        Instagram registers with Google OAuth. Google issues <code style="font-family:var(--font-mono);font-size:11px">client_id</code> and <code style="font-family:var(--font-mono);font-size:11px">client_secret</code>. These identify Instagram as a trusted app.
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E6F1FB;color:#0C447C">2</div>
+      <div class="step-body">
+        <strong>User clicks "Login with Google"</strong>
+        Instagram redirects user to Google Auth Server with <code style="font-family:var(--font-mono);font-size:11px">client_id</code>, <code style="font-family:var(--font-mono);font-size:11px">redirect_uri</code>, <code style="font-family:var(--font-mono);font-size:11px">scope</code>, and a random <code style="font-family:var(--font-mono);font-size:11px">state</code> value.
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E1F5EE;color:#085041">3</div>
+      <div class="step-body">
+        <strong>User authenticates + consents</strong>
+        Google shows login page. User enters email + password. Google shows consent screen: "Instagram wants access to: email, profile." User clicks Allow.
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#FAEEDA;color:#633806">4</div>
+      <div class="step-body">
+        <strong>Authorization code issued</strong>
+        Google redirects back to <code style="font-family:var(--font-mono);font-size:11px">instagram.com/callback?code=abc123&state=random123</code>. The code is short-lived (minutes).
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#FAEEDA;color:#633806">5</div>
+      <div class="step-body">
+        <strong>Exchange code for token (server-to-server)</strong>
+        Instagram backend sends <code style="font-family:var(--font-mono);font-size:11px">POST /token</code> with code + client_id + client_secret. Google returns <code style="font-family:var(--font-mono);font-size:11px">access_token</code> + <code style="font-family:var(--font-mono);font-size:11px">refresh_token</code>. This step is server-to-server — never exposed to browser.
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#EAF3DE;color:#27500A">6</div>
+      <div class="step-body">
+        <strong>Access resource</strong>
+        Instagram calls <code style="font-family:var(--font-mono);font-size:11px">GET /userinfo</code> with <code style="font-family:var(--font-mono);font-size:11px">Authorization: Bearer access_token</code>. Google API returns name and email. User is now logged in.
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Why the two-step code → token exchange?</strong> If the token was sent directly in the browser redirect (URL), it could be leaked in browser history or logs. The code is useless without the client_secret — only Instagram's server has that.</div>
+  </div>
+
+  <!-- TOKENS + SECURITY -->
+  <div class="sub-panel" id="sub-tokens">
+    <div class="section-title">Access token vs refresh token</div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Access token</div>
+        <div class="box-sub" style="margin-bottom:8px">Short-lived credential used to access APIs.</div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-secondary);line-height:1.8">
+          expires_in: 1 hour<br>
+          scope: email profile<br>
+          use: GET /userinfo
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--color-text-tertiary)">Short expiry limits damage if stolen.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Refresh token</div>
+        <div class="box-sub" style="margin-bottom:8px">Long-lived token to get new access tokens without re-login.</div>
+        <div class="code-block" style="margin:0">POST /token
+grant_type=refresh_token
+refresh_token=xyz...</div>
+        <div style="margin-top:8px;font-size:12px;color:var(--color-text-tertiary)">Stored securely server-side. Never exposed to browser.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Security — state parameter (CSRF prevention)</div>
+    <div class="arch-flow" style="margin-bottom:16px">
+      <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+        1. Instagram sends <code style="font-family:var(--font-mono);font-size:11px">state=random123</code> in the auth request<br>
+        2. Google echoes it back in the redirect: <code style="font-family:var(--font-mono);font-size:11px">callback?code=abc&state=random123</code><br>
+        3. Instagram verifies state matches → request is legitimate<br>
+        4. If state doesn't match → reject — someone forged the redirect
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Token type</th><th>Lifetime</th><th>Stored where</th><th>Used for</th></tr>
+      <tr><td><span class="tag tag-blue">Access token</span></td><td>Minutes to hours</td><td>Client memory / session</td><td>API calls</td></tr>
+      <tr><td><span class="tag tag-teal">Refresh token</span></td><td>Days to months</td><td>Server-side securely</td><td>Get new access token</td></tr>
+      <tr><td><span class="tag tag-amber">Auth code</span></td><td>Seconds to minutes</td><td>URL param (briefly)</td><td>Exchanged for tokens</td></tr>
+    </table>
+  </div>
+
+  <!-- GRANT TYPES -->
+  <div class="sub-panel" id="sub-grant-types">
+    <div class="highlight"><strong>Different use cases need different flows.</strong> Authorization Code is the gold standard. Others exist for specific scenarios.</div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:#E6F1FB;color:#0C447C">1</div>
+      <div class="step-body">
+        <strong>Authorization Code <span class="tag tag-blue">most used</span></strong>
+        Web apps and mobile apps. Two-step: code → token. Secure — client_secret never exposed to browser. Use this by default.
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#FCEBEB;color:#791F1F">2</div>
+      <div class="step-body">
+        <strong>Implicit Grant <span class="tag tag-red">deprecated</span></strong>
+        Token returned directly in URL. Faster but insecure — token in browser history. Replaced by Auth Code + PKCE for SPAs.
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#FAEEDA;color:#633806">3</div>
+      <div class="step-body">
+        <strong>Resource Owner Password Grant</strong>
+        Client collects username + password directly. Only for highly trusted first-party apps. Not recommended — defeats the purpose of OAuth.
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#EAF3DE;color:#27500A">4</div>
+      <div class="step-body">
+        <strong>Client Credentials <span class="tag tag-green">M2M</span></strong>
+        No user involved. Service-to-service communication. Example: your backend calling another service's API. Uses client_id + client_secret directly.
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#EEEDFE;color:#3C3489">5</div>
+      <div class="step-body">
+        <strong>Refresh Token Grant</strong>
+        When access token expires, client sends refresh token to get a new access token silently. No user re-login needed.
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Grant type</th><th>Use case</th><th>Security</th></tr>
+      <tr><td><span class="tag tag-blue">Authorization Code</span></td><td>Web apps, mobile apps</td><td>High — server-to-server exchange</td></tr>
+      <tr><td><span class="tag tag-red">Implicit</span></td><td>SPAs (legacy)</td><td>Low — deprecated</td></tr>
+      <tr><td><span class="tag tag-amber">Password</span></td><td>Trusted first-party apps</td><td>Low — not recommended</td></tr>
+      <tr><td><span class="tag tag-green">Client Credentials</span></td><td>M2M / service-to-service</td><td>High — no user involved</td></tr>
+      <tr><td><span class="tag tag-purple">Refresh Token</span></td><td>Renew expired access token</td><td>High — stored server-side</td></tr>
+    </table>
+  </div>
+
+  <!-- INTERVIEW -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>One-line answer:</strong> OAuth 2.0 is an authorization framework that lets third-party apps access user data without the user sharing their password — using short-lived tokens instead.
+    </div>
+
+    <div class="section-title">OAuth vs authentication</div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">OAuth 2.0</div>
+        <div class="box-sub">Authorization — answers "what can this app access?" Grants limited access to resources. Does NOT prove who the user is.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">OpenID Connect (OIDC)</div>
+        <div class="box-sub">OAuth 2.0 + identity layer. Adds an ID token (JWT) that proves who the user is. This is what "Login with Google" actually uses.</div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>OAuth purpose</td><td>Delegate limited access to data without sharing password</td></tr>
+      <tr><td>Authorization Code</td><td>Best flow — code exchanged server-to-server for token</td></tr>
+      <tr><td>Access token</td><td>Short-lived (~1hr), used for API calls</td></tr>
+      <tr><td>Refresh token</td><td>Long-lived, used to silently renew access token</td></tr>
+      <tr><td>State param</td><td>Random value to prevent CSRF — must match on callback</td></tr>
+      <tr><td>Client Credentials</td><td>M2M — no user, service authenticates with client_id + secret</td></tr>
+      <tr><td>OAuth vs OIDC</td><td>OAuth = authorization. OIDC = OAuth + who the user is (ID token)</td></tr>
+    </table>
+
+    <div class="highlight"><strong>Real systems:</strong> <span class="tag tag-blue">Google</span><span class="tag tag-blue">GitHub</span><span class="tag tag-blue">Facebook</span><span class="tag tag-blue">Microsoft</span> — all use OAuth 2.0 + OpenID Connect. When you click "Login with Google" on any site, Authorization Code flow runs behind the scenes.</div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
