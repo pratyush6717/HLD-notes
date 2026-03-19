@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15.Handledistributedtransactions - HLD Note</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --color-background-primary: #0f172a;
+            --color-background-secondary: #1e293b;
+            --color-text-primary: #f8fafc;
+            --color-text-secondary: #cbd5e1;
+            --color-text-tertiary: #94a3b8;
+            --color-border-primary: #3b82f6;
+            --color-border-secondary: #334155;
+            --color-border-tertiary: #475569;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --color-background-primary: #f8fafc;
+                --color-background-secondary: #ffffff;
+                --color-text-primary: #0f172a;
+                --color-text-secondary: #475569;
+                --color-text-tertiary: #64748b;
+                --color-border-primary: #2563eb;
+                --color-border-secondary: #cbd5e1;
+                --color-border-tertiary: #e2e8f0;
+            }
+        }
+
+        body {
+            font-family: var(--font-sans) !important;
+            background-color: var(--color-background-primary) !important;
+            color: var(--color-text-primary) !important;
+            margin: 0 !important;
+            padding: 2rem 1rem !important;
+            line-height: 1.6 !important;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px !important;
+            margin: 0 auto !important;
+            background: transparent !important;
+        }
+        
+        /* Modern aesthetic enhancements */
+        .box, .card, .sub-panel, .cap-card, .scenario-box, .highlight, .pain, .cure, .insight-box, .path-box, .decision-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+        }
+
+        .box:hover, .cap-card:hover, .scenario-box:hover, .decision-card:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        button, .nav-btn, .sub-btn {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+            touch-action: manipulation;
+        }
+        
+        button:hover, .nav-btn:hover, .sub-btn:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+        }
+
+        .section-title {
+            color: var(--color-border-primary) !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.1em !important;
+        }
+        
+        .box-title, .cap-card-title {
+            font-weight: 600 !important;
+            letter-spacing: -0.01em !important;
+        }
+        
+        .compare-table th {
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            background-color: var(--color-background-secondary) !important;
+        }
+
+        /* Back Button Style */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--color-text-primary);
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            background: var(--color-background-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--color-border-tertiary);
+            transition: all 0.2s;
+            margin-bottom: 2rem;
+        }
+        .back-btn:hover {
+            border-color: var(--color-border-primary);
+            color: var(--color-border-primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem !important;
+            }
+            .grid, .grid-3, .two-col, .path-diagram, .decision-strip {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+            .sub-nav, .nav {
+                justify-content: center !important;
+                gap: 0.5rem !important;
+            }
+            .compare-table {
+                display: block !important;
+                width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            .box, .cap-card, .scenario-box, .decision-card {
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .flow-row, .node-row {
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
+    <a href="../../index.html" class="back-btn">
+        &larr; Back to Index
+    </a>
+</div>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-purple { background: #3C3489; color: #CECBF6; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .pain ul, .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .flow-chain { display: flex; flex-direction: column; gap: 3px; }
+  .flow-node { padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; align-self: flex-start; }
+  .flow-down { font-size: 13px; color: var(--color-text-tertiary); padding-left: 16px; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-purple { background: #EEEDFE; color: #3C3489; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-purple { background: #3C3489; color: #CECBF6; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+  .phase-row { display: flex; gap: 10px; align-items: flex-start; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); margin-bottom: 8px; }
+  .phase-num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+  .phase-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .phase-body strong { color: var(--color-text-primary); font-weight: 500; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .pro { font-size: 12px; color: #0F6E56; line-height: 1.7; }
+  .con { font-size: 12px; color: #A32D2D; line-height: 1.7; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('2pc')">2PC</button>
+    <button class="sub-btn" onclick="show('3pc')">3PC</button>
+    <button class="sub-btn" onclick="show('saga')">Saga pattern</button>
+    <button class="sub-btn" onclick="show('compare')">When to use what</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="highlight"><strong>The core problem:</strong> In microservices, each service has its own DB. A single user action spans multiple services and DBs. If one step fails mid-way, the other steps have already committed — leaving the system in an inconsistent state.</div>
+
+    <div class="grid">
+      <div class="pain">
+        <div class="label">E-commerce disaster</div>
+        <ul>
+          <li>User buys item — 2 things must happen</li>
+          <li>Step 1: Order create → success</li>
+          <li>Step 2: Inventory reduce → failed</li>
+          <li>Result: Order exists, inventory not reduced</li>
+          <li>Product oversold</li>
+        </ul>
+      </div>
+      <div class="pain">
+        <div class="label">Banking disaster</div>
+        <ul>
+          <li>Transfer ₹100 from A to B</li>
+          <li>Step 1: Debit A → success (A = ₹0)</li>
+          <li>Step 2: Credit B → failed (B = ₹50)</li>
+          <li>Result: ₹100 vanishes into thin air</li>
+          <li>Financial disaster</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-title">3 solutions — overview</div>
+    <div class="grid-3">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">2PC</div>
+        <div class="box-sub">Coordinator asks all services to prepare, then commits or aborts. Strong consistency. But coordinator crash = system blocked.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#854F0B">3PC</div>
+        <div class="box-sub">Adds a Pre-Commit phase so participants know the decision before final commit. Non-blocking. Complex — rarely used in practice.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Saga</div>
+        <div class="box-sub">Break big transaction into small local ones. Failure → run compensation (rollback) actions. Async via events. Used everywhere in microservices.</div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Travel booking analogy:</strong> Flight booked ✔ → Hotel booked ✔ → Taxi failed ✗. Saga compensation: cancel hotel → cancel flight. Each step has a forward action and a rollback action.</div>
+  </div>
+
+  <!-- 2PC -->
+  <div class="sub-panel" id="sub-2pc">
+    <div class="highlight"><strong>2PC = Two Phase Commit.</strong> A coordinator manages all participants. Two phases: Prepare (vote) and Commit/Abort (decide). Strong consistency but blocking on coordinator failure.</div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:10px">Phase 1 — Prepare (voting)</div>
+        <div class="flow-chain">
+          <span class="flow-node node-blue">Coordinator</span>
+          <span class="flow-down">↓ "Can you commit?"</span>
+          <div style="display:flex;gap:8px">
+            <span class="flow-node node-gray" style="font-size:12px">Order DB</span>
+            <span class="flow-node node-gray" style="font-size:12px">Inventory DB</span>
+          </div>
+          <span class="flow-down">↓ both reply</span>
+          <div style="display:flex;gap:8px">
+            <span class="flow-node node-green" style="font-size:12px">YES</span>
+            <span class="flow-node node-green" style="font-size:12px">YES</span>
+          </div>
+        </div>
+      </div>
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:10px">Phase 2 — Decision</div>
+        <div class="flow-chain">
+          <span class="flow-node node-blue">Coordinator</span>
+          <span class="flow-down">↓ all YES → sends COMMIT</span>
+          <div style="display:flex;gap:8px">
+            <span class="flow-node node-teal" style="font-size:12px">Order DB ✔</span>
+            <span class="flow-node node-teal" style="font-size:12px">Inventory DB ✔</span>
+          </div>
+          <div style="margin-top:12px;border-top:1px solid var(--color-border-tertiary);padding-top:8px">
+            <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:6px">Any NO → ABORT</div>
+            <div style="display:flex;gap:8px">
+              <span class="flow-node node-red" style="font-size:12px">Order DB ✗</span>
+              <span class="flow-node node-red" style="font-size:12px">Inventory DB ✗</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">The blocking problem — what-if sandbox</div>
+    <div class="grid-3">
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Coordinator crashes</div>
+        <div class="box-sub">Participants in "prepared" state — locks held. They can't decide alone. System blocked until coordinator recovers.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">OK message lost</div>
+        <div class="box-sub">Coordinator thinks participant failed → sends ABORT. Transaction rolled back unnecessarily.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Commit message lost</div>
+        <div class="box-sub">Participants prepared but never receive COMMIT. They wait forever. Locks held indefinitely.</div>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:4px">
+      <div class="cure">
+        <div class="label">Pros</div>
+        <ul><li>Strong consistency — all or nothing</li><li>Well understood protocol</li><li>Good for small number of services</li></ul>
+      </div>
+      <div class="pain">
+        <div class="label">Cons</div>
+        <ul><li>Blocking — coordinator crash = system stuck</li><li>Locks held during both phases — latency</li><li>Not suited for large microservice systems</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3PC -->
+  <div class="sub-panel" id="sub-3pc">
+    <div class="highlight"><strong>3PC = Three Phase Commit.</strong> Adds a Pre-Commit phase between Prepare and Commit. Now participants know the coordinator's decision before the final commit — so they can proceed even if coordinator crashes. Non-blocking.</div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+      <div class="phase-row">
+        <div class="phase-num" style="background:#E6F1FB;color:#0C447C">1</div>
+        <div class="phase-body"><strong>Prepare</strong> — same as 2PC. Coordinator asks "can you commit?" Participants lock resources and vote YES/NO.</div>
+      </div>
+      <div class="phase-row">
+        <div class="phase-num" style="background:#FAEEDA;color:#633806">2</div>
+        <div class="phase-body"><strong>Pre-Commit</strong> — coordinator broadcasts the decision (PRE-COMMIT). Participants now know the outcome before final commit. If coordinator crashes here, participants can proceed independently.</div>
+      </div>
+      <div class="phase-row">
+        <div class="phase-num" style="background:#EAF3DE;color:#27500A">3</div>
+        <div class="phase-body"><strong>Commit</strong> — final COMMIT signal sent. Participants commit and release locks.</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="cure">
+        <div class="label">Pros over 2PC</div>
+        <ul><li>Non-blocking — participants can decide even if coordinator crashes</li><li>Participants already know decision after Phase 2</li></ul>
+      </div>
+      <div class="pain">
+        <div class="label">Why rarely used</div>
+        <ul><li>Complex to implement correctly</li><li>Requires synchronous network assumptions</li><li>Saga solves the same problem more practically</li></ul>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>In practice:</strong> 3PC is mostly theoretical. Real systems either use 2PC for strong consistency (banking) or Saga for distributed microservices. You mention 3PC in interviews to show you know the evolution — not because you'd implement it.</div>
+  </div>
+
+  <!-- SAGA -->
+  <div class="sub-panel" id="sub-saga">
+    <div class="highlight"><strong>Saga = most used in microservices.</strong> Instead of one big transaction, break it into small local transactions. Each has a forward action and a compensation (rollback) action. Communication via events — no global lock.</div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:10px">Happy path — all success</div>
+        <div class="flow-chain">
+          <span class="flow-node node-green" style="font-size:12px">T1: Order create ✔</span>
+          <span class="flow-down">↓ event published</span>
+          <span class="flow-node node-green" style="font-size:12px">T2: Inventory reduce ✔</span>
+          <span class="flow-down">↓ event published</span>
+          <span class="flow-node node-green" style="font-size:12px">T3: Payment ✔</span>
+          <span class="flow-down">↓ event published</span>
+          <span class="flow-node node-green" style="font-size:12px">T4: Shipping ✔</span>
+        </div>
+      </div>
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:10px">Failure path — compensation runs</div>
+        <div class="flow-chain">
+          <span class="flow-node node-green" style="font-size:12px">T1: Order create ✔</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-green" style="font-size:12px">T2: Inventory reduce ✔</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-green" style="font-size:12px">T3: Payment ✔</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-red" style="font-size:12px">T4: Shipping FAILED ✗</span>
+          <span class="flow-down">↓ compensation triggers</span>
+          <span class="flow-node node-amber" style="font-size:12px">C3: Refund payment</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-amber" style="font-size:12px">C2: Restore inventory</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-amber" style="font-size:12px">C1: Cancel order</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="section-title">Choreography vs Orchestration</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Choreography</div>
+        <div class="box-sub" style="margin-bottom:8px">Services react to events independently. No central controller.</div>
+        <div class="flow-chain">
+          <span class="flow-node node-blue" style="font-size:12px">Order Service → publishes event</span>
+          <span class="flow-down" style="font-size:12px">↓</span>
+          <span class="flow-node node-teal" style="font-size:12px">Inventory Service reacts</span>
+          <span class="flow-down" style="font-size:12px">↓</span>
+          <span class="flow-node node-green" style="font-size:12px">Payment Service reacts</span>
+        </div>
+        <div class="pro" style="margin-top:8px">✔ Simple, no central dependency</div>
+        <div class="con">✗ Hard to debug, circular dependencies possible</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#3B6D11">Orchestration</div>
+        <div class="box-sub" style="margin-bottom:8px">Central orchestrator calls each service in sequence. Controls rollback on failure.</div>
+        <div class="flow-chain">
+          <span class="flow-node node-purple" style="font-size:12px">Orchestrator</span>
+          <span class="flow-down" style="font-size:12px">↓ calls each</span>
+          <span class="flow-node node-blue" style="font-size:12px">Order → Inventory → Payment</span>
+          <span class="flow-down" style="font-size:12px">↓ failure → triggers rollback</span>
+          <span class="flow-node node-amber" style="font-size:12px">Compensation sequence</span>
+        </div>
+        <div class="pro" style="margin-top:8px">✔ Easier to monitor and debug</div>
+        <div class="con">✗ Orchestrator = single point of concern</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARE -->
+  <div class="sub-panel" id="sub-compare">
+    <div class="insight-box"><strong>Interview answer structure:</strong> Mention all 3 → explain the evolution (2PC blocking → 3PC non-blocking → Saga for microservices) → say which you'd use and why.</div>
+
+    <table class="compare-table">
+      <tr><th>Feature</th><th>2PC</th><th>3PC</th><th>Saga</th></tr>
+      <tr><td>Consistency</td><td>Strong</td><td>Strong</td><td>Eventual</td></tr>
+      <tr><td>Blocking</td><td>Yes — on coordinator crash</td><td>No — non-blocking</td><td>No — async events</td></tr>
+      <tr><td>Complexity</td><td>Medium</td><td>High</td><td>Medium (compensations)</td></tr>
+      <tr><td>Scalability</td><td>Low — locks held</td><td>Low — network assumptions</td><td>High — event-driven</td></tr>
+      <tr><td>Used in practice</td><td>Databases, banking</td><td>Rarely</td><td>Most microservices</td></tr>
+    </table>
+
+    <div class="section-title">When to use what</div>
+    <div class="grid-3">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Use 2PC when</div>
+        <div class="box-sub">Strong consistency is non-negotiable. Small number of services. Short transactions.</div>
+        <div style="margin-top:8px"><span class="tag tag-blue">Bank transfers</span><span class="tag tag-blue">Financial systems</span></div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#854F0B">Use 3PC when</div>
+        <div class="box-sub">Non-blocking protocol needed and you can't use Saga. Theoretical — rare in production.</div>
+        <div style="margin-top:8px"><span class="tag tag-amber">Interview knowledge only</span></div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Use Saga when</div>
+        <div class="box-sub">Microservices architecture. Long-running workflows. Event-driven systems. Eventual consistency acceptable.</div>
+        <div style="margin-top:8px"><span class="tag tag-teal">E-commerce checkout</span><span class="tag tag-teal">Travel booking</span><span class="tag tag-teal">Food delivery</span></div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Final intuition:</strong> 2PC → strong consistency, blocking risk. 3PC → non-blocking improvement, rarely used. Saga → eventual consistency, event-driven, scales with microservices. Real production systems almost always choose Saga for distributed workflows.</div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

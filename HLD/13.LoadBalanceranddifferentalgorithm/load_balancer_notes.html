@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>13.Loadbalanceranddifferentalgorithm - HLD Note</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --color-background-primary: #0f172a;
+            --color-background-secondary: #1e293b;
+            --color-text-primary: #f8fafc;
+            --color-text-secondary: #cbd5e1;
+            --color-text-tertiary: #94a3b8;
+            --color-border-primary: #3b82f6;
+            --color-border-secondary: #334155;
+            --color-border-tertiary: #475569;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --color-background-primary: #f8fafc;
+                --color-background-secondary: #ffffff;
+                --color-text-primary: #0f172a;
+                --color-text-secondary: #475569;
+                --color-text-tertiary: #64748b;
+                --color-border-primary: #2563eb;
+                --color-border-secondary: #cbd5e1;
+                --color-border-tertiary: #e2e8f0;
+            }
+        }
+
+        body {
+            font-family: var(--font-sans) !important;
+            background-color: var(--color-background-primary) !important;
+            color: var(--color-text-primary) !important;
+            margin: 0 !important;
+            padding: 2rem 1rem !important;
+            line-height: 1.6 !important;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px !important;
+            margin: 0 auto !important;
+            background: transparent !important;
+        }
+        
+        /* Modern aesthetic enhancements */
+        .box, .card, .sub-panel, .cap-card, .scenario-box, .highlight, .pain, .cure, .insight-box, .path-box, .decision-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+        }
+
+        .box:hover, .cap-card:hover, .scenario-box:hover, .decision-card:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        button, .nav-btn, .sub-btn {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+            touch-action: manipulation;
+        }
+        
+        button:hover, .nav-btn:hover, .sub-btn:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+        }
+
+        .section-title {
+            color: var(--color-border-primary) !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.1em !important;
+        }
+        
+        .box-title, .cap-card-title {
+            font-weight: 600 !important;
+            letter-spacing: -0.01em !important;
+        }
+        
+        .compare-table th {
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            background-color: var(--color-background-secondary) !important;
+        }
+
+        /* Back Button Style */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--color-text-primary);
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            background: var(--color-background-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--color-border-tertiary);
+            transition: all 0.2s;
+            margin-bottom: 2rem;
+        }
+        .back-btn:hover {
+            border-color: var(--color-border-primary);
+            color: var(--color-border-primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem !important;
+            }
+            .grid, .grid-3, .two-col, .path-diagram, .decision-strip {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+            .sub-nav, .nav {
+                justify-content: center !important;
+                gap: 0.5rem !important;
+            }
+            .compare-table {
+                display: block !important;
+                width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            .box, .cap-card, .scenario-box, .decision-card {
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .flow-row, .node-row {
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
+    <a href="../../index.html" class="back-btn">
+        &larr; Back to Index
+    </a>
+</div>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-purple { background: #3C3489; color: #CECBF6; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .pain ul, .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .flow-chain { display: flex; flex-direction: column; gap: 3px; }
+  .flow-node { padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; align-self: flex-start; }
+  .flow-down { font-size: 13px; color: var(--color-text-tertiary); padding-left: 16px; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-purple { background: #EEEDFE; color: #3C3489; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-purple { background: #3C3489; color: #CECBF6; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+  .algo-card { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); margin-bottom: 10px; }
+  .algo-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+  .algo-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; margin-bottom:8px; }
+  .mini-table { font-size: 12px; font-family: var(--font-mono); color: var(--color-text-secondary); line-height: 1.8; }
+  .pro { font-size: 12px; color: #0F6E56; margin-top: 6px; }
+  .con { font-size: 12px; color: #A32D2D; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('types')">L4 vs L7</button>
+    <button class="sub-btn" onclick="show('algorithms')">Algorithms</button>
+    <button class="sub-btn" onclick="show('tradeoffs')">Trade-offs</button>
+    <button class="sub-btn" onclick="show('hld')">HLD draw</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="highlight"><strong>Core idea:</strong> Load balancer = traffic controller. Sits between users and servers, distributes requests so no single server gets overwhelmed. It's the reason large systems stay alive during traffic spikes.</div>
+
+    <div class="section-title">4 disasters without load balancer</div>
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Server overload</div>
+        <ul><li>100,000 users → 1 server</li><li>CPU 100%, memory full</li><li>Server crash → website down</li></ul>
+      </div>
+      <div class="pain">
+        <div class="label">Traffic spike</div>
+        <ul><li>Flipkart Big Billion Day: 500k req/sec</li><li>Single server can't handle</li><li>Sale fails — revenue loss</li></ul>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Uneven server usage</div>
+        <ul><li>3 servers — random routing</li><li>S1: 70k, S2: 10k, S3: 20k</li><li>S1 crashes, others idle</li></ul>
+      </div>
+      <div class="pain">
+        <div class="label">Scaling chaos</div>
+        <ul><li>Add Server4, Server5 manually</li><li>Clients don't know which to use</li><li>No central coordination</li></ul>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Restaurant analogy:</strong> Customers = clients. Tables = servers. Host = load balancer. Customer enters → host assigns the best available table. Host knows which tables are free, which are busy. Exactly load balancing.</div>
+
+    <div class="section-title">How it works</div>
+    <div class="grid">
+      <div class="arch-flow">
+        <div class="flow-chain">
+          <div style="display:flex;gap:6px"><span class="flow-node node-gray" style="font-size:12px">User 1</span><span class="flow-node node-gray" style="font-size:12px">User 2</span><span class="flow-node node-gray" style="font-size:12px">User 3</span></div>
+          <span class="flow-down">↓ all requests</span>
+          <span class="flow-node node-blue">Load Balancer</span>
+          <span class="flow-down">↓ distributes</span>
+          <div style="display:flex;gap:8px"><span class="flow-node node-teal" style="font-size:12px">Server 1</span><span class="flow-node node-teal" style="font-size:12px">Server 2</span><span class="flow-node node-teal" style="font-size:12px">Server 3</span></div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label">Used by</div>
+        <div style="margin-top:6px"><span class="tag tag-blue">Netflix</span><span class="tag tag-blue">Amazon</span><span class="tag tag-blue">Google</span></div>
+        <div style="margin-top:10px;font-size:11px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Tools</div>
+        <div><span class="tag tag-teal">Nginx</span><span class="tag tag-teal">HAProxy</span><span class="tag tag-teal">AWS ELB</span><span class="tag tag-teal">Cloudflare</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- L4 VS L7 -->
+  <div class="sub-panel" id="sub-types">
+    <div class="highlight"><strong>Two types:</strong> L4 works at network layer (IP + port) — fast but dumb. L7 works at application layer (HTTP headers, URL, cookies) — slower but intelligent routing.</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">L4 — Network Layer</div>
+        <div class="box-sub" style="margin-bottom:10px">Sirf IP aur port dekhta hai. Content nahi dekhta. Extremely fast.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.7;margin-bottom:10px">
+          <span style="color:#0F6E56">✔</span> Very fast — no deep inspection<br>
+          <span style="color:#0F6E56">✔</span> Works for any TCP/UDP traffic<br>
+          <span style="color:#A32D2D">✗</span> Can't route based on content<br>
+          <span style="color:#A32D2D">✗</span> No SSL termination
+        </div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Example: AWS Network Load Balancer</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">L7 — Application Layer</div>
+        <div class="box-sub" style="margin-bottom:10px">HTTP headers, URL, cookies, payload padhta hai. Smart routing possible.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:10px">
+          <span class="tag tag-teal" style="font-family:var(--font-mono)">/images → Server1</span><br>
+          <span class="tag tag-teal" style="font-family:var(--font-mono)">/api → Server2</span><br>
+          <span style="color:#0F6E56">✔</span> SSL termination, content routing<br>
+          <span style="color:#A32D2D">✗</span> Slightly more overhead
+        </div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Examples: Nginx, HAProxy, AWS ALB</div>
+      </div>
+    </div>
+    <table class="compare-table">
+      <tr><th>Feature</th><th>L4</th><th>L7</th></tr>
+      <tr><td>Operates at</td><td>Transport (IP, TCP/UDP, Port)</td><td>Application (HTTP, headers, URL)</td></tr>
+      <tr><td>Speed</td><td>Faster</td><td>Slightly slower</td></tr>
+      <tr><td>Content routing</td><td>No</td><td>Yes — URL, header, cookie based</td></tr>
+      <tr><td>SSL termination</td><td>No</td><td>Yes</td></tr>
+      <tr><td>Use case</td><td>Raw TCP throughput</td><td>Web apps, microservices routing</td></tr>
+    </table>
+  </div>
+
+  <!-- ALGORITHMS -->
+  <div class="sub-panel" id="sub-algorithms">
+    <div class="algo-card">
+      <div class="algo-title" style="color:#185FA5">Round Robin</div>
+      <div class="algo-body">Requests sequentially cycle through all servers. Equal distribution regardless of capacity.</div>
+      <div class="mini-table">Req 1 → S1 &nbsp; Req 2 → S2 &nbsp; Req 3 → S1 &nbsp; Req 4 → S2</div>
+      <div class="pro">✔ Simple, equal distribution</div>
+      <div class="con">✗ Ignores server capacity — weak server gets same load as powerful one</div>
+    </div>
+
+    <div class="algo-card">
+      <div class="algo-title" style="color:#0F6E56">Weighted Round Robin</div>
+      <div class="algo-body">Each server gets a weight. Higher weight = more requests. Accounts for different server capacities.</div>
+      <div class="mini-table">S1 weight=3, S2 weight=1<br>Req 1→S1 · Req 2→S1 · Req 3→S1 · Req 4→S2</div>
+      <div class="pro">✔ Powerful servers handle more traffic proportionally</div>
+      <div class="con">✗ Static weights — doesn't adapt to real-time load</div>
+    </div>
+
+    <div class="algo-card">
+      <div class="algo-title" style="color:#854F0B">IP Hash</div>
+      <div class="algo-body">Server chosen based on hash(client IP). Same user always goes to same server — sticky sessions.</div>
+      <div class="mini-table">hash(UserA IP) → S1 (always)<br>hash(UserB IP) → S2 (always)</div>
+      <div class="pro">✔ Session persistence — useful when server holds session state</div>
+      <div class="con">✗ If users behind proxy → all same IP → all traffic hits one server</div>
+    </div>
+
+    <div class="algo-card">
+      <div class="algo-title" style="color:#3C3489">Least Connection</div>
+      <div class="algo-body">New request goes to server with fewest active connections. Dynamic — adapts to real load.</div>
+      <div class="mini-table">S1: 5 conn · S2: 2 conn → new req → S2</div>
+      <div class="pro">✔ Fair under varying request durations</div>
+      <div class="con">✗ Slightly more overhead (must track connections)</div>
+    </div>
+
+    <div class="algo-card">
+      <div class="algo-title" style="color:#185FA5">Weighted Least Connection</div>
+      <div class="algo-body">Formula: active connections ÷ weight. Lower score wins — combines capacity and real-time load.</div>
+      <div class="mini-table">S1: 2 conn / weight 10 = 0.2<br>S2: 1 conn / weight 1 = 1.0 → new req → S1</div>
+      <div class="pro">✔ Best of both — capacity + real-time awareness</div>
+      <div class="con">✗ More complex to configure</div>
+    </div>
+
+    <div class="algo-card">
+      <div class="algo-title" style="color:#0F6E56">Least Response Time</div>
+      <div class="algo-body">Formula: active connections × response time. Picks the fastest server available right now.</div>
+      <div class="mini-table">S1: 3×2ms = 6 · S2: 1×4ms = 4 · S3: 2×0ms = 0 → new req → S3</div>
+      <div class="pro">✔ Optimises for user experience — always picks fastest</div>
+      <div class="con">✗ Requires response time monitoring overhead</div>
+    </div>
+
+    <hr class="divider">
+    <div class="section-title">Quick decision guide</div>
+    <table class="compare-table">
+      <tr><th>Situation</th><th>Best algorithm</th></tr>
+      <tr><td>All servers same capacity, simple setup</td><td><span class="tag tag-blue">Round Robin</span></td></tr>
+      <tr><td>Servers have different capacities</td><td><span class="tag tag-teal">Weighted Round Robin</span></td></tr>
+      <tr><td>Session state stored on server</td><td><span class="tag tag-amber">IP Hash</span></td></tr>
+      <tr><td>Requests have varying durations</td><td><span class="tag tag-purple">Least Connection</span></td></tr>
+      <tr><td>Different capacities + varying load</td><td><span class="tag tag-green">Weighted Least Connection</span></td></tr>
+      <tr><td>Minimise user latency above all</td><td><span class="tag tag-teal">Least Response Time</span></td></tr>
+    </table>
+  </div>
+
+  <!-- TRADEOFFS -->
+  <div class="sub-panel" id="sub-tradeoffs">
+    <div class="section-title">What-if sandbox</div>
+    <div class="grid-3">
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Load balancer remove kar diya</div>
+        <div class="box-sub">All users hit one server. CPU 100%, memory full, crash. No fault tolerance, no scaling. Back to disaster 1.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Round robin with unequal servers</div>
+        <div class="box-sub">S1 powerful, S2 weak — both get same traffic. S2 crashes under load S1 could easily handle. Fix: use Weighted Round Robin.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">IP Hash with proxy users</div>
+        <div class="box-sub">All users behind corporate proxy → same IP. All traffic → one server → overload. IP Hash breaks. Fix: use Least Connection instead.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="highlight"><strong>Load balancer itself — single point of failure?</strong> Yes! Isi liye production me 2 load balancers hote hain — Active + Passive (or Active + Active). Agar primary LB crash kare, secondary le leta hai.</div>
+    <table class="compare-table">
+      <tr><th>Pain without LB</th><th>Cure with LB</th></tr>
+      <tr><td>Uneven traffic → some servers overloaded</td><td>Algorithm ensures balanced distribution</td></tr>
+      <tr><td>Single server crash = full outage</td><td>LB routes to healthy servers automatically</td></tr>
+      <tr><td>Can't scale — clients don't know new servers</td><td>Add server to pool — LB handles routing</td></tr>
+      <tr><td>Traffic spike crashes system</td><td>LB spreads load, system survives</td></tr>
+    </table>
+  </div>
+
+  <!-- HLD DRAW -->
+  <div class="sub-panel" id="sub-hld">
+    <div class="highlight"><strong>Interview me ye draw karo.</strong> Load balancer between users and app servers. DB behind servers. Add second LB for HA.</div>
+
+    <div class="arch-flow" style="max-width:380px;margin:0 auto 16px">
+      <div class="flow-chain">
+        <div style="display:flex;gap:8px"><span class="flow-node node-gray" style="font-size:12px">User 1</span><span class="flow-node node-gray" style="font-size:12px">User 2</span><span class="flow-node node-gray" style="font-size:12px">User N</span></div>
+        <span class="flow-down">↓</span>
+        <div style="display:flex;gap:8px">
+          <span class="flow-node node-blue">Load Balancer (Primary)</span>
+        </div>
+        <div style="font-size:11px;color:var(--color-text-tertiary);padding-left:16px;margin-bottom:2px">↕ heartbeat</div>
+        <span class="flow-node node-gray" style="font-size:12px">Load Balancer (Standby)</span>
+        <span class="flow-down" style="margin-top:4px">↓ distributes</span>
+        <div style="display:flex;gap:8px">
+          <span class="flow-node node-teal" style="font-size:12px">Server 1</span>
+          <span class="flow-node node-teal" style="font-size:12px">Server 2</span>
+          <span class="flow-node node-teal" style="font-size:12px">Server 3</span>
+        </div>
+        <span class="flow-down">↓</span>
+        <span class="flow-node node-amber">Database</span>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Layer</th><th>Component</th><th>What it does</th></tr>
+      <tr><td>Users</td><td>Clients</td><td>Send requests</td></tr>
+      <tr><td>Primary LB</td><td>Nginx / AWS ELB</td><td>Distributes traffic using chosen algorithm</td></tr>
+      <tr><td>Standby LB</td><td>Same tool</td><td>Takes over if primary fails — removes LB as SPOF</td></tr>
+      <tr><td>App Servers</td><td>Your backend</td><td>Process requests independently</td></tr>
+      <tr><td>Database</td><td>MySQL / Postgres</td><td>Shared persistent storage</td></tr>
+    </table>
+
+    <div class="highlight"><strong>Final intuition:</strong> Without LB → traffic → single server. With LB → traffic → distributed servers. The algorithm decides HOW it's distributed — and that's the part most candidates skip in interviews.</div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

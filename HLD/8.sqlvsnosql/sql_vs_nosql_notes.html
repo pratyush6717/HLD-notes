@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.Sqlvsnosql - HLD Note</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --color-background-primary: #0f172a;
+            --color-background-secondary: #1e293b;
+            --color-text-primary: #f8fafc;
+            --color-text-secondary: #cbd5e1;
+            --color-text-tertiary: #94a3b8;
+            --color-border-primary: #3b82f6;
+            --color-border-secondary: #334155;
+            --color-border-tertiary: #475569;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --color-background-primary: #f8fafc;
+                --color-background-secondary: #ffffff;
+                --color-text-primary: #0f172a;
+                --color-text-secondary: #475569;
+                --color-text-tertiary: #64748b;
+                --color-border-primary: #2563eb;
+                --color-border-secondary: #cbd5e1;
+                --color-border-tertiary: #e2e8f0;
+            }
+        }
+
+        body {
+            font-family: var(--font-sans) !important;
+            background-color: var(--color-background-primary) !important;
+            color: var(--color-text-primary) !important;
+            margin: 0 !important;
+            padding: 2rem 1rem !important;
+            line-height: 1.6 !important;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px !important;
+            margin: 0 auto !important;
+            background: transparent !important;
+        }
+        
+        /* Modern aesthetic enhancements */
+        .box, .card, .sub-panel, .cap-card, .scenario-box, .highlight, .pain, .cure, .insight-box, .path-box, .decision-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+        }
+
+        .box:hover, .cap-card:hover, .scenario-box:hover, .decision-card:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        button, .nav-btn, .sub-btn {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+            touch-action: manipulation;
+        }
+        
+        button:hover, .nav-btn:hover, .sub-btn:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+        }
+
+        .section-title {
+            color: var(--color-border-primary) !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.1em !important;
+        }
+        
+        .box-title, .cap-card-title {
+            font-weight: 600 !important;
+            letter-spacing: -0.01em !important;
+        }
+        
+        .compare-table th {
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            background-color: var(--color-background-secondary) !important;
+        }
+
+        /* Back Button Style */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--color-text-primary);
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            background: var(--color-background-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--color-border-tertiary);
+            transition: all 0.2s;
+            margin-bottom: 2rem;
+        }
+        .back-btn:hover {
+            border-color: var(--color-border-primary);
+            color: var(--color-border-primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem !important;
+            }
+            .grid, .grid-3, .two-col, .path-diagram, .decision-strip {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+            .sub-nav, .nav {
+                justify-content: center !important;
+                gap: 0.5rem !important;
+            }
+            .compare-table {
+                display: block !important;
+                width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            .box, .cap-card, .scenario-box, .decision-card {
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .flow-row, .node-row {
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
+    <a href="../../index.html" class="back-btn">
+        &larr; Back to Index
+    </a>
+</div>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .box ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.8; margin-top: 6px; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-coral { background: #FAECE7; color: #712B13; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-purple { background: #3C3489; color: #CECBF6; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-coral { background: #712B13; color: #F5C4B3; }
+  }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .pain ul, .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 12px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.8; margin-bottom: 12px; }
+  .decision-step { display: flex; gap: 12px; align-items: flex-start; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); margin-bottom: 8px; }
+  .decision-q { font-size: 13px; color: var(--color-text-secondary); flex: 1; }
+  .decision-q strong { color: var(--color-text-primary); font-weight: 500; display: block; margin-bottom: 2px; }
+  .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; white-space: nowrap; }
+  .badge-sql { background: #E6F1FB; color: #0C447C; }
+  .badge-nosql { background: #E1F5EE; color: #085041; }
+  @media (prefers-color-scheme: dark) {
+    .badge-sql { background: #0C447C; color: #B5D4F4; }
+    .badge-nosql { background: #085041; color: #9FE1CB; }
+  }
+  .data-row { display: flex; align-items: center; gap: 0; margin-bottom: 2px; }
+  .cell { padding: 5px 10px; font-size: 12px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); color: var(--color-text-primary); }
+  .cell-head { background: var(--color-background-primary); font-weight: 500; color: var(--color-text-secondary); font-size: 11px; }
+  .cell:first-child { border-radius: 4px 0 0 4px; }
+  .cell:last-child { border-radius: 0 4px 4px 0; }
+  .cell + .cell { border-left: none; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('sql')">SQL deep dive</button>
+    <button class="sub-btn" onclick="show('nosql')">NoSQL deep dive</button>
+    <button class="sub-btn" onclick="show('tradeoffs')">Trade-offs</button>
+    <button class="sub-btn" onclick="show('interview')">Interview answer</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="highlight"><strong>The core question:</strong> Does your system need correctness above all else (SQL), or massive scale with flexible data (NoSQL)? Both are right — for different problems.</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">SQL — structured, consistent</div>
+        <div class="box-sub" style="margin-bottom:10px">Tables → Rows → Columns. Fixed schema. Relations. ACID transactions.</div>
+        <div><span class="tag tag-blue">MySQL</span><span class="tag tag-blue">PostgreSQL</span><span class="tag tag-blue">Oracle</span></div>
+        <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">Analogy: Bank locker — fixed structure, every transaction secure</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">NoSQL — flexible, scalable</div>
+        <div class="box-sub" style="margin-bottom:10px">JSON / Key-value / Graph / Column. Flexible schema. Horizontal scale. High availability.</div>
+        <div><span class="tag tag-teal">MongoDB</span><span class="tag tag-teal">DynamoDB</span><span class="tag tag-teal">Cassandra</span><span class="tag tag-teal">Redis</span></div>
+        <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">Analogy: Google Drive — any file, any structure, no rules</div>
+      </div>
+    </div>
+    <table class="compare-table">
+      <tr><th>Feature</th><th>SQL</th><th>NoSQL</th></tr>
+      <tr><td>Schema</td><td>Fixed — must define upfront</td><td>Flexible — each record can differ</td></tr>
+      <tr><td>Structure</td><td>Tables with rows and columns</td><td>JSON, key-value, column, graph</td></tr>
+      <tr><td>Scaling</td><td>Vertical (bigger machine)</td><td>Horizontal (more machines)</td></tr>
+      <tr><td>Consistency</td><td>Strong — ACID guaranteed</td><td>Eventual — BASE model</td></tr>
+      <tr><td>Queries</td><td>Complex JOINs supported</td><td>Simple queries, no JOINs</td></tr>
+      <tr><td>Best for</td><td>Banking, payments, ERP</td><td>Social media, analytics, caching</td></tr>
+    </table>
+  </div>
+
+  <!-- SQL DEEP DIVE -->
+  <div class="sub-panel" id="sub-sql">
+    <div class="highlight"><strong>The banking nightmare:</strong> User A transfers ₹5000 to B. DB deducts from A but crashes before crediting B. Money lost. SQL's ACID transactions prevent exactly this.</div>
+
+    <div class="section-title">What ACID means</div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">A — Atomicity</div>
+        <div class="box-sub">All steps of a transaction succeed, or none do. No partial updates. Either A loses ₹5000 AND B gains ₹5000, or neither happens.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">C — Consistency</div>
+        <div class="box-sub">DB moves from one valid state to another. Total money before = total money after. Rules can never be violated.</div>
+      </div>
+    </div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">I — Isolation</div>
+        <div class="box-sub">Concurrent transactions don't interfere. Two users withdrawing simultaneously still see correct balances.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">D — Durability</div>
+        <div class="box-sub">Once committed, data survives crashes. Even if server dies after confirming, the transaction is not lost.</div>
+      </div>
+    </div>
+
+    <div class="section-title">How SQL data looks</div>
+    <div style="margin-bottom:16px;overflow-x:auto">
+      <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">Users table</div>
+      <div class="data-row">
+        <span class="cell cell-head" style="width:50px">id</span>
+        <span class="cell cell-head" style="width:80px">name</span>
+        <span class="cell cell-head" style="width:80px">city</span>
+        <span class="cell cell-head" style="width:100px">balance</span>
+      </div>
+      <div class="data-row">
+        <span class="cell" style="width:50px">1</span>
+        <span class="cell" style="width:80px">PK</span>
+        <span class="cell" style="width:80px">Pune</span>
+        <span class="cell" style="width:100px">10,000</span>
+      </div>
+      <div class="data-row">
+        <span class="cell" style="width:50px">2</span>
+        <span class="cell" style="width:80px">Rahul</span>
+        <span class="cell" style="width:80px">Delhi</span>
+        <span class="cell" style="width:100px">5,000</span>
+      </div>
+    </div>
+    <div class="highlight"><strong>Fixed schema:</strong> Every row must have the same columns. Can't store "hobbies" as an array. Strong structure = strong guarantees.</div>
+    <div class="section-title">Use SQL when</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
+      <span class="tag tag-blue">Banking</span>
+      <span class="tag tag-blue">Payments</span>
+      <span class="tag tag-blue">Order systems</span>
+      <span class="tag tag-blue">Inventory</span>
+      <span class="tag tag-blue">Accounting / ERP</span>
+      <span class="tag tag-blue">Any relational data</span>
+    </div>
+  </div>
+
+  <!-- NOSQL DEEP DIVE -->
+  <div class="sub-panel" id="sub-nosql">
+    <div class="highlight"><strong>The social media scale problem:</strong> Facebook has billions of posts. SQL JOINs across billions of rows = painfully slow. NoSQL stores data denormalized — reads are instant, no JOINs needed.</div>
+
+    <div class="section-title">How NoSQL data looks (MongoDB)</div>
+    <div class="code-block">
+{
+  "id": 1,
+  "name": "PK",
+  "city": "Pune",
+  "hobbies": ["cricket", "music"]  ← array, fine!
+}
+
+{
+  "id": 2,
+  "name": "Rahul"
+  ← no "city" or "hobbies", also fine!
+}
+    </div>
+    <div class="highlight"><strong>Flexible schema:</strong> Each document can have different fields. New fields can be added without migrating the whole DB. Perfect when data shape changes often.</div>
+
+    <div class="section-title">4 types of NoSQL</div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Document store</div>
+        <div class="box-sub">JSON-like documents. Best for flexible, hierarchical data.</div>
+        <div style="margin-top:8px"><span class="tag tag-teal">MongoDB</span><span class="tag tag-teal">CouchDB</span></div>
+        <div style="margin-top:6px;font-size:12px;color:var(--color-text-tertiary)">Use: User profiles, product catalogs</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Key-value store</div>
+        <div class="box-sub">Simplest NoSQL. key → value. Extremely fast lookups.</div>
+        <div style="margin-top:8px"><span class="tag tag-teal">Redis</span><span class="tag tag-teal">DynamoDB</span></div>
+        <div style="margin-top:6px;font-size:12px;color:var(--color-text-tertiary)">Use: Sessions, caching, leaderboards</div>
+      </div>
+    </div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Wide column store</div>
+        <div class="box-sub">Rows with dynamic columns. Optimised for write-heavy workloads at massive scale.</div>
+        <div style="margin-top:8px"><span class="tag tag-teal">Cassandra</span><span class="tag tag-teal">HBase</span></div>
+        <div style="margin-top:6px;font-size:12px;color:var(--color-text-tertiary)">Use: Time-series, analytics, IoT</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Graph DB</div>
+        <div class="box-sub">Nodes and edges. Best for relationships between entities.</div>
+        <div style="margin-top:8px"><span class="tag tag-teal">Neo4j</span><span class="tag tag-teal">Amazon Neptune</span></div>
+        <div style="margin-top:6px;font-size:12px;color:var(--color-text-tertiary)">Use: Social graphs, recommendations</div>
+      </div>
+    </div>
+    <div class="section-title">Use NoSQL when</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
+      <span class="tag tag-teal">Social media feeds</span>
+      <span class="tag tag-teal">User sessions</span>
+      <span class="tag tag-teal">Logs</span>
+      <span class="tag tag-teal">Caching</span>
+      <span class="tag tag-teal">Analytics</span>
+      <span class="tag tag-teal">Netflix history</span>
+      <span class="tag tag-teal">Twitter timeline</span>
+    </div>
+  </div>
+
+  <!-- TRADE-OFFS -->
+  <div class="sub-panel" id="sub-tradeoffs">
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Banking me NoSQL use kiya</div>
+        <ul>
+          <li>Eventual consistency → temporary wrong balances</li>
+          <li>No transaction guarantee</li>
+          <li>A debited, B credit fail → money lost</li>
+          <li>Financial disaster</li>
+        </ul>
+      </div>
+      <div class="pain">
+        <div class="label">Social media me SQL use kiya</div>
+        <ul>
+          <li>Billion rows → massive JOINs</li>
+          <li>Vertical scaling hits hardware ceiling</li>
+          <li>Schema changes need full migration</li>
+          <li>Facebook-scale almost impossible</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pain">
+      <div class="label">MongoDB me JOINs chahiye</div>
+      <ul>
+        <li>Possible via $lookup but very slow</li>
+        <li>Not what MongoDB is designed for</li>
+        <li>If you need JOINs regularly → use SQL</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+    <div class="section-title">When to use both (Polyglot persistence)</div>
+    <div class="highlight"><strong>Real production systems often use both.</strong> Uber uses MySQL for payments (SQL) and Cassandra for trip history (NoSQL). Instagram uses PostgreSQL for user data (SQL) and Redis for caching (NoSQL). Choosing the right DB per use case is the skill.</div>
+    <table class="compare-table">
+      <tr><th>System</th><th>Component</th><th>DB choice</th><th>Why</th></tr>
+      <tr><td>Uber</td><td>Payments</td><td><span class="tag tag-blue">MySQL</span></td><td>ACID transactions required</td></tr>
+      <tr><td>Uber</td><td>Trip history</td><td><span class="tag tag-teal">Cassandra</span></td><td>Huge write volume, time-series</td></tr>
+      <tr><td>Instagram</td><td>User profiles</td><td><span class="tag tag-blue">PostgreSQL</span></td><td>Relational data, consistency</td></tr>
+      <tr><td>Instagram</td><td>Feed cache</td><td><span class="tag tag-teal">Redis</span></td><td>Sub-millisecond reads</td></tr>
+      <tr><td>Twitter</td><td>Tweets</td><td><span class="tag tag-teal">Manhattan (NoSQL)</span></td><td>Scale, flexible schema</td></tr>
+    </table>
+  </div>
+
+  <!-- INTERVIEW ANSWER -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box"><strong>One-line answer:</strong> SQL provides strong consistency and ACID transactions for relational data. NoSQL provides flexible schema, horizontal scalability, and high availability for large distributed systems.</div>
+
+    <div class="section-title">Decision tree — 4 questions</div>
+    <div class="decision-step">
+      <div class="decision-q"><strong>1. Is data relational?</strong> Tables that JOIN with each other?</div>
+      <span class="badge badge-sql">YES → SQL</span>
+    </div>
+    <div class="decision-step">
+      <div class="decision-q"><strong>2. Need strong consistency?</strong> Banking, payments, inventory?</div>
+      <span class="badge badge-sql">YES → SQL</span>
+    </div>
+    <div class="decision-step">
+      <div class="decision-q"><strong>3. Massive scale?</strong> Billions of records, huge write throughput?</div>
+      <span class="badge badge-nosql">YES → NoSQL</span>
+    </div>
+    <div class="decision-step">
+      <div class="decision-q"><strong>4. Schema changes frequently?</strong> Flexible or evolving data structure?</div>
+      <span class="badge badge-nosql">YES → NoSQL</span>
+    </div>
+
+    <hr class="divider">
+    <div class="section-title">Real systems quick reference</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">SQL used in</div>
+        <ul>
+          <li>Banking systems</li>
+          <li>Payment gateways</li>
+          <li>ERP / accounting</li>
+          <li>Inventory systems</li>
+          <li>Order management</li>
+        </ul>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">NoSQL used in</div>
+        <ul>
+          <li>Facebook / Instagram feed</li>
+          <li>Twitter timeline</li>
+          <li>Netflix viewing history</li>
+          <li>User sessions / caching</li>
+          <li>Real-time analytics / logs</li>
+        </ul>
+      </div>
+    </div>
+    <div class="highlight"><strong>Pro tip for interviews:</strong> Don't just say SQL or NoSQL — explain WHY. "I'd use PostgreSQL for payments because ACID transactions are non-negotiable, and Cassandra for activity logs because we need horizontal scale and eventual consistency is acceptable."</div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

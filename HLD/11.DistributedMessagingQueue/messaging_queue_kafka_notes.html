@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11.Distributedmessagingqueue - HLD Note</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --color-background-primary: #0f172a;
+            --color-background-secondary: #1e293b;
+            --color-text-primary: #f8fafc;
+            --color-text-secondary: #cbd5e1;
+            --color-text-tertiary: #94a3b8;
+            --color-border-primary: #3b82f6;
+            --color-border-secondary: #334155;
+            --color-border-tertiary: #475569;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --color-background-primary: #f8fafc;
+                --color-background-secondary: #ffffff;
+                --color-text-primary: #0f172a;
+                --color-text-secondary: #475569;
+                --color-text-tertiary: #64748b;
+                --color-border-primary: #2563eb;
+                --color-border-secondary: #cbd5e1;
+                --color-border-tertiary: #e2e8f0;
+            }
+        }
+
+        body {
+            font-family: var(--font-sans) !important;
+            background-color: var(--color-background-primary) !important;
+            color: var(--color-text-primary) !important;
+            margin: 0 !important;
+            padding: 2rem 1rem !important;
+            line-height: 1.6 !important;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px !important;
+            margin: 0 auto !important;
+            background: transparent !important;
+        }
+        
+        /* Modern aesthetic enhancements */
+        .box, .card, .sub-panel, .cap-card, .scenario-box, .highlight, .pain, .cure, .insight-box, .path-box, .decision-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+        }
+
+        .box:hover, .cap-card:hover, .scenario-box:hover, .decision-card:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        button, .nav-btn, .sub-btn {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+            touch-action: manipulation;
+        }
+        
+        button:hover, .nav-btn:hover, .sub-btn:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+        }
+
+        .section-title {
+            color: var(--color-border-primary) !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.1em !important;
+        }
+        
+        .box-title, .cap-card-title {
+            font-weight: 600 !important;
+            letter-spacing: -0.01em !important;
+        }
+        
+        .compare-table th {
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            background-color: var(--color-background-secondary) !important;
+        }
+
+        /* Back Button Style */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--color-text-primary);
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            background: var(--color-background-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--color-border-tertiary);
+            transition: all 0.2s;
+            margin-bottom: 2rem;
+        }
+        .back-btn:hover {
+            border-color: var(--color-border-primary);
+            color: var(--color-border-primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem !important;
+            }
+            .grid, .grid-3, .two-col, .path-diagram, .decision-strip {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+            .sub-nav, .nav {
+                justify-content: center !important;
+                gap: 0.5rem !important;
+            }
+            .compare-table {
+                display: block !important;
+                width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            .box, .cap-card, .scenario-box, .decision-card {
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .flow-row, .node-row {
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
+    <a href="../../index.html" class="back-btn">
+        &larr; Back to Index
+    </a>
+</div>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .box ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.8; margin-top: 6px; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-coral { background: #FAECE7; color: #712B13; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-purple { background: #3C3489; color: #CECBF6; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-coral { background: #712B13; color: #F5C4B3; }
+  }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .pain ul, .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 12px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.8; margin-bottom: 12px; }
+  .flow-chain { display: flex; flex-direction: column; gap: 3px; }
+  .flow-node { padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; align-self: flex-start; }
+  .flow-down { font-size: 13px; color: var(--color-text-tertiary); padding-left: 16px; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-purple { background: #EEEDFE; color: #3C3489; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-purple { background: #3C3489; color: #CECBF6; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+  .concept-card { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); margin-bottom: 10px; }
+  .concept-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+  .concept-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .mini-chain { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top:6px; }
+  .mini-node { padding: 3px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('problems')">4 problems solved</button>
+    <button class="sub-btn" onclick="show('kafka-concepts')">Kafka internals</button>
+    <button class="sub-btn" onclick="show('kafka-vs-rabbit')">Kafka vs RabbitMQ</button>
+    <button class="sub-btn" onclick="show('tradeoffs')">Trade-offs</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="highlight"><strong>The aha moment:</strong> Queue is not about messaging — it's about decoupling systems. It solves latency, scaling, retry, and failure isolation. That's why almost every large system uses Kafka.</div>
+
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Without queue — direct calls</div>
+        <div class="flow-chain" style="margin-top:8px">
+          <span class="flow-node node-gray">Order Service</span>
+          <span class="flow-down">↓ waits 200ms</span>
+          <span class="flow-node node-red">Email Service</span>
+          <span class="flow-down">↓ waits 300ms</span>
+          <span class="flow-node node-red">Inventory Service</span>
+          <span class="flow-down">↓ waits 400ms</span>
+          <span class="flow-node node-red">Notification Service</span>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:#A32D2D">Total latency: 900ms+ per order. One service down = order fails.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">With queue — async</div>
+        <div class="flow-chain" style="margin-top:8px">
+          <span class="flow-node node-gray">Order Service</span>
+          <span class="flow-down">↓ publishes message (~5ms)</span>
+          <span class="flow-node node-amber">Kafka Queue</span>
+          <span class="flow-down">↓ consumers read at own pace</span>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="flow-node node-teal" style="font-size:12px">Email</span>
+            <span class="flow-node node-teal" style="font-size:12px">Inventory</span>
+            <span class="flow-node node-teal" style="font-size:12px">Analytics</span>
+          </div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:#0F6E56">User gets response instantly. Services decouple. One down = message waits in queue.</div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Restaurant analogy:</strong> Old system = Customer → Chef directly (chef busy = delay). New system = Customer → Order Slip Board → Chef (chef picks up orders at own pace, no orders lost, no chaos). Kafka = the order board.</div>
+
+    <div class="section-title">Used by</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <span class="tag tag-blue">Netflix</span><span class="tag tag-blue">Uber</span><span class="tag tag-blue">LinkedIn</span><span class="tag tag-blue">Airbnb</span>
+    </div>
+  </div>
+
+  <!-- 4 PROBLEMS -->
+  <div class="sub-panel" id="sub-problems">
+    <div class="highlight"><strong>E-commerce order flow:</strong> User places order → system must send email, update inventory, generate invoice, send notification, update analytics. Direct calls fail in 4 ways.</div>
+
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Problem 1 — Slow system</div>
+        <ul>
+          <li>Order service waits for each service response</li>
+          <li>Email: 200ms + Inventory: 300ms + Notification: 400ms</li>
+          <li>Total: 900ms+ per order</li>
+          <li>User waits → bad UX</li>
+        </ul>
+        <div style="margin-top:8px;font-size:12px;color:#0F6E56">Queue fix: Order publishes message → returns immediately (~5ms)</div>
+      </div>
+      <div class="pain">
+        <div class="label">Problem 2 — Service down</div>
+        <ul>
+          <li>Email service crashes</li>
+          <li>Order → Email ❌ → entire order fails</li>
+          <li>User's order never placed</li>
+          <li>Failure propagates upstream</li>
+        </ul>
+        <div style="margin-top:8px;font-size:12px;color:#0F6E56">Queue fix: Message waits in queue. Email service recovers → processes it. Order never fails.</div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Problem 3 — Traffic burst</div>
+        <ul>
+          <li>10,000 orders/sec during sale</li>
+          <li>Notification service handles only 2,000/sec</li>
+          <li>System crashes under load</li>
+        </ul>
+        <div style="margin-top:8px;font-size:12px;color:#0F6E56">Queue fix: Queue absorbs the burst. Consumer processes at its pace. Producer and consumer decouple.</div>
+      </div>
+      <div class="pain">
+        <div class="label">Problem 4 — Tight coupling</div>
+        <ul>
+          <li>Order service directly depends on Email, Inventory, Notification, Analytics</li>
+          <li>Notification service changes → Order service must also change</li>
+          <li>System becomes fragile</li>
+        </ul>
+        <div style="margin-top:8px;font-size:12px;color:#0F6E56">Queue fix: Order service only knows the queue — not who's consuming. Add/remove consumers freely.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KAFKA INTERNALS -->
+  <div class="sub-panel" id="sub-kafka-concepts">
+    <div class="highlight"><strong>Kafka ke 4 core concepts:</strong> Topic → Partition → Offset → Consumer Group. In charon ko samajh lo — Kafka interviews handle ho jaayenge.</div>
+
+    <div class="concept-card">
+      <div class="concept-title" style="color:#185FA5">Topic — message ka category</div>
+      <div class="concept-body" style="margin-bottom:8px">Har event type ka apna topic. Producers publish karte hain, consumers subscribe karte hain.</div>
+      <div class="mini-chain">
+        <span class="mini-node node-blue">order_events</span>
+        <span class="mini-node node-blue">payment_events</span>
+        <span class="mini-node node-blue">inventory_events</span>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-title" style="color:#0F6E56">Partition — parallel processing ke liye</div>
+      <div class="concept-body" style="margin-bottom:8px">Ek topic ko multiple partitions me split karo. Alag-alag consumers parallel me read kar sakte hain — throughput badhta hai.</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span class="mini-node node-teal">Partition 0</span>
+        <span class="mini-node node-teal">Partition 1</span>
+        <span class="mini-node node-teal">Partition 2</span>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-title" style="color:#854F0B">Offset — message ka index</div>
+      <div class="concept-body" style="margin-bottom:8px">Har message ka ek offset number hota hai. Consumer track karta hai: "maine last offset 47 tak padha." Crash ke baad bhi wahi se start ho sakta hai.</div>
+      <div style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:12px;color:var(--color-text-secondary)">
+        <span class="mini-node node-amber">offset 0</span>
+        <span style="color:var(--color-text-tertiary)">→</span>
+        <span class="mini-node node-amber">offset 1</span>
+        <span style="color:var(--color-text-tertiary)">→</span>
+        <span class="mini-node node-amber">offset 2</span>
+        <span style="color:var(--color-text-tertiary)">→ ...</span>
+      </div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-title" style="color:#3C3489">Consumer Group — load balancing consumers</div>
+      <div class="concept-body" style="margin-bottom:8px">Multiple consumers ek group banate hain. Har partition sirf ek consumer read karta hai at a time. Scale out karo — naye consumers add karo group me.</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:4px">Group A</div>
+          <div style="display:flex;gap:6px"><span class="mini-node node-purple">Consumer 1</span><span class="mini-node node-purple">Consumer 2</span></div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:4px">Group B</div>
+          <div style="display:flex;gap:6px"><span class="mini-node node-purple">Consumer 3</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Full Kafka data flow</div>
+    <div class="flow-chain" style="background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);border-radius:10px;padding:14px">
+      <span class="flow-node node-gray">Producer (Order Service)</span>
+      <span class="flow-down">↓ publishes to</span>
+      <span class="flow-node node-amber">Kafka Broker / Cluster</span>
+      <span class="flow-down">↓ message stored in</span>
+      <span class="flow-node node-blue">Topic: order_events</span>
+      <span class="flow-down">↓ split across</span>
+      <div style="display:flex;gap:8px"><span class="flow-node node-teal">Partition 0</span><span class="flow-node node-teal">Partition 1</span><span class="flow-node node-teal">Partition 2</span></div>
+      <span class="flow-down">↓ read by consumer group</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="flow-node node-green">Email Consumer</span><span class="flow-node node-green">Inventory Consumer</span><span class="flow-node node-green">Analytics Consumer</span></div>
+    </div>
+  </div>
+
+  <!-- KAFKA VS RABBITMQ -->
+  <div class="sub-panel" id="sub-kafka-vs-rabbit">
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Kafka</div>
+        <div class="box-sub" style="margin-bottom:10px">Pull-based. Consumers decide when to read. Messages retained on disk for replay.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.7;margin-bottom:8px">
+          <span style="color:#0F6E56">✔</span> Extremely high throughput (millions/sec)<br>
+          <span style="color:#0F6E56">✔</span> Message replay — consumers can re-read old messages<br>
+          <span style="color:#0F6E56">✔</span> Perfect for streaming and big data<br>
+          <span style="color:#A32D2D">✗</span> Complex setup and operations<br>
+          <span style="color:#A32D2D">✗</span> Not designed for complex routing logic
+        </div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Used by: Uber location streams, Netflix logs, LinkedIn activity</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#3B6D11">RabbitMQ</div>
+        <div class="box-sub" style="margin-bottom:10px">Push-based. Broker pushes messages to consumers. Message deleted after consumption.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.7;margin-bottom:8px">
+          <span style="color:#0F6E56">✔</span> Complex routing — fanout, direct, topic exchanges<br>
+          <span style="color:#0F6E56">✔</span> Lightweight, simpler to set up<br>
+          <span style="color:#0F6E56">✔</span> Good for task queues and job processing<br>
+          <span style="color:#A32D2D">✗</span> Lower throughput than Kafka<br>
+          <span style="color:#A32D2D">✗</span> No message replay after consumption
+        </div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Used by: Microservice task queues, email job queues</div>
+      </div>
+    </div>
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Kafka</th><th>RabbitMQ</th></tr>
+      <tr><td>Model</td><td>Pull-based (consumer reads)</td><td>Push-based (broker sends)</td></tr>
+      <tr><td>Throughput</td><td>Very high (millions/sec)</td><td>Moderate</td></tr>
+      <tr><td>Message replay</td><td>Yes — messages stored on disk</td><td>No — deleted after ack</td></tr>
+      <tr><td>Routing</td><td>Simple (topic + partition)</td><td>Complex (exchanges, bindings)</td></tr>
+      <tr><td>Best for</td><td>Streaming, big data, event log</td><td>Task queues, microservice jobs</td></tr>
+    </table>
+    <div class="highlight"><strong>Simple decision rule:</strong> High volume event streaming + replay needed → Kafka. Complex routing + lightweight task queues → RabbitMQ.</div>
+  </div>
+
+  <!-- TRADEOFFS -->
+  <div class="sub-panel" id="sub-tradeoffs">
+    <div class="insight-box"><strong>Queue is not about messaging. It's about decoupling systems.</strong> Latency + Scaling + Retry + Failure isolation — ye char problems queue solve karta hai.</div>
+
+    <div class="section-title">What-if sandbox</div>
+    <div class="grid-3">
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Queue remove kar diya</div>
+        <div class="box-sub">Direct calls return karengi. High latency, tight coupling, failures propagate. System fragile ho jaata hai. Back to square one.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Queue full ho gayi</div>
+        <div class="box-sub">Options: reject producer, drop messages, or scale brokers. Kafka typically scales horizontally by adding more brokers.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#854F0B">Consumer slow hai</div>
+        <div class="box-sub">Producer: 10k/sec. Consumer: 2k/sec. Lag builds up. Monitor with consumer lag metric. Fix: add more consumers to the group.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="section-title">4 benefits — quick reference</div>
+    <table class="compare-table">
+      <tr><th>Benefit</th><th>What it means</th><th>Example</th></tr>
+      <tr><td><span class="tag tag-teal">Async</span></td><td>User nahi rukta</td><td>Order place → instant response. Email sends later.</td></tr>
+      <tr><td><span class="tag tag-blue">Retry</span></td><td>Consumer down = message waits</td><td>Email service crashes → message stays in queue → processes on recovery</td></tr>
+      <tr><td><span class="tag tag-purple">Load buffering</span></td><td>Queue absorbs traffic bursts</td><td>10k orders/sec → queue stores → consumer reads at 2k/sec</td></tr>
+      <tr><td><span class="tag tag-amber">Loose coupling</span></td><td>Producer doesn't know consumers</td><td>Add new Analytics service → no change in Order service</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

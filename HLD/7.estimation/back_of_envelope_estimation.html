@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.Estimation - HLD Note</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --color-background-primary: #0f172a;
+            --color-background-secondary: #1e293b;
+            --color-text-primary: #f8fafc;
+            --color-text-secondary: #cbd5e1;
+            --color-text-tertiary: #94a3b8;
+            --color-border-primary: #3b82f6;
+            --color-border-secondary: #334155;
+            --color-border-tertiary: #475569;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --color-background-primary: #f8fafc;
+                --color-background-secondary: #ffffff;
+                --color-text-primary: #0f172a;
+                --color-text-secondary: #475569;
+                --color-text-tertiary: #64748b;
+                --color-border-primary: #2563eb;
+                --color-border-secondary: #cbd5e1;
+                --color-border-tertiary: #e2e8f0;
+            }
+        }
+
+        body {
+            font-family: var(--font-sans) !important;
+            background-color: var(--color-background-primary) !important;
+            color: var(--color-text-primary) !important;
+            margin: 0 !important;
+            padding: 2rem 1rem !important;
+            line-height: 1.6 !important;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px !important;
+            margin: 0 auto !important;
+            background: transparent !important;
+        }
+        
+        /* Modern aesthetic enhancements */
+        .box, .card, .sub-panel, .cap-card, .scenario-box, .highlight, .pain, .cure, .insight-box, .path-box, .decision-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+        }
+
+        .box:hover, .cap-card:hover, .scenario-box:hover, .decision-card:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        button, .nav-btn, .sub-btn {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+            touch-action: manipulation;
+        }
+        
+        button:hover, .nav-btn:hover, .sub-btn:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+        }
+
+        .section-title {
+            color: var(--color-border-primary) !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.1em !important;
+        }
+        
+        .box-title, .cap-card-title {
+            font-weight: 600 !important;
+            letter-spacing: -0.01em !important;
+        }
+        
+        .compare-table th {
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            background-color: var(--color-background-secondary) !important;
+        }
+
+        /* Back Button Style */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--color-text-primary);
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            background: var(--color-background-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--color-border-tertiary);
+            transition: all 0.2s;
+            margin-bottom: 2rem;
+        }
+        .back-btn:hover {
+            border-color: var(--color-border-primary);
+            color: var(--color-border-primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem !important;
+            }
+            .grid, .grid-3, .two-col, .path-diagram, .decision-strip {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+            .sub-nav, .nav {
+                justify-content: center !important;
+                gap: 0.5rem !important;
+            }
+            .compare-table {
+                display: block !important;
+                width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            .box, .cap-card, .scenario-box, .decision-card {
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .flow-row, .node-row {
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
+    <a href="../../index.html" class="back-btn">
+        &larr; Back to Index
+    </a>
+</div>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-purple { background: #3C3489; color: #CECBF6; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+  }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .pain ul, .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .calc-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+  .calc-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 10px; }
+  .calc-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 6px; flex-wrap: wrap; }
+  .calc-op { color: var(--color-text-tertiary); font-size: 16px; min-width: 14px; text-align: center; }
+  .calc-val { font-family: var(--font-mono); font-size: 12px; padding: 2px 8px; border-radius: 4px; background: var(--color-background-primary); border: 1px solid var(--color-border-tertiary); color: var(--color-text-primary); }
+  .calc-result { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--color-border-tertiary); }
+  .result-pill { padding: 4px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; }
+  .pill-blue { background: #E6F1FB; color: #0C447C; }
+  .pill-teal { background: #E1F5EE; color: #085041; }
+  .pill-amber { background: #FAEEDA; color: #633806; }
+  .pill-purple { background: #EEEDFE; color: #3C3489; }
+  @media (prefers-color-scheme: dark) {
+    .pill-blue { background: #0C447C; color: #B5D4F4; }
+    .pill-teal { background: #085041; color: #9FE1CB; }
+    .pill-amber { background: #633806; color: #FAC775; }
+    .pill-purple { background: #3C3489; color: #CECBF6; }
+  }
+
+  /* calculator */
+  .calc-input { width: 80px; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-family: var(--font-mono); font-size: 12px; }
+  .calc-input:focus { outline: none; border-color: var(--color-border-primary); }
+  .calc-run { padding: 6px 14px; border-radius: 6px; border: none; background: var(--color-text-primary); color: var(--color-background-primary); font-size: 12px; font-weight: 500; cursor: pointer; font-family: var(--font-sans); }
+  .output-row { font-size: 13px; color: var(--color-text-secondary); margin-top: 6px; }
+  .output-row strong { color: var(--color-text-primary); font-weight: 500; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('why')">Why estimate?</button>
+    <button class="sub-btn" onclick="show('cheatsheet')">Cheat sheet</button>
+    <button class="sub-btn" onclick="show('traffic')">Traffic (QPS)</button>
+    <button class="sub-btn" onclick="show('storage')">Storage</button>
+    <button class="sub-btn" onclick="show('cache')">Cache / servers</button>
+    <button class="sub-btn" onclick="show('calculator')">Try it yourself</button>
+    <button class="sub-btn" onclick="show('interview')">Interview formula</button>
+  </div>
+
+  <!-- WHY -->
+  <div class="sub-panel active" id="sub-why">
+    <div class="highlight"><strong>System design guessing game nahi hai.</strong> Har decision — load balancer, cache size, server count — numbers se driven hona chahiye. Back of the envelope = rough numbers se system capacity estimate karna.</div>
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Estimation ke bina</div>
+        <ul>
+          <li>Interviewer poochta hai: kitne servers?</li>
+          <li>Tum bolte ho: "scalable design hai"</li>
+          <li>System over-engineered ya under-capacity</li>
+          <li>No numbers = no credibility</li>
+        </ul>
+      </div>
+      <div class="cure">
+        <div class="label">Estimation ke saath</div>
+        <ul>
+          <li>Load balancer → QPS se decide hota hai</li>
+          <li>Cache size → RAM calculation se</li>
+          <li>Storage → data growth se</li>
+          <li>Servers → requests per second se</li>
+        </ul>
+      </div>
+    </div>
+    <div class="highlight"><strong>Rule:</strong> Exact numbers ki zaroorat nahi. Round numbers kaafi hain — 10M, 100M, 1B. Goal rough order of magnitude hai, not precision.</div>
+    <div class="section-title">Restaurant analogy</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Bina estimation ke</div>
+        <div class="box-sub">Kitne chefs? Kitne tables? Kitni food storage? Sab guess hoga. Restaurant ya overbuilt hoga ya customers ko wait karwayega.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Estimation ke saath</div>
+        <div class="box-sub">Customers/day = 1000, meals/customer = 2 → kitchen size, staff, inventory sab calculate ho jaata hai. Same logic software mein.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHEAT SHEET -->
+  <div class="sub-panel" id="sub-cheatsheet">
+    <div class="section-title">Storage units</div>
+    <table class="compare-table">
+      <tr><th>Unit</th><th>Power</th><th>Example</th></tr>
+      <tr><td><span class="tag tag-blue">1 KB</span></td><td>10³ bytes</td><td>Short text message</td></tr>
+      <tr><td><span class="tag tag-teal">1 MB</span></td><td>10⁶ bytes</td><td>Small image / MP3 clip</td></tr>
+      <tr><td><span class="tag tag-amber">1 GB</span></td><td>10⁹ bytes</td><td>Movie file</td></tr>
+      <tr><td><span class="tag tag-purple">1 TB</span></td><td>10¹²bytes</td><td>Large database backup</td></tr>
+      <tr><td><span class="tag tag-green">1 PB</span></td><td>10¹⁵ bytes</td><td>Facebook image store</td></tr>
+    </table>
+    <div class="section-title">Common data size assumptions</div>
+    <table class="compare-table">
+      <tr><th>Data type</th><th>Size assumption</th></tr>
+      <tr><td>1 character</td><td>2 bytes</td></tr>
+      <tr><td>1 image</td><td>~300 KB</td></tr>
+      <tr><td>1 short video</td><td>~5–50 MB</td></tr>
+      <tr><td>1 post (250 chars)</td><td>~500 bytes ≈ 1 KB</td></tr>
+      <tr><td>1 user row (basic)</td><td>~1 KB</td></tr>
+    </table>
+    <div class="section-title">Time shortcuts</div>
+    <table class="compare-table">
+      <tr><th>Period</th><th>Seconds (approx)</th></tr>
+      <tr><td>1 day</td><td>86,400 ≈ 10⁵ seconds</td></tr>
+      <tr><td>1 month</td><td>~2.5M seconds</td></tr>
+      <tr><td>1 year</td><td>~31M seconds ≈ 3 × 10⁷</td></tr>
+      <tr><td>5 years</td><td>~2000 days</td></tr>
+    </table>
+  </div>
+
+  <!-- TRAFFIC -->
+  <div class="sub-panel" id="sub-traffic">
+    <div class="highlight"><strong>Goal:</strong> QPS (Queries Per Second) nikalna. Yahi decide karta hai kitne app servers chahiye aur load balancer ki zaroorat hai ya nahi.</div>
+    <div class="calc-block">
+      <div class="calc-title">Facebook QPS calculation</div>
+      <div class="calc-row"><span style="width:180px;color:var(--color-text-secondary)">Total users</span><span class="calc-val">1 Billion</span></div>
+      <div class="calc-row"><span style="width:180px;color:var(--color-text-secondary)">Daily active users (25%)</span><span class="calc-op">×</span><span class="calc-val">0.25</span><span class="calc-op">=</span><span class="calc-val">250 Million</span></div>
+      <div class="calc-row"><span style="width:180px;color:var(--color-text-secondary)">Queries per user/day</span><span class="calc-val">5 reads + 2 writes = 7</span></div>
+      <div class="calc-row"><span style="width:180px;color:var(--color-text-secondary)">Total queries/day</span><span class="calc-op">=</span><span class="calc-val">250M × 7 = 1.75B</span></div>
+      <div class="calc-row"><span style="width:180px;color:var(--color-text-secondary)">Seconds in a day</span><span class="calc-val">86,400 ≈ 100,000</span></div>
+      <div class="calc-result">
+        <span>QPS</span><span class="calc-op">=</span><span class="calc-val">1.75B / 100,000</span><span class="calc-op">≈</span>
+        <span class="result-pill pill-blue">~18,000 req/sec</span>
+      </div>
+    </div>
+    <table class="compare-table">
+      <tr><th>QPS range</th><th>What it implies</th></tr>
+      <tr><td>&lt; 1,000</td><td>Single app server might work</td></tr>
+      <tr><td>1K – 10K</td><td>Load balancer + few servers needed</td></tr>
+      <tr><td>10K – 100K</td><td>Multiple server clusters, caching critical</td></tr>
+      <tr><td>&gt; 100K</td><td>Multiple data centers, heavy sharding</td></tr>
+    </table>
+  </div>
+
+  <!-- STORAGE -->
+  <div class="sub-panel" id="sub-storage">
+    <div class="highlight"><strong>Goal:</strong> Daily storage growth estimate karna — phir 5-year projection. Yahi decide karta hai storage type (SSD/HDD), sharding ki zaroorat, aur CDN.</div>
+    <div class="calc-block">
+      <div class="calc-title">Post storage per day</div>
+      <div class="calc-row"><span style="width:200px;color:var(--color-text-secondary)">Post size (250 chars)</span><span class="calc-val">250 × 2 bytes = 500 bytes ≈ 1 KB</span></div>
+      <div class="calc-row"><span style="width:200px;color:var(--color-text-secondary)">Posts per user/day</span><span class="calc-val">2</span></div>
+      <div class="calc-row"><span style="width:200px;color:var(--color-text-secondary)">DAU</span><span class="calc-val">250 Million</span></div>
+      <div class="calc-result">
+        <span>Post storage/day</span><span class="calc-op">=</span><span class="calc-val">250M × 1KB</span><span class="calc-op">=</span>
+        <span class="result-pill pill-teal">250 GB/day</span>
+      </div>
+    </div>
+    <div class="calc-block">
+      <div class="calc-title">Image storage per day</div>
+      <div class="calc-row"><span style="width:200px;color:var(--color-text-secondary)">Users uploading images</span><span class="calc-val">10% of 250M = 25M</span></div>
+      <div class="calc-row"><span style="width:200px;color:var(--color-text-secondary)">Image size</span><span class="calc-val">300 KB</span></div>
+      <div class="calc-result">
+        <span>Image storage/day</span><span class="calc-op">=</span><span class="calc-val">25M × 300KB</span><span class="calc-op">=</span>
+        <span class="result-pill pill-amber">~8 TB/day</span>
+      </div>
+    </div>
+    <div class="calc-block">
+      <div class="calc-title">5-year projection</div>
+      <div class="calc-row"><span style="width:200px;color:var(--color-text-secondary)">Days in 5 years</span><span class="calc-val">≈ 2,000 days</span></div>
+      <div class="calc-result" style="flex-wrap:wrap;gap:12px">
+        <span class="result-pill pill-teal">Posts: 2000 × 250GB ≈ 500 TB</span>
+        <span class="result-pill pill-amber">Images: 2000 × 8TB ≈ 16 PB</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CACHE + SERVERS -->
+  <div class="sub-panel" id="sub-cache">
+    <div class="highlight"><strong>Goal:</strong> Cache ke liye kitna RAM chahiye, aur kitne app servers needed hain — in dono ka calculation.</div>
+
+    <div class="calc-block">
+      <div class="calc-title">Cache (RAM) estimation</div>
+      <div class="calc-row"><span style="width:220px;color:var(--color-text-secondary)">Cache last N posts per user</span><span class="calc-val">5 posts</span></div>
+      <div class="calc-row"><span style="width:220px;color:var(--color-text-secondary)">Post size</span><span class="calc-val">500 bytes ≈ 1 KB each → 5 KB total</span></div>
+      <div class="calc-row"><span style="width:220px;color:var(--color-text-secondary)">DAU</span><span class="calc-val">250 Million</span></div>
+      <div class="calc-row"><span style="width:220px;color:var(--color-text-secondary)">Total RAM needed</span><span class="calc-val">250M × 3KB ≈ 750 GB</span></div>
+      <div class="calc-row"><span style="width:220px;color:var(--color-text-secondary)">RAM per cache server</span><span class="calc-val">75 GB</span></div>
+      <div class="calc-result">
+        <span>Cache servers needed</span><span class="calc-op">=</span><span class="calc-val">750 / 75</span><span class="calc-op">=</span>
+        <span class="result-pill pill-purple">10 cache servers</span>
+      </div>
+    </div>
+
+    <div class="calc-block">
+      <div class="calc-title">App servers estimation</div>
+      <div class="calc-row"><span style="width:220px;color:var(--color-text-secondary)">Assumed latency</span><span class="calc-val">500ms → 2 req/sec per thread</span></div>
+      <div class="calc-row"><span style="width:220px;color:var(--color-text-secondary)">Threads per server</span><span class="calc-val">50</span></div>
+      <div class="calc-row"><span style="width:220px;color:var(--color-text-secondary)">Capacity per server</span><span class="calc-val">50 × 2 = 100 req/sec</span></div>
+      <div class="calc-row"><span style="width:220px;color:var(--color-text-secondary)">Total QPS</span><span class="calc-val">18,000 req/sec</span></div>
+      <div class="calc-result">
+        <span>App servers needed</span><span class="calc-op">=</span><span class="calc-val">18,000 / 100</span><span class="calc-op">≈</span>
+        <span class="result-pill pill-blue">~180 servers</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALCULATOR -->
+  <div class="sub-panel" id="sub-calculator">
+    <div class="highlight"><strong>Apna system estimate karo.</strong> Numbers change karo aur dekho QPS, storage, aur servers kaise change hote hain.</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label">Inputs</div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:6px">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-text-secondary)">
+            <span style="width:160px">Total users (M)</span>
+            <input class="calc-input" id="inp-users" value="1000" type="number">
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-text-secondary)">
+            <span style="width:160px">DAU % of total</span>
+            <input class="calc-input" id="inp-dau" value="25" type="number">
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-text-secondary)">
+            <span style="width:160px">Queries / user / day</span>
+            <input class="calc-input" id="inp-qpd" value="7" type="number">
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-text-secondary)">
+            <span style="width:160px">Post size (bytes)</span>
+            <input class="calc-input" id="inp-post" value="500" type="number">
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-text-secondary)">
+            <span style="width:160px">Posts / user / day</span>
+            <input class="calc-input" id="inp-wpd" value="2" type="number">
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-text-secondary)">
+            <span style="width:160px">Server capacity (req/s)</span>
+            <input class="calc-input" id="inp-srvr" value="100" type="number">
+          </div>
+          <button class="calc-run" onclick="runCalc()">Calculate</button>
+        </div>
+      </div>
+      <div class="box" id="calc-output">
+        <div class="box-label">Results</div>
+        <div style="font-size:13px;color:var(--color-text-tertiary);margin-top:8px">Click Calculate to see results</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW FORMULA -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Ye 5 steps bol diye → interviewer sochega: "yeh banda large scale systems samajhta hai."</strong><br><br>
+      Most candidates sirf architecture draw karte hain. Senior engineers numbers bhi bolte hain.
+    </div>
+    <div class="section-title">5-step answer structure</div>
+    <table class="compare-table">
+      <tr><th>Step</th><th>Calculate</th><th>Drives decision for</th></tr>
+      <tr><td><span class="tag tag-blue">1 — Traffic (QPS)</span></td><td>DAU × queries/day ÷ 86,400</td><td>Load balancer, number of app servers</td></tr>
+      <tr><td><span class="tag tag-teal">2 — Storage</span></td><td>DAU × data/user × days</td><td>DB type, sharding, CDN for media</td></tr>
+      <tr><td><span class="tag tag-purple">3 — Cache / RAM</span></td><td>DAU × cached items × item size</td><td>Number of cache servers (Redis)</td></tr>
+      <tr><td><span class="tag tag-amber">4 — Servers</span></td><td>QPS ÷ capacity per server</td><td>Horizontal scaling plan</td></tr>
+      <tr><td><span class="tag tag-green">5 — CAP tradeoff</span></td><td>Consistency vs Availability</td><td>DB choice (AP → Cassandra, CP → Zookeeper)</td></tr>
+    </table>
+    <div class="highlight"><strong>Facebook example summary:</strong> ~18K QPS → ~180 app servers · Post storage ~250 GB/day → 500 TB in 5 years · Image storage ~8 TB/day → 16 PB in 5 years · Cache ~750 GB → 10 Redis servers · CAP: AP (availability + eventual consistency)</div>
+    <div class="section-title">Quick number shortcuts</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label">Always use round numbers</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          1.75B / 100K → 17,500 → say <strong style="color:var(--color-text-primary)">~18K</strong><br>
+          750 GB RAM / 75 GB → say <strong style="color:var(--color-text-primary)">~10 servers</strong><br>
+          18,000 / 100 → say <strong style="color:var(--color-text-primary)">~180 servers</strong>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label">Common assumptions to state upfront</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          DAU = 20–25% of total users<br>
+          Read:Write ratio = 5:2 (typical)<br>
+          1 char = 2 bytes<br>
+          Seconds/day ≈ 10⁵
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function fmt(n) {
+  if (n >= 1e15) return (n/1e15).toFixed(1) + ' PB';
+  if (n >= 1e12) return (n/1e12).toFixed(1) + ' TB';
+  if (n >= 1e9)  return (n/1e9).toFixed(1) + ' GB';
+  if (n >= 1e6)  return (n/1e6).toFixed(1) + ' MB';
+  if (n >= 1e3)  return (n/1e3).toFixed(1) + ' KB';
+  return n + ' B';
+}
+
+function runCalc() {
+  const users   = parseFloat(document.getElementById('inp-users').value) * 1e6;
+  const dauPct  = parseFloat(document.getElementById('inp-dau').value) / 100;
+  const qpd     = parseFloat(document.getElementById('inp-qpd').value);
+  const postSz  = parseFloat(document.getElementById('inp-post').value);
+  const wpd     = parseFloat(document.getElementById('inp-wpd').value);
+  const srvCap  = parseFloat(document.getElementById('inp-srvr').value);
+
+  const dau       = users * dauPct;
+  const qps       = Math.round((dau * qpd) / 86400);
+  const stoDay    = dau * wpd * postSz;
+  const sto5y     = stoDay * 2000;
+  const cacheDay  = dau * 5 * postSz;
+  const cacheServ = Math.ceil(cacheDay / (75 * 1e9));
+  const appServ   = Math.ceil(qps / srvCap);
+
+  const out = document.getElementById('calc-output');
+  out.innerHTML = `
+    <div class="box-label">Results</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+      <div class="output-row">DAU: <strong>${(dau/1e6).toFixed(0)}M users</strong></div>
+      <div class="output-row">QPS: <strong>~${qps.toLocaleString()} req/sec</strong></div>
+      <div class="output-row">Post storage/day: <strong>${fmt(stoDay)}</strong></div>
+      <div class="output-row">Post storage (5y): <strong>${fmt(sto5y)}</strong></div>
+      <div class="output-row">Cache RAM needed: <strong>${fmt(cacheDay)}</strong></div>
+      <div class="output-row">Cache servers (75GB each): <strong>${cacheServ} servers</strong></div>
+      <div class="output-row">App servers needed: <strong>~${appServ} servers</strong></div>
+    </div>`;
+}
+</script>
+
+</body>
+</html>

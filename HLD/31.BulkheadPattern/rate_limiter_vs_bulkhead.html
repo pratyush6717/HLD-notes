@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>31.Bulkheadpattern - HLD Note</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --color-background-primary: #0f172a;
+            --color-background-secondary: #1e293b;
+            --color-text-primary: #f8fafc;
+            --color-text-secondary: #cbd5e1;
+            --color-text-tertiary: #94a3b8;
+            --color-border-primary: #3b82f6;
+            --color-border-secondary: #334155;
+            --color-border-tertiary: #475569;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --color-background-primary: #f8fafc;
+                --color-background-secondary: #ffffff;
+                --color-text-primary: #0f172a;
+                --color-text-secondary: #475569;
+                --color-text-tertiary: #64748b;
+                --color-border-primary: #2563eb;
+                --color-border-secondary: #cbd5e1;
+                --color-border-tertiary: #e2e8f0;
+            }
+        }
+
+        body {
+            font-family: var(--font-sans) !important;
+            background-color: var(--color-background-primary) !important;
+            color: var(--color-text-primary) !important;
+            margin: 0 !important;
+            padding: 2rem 1rem !important;
+            line-height: 1.6 !important;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px !important;
+            margin: 0 auto !important;
+            background: transparent !important;
+        }
+        
+        /* Modern aesthetic enhancements */
+        .box, .card, .sub-panel, .cap-card, .scenario-box, .highlight, .pain, .cure, .insight-box, .path-box, .decision-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+        }
+
+        .box:hover, .cap-card:hover, .scenario-box:hover, .decision-card:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        button, .nav-btn, .sub-btn {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+            touch-action: manipulation;
+        }
+        
+        button:hover, .nav-btn:hover, .sub-btn:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+        }
+
+        .section-title {
+            color: var(--color-border-primary) !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.1em !important;
+        }
+        
+        .box-title, .cap-card-title {
+            font-weight: 600 !important;
+            letter-spacing: -0.01em !important;
+        }
+        
+        .compare-table th {
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            background-color: var(--color-background-secondary) !important;
+        }
+
+        /* Back Button Style */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--color-text-primary);
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            background: var(--color-background-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--color-border-tertiary);
+            transition: all 0.2s;
+            margin-bottom: 2rem;
+        }
+        .back-btn:hover {
+            border-color: var(--color-border-primary);
+            color: var(--color-border-primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem !important;
+            }
+            .grid, .grid-3, .two-col, .path-diagram, .decision-strip {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+            .sub-nav, .nav {
+                justify-content: center !important;
+                gap: 0.5rem !important;
+            }
+            .compare-table {
+                display: block !important;
+                width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            .box, .cap-card, .scenario-box, .decision-card {
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .flow-row, .node-row {
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
+    <a href="../../index.html" class="back-btn">
+        &larr; Back to Index
+    </a>
+</div>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .pain ul, .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .flow-chain { display: flex; flex-direction: column; gap: 3px; }
+  .flow-node { padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; align-self: flex-start; }
+  .flow-down { font-size: 13px; color: var(--color-text-tertiary); padding-left: 16px; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .thread-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
+  .thread { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 500; font-family: var(--font-mono); }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('rl')">Rate Limiter</button>
+    <button class="sub-btn" onclick="show('bh')">Bulkhead</button>
+    <button class="sub-btn" onclick="show('noisy')">Noisy neighbor</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="highlight"><strong>Two different problems — two different tools.</strong> Rate Limiter controls how many requests come IN from clients. Bulkhead controls how many threads go OUT to downstream services. Confusing them = wrong protection in wrong place.</div>
+
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Problem 1 — Client overload</div>
+        <ul>
+          <li>Client sends 1000 req/sec</li>
+          <li>System can handle 100 req/sec</li>
+          <li>Server crashes from sheer volume</li>
+          <li>Solution: Rate Limiter at the gate</li>
+        </ul>
+      </div>
+      <div class="pain">
+        <div class="label">Problem 2 — Downstream slow</div>
+        <ul>
+          <li>Order Service calls Payment</li>
+          <li>Payment responds in 5 seconds</li>
+          <li>Threads pile up waiting for Payment</li>
+          <li>Fast APIs also start failing</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <strong>Mental model — super clear:</strong><br><br>
+      Rate Limiter → OUTSIDE protection (from clients)<br>
+      Bulkhead → INSIDE protection (between services/resources)<br><br>
+      <strong>Traffic control ≠ Resource control</strong>
+    </div>
+
+    <div class="section-title">Side-by-side comparison</div>
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Rate Limiter</th><th>Bulkhead</th></tr>
+      <tr><td>Protects from</td><td>Excessive client traffic</td><td>Slow/failing downstream services</td></tr>
+      <tr><td>Controls</td><td>Request rate (per time window)</td><td>Concurrency (simultaneous calls)</td></tr>
+      <tr><td>Position</td><td>Edge — between client and service</td><td>Internal — between services</td></tr>
+      <tr><td>Analogy</td><td>Mall entry gate — N people/min</td><td>Kitchen sections — veg/non-veg isolated</td></tr>
+      <tr><td>About concurrency?</td><td>No</td><td>Yes</td></tr>
+      <tr><td>About rate?</td><td>Yes</td><td>No</td></tr>
+    </table>
+  </div>
+
+  <!-- RATE LIMITER -->
+  <div class="sub-panel" id="sub-rl">
+    <div class="highlight"><strong>Rate Limiter = Gatekeeper.</strong> Sits at the edge of your service. Controls how many requests clients can send per time window. Doesn't care about concurrency — just rate.</div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Rate limiter flow</div>
+        <div class="flow-chain">
+          <span class="flow-node node-gray">Client (1000 req/sec)</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-red">Rate Limiter — max 100 req/sec</span>
+          <span class="flow-down">↓ 100 allowed · 900 rejected (HTTP 429)</span>
+          <span class="flow-node node-blue">Order Service (stable, never overloaded)</span>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Important nuance</div>
+        <div class="box-sub" style="margin-bottom:12px">Rate limiter allows N requests per window — whether they come all at once or spread out. It doesn't care if 10 hit simultaneously.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          Allow 10/sec:<br>
+          <span style="color:#0F6E56">✔</span> 10 arriving at t=0 (all at once)<br>
+          <span style="color:#0F6E56">✔</span> 1 per 100ms (spread out)<br>
+          <span style="color:#A32D2D">✗</span> 11th request → rejected<br><br>
+          No concurrency control — all 10 could be processed simultaneously.
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Mall entry gate analogy:</strong> "100 people per minute allowed." They can all rush in at once at the start of the minute — gate doesn't regulate them once inside. Rate Limiter is the gate, not a crowd controller inside the mall.</div>
+  </div>
+
+  <!-- BULKHEAD -->
+  <div class="sub-panel" id="sub-bh">
+    <div class="highlight"><strong>Bulkhead = Ship compartments.</strong> Ships have watertight compartments — one floods, others stay dry. Bulkhead isolates thread pools so one slow service can't steal threads meant for another.</div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Simple bulkhead</div>
+        <div class="flow-chain">
+          <span class="flow-node node-gray">Order Service calls Product</span>
+          <span class="flow-down">↓ Product handles only 3 concurrent</span>
+          <span class="flow-node node-blue">Bulkhead — max 3 concurrent threads</span>
+          <span class="flow-down">↓</span>
+          <div class="thread-row">
+            <span class="thread node-green">Req1 ✔</span>
+            <span class="thread node-green">Req2 ✔</span>
+            <span class="thread node-green">Req3 ✔</span>
+            <span class="thread node-red">Req4 ✗ wait/reject</span>
+          </div>
+          <span class="flow-down" style="margin-top:6px">↓</span>
+          <span class="flow-node node-teal">Product Service (never overwhelmed)</span>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Key difference from Rate Limiter</div>
+        <div class="box-sub" style="margin-bottom:10px">Bulkhead controls how many requests are <strong style="color:var(--color-text-primary)">simultaneously active</strong> — not how many came per second.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          Bulkhead = 3 concurrent max:<br>
+          <span style="color:#A32D2D">✗</span> All 3 threads busy at same time → 4th rejected<br>
+          <span style="color:#0F6E56">✔</span> As soon as one finishes → 4th enters<br><br>
+          Doesn't care if 100 arrive in 1 second — only 3 active at any moment.
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Restaurant kitchen analogy:</strong> Veg section, non-veg section, dessert section — all separate. Non-veg gets overwhelmed → veg chef still working calmly. Sections = bulkheads. Isolation prevents one busy section from killing the whole kitchen.</div>
+  </div>
+
+  <!-- NOISY NEIGHBOR -->
+  <div class="sub-panel" id="sub-noisy">
+    <div class="highlight"><strong>Most important real use case.</strong> Order Service has 2 APIs: API1 calls Product (fast), API2 calls Payment (slow). Payment spike → all 10 threads blocked → API1 also starts failing. Thread Pool Bulkhead fixes this.</div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:#A32D2D;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Without bulkhead — noisy neighbor</div>
+        <div class="flow-chain">
+          <span class="flow-node node-gray">Order Service — 10 total threads</span>
+          <span class="flow-down">↓</span>
+          <div style="display:flex;gap:8px;flex-direction:column">
+            <div>
+              <div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:4px">API1 → Product (fast)</div>
+              <div class="thread-row"><span class="thread node-green">T1</span><span class="thread node-green">T2</span></div>
+            </div>
+            <div>
+              <div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:4px">API2 → Payment (SLOW) — noisy neighbor</div>
+              <div class="thread-row">
+                <span class="thread node-red">T3 blocked</span>
+                <span class="thread node-red">T4 blocked</span>
+                <span class="thread node-red">T5 blocked</span>
+                <span class="thread node-red">T6 blocked</span>
+                <span class="thread node-red">T7 blocked</span>
+                <span class="thread node-red">T8 blocked</span>
+                <span class="thread node-red">T9 blocked</span>
+                <span class="thread node-red">T10 blocked</span>
+              </div>
+            </div>
+          </div>
+          <span class="flow-down" style="margin-top:6px">↓ all threads full</span>
+          <span class="flow-node node-red">API1 requests rejected too — fast API dies</span>
+        </div>
+      </div>
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">With thread pool bulkhead — isolated</div>
+        <div class="flow-chain">
+          <span class="flow-node node-gray">Order Service</span>
+          <span class="flow-down">↓</span>
+          <div style="display:flex;gap:8px;flex-direction:column">
+            <div class="arch-flow" style="padding:8px 12px;border-color:#1D9E75">
+              <div style="font-size:11px;color:#0F6E56;margin-bottom:4px">API1 thread pool (5 threads)</div>
+              <div class="thread-row"><span class="thread node-green">T1 ✔</span><span class="thread node-green">T2 ✔</span><span class="thread node-green">T3 ✔</span></div>
+              <div style="font-size:11px;color:#0F6E56;margin-top:4px">API1 unaffected</div>
+            </div>
+            <div class="arch-flow" style="padding:8px 12px;border-color:#E24B4A">
+              <div style="font-size:11px;color:#A32D2D;margin-bottom:4px">API2 thread pool (5 threads — isolated)</div>
+              <div class="thread-row">
+                <span class="thread node-red">T1 wait</span>
+                <span class="thread node-red">T2 wait</span>
+                <span class="thread node-red">T3 wait</span>
+                <span class="thread node-red">T4 wait</span>
+                <span class="thread node-red">T5 wait</span>
+              </div>
+              <div style="font-size:11px;color:#A32D2D;margin-top:4px">Only API2 suffers — contained</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Noisy neighbor definition:</strong> One component consumes all shared resources — starving others. Thread Pool Bulkhead = give each component its own dedicated pool. Noisy neighbor can only hurt itself.</div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Rate Limiter:</strong> Protects the system from excessive client traffic by limiting requests per time window.<br><br>
+      <strong>Bulkhead:</strong> Isolates resources so failure or slowness in one part does not impact others.
+    </div>
+
+    <div class="section-title">Decision guide — which to use?</div>
+    <table class="compare-table">
+      <tr><th>Scenario</th><th>Use</th><th>Why</th></tr>
+      <tr><td>Client spamming your API</td><td><span class="tag tag-red">Rate Limiter</span></td><td>Control incoming traffic rate — reject excess</td></tr>
+      <tr><td>Downstream service slow/failing</td><td><span class="tag tag-blue">Bulkhead</span></td><td>Limit concurrent calls — don't let threads pile up</td></tr>
+      <tr><td>Fast API failing because slow API hogs threads</td><td><span class="tag tag-blue">Thread Pool Bulkhead</span></td><td>Isolate thread pools — noisy neighbor contained</td></tr>
+      <tr><td>DDoS / abuse prevention</td><td><span class="tag tag-red">Rate Limiter</span></td><td>Edge protection — reject before hitting backend</td></tr>
+      <tr><td>Microservice calling multiple downstream services</td><td><span class="tag tag-blue">Bulkhead per service</span></td><td>Each downstream gets own isolated thread pool</td></tr>
+    </table>
+
+    <div class="section-title">HLD to draw in interviews</div>
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:8px">Rate Limiter position</div>
+        <div class="flow-chain">
+          <span class="flow-node node-gray">Client</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-red">Rate Limiter (API Gateway)</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-blue">Order Service</span>
+        </div>
+      </div>
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:8px">Bulkhead position</div>
+        <div class="flow-chain">
+          <span class="flow-node node-blue">Order Service</span>
+          <span class="flow-down">↓</span>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="flow-node node-teal" style="font-size:11px;padding:4px 10px">Bulkhead A</span>
+              <span style="font-size:11px;color:var(--color-text-tertiary)">→ Product (fast)</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="flow-node node-amber" style="font-size:11px;padding:4px 10px">Bulkhead B</span>
+              <span style="font-size:11px;color:var(--color-text-tertiary)">→ Payment (slow)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="compare-table" style="margin-top:16px">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Rate Limiter</td><td>Outside protection — caps client requests per time window</td></tr>
+      <tr><td>Bulkhead</td><td>Inside protection — caps concurrent calls to downstream services</td></tr>
+      <tr><td>Noisy neighbor</td><td>One component hogs all threads → others starve. Fix: thread pool per downstream.</td></tr>
+      <tr><td>Key distinction</td><td>RL = about rate. BH = about concurrency. Neither replaces the other.</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>28.Dualwriteproblem - HLD Note</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --color-background-primary: #0f172a;
+            --color-background-secondary: #1e293b;
+            --color-text-primary: #f8fafc;
+            --color-text-secondary: #cbd5e1;
+            --color-text-tertiary: #94a3b8;
+            --color-border-primary: #3b82f6;
+            --color-border-secondary: #334155;
+            --color-border-tertiary: #475569;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --color-background-primary: #f8fafc;
+                --color-background-secondary: #ffffff;
+                --color-text-primary: #0f172a;
+                --color-text-secondary: #475569;
+                --color-text-tertiary: #64748b;
+                --color-border-primary: #2563eb;
+                --color-border-secondary: #cbd5e1;
+                --color-border-tertiary: #e2e8f0;
+            }
+        }
+
+        body {
+            font-family: var(--font-sans) !important;
+            background-color: var(--color-background-primary) !important;
+            color: var(--color-text-primary) !important;
+            margin: 0 !important;
+            padding: 2rem 1rem !important;
+            line-height: 1.6 !important;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px !important;
+            margin: 0 auto !important;
+            background: transparent !important;
+        }
+        
+        /* Modern aesthetic enhancements */
+        .box, .card, .sub-panel, .cap-card, .scenario-box, .highlight, .pain, .cure, .insight-box, .path-box, .decision-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+        }
+
+        .box:hover, .cap-card:hover, .scenario-box:hover, .decision-card:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        button, .nav-btn, .sub-btn {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+            touch-action: manipulation;
+        }
+        
+        button:hover, .nav-btn:hover, .sub-btn:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+        }
+
+        .section-title {
+            color: var(--color-border-primary) !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.1em !important;
+        }
+        
+        .box-title, .cap-card-title {
+            font-weight: 600 !important;
+            letter-spacing: -0.01em !important;
+        }
+        
+        .compare-table th {
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+            background-color: var(--color-background-secondary) !important;
+        }
+
+        /* Back Button Style */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--color-text-primary);
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            background: var(--color-background-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--color-border-tertiary);
+            transition: all 0.2s;
+            margin-bottom: 2rem;
+        }
+        .back-btn:hover {
+            border-color: var(--color-border-primary);
+            color: var(--color-border-primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem !important;
+            }
+            .grid, .grid-3, .two-col, .path-diagram, .decision-strip {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1rem !important;
+            }
+            .sub-nav, .nav {
+                justify-content: center !important;
+                gap: 0.5rem !important;
+            }
+            .compare-table {
+                display: block !important;
+                width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            .box, .cap-card, .scenario-box, .decision-card {
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .flow-row, .node-row {
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
+    <a href="../../index.html" class="back-btn">
+        &larr; Back to Index
+    </a>
+</div>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .box ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.8; margin-top: 6px; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-purple { background: #3C3489; color: #CECBF6; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .pain ul, .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .flow-chain { display: flex; flex-direction: column; gap: 3px; }
+  .flow-node { padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; align-self: flex-start; }
+  .flow-down { font-size: 13px; color: var(--color-text-tertiary); padding-left: 16px; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-purple { background: #EEEDFE; color: #3C3489; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-purple { background: #3C3489; color: #CECBF6; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .pattern-card { border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); overflow: hidden; margin-bottom: 16px; }
+  .pattern-header { padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+  .pattern-badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+  .pattern-body { padding: 0 16px 14px; }
+  .tradeoff-row { display: flex; gap: 6px; align-items: flex-start; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 5px; }
+  .db-box { border: 2px dashed var(--color-border-secondary); border-radius: 8px; padding: 8px 12px; }
+  .db-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: 6px; }
+  .db-inner { display: flex; gap: 6px; }
+  .db-table { padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: 500; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('outbox')">Transactional Outbox</button>
+    <button class="sub-btn" onclick="show('lty')">Listen-to-Yourself</button>
+    <button class="sub-btn" onclick="show('cdc')">CDC (Debezium)</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="highlight"><strong>The core pain:</strong> Service writes to DB and publishes to Kafka. These are 2 separate operations. No atomicity. Either can fail independently → system goes inconsistent.</div>
+
+    <div class="grid">
+      <div class="pain">
+        <div class="label">DB write ✔ but Kafka publish ✗</div>
+        <ul>
+          <li>Loan created in DB</li>
+          <li>Kafka event never sent</li>
+          <li>Notification Service never notified</li>
+          <li>User doesn't get notified — silent failure</li>
+        </ul>
+      </div>
+      <div class="pain">
+        <div class="label">DB write ✗ but Kafka publish ✔</div>
+        <ul>
+          <li>Kafka event fires</li>
+          <li>Other services react and process</li>
+          <li>But actual data never saved in DB</li>
+          <li>Ghost data / wrong system state</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Why not 2PC?</strong> Kafka doesn't properly support 2PC. It's slow (multiple network roundtrips), and coordinator failure blocks the entire system. 2PC = theoretical solution, not practical.</div>
+
+    <div class="insight-box">
+      <strong>Mental model:</strong><br>
+      Never: DB write + Kafka publish separately<br>
+      Always: Single source of truth → then async publish<br><br>
+      <strong>Consistency &gt; immediacy</strong>
+    </div>
+
+    <div class="section-title">3 patterns to solve it</div>
+    <table class="compare-table">
+      <tr><th>Pattern</th><th>Core idea</th><th>Best for</th></tr>
+      <tr><td><span class="tag tag-blue">Transactional Outbox</span></td><td>Event stored in DB outbox table in same transaction, poller publishes to Kafka</td><td>Most common — reliable, battle-tested</td></tr>
+      <tr><td><span class="tag tag-teal">Listen-to-Yourself</span></td><td>Write event first → consume own event → then write to DB</td><td>Event-sourced systems</td></tr>
+      <tr><td><span class="tag tag-purple">CDC (Debezium)</span></td><td>Read DB binary logs → auto-generate events to Kafka</td><td>When you can't change service code</td></tr>
+    </table>
+  </div>
+
+  <!-- OUTBOX -->
+  <div class="sub-panel" id="sub-outbox">
+    <div class="highlight"><strong>Core idea:</strong> Don't call Kafka directly. Store the event in the DB (Outbox table) in the same transaction as the business data. A separate poller reads the outbox and publishes to Kafka.</div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Outbox flow</div>
+        <div class="flow-chain">
+          <span class="flow-node node-gray">Service receives request</span>
+          <span class="flow-down">↓ begin transaction</span>
+          <div class="db-box" style="margin:4px 0 4px 16px">
+            <div class="db-label">Same DB Transaction</div>
+            <div class="db-inner">
+              <span class="db-table node-blue">User/Loan table INSERT</span>
+              <span class="db-table node-amber">Outbox table INSERT</span>
+            </div>
+          </div>
+          <span class="flow-down">↓ commit (atomic)</span>
+          <span class="flow-node node-teal">Poller Service (async)</span>
+          <span class="flow-down">↓ reads outbox + marks published</span>
+          <span class="flow-node node-purple">Kafka Event Published</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-green">Notification Service consumes</span>
+        </div>
+      </div>
+      <div>
+        <div class="box" style="margin-bottom:12px">
+          <div class="box-label" style="color:#854F0B">Restaurant analogy</div>
+          <div class="box-sub">Wrong: Write order in register AND separately update delivery app (can mismatch). Right: Write order in register + delivery note in same register. One person then takes delivery note and updates the app. Always consistent.</div>
+        </div>
+        <div class="box">
+          <div class="box-label" style="color:#A32D2D">Trade-offs to mention</div>
+          <div class="tradeoff-row"><span style="color:#A32D2D;flex-shrink:0">✗</span><span>Small delay — event not published immediately (poller runs every N ms)</span></div>
+          <div class="tradeoff-row"><span style="color:#A32D2D;flex-shrink:0">✗</span><span>Duplicate events possible if poller retries → fix with idempotency</span></div>
+          <div class="tradeoff-row"><span style="color:#A32D2D;flex-shrink:0">✗</span><span>Ordering issues with multiple pollers → fix with Kafka partition key</span></div>
+          <div class="tradeoff-row" style="margin-top:6px"><span style="color:#0F6E56;flex-shrink:0">✔</span><span>DB + Event always in sync — atomicity guaranteed</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LISTEN-TO-YOURSELF -->
+  <div class="sub-panel" id="sub-lty">
+    <div class="highlight"><strong>Core idea:</strong> Flip the flow. Don't write to DB first — write the event first. Then your own service consumes that event and writes to DB. Event = single source of truth.</div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Listen-to-Yourself flow</div>
+        <div class="flow-chain">
+          <span class="flow-node node-gray">Service receives request</span>
+          <span class="flow-down">↓ step 1</span>
+          <span class="flow-node node-amber">Write event to Outbox</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-purple">Poller → Kafka</span>
+          <span class="flow-down">↓ service also listens to own topic</span>
+          <span class="flow-node node-blue">Same service consumes event</span>
+          <span class="flow-down">↓ step 2 (DB write happens here)</span>
+          <span class="flow-node node-green">Write to DB</span>
+        </div>
+      </div>
+      <div>
+        <div class="cure" style="margin-bottom:12px">
+          <div class="label">The aha moment</div>
+          <ul>
+            <li>Event is the source of truth</li>
+            <li>DB is derived from events</li>
+            <li>Perfect for event-sourced systems</li>
+            <li>Decoupled write path</li>
+          </ul>
+        </div>
+        <div class="pain">
+          <div class="label">The problem</div>
+          <ul>
+            <li>GET request arrives immediately after write</li>
+            <li>DB still empty — event not yet consumed</li>
+            <li>User sees: data not found</li>
+          </ul>
+          <div style="margin-top:8px;font-size:12px;color:#0F6E56"><strong>Fix:</strong> Write-through cache (Redis) — read from cache immediately, DB updated async</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CDC -->
+  <div class="sub-panel" id="sub-cdc">
+    <div class="highlight"><strong>Core idea:</strong> Every DB write creates a log entry (binlog). CDC tool (Debezium) reads those logs and automatically creates Kafka events. No changes to application code needed.</div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">CDC flow</div>
+        <div class="flow-chain">
+          <span class="flow-node node-gray">Service writes to DB</span>
+          <span class="flow-down">↓ DB writes binlog (always happens)</span>
+          <span class="flow-node node-blue">DB Binary Log (binlog)</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-amber">Debezium (CDC tool) reads log</span>
+          <span class="flow-down">↓ auto-creates event</span>
+          <span class="flow-node node-purple">Kafka Event</span>
+          <span class="flow-down">↓</span>
+          <span class="flow-node node-green">Downstream consumers</span>
+        </div>
+      </div>
+      <div>
+        <div class="cure" style="margin-bottom:12px">
+          <div class="label">Why it's powerful</div>
+          <ul>
+            <li>Zero application code changes</li>
+            <li>Event auto-generated from any DB write</li>
+            <li>Works with legacy systems</li>
+            <li>Captures all changes — inserts, updates, deletes</li>
+          </ul>
+        </div>
+        <div class="pain">
+          <div class="label">Problems</div>
+          <ul>
+            <li>Duplicate events if Debezium retries</li>
+            <li>Ordering issues with high write volume</li>
+            <li>Slight latency — log write delay</li>
+            <li>Extra infrastructure (Debezium cluster)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Transactional Outbox</th><th>Listen-to-Yourself</th><th>CDC (Debezium)</th></tr>
+      <tr><td>App code changes</td><td>Yes (add outbox table)</td><td>Yes (flip write flow)</td><td>No</td></tr>
+      <tr><td>Atomicity</td><td>DB transaction</td><td>Event-first</td><td>DB log-based</td></tr>
+      <tr><td>Read-after-write</td><td>Normal</td><td>Needs cache layer</td><td>Normal</td></tr>
+      <tr><td>Best for</td><td>Most systems</td><td>Event-sourced systems</td><td>Legacy migration</td></tr>
+    </table>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Interview definition:</strong> Dual write problem occurs when we try to update two systems (DB and message broker) without atomicity, leading to inconsistent states.<br><br>
+      <strong>Interview solution:</strong> Use Transactional Outbox — store both DB change and event in the same transaction, then a separate process publishes events asynchronously.
+    </div>
+
+    <div class="section-title">What-if sandbox</div>
+    <table class="compare-table">
+      <tr><th>If you...</th><th>Problem</th><th>Fix</th></tr>
+      <tr><td>Write DB + Kafka directly (dual write)</td><td>Either can fail → inconsistency</td><td>Use Outbox pattern</td></tr>
+      <tr><td>Use single poller</td><td>Not scalable — bottleneck</td><td>Multiple pollers + Kafka partition key</td></tr>
+      <tr><td>Use multiple pollers</td><td>Events may arrive out of order</td><td>Kafka partition by entity ID</td></tr>
+      <tr><td>Ignore idempotency</td><td>Duplicate events processed twice</td><td>Idempotency key in consumer</td></tr>
+    </table>
+
+    <div class="section-title">Full HLD to draw</div>
+    <div class="arch-flow" style="margin-bottom:16px">
+      <div class="flow-chain">
+        <span class="flow-node node-gray">Service (Loan Service)</span>
+        <span class="flow-down">↓ single atomic transaction</span>
+        <div class="db-box" style="margin:4px 0 4px 16px">
+          <div class="db-label">PostgreSQL / MySQL</div>
+          <div class="db-inner">
+            <span class="db-table node-blue">Loan table</span>
+            <span class="db-table node-amber">Outbox table</span>
+          </div>
+        </div>
+        <span class="flow-down">↓ poller (async)</span>
+        <span class="flow-node node-purple">Kafka — topic: loan.created</span>
+        <span class="flow-down">↓</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="flow-node node-teal" style="font-size:12px">Notification Service</span>
+          <span class="flow-node node-teal" style="font-size:12px">Analytics Service</span>
+          <span class="flow-node node-teal" style="font-size:12px">Credit Service</span>
+        </div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Dual write</td><td>Writing to DB + Kafka separately without atomicity → inconsistency risk</td></tr>
+      <tr><td>Outbox pattern</td><td>Store event in DB (same txn) → poller publishes to Kafka → guaranteed consistency</td></tr>
+      <tr><td>CDC</td><td>Read DB binlogs → auto-generate Kafka events (no code change)</td></tr>
+      <tr><td>Why not 2PC</td><td>Kafka doesn't support it properly, slow, coordinator failure risk</td></tr>
+      <tr><td>Idempotency</td><td>Each consumer must handle duplicate events gracefully</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
