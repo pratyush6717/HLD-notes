@@ -1,0 +1,196 @@
+PK — ab isko bhi Evolution of Pain + Feynman style me simplify karte hain 🔥
+Tumne itna long content diya hai, but main ise clear + feel aane wala version bana raha hoon.
+
+🛡️ WEB ATTACKS (CSRF, XSS, SQL Injection)
+🚨 1️⃣ Evolution of Pain (Attack ke bina system kya suffer karta hai)
+
+Socho tumhari banking app hai:
+
+User login karta hai → sab secure lag raha hai
+
+But behind the scenes…
+
+😱 Nightmare 1 — CSRF
+
+Tum login ho:
+
+bank.com → authenticated
+
+Fir kisi ne tumhe ek link bheja:
+
+Click here 😈
+
+Tum click karte ho → background me:
+
+/transfer?amount=10000&to=attacker
+
+💥 Money transfer ho gaya — tumhe pata bhi nahi
+
+😱 Nightmare 2 — XSS
+
+Tum comments section open karte ho:
+
+"Nice video"
+
+But attacker ne dala:
+
+<script>sendCookiesToHacker()</script>
+
+💥 Tumhara session leak
+
+😱 Nightmare 3 — SQL Injection
+
+Search box me user likhta hai:
+
+'or 1=1
+
+Query ban jaati hai:
+
+SELECT * FROM users WHERE name = '' OR 1=1
+
+💥 Saara database leak
+
+👉 Pain summary:
+
+❌ User impersonation
+❌ Data leak
+❌ Unauthorized actions
+❌ System compromise
+🦸 2️⃣ The Cure (Security Concepts)
+
+Har attack ka ek simple root cause hai:
+
+Attack	Root Problem
+CSRF	Trusting browser blindly
+XSS	Trusting user input blindly
+SQL Injection	Using raw input in query
+🧠 3️⃣ CSRF (Feynman Style)
+💡 Simple Idea
+Browser automatically sends cookies
+🔥 Attack Flow
+1. User logged in (cookie present)
+2. Attacker sends link
+3. User clicks
+4. Browser auto adds cookie
+5. Server thinks → valid user
+🍔 Analogy
+
+Socho:
+
+Tum restaurant me ho (logged in)
+
+Koi aur banda waiter ko bolta hai:
+
+"Is table se 2 pizza bhej do"
+
+Waiter trust karta hai:
+
+✔ order accept (kyunki table valid hai)
+🛡️ Solution
+CSRF Token
+Server → token deta hai
+Client → har request me bhejta hai
+
+Attacker:
+
+❌ token nahi pata
+🧠 4️⃣ XSS (Feynman Style)
+💡 Simple Idea
+User input = code ban gaya
+🔥 Attack Flow
+1. Attacker comment me script daalta hai
+2. Server bina check save karta hai
+3. Dusra user page open karta hai
+4. Browser script execute karta hai
+🍔 Analogy
+
+Socho notice board hai:
+
+Normal:
+
+"Meeting at 5pm"
+
+Attacker:
+
+"Click here → malware"
+
+Aur sab log padh ke click kar lete hain 💥
+
+🛡️ Solution
+Input escape karo
+<script> → &lt;script&gt;
+Validate input
+Only text allowed
+🧠 5️⃣ SQL Injection (Feynman Style)
+💡 Simple Idea
+User input = query ka part ban gaya
+🔥 Attack Flow
+User input:
+'or 1=1
+
+Query:
+SELECT * FROM users WHERE name = '' OR 1=1
+
+→ Always true → full data leak
+
+🍔 Analogy
+
+Socho:
+
+Guard: "Naam batao"
+User: "' OR sabko andar aane do"
+
+Guard:
+
+😵 sabko entry de deta hai
+🛡️ Solution
+Parameterized Query
+SELECT * FROM users WHERE name = ?
+🧠 6️⃣ CORS (Bonus — Not Attack)
+💡 Simple Idea
+Kaun request bhej sakta hai?
+Example
+frontend.com → backend.com
+
+Server bole:
+
+✔ allowed
+❌ not allowed
+🍔 Analogy
+Club entry allowed only for VIP list
+🧪 7️⃣ What If Sandbox (Trade-offs)
+❓ Agar CSRF token remove kar diya?
+❌ Any site can trigger request
+❓ Agar input validate nahi kiya?
+❌ XSS + SQL injection possible
+❓ Agar CORS open kar diya (*)
+❌ Any domain can hit your API
+⚙️ 8️⃣ LLD / Spring Style (Before vs After)
+❌ BEFORE (Vulnerable)
+String query = "SELECT * FROM users WHERE name = '" + name + "'";
+✅ AFTER (Safe)
+PreparedStatement ps = conn.prepareStatement(
+    "SELECT * FROM users WHERE name = ?"
+);
+ps.setString(1, name);
+❌ BEFORE (XSS vulnerable)
+comments.add(userInput);
+✅ AFTER
+String safe = HtmlUtils.htmlEscape(userInput);
+comments.add(safe);
+🔥 Final Mental Model
+Never trust:
+❌ Browser
+❌ User input
+❌ Client request
+🚀 One-line Interview Answers
+CSRF
+CSRF exploits browser’s automatic credential sending to perform unauthorized actions.
+XSS
+XSS injects malicious scripts into web pages executed in other users’ browsers.
+SQL Injection
+SQL Injection manipulates queries by injecting malicious input into SQL statements.
+💥 Ultimate Aha Moment
+Security = Trust nothing from outside
+
+PK agar chaho next main tumhe:

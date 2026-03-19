@@ -1,0 +1,279 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-purple { background: #3C3489; color: #CECBF6; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .pain ul, .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .flow-chain { display: flex; flex-direction: column; gap: 3px; }
+  .flow-node { padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; align-self: flex-start; }
+  .flow-down { font-size: 13px; color: var(--color-text-tertiary); padding-left: 16px; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-purple { background: #EEEDFE; color: #3C3489; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-purple { background: #3C3489; color: #CECBF6; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 10px; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .step-card { display: flex; gap: 12px; align-items: flex-start; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); margin-bottom: 8px; }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; flex-shrink: 0; margin-top: 2px; }
+  .step-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; flex: 1; }
+  .step-body strong { color: var(--color-text-primary); font-weight: 500; display: block; margin-bottom: 2px; }
+  .hierarchy { display: flex; flex-direction: column; gap: 6px; }
+  .h-row { display: flex; align-items: center; gap: 8px; }
+  .h-indent { width: 20px; flex-shrink: 0; border-left: 2px solid var(--color-border-secondary); border-bottom: 2px solid var(--color-border-secondary); height: 16px; margin-top: -8px; }
+  .h-node { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; font-family: var(--font-mono); }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('structure')">Domain structure</button>
+    <button class="sub-btn" onclick="show('resolution')">DNS resolution</button>
+    <button class="sub-btn" onclick="show('records')">Record types</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="highlight"><strong>Internet without DNS:</strong> To visit Google you'd need to remember <code style="font-family:var(--font-mono);font-size:11px">142.250.183.206</code>. 100 websites = 100 IPs to memorise. IP changes = everything breaks. No CDN, no load balancing, no failover. Internet unusable.</div>
+
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Without DNS</div>
+        <ul>
+          <li>Must memorise IPs (142.250.183.206)</li>
+          <li>IP changes → user can't reach site</li>
+          <li>No human-readable names</li>
+          <li>No CDN geo-routing possible</li>
+          <li>No load balancing via names</li>
+        </ul>
+      </div>
+      <div class="cure">
+        <div class="label">With DNS</div>
+        <ul>
+          <li>Type <code style="font-family:var(--font-mono);font-size:11px">google.com</code> — DNS finds the IP</li>
+          <li>IP changes behind the scenes, name stays same</li>
+          <li>Multiple IPs → automatic load balancing</li>
+          <li>Geo routing → nearest server for user</li>
+          <li>Failover → broken server? DNS points elsewhere</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Analogy:</strong> Courier system. Without DNS: you give full address "Flat 302, Building 7, Street 5." With DNS: you say "Amazon Warehouse" — courier resolves the full address. DNS is the internet's phonebook.</div>
+
+    <div class="section-title">DNS in real systems</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <span class="tag tag-blue">Load balancing (multiple IPs)</span>
+      <span class="tag tag-teal">Geo routing (nearest server)</span>
+      <span class="tag tag-amber">Failover (backup servers)</span>
+      <span class="tag tag-purple">CDN routing (Cloudflare)</span>
+    </div>
+  </div>
+
+  <!-- DOMAIN STRUCTURE -->
+  <div class="sub-panel" id="sub-structure">
+    <div class="highlight"><strong>Domain names are a hierarchy.</strong> Reading right to left: root → TLD → domain → subdomain. Each level is managed by a different authority.</div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em">www.example.com — hierarchy</div>
+        <div class="hierarchy">
+          <div class="h-row"><span class="h-node node-gray">. (root)</span><span style="font-size:11px;color:var(--color-text-tertiary);margin-left:8px">13 root server clusters worldwide</span></div>
+          <div class="h-row"><div style="width:20px;border-left:2px solid var(--color-border-secondary);height:16px"></div><span class="h-node node-blue">.com (TLD)</span><span style="font-size:11px;color:var(--color-text-tertiary);margin-left:8px">Top-level domain</span></div>
+          <div class="h-row"><div style="width:40px;border-left:2px solid var(--color-border-secondary);height:16px"></div><span class="h-node node-teal">example (domain)</span><span style="font-size:11px;color:var(--color-text-tertiary);margin-left:8px">Registered by company</span></div>
+          <div class="h-row"><div style="width:60px;border-left:2px solid var(--color-border-secondary);height:16px"></div><span class="h-node node-amber">www (subdomain)</span><span style="font-size:11px;color:var(--color-text-tertiary);margin-left:8px">Managed by company</span></div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label">Why hierarchy matters</div>
+        <div class="box-sub" style="margin-bottom:10px">Each level is independently managed. Delegation allows internet to scale to billions of domains.</div>
+        <table class="compare-table" style="margin-bottom:0">
+          <tr><th>Part</th><th>Managed by</th></tr>
+          <tr><td><code style="font-family:var(--font-mono)">.com</code></td><td>Verisign</td></tr>
+          <tr><td><code style="font-family:var(--font-mono)">.in</code></td><td>NIXI (India)</td></tr>
+          <tr><td><code style="font-family:var(--font-mono)">example.com</code></td><td>Domain owner</td></tr>
+          <tr><td><code style="font-family:var(--font-mono)">www.example.com</code></td><td>Domain owner</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-title">DNS zones — load distribution</div>
+    <div class="highlight"><strong>Problem:</strong> <code style="font-family:var(--font-mono);font-size:11px">mail.example.com</code>, <code style="font-family:var(--font-mono);font-size:11px">blog.example.com</code>, <code style="font-family:var(--font-mono);font-size:11px">api.example.com</code> all on one server = overload. <strong>Solution:</strong> Zone splitting — delegate each subdomain to a separate server.</div>
+    <div class="code-block">example.com       → Server 1 (main authoritative)
+mail.example.com  → Server 2 (mail zone)
+blog.example.com  → Server 3 (blog zone)
+api.example.com   → Server 4 (API zone)</div>
+  </div>
+
+  <!-- DNS RESOLUTION -->
+  <div class="sub-panel" id="sub-resolution">
+    <div class="highlight"><strong>Recursive resolution:</strong> From the client's view — 1 request, 1 response. Internally the DNS resolver does all the work: Root → TLD → Authoritative. Client sees none of this.</div>
+
+    <div class="step-card">
+      <div class="step-num" style="background:#E6F1FB;color:#0C447C">1</div>
+      <div class="step-body"><strong>Local cache check</strong> Browser checks its cache. OS checks hosts file. If IP found → done. No network call needed.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E6F1FB;color:#0C447C">2</div>
+      <div class="step-body"><strong>DNS Resolver (ISP / 8.8.8.8)</strong> Cache miss → client asks resolver. Resolver is your ISP's DNS server or Google's 8.8.8.8. Resolver does all the heavy lifting.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#E1F5EE;color:#085041">3</div>
+      <div class="step-body"><strong>Root Server</strong> Resolver asks: "Where is <code style="font-family:var(--font-mono);font-size:11px">.com</code>?" Root replies: "Ask the <code style="font-family:var(--font-mono);font-size:11px">.com</code> TLD server." 13 root server clusters worldwide.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#FAEEDA;color:#633806">4</div>
+      <div class="step-body"><strong>TLD Server (.com)</strong> Resolver asks: "Where is <code style="font-family:var(--font-mono);font-size:11px">example.com</code>?" TLD replies: "Ask the authoritative server at ns1.example.com."</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#FAEEDA;color:#633806">5</div>
+      <div class="step-body"><strong>Authoritative Server</strong> Resolver asks: "What is the IP of <code style="font-family:var(--font-mono);font-size:11px">www.example.com</code>?" Server replies: <code style="font-family:var(--font-mono);font-size:11px">1.2.3.4</code>. This server is the final authority.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num" style="background:#EAF3DE;color:#27500A">6</div>
+      <div class="step-body"><strong>IP returned to client</strong> Resolver caches the result (for TTL duration) → returns IP to client → browser loads page.</div>
+    </div>
+
+    <hr class="divider">
+    <div class="section-title">Recursive vs Iterative</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Recursive</div>
+        <div class="box-sub" style="margin-bottom:8px">Client makes 1 request. Resolver does all the work: Root → TLD → Authoritative. Client gets final IP.</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Client is lazy — resolver does everything. Most common.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#3B6D11">Iterative</div>
+        <div class="box-sub" style="margin-bottom:8px">Client does all the work itself: asks Root, then TLD, then Authoritative — three separate calls.</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Client is the worker. Rare — used between resolvers.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECORD TYPES -->
+  <div class="sub-panel" id="sub-records">
+    <div class="highlight"><strong>DNS stores different types of records.</strong> Each record type serves a different purpose — routing, aliasing, mail, text verification, and more.</div>
+
+    <table class="compare-table">
+      <tr><th>Record</th><th>What it does</th><th>Example</th></tr>
+      <tr><td><span class="tag tag-blue">A</span></td><td>Domain → IPv4 address (most common)</td><td><code style="font-family:var(--font-mono);font-size:11px">example.com → 1.2.3.4</code></td></tr>
+      <tr><td><span class="tag tag-blue">AAAA</span></td><td>Domain → IPv6 address</td><td><code style="font-family:var(--font-mono);font-size:11px">example.com → 2001:db8::1</code></td></tr>
+      <tr><td><span class="tag tag-teal">CNAME</span></td><td>Alias → another domain (chain resolves to IP)</td><td><code style="font-family:var(--font-mono);font-size:11px">www.example.com → example.com → 1.2.3.4</code></td></tr>
+      <tr><td><span class="tag tag-amber">NS</span></td><td>Which nameserver is authoritative for domain</td><td><code style="font-family:var(--font-mono);font-size:11px">example.com NS → ns1.example.com</code></td></tr>
+      <tr><td><span class="tag tag-purple">MX</span></td><td>Mail server for domain</td><td><code style="font-family:var(--font-mono);font-size:11px">example.com MX → mail.example.com</code></td></tr>
+      <tr><td><span class="tag tag-green">TXT</span></td><td>Arbitrary text — SPF, DKIM, domain verification</td><td><code style="font-family:var(--font-mono);font-size:11px">example.com TXT → "v=spf1..."</code></td></tr>
+    </table>
+
+    <div class="section-title">TTL — Time to Live</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label">What TTL does</div>
+        <div class="box-sub">DNS response cached for TTL seconds. After expiry, resolver fetches fresh record. Balances freshness vs performance.</div>
+      </div>
+      <div class="box">
+        <div class="box-label">TTL trade-offs</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          Low TTL (60s) → changes propagate fast, more DNS queries<br>
+          High TTL (3600s) → cached longer, changes slow to propagate
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Interview answer:</strong> DNS resolves domain names to IP addresses using a hierarchical system of root, TLD, and authoritative servers — typically via recursive resolution with caching for performance.
+    </div>
+
+    <div class="section-title">Resolution chain to memorise</div>
+    <div class="arch-flow" style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;font-family:var(--font-mono)">
+        <span class="tag tag-gray" style="background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);color:var(--color-text-secondary)">Browser</span>
+        <span style="color:var(--color-text-tertiary)">→</span>
+        <span class="tag tag-blue">Cache</span>
+        <span style="color:var(--color-text-tertiary)">→</span>
+        <span class="tag tag-teal">DNS Resolver</span>
+        <span style="color:var(--color-text-tertiary)">→</span>
+        <span class="tag tag-amber">Root</span>
+        <span style="color:var(--color-text-tertiary)">→</span>
+        <span class="tag tag-amber">TLD</span>
+        <span style="color:var(--color-text-tertiary)">→</span>
+        <span class="tag tag-amber">Authoritative</span>
+        <span style="color:var(--color-text-tertiary)">→</span>
+        <span class="tag tag-green">IP</span>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Interview question</th><th>Answer</th></tr>
+      <tr><td>Why is DNS scalable?</td><td>Hierarchical delegation — root doesn't know everything, delegates to TLD, TLD delegates to authoritative. Distributed responsibility.</td></tr>
+      <tr><td>Why not single DNS server?</td><td>Single point of failure, high latency, can't handle billions of queries. Hierarchy + caching solves this.</td></tr>
+      <tr><td>Why is caching important?</td><td>Reduces latency (no repeated lookups), reduces load on root/TLD servers. Most queries served from cache.</td></tr>
+      <tr><td>What is TTL?</td><td>How long a DNS record is cached. Low TTL = fast propagation, more queries. High TTL = slower propagation, fewer queries.</td></tr>
+      <tr><td>Recursive vs Iterative?</td><td>Recursive: resolver does all work for client. Iterative: client queries each server itself.</td></tr>
+      <tr><td>How does DNS enable load balancing?</td><td>A record returns multiple IPs. Resolver picks one (round-robin). Different users get different IPs → load spreads.</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
