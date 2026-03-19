@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Level Design (HLD) Notes</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --hover-color: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 2rem 1rem;
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        h1 {
+            color: var(--text-main);
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            margin-top: 0;
+        }
+        p.subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+        }
+        li {
+            margin: 0;
+        }
+        a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        a:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+            color: var(--primary-color);
+        }
+        .number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background-color: #eff6ff;
+            color: var(--primary-color);
+            border-radius: 50%;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        @media (max-width: 600px) {
+            ul {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HLD Notes Directory</h1>
+        <p class="subtitle">Complete Collection of High-Level Design Concepts</p>
+        <ul>
+            <li><a href="1.Network_Protocol/networking_revision_notes.html"><span class="number">1</span> Network Protocol</a></li>
+            <li><a href="2.capTheorem/cap_theorem_notes.html"><span class="number">2</span> CAP Theorem</a></li>
+            <li><a href="3.microservices/microservices_notes.html"><span class="number">3</span> Microservices</a></li>
+            <li><a href="4.microservicespattern/microservice_patterns_notes.html"><span class="number">4</span> Microservices Pattern</a></li>
+            <li><a href="5.scaling/scaling_0_to_1m_notes.html"><span class="number">5</span> Scaling (0 to 1M)</a></li>
+            <li><a href="6.consistent_hashing/consistent_hashing_notes.html"><span class="number">6</span> Consistent Hashing</a></li>
+            <li><a href="7.estimation/back_of_envelope_estimation.html"><span class="number">7</span> Estimation (Back of Envelope)</a></li>
+            <li><a href="8.sqlvsnosql/sql_vs_nosql_notes.html"><span class="number">8</span> SQL vs NoSQL</a></li>
+            <li><a href="9.Idempotent_API/idempotency_notes.html"><span class="number">9</span> Idempotent API</a></li>
+            <li><a href="10.HighAvailabilitySystem/high_availability_notes.html"><span class="number">10</span> High Availability System</a></li>
+            <li><a href="11.DistributedMessagingQueue/messaging_queue_kafka_notes.html"><span class="number">11</span> Distributed Messaging Queue (Kafka)</a></li>
+            <li><a href="12.Proxy vs Reverse Proxy/proxy_server_notes.html"><span class="number">12</span> Proxy vs Reverse Proxy</a></li>
+            <li><a href="13.LoadBalanceranddifferentalgorithm/load_balancer_notes.html"><span class="number">13</span> Load Balancer &amp; Algorithms</a></li>
+            <li><a href="14.Distributedcacheandcachingstrategy/caching_notes.html"><span class="number">14</span> Distributed Cache &amp; Strategy</a></li>
+            <li><a href="15.HandleDistributedTransactions/distributed_transactions_notes.html"><span class="number">15</span> Handle Distributed Transactions</a></li>
+            <li><a href="16.DatabaseIndexing/database_indexing_notes.html"><span class="number">16</span> Database Indexing</a></li>
+            <li><a href="17.concurrencycontrolindistributedsystem/concurrency_control_notes.html"><span class="number">17</span> Concurrency Control in Distributed System</a></li>
+            <li><a href="18.TwoPhaseLocking/two_phase_locking_notes.html"><span class="number">18</span> Two Phase Locking</a></li>
+            <li><a href="19.OAuth/oauth2_notes.html"><span class="number">19</span> OAuth</a></li>
+            <li><a href="20.SymmetricandAsymmetricEncryption/cryptography_notes.html"><span class="number">20</span> Symmetric &amp; Asymmetric Encryption</a></li>
+            <li><a href="21.JWT(jsonWebToken)/jwt_notes.html"><span class="number">21</span> JWT (JSON Web Token)</a></li>
+            <li><a href="22.ThunderingHerdProblem/thundering_herd_notes.html"><span class="number">22</span> Thundering Herd Problem</a></li>
+            <li><a href="23.API Gateway/api_gateway_notes.html"><span class="number">23</span> API Gateway</a></li>
+            <li><a href="24.service mesh/service_mesh_notes.html"><span class="number">24</span> Service Mesh</a></li>
+            <li><a href="25.HowDNSwork/dns_notes.html"><span class="number">25</span> How DNS Works</a></li>
+            <li><a href="26. In How many Microservices we should divide Monolithic System/monolith_to_microservices_ddd.html"><span class="number">26</span> Microservices Division (Monolith to Microservices)</a></li>
+            <li><a href="27 Attacks with Demo/web_attacks_security_notes.html"><span class="number">27</span> Attacks with Demo</a></li>
+            <li><a href="28.DualWriteProblem/dual_write_problem_notes.html"><span class="number">28</span> Dual Write Problem</a></li>
+            <li><a href="29.service discovery/service_discovery_notes.html"><span class="number">29</span> Service Discovery</a></li>
+            <li><a href="30.RateLimiterAlgo/fault_tolerance_rate_limiter_notes.html"><span class="number">30</span> Rate Limiter Algo</a></li>
+            <li><a href="31.BulkheadPattern/rate_limiter_vs_bulkhead.html"><span class="number">31</span> Bulkhead Pattern</a></li>
+            <li><a href="32.RetryPattern/retry_notes.html"><span class="number">32</span> Retry Pattern</a></li>
+            <li><a href="33.circuitbreaker/circuit_breaker_notes.html"><span class="number">33</span> Circuit Breaker</a></li>
+        </ul>
+    </div>
+</body>
+</html>
