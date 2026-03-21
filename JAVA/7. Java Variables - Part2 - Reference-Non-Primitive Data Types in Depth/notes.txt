@@ -1,0 +1,701 @@
+# Java Variables - Part2 | Reference/Non-Primitive Data Types in Depth
+
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+So let's complete today our variables Java variables part two.
+So in the part one we have looked in depth our primitive data types and also how the float memory representation
+happens.
+And I hope you like that video guys.
+So today is we are going to see a very very important concept which is reference data type.
+So there are two types of data types you already know primitive and non primitive which is also known
+as reference.
+So it is also known as non primitive data types.
+Right.
+So I'll cover today non primitive data type wrapper classes.
+And what is autoboxing and unboxing and what is constant variable.
+And with that these three things we will complete our Java variables.
+Right.
+So what is the next set of video.
+Next set of video would be methods.
+And then main thing memory The management and garbage collector.
+Garbage collector.
+Okay, so this two upcoming videos after this Java variables.
+Right?
+So let's start with the reference data type.
+So what are the different type of reference data type.
+The first is class.
+Second is string.
+Third is interface fourth is array.
+These are the main reference data type.
+But first we have to understand what is reference.
+Hey what is reference.
+Okay so now let's understand with the class.
+So I'll explain you this reference concept by the help of a class and others would become very very
+easy for you.
+Okay so now let's go with the class first.
+So now you already know that how to create a class.
+So this is the keyword to create a class.
+So let's say I am creating an employee class.
+So I have created a class employee.
+And in this class you know that a class has two things properties and functions.
+So this is the property employee ID.
+And these are the functions which are nothing but a getter and setters.
+Get employee ID so it will return the employee ID set employee ID.
+Whatever the employee ID you will set, it will set it right.
+So it's a very, very simple, very, very basic class I have created employee.
+Now how to create an object of this.
+So how to create an object.
+You know that new keyword is used to create an object.
+So now I am creating an I am in another class student right.
+So this let's say this is one method inside that I am creating an object of this employee class.
+So how I created the class name.
+What is the object name which I wanted to give equals to new the class name.
+Right.
+So with that, what it will do is it will create a new object.
+Now we need to understand what is reference in this.
+So here this is heap memory.
+So there are different type of memories which I will cover in the memory management heap stack.
+And how the garbage collector manage this memory for Java.
+Right.
+So don't worry about heap and stack right.
+But currently for understanding the reference understand this.
+There is a memory called heap memory.
+And whenever you do new whenever you created an object new employee here in this case.
+So what you are doing is you are creating one object.
+Here you are actually storing saving certain memory.
+Right.
+So let's say I'm just saying that let's say it has an address of memory AIJ1246987 something.
+So this is a memory, right?
+Now what you have done is you have created an object with this new keyword inside a heap.
+Memory and space is allocated for this object.
+And employee object is what employee object is nothing but a reference.
+So employee object which you created.
+This is a reference to this space which is created in memory.
+So employee object is a reference.
+It holds a reference.
+So this holds a reference to the actual memory Right.
+So that's why it is called as reference data type.
+Reference data type.
+So means whatever the objects you gonna create that will be created into heap memory and.
+Whatever the variable's name which you have defined those actually holds a reference to.
+The actual memory.
+Understood.
+So now I have created a class.
+Now when I created an object new employee a memory has been stored for here.
+Right.
+And this memory reference is hold it into this object emp object emp object.
+So this holds the reference to this one.
+Okay.
+Now understand this.
+So you if you are familiar with C I think C++.
+So you might be aware of something called pointers.
+Pointers I think are when you pass into a method.
+So this is method you Who passed.
+So you passed via underscore this and percent let's say some object.
+So what ultimately it is passing is passing the address.
+Right.
+So in Java there is no concept called pointers.
+Right.
+So you might be aware of pass by value and pass by reference.
+Right.
+So if you are familiar with C++ you know that whenever you pass through under this thing and this means
+you are passing a address which is passed by reference.
+But in Java everything is passed by value.
+Everything is passed by value.
+There is no concept of pass by reference in Java.
+Okay, there is no concept called pointer.
+So how does this, uh, so you know that there are lot of advantage of passing a address or pointer,
+right.
+Because if anything is change in this method with a equals to.
+Let's say here a is ten.
+Now you change here 20.
+So in that above method a value has been changed.
+This all advantage used to come while passing a pointer.
+Now we are saying that hey in Java when everything is passed by value how we get this functionality.
+That's what because of this data type, reference data type which is non primitive data type.
+So I told you now this objects holds the reference to the actual memory.
+Now let's say I have created a new employee an object of this class.
+So what will happen is a space has been stored in the heap memory.
+Now what I have defining is employee object dot employee id equals to ten.
+So this has employee ID.
+So now what id I'm saying is employee ID.
+I am setting it as now.
+Ten.
+Okay, so employee object dot.
+So this is just nothing but a reference to this.
+So in this memory employee ID is set to ten.
+Now.
+Now I am calling a method modify this method I am calling and what I am passing this employee object.
+This employee object.
+Okay.
+So this modify method accept this object employee which is of class type right.
+So employee is a class right.
+So it is accepting this method.
+So now here in this case what will happen is this employee this this is also an variable right.
+So this employee now it holds a reference of what employee object which is getting passed here.
+So in the modify method I am passing a employee object.
+So this will also hold a reference to this employee.
+Now in this method I am saying employee dot employee ID to 20.
+So employee dot.
+So employee dot means this memory dot employee ID change it to 20.
+So now it's change it to 20.
+Right when I came out of this method.
+And when I am the previous method and I'm printing system dot dot println employee object.
+So this is the employee object dot.
+So reference to it.
+This is the memory employee id.
+So now it will print the employee ID 20.
+So output would be here 20 okay.
+So now you see that because of this reference data type we achieve something.
+What we use to achieve through pointers in C++ I think right in C++ only we have this pointer concept.
+So even though everything is passed by value in Java, we can still achieve through this all this thing
+through reference data types Okay, so this is clear, right?
+What?
+How it is able to change this thing.
+Because everything is nothing but a reference in objects.
+So whenever you create a object, new employee a memory is stored.
+Now whatever you are storing in the reference.
+So you access it this memory via reference, whatever the object's name, variable name you have given
+dot employee ID ten.
+So it will be reference to this.
+Now let's say I am creating another, uh, this thing employee.
+This employee.
+Object one.
+Let's say I am creating obj two equals to EMP object.
+Employee object.
+So employee object was pointing to this.
+Now object two.
+Also obj two also will point to the same memory.
+Now if you change anything in object two dot 2.mp id equals to 30.
+This will change.
+Okay so currently all these three points to this memory.
+So that's why it is called as reference data type reference.
+I think you now very much clear what does why this class is called as reference.
+Because it holds a reference to the actual memory okay.
+This is clear.
+Now let's come to the string.
+Very very important right.
+So let's come to the string.
+So now here if you see that even though string is already defined in Java like like in primitive int
+float Boolean.
+Similarly string is also defined in Java.
+But why we consider this as a Reference data type.
+Why?
+Why not primitive.
+Okay.
+So let's understand this.
+Why we considered a string as a reference data type.
+So you know that we have a heap.
+Memory inside a heap.
+Memory there is something called.
+A string constant pool.
+This is very very important.
+So understand this very very clearly that strings are immutable.
+Strings are immutable.
+Right.
+And there are a concept called string literals.
+So you need to understand is why strings are immutable.
+And what are string literals trills.
+Okay, right.
+And why?
+They are coming as a reference data type, even though it is defined in Java.
+So see here.
+The class is like you defined it.
+User defined it.
+Right?
+We as a programmer we define it.
+So currently I have created a class employee.
+Maybe I can create a class.
+Let's say some other class.
+Let's say bird right.
+So I can define this class.
+But here if you see in Java it has defined a string.
+But even though Java is defined why it is considered as reference, why not primitive?
+I'll tell you why.
+So before that, you have to understand that why strings are immutable and what are string literals.
+So now let's say you are creating a string variable a string, let's say S1.
+I'm creating one object S1.
+Hello.
+So this hello which we I have created.
+This is known as string literal, right?
+So this will go inside this string constant pool.
+So this will go here.
+Hello.
+Right.
+Now let's say I'm creating another string.
+String S2 equals to hello again.
+So what it will do is internally it will not create another hello.
+First it will check the string pool.
+Constant.
+Hey does this literal present or not.
+If literal is present then what will do is both will point to the same reference to this.
+Hello.
+So S1 is pointing to this hello literal.
+And when you created a another S2 with the hello, what it will do is it will.
+Inside a heap there is something called string constant pool.
+This is your string constant pool.
+So it will go and first check.
+Hey, does hello literal is already present or not?
+If it is already present, S2 will also point to the same, right?
+So now let's see this.
+Let's.
+And before that I'll show you an example.
+But if I create like this string S3 equals to new string.
+Hello.
+So what it will do is now I am creating a hello again but using new keyword.
+So whenever you use a new keyword it will not be considered as a string literal.
+It created another object inside a heap which has the word hello, right?
+So now here S3 is holding the reference to this one, not the string constant one.
+Right.
+So now let's see this with an example.
+Okay.
+So now here let's say that I have I am creating one string S1.
+Hello.
+So what it might have done is in the string constant pool it have put this literal.
+Now I am doing string S2.
+Again I am doing hello.
+So what it might have done is it will check before uh creating another hello.
+It would have checked first the string constant pool and one string literal is already present.
+So now S2 will also point to the same.
+Now if I do.
+S1 equals to equals to S2.
+So when you do equals to equals to, what it will do is it checks whether they both point to the same
+memory.
+Right.
+Same memory or not.
+So will it.
+Yes.
+They both point to the same memory in the string constant pool, so it should return true here if you
+see that it is returning.
+True.
+But if I do s1 dot equals s2.
+Now it will check the value inside that memory.
+So it is hello for s2.
+Also it is pointing to the same.
+So it would be hello.
+So this will also be true.
+So this will also comes true.
+Now see this.
+Now I am creating S3 equals to new string.
+Hello.
+Now I am doing let's say only now I am saying let's say S1 equals S3.
+First I am doing equals.
+So what equals will match is the content.
+Does S1 and S3 has the same content?
+Yes.
+Both have.
+Hello.
+So it will be true only.
+So it would be true only.
+But if I do now S1 equals to equals to S3.
+Are they both pointing to the same memory in the heap?
+No, because in the new you know that it would create a separate memory.
+So it would be false.
+So you understand right.
+The key major concept here.
+So strings are immutable.
+So immutable means when you say that hey S1 now you changing it to hello world.
+So it will first check.
+Hey Hello world is there.
+No.
+So it will create another hello world.
+But here if you see that it didn't change the previous literal hello.
+Now S1 will change and point to the hello world, but hello is still present.
+Hello is not changed.
+So that's why I say that strings are immutable.
+Once created, they cannot be changed, right?
+So if you see that here S1 is just holding a reference inside a string constant pool, right?
+For a literal or if you create it through new, it will create an object inside a heap, not inside
+a string constant.
+So you are properly clear in the string.
+Why?
+Why string is considered as a reference data type, right?
+Why?
+Because whatever the variable you are constructing, it holds a reference either to a string literal
+or to a object which you have created through new.
+And what are the string and why they are immutable.
+Strings are immutable because whatever the value you have created through string literals.
+So let's say you have created through first hello.
+It will go inside string constant pool right.
+So currently S one is pointing to hello.
+Now I am changing S one equals to something.
+Let's say s j hello would still be there because s two now pointed to hello, but s j is not present
+into their string constant pool.
+So it will create s j.
+And now s one is now pointing to.
+S one is now pointing to s j.
+But here if you see that hello is still present.
+Hello is not changed, right.
+It's just a reference is changed for s one to this one.
+And the value is still present into string constant.
+Right.
+So it's a constant right.
+So it just hold a reference.
+And I think you are very much clear like what is the string literals.
+String literals which are present inside a string constant pool.
+Right.
+And you are very much clear, right?
+How?
+With the example which I have given you is a string equals string two and string one equals to equals
+to S2.
+When we do dot equals it compares the content which is present.
+When you do equals equals is.
+Check whether they are pointing to the same memory or not, the same memory or not.
+Right.
+So do practice it.
+And then you will understand that this string properly.
+Okay.
+Now let's understand the interface.
+So see interface is also a reference data type very very similar to class.
+Nothing much difference.
+So now you know that how to create an interface that we can create an interface through a keyword interface.
+So I have created a person and one method in the interface I have created a profession right.
+And I have created two childs of this interface.
+One is teacher.
+And if you see that this teacher implements the person.
+Similarly, I've created an engineer and it implements it implements the person.
+And when anybody implements the interface, it has to override its method.
+It has to define because here in the interface it is just a method.
+You have to give a proper implementation here.
+So here for the profession in the teacher what is the profession.
+It is returning teaching.
+And in the engineer it is returning software engineer.
+So I have created the interface now here in another class.
+Now I want to create an object of it.
+Right.
+So how I can do it I can do in this four different ways.
+Let's say I want to create an object of this engineer.
+So what I can do is new engineer.
+So what it will do is in the heap it will create a engineer object.
+Engineer object.
+Right.
+And where I am storing a reference to person.
+So here a person is a parent interface, right?
+So a person object holding a reference to this engineer.
+Right.
+So this is valid.
+Similarly I am creating a person another object which is a teacher.
+It it holds an object of what it holds an object of.
+Teacher.
+New teacher.
+So I'm creating an object called teacher.
+Teacher.
+Class.
+Object.
+And this reference is hold in a variable teacher which is of type again person.
+Right.
+So as you already know that we can save the object.
+We can store the object of a child classes in a parent one.
+Right.
+Or either you can also store the teacher itself itself into a teacher itself.
+You can store its object into the same class itself.
+For engineer.
+You can store inside an engineer itself, or you can store an object of engineer into its parent reference.
+Personal right.
+But this is wrong.
+You cannot create an object of.
+Let's say I am creating a new person, new person in an interface.
+You cannot create an object of an interface.
+This is wrong.
+You can't do new person.
+You cannot create an object of an interface.
+Why?
+You can't create an object of an interface?
+Because interface Just define a blueprint.
+And like a method which has to be implemented by the child classes.
+So child classes has the implementation.
+Right.
+So okay so this person has this function.
+So it implement this.
+You can create an object of this.
+You can create an object of it.
+And this object you can keep it inside a parent one.
+Right.
+And you know now right.
+Why you can even though you are created an object of an engineer, why you can keep it into a parent
+one because it is just a reference, right?
+Even though this you are not creating an object of a person, you are just holding a reference to an
+engineer object, right?
+And since it's a parent, it can hold a reference to its child.
+So here teacher again a parent holds a reference to a child object Okay.
+So this is interface is another type of reference data type.
+Now let's see array.
+So what does array is.
+Right.
+So array is nothing but a sequence of memory which stores the same data type.
+So let's say I am creating one integer array.
+Integer array new int.
+Let's say for five.
+So this is the way to create an array.
+This is one dimension array.
+Single array.
+So what I have done is I have created
+A4512341234501234.
+Let's say this is the index of an array.
+And this is a memory.
+So I have booked created five memory locations inside a heap and this is the array A.
+So this holds a reference to this array.
+And this array contains.
+These are in continuous uh sequence.
+And they will hold a single data type.
+So what data type it will hold I created a integer.
+So it will create integer type like five 610 120.
+Right.
+So this is the way to create an array in.
+Then you can either have like int a or like this or n like this.
+Also both are correct way to create an array right.
+So here I can create like this new int five.
+Right.
+So this is also applicable.
+What and what you can do is if you want to assign this.
+So now you have created a memory of five blocks of n type.
+Now you want to fill this.
+How you will fill this a zeroth zeroth index you have put let's say ten.
+So ten would be store here.
+A let's say three index three.
+Let's say 40.
+So it index 340 will store.
+So this way you can do the array new int.
+You have defined the capacity of the array and then define this.
+There is another way is like int array.
+You don't have to do like this new int five.
+You can just go like this 30 2010 4050.
+So what it will do is internally Automatically.
+What it will do is it will see that okay, how many variables one, two, three, four, five.
+So it will create a space of five and put into index zero 30.
+So it will put 30 here, 20 here, ten here, 40 here 50 here.
+Right.
+So this is also a way of doing it.
+So this is also correct.
+You can create like this first memory five and then assign the value for each index.
+That is also correct okay.
+So there is another called 2D array.
+So 2D array is like you would be defining like this a either before the variable and after the variable.
+Also correct.
+Ah this is also correct.
+You can use any okay.
+Now you can let's say new integer.
+This is your row.
+This is your let's say column five by four.
+So consider this now a 2D.
+So five.
+This is your first row.
+This is your column.
+So by default value of int is zero.
+So it would be like it will be created like this.
+So five row 12345 and four means column 41234.
+So this is your 2D array.
+Now you want to fill the value in this how you will fill array.
+Let's say I want to put into 012340123.
+Now let's say I want to put some value here.
+So this is two two.
+So two two is 20 let's say.
+So row is two.
+So 012 column is 2012.
+So here now I am putting 20.
+So it would be changed to 20.
+So RR you can put let's say uh uh, one comma, 330.
+So row is one, row is one, column is three, column is three.
+So this value is you change to 30.
+So this way you can set.
+And another way direct way is like how we did in uh this one is you can also do like this.
+You can define while declaring variable itself let's say one comma five comma, seven comma, four comma,
+two comma three.
+You can type like this.
+So here what it will create is like 157423.
+It created like this.
+So two rows.
+So there are two rows and three columns 123123.
+So it constructed like this internally.
+Now you can access like the same uh one comma two.
+So one row.
+So this is zero one second column 012.
+So this value you will get it.
+Okay.
+So this is how you create a array.
+And you already know that y array is a reference data type.
+Because array it's uh holds a reference to the actual memory.
+Right.
+So whatever the value you change it will change in the memory itself.
+So this is your array.
+See in this this is very very important.
+This so many like you should be very very clear about the string constant pool.
+Right.
+This is very important when you work with strings.
+Right.
+So how this thing works.
+So go again this video you will definitely learn uh just practice create try to create this S1, S2
+compare them right.
+Are their addresses same or not?
+I told you how you can check double equals to dot equals.
+Check the content value double equals to check are they are the same memory in the heap or string constant
+pool or not.
+Okay.
+So reference data type is clear class string interface array.
+And how in Java everything is passed by value.
+Nothing is passed by reference.
+But because of a reference data type we can achieve what all within C++ with we can achieve through
+pointer.
+Okay, now let's move to the wrapper class.
+Wrapper class.
+Okay.
+Now you can ask hey what is wrapper class.
+So in wrapper class we can understand it through two things Autoboxing and unboxing.
+Autoboxing and unboxing.
+So you know that there are eight primitive types eight primitive types int Care.
+Short byte.
+Long float.
+Double boolean 12345678.
+So there are eight primitive types.
+So in Java, for each eight primitive type we have the respective reference type.
+Or you can say that wrapper.
+Int we have integer care.
+We have a character short we have short byte.
+We have this class long.
+We have this float.
+We have this double.
+Is this boolean.
+Is this.
+Now you can ask me hey why we need for each eight primitive type why we need their respective reference
+type, which is known as wrapper.
+Right?
+Why?
+I told you an advantage of reference data type, right?
+If you have understand this reference data type properly, you got the advantage.
+So there are two main reason of introducing this wrapper classes for primitive.
+Why?
+First is you got the advantages like in a memory or in a method.
+You get the capability like if you pass, if you pass the object and you change it here, ultimately
+it will change the memory itself, right?
+Because objects refer to the actual address in the memory.
+Right?
+So here though I have a ten here I have changed it to 20.
+But in the previous method if I printed it it will print 20.
+So this is the advantage which you cannot get in primitive because in primitive.
+So let's say I have int ten here int a equals to ten.
+Now I am passing into the modify method let's say int x right.
+I'm now changing here x equals to 20.
+Now here I am printing System.out.println A which is ten.
+So what it will print.
+It will print 10 to 10 only not 20 which I have changed right.
+So primitive data type is like they are not stored in a heap.
+I will tell you in the memory management.
+So primitive data type is stored in a stack.
+So it is stored in a stack memory right.
+So a equals to ten when it is passed to the method int x.
+So x has received is like ten.
+Now the x value is changed to 20.
+So x has value changed to 20.
+Now this method finish this from this stack.
+This x gone.
+And what is this value a.
+So A is again ten.
+Okay So in primitive type, primitive stores data in a stack and it goes like this.
+So there are a lot of things which can which might be needed that, hey, you want to pass the object
+into another method, another class.
+And there are something change so that need to be reflected.
+So that can only happen through a reference data type.
+So that's why whenever you need a primitive data type a capability, and you want to pass it to another
+method where something modify happen and you want to reflect, you can use this right reference data
+type.
+Second thing, what are the second advantage?
+First advantage I have told you that, uh, change in the like, uh, reference reference capability.
+Right.
+Second, uh, advantage of using a wrapper here is like all the collections which we will see in the
+later videos, the collections.
+The very very important ArrayList HashMap.
+There are so many Java collections which we have.
+They all work on object only reference data type.
+They work on reference data type objects.
+They do not work on primitive.
+So if you want to work or have a data of any type and you want to work with a collection, you want
+to create a collection of integer.
+You can't create and use this since because collections can only work with an object reference data
+type.
+So you have to use integer.
+So that's why for each primitive type, there is a wrapper class provided in Java, which can help you
+to achieve the reference type capability which you wanted for the primitive also.
+So let's say you have defined int a equals to ten.
+Now when you change it to this integer, it's wrapper integer.
+Let's say a one equals to a.
+So this is what we are doing is primitive two primitive to its wrapper class.
+Primitive wrapper class.
+This is known as autoboxing.
+If I do this integer x equals to 20.
+Now I'm creating int.
+Let's say x one equals to x.
+So now what I'm doing is wrapper class to.
+Wrapper class to primitive opposite.
+This is called unboxing.
+That's the difference.
+Simple.
+But the major thing you have to understand is why we need a wrapper class for all eight primitive data
+types.
+We have a wrapper class there which has an kind of an object.
+Why we need it.
+Because of that reference capability that it holds a reference to the actual memory, and if anything
+change in another method, it will change into the memory and reflect it in both the methods.
+Right.
+Second is all the Java collections works only with objects, which is reference data type, not with
+primitive data type.
+Okay, you got wrapper classes.
+Then there is something called constant variable which is the another constant variable.
+So now you know that uh, in a class let's say employee.
+You know that if you can create a static I have already told you the static variable.
+Right.
+Let's say you have created a static, uh, int uh, employee ID equals to ten, let's say.
+So you already know that static from the previous session.
+So let's say you have created two objects now.
+Employee object one.
+Employee object two.
+So this static right.
+So here let's say this belongs to a class.
+This belongs to a class.
+So this m id equals to ten.
+This belongs to.
+So object one also use the same employee ID.
+Object two also uses the same employee ID object because it is static and because it is static.
+It belongs to a class.
+So no matter how many objects you created of this class, all will hold this.
+But is it a constant?
+No, it is not constant.
+If it change, if this object change it to 20, it will change it to 20.
+If this object change it to 40.
+It will change it to 40.
+So how to make it constant.
+So we will add final also.
+So public static final.
+So once you created a final means if you have defined it ten it will be ten only.
+Now if you try to change it like say employee ID equals to 20.
+No this will be a compilation error.
+You can't change the final thing.
+So now this is a constant.
+This is known as constant variable.
+How you can define a constant variable.
+Static final.
+And you know that in the previous I told you the how you can define a constant variable.
+What is the correct way.
+Employee ID in the capital let's say ten.
+So and so.
+Now static means only one copy can exist no matter how many objects you create.
+Final make it like no copy can change.
+They can only read it this value, but they cannot change it.
+They cannot change it.
+So now this employee ID is nothing but a constant.
+This is known as constant.
+This is known as constant variable.
+By putting static and final.
+Okay.
+So that's pretty much on the variables part.
+So this is what about variables.
+So now you I think you are pretty much clear about uh different type of variables.
+How to declare them their naming conventions, primitive data types, reference types now kind of variables,
+conventions, uh, conversions, wrappers and final and static variables I told you.
+Okay guys.
+So that's pretty much on variable.
+And now the next video would be on the methods.
+And after that we will do memory management and garbage collector okay.
+Okay guys.
+See you.
+Bye.

@@ -1,0 +1,354 @@
+# Java VirtualThreads vs Normal Threads || ThreadLocal in Java
+
+Okay guys, let's continue.
+So only two topics are left which is thread local and virtual thread versus normal thread.
+Right.
+So this has been recently asked in an interview.
+So let's start with thread local.
+Very simple.
+So whenever we create a thread whenever we create a thread each thread has this class thread local class
+object in it.
+Right.
+So inside this class there is a variable.
+You can see that thread local variable right.
+So we can say that each thread got a thread local variable where we can store certain data okay.
+So thread local variable hold the value for a particular thread.
+It can hold a string.
+It can hold integer.
+It can hold any object because it's a generic type.
+Right.
+So means each thread has its own copy of thread.
+Local variable.
+So we need only one object of thread local class, and each thread can use it to set and get its own
+thread variable.
+How?
+So let's take an example to understand it better.
+You will get totally clarified.
+So let's say I created an object of thread local, right?
+So this is how you can create an object of thread local.
+So this is the class thread local class right.
+So you can pass it either a string or integer or any object whatever you wanted to store inside it.
+Okay.
+So now for this object.
+Now currently what is the thread going on.
+Main thread.
+Correct.
+So now I am using this thread local object dot set and putting certain string thread dot current thread
+dot get name is a string, right?
+What is the thread name?
+So some string got set into which main thread?
+So main thread.
+So this is the main thread.
+Main thread has something called thread local variable.
+Now I have set it with its name.
+So what would be the name would be main right.
+Because the main thread currently name is this right?
+So even though here if you see that I haven't said that, hey put it into my main thread, it automatically
+does this thread local.
+So here let's see this.
+So here in this example when I'm doing thread local dot set what internally it is doing it is first
+get the current thread.
+What is the current thread.
+So now current thread.
+What it is is main thread.
+Currently it is main thread it is running.
+So this thread it will get main thread.
+Now, inside this main thread I told you that each thread has a thread local class.
+So now here.
+If you see that each thread maintains a thread local class, right?
+So it will fetch this ultimately.
+So it will try to fetch this thread local class for each thread.
+And ultimately it will set into that.
+Okay so you got it.
+We don't have to specify that.
+Hey set into main it internally.
+It will find out what is the current thread, what is the current thread.
+And inside that current thread it will fetch the thread local variable and update it.
+Okay, so here in this example I have created only one object of thread local and now first main thread
+whatever the current thread.
+So main thread is used it to set the name.
+Now it created a new thread.
+Now new thread is also using the same object thread local object and setting the data which it required.
+Now it don't have to tell whether hey, set this into thread one.
+It will automatically do.
+Whenever it is doing this it will say that hey, what is the current thread?
+So current thread is this and then it will put into its own thread.
+So when it is thread one current thread and then inside that it will fetch its thread local.
+And put its name here, whatever it would be thread pool something one whatever the name it would be
+it put it right and the flow begins, continues.
+And here what I am trying to do is this I am fetching the data doing from the thread pool thread pool
+dot get.
+So when I'm doing thread pool dot get right thread local object thread local object dot get right.
+So what is the current thread which is here?
+Main right.
+So from the main it will fetch it get.
+So now let's see this.
+When you do get what it will do first get the current thread whether main or any other particular thread.
+And from there it will fetch the data.
+Right.
+So if you run it it will print main right.
+So only one time you have to initiate thread local thread local class object and you can use this thread
+local class object to set the value for each particular thread which you want, right?
+Very simple right?
+Now there is something that you have to remember to clean up if you are reusing the thread.
+Now we have seen a lot of concept of thread pool executor.
+Inside that.
+Let's say if you have only two threads, thread one, thread two, and there are multiple tasks.
+Task one.
+Task 2345.
+So only these two thread will do all this task.
+So it is possible that thread can be reused.
+So let's say when you are performing task one and thread one has been used, thread one is performing
+the task one and you have set the.
+For this thread.
+You have set the thread local variable something something related to task one.
+I have said something related to task one.
+Now let's say this task one is completed.
+Now the same thread goes to the pool and it picks let's say task four.
+Now task one is now.
+Thread one is doing task four.
+For now see thread local is set to this thread not task.
+So this is thread local variables already set, so we have to clean it up whenever we are reusing the
+thread.
+Okay, and how to clean it up.
+Let's see this.
+So currently main thread is going on right.
+So here I created a thread thread pool thread local object.
+Now here I have created a pool of five.
+So means five threads.
+Are there thread one.
+Thread two.
+Thread three.
+Thread four, thread five.
+Now I am submitting a task first, right?
+And whichever it picks, whichever the thread gonna pick it.
+It is setting thread local object something.
+Some name has been set.
+So now let's say thread one has picked this task and set its thread local variable something name?
+Whatever the thread name would be.
+Okay, now I am submitting 15 more tasks.
+Right I am and now I am trying to see I'm fetching.
+I'm doing just get.
+So generally for this 15 task, 15 new tasks, generally everything should be null thread.
+Thread local variable should be null.
+But here if you see the output out of this, 15 tasks you got for three thread local variable is already
+set.
+How?
+Because when the whichever task.
+So this task this thread.
+So this thread has picked this task first.
+And we have done the thread local variable set for this thread.
+But we haven't cleaned it up.
+It completed this task.
+It went back to the pool.
+And there are another task comes.
+So if it picked, if the same thread picks the another task and you will do get you will see that it
+is already set.
+So we have to clean this up.
+And how you can clean this up.
+It's simple.
+Whenever the task, whenever the thread is about to finish, just call remove thread local object dot
+remove.
+So when you call remove for that particular thread it will clear the thread local variable.
+So now here if you see that I set it do certain task and after that cleaned it up remove.
+I've called the remove.
+Now for 15 times I have run.
+Try to do the get of those 15 all got null.
+Nothing is set right.
+So always remember to clean this task up right.
+If you have a scenario where you are reusing the thread.
+Otherwise concept is very very simple thread.
+Local variable is for each individual threads.
+You can set it the.
+You can set the value and then you can get it whenever you require.
+But remember to clean it up if there is a scenario where you have to reuse it.
+Okay.
+Now let's understand virtual thread versus platform or generally called you can say that normal thread
+whatever.
+Till now we are doing okay.
+Let's first understand the motto.
+What is the motto of virtual thread?
+It is to get higher throughput, not latency.
+Very important.
+How?
+I will tell you.
+But remember this point just now it why virtual thread is introduced.
+Higher throughput.
+Higher throughput means, let's say in one second how many tasks you can perform.
+That's what known as your throughput.
+Okay, so it is to achieve higher throughput earlier in one second.
+You are able to perform 100 requests.
+Now in one second you are able to perform 1000 requests.
+So your throughput got increased and it's a good thing.
+So now let's first understand virtual thread versus normal thread.
+So first again normal thread or also known as platform thread till what we were doing now.
+So let's say this is my platform thread.
+Uh.
+Platform thread I will write HT now.
+So whenever you create a thread new thread.
+Right.
+Let's say this is thread T one.
+And when you do t one dot start you are starting a new thread.
+What JVM will do right?
+So this command what JVM will do?
+JVM will tell that hey operating system, create one native thread, right?
+So it will create one native or or you can say that OS thread.
+Right.
+So if you are creating ten threads means you are ultimately creating ten OS thread.
+Right.
+So this you can say that just a wrapper.
+It's just a wrapper JVM just provide a wrapper for you.
+Platform thread is managed by JVM.
+Platform thread is managed by JVM and you can say that it's just a wrapper.
+Rapper, rapper of two.
+Rapper to what rapper?
+Two of OS thread.
+So if you remember when we studied the thread, I told you that thread has maintained its own stack,
+has program counter and everything.
+That's all the properties of OS thread, right?
+So JVM is just a wrapper that if you are creating ten threads, it ultimately asked OS to create one
+thread for it, right?
+So it is a 1 to 1 mapping.
+So for so platform thread is nothing, just a wrapper around this.
+It's just a wrapper.
+So let's let's say that it's a OS thread.
+So platform thread is just like this.
+It's just a wrapper.
+So you are interacting with this ultimately uh at the back you don't know that you are actually interacting
+with OS thread only.
+So JVM just try to be a mediator between OS thread and you.
+Right.
+So.
+In the simple term, understand that platform thread is maintained by JVM and it's just a wrapper around
+OS thread.
+So if you are creating ten threads, those ten threads are directly 1 to 1 attached with OS threads.
+Okay.
+What is the disadvantage of it?
+First of all, it's slow.
+That's why we have using Thread Pool Executor where we initially itself created let's say ten thread
+100 threads, whatever we wanted because thread creation takes time, right?
+Thread creation takes time.
+That's why we are using thread pool executor that hey, create 100 thread, create 200 thread so that
+we don't have to create thread again and again.
+And why?
+It is slow Because whenever you are calling thread one dot start, you are trying to, uh, you are
+trying to create one thread.
+Java calls OS, right?
+It calls OS, hey, create one OS thread.
+So this call is ultimately is a system call.
+So system call takes time, right?
+Let's say it is taking two millisecond, three milliseconds, whatever time it is taking.
+But it takes it's a system call.
+And system call is expensive.
+So that's why thread creation is always an expensive task.
+And that's why we were, uh, thread pool executor helping this, but inside a thread pool executor.
+Still, we have to sometimes create new threads, right?
+We have minimum pool.
+Maximum pool.
+We have to create threads.
+So this is not completely removed.
+What is the second disadvantage?
+The second disadvantage is let's say that your platform thread or your thread is waiting.
+Thing for certain DB calls.
+So let's say there is a DB call right?
+And it is fetching the data right.
+So let's say you have you have created one thread.
+Thread one.
+And you know that this thread one is ultimately attached to what one OS thread right.
+This is nothing but a thread which we call.
+So when you create a thread one it is ultimately attached to OS thread.
+Now let's say this thread requires certain DB call.
+Now it is uh done some db query, some db query and let's say it needed uh four.
+Second, let's say this query running for long and it is running for four second.
+So now if you see that this thread is in waiting state, and since because of 1 to 1 mapping, this
+OS thread is also not been utilized, it is also waiting because 1 to 1 mapping has been done to this
+thread To this thread, right?
+It's just a wrapper around this.
+So for this four second waiting, this is this OS thread is just waiting.
+It's not doing anything.
+So that's the second disadvantage that if your thread requires certain input output calls DB calls like
+then your OS processing time, your your OS thread might can do certain other tasks, but now it is
+totally blocked because it is directly linked with your thread.
+Okay, so these are the two disadvantage.
+And that's where virtual thread comes into the picture right?
+And here if you see that.
+I think it has been uh available in from JDK 19.
+I can recheck once, but mostly it has been available from JDK 19.
+So what does happen in virtual thread is.
+So now let's say.
+There are two OS threads.
+There are two OS thread.
+And now JVM can create so many virtual threads.
+Right.
+It can create so many.
+These are just an object.
+Now these are totally control of JVM.
+It's a JVM object but it has so many you can create so many objects of virtual thread.
+Now in the virtual thread concept is that if any thread, if any virtual thread which want to run right
+and it's not in waiting state, which is one to execute.
+Then only it would be attached to OS thread.
+Let's say this two threads want to run.
+So this two threads would be attached to OS.
+Now let's say this thread wants to goes to the waiting state.
+Wants to goes to the waiting state.
+As soon as it wants to.
+Goes to the waiting state.
+What now JVM can do?
+Is it detach the link between your OS thread and virtual thread and any other virtual thread which want
+to run that attach.
+That linking would be done now.
+So you understood the concept.
+So now here what we have done is there is no 1 to 1 mapping between virtual thread versus OS thread
+like platform.
+So we can have so many thousands and thousands of virtual threads.
+Right.
+And any time any virtual thread wants to wait.
+Then there would be it.
+Link would be detached from the OS thread and any other thread which is waiting for OS thread OS thread
+time.
+That would provide the connection or the mapping would be done right.
+And apart from that all the functionalities are backward compatible.
+So whatever.
+Till now we have studied in the multithreading.
+All thing can be done with the thread also.
+So it's totally backward compatible.
+Only the difference is how JVM is managing the thread now.
+Earlier JVM has a wrapper around OS thread, right?
+So everything is OS thread only.
+Like say we give a command create a thread start thread.
+So JVM just is a mediator.
+It's just a wrapper.
+It is as OS only to create a thread, right?
+So ultimately we are directly dealing with OS threads.
+But now here we are dealing with virtual threads.
+Right now we are not directly dealing with OS threads.
+We are directly dealing with virtual threads.
+Now JVM controls like how many OS threads is required based upon the capacity of your system.
+Now we don't have control how many OS threads we can create.
+We have only control how many virtual thread we can create.
+Right now JVM totally controls like which thread is waiting.
+If it is waiting, detach the link and provide the link to somebody else.
+Some somebody other thread which required instant processing.
+Okay, so these are the ways we can create a virtual thread.
+So first way is that using thread class thread dot of virtual dot start and runnable tasks.
+Right.
+So it will create your virtual thread.
+Another way is the executor service itself.
+What till now what we have seen right executor service dot this method.
+new virtual thread per task executor.
+So it creates a executor service itself, right?
+And using this we can submit one task runnable task right.
+We have seen a lot of examples of this creating a thread pool and then submit.
+Right.
+So the same thing we can use executor dot new virtual thread thread per task executor.
+Once we get an executor service we can submit the runnable task right.
+So now whatever thread it create it, create virtual thread here.
+So that's the only difference between virtual thread versus platform which we also call as normal thread.
+Till now what we have seen was normal.
+And that's the only difference between virtual why it was introduced.
+And I hope with this example you know that.
+What's the difference?
+Okay guys, if you have any doubt let me know.
+We can discuss more on the comment section, but that's pretty much from my side.
+Thank you guys.
+Bye.

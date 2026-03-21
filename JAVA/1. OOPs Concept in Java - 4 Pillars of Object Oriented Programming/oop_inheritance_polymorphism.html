@@ -1,0 +1,250 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .code-bad { border-left: 3px solid #E24B4A; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('oop')">4 OOP pillars</button>
+    <button class="sub-btn" onclick="show('inheritance')">Inheritance</button>
+    <button class="sub-btn" onclick="show('polymorphism')">Polymorphism</button>
+    <button class="sub-btn" onclick="show('relationships')">IS-A vs HAS-A</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- 4 PILLARS -->
+  <div class="sub-panel active" id="sub-oop">
+    <div class="insight-box"><strong>OOP has 4 pillars. Interviewer asks "explain OOP" — say all 4 in one breath:</strong></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div class="box" style="border-color:#185FA5">
+        <div class="box-label" style="color:#185FA5">1. Abstraction</div>
+        <div class="box-sub" style="margin-bottom:6px">Hide complexity. Show only what's needed.</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Car.drive() — you don't see engine internals</div>
+      </div>
+      <div class="box" style="border-color:#0F6E56">
+        <div class="box-label" style="color:#0F6E56">2. Encapsulation</div>
+        <div class="box-sub" style="margin-bottom:6px">Protect data. Private fields + public getters/setters.</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">account.balance — can't set directly, use deposit()</div>
+      </div>
+      <div class="box" style="border-color:#854F0B">
+        <div class="box-label" style="color:#854F0B">3. Inheritance</div>
+        <div class="box-sub" style="margin-bottom:6px">Child acquires parent's features + adds own. Code reuse.</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Car extends Vehicle — gets engine, adds carType</div>
+      </div>
+      <div class="box" style="border-color:#3C3489">
+        <div class="box-label" style="color:#3C3489">4. Polymorphism</div>
+        <div class="box-sub" style="margin-bottom:6px">Same method, different behaviour based on context.</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">animal.sound() → Dog barks, Cat meows</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INHERITANCE -->
+  <div class="sub-panel" id="sub-inheritance">
+    <div class="highlight"><strong>Inheritance:</strong> Child = Parent features + Own features. Child can access parent. Parent CANNOT access child.</div>
+
+    <div class="grid">
+      <div>
+        <div class="code-block code-good">class Vehicle {
+  boolean hasEngine;
+  boolean getEngine() { return hasEngine; }
+}
+class Car extends Vehicle {
+  String type;
+  String getCarType() { return type; }
+}
+
+Car c = new Car();
+c.getEngine();   // ✔ from parent
+c.getCarType();  // ✔ from child
+
+Vehicle v = new Vehicle();
+v.getCarType(); // ✗ NOT allowed</div>
+      </div>
+      <div>
+        <div class="box" style="margin-bottom:10px">
+          <div class="box-label">4 types of inheritance</div>
+          <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.9;font-family:var(--font-mono)">
+            Single:      A → B<br>
+            Multilevel:  A → B → C<br>
+            Hierarchical: A → B, C<br>
+            Multiple:    ❌ Not in Java
+          </div>
+        </div>
+        <div class="box" style="border-color:#A32D2D">
+          <div class="box-label" style="color:#A32D2D">Diamond problem</div>
+          <div class="code-block code-bad" style="margin-bottom:6px">class C extends A, B { } // ❌
+// c.getEngine() — A or B? Ambiguous.</div>
+          <div style="font-size:12px;color:#0F6E56"><strong>Fix:</strong> Use interfaces — no implementation, so C provides the single implementation. No ambiguity.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Interview line:</strong> Java does not support multiple inheritance with classes to avoid ambiguity (diamond problem). Multiple interface implementation is allowed because interfaces have no implementation — the class provides the single concrete implementation.</div>
+  </div>
+
+  <!-- POLYMORPHISM -->
+  <div class="sub-panel" id="sub-polymorphism">
+    <div class="highlight"><strong>Polymorphism:</strong> One method behaving differently based on context. Two types — compile-time (overloading) and runtime (overriding).</div>
+
+    <div class="grid">
+      <div class="box" style="border-color:#185FA5">
+        <div class="box-label" style="color:#185FA5">Compile-time — Overloading</div>
+        <div class="box-sub" style="margin-bottom:8px">Same name, different parameters. Decided at compile time.</div>
+        <div class="code-block code-good" style="margin-bottom:6px">int sum(int a, int b) {}
+int sum(int a, int b, int c) {}
+String sum(String a, String b) {}</div>
+        <div class="code-block code-bad" style="margin-bottom:6px">int sum(int a, int b) {}
+String sum(int a, int b) {} // ❌ only return type different
+// Compiler checks params only, not return type</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)"><strong>Interview line:</strong> Overloading depends on method signature (name + params), not return type.</div>
+      </div>
+      <div class="box" style="border-color:#0F6E56">
+        <div class="box-label" style="color:#0F6E56">Runtime — Overriding</div>
+        <div class="box-sub" style="margin-bottom:8px">Same name + same params + same return type. Different implementation. Decided at runtime.</div>
+        <div class="code-block code-good" style="margin-bottom:6px">class A { void show() { print("A"); } }
+class B extends A {
+  @Override void show() { print("B"); }
+}
+
+B obj = new B();
+obj.show(); // "B" — runtime decision</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)"><strong>Key insight:</strong> Which show() runs = decided by the actual object type at runtime, not the reference type.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Overloading vs Overriding</div>
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Overloading</th><th>Overriding</th></tr>
+      <tr><td>Class</td><td>Same class</td><td>Parent + Child</td></tr>
+      <tr><td>Parameters</td><td>Must differ</td><td>Must be same</td></tr>
+      <tr><td>Return type</td><td>Can differ</td><td>Must be same</td></tr>
+      <tr><td>Binding</td><td>Compile time</td><td>Runtime</td></tr>
+      <tr><td>Annotation</td><td>None needed</td><td>@Override recommended</td></tr>
+    </table>
+  </div>
+
+  <!-- RELATIONSHIPS -->
+  <div class="sub-panel" id="sub-relationships">
+    <div class="highlight"><strong>Most important LLD concept.</strong> Every class relationship is IS-A or HAS-A. Getting this right = clean design. Getting it wrong = bad inheritance.</div>
+
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box" style="border-color:#185FA5">
+        <div class="box-label" style="color:#185FA5">IS-A (Inheritance)</div>
+        <div class="box-sub" style="margin-bottom:8px">Child IS a type of parent. Use extends.</div>
+        <div class="code-block code-good" style="margin-bottom:6px">class Dog extends Animal {} // Dog IS-A Animal
+class Car extends Vehicle {} // Car IS-A Vehicle</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Test: "Dog IS an Animal" → true ✔ → use inheritance</div>
+      </div>
+      <div class="box" style="border-color:#0F6E56">
+        <div class="box-label" style="color:#0F6E56">HAS-A (Association)</div>
+        <div class="box-sub" style="margin-bottom:8px">One object contains another. Use field.</div>
+        <div class="code-block code-good" style="margin-bottom:6px">class Car {
+  Engine engine; // Car HAS-A Engine
+}
+// ❌ Car extends Engine is WRONG
+// Car is not "a type of" Engine</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Test: "Car IS an Engine" → false ✗ → don't use inheritance</div>
+      </div>
+    </div>
+
+    <div class="section-title">HAS-A has 2 types</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Aggregation — weak</div>
+        <div class="box-sub" style="margin-bottom:8px">Objects can exist independently.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          School → Students<br>
+          School closes → Students still exist ✔<br>
+          Student removed → school list just empty ✔<br>
+          Student class deleted → compile error ✗
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Composition — strong</div>
+        <div class="box-sub" style="margin-bottom:8px">Child's lifecycle tied to parent.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          House → Rooms<br>
+          House destroyed → Rooms destroyed too ✗<br>
+          Rooms can't exist without the House<br>
+          Created inside parent, not passed in
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <strong>Senior-level insight:</strong><br>
+      In real systems: prefer HAS-A (composition) over IS-A (inheritance).<br>
+      Bad: <code style="font-family:var(--font-mono);font-size:11px">Car extends Engine</code> ← Car is not a type of Engine<br>
+      Good: <code style="font-family:var(--font-mono);font-size:11px">Car has Engine</code> ← Car contains an engine
+    </div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>If asked "explain OOP":</strong> OOP has 4 pillars: Abstraction (hide complexity), Encapsulation (protect data), Inheritance (reuse code), Polymorphism (flexibility through same interface, different behaviour).
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Inheritance</td><td>Child acquires parent features + adds own. Child → parent access. Not reverse.</td></tr>
+      <tr><td>Diamond problem</td><td>Multiple class inheritance causes ambiguity. Java forbids it. Interfaces solve it.</td></tr>
+      <tr><td>Overloading</td><td>Same name, different params. Compile-time. Return type alone can't differentiate.</td></tr>
+      <tr><td>Overriding</td><td>Same name + same params in child. Runtime. Actual object type decides method.</td></tr>
+      <tr><td>IS-A</td><td>Dog IS an Animal → inheritance (extends)</td></tr>
+      <tr><td>HAS-A</td><td>Car HAS an Engine → composition/aggregation (field)</td></tr>
+      <tr><td>Aggregation</td><td>Weak — objects exist independently (School → Student)</td></tr>
+      <tr><td>Composition</td><td>Strong — child dies with parent (House → Room)</td></tr>
+      <tr><td>Senior insight</td><td>Prefer HAS-A over IS-A in real systems. Composition over inheritance.</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

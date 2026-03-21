@@ -1,0 +1,379 @@
+# Operators in Java - Part1 | Arithmetic, Relational, Logical, Unary & Assignment
+
+Hello.
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And today in Java we are going to do operators in Java right.
+So we have used couple of them while doing other previous videos.
+Right.
+But today in depth we will see like what are the different types of operators we have and see arithmetic
+relational.
+Many of you already know if you know C++ and all but few operators, which we have to actually focus
+more on the bitwise operators and bitwise shift operator, right.
+And rest of them would be very, very easy.
+You would be able to grasp, uh, as soon as possible.
+But I would say that uh, bitwise bitwise shift operator is very important as it might also help you
+in solving many DSA problems also.
+Okay.
+So let's first start with this.
+Like what is operator.
+So operator is this indicate what action to perform like addition or subtraction.
+This one for example five plus three.
+So here in this this is the operator.
+It tells what action I have to do.
+I have to sum this up.
+I have to subtract this up I have to multiply this up.
+So these which tells which indicate what action we have to do is called operation operator.
+And what are the operand, the action which we have to take.
+So on which on which item action has to be performed.
+Those are known as operand.
+So your operand can be variable.
+It can be constant.
+Also variable means if you have a equals to three b equals to four and you are doing a plus b.
+So here these are variables.
+These are operands right.
+And this is operator.
+So we have to do what action do addition on which items these two variables right.
+Similarly same example five plus three.
+This is your operator and your operand is constant.
+Directly we have defined the constant values like five and three.
+So these are your operand on which this action has to be taken okay.
+So you now clear what is operator.
+What is operand and what is expression.
+So you might heard like this is the expression.
+This is the expression a lot of places lot of if you are reading some blogs or discussing with your
+team.
+So what is expression is it consists of one or more operand and zero or more operators.
+Right.
+So you have one or more operand and zero or more operators.
+So generally if I say that five plus three into four like plus a, like some something I have.
+So this is all combining known as an expression.
+So expression consist of one or more operand and zero or more operators Okay, so now we have this basic
+thing.
+Now let's see what are the categories of operator in Java.
+Okay.
+So how many categories we have is
+123456789
+okay.
+So now let's first go with the arithmetic operator.
+So see this is very very basic arithmetic operators I will not go in depth for this arithmetic operation.
+Plus minus divide modulus multiplication.
+These are very similar in all the languages.
+This is one of the simple class Java class I have written.
+Right.
+Uh how division works.
+So five divided by two I have taken a mod plus minus multiplication.
+So this is the output.
+You will get five divided by two.
+You write right.
+Uh two two.
+So this is your the answer for this division one.
+And this is your for the mod one okay.
+So here you got two.
+And this is you got one here.
+Similarly addition subtraction multiplication you will get it.
+So this is very basic one.
+So I am skipping it.
+But if you have any doubt in this please ping me in the comment section.
+Second is relational operators.
+So what does relational operator is.
+So relational operator compares two operand relation and return either true or false okay.
+So it will always return you true and false right.
+And what does it compare.
+It compares two operand relation right.
+Operand can be your constant show.
+So five and three.
+So there would be some operator.
+So it determines this relation right.
+Or it can be also operand can also be a variable.
+Let's say a b.
+There would be some operators which will discuss.
+It will tell what is relation.
+So here if you see the relational operator What are the different type equals to not equals to greater
+than less than greater than equals to less than equals to.
+Again very very basic.
+You might have used already in your C++ or other language also.
+So it's a self explanatory.
+But I'll just this just go through this example.
+Uh, if you are totally new to this one.
+So A is four, B is seven right.
+So these are the different relational operator A equals to equals to b.
+So this is a relational operator.
+Right.
+Answer would be the true or false only equals to equals to four is equal to equals to seven.
+No.
+So it is false a not equals to b.
+Yeah four not equals to seven.
+True four is greater than seven.
+False four is less than seven true.
+Like this okay.
+So again it's a very simple one.
+Go through it once relational operator.
+You will easily get it.
+But understand that it will always return true or false.
+And it compares the relation between two operands.
+Then there is something called logical operator.
+Logical operator.
+What it does is it combines two or more condition and return.
+True or false.
+Okay.
+So it combines two or more condition for example.
+So there what are the two types of logical operator and logical and and or logical or.
+Okay.
+There is something called logical not also I will but are generally some sometimes somewhere you read
+they will put it into here.
+Not also logical, not also somewhere it also put into unary operator also.
+But I find it that logical not is more suited to a unary operator.
+I will tell you why, but first let's understand the logical operator.
+So these are the two logical operators.
+Logical and logical or and what does it do.
+It combines two or more condition and return.
+True or false?
+Let's see an example here.
+A is four, B is seven.
+So now let's see first logical and.
+So this is your logical.
+And we are doing.
+So what I am doing is look out this condition.
+A less than three and a not equals to b.
+So what.
+First I told you that logical operator combine two condition.
+So it is combining this and this condition.
+So see this is a again certain check happening.
+This is again a certain check happening.
+And we are combining it then with the end.
+And what ultimately it will return.
+It will return ultimately true or false.
+Okay.
+So I will tell you uh, so a less than three A is four a less than three.
+So is it true or false.
+This is relational.
+Operator.
+Right?
+So is it true or false?
+A less than three.
+So this is false.
+And and right.
+So in and and it's generally let's say like this.
+If both are false it would be false.
+If one is false one is true it again would be false.
+If one is true one is false.
+Again it would be false.
+If both are true, then only it would be true.
+Okay.
+So generally that's what and is.
+But here we have to understand.
+One more thing is as soon as the first one you get as false.
+As soon as the first one you get as false, right.
+You know that even one of them is false.
+So here two are false.
+Either one of them is false.
+You have to return false.
+So the first condition is false.
+During the logical end, it will not even compute the second one.
+It will directly return false, right?
+Let's say for.
+In this example, a less than three does A is what four less than three and A not equals to B means
+four, not equals to seven.
+So four is less than three.
+No false.
+This will return false.
+So we know that in the end condition if any of this condition is false right it return false.
+So it will not even compute this part.
+It will simply return false.
+Right.
+So second condition is a greater than three.
+So four greater than three and a not equals to b four.
+Not equals to b is seven.
+So now in this case first is four greater than three true.
+So one is true.
+Now it has to now evaluate the second one, whether the second one is also true.
+If the second one is also true, means it has to return true.
+If the second one is come as false, it will return false.
+So now in that case, it will evaluate the second one.
+So for not equals to seven true.
+Both are true true.
+So it will return true okay.
+Now similarly for the or also for is less than three or for not equals to seven.
+Four is less than three false or four not equals to seven.
+So now here in the Or case just remember that it is like zero means considered as a false 00011011.
+So zero zero is your kind of both are false false.
+Even one of them is true.
+Return true.
+One of them is true is returned true.
+Both of them are one return true.
+This is what or is.
+So here, if you see in that case, if the first one is false, it has to evaluate the second one to
+know that the second one is also false or not.
+If it is false, then only it will return this.
+If the second one is become true, it has to return true, right?
+So the first one is false.
+Then it it will evaluate the second one for not equals to seven.
+This will true.
+So ultimately it will return true.
+Similarly it's for greater than 3 or 4 not equals to seven for greater than three.
+True.
+Now one is true in the or one is true true true true.
+It output is true.
+So it will not evaluate the second one itself.
+It will directly return from the here itself.
+True.
+Okay.
+So logical.
+Operator.
+You got it right.
+It combines two or more condition and return.
+True or false.
+So now let's see say what is unary operator?
+Unary operator is known as the operators, which require or work only on single operand single operand.
+Right.
+So there are 12345 increment decrement unary minus, unary plus, and logical not.
+Let's see this example.
+Okay.
+So here take first increment.
+Increment is your plus plus okay.
+So now there are two type of increment like so let's say you are doing operand.
+You are operand plus plus or plus plus operand.
+This one is known as postfix postfix increment.
+This one is your known as prefix.
+Increment okay.
+There is a slight difference in that.
+I will tell you how, but understand that what this will do is it increments the value.
+How?
+Now let's see this one.
+So I have kept the value a equals to five.
+So operand.
+So now unary operator is works only on one operand.
+It's not like whatever we have seen relation that a plus b it require two operand a greater than b relational
+operator require two operand.
+It works only on one operand.
+That's why they are known as unary single.
+So let's see this increment operator part.
+First I am using an example of postfix increment.
+So let's say I have done this.
+Uh, a is five.
+I am doing what a plus plus.
+So what does it do.
+So first it will return whatever the value it has it will return it and then increment its value a value.
+So I am going System.out.println A plus plus.
+So first it returns whatever the value A has.
+So A has five.
+It will return it.
+So System.out.println will make print five.
+And then it will increment the value of a.
+Now value of a become six.
+Okay.
+Now what happening is I am doing prefix one plus plus a.
+So now what does this do.
+Is it will first increment the value and then return.
+So current value of what is happening six after this first statement.
+So now I am doing System.out.println.
+Then prefix increment plus plus a.
+So six.
+First it will increment.
+It will plus plus it will become seven and then it will return.
+Then it will return.
+So it will print seven.
+Similarly the for the decrement also.
+So current value of a is going as seven.
+So Out out dot println a minus minus.
+So first it will return.
+It's a postfix right.
+It will first return the value which is seven and then decrement its value by one.
+Then it becomes six here.
+So next statement is System.out.println.
+And the prefix decrement.
+So first it will decrement the value and then return it.
+So what is a value now five that will return five okay.
+So you understand the increment and decrement order.
+So in the both increment and decrement order you have a postfix and prefix okay.
+In the postfix first the operand value is written and then its incremented in the prefix.
+First operand value is incremented and then return.
+Then something there is a logical not operator.
+I told you right, log some where you find this logical not also here also inside the logical operator.
+But this is a unary.
+This is a unary operator means it works with only single operand logical, not operator.
+So what does it do is if the value is true, it will make it false.
+If the value is false, it will make it true, so it will change it.
+So I have one flag which I make it true.
+Now I am doing a logical operator.
+So this is your logical operator.
+Like not okay so I put this before the flag.
+So current value of is true.
+So what it will change is true to false.
+So it will print false right.
+So only one operand it works on.
+Then we have unary minus you have.
+Plus if you put this unary minus above this operand it will change its make it to the negative.
+So minus five and similarly unary plus if you add it it will make it positive number again plus five
+okay so very simple here.
+But understand that unary operator works on single operand.
+And these are the five types of unary operators.
+Then we have something called assignment operators, like used to assign a new value to the variable.
+Right.
+So here you can see that we have let's say a equals to b.
+This one.
+The left hand side one is known as generally variable right here in the assignment.
+And this is what known as generally value.
+So we are assigning the value to a variable right.
+And this is the assignment operator.
+So we have different type of assignment operator right.
+So generally this is the basic one equals to a equals to five.
+So what we are doing is we are assigning the value to a variable a okay.
+And whatever we have seen this plus minus divide right.
+We can also have a assignment operator with that.
+Like like this a equals to.
+If you write this a plus five.
+Let's say you have defined a equals to five.
+Means now you have assigned the five to the A.
+Now you can also do this a equals to a plus five.
+So or you can say that a equals to a plus four.
+Okay.
+So now whatever the value of A has five now it will become five plus four nine.
+So in the short you can also write it like this A plus equals to four.
+This is equivalent to this only a equals to a plus four right.
+So this is also an assignment.
+You can use this as an assignment also.
+So you can do plus minus equals to multiply equals to divide equals to all this operators you can use
+with the equals to also.
+So it will be simple like this a equals to a.
+Whatever the operator you are using here that operator let's say divide.
+And what is the value.
+Right.
+So here it would be short form would be a divide equals to four.
+Right.
+So this divide equals to will be expanded like this equals to and then a divide by the value.
+Okay.
+So this is uh here assignment operator.
+Just uh, for this one, just have a look at this.
+A equals to five.
+This is the variable.
+So I have first do a normal assignment.
+Assign the value of A to a variable.
+So now my variable become five.
+So I'm printing it this.
+Now I'm assigning it again a variable to zero.
+So zero now become to a variable.
+Now I am doing variable plus equals to a.
+So how it would be treated variable equals to variable plus a.
+This is how it will be transformed to.
+So zero plus a what is five.
+So it will print five.
+So variable the value.
+It now is your five.
+Now I am doing variable minus equals to.
+So it would be variable equals to variable minus three.
+Variable was five five minus three.
+It will become two.
+Variable value is now two.
+Now I am doing variable into equals to how it will be transformed into variable equals to variable into
+a which is five.
+So variable was two 5 to 10.
+Similarly this would be variable equals to variable divided by what is the a 510 divided by two two.
+So you got it right.
+You can put any variable operator operator like this with the assignment.
+And that would how it would be translated to.
+Okay.
+Now this is very important.
+Bitwise operator.

@@ -1,0 +1,374 @@
+# How FLOAT and DOUBLE  Number Stored in Memory?  |  IEEE 754 Representation
+
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And, uh, before proceeding, uh, please excuse my voice as I have a minor cold.
+Okay, so in the last class, we have seen that we have completed the primitive types.
+And I told you that the float and doubles are very important in that.
+Right?
+Because lot of interview question has been asked on top of this float and double.
+Okay.
+So now here you see that, uh, there is a float value 0.7 F, right?
+So when we are printing it.
+Right.
+So see what values are coming is the word value is coming is 0.6999998879071, but not exactly 0.7 F.
+That's the issue with the float.
+And that's why we don't use IT industry.
+But it makes a very good interview question like how come this value came.
+So today I'm going to explain this only that how this number generally get arrived okay.
+How actually it is stored in memory.
+So let's go ahead.
+So here in the float you know that.
+Float is store 32 bit I triple E754.
+In this format float stores the data.
+But now what does it mean.
+Right.
+So out of 32 bit.
+So this is the format.
+One bit is for the sign right.
+Whether if it is a negative negative you know it should be one for positive it would be zero okay.
+Uh then next eight bits.
+Eight bit is for exponent.
+I'll explain you how and rest 23 bit.
+23 bit is for mantissa.
+Or significant?
+Significant.
+Generally we use the mantissa.
+Okay, so I'll explain you this how the data is stored in this format with one simple example.
+4.125 right.
+How it got stored here.
+And then we will do a revert back to this value again right.
+And one I will tell you about 0.7 float value 0.75.
+And this .4.125.
+And you see that right when you check 0.7 what was the outcome?
+0.699999 how we got it.
+So we'll check for both.
+One is simple one one is hard one okay.
+So let's start with 4.125 float.
+So when we did this how it actually stored in the memory.
+So first step step one.
+Okay.
+So we have to store in this format.
+So for this step one.
+Convert it to.
+Binary.
+Okay.
+So for how for would be converted to binary you know right.
+Decimal to binary conversion.
+Right.
+For so two to the 402120201.
+And from bottom to up.
+So 100.
+So four is converted to 100.
+And then 0.125.125.
+How you can convert it to decimal
+.121252 into two.
+We want to convert it to binary right.
+So into two.
+So 0.125 into two is your .25 right.
+So we take zero and 4.25 into two, it would be 0.50.
+So we have taken 0.50.50 into 21.00.
+So we have taken 100 and go from top to bottom.
+So it would be 0.001 okay.
+So 4.125 after the step one would be 100.001 right.
+4.125 okay.
+So this is our step one.
+Step two we need to make it in the.
+Form of this one.
+Point your some decimal values into two raised to power exponent.
+We need to convert into this form.
+So how we can convert it.
+So 0.001 if I want to convert it to this form.
+So point I have to bring it to ahead two two decimal ahead.
+Right.
+So it will become 1.00001 into since its base is two.
+Now I have converted.
+So this is a decimal.
+Its base is two right.
+So when decimal goes front so it will become two raised to power.
+So here I make two step ahead right.
+So two raised to power two.
+If I make two step back two raise to power minus two okay.
+And why two.
+Why not ten.
+Because it's a basis two.
+So now.
+So step one is converted to binary which we know.
+Step two is make it in the form of one point and then the value.
+So I have converted it to this two I have to make dot two step ahead.
+So that's why two raised to power two.
+And now it is in the form of one dot something something something okay.
+Step three.
+Add bias to the exponent.
+So now here if you see that this is after dot this is known as mantissa.
+This is known as mantissa.
+This is your exponent okay.
+So in the step three we have to add bias to the exponent.
+So for the float.
+So for the float here bias is 127 uh two raise to power seven minus one uh 127 is the bias right.
+So here we add 127 and the exponent is positive two right.
+So it 129 we will store it.
+So now you can ask me a question right.
+Hey why we need bias here.
+Right.
+Because let's say if it is negative let's say if it was 0.001 right.
+And we want it to convert into this form and dot, we have to take it back till here let's say right.
+So three steps back so I can have two raised to power minus three.
+So I can represent minus three.
+Right.
+And we know that minus three how to represent in the sign second complement.
+But here in the float right in IEEE IEEE 754 they haven't used the signed second complement to showcase
+the negative.
+So instead what they used is they use the bias right.
+If it is minus three.
+So it would be it would be stored here in the exponent would be 124.
+Right.
+So if it is positive.
+So 127 plus two.
+So 129 is what is actually stored in this exponent.
+Okay.
+So it step three is add bias to the exponent.
+Bias is for float is 127.
+Step four.
+Now fill it up.
+So first bit is sign bit.
+So over is 4.125.
+So it's a positive only.
+So it's zero.
+Then next eight bit is your exponent.
+Now over.
+My exponent is 129.
+So two plus bias.
+So it's a 129.
+So you know right.
+So eight bits 123456781248
+1632 64 128.
+So for 129 this should be one, this should be one.
+So
+12345678.
+So this eight bit is now my.
+Exponent.
+And what I told you here is mantissa.
+So what is the mantissa.
+We have come up with this 12345.
+12345.
+And but here are total 23 bits.
+So rest would be 00000000 till all 23 bits rest.
+So this is how actually it is stored in the D actually memory right in IEEE IEEE 754 format.
+Now let's do revert back like okay.
+If we now get the value, are we getting the same value for 4.125 or not.
+So first we have to convert it to we.
+So this is the formula.
+It's the same thing how what we did a step right.
+So while taking it back we follow the same thing.
+Right.
+So one plus.
+mantissa into two raised to power exponent minus one.
+27.
+So why we are subtracting one?
+27 I told you we are added the bias right here we have added one plus because uh, here if you see that
+this one dot we haven't done anything we leave it.
+We only stored mantissa.
+Right.
+So that's why we are doing one plus.
+So one plus mantissa and sign bit minus one is like if it is zero it will become one.
+And if it is one it will be converted into minus only.
+Okay.
+So we have.
+So this is the formula.
+We have to now fill this up minus one.
+So sign bit is zero zero into one.
+Plus we have to compute this mantissa.
+So this is the mantissa.
+We have to compute it into two raised to power e.
+This is your exponent.
+So we know that it's uh, this is 128.
+This is one, uh, so 129, is there?
+Right?
+Total.
+129 -127.
+So, you know.
+Right.
+So this mantissa is your after decimal.
+So it is you know that it is how it how we can compute this.
+It is two raised to power minus one two raised to power minus two two raise to power minus three two
+raised to power minus four two raised to power minus five.
+Likewise.
+So one is that two raised to power minus five.
+Right?
+So it is one raised to power like this.
+So now if we go this so minus one raised to power zero one into one plus one raised to power two raised
+to power five would be .03125 into two to solve this one.
+So it would be 1.03125 into four.
+And if you multiply it 4.125.
+So now here if you see that when I change for 4.1 to 5, the when we fetch it from the memory, I got
+4.125.
+It's 4.125.
+Now let's see.
+What does it come?
+4.125.
+Right.
+But now let's see a little bit difficult.
+One.
+Right.
+Now I'm showing you the little difficult 1.7 F right.
+So here 0.7 F is step one.
+What is the step one.
+Convert it to binary.
+Convert it to.
+Binary.
+So 0.7 into 21.4.
+So we have taken a one.
+And it become 0.4 into
+2.80.8
+into 21.6.
+So we have taken a 1.6 into two, 1.2, 1.2 into two, 0.4.
+Right.
+So we have taken a zero here.
+And if you see that we are now repeating again from 0.4.
+Right.
+So 0.4 into 20.8.
+So again if you see that it's almost same now right.
+So it will be like for and from here to here.
+So 0.7 would be like
+.101100110.
+Then from here again repeating 01100110011.
+So it would be just like this okay.
+So this is the first step.
+First step is convert it to the binary.
+Second step is we have to make it in the form of like this into two raise to power exponent.
+Okay.
+So now here we have to make.
+So dot should be.
+Now move to here.
+So it should be
+1.011001100110.
+Like continuously go on into two raise to power only one shift to the right.
+I have done right.
+So two raised to power minus one.
+Okay now what is the third step?
+Add bias to the exponent 127 plus minus one exponent is minus one right.
+So it would be 126.
+So this is your exponent.
+Now let's store it in the memory.
+So we are storing 0.7 f.
+So it's a positive.
+So it is zero then 126 eight bits right?
+126 okay, now your is mantissa.
+So mantissa is
+0110011001100110.
+So 23 bit.
+Right.
+So 123456789 1011 1221 2223.
+So till this.
+So this is how we store it in the memory.
+Now take it.
+Revert back in the form of minus one into sign into one plus mantissa into two.
+Raised to power exponent -127.
+So minus one raised to power zero into one.
+Plus we will compute mantissa two.
+Raised to power E is 126 126 -127 okay.
+So now let's first, uh, so minus one raised to power.
+Zero is one into one plus one mantissa.
+We have to compute into two raised to power minus one.
+Okay.
+So now let's compute mantissa.
+So you know right mantissa.
+This is two raised to power minus one two raised to power minus two minus three.
+This is minus four minus five minus six.
+Minus seven minus eight minus nine.
+This is minus ten.
+-11.
+-12.
+-13.
+-14.
+-15.
+-16.
+-17.
+-18.
+-19.
+-2021.
+-22.
+-23.
+So this is we have to compute the mantissa.
+So one is at minus one minus two minus three.
+So one raised to power.
+Plus then six and seven two raised to power six, seven, ten and 11.
+Plus like this.
+Right?
+Ten.
+11.
+14.
+15.
+18.
+19.
+14.
+15.
+18.
+19.
+I think 22 and 23.
+Right.
+So two raised to power.
+This is what we have is .25 plus.
+This is computed as .125 plus uh this is computed as uh this is computed as uh
+.015625
+plus this is computed as
+.0078125.
+This is computed as plus.
+.000976562.
+Similarly, we have to keep adding all these things.
+So I am just uh computed till value here.
+Right.
+You can add all to get an exact value.
+So I might get very similar to .699 something, but not exactly the same because I'm not computing more
+ahead of it till two raised to power ten.
+Now if you sum it up, what is the value you are getting?
+.399414062.
+So this is your mantissa.
+Uh
+.399414062.
+Right.
+So it would be your one plus.
+Uh, 1.399414062
+into one.
+Raised to power two.
+Right.
+What?
+You get it here?
+Here.
+You will get it.
+0.699707031.
+So here not exactly like 0.699999 because I haven't computed this and all, but if you do it all you
+will get more like this.
+But now if you see that we we try to compute it for point seven F, we store it in the memory and we
+try when we try to get it back, what we got .6999 right.
+So this is how generally the computation happen.
+I hope you got it right.
+So this is for float.
+Double is exactly same.
+So double is.
+64 bit right.
+So here instead of this.
+So this for double It would be one bit for the sign, 11 bit is for the exponent and rest is for your
+mantissa.
+Right.
+And what was the bias for double.
+Right.
+11 bit right.
+So two raised to power ten minus one 1023.
+That would be the bias for double.
+Okay I think you guys are you know right how the float value is stored in the memory.
+How to retrieve it.
+Right.
+Uh, so it's very frequently asked in the Java interview questions.
+Right.
+Even sometimes experience ah get confused with this.
+So do practice it right.
+Instead of this we use Bigdecimal Bigdecimal.
+Bigdecimal is like if you store like 4.7 it output would be 4.7, not like 4.699999 something.
+Right?
+So always use Bigdecimal while you are dealing with the decimals value.
+Okay guys, see you soon.
+Thank you.
+Bye.

@@ -1,0 +1,244 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .code-bad { border-left: 3px solid #E24B4A; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('oop')">OOP basics</button>
+    <button class="sub-btn" onclick="show('abstraction')">Abstraction</button>
+    <button class="sub-btn" onclick="show('encapsulation')">Encapsulation</button>
+    <button class="sub-btn" onclick="show('access')">Access modifiers</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OOP BASICS -->
+  <div class="sub-panel active" id="sub-oop">
+    <div class="insight-box"><strong>OOP in one line:</strong> A programming paradigm where everything is modelled as objects having state (properties) and behaviour (methods).</div>
+
+    <div class="section-title">Real world → Objects → Code</div>
+    <div class="grid-3" style="margin-bottom:16px">
+      <div class="box" style="text-align:center">
+        <div style="font-size:20px;margin-bottom:6px">🐕</div>
+        <div class="box-label">Dog</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.8">Properties: color, age<br>Behaviour: bark(), eat()</div>
+      </div>
+      <div class="box" style="text-align:center">
+        <div style="font-size:20px;margin-bottom:6px">🚗</div>
+        <div class="box-label">Car</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.8">Properties: type, fuel<br>Behaviour: drive(), stop()</div>
+      </div>
+      <div class="box" style="text-align:center">
+        <div style="font-size:20px;margin-bottom:6px">🎓</div>
+        <div class="box-label">Student</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);line-height:1.8">Properties: age, address<br>Behaviour: updateAddress()</div>
+      </div>
+    </div>
+
+    <div class="section-title">Class vs Object</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Class — the blueprint</div>
+        <div class="code-block" style="border-left:3px solid #185FA5;margin-top:6px">class Student {
+  int age;
+  String address;
+  void updateAddress() {}
+}</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Template only. No data yet.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Object — the instance</div>
+        <div class="code-block" style="border-left:3px solid #1D9E75;margin-top:6px">Student s1 = new Student();
+Student s2 = new Student();
+// Two separate real students</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Real data. Independent state.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Procedural vs OOP</div>
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Procedural</th><th>OOP</th></tr>
+      <tr><td>Focus</td><td>Functions</td><td>Objects (data + behaviour together)</td></tr>
+      <tr><td>Data access</td><td>Freely moving — anyone can access</td><td>Controlled via access modifiers</td></tr>
+      <tr><td>Coupling</td><td>Tight — functions depend on each other</td><td>Loose — objects interact via interfaces</td></tr>
+      <tr><td>Security</td><td>Low — no data hiding</td><td>High — encapsulation</td></tr>
+    </table>
+  </div>
+
+  <!-- ABSTRACTION -->
+  <div class="sub-panel" id="sub-abstraction">
+    <div class="highlight"><strong>Abstraction:</strong> Show WHAT to do. Hide HOW it works.</div>
+
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Real-world examples</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          🚗 Car brake → user presses pedal. Internal hydraulics? Hidden.<br>
+          📱 ATM → you see withdraw button. Core banking logic? Hidden.<br>
+          ☕ Coffee machine → press button. Brewing mechanism? Hidden.
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">In code — interface / abstract class</div>
+        <div class="code-block code-good" style="margin-top:6px">// Abstract — hides implementation
+interface Payment {
+  void pay(int amount); // WHAT
+}
+
+class UpiPayment implements Payment {
+  public void pay(int amount) {
+    // HOW — hidden from caller
+    callUpiServer(amount);
+  }
+}</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Caller only knows pay(). Doesn't know UPI/card/bank internals.</div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Why abstraction matters:</strong> Simplicity (user sees simple interface), Security (internal logic hidden), Flexibility (change HOW without affecting callers).</div>
+  </div>
+
+  <!-- ENCAPSULATION -->
+  <div class="sub-panel" id="sub-encapsulation">
+    <div class="highlight"><strong>Most misunderstood OOP concept.</strong> Encapsulation ≠ just grouping. Encapsulation = <strong>CONTROLLED ACCESS</strong> to data.</div>
+
+    <div class="grid">
+      <div>
+        <div class="code-block code-bad" style="margin-bottom:8px">// BAD — no encapsulation
+class Dog {
+  String color; // public by default
+}
+Dog d = new Dog();
+d.color = null; // anyone can break it</div>
+        <div class="code-block code-good">// GOOD — encapsulation
+class Dog {
+  private String color; // protected
+
+  public String getColor() { return color; }
+
+  public void setColor(String color) {
+    if (color != null) { // controlled
+      this.color = color;
+    }
+  }
+}</div>
+      </div>
+      <div>
+        <div class="box" style="margin-bottom:10px;border-color:#E24B4A">
+          <div class="box-label" style="color:#A32D2D">Common confusion fixed</div>
+          <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+            Q: If Cat can call dog.getColor(), is encapsulation broken?<br>
+            A: <strong style="color:var(--color-text-primary)">No!</strong><br>
+            Encapsulation ≠ No access<br>
+            Encapsulation = <strong style="color:var(--color-text-primary)">Controlled</strong> access<br><br>
+            Cat → dog.getColor() → ✔ allowed (public method)<br>
+            Cat → dog.color directly → ✗ not allowed (private field)
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-label" style="color:#0F6E56">Why it matters</div>
+          <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+            Control — you decide how data flows<br>
+            Security — hide sensitive fields<br>
+            Flexibility — change setter logic; callers unaffected<br>
+            Loose coupling — classes use methods, not fields
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCESS MODIFIERS -->
+  <div class="sub-panel" id="sub-access">
+    <div class="highlight"><strong>Access modifiers are the tools of encapsulation.</strong> They decide who can see what.</div>
+
+    <table class="compare-table">
+      <tr><th>Modifier</th><th>Same class</th><th>Same package</th><th>Subclass</th><th>Everywhere</th></tr>
+      <tr><td><span class="tag tag-red">private</span></td><td>✔</td><td>✗</td><td>✗</td><td>✗</td></tr>
+      <tr><td><span class="tag" style="background:#F1EFE8;color:#444441">default</span></td><td>✔</td><td>✔</td><td>✗</td><td>✗</td></tr>
+      <tr><td><span class="tag tag-amber">protected</span></td><td>✔</td><td>✔</td><td>✔</td><td>✗</td></tr>
+      <tr><td><span class="tag tag-green">public</span></td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
+    </table>
+
+    <div class="highlight"><strong>Typical encapsulation pattern:</strong> Fields = private. Getters/setters = public. Logic inside setters = validation. This is Java Beans pattern — used everywhere in Spring entities.</div>
+
+    <div class="section-title">Abstraction vs Encapsulation</div>
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Abstraction</th><th>Encapsulation</th></tr>
+      <tr><td>Focus</td><td>Hide logic / complexity</td><td>Control data access</td></tr>
+      <tr><td>Level</td><td>Design level (interfaces)</td><td>Implementation level (private fields)</td></tr>
+      <tr><td>Achieved via</td><td>Interface, abstract class</td><td>private + getters/setters</td></tr>
+      <tr><td>Example</td><td>pay() hides UPI details</td><td>dog.color is private</td></tr>
+      <tr><td>One-liner</td><td>Hides complexity</td><td>Protects data</td></tr>
+    </table>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>If asked "What is Encapsulation?"</strong><br>
+      Encapsulation is the concept of binding data and methods together and restricting direct access using access modifiers to ensure controlled interaction.<br><br>
+      <strong>If asked "What is Abstraction?"</strong><br>
+      Abstraction is the concept of exposing only essential features while hiding internal implementation details.
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>OOP</td><td>Model real world as objects with state + behaviour</td></tr>
+      <tr><td>Class vs Object</td><td>Class = blueprint. Object = real instance with actual data.</td></tr>
+      <tr><td>Abstraction</td><td>Show WHAT, hide HOW. Interface/abstract class.</td></tr>
+      <tr><td>Encapsulation</td><td>Controlled access. private fields + public methods.</td></tr>
+      <tr><td>Encapsulation ≠</td><td>No access. It means CONTROLLED access.</td></tr>
+      <tr><td>private</td><td>Only same class. Most restrictive.</td></tr>
+      <tr><td>protected</td><td>Package + subclasses.</td></tr>
+      <tr><td>In Spring</td><td>Entities = classes. APIs = controlled access. Interfaces = abstraction.</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

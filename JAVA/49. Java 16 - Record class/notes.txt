@@ -1,0 +1,553 @@
+# Java 16: Record class
+
+Welcome back to the channel and let's cover today Java 16 feature that is records.
+So let's start without wasting time.
+So let's understand the problem.
+First to create an immutable class which is just required a simple data carrier like a Pojo.
+Okay we need to write the below code.
+Just check the amount of code we have to write.
+So we will create.
+Let's say I'm creating a class user.
+I have to first make it final so that it cannot be subclassed all its member variable.
+I need to declare it private final okay, and these will be set through constructor and only getter
+methods would be allowed.
+No setter methods would be exposed and equals hashcode and two strings method would also be available,
+like if we generally required it because see we have to pass it right sometime we store it in map and
+all.
+So these methods sometime we have to provide okay.
+So this is how our normal, immutable, very basic immutable class looks like.
+Okay.
+And this is how we create it.
+Like we can create an object new user.
+And by the time of creating an object we have to initialize the member variable because there is no
+setter method separately.
+So we have at the time of constructor itself, we have to initialize it.
+After that we can use with the get method.
+So one thing we can easily notice is lot of boiler code just for a basic immutable Pojo class.
+And that's where Java 16 comes into the picture.
+It helps us to generate lot of this code automatically.
+But wait you.
+We have already seen the Lombok.
+Lombok have also helped us in reducing all this boiler code.
+Lombok also can help me like if I use this Lombok annotation at the radiator, at the radiator, it
+will help me to generate the getter method automatically.
+If I use this at the rate equals and hashcode, it will help me to generate equals and hashCode method
+automatically.
+Similarly, this is for constructor.
+This is for toString method.
+And similarly, if I use at the rate value only one, it will help me to generate an immutable class
+itself.
+Okay.
+So why we need this records which is available in Java 16.
+Why when we already have Lombok.
+I will tell you okay.
+But let's first understand records how it works.
+Okay then at last we will come back to this Lombok again.
+Then we will find out a difference.
+What record?
+Why record is given a more priority nowadays.
+Okay, so let's first understand record.
+It helps us to create immutable class in a short way.
+Okay.
+It is mostly designed to reduce the boiler code for data carrying classes like a Pojo.
+Very simple, immutable classes only.
+Uh, if you want, you can use records.
+Okay.
+And its syntax is that this is the keyword record.
+Whatever the name you have to give, give it the name.
+And then you have to provide all the fields.
+Okay.
+With comma separated you can provide all the fields and curly braces on.
+Curly braces off.
+That's all.
+So the whole so let's say this whole class.
+Now if you use this syntax, let's say I'm using public I have used the keyword record.
+The name I have given is user okay.
+Now all the fields which it has name and age right.
+I have given a string name comma, string age.
+That's all.
+Okay, now this everything constructor getter method equals hashCode two string.
+This final class is made final.
+Even this, all the variables which you have provided that will also be made private.
+Final.
+Everything would be generated automatically.
+Okay so if you see Java C user dot, if you run this, if you compile this and see the dot class file
+of this record user, you will see that it has generated the getter method.
+Okay.
+It has generated a constructor okay.
+And it has used the keyword record.
+So keyword is a record.
+It is not changed to let's say hey why it is not their final class and all.
+So this is the you can say that new addition where record itself mean that it is equivalent to that
+final class.
+Okay.
+So now let's see one by one and understand what happens.
+And you invoke it.
+Like normally I am creating an object of this record user.
+Okay.
+And in the constructor, even though here if you see I haven't defined any constructor, but it's there.
+Okay, I can pass all the values in a order.
+So here the string is first and integer is second, right?
+So first string, then integer.
+And after that you can use it even if you see the two string method is available.
+So now let's see what happened.
+So this is the dot class file right.
+This is the dot class file.
+So first thing first the record.
+So if you understand it the record keyword is equivalent to final class.
+So means you are making a class final the record access specifier public or you are wanted it or package
+protected.
+Uh package private.
+These rules are similar.
+What to the normal class?
+Okay, so there is no change that.
+Hey, for if you are using a record, there is any difference in the rule for this axis specified normal,
+whatever it is there for the normal class.
+Okay.
+Then we have like all record class by default extend Java dot lang dot record class implicitly.
+Okay, so whatever the record you are creating okay, I am creating a user record internally.
+It extends this Java dot lang dot record.
+Why?
+Because Java framework identify whether this user, whether this user is a record or is a class normal
+class and how it does that it check whatever.
+Let's say you are at currently user.
+So get it.
+Superclass.
+If it is equals to equals to record class, then all the record logic, all the record rules will run
+into the picture.
+Okay.
+And that's why it's superclass implicitly all record which you will create implicitly it extends.
+Record Java dot lang dot record.
+It is not visible to us but internally it does.
+And that's one of the reason why you cannot extend another class.
+Okay.
+If you let's say you are writing like this public record, you are creating one record, let's say user
+and providing all the variables string, name, int, age.
+And you are trying to extend, let's say another class Myservice extend is not allowed on record.
+Why?
+Because there is already one.
+extent is happening internally, implicitly and in Java.
+You already know that multiple inheritance is not supported.
+You cannot extend from more than one classes, but you can implement more than one interfaces.
+And that's where you implement are allowed.
+So you can do this.
+Public record.
+You can give the record name whatever the variable name you want to give implements whichever the interface
+you want to implement.
+You can do that.
+And you can provide its implementation like a normal.
+Okay.
+So there is no problem in that.
+Now let's see.
+The second part of this one is like.
+This fields which we give.
+So internally it generates a private final field, and these are generally known as record components.
+Now from on I am going to call it record components.
+When I call record components, just say that I am talking about these fields which are given beside
+your record name okay.
+So it automatically generates a private final fields.
+Internally it will create a private final string name private final int age okay.
+Another important is we cannot add more than one instance field, not more than one.
+We cannot add more instance field.
+Whatever you want to define.
+Define it at here like this is your user your field one, field two, field three.
+Whatever you want to define, define here.
+If you want to go, let's say internally like a class.
+Can I define more?
+No.
+Not allowed.
+Why?
+Because this record is also known as transparent data carrier means.
+Just by looking at the record itself, you can know what data it is carrying that I can know that user
+is carrying the name and age.
+Okay, so that's why it is known as transparent data carrier.
+That's one of the reason it do not allow to define more instances within internally like this.
+If you want you can have to define like this comma last name.
+Okay.
+But static fields are allowed.
+So within a record like user you have a name age.
+But now you can define a static field like here I define a static name.
+Now you can ask hey why static field is allowed.
+Why not normal instance field.
+So here see static Field belongs to a class does not belong to an object.
+So our object is still immutable.
+Our object is not changing.
+So for this, this is it will generate private final.
+It will also generate private final age.
+And these fields or record components belongs to each instance okay.
+And these static belongs to a class.
+So our each object let's say if I am creating multiple objects user object one.
+User object two.
+These objects are still immutable.
+Okay.
+Because whatever the fields which is required, we define here at top in the record components.
+And this static belongs to a class not to an instance.
+So the rule that object is immutable that is not change.
+So that's why static is allowed.
+Now comes to the part constructor where it creates right.
+So it automatically when you do let's say right record user field one.
+Field two okay.
+And that's all.
+You haven't defined anything internally.
+It generates constructor like this.
+Okay.
+So this is dot class file after compilation.
+We got this.
+So it generates a canonical instructor means constructor that take all the record components fields
+in an order.
+So this constructor takes all the fields name age, whatever we have defined in the record components
+and in the same order okay.
+And it initializes them.
+We can override the canonical constructor if want.
+If let's say you want to put certain conditions you can do that.
+Let's say I can in this record I can override this constructor.
+And I put condition that if age is less than zero, do something.
+You can have your custom logic, but you have to assign this like this.
+You have to initialize this name and age like this okay.
+We can have compact constructor two.
+This is additional feature okay.
+Which is a shorthand form of the canonical structure constructor.
+So here if you see the above constructor you can write it as.
+So currently you have to give like this public user and all the fields which are defined into the record
+components in the same order.
+So we don't want we can skip it.
+Also we can just give public user that's all we can skip, providing all the fields not required internally.
+It will add it.
+You can just put curly braces on.
+Curly braces off.
+Put your logic.
+Okay.
+Put your logic.
+And even you can ignore this.
+This dot name.
+This dot age initialization part.
+Also, you can ignore this.
+It will automatically add it.
+Compiler add this automatically, but only with this compact constructor.
+Remember that.
+Okay.
+So for this if you are using compact constructor you can avoid this parameters.
+It will automatically generate.
+We can also have more constructor with different parameter list also.
+Okay.
+Let's say that I am creating a different.
+So see canonical constructor is implicitly create.
+So I am creating one record user and I have this record component name and age.
+So internally it will create one canonical nickel.
+Constructor.
+Which constructor have all the fields of the record component in the same order?
+But now I am creating more constructor with different parameters, let's say.
+And I have only age.
+So this put one restriction that yes you can have different constructor.
+No problem.
+Different constructor with different parameter no problem.
+But internally you have to invoke the canonical constructor.
+So here I am invoking the canonical constructor and passing this values in the order of the record component
+name age so that this will get initialized properly.
+Okay, so this is just to make sure that no field left uninitialized.
+So if you're writing your own constructor with different parameters, you have to make sure that you
+invoke the canonical one and pass the parameter in the same order of the record components and all everyone,
+every every field.
+Also whatever the constructor canonical constructor which is getting generated here, let's say it's
+public access fire.
+Now we will see that if we are creating a record public, then our canonical constructor should be public.
+Okay, so I am creating a record.
+Public record user.
+And these are my record components.
+Now the canonical constructor should be public to generally implicitly it will create.
+You don't have to worry about it let's say.
+But you thought that no I will override it.
+Make sure that it should be public.
+You don't change it.
+So here if you see my record is public, you can't restrict it okay.
+So you will see an error like this.
+Okay.
+You can't restrict the access access level.
+So similarly here if you see my record is default package level.
+So here your constructor also can be a package level, either same level or you can increase the access
+level.
+So here it is default I haven't tell anything.
+So it's a package level but I can use public.
+This is allowed.
+You can increase the constructor access level but you can't decrease it.
+That's the rule.
+Another for the constructor is that make sure you are doing defensive coping.
+For example this is you have created a record public record user and you have defined all the fields.
+So let's say that field is list.
+One is list list of string hobbies.
+Even though it will create let's say private final list of string hobbies.
+so it will only make a final this reference.
+But the list ultimately it point to that you can change, right?
+That is not immutable.
+So that is just only for the knowledge that hey, even though my hobbies internally it will make it
+immutable, private, final.
+But this hobby I can change it.
+I can access the hobby object and add new.
+Nobody is going to restrict it because this is not immutable, only this reference.
+I cannot change the reference.
+So it is just an advisable that in that case, you can override the canonical instruct constructor and
+make this list.
+Also like this immutable list dot copy of hobby.
+If you see the copy of implementation right, it will make it immutable and if you try to change it,
+you will get Exception.
+Unsupported operation exception.
+So this is just for a reference.
+Okay.
+Even though you are making private final this list, it doesn't make your actual list immutable.
+Only this reference is immutable.
+Okay.
+Now let's go to the getter part.
+Now here, if you see for every record component like the field, it automatically generate the public
+method.
+Public method.
+Accessor method means I didn't say public get method is because generally our syntax for the get method
+is annotation is get and the name okay field name.
+But here the method name it generate is exactly the same as what you are for.
+The record component is.
+So my field name is let's say name.
+So it create one method with the name itself and you can fetch it.
+Okay.
+They are named exactly as the component field name.
+Okay, no setter method is created.
+We can override the accessor method if we want.
+You can override this age method and you can write custom logic if you want it.
+We can add more method if required.
+Nobody is going to stop us.
+Similarly, you can override equals, hashCode and toString method.
+It's like this.
+You can provide an override it.
+You can override it and provide your implementation.
+That should be totally fine.
+Now let's see nested records.
+So this nested records are very much similar to nested classes but with one minor change.
+If you don't know about nested classes, I have already covered into the Java playlist, right?
+So nested classes can be of static non-static.
+So that is all covered.
+So I would highly recommend check it out this If you don't know what is nested classes before you start
+the nested records.
+So here if you see in records we can also create nested records also, which can be private protected
+public like nested classes very similar to nested classes.
+No change in that.
+Only one change in that is record can only be static.
+In record we can only have static nested record.
+Okay, there is no concept of non static nested records okay.
+So there is only one thing called static nested record like this here.
+If you see I am creating one record user and these are my fields record components.
+Now I am within this record.
+Within this record I am creating one.
+nested record.
+Okay, so I am creating one nested address record.
+So here, just like this I am creating a record.
+My record name and I don't have any field.
+So that's why it is empty.
+And internally it is just a method.
+So by default here if you see I haven't tell whether it's a static non-static nothing.
+So by default it's static only okay.
+If you remember from the nested class we have something called static and non static.
+So if there is nothing on a class it would consider as a non-static.
+And for static you have to write it.
+But here in the nested records if you don't write it by default it is static only.
+You don't have to write static here.
+Okay.
+And we can access it in a similar way like we access a nested classes.
+Okay.
+So here I am creating.
+So I am I need to create an object of this one.
+Right?
+So user dot, this is just like I'm creating an object of this.
+This is a reference.
+So this is a static right.
+So how we can access it from the directly the class name.
+So it belongs.
+So this belongs to a class.
+This belongs to a class.
+Okay.
+So user dot user dot this.
+So like we have done in nested class nothing different.
+And once you get an object you can call the display method.
+It will get more clear with this example.
+Now here if you see I have created a record.
+This is my record name.
+And in the record components I have defined this too.
+So I have created first this record okay address record.
+And I haven't defined anything.
+So by default it is static.
+Similarly I have created one static class.
+Okay.
+And this is my nested nested class.
+I have created nested.
+You can say the static class okay.
+And I have also created nested class.
+But I haven't defined anything so it is non-static.
+So I have three things.
+One is nested record which is by default static.
+And I have two.
+One is nested class which is static.
+Another is another nested class which is non-static.
+So here if you see you can access in similar way like we do it.
+So first you want to access the record.
+You create an object new and access like this user dot nested address record.
+So this is static right.
+So you can access like user dot this.
+Okay.
+And then you can create a new object of this, and then you call the display similarly nested class
+which is static.
+The similar way user dot address static class.
+Okay, I am creating an instance of it and then I'm calling the display method.
+Now this is non static nested class.
+So this is how we are creating.
+So I am creating.
+So now here if you see the difference is this is non static means this is not attached to this class
+user.
+You this is attached to an instance.
+So you need an object of user.
+So that's why I'm first creating an object of user.
+So I created an object of user.
+Then from this object user object I am accessing it user object dot new.
+Now I am creating It's instance like this.
+Okay.
+And then call the display.
+So this is all the concept we have already seen into this topic.
+And that's why starting mentioned that if you know the nested class this would be very simple.
+Like because we have already discussed in depth into this topic.
+It's just like we are now replicating it with nested records.
+Okay.
+Similarly we have like and yeah, one question might have come to you that hey, why only static records
+are allowed.
+Why, if we are keeping it everything same with the nested class.
+Nested class can be static.
+Non-static.
+Why?
+Here in the records only static is allowed.
+So I'm sharing my view.
+I told you that record is transparent.
+Data carrier means just by looking at the record itself, you can tell what data it is carrying.
+So let's say user is carrying a string object.
+Okay.
+But if we are saying hypothetically for now I am creating one nested record.
+So within this user I am creating one nested record address which has this record component string b.
+So we are saying hypothetically that it is non-static for now consider that this is non-static.
+Since we assume that nested record is non-static this is address is non-static means it can access the
+parent class fields.
+It can access this string a also okay means internally somewhere it has a reference of this user.
+Correct means address contains reference of user.
+That's why it able to access the instance of this parent record means internally it might be having
+like this address.
+This address internally might be having like this.
+It has an object of reference of user.
+So this is contradicting with our definition.
+That record is a transparent data carrier.
+And all the fields which it carry it is there in the record component.
+So if it is a non-static means it can access the non-static fields which is this.
+And to access it, it need an object.
+And to have an object means internally it somewhere to store it.
+And if it store it means then it is not a transparent data carrier.
+Because I do not see here in the record component of the address.
+So it violates it.
+So that's why I believe that it make it like, hey, it can only be static because this is a transparent
+clear that, hey, it only carries this string object.
+Nothing else.
+Because since it is static, it belongs to a class.
+It cannot access this instance variables of the parent record.
+It can only access the static objects of parent record only, not an instance one.
+So you don't need an instance reference.
+Okay.
+Hope that clarifies.
+Similarly we have something called local records.
+Local records means within a block like if condition block while block you are creating a record.
+Again similar to local classes we have seen.
+Similar to local class, we can also create local records means record within a block like method block
+if condition block anything.
+Again, its access modifier is similar to local classes.
+Only local record cannot be declared public.
+Private protected.
+Why?
+Because.
+See, when within a block you are creating a record.
+There is no point in making it private public protected because its scope is limited to this block only.
+So why we have to provide this unnecessary private public protected access wire?
+So whatever, whenever you are creating a record within a block, its scope is this block only.
+Okay.
+And local record cannot be initiated outside of the block.
+Again, another thing is, let's say if you have created the record within this block, its scope is
+within this block, then you can also initialize it.
+You can create an object of this new within this block only like a simple local class also.
+Also, there is no static local record.
+Why?
+Because static means something belongs to a class.
+But local record scoped to a block only, not class.
+So can you make this, uh, record static?
+Does it make sense?
+Static means that whatever you are creating, it belongs to a class.
+But here, if you see, once this block is finished, the scope of this record is also finished.
+It do not belongs to a class.
+Its scope is only to this block.
+So static is also doesn't make sense to a local record.
+So here if you see this is how we can do similar like a local class we used to do.
+So I am creating a record user.
+These are the components.
+Okay.
+Now here let's say this is one method which I have.
+And within this method scope.
+Within this method scope I am creating this local record record record name, whatever the record components
+it takes.
+okay.
+And the whatever the methods or functionality you want to add.
+So now I told you that it's object can be within the block itself, this block.
+So this method block itself it we can create an object of it okay.
+So I can create a new address and initialize this internally.
+Implicitly it will create a canonical instructor.
+So that would get initialized.
+And you can then access it with this address dot you can invoke it okay.
+Now outside you have to call this print address.
+How you will call you have to create an object of this okay.
+So you have to create an object of user.
+So I'm creating an object of new user and provided the values.
+And once you got the object I am calling this method print address and this will first create this address
+object and then invoke it.
+Again, very much similar to local classes.
+Nothing.
+No fancy.
+Only thing is, if you understand record that it is just a shorthand of writing an immutable class.
+That's all.
+Nothing difference at all.
+Okay, now again, let's come back to a question that, hey, why we need record itself when we can
+do this with a number, say with Lombok.
+You need to add a library into the pom.xml.
+Means it is not a.
+It is supported through some external party.
+It is not Java functionality.
+Now with this record, Java internally support this.
+You don't need to add any external library to your pom.xml.
+That is one very big part.
+Second is that Lombok only helps you to reduce the boiler code.
+You don't need to write all this code like it will generate a getter for you.
+It will generate all this thing, but it never restrict you.
+Even if you write a setter code here, like set name, can it restrict you?
+No, but record will.
+If you are using a record, it will never let you add the setter method.
+Okay, so it is more restrictive because now this is in control of Java.
+And that's why one of the reason you can say that the record you will see more enhancements uh, with
+uh like record.
+You can use record with the sealed classes and interfaces.
+So lot more enhancement.
+Even the pattern matching we will see in the next part.
+Pattern matching in instance of and switch.
+The record is supported because this is now belongs to like true Java.
+So at multiple places we are utilizing it.
+Okay.
+So that's one of the reason why how it is different from Lombok.
+Okay.
+So do practice it out.
+Uh it's very simple.
+Uh, but only thing is, if you want take it out from your hand, it will, uh, things become pretty
+clear.
+And, uh.
+Yeah.
+Do check out this local, uh, local classes and nested classes.
+Uh, if you have faced any difficulty in understanding this part, how to create local class, how to
+create nested class.
+Because record is nothing but a simple similar to that one.
+Okay, uh, any doubt, let me know in the comment section we can discuss further.
+Thank you guys.
+Bye.

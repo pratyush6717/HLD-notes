@@ -1,0 +1,663 @@
+# Java 21 : SequencedCollection, SequencedSet and SequencedMap
+
+Welcome to Concept and Coding.
+And today in this video we are going to cover a feature which has been introduced in Java 21.
+So three new interfaces sequence Collection, Sequence set and Sequence map.
+These three interfaces are added in existing Java collection hierarchy.
+So before we start understanding about these new interfaces, let's first see existing collection hierarchy.
+And where does this new interfaces exactly fit into that okay.
+Then we understand like what is this and why it has been added.
+So if you recall this is how our existing hierarchy looks like.
+We have already covered each one of this in depth okay.
+And we have covered in multiple parts.
+So kindly have a look if you have any doubts with any of the collection type.
+Now let's see the new collection hierarchy The Java 21.
+How does it look like?
+So focus on this yellow one.
+So this is where this three interfaces has been fit.
+Okay.
+So see this one.
+So all this yellow one is the new changes okay.
+So sequence collection is now a child of collection.
+Earlier list was child of it.
+Now list is child of sequence collection.
+List extends sequence collection and sequence collection extends collection.
+Similarly, DK is also now extends sequence collection.
+Okay.
+And here we have added new interface sequence set and which is also extends sequence collection okay.
+And here if you see earlier linked has set was implementing set.
+Now it's implementing Sequence.
+Set and sorted.
+Set also now extend to sequence set and sequence set is extending set.
+So this is two interfaces interface one, interface two and the third interface inside a map where a
+sequence map has been added.
+And this all yellow line is.
+The changes has been made in the Java 21.
+So sorted map now extended sequence map.
+Sequence map is now extending the map and linked HashMap which were earlier was implementing map.
+Now it is implementing sequence map.
+Okay, so this three.
+This is how the in Java 21 plus, this is how the Java collection hierarchy gonna look like.
+But the first and the foremost question which comes to all our mind is okay, these are the questions
+if we answer these three questions we will fully understand.
+Like, the first thing which comes to my mind is how we determine this position.
+That list should be the child of list should extend this DIC should extend it.
+Sequencer should extend this.
+How we should determine it.
+Like what is the logic behind it?
+Right?
+I don't want to muck it up like okay, this is where the sequence collection has to be.
+And these are all the types interfaces.
+It should extend it.
+I don't want to muck it up, but I want to know the reason why these yellow boxes new interfaces is
+put here.
+Okay, so this is my first question which comes to all our mind.
+What's the criteria of putting this interfaces at this specific place.
+Like I can see it left out queue and priority queue.
+Why why not include those.
+So here if you see it made DK extend sequence collection.
+It made list extend sequence collection.
+But why not Q why not priority Q right.
+So since DK extending it so means all are covered here.
+All are covered here.
+So everything is so this is covered and this is also covered.
+But this left out Q left out priority Q left out has said left out.
+Why.
+So that's the first question which comes to our mind.
+What's the reason of putting this interface at a specific place.
+And why not include queue priority queue?
+Another.
+The second question is why exactly this interface required?
+Okay, I understood why they have put at this place.
+Let's say I understood, but why it's actually needed at the first place.
+Okay, that we also have to know what gap exactly they are trying to fill, which is Present in before
+Java 21 versions and the third is VI sequence set is needed.
+Why not directly sequence collection is sufficient.
+So one question is why linked hash set is implementing sequence set?
+Why not directly sequence collection?
+What is the purpose of sequence set?
+So these three questions which I think there might be more which might be coming to my mind, but I
+believe that if we able to find an answer of this three like this topic would be like on our tips.
+We don't have to remember this collection or we don't have to remember muck it up anything.
+Okay, so let's start with the first why.
+What's the criteria of putting this interfaces at the specific place and why we left out queue and priority
+queue.
+And also one more thing before we start the point one it is very important because if we understood
+the point one when properly we will actually get the answer of the remaining two inside the one itself.
+So our answer of two and three is actually inside one itself.
+Okay, so go through this one very, very thoroughly in depth and get it properly because the remaining
+answer you will find it here itself.
+Let's start.
+So any collection which follows below condition we can term it as sequence.
+So we are saying that right list is now extending sequence collection.
+So what are the conditions we need to know.
+That list should follow.
+Then it can be like yes it can extend sequence sequence collection or sequence set or sequence map anything
+okay.
+So these are the three conditions which a collection type should follow so that they can be considered
+as yes, they are sequenced.
+The first is predictable iteration.
+So predictable iteration means let's say you have certain sequence one two, three.
+Okay.
+Now in the collection if you insert them.
+So what are the two types of ordering.
+One is insertion order, second is sorted order.
+Okay so there are list follows.
+Insertion order.
+The the way you insert the record it stays as it is.
+So let's say that first I added one then two, then it three.
+So it's a predictable iteration.
+No matter how many times you fetch and iterate you will get a consistent behavior.
+Okay.
+Similarly let's say any sorting uh, you are using any sorted set, sorted map or.
+Right.
+So in decreasing order let's say so it will always like 3 to 1.
+So it's a predictable iteration means elements are written in consistent and well-defined order every
+time we iterate over the collection.
+So if a collection maintains element in insertion order or sorted order, then we can say it follows
+predictable iteration.
+Okay.
+So this is the first requirement.
+Clear it properly because insertion order.
+If the collection is following insertion order doesn't mean it's a predictable iteration even the sorted
+order.
+So let's say that you have a values list of values is one two, three.
+But during sorting it is storing as 3 to 1, even though it is changing the sequence.
+But it's predictable.
+Predictable iteration means it's consistent behavior.
+No matter.
+No matter how many times you fetch it, the iteration which you will get is predictable.
+Consistent.
+3 to 1.
+Only 3 to 1 only.
+Right.
+So our collection can maintain in either insertion order or sorted order.
+Both.
+Very important.
+Okay.
+The second condition is the collection provides support for access or manipulation of the first and
+last element.
+So whatever the collection would be, let's say my collection has some value of five.
+My insertion, let's say my collection is following some insertion order of I inserted first five,
+then ten, then seven, then 12.
+So this is my insertion order.
+This is how I am inserting the elements into my collection.
+Now if my collection is supporting that, yes I can.
+I can add an element in first place or at last place.
+Okay.
+Or so access or manipulate means you can add, you can fetch, you can remove at first place or similarly
+at the at at end also.
+Okay.
+You can add you can fetch, you can remove at the last of the element.
+Then also is an important requirement for a collection to be considered as a sequence.
+So this is the second condition.
+So collection provides support for access or manipulation of the first and the last element.
+Collection support.
+Reversible view.
+Reversible view means.
+So let's say that if this is your collection, is it possible to get a reverse view of.
+It means 12 710 five reversible view.
+I am not reversing the collection itself.
+I am not creating new collection.
+No, the underground collection is the same.
+Underground collection is same.
+only I'm getting a view of it.
+12.
+Seven.
+Ten.
+Five.
+If I am changing somewhere in it, it will ultimately change in the underground collection itself.
+Okay, so is it possible to get a reversible view?
+If all these three conditions are satisfied, then that collection is termed as yes, it can be.
+Termed as sequenced okay.
+That's what this three conditions is used to determine what all collection type can extend this sequence
+collection or sequence set.
+Okay.
+So let's go one by one and see.
+So this is condition one predictable iteration.
+This is condition two access and manipulation of the first and last element.
+And this is condition three.
+Now let's see that one by one each collection type quickly.
+So list.
+Yes.
+Predictable iteration.
+Yes.
+It follows insertion order.
+So the way you insert a record into this collection, it will follow that only.
+And whenever you fetch it you will get a consistent order okay.
+So yes it follows predictable iteration.
+Can you access first and last element.
+Yes.
+This is it will return you first and list dot get and the last index.
+So it will give you the last.
+You can do access.
+Can you add.
+Yes.
+List dot add zero element.
+It will add at first and this will add at end.
+Can you remove it.
+Yes I can remove it like this.
+So yes list provide the access and manipulation operation on the first and last operation.
+Can you reverse it?
+Yes, I can reverse it.
+So here is the list okay.
+Now I can just simply call collection dot reverse list and it got reverse.
+reversed.
+So all three conditions are satisfied.
+So it can be a part of sequence collection.
+Okay.
+So all we have to do is just check all this three condition for all collection type.
+And we know that.
+Should we add it into under sequence collection or not.
+Or we have to skip it.
+Similarly DK it follows some sometime we call DAC dequeue like whichever you feel it's right.
+Uh generally it's pronounced as DAC.
+So it follows insertion order.
+Right.
+Now here how you can access the first and last element.
+Get first.
+Get last.
+How you can add it.
+Add first at last and remove it.
+Remove first, remove last.
+So all access and manipulation supported for the first and last element.
+And there is also a reverse method available.
+So all three are satisfied.
+It can be part of sequence collection.
+Queue.
+Queue follows insertion order.
+Good.
+Predictable.
+The first condition.
+Predictable iteration is satisfied.
+Second, does access and manipulation of the front.
+And the last element is possible.
+So queue follows Fifo insertion at back and remove from front.
+So if you are accessing it there is a method called peek.
+It returns head.
+But can you access the last element in queue.
+No.
+Okay.
+Can you add element at first?
+No.
+Queue says that queue follows Fifo.
+You can only add element to the tail.
+Can you remove from the first element?
+Yes.
+Poll.
+Because queue follows.
+First Fifo.
+First in.
+First out.
+Okay.
+And here if you see that remove last element it's not possible.
+Okay.
+Can you reverse a cue not supported directly.
+So here, if you see that there is an issue with this two conditions.
+So that's why cue is left out.
+It's not part of any sequence collection.
+Similarly priority queue.
+So see priority queue.
+Do not follow any insertion or sorted order.
+Why?
+Because internally it uses heap.
+It only guarantee whether the head is either maximum or minimum depends upon the comparator which we
+are using.
+But the iteration order is not properly sorted or consistent, only it guarantee about the top element
+okay.
+It will always either give you maximum or minimum depending upon which priority queue you are using.
+Minimum or maximum.
+But the rest of the values are not consistent or not properly sorted.
+Okay.
+So that's why order is not maintained.
+And since order is not maintained like first and last.
+Can you add it or remove it?
+Doesn't matter.
+Right?
+Because if the order is not even maintain this and this reversal is not applicable itself, it's not
+supported actually.
+So you can say that this is very important condition if order is preserved, if it is a following,
+stern insertion or sorted order, then only these two matters.
+You can reverse it or you can add it first, add it last.
+But if order is not even maintained, how you can add an element or start or at first or last because
+it can be stored anywhere.
+So that's why priority queue is also skipped from the sequence collection.
+Now let's come to Hesset.
+Hesset is also skipped, right?
+Because it also do not follow insertion or sorted order, right?
+So that's why the addition of first and last or manipulation is and the reverse is also not applicable
+on it.
+That's why hashset is also skipped from the sequence collection sequence.
+Got it.
+Linked has said so.
+Linked has set follows insertion order if you remember it internally.
+Uses doubly linked list also.
+To maintain a insertion order.
+Okay so you can access the first element.
+You can access the last element but you have to do manual iteration.
+It's kind of a linked list right.
+So we have to do manual iteration like linked list dot iterator dot.
+Next you can iterate to the next element till.
+You can also iterate till last element.
+So you can access it.
+You can add element at first.
+Also you can add element at the end.
+Also methods are not there, but since it's a doubly linked list.
+It's a doubly linked list.
+It is possible.
+It is possible to add element at first.
+So generally the current method which is exposed in linked has said is add, which generally add to
+the end if you want to add at first.
+Currently today method is not available, but is it possible?
+Yes.
+Because doubly linked list it follows.
+It is possible to add an element at first.
+Okay.
+That's why I made it yellow today.
+Method is not there to add it first, but it can be supported because the structure data structure it
+uses is doubly linked list through which we can add it easily.
+Only it's we need to extend the functionality.
+Similarly remove.
+Yes, we can remove the first and last element.
+All we require is manual iteration.
+We have to manually iterate and then remove it.
+Similarly reverse.
+So see it follows again I told you doubly linked list.
+We can get a reverse view because we can iterate in opposite direction, also because of the doubly
+linked list.
+But today method is not there.
+But this functionality can be written.
+So that's why I made it yellow.
+Today's not there, but we can extend the functionality because it follows doubly linked list and then
+doubly linked list.
+You can iterate from the back also.
+So since the data structure internally uses can support all these three, that's why it is also kept
+under sequence collection.
+Or we have specifically put into sequence set.
+Now one more question.
+I told you right.
+The the part, the first question which we are trying to find an answer that itself will help us to
+find out the remaining question also.
+So why sequence set is needed.
+So here if you see linked has said is kept under sequence set.
+Why?
+Why not inside sequence collection itself?
+We put linked has set.
+Why not directly under it.
+Why we need it under first sequence set.
+Okay.
+So see the main reason is the collection can support duplicate like your list.
+But the set do not support duplicate do not support duplicate.
+No duplicates are allowed okay so linked has set.
+That's why a new interface was introduced.
+Sequence set in which no duplicates are allowed okay so if you see the diagram it will now become clear
+why it was added.
+So linked has set here.
+In this no duplicate is allowed.
+And here if you see list duplicate is allowed DK duplicates are allowed.
+So that's why it is made.
+A new sequence set is created because here only unique values are stored.
+And then this sequence set is extending the sequence collection.
+It has all the functionalities like get first, get last at first at last.
+So all the functionality which sequence collection is going to expose this also has it, but it additionally
+makes sure that the values are unique.
+There should be no duplicate.
+Okay, so that's why linked has set is a child of sequence set, not sequence collection.
+Okay then we have sorted set sorted.
+Set follows sorted order.
+So it's a consistent behavior whatever Any time you try to fetch a value, you will fetch in a particular
+sequence.
+You will not get randomly.
+So now here, if you see if I am trying to access it, you have a sorted set, right?
+Let's say you have created three set which is a sorted set.
+You can access the first element.
+You can also get the last element dot last.
+You can add and you can also add it.
+So it goes to first if it is the smallest.
+And if you are adding a value 25 it goes to the last if it is a largest value okay.
+So since it is internally doing sorting this value, actually if you are storing it two it will goes
+to a proper order.
+So there is nothing like add first and last that doesn't you can say that are meaningful in the case
+of sorted order, if you have used a value which is smallest, then it will goes to the first.
+If you have used a value which is the largest, it will goes to the last.
+Okay, so it's possible if you give me the smallest value I can, it can append to the first.
+If you give me the largest value, it can append to the last.
+Remove.
+Yes, you can remove like this dot.
+Remove and give the first element remove.
+Give the last element.
+So yeah all possible.
+Similarly, can we do a reverse.
+Yes.
+There is an operation called descending iterator available okay.
+So tree set when you create it it has a method called descending iterator okay.
+And through this you can now iterate in opposite direction.
+So all three possible.
+And again it's a set means no duplicates.
+That's why it's kept as a child of sequence set.
+Okay.
+So this part is clear right now we don't have to remember right.
+Why list is made a child of this one.
+Why do why we left out Q why we left out priority.
+Q why we left out?
+Hashtag right and why sequence that is required?
+Why not directly sequence selection only?
+Okay.
+Now let's come to this another map part so that also we will see that we have left out HashMap and left
+out hash table.
+Why.
+So here if you see HashMap maintain order no.
+No insertion order no sorted order.
+That's why.
+So that's why these two also not applicable okay.
+So it's not applicable.
+Hash table again hash table also do not maintain any order.
+So that's why easy we both these two other conditions is not supported because order itself is not maintained
+okay.
+So that's why it is also skipped to be part of any of the sequence interface.
+Then we have linked HashMap again similarly to what we have seen before.
+Linked HashMap internally uses.
+Doubly linked list.
+So it follows insertion order and similarly exactly the same.
+There are minor methods and like it's a map right.
+So you have to iterate differently.
+But we can do access.
+We can do add and we can remove it okay.
+Similarly we can reverse it.
+Today method is not there.
+But yes it is possible because it follows internally doubly linked list.
+So that's why I made it yellow.
+We can do it.
+Similarly what we have seen it right.
+Linked has set similarly like this okay.
+So that's why we have made it as a part of sequence map.
+Sorted map.
+Again same thing follows sorted order.
+Yes.
+You can access first key.
+Last key.
+You can put it put first.
+Put last.
+Doesn't matter because it's sorted okay.
+So it will automatically sorted according to the value key.
+Remove pole, first entry pole last entry.
+and there is reverse.
+There is a method called descending map.
+You can use it to iterate in reverse direction.
+So all three are possible sorted map.
+So that's why it's made a child of sequence map okay, so that's why here sorted map and linked hash
+map are child of sequence map.
+Now only one question left unanswered what exactly these interfaces are trying to fix.
+What are the gaps which are there?
+Which are trying to fill?
+Why exactly this interface is required?
+Different ways to ask a question.
+But the question is one why?
+Why you need these interfaces.
+So if we observe the collections, if you observe the above table which we have created, you will find
+an answer of this here itself.
+Just focus here.
+All those operations, all those collection type which supports which can be termed as sequence, right.
+Just see if you want to access the first last element or you want to add for list.
+It's a different operations do dot get dot add dot remove for dequeue get first get last add first at
+last, remove first, remove last.
+There is a different method for reversing dot reverse for its collection.
+Dot reverse for linked HashMap linked hash set.
+It's different right?
+You have to treat it.
+Linked set dot iterator dot.
+Next you have to iterate it right.
+Similarly for reversal there is nothing but we have to create new.
+Similarly for sorted and sorted set dot first dot last dot add dot remove for reversal dot descending
+iterator.
+Are you able to catch a gap?
+Each collection type has different method.
+Why?
+Because there is no common interface.
+Okay, if you observe the collection which are marked as sequence, we will find that get first, get
+last at first, add last, remove first, remove last and reversing the view of the collection.
+There is no common interface.
+Each collection have their own method.
+So we have to remember.
+Okay, if I have to use list then it was like a dot.
+Like uh, hey, add me at zeroth index, add this element.
+Hey, if I am using deck, It was like at first, hey, if I'm using this, it is something like this.
+So you have to remember and it's very difficult to maintain.
+Okay.
+So this is one of the biggest gap that there is no common interface present.
+And for all this operation and each collection type has their own functionality for that one.
+So it makes our, you can say that code little bit difficult to maintain.
+And for as an engineer we have it's like challenge to remember.
+Like if you are using DK what's the method for fetching the first and last for adding the first and
+last, or for removing the first and last or for reversing it?
+So that's where the sequence collection sequence set sequence map trying to fill up.
+So here if you see sequence collection has this method at first.
+At last.
+Get first, get last, remove first, remove last and reverse.
+Simple.
+Now, no matter if it is list or your linked hash set.
+Whatever.
+Right?
+They all follow the same because sequence set is also a child of it.
+So even the linked hash said will have a same method itself.
+Now we don't have to like remember okay for DAC, what's the method for adding a first position?
+It would be same for list again same.
+Similarly for sequence map since it's a map key value right.
+First entry.
+Last entry pole.
+First entry pole.
+Last entry.
+So it's like a remove.
+It's like a get first get last remove first remove last.
+Right.
+It's add Put first, put last right.
+Then if you want only a key set, you will get all the key set.
+If you want all the values, you can get all the values right.
+You can even get reversed, right?
+You can even iterate in the reverse direction also.
+So all this is possible now because of this new interfaces.
+So now the same all the collection type which are earlier we marked as.
+That's it can it's solves all three condition and can be termed as sequence.
+Now we will see all those.
+Now see the change.
+You will automatically see yourself.
+So list which was following insertion order.
+Now let's say that how we will do all this operation in Java 21 plus okay.
+So now let's say that I have a list value BCD okay.
+Now I want to add I can do simply get first, get last so it will return me be get last.
+D you want to add?
+What are the methods.
+So it's there at first, at last.
+So I'm using those only at first A.
+So now A is added at first at last z.
+So z is added at last remove remove first remove last.
+So it remove a and then ultimately it removes z at last.
+Reverse list dot reverse you get the reverse C.
+Very simple very clean right.
+And the same thing we will gonna do for everyone.
+We don't have to now remember what method for deck.
+So it follows also insertion order.
+So this is how we create a deck I have created let's say BCD again get first.
+Get last at first.
+At last remove first remove last reverse similar like list all this because of this interface.
+Now they have a common method.
+Similarly, linked has set okay.
+Follows insertion order.
+So here if you see in the linked hash set I created a set linked hash set b, c, d.
+If you want to access get first get last the first is b, last is D.
+If you want to add add first at last.
+Now it's possible, right?
+You added A at the first and Z at the last okay.
+Now you know that set do not contains duplicate.
+So now if I say this now my current value is a b c d z.
+Now I am trying to add c.
+So what it will do is at first c.
+So it will since duplicate is not allowed and c is already present, what it will do is it will take
+it to the first itself.
+So my it become comes from this position to first.
+So c a d c a b d z is now my new Collection.
+You want to remove it?
+Remove first.
+Remove last.
+Same method.
+Reverse.
+Right.
+Very very simple.
+So sorted set.
+So sorted.
+Set.
+You can say that it follows sorted order.
+So now I have created a sorted set here okay 14 five seven.
+So internally it is stored in a sorted form.
+So five 714 let's say I'm storing in ascending order.
+So get first get last five and 14.
+It will return.
+Now if you try to call at first at last.
+So now here if you see at uh at first at last methods are there.
+Right.
+But for sorted set does does this makes sense.
+If you add two at first, will it add it at the first place.
+Are you sure.
+No.
+Right.
+It depend upon the order like in the sorting order.
+If in the sorting, if it is the smallest, it will only get added at first.
+Okay, so that's why at first and at last, if you use it, it will throw unsupported operation exception
+for sorted set.
+Okay.
+Because at first at last does not make sense.
+All you can do is add.
+If it is a smallest value, it will automatically get added at start.
+If it is a largest value, it will automatically get added at the end.
+If it is the smallest, it will be stored at the first.
+Okay, so that's why if you use at first, at last in the sorted map, it will throw unsupported operation
+exception.
+So yeah remove remove first, remove last and the reverse.
+Same thing.
+Similarly you can go through like all of this thing linked HashMap.
+Same thing.
+I have just created a map.
+Now all I'm using the same methods which is present here.
+First entry.
+Last entry.
+Like it made very easy.
+Uh, so this is my map 100.
+So this is my key value.
+First entry is this 100 B last entry is 300 D.
+If you want to start at first, just put key value.
+So now I see that 400 key.
+And the value a is now at the first okay.
+Internally it uses doubly linked list.
+That's why it is possible okay.
+So all this operations are possible.
+Put first put last pole first entry pole.
+Last entry reverse.
+Similarly sorted map like very very similar to sorted set.
+You can go through it very very similar right.
+If you use put first put last you will get unsupported operation exception.
+Because this doesn't make sense.
+Because it is a sorted map.
+It will sort it internally either ascending or descending.
+If you putting a value, let's say if it is a map, it sort the order based on keys.
+So based on the keys it decides its position.
+If you put it, say that hey put it first.
+But based on the ordering, it says that it should come at the third position in the ordering.
+Then it puts it into the third.
+It will not put it into the first.
+So that's why these two operation does not make sense.
+So it will throw unsupported operation exception.
+So for sorted map you have to use simple put and it will put it into its proper order.
+So key is 50 very less.
+So it will come at first 400 is max.
+So it will go at n.
+Similarly remove and reverse.
+So if you see that all our three are doubts are clarified with this.
+Okay.
+Now we know the reason.
+What is the criteria of putting into a specific place why it left out.
+Q we know the conditions.
+What exactly this interface is required?
+What are the gaps?
+We know that there was a missing interface.
+That's why each collection type are using their own method to do at first, at last, get first, get
+last, remove first, remove last whatever.
+Now, because of a common interface, it's a very cleaner way to operate on the first and the last element,
+or even doing the reverse of a collection.
+Right?
+Reverse is just a view.
+It's not changing the underlying collection.
+Okay.
+And why sequence set is needed I already explained because sequence set no duplicates are allowed.
+And in this collection duplicates are allowed.
+That's why we needed a different set.
+So do practice with your hand.
+You will get it like.
+And also I hope if you understand it, you don't have to remember this collection hierarchy.
+Like where exactly?
+Like what all should be the child of uh, new interface and why we have skipped and all.
+So if you understand it properly, you will create your own hierarchy diagram by yourself.
+And if you have any doubt, let me know in the comment section.
+We can discuss further.
+Okay guys.
+Thank you.
+Bye.
