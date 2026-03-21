@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 
 base_dir = r"c:\Users\praty\Coding\HLD-notes"
-html_files = glob.glob(os.path.join(base_dir, "*", "*.html"))
+html_files = [str(p) for p in Path(base_dir).rglob("*.html")]
 
 wrapper_start = """<!DOCTYPE html>
 <html lang="en">
@@ -189,7 +189,11 @@ for filepath in html_files:
     with open(filepath, 'w', encoding='utf-8') as f:
         dir_name = Path(filepath).parent.name
         pretty_title = dir_name.replace('_', ' ').title()
+        
+        rel_base = os.path.relpath(base_dir, start=os.path.dirname(filepath)).replace('\\', '/')
+        back_href = f"{rel_base}/index.html"
         html_start = wrapper_start.replace("<title>HLD Note</title>", f"<title>{pretty_title} - HLD Note</title>")
+        html_start = html_start.replace('href="../index.html"', f'href="{back_href}"')
         
         f.write(html_start + "\n" + original_content + "\n" + wrapper_end)
         count += 1
