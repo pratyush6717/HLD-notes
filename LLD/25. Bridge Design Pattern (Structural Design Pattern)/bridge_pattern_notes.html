@@ -1,0 +1,266 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .code-bad { border-left: 3px solid #E24B4A; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .tree-item { font-family: var(--font-mono); font-size: 13px; color: var(--color-text-secondary); line-height: 2; }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .pain ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('problem')">The problem</button>
+    <button class="sub-btn" onclick="show('solution')">The solution</button>
+    <button class="sub-btn" onclick="show('vs-strategy')">Bridge vs Strategy</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box">
+      <strong>One line:</strong> Bridge decouples abstraction from implementation so that both can vary independently.<br><br>
+      <strong>The real problem it solves:</strong> When both the abstraction hierarchy AND the implementation hierarchy need to grow — without being tightly coupled to each other.
+    </div>
+
+    <div class="section-title">Core structure</div>
+    <div class="arch-flow" style="margin-bottom:16px">
+      <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+        <div>
+          <div style="font-size:11px;font-weight:500;color:#185FA5;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Abstraction hierarchy</div>
+          <div class="tree-item">
+            <span style="color:#185FA5">LivingThing (abstract)</span><br>
+            ├── <span style="color:#0C447C">Dog</span><br>
+            ├── <span style="color:#0C447C">Fish</span><br>
+            └── <span style="color:#0C447C">Tree</span>
+          </div>
+        </div>
+        <div style="font-size:28px;color:var(--color-text-tertiary);padding-top:24px">⟵ bridge →</div>
+        <div>
+          <div style="font-size:11px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Implementation hierarchy</div>
+          <div class="tree-item">
+            <span style="color:#0F6E56">BreatheImplementer (interface)</span><br>
+            ├── <span style="color:#085041">LandBreathe</span><br>
+            ├── <span style="color:#085041">WaterBreathe</span><br>
+            └── <span style="color:#085041">TreeBreathe</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">Add new animals → abstraction grows independently. Add new breathe processes → implementation grows independently. No class explosion.</div>
+    </div>
+
+    <div class="highlight"><strong>IS-A + HAS-A again:</strong> LivingThing IS-A abstraction (abstract class) + HAS-A BreatheImplementer (reference to implementation). Client injects the right implementer at construction. Abstraction delegates to it.</div>
+  </div>
+
+  <!-- PROBLEM -->
+  <div class="sub-panel" id="sub-problem">
+    <div class="highlight"><strong>Simple inheritance works fine — until you need to add a new breathing process independently of the animal hierarchy.</strong></div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:#A32D2D;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Simple inheritance (problem)</div>
+        <div class="tree-item">
+          <span style="color:#0C447C">LivingThing</span> (abstract)<br>
+          └── breatheProcess() abstract<br>
+          ├── <span style="color:#633806">Dog</span> → breatheProcess() { nose }<br>
+          ├── <span style="color:#633806">Fish</span> → breatheProcess() { gills }<br>
+          └── <span style="color:#633806">Tree</span> → breatheProcess() { leaves }
+        </div>
+      </div>
+      <div class="pain">
+        <div class="label">The tightly coupled problem</div>
+        <ul>
+          <li>Breathing process baked into each animal class</li>
+          <li>Want a new breathing process (e.g. Bird via beak)?</li>
+          <li>Must add Bird class first — no Bird, no Bird breathe</li>
+          <li>Breathe process can't exist independently</li>
+          <li>Both hierarchies grow together — can't scale independently</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Root problem:</strong> Implementation (how to breathe) is tightly coupled to abstraction (what animal). One cannot change without the other. Bridge pattern separates them into independent hierarchies.</div>
+  </div>
+
+  <!-- SOLUTION -->
+  <div class="sub-panel" id="sub-solution">
+    <div class="highlight"><strong>Extract the implementation into its own interface. Abstraction holds a reference to it.</strong> Both hierarchies now grow independently.</div>
+
+    <div class="code-block code-good">// Implementation hierarchy — grows independently
+interface BreatheImplementer {
+  void breathe();
+}
+class LandBreathe implements BreatheImplementer {
+  public void breathe() { System.out.println("Nose → O2 in, CO2 out"); }
+}
+class WaterBreathe implements BreatheImplementer {
+  public void breathe() { System.out.println("Gills → absorb O2 from water"); }
+}
+class TreeBreathe implements BreatheImplementer {
+  public void breathe() { System.out.println("Leaves → CO2 in, O2 out"); }
+}
+// Add XYZBreathe? Add independently. No animal changes needed.</div>
+
+    <div class="code-block code-good">// Abstraction hierarchy — holds reference to implementer
+abstract class LivingThing {
+  BreatheImplementer breatheImpl; // HAS-A implementer
+
+  LivingThing(BreatheImplementer impl) {
+    this.breatheImpl = impl;
+  }
+  abstract void breatheProcess();
+}
+
+class Dog extends LivingThing {
+  Dog(BreatheImplementer impl) { super(impl); }
+  public void breatheProcess() { breatheImpl.breathe(); } // delegates
+}
+class Fish extends LivingThing {
+  Fish(BreatheImplementer impl) { super(impl); }
+  public void breatheProcess() { breatheImpl.breathe(); }
+}</div>
+
+    <div class="code-block code-good">// Client — injects the right implementer
+LivingThing fish = new Fish(new WaterBreathe());
+fish.breatheProcess(); // "Gills → absorb O2 from water"
+
+LivingThing dog = new Dog(new LandBreathe());
+dog.breatheProcess();  // "Nose → O2 in, CO2 out"
+
+// Change breathe method at runtime — same as Strategy!
+LivingThing tree = new Tree(new XYZBreathe()); // new process, no Tree changes</div>
+  </div>
+
+  <!-- BRIDGE vs STRATEGY -->
+  <div class="sub-panel" id="sub-vs-strategy">
+    <div class="highlight"><strong>Bridge and Strategy have nearly identical UML and code — the only difference is intent.</strong> This confuses everyone. Fix it here permanently.</div>
+
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box" style="border-color:#185FA5">
+        <div class="box-label" style="color:#185FA5">Strategy — Change behaviour at runtime</div>
+        <div class="box-sub" style="margin-bottom:10px">Intent: swap the algorithm/behaviour of a single object dynamically. Focus = one object + swappable behaviour.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          Client creates one context object<br>
+          Passes different strategies to it<br>
+          Same object → different behaviour each time<br><br>
+          <span style="color:#0F6E56;font-style:italic">"Change what this object does"</span>
+        </div>
+      </div>
+      <div class="box" style="border-color:#0F6E56">
+        <div class="box-label" style="color:#0F6E56">Bridge — Let two hierarchies grow independently</div>
+        <div class="box-sub" style="margin-bottom:10px">Intent: design for long-term growth. Both abstraction AND implementation expand independently over time. Focus = scalability of two hierarchies.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          Two separate hierarchies (animals + breathe)<br>
+          Both can add new members independently<br>
+          Neither depends on the other for growth<br><br>
+          <span style="color:#0F6E56;font-style:italic">"Let both hierarchies scale freely"</span>
+        </div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Strategy</th><th>Bridge</th></tr>
+      <tr><td>Code/UML</td><td colspan="2" style="text-align:center;color:var(--color-text-tertiary);font-style:italic">Nearly identical — same IS-A + HAS-A structure</td></tr>
+      <tr><td>Intent</td><td>Change object behaviour at runtime</td><td>Let abstraction and implementation grow independently</td></tr>
+      <tr><td>Focus</td><td>One object, swappable behaviour</td><td>Two hierarchies, independent scaling</td></tr>
+      <tr><td>Decision time</td><td>Runtime — client swaps strategies</td><td>Design time — architect separates hierarchies</td></tr>
+      <tr><td>Analogy</td><td>Driver changes gear at will</td><td>Engine team and body team work independently</td></tr>
+    </table>
+
+    <div class="insight-box">
+      <strong>The honest truth from the lecture:</strong> UML-wise and code-wise — Bridge and Strategy are almost the same. The difference is intent only.<br><br>
+      Strategy = "I want to change this behaviour now"<br>
+      Bridge = "I want both hierarchies to grow without coupling"
+    </div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Definition:</strong> Bridge pattern decouples an abstraction from its implementation so that the two can vary independently.<br><br>
+      <strong>Category:</strong> Structural — separates a complex class into two independent hierarchies.
+    </div>
+
+    <div class="section-title">When to use</div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="cure">
+        <div class="label">Use Bridge when</div>
+        <ul>
+          <li>Both abstraction and implementation need to grow independently</li>
+          <li>Tight coupling prevents adding new processes without new classes</li>
+          <li>Want to avoid a Cartesian product of classes (3 animals × 4 breathe = 12 classes)</li>
+          <li>Implementation should be swappable at runtime</li>
+        </ul>
+      </div>
+      <div class="box">
+        <div class="box-label">Real examples</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          Shape (Circle, Square) × Renderer (SVG, Canvas, OpenGL)<br>
+          LivingThing × BreatheProcess<br>
+          Remote (TV, DVD) × Device<br>
+          Platform (Windows, Mac) × UI Toolkit
+        </div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Bridge definition</td><td>Decouple abstraction from implementation → both hierarchies scale independently</td></tr>
+      <tr><td>IS-A + HAS-A</td><td>Abstraction IS-A abstract class + HAS-A implementer reference</td></tr>
+      <tr><td>vs Strategy</td><td>Same code structure. Different intent. Strategy = swap behaviour. Bridge = independent growth.</td></tr>
+      <tr><td>Problem solved</td><td>Tight coupling between abstraction and implementation prevents either from growing freely</td></tr>
+      <tr><td>Key benefit</td><td>Add new breathe processes without adding animals. Add new animals without adding breathe classes.</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

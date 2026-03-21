@@ -1,0 +1,164 @@
+Great — this is one of the most important LLD patterns for interviews. I’ll simplify and structure everything so you can explain + implement confidently.
+
+🧠 1️⃣ Command Pattern — One Line
+Encapsulate a request as an object so you can parameterize, queue, log, and undo operations.
+🎯 Why We Need It (Your AC Example)
+❌ Problem Without Command
+ac.turnOn();
+ac.setTemp(24);
+ac.turnOff();
+Issues:
+🚫 1. Tight Coupling
+Client knows EVERYTHING about AC
+
+What methods to call
+
+In what sequence
+
+How logic works
+
+🚫 2. No Undo/Redo
+No history of actions
+
+Can't revert easily
+
+Client must track everything ❌
+
+🚫 3. Poor Scalability
+Add new device → client changes
+
+AC + Bulb + Fan → client becomes HUGE
+
+💡 Core Idea of Command Pattern
+Break into 3 parts:
+Invoker → Command → Receiver
+Visual Flow
+4
+🧩 Components (VERY IMPORTANT)
+1️⃣ Receiver (Actual Logic)
+class AirConditioner {
+    void turnOn() { ... }
+    void turnOff() { ... }
+}
+
+👉 Does real work
+👉 “Dumb object”
+
+2️⃣ Command Interface
+interface Command {
+    void execute();
+    void undo();   // optional but powerful
+}
+3️⃣ Concrete Commands
+class TurnOnACCommand implements Command {
+    AirConditioner ac;
+
+    public void execute() {
+        ac.turnOn();
+    }
+
+    public void undo() {
+        ac.turnOff();
+    }
+}
+4️⃣ Invoker (Remote Control)
+class RemoteControl {
+    Command command;
+
+    void pressButton() {
+        command.execute();
+    }
+}
+5️⃣ Client
+remote.setCommand(new TurnOnACCommand(ac));
+remote.pressButton();
+🧠 What Changed?
+Before
+Client → AC directly ❌
+After
+Client → Remote → Command → AC ✅
+🔥 BIG BENEFITS
+✅ 1. Loose Coupling
+Client doesn’t know AC internals anymore
+✅ 2. Easy Undo/Redo
+Store commands → reverse them
+✅ 3. Extensible
+Add new command → no change in client
+✅ 4. Supports Logging / Queue
+Commands can be stored, delayed, replayed
+🔁 Undo / Redo (VERY IMPORTANT)
+Idea:
+
+👉 Maintain a stack of commands
+
+Implementation
+Stack<Command> history = new Stack<>();
+On Execute
+command.execute();
+history.push(command);
+On Undo
+Command last = history.pop();
+last.undo();
+Flow
+Press → execute → store  
+Undo → pop → reverse
+🔥 Example Flow
+1. Press ON → AC ON → push
+2. Press OFF → AC OFF → push
+3. Undo → pop OFF → AC ON
+4. Undo → pop ON → AC OFF
+🎯 Real-Life Examples
+📺 Remote Control
+Button = Command
+TV/AC = Receiver
+✂️ Text Editor
+Copy, Paste, Undo
+💳 Banking
+Transfer money (can rollback)
+🧾 Order System
+Place order → cancel order
+⚠️ Interview Trick Questions
+❓ Where is undo stored?
+
+👉 In Invoker (Remote)
+
+❓ Who knows undo logic?
+
+👉 Command class
+
+❓ Can we support redo?
+
+👉 Yes → use two stacks
+
+Undo stack  
+Redo stack
+🔄 Command vs Other Patterns
+Command vs Strategy
+Command → encapsulates action + receiver  
+Strategy → interchangeable algorithms
+Command vs Observer
+Command → execute action  
+Observer → notify changes
+Command vs Proxy
+Command → represents action  
+Proxy → controls access
+🧠 When to Use (IMPORTANT)
+
+Use Command when:
+
+✔ Need undo/redo
+✔ Need to queue operations
+✔ Need to log actions
+✔ Need decoupling between sender & receiver
+🧠 Memory Trick
+“Button doesn’t know what it does”
+
+👉 Button → Command → Receiver
+
+🚀 Interview Perfect Answer
+Definition
+Command pattern encapsulates a request as an object, allowing parameterization, queuing, logging, and undo/redo operations.
+Example
+Remote control → button → command → AC
+🔥 Final Mental Model
+Action = Object

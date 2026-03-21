@@ -1,0 +1,159 @@
+Great, this is a classic LLD + design pattern combo (Mediator + Auction System) — very commonly asked. I’ll simplify and structure it so you can explain confidently in interviews + actually design it.
+
+🧠 1️⃣ Mediator Pattern — One Line
+Objects communicate through a central mediator instead of directly with each other.
+🎯 Core Problem It Solves
+❌ Without Mediator
+Bidder A ↔ Bidder B ↔ Bidder C ↔ Bidder D
+
+👉 Everyone talks to everyone
+👉 Too many dependencies
+👉 Tight coupling ❌
+
+✅ With Mediator
+Bidder → Auction → Bidder
+
+👉 Central controller
+👉 Loose coupling ✅
+
+🧩 Real-World Examples
+🏷️ Online Auction System
+✈️ Air Traffic Control
+💬 Chat Application
+🎮 Multiplayer Game Lobby
+Visual Idea
+4
+🧠 Key Insight
+Objects don’t know each other  
+They only know the mediator
+🧩 Components (VERY IMPORTANT)
+🟦 1. Mediator Interface
+interface AuctionMediator {
+    void addBidder(Colleague bidder);
+    void placeBid(Colleague bidder, int amount);
+}
+🟩 2. Concrete Mediator
+class Auction implements AuctionMediator {
+    List<Colleague> bidders = new ArrayList<>();
+
+    public void addBidder(Colleague bidder) {
+        bidders.add(bidder);
+    }
+
+    public void placeBid(Colleague bidder, int amount) {
+        for (Colleague b : bidders) {
+            if (b != bidder) {
+                b.receiveBidNotification(bidder.getName(), amount);
+            }
+        }
+    }
+}
+🟨 3. Colleague Interface
+interface Colleague {
+    void placeBid(int amount);
+    void receiveBidNotification(String bidder, int amount);
+    String getName();
+}
+🟧 4. Concrete Colleague (Bidder)
+class Bidder implements Colleague {
+    String name;
+    AuctionMediator mediator;
+
+    public Bidder(String name, AuctionMediator mediator) {
+        this.name = name;
+        this.mediator = mediator;
+        mediator.addBidder(this);
+    }
+
+    public void placeBid(int amount) {
+        mediator.placeBid(this, amount);
+    }
+
+    public void receiveBidNotification(String bidder, int amount) {
+        System.out.println(name + " notified: " + bidder + " bid " + amount);
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+🟥 5. Client
+AuctionMediator auction = new Auction();
+
+Bidder A = new Bidder("A", auction);
+Bidder B = new Bidder("B", auction);
+
+A.placeBid(1000);
+B.placeBid(2000);
+🔁 Flow Explained
+Step 1
+A places bid → mediator
+Step 2
+Mediator notifies all others
+Step 3
+B receives → reacts
+🔥 Why This Is Powerful
+✅ 1. Loose Coupling
+Bidders don’t know each other
+✅ 2. Centralized Logic
+All rules in one place (mediator)
+✅ 3. Easy to Extend
+Add new bidder → no changes in others
+❌ Tradeoff
+Mediator can become complex (God object)
+🆚 Mediator vs Observer (IMPORTANT)
+Mediator
+Communication control
+
+Objects talk via mediator
+
+Bidder → mediator → bidder
+
+Observer
+Event notification
+
+Subject → notify all observers
+
+No interaction logic
+
+🔥 Difference
+Mediator = coordination  
+Observer = broadcast
+🆚 Mediator vs Proxy
+Mediator
+Manages communication between multiple objects
+Proxy
+Controls access to ONE object
+🧠 When to Use Mediator
+
+Use when:
+
+✔ Many objects interacting
+✔ Complex dependencies
+✔ Want loose coupling
+✔ Central coordination needed
+🚀 Interview Tips (VERY IMPORTANT)
+❓ If interviewer says:
+Design chat app / auction / air traffic
+
+👉 Think:
+
+MEDIATOR
+❓ If many objects talking to each other?
+
+👉 Use mediator
+
+❓ If communication is centralized?
+
+👉 Use mediator
+
+🧠 Memory Trick
+“Don’t talk to each other, talk to the boss”
+
+👉 Boss = Mediator
+
+🔥 Final Mental Model
+Colleagues = Users  
+Mediator = Server
+🎯 Perfect Interview Answer
+Mediator pattern is a behavioral design pattern that reduces coupling between objects by making them communicate through a central mediator instead of directly interacting with each other.

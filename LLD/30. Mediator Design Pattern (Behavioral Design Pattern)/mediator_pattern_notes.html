@@ -1,0 +1,280 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .pain ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('components')">Components</button>
+    <button class="sub-btn" onclick="show('code')">Full code</button>
+    <button class="sub-btn" onclick="show('compare')">vs Observer / Proxy</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box">
+      <strong>One line:</strong> Objects communicate through a central mediator instead of directly with each other.<br><br>
+      <strong>Memory trick:</strong> "Don't talk to each other — talk to the boss." Boss = Mediator.
+    </div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:#A32D2D;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Without Mediator — spaghetti</div>
+        <div style="text-align:center;font-size:13px;color:var(--color-text-secondary);line-height:2">
+          Bidder A ↔ Bidder B<br>
+          Bidder A ↔ Bidder C<br>
+          Bidder B ↔ Bidder C<br>
+          Bidder C ↔ Bidder D<br>
+          <span style="color:#A32D2D;font-size:12px">N objects = N(N-1)/2 connections</span>
+        </div>
+      </div>
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">With Mediator — star topology</div>
+        <div style="text-align:center;font-size:13px;color:var(--color-text-secondary);line-height:2">
+          Bidder A → Auction<br>
+          Bidder B → Auction<br>
+          Bidder C → Auction<br>
+          Auction → notifies all<br>
+          <span style="color:#0F6E56;font-size:12px">N objects = N connections only</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Without Mediator</div>
+        <ul><li>Every bidder knows every other bidder</li><li>10 bidders = 45 connections</li><li>Add one bidder → update 10 others</li><li>Tight coupling everywhere</li></ul>
+      </div>
+      <div class="cure">
+        <div class="label">With Mediator</div>
+        <ul><li>Bidders only know the auction (mediator)</li><li>10 bidders = 10 connections</li><li>Add one bidder → only add to mediator</li><li>Loose coupling</li></ul>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Real-world examples:</strong> <span class="tag tag-blue">Online Auction</span><span class="tag tag-blue">Air Traffic Control (tower)</span><span class="tag tag-blue">Chat App (server)</span><span class="tag tag-blue">Multiplayer Game Lobby</span> — in all of these, objects talk to a central coordinator, not to each other.</div>
+  </div>
+
+  <!-- COMPONENTS -->
+  <div class="sub-panel" id="sub-components">
+    <div class="highlight"><strong>4 components — always the same structure.</strong></div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+      <div style="padding:10px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;gap:12px;align-items:flex-start">
+        <div style="width:24px;height:24px;border-radius:50%;background:#E6F1FB;color:#0C447C;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px">1</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">Mediator interface</div>
+          <div style="font-size:13px;color:var(--color-text-secondary)">Contract for central coordinator. Defines <code style="font-family:var(--font-mono);font-size:11px">addBidder()</code> and <code style="font-family:var(--font-mono);font-size:11px">placeBid()</code>. Multiple mediator types possible (e.g. Dutch auction, English auction).</div>
+        </div>
+      </div>
+      <div style="padding:10px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;gap:12px;align-items:flex-start">
+        <div style="width:24px;height:24px;border-radius:50%;background:#FAEEDA;color:#633806;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px">2</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">Concrete Mediator (Auction)</div>
+          <div style="font-size:13px;color:var(--color-text-secondary)">Maintains list of colleagues. When a bid comes in — notifies all other bidders. All business rules live here (not in bidders).</div>
+        </div>
+      </div>
+      <div style="padding:10px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;gap:12px;align-items:flex-start">
+        <div style="width:24px;height:24px;border-radius:50%;background:#E1F5EE;color:#085041;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px">3</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">Colleague interface (Bidder)</div>
+          <div style="font-size:13px;color:var(--color-text-secondary)">Contract for all participants. Defines <code style="font-family:var(--font-mono);font-size:11px">placeBid()</code> and <code style="font-family:var(--font-mono);font-size:11px">receiveBidNotification()</code>.</div>
+        </div>
+      </div>
+      <div style="padding:10px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;gap:12px;align-items:flex-start">
+        <div style="width:24px;height:24px;border-radius:50%;background:#EAF3DE;color:#27500A;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px">4</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">Concrete Colleague (Bidder impl)</div>
+          <div style="font-size:13px;color:var(--color-text-secondary)">HAS-A mediator reference. placeBid() delegates to mediator. receiveBidNotification() reacts to others' bids. Knows ONLY the mediator — never other bidders.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CODE -->
+  <div class="sub-panel" id="sub-code">
+    <div class="code-block code-good">// 1. Mediator interface
+interface AuctionMediator {
+  void addBidder(Colleague bidder);
+  void placeBid(Colleague bidder, int amount);
+}
+
+// 2. Concrete Mediator — all rules live here
+class Auction implements AuctionMediator {
+  List&lt;Colleague&gt; bidders = new ArrayList&lt;&gt;();
+
+  public void addBidder(Colleague b) { bidders.add(b); }
+
+  public void placeBid(Colleague bidder, int amount) {
+    for (Colleague b : bidders) {
+      if (b != bidder) { // don't notify the bidder themselves
+        b.receiveBidNotification(bidder.getName(), amount);
+      }
+    }
+  }
+}</div>
+
+    <div class="code-block code-good">// 3. Colleague interface
+interface Colleague {
+  void placeBid(int amount);
+  void receiveBidNotification(String bidder, int amount);
+  String getName();
+}
+
+// 4. Concrete Colleague
+class Bidder implements Colleague {
+  String name;
+  AuctionMediator mediator; // HAS-A mediator, NOT other bidders
+
+  Bidder(String name, AuctionMediator mediator) {
+    this.name = name;
+    this.mediator = mediator;
+    mediator.addBidder(this); // self-register
+  }
+
+  public void placeBid(int amount) {
+    System.out.println(name + " placed bid: " + amount);
+    mediator.placeBid(this, amount); // goes through mediator
+  }
+
+  public void receiveBidNotification(String bidder, int amount) {
+    System.out.println(name + " notified: " + bidder + " bid " + amount);
+  }
+
+  public String getName() { return name; }
+}</div>
+
+    <div class="code-block code-good">// 5. Client
+AuctionMediator auction = new Auction();
+
+Bidder alice = new Bidder("Alice", auction);
+Bidder bob   = new Bidder("Bob",   auction);
+Bidder carol = new Bidder("Carol", auction);
+
+alice.placeBid(1000);
+// Output: Alice placed bid: 1000
+//         Bob notified: Alice bid 1000
+//         Carol notified: Alice bid 1000
+
+bob.placeBid(2000);
+// Output: Bob placed bid: 2000
+//         Alice notified: Bob bid 2000
+//         Carol notified: Bob bid 2000</div>
+  </div>
+
+  <!-- COMPARE -->
+  <div class="sub-panel" id="sub-compare">
+    <div class="highlight"><strong>Mediator and Observer look similar — both involve objects being notified. The difference is the role of the central object.</strong></div>
+
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box" style="border-color:#185FA5">
+        <div class="box-label" style="color:#185FA5">Mediator — coordination</div>
+        <div class="box-sub" style="margin-bottom:8px">Central object controls how colleagues interact. Contains interaction logic. Bidder A's action triggers Mediator to decide what to tell Bidder B.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          Bidder → Auction → Bidder<br>
+          Auction decides the rules<br>
+          Colleagues don't know each other
+        </div>
+      </div>
+      <div class="box" style="border-color:#0F6E56">
+        <div class="box-label" style="color:#0F6E56">Observer — broadcast</div>
+        <div class="box-sub" style="margin-bottom:8px">Subject broadcasts an event. Observers react independently. No coordination logic — just notification.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          Subject → notify all observers<br>
+          No back-communication<br>
+          One-way event push
+        </div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Mediator</th><th>Observer</th><th>Proxy</th></tr>
+      <tr><td>Purpose</td><td>Control/coordinate multi-object communication</td><td>Broadcast events to observers</td><td>Control access to one object</td></tr>
+      <tr><td>Central object role</td><td>Orchestrates interaction logic</td><td>Just fires notifications</td><td>Controls access</td></tr>
+      <tr><td>Objects involved</td><td>Many colleagues ↔ mediator</td><td>One subject → many observers</td><td>One client → one real object</td></tr>
+      <tr><td>Shortcut</td><td>Coordination</td><td>Broadcast</td><td>Gatekeeper</td></tr>
+    </table>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Definition:</strong> Mediator is a behavioural pattern that reduces coupling between objects by making them communicate through a central mediator instead of directly interacting.<br><br>
+      <strong>Final model:</strong> Colleagues = Users. Mediator = Server. Users talk to server, server tells others.
+    </div>
+
+    <div class="section-title">Interview trigger words → Mediator</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
+      <span class="tag tag-blue">Design a chat app</span>
+      <span class="tag tag-blue">Design an auction system</span>
+      <span class="tag tag-blue">Air traffic control</span>
+      <span class="tag tag-blue">Multiplayer game lobby</span>
+      <span class="tag tag-blue">Many objects talking to each other</span>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Mediator definition</td><td>Central coordinator — objects don't know each other, only know the mediator</td></tr>
+      <tr><td>Colleague</td><td>Participant — HAS-A mediator, talks through it, never to others directly</td></tr>
+      <tr><td>N objects benefit</td><td>Without: N(N-1)/2 connections. With: N connections. Linear vs quadratic.</td></tr>
+      <tr><td>Trade-off</td><td>Mediator can become God object if too much logic is concentrated in it</td></tr>
+      <tr><td>vs Observer</td><td>Mediator = coordination (interaction logic). Observer = broadcast (event notification).</td></tr>
+      <tr><td>vs Proxy</td><td>Mediator = manages many↔many. Proxy = controls 1→1 access.</td></tr>
+      <tr><td>Category</td><td>Behavioural</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

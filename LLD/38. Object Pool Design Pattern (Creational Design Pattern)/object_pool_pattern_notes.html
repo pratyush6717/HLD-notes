@@ -1,0 +1,291 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .code-bad { border-left: 3px solid #E24B4A; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .conn-slot { display: inline-block; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: 500; font-family: var(--font-mono); margin: 2px; }
+  .conn-free { background: #EAF3DE; color: #27500A; }
+  .conn-used { background: #FCEBEB; color: #791F1F; }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .pain ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('must-haves')">2 must-haves</button>
+    <button class="sub-btn" onclick="show('code')">Code</button>
+    <button class="sub-btn" onclick="show('advanced')">Advanced points</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box">
+      <strong>One line:</strong> Object Pool manages a fixed set of reusable objects — clients borrow, use, and return. Create once, reuse many times.<br><br>
+      <strong>Category:</strong> Creational pattern.
+    </div>
+
+    <div class="section-title">Pool state — free vs in-use</div>
+    <div class="arch-flow" style="margin-bottom:16px">
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:6px">Free pool</div>
+          <span class="conn-slot conn-free">conn-1</span>
+          <span class="conn-slot conn-free">conn-2</span>
+          <span class="conn-slot conn-free">conn-3</span>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:6px">In-use pool</div>
+          <span class="conn-slot conn-used">conn-4</span>
+          <span class="conn-slot conn-used">conn-5</span>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:13px;color:var(--color-text-secondary)">
+        Client calls getResource() → moves from free to in-use<br>
+        Client calls releaseResource() → moves back to free
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Real-world examples</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          💻 DB Connection Pool (HikariCP)<br>
+          🧵 Thread Pool (ExecutorService)<br>
+          🔌 Socket Pool<br>
+          🎮 Game object pooling (bullets, particles)
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Why it exists</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          Creating DB connections is expensive (100ms+)<br>
+          Without pool: create → use → destroy per request<br>
+          With pool: borrow → use → return → reuse<br>
+          Performance boost + controlled resources
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MUST-HAVES -->
+  <div class="sub-panel" id="sub-must-haves">
+    <div class="highlight"><strong>Interviewers don't care about theory — they care whether you mention these two. Missing either = red flag.</strong></div>
+
+    <div style="padding:16px;border-radius:10px;border:2px solid #A32D2D;background:var(--color-background-secondary);margin-bottom:16px">
+      <div style="font-size:14px;font-weight:500;color:#A32D2D;margin-bottom:8px">❌ Wrong implementation</div>
+      <div class="code-block code-bad" style="margin-bottom:8px">// Multiple pool managers — uncontrolled resources
+Pool pool1 = new Pool(); // 3 connections
+Pool pool2 = new Pool(); // 3 more connections
+Pool pool3 = new Pool(); // 3 more connections
+// Total: 9 connections — no control</div>
+      <div style="font-size:12px;color:#A32D2D">Also wrong: no thread safety → two threads get same connection → data corruption</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="padding:16px;border-radius:10px;border:2px solid #1D9E75;background:var(--color-background-secondary)">
+        <div style="font-size:14px;font-weight:500;color:#0F6E56;margin-bottom:8px">✔ Must-have 1 — Singleton Pool Manager</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:8px">Only ONE pool exists globally. Prevents uncontrolled resource multiplication.</div>
+        <div class="code-block code-good" style="margin-bottom:0">class ConnectionPool {
+  private static ConnectionPool instance; // singleton
+  private Queue&lt;Connection&gt; freePool = new LinkedList&lt;&gt;();
+
+  private ConnectionPool(int size) {
+    for (int i = 0; i &lt; size; i++) {
+      freePool.add(new Connection());
+    }
+  }
+
+  public static synchronized ConnectionPool getInstance() {
+    if (instance == null) instance = new ConnectionPool(5);
+    return instance;
+  }
+}</div>
+      </div>
+
+      <div style="padding:16px;border-radius:10px;border:2px solid #185FA5;background:var(--color-background-secondary)">
+        <div style="font-size:14px;font-weight:500;color:#185FA5;margin-bottom:8px">✔ Must-have 2 — Thread Safety</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:8px">Without it: Thread A and Thread B both see the same connection as "free" → both borrow it → data corruption.</div>
+        <div class="code-block code-good" style="margin-bottom:0">public synchronized Connection getConnection() {
+  if (freePool.isEmpty()) return null; // or block
+  Connection c = freePool.poll();
+  inUse.add(c);
+  return c;
+}
+
+public synchronized void releaseConnection(Connection c) {
+  inUse.remove(c);
+  freePool.add(c);
+}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CODE -->
+  <div class="sub-panel" id="sub-code">
+    <div class="code-block code-good">// Full Object Pool — Singleton + Thread-safe
+class ConnectionPool {
+  private static ConnectionPool instance;
+  private Queue&lt;Connection&gt; freePool = new LinkedList&lt;&gt;();
+  private Set&lt;Connection&gt; inUse = new HashSet&lt;&gt;();
+  private int maxSize;
+
+  private ConnectionPool(int size) {
+    this.maxSize = size;
+    for (int i = 0; i &lt; size; i++) {
+      freePool.add(createConnection());
+    }
+  }
+
+  public static synchronized ConnectionPool getInstance(int size) {
+    if (instance == null) instance = new ConnectionPool(size);
+    return instance;
+  }
+
+  public synchronized Connection getConnection() {
+    if (!freePool.isEmpty()) {
+      Connection c = freePool.poll();
+      inUse.add(c);
+      return c;
+    }
+    // All connections busy
+    return null; // or block until available
+  }
+
+  public synchronized void releaseConnection(Connection c) {
+    inUse.remove(c);
+    freePool.add(c); // back to free pool
+  }
+
+  private Connection createConnection() {
+    return new Connection("jdbc:mysql://...");
+  }
+}
+
+// Client usage
+ConnectionPool pool = ConnectionPool.getInstance(5);
+Connection conn = pool.getConnection();
+// use conn...
+pool.releaseConnection(conn); // MUST return — or leak</div>
+  </div>
+
+  <!-- ADVANCED -->
+  <div class="sub-panel" id="sub-advanced">
+    <div class="highlight"><strong>Say any of these in interview → interviewer impressed. These distinguish a senior engineer from a junior.</strong></div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+      <div style="padding:10px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;gap:12px">
+        <div style="width:24px;height:24px;border-radius:50%;background:#E6F1FB;color:#0C447C;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px">1</div>
+        <div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">Block instead of returning null</div><div style="font-size:13px;color:var(--color-text-secondary)">When pool is exhausted, use <code style="font-family:var(--font-mono);font-size:11px">BlockingQueue</code> or <code style="font-family:var(--font-mono);font-size:11px">wait()/notify()</code> to make client wait until a connection is released, instead of returning null.</div></div>
+      </div>
+      <div style="padding:10px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;gap:12px">
+        <div style="width:24px;height:24px;border-radius:50%;background:#E1F5EE;color:#085041;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px">2</div>
+        <div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">Timeout support</div><div style="font-size:13px;color:var(--color-text-secondary)">Wait max N seconds for a connection. If none available → fail with exception. Prevents threads waiting forever.</div></div>
+      </div>
+      <div style="padding:10px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;gap:12px">
+        <div style="width:24px;height:24px;border-radius:50%;background:#FAEEDA;color:#633806;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px">3</div>
+        <div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">Health check before reuse</div><div style="font-size:13px;color:var(--color-text-secondary)">DB connection may have gone stale (timeout). Validate before giving to client: <code style="font-family:var(--font-mono);font-size:11px">conn.isValid()</code>. Discard + create new if dead.</div></div>
+      </div>
+      <div style="padding:10px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;gap:12px">
+        <div style="width:24px;height:24px;border-radius:50%;background:#EAF3DE;color:#27500A;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px">4</div>
+        <div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">Resource leak prevention</div><div style="font-size:13px;color:var(--color-text-secondary)">If client forgets releaseConnection() → connection lost forever. Use try-with-resources or AutoCloseable wrapper to auto-return on scope exit.</div></div>
+      </div>
+      <div style="padding:10px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;gap:12px">
+        <div style="width:24px;height:24px;border-radius:50%;background:#EEEDFE;color:#3C3489;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px">5</div>
+        <div><div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">Use libraries in real systems</div><div style="font-size:13px;color:var(--color-text-secondary)"><span class="tag tag-blue">HikariCP</span><span class="tag tag-blue">Apache Commons Pool</span><span class="tag tag-blue">ExecutorService</span> — battle-tested pool implementations. Say this in interview for instant +points.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Definition:</strong> Object Pool is a creational pattern that manages a fixed number of reusable objects, allowing clients to borrow and return them — reducing the cost of frequent object creation.<br><br>
+      <strong>Senior-level bonus:</strong> "In real systems we use HikariCP for DB pools and ExecutorService for thread pools rather than building our own."
+    </div>
+
+    <div class="section-title">4 common interview mistakes</div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="pain">
+        <div class="label">Mistakes = red flags</div>
+        <ul>
+          <li>Forget Singleton → multiple pools → uncontrolled resources</li>
+          <li>No thread safety → two threads get same object</li>
+          <li>Return null when pool empty → client NPE</li>
+          <li>No resource leak handling → connections lost</li>
+        </ul>
+      </div>
+      <div class="cure">
+        <div class="label">Correct answers</div>
+        <ul>
+          <li>Singleton → ONE pool globally</li>
+          <li>synchronized / BlockingQueue → thread safe</li>
+          <li>Block with timeout → no null return</li>
+          <li>AutoCloseable / try-with-resources → no leak</li>
+        </ul>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Object Pool</td><td>Fixed set of reusable expensive objects — borrow, use, return</td></tr>
+      <tr><td>Must-have 1</td><td>Singleton — ONE pool manager globally. Multiple pools = uncontrolled resources.</td></tr>
+      <tr><td>Must-have 2</td><td>Thread safety — synchronized or BlockingQueue. Race condition = data corruption.</td></tr>
+      <tr><td>vs Singleton</td><td>Singleton = 1 instance total. Object Pool = N instances, controlled lifecycle.</td></tr>
+      <tr><td>vs Flyweight</td><td>Flyweight = shared immutable objects (never checked out). Pool = mutable, borrowed + returned.</td></tr>
+      <tr><td>Real usage</td><td>HikariCP (DB), ExecutorService (threads), Apache Commons Pool</td></tr>
+      <tr><td>When NOT to use</td><td>Lightweight objects, no reuse benefit, creation is cheap</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

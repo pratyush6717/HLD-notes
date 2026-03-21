@@ -1,0 +1,304 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .divider { border: none; border-top: 1px solid var(--color-border-tertiary); margin: 16px 0; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  .tag-purple { background: #EEEDFE; color: #3C3489; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+    .tag-purple { background: #3C3489; color: #CECBF6; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .flow-chain { display: flex; flex-direction: column; gap: 3px; }
+  .flow-node { padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; align-self: flex-start; }
+  .flow-down { font-size: 13px; color: var(--color-text-tertiary); padding-left: 16px; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 10px; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .cat-card { border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); padding: 14px 16px; }
+  .cat-title { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+  .cat-q { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 8px; }
+  .cat-body { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .rel-card { border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); padding: 14px 16px; }
+  .rel-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; margin-bottom: 8px; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">What is LLD?</button>
+    <button class="sub-btn" onclick="show('categories')">3 categories</button>
+    <button class="sub-btn" onclick="show('relationships')">IS-A vs HAS-A</button>
+    <button class="sub-btn" onclick="show('hasa-types')">Aggregation vs Composition</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box"><strong>One line:</strong> LLD = design of classes, their relationships, and their interactions inside a system.</div>
+
+    <div class="section-title">Where LLD fits</div>
+    <div class="grid-3" style="margin-bottom:16px">
+      <div class="box" style="text-align:center;padding:18px 14px">
+        <div style="font-size:20px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">HLD</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:10px">System architecture</div>
+        <div style="font-size:13px;color:var(--color-text-secondary)">Order Svc → Product Svc → Payment Svc</div>
+        <div style="margin-top:8px;font-size:11px;color:var(--color-text-tertiary)">Big picture — the map</div>
+      </div>
+      <div class="box" style="text-align:center;padding:18px 14px;border-color:#1D9E75;border-width:2px">
+        <div style="font-size:20px;font-weight:500;color:#0F6E56;margin-bottom:4px">LLD</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:10px">Classes inside a service</div>
+        <div style="font-size:13px;color:var(--color-text-secondary)">OrderService · ProductClient · PaymentHandler</div>
+        <div style="margin-top:8px;font-size:11px;color:var(--color-text-tertiary)">Blueprint — inside one building</div>
+      </div>
+      <div class="box" style="text-align:center;padding:18px 14px">
+        <div style="font-size:20px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px">Code</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:10px">Actual implementation</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);font-family:var(--font-mono)">class OrderService { ... }</div>
+        <div style="margin-top:8px;font-size:11px;color:var(--color-text-tertiary)">Construction — bricks and mortar</div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>HLD = system ka map · LLD = building ka blueprint · Code = actual construction</strong></div>
+
+    <div class="section-title">Purpose of LLD</div>
+    <div class="grid-3">
+      <div class="box" style="text-align:center">
+        <div class="box-label" style="color:#185FA5">Clean code</div>
+        <div class="box-sub">Readable. Structured. Easy to understand at first glance.</div>
+      </div>
+      <div class="box" style="text-align:center">
+        <div class="box-label" style="color:#0F6E56">Maintainable</div>
+        <div class="box-sub">Change one part → rest of system doesn't break.</div>
+      </div>
+      <div class="box" style="text-align:center">
+        <div class="box-label" style="color:#854F0B">Testable</div>
+        <div class="box-sub">Unit tests easy to write because dependencies are clean.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Right approach in interviews</div>
+    <div class="grid">
+      <div style="border-left:3px solid #E24B4A;padding:12px 14px;background:var(--color-background-secondary);border-radius:0 8px 8px 0">
+        <div style="font-size:11px;font-weight:500;color:#A32D2D;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Wrong</div>
+        <div style="font-size:13px;color:var(--color-text-secondary)">Seedha code likhne lagte — no structure, no thought. Mess guaranteed.</div>
+      </div>
+      <div style="border-left:3px solid #1D9E75;padding:12px 14px;background:var(--color-background-secondary);border-radius:0 8px 8px 0">
+        <div style="font-size:11px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Right</div>
+        <div style="font-size:13px;color:var(--color-text-secondary)">1. Identify classes · 2. Define relationships · 3. Then write code</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="sub-panel" id="sub-categories">
+    <div class="highlight"><strong>Design patterns — 3 categories.</strong> Every pattern fits one of these. Know the category → know the problem it solves.</div>
+
+    <div class="grid-3" style="margin-bottom:16px">
+      <div class="cat-card">
+        <div class="cat-title" style="color:#185FA5">Creational</div>
+        <div class="cat-q">Object kaise banega?</div>
+        <div class="cat-body" style="margin-bottom:10px">Controls how objects are created. Hides the complexity of instantiation from the caller.</div>
+        <div><span class="tag tag-blue">Singleton</span><span style="font-size:12px;color:var(--color-text-tertiary)"> — one object only</span></div>
+        <div><span class="tag tag-blue">Factory</span><span style="font-size:12px;color:var(--color-text-tertiary)"> — decide which object</span></div>
+        <div><span class="tag tag-blue">Builder</span><span style="font-size:12px;color:var(--color-text-tertiary)"> — step-by-step creation</span></div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-title" style="color:#854F0B">Structural</div>
+        <div class="cat-q">Objects ka arrangement kaise hoga?</div>
+        <div class="cat-body" style="margin-bottom:10px">How objects combine to form larger structures. Defines the skeleton of the system.</div>
+        <div><span class="tag tag-amber">Adapter</span><span style="font-size:12px;color:var(--color-text-tertiary)"> — bridge incompatible interfaces</span></div>
+        <div><span class="tag tag-amber">Decorator</span><span style="font-size:12px;color:var(--color-text-tertiary)"> — add behaviour dynamically</span></div>
+        <div><span class="tag tag-amber">Composite</span><span style="font-size:12px;color:var(--color-text-tertiary)"> — tree structure</span></div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-title" style="color:#0F6E56">Behavioural</div>
+        <div class="cat-q">Objects baat kaise karenge?</div>
+        <div class="cat-body" style="margin-bottom:10px">How objects interact and communicate. Defines the flow of the system.</div>
+        <div><span class="tag tag-teal">Observer</span><span style="font-size:12px;color:var(--color-text-tertiary)"> — notify on change</span></div>
+        <div><span class="tag tag-teal">Strategy</span><span style="font-size:12px;color:var(--color-text-tertiary)"> — swap algorithms</span></div>
+        <div><span class="tag tag-teal">Command</span><span style="font-size:12px;color:var(--color-text-tertiary)"> — encapsulate action</span></div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <strong>Ultimate aha moment:</strong><br>
+      Creational → banega kaise (creation)<br>
+      Structural → judega kaise (structure)<br>
+      Behavioural → chalega kaise (interaction / flow)
+    </div>
+  </div>
+
+  <!-- IS-A vs HAS-A -->
+  <div class="sub-panel" id="sub-relationships">
+    <div class="highlight"><strong>The most important LLD concept.</strong> Every class relationship is either IS-A (inheritance) or HAS-A (association). Get this right → diagram draws itself.</div>
+
+    <div class="grid" style="margin-bottom:16px">
+      <div class="rel-card">
+        <span class="rel-badge" style="background:#E6F1FB;color:#0C447C">IS-A (Inheritance)</span>
+        <div style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px">Child IS a type of parent</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:10px">
+          Car IS-A Vehicle<br>
+          Dog IS-A Animal<br>
+          Admin IS-A User
+        </div>
+        <div class="code-block" style="margin-bottom:0">class Vehicle {}
+class Car extends Vehicle {}</div>
+        <div style="margin-top:8px;font-size:12px;color:var(--color-text-tertiary)">When: child has all parent properties + adds more. "Is a kind of" relationship.</div>
+      </div>
+      <div class="rel-card">
+        <span class="rel-badge" style="background:#E1F5EE;color:#085041">HAS-A (Association)</span>
+        <div style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px">One object contains another</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:10px">
+          Car HAS-A Engine<br>
+          Library HAS-A Books<br>
+          Order HAS-A Payment
+        </div>
+        <div class="code-block" style="margin-bottom:0">class Car {
+  Engine engine; // HAS-A
+}</div>
+        <div style="margin-top:8px;font-size:12px;color:var(--color-text-tertiary)">When: one object uses/contains another. "Is made of" or "uses" relationship.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Diagram shortcut (interview hack)</div>
+    <div class="arch-flow">
+      <div style="font-size:13px;color:var(--color-text-secondary);line-height:2;font-family:var(--font-mono)">
+        Car ──extends──▷ Vehicle &nbsp;&nbsp;&nbsp; ← IS-A (inheritance arrow)<br>
+        Car ──────────◇ Engine &nbsp;&nbsp;&nbsp;&nbsp; ← HAS-A (diamond = contains)<br>
+        Car ──────────◇ Wheels &nbsp;&nbsp;&nbsp;&nbsp; ← HAS-A
+      </div>
+      <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">Instead of memorising UML symbols — just think IS-A or HAS-A, then draw the arrow accordingly.</div>
+    </div>
+  </div>
+
+  <!-- AGGREGATION VS COMPOSITION -->
+  <div class="sub-panel" id="sub-hasa-types">
+    <div class="highlight"><strong>HAS-A has 2 types based on how tightly the objects are coupled.</strong> Key question: "If the parent dies, does the child die too?"</div>
+
+    <div class="grid" style="margin-bottom:16px">
+      <div class="rel-card">
+        <span class="rel-badge" style="background:#E1F5EE;color:#085041">Aggregation — Weak HAS-A</span>
+        <div style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px">Objects are independent</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:10px">
+          Library HAS-A Books<br>
+          Library closes → books still exist<br>
+          Books can belong to another library
+        </div>
+        <div class="code-block" style="margin-bottom:8px">class Library {
+  List&lt;Book&gt; books; // Books exist independently
+}</div>
+        <div style="font-size:12px;color:#0F6E56">Loose relation. Objects have independent lifecycles.</div>
+      </div>
+      <div class="rel-card">
+        <span class="rel-badge" style="background:#FCEBEB;color:#791F1F">Composition — Strong HAS-A</span>
+        <div style="font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px">Objects are dependent</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:10px">
+          House HAS-A Rooms<br>
+          House demolished → rooms gone too<br>
+          Rooms can't exist without the house
+        </div>
+        <div class="code-block" style="margin-bottom:8px">class House {
+  Room room = new Room(); // Created inside House
+  // Room dies when House dies
+}</div>
+        <div style="font-size:12px;color:#A32D2D">Tight relation. Child's lifecycle is fully controlled by parent.</div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Aggregation</th><th>Composition</th></tr>
+      <tr><td>Relationship strength</td><td>Weak (loose)</td><td>Strong (tight)</td></tr>
+      <tr><td>Lifecycle</td><td>Independent — child survives parent's death</td><td>Dependent — child dies with parent</td></tr>
+      <tr><td>Example</td><td>Library → Books</td><td>House → Rooms</td></tr>
+      <tr><td>Code signal</td><td>Object passed in (constructor/setter)</td><td>Object created inside the class</td></tr>
+      <tr><td>UML symbol</td><td>Empty diamond ◇</td><td>Filled diamond ◆</td></tr>
+    </table>
+
+    <div class="insight-box"><strong>Quick test:</strong> "If the container object is deleted, does the contained object still exist?"<br>Yes → Aggregation (weak). No → Composition (strong).</div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box"><strong>One line:</strong> LLD = design of classes, their relationships, and their interactions inside a system.</div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>LLD vs HLD</td><td>HLD = architecture (services). LLD = classes inside one service.</td></tr>
+      <tr><td>Creational patterns</td><td>Control how objects are created (Singleton, Factory, Builder)</td></tr>
+      <tr><td>Structural patterns</td><td>Control how objects are arranged (Adapter, Decorator, Composite)</td></tr>
+      <tr><td>Behavioural patterns</td><td>Control how objects interact (Observer, Strategy, Command)</td></tr>
+      <tr><td>IS-A</td><td>Inheritance — Car IS-A Vehicle (extends)</td></tr>
+      <tr><td>HAS-A</td><td>Association — Car HAS-A Engine (contains/uses)</td></tr>
+      <tr><td>Aggregation</td><td>Weak HAS-A — Library has Books, books survive library's deletion</td></tr>
+      <tr><td>Composition</td><td>Strong HAS-A — House has Rooms, rooms die when house is deleted</td></tr>
+    </table>
+
+    <div class="section-title">Interview approach — always follow this order</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary)">
+        <div style="width:22px;height:22px;border-radius:50%;background:#E6F1FB;color:#0C447C;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px">1</div>
+        <div style="font-size:13px;color:var(--color-text-secondary)"><strong style="color:var(--color-text-primary)">Identify classes</strong> — what are the nouns in the problem? Each major entity = a class.</div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary)">
+        <div style="width:22px;height:22px;border-radius:50%;background:#E1F5EE;color:#085041;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px">2</div>
+        <div style="font-size:13px;color:var(--color-text-secondary)"><strong style="color:var(--color-text-primary)">Define relationships</strong> — IS-A or HAS-A? Aggregation or Composition? Draw before you code.</div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;padding:10px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary)">
+        <div style="width:22px;height:22px;border-radius:50%;background:#FAEEDA;color:#633806;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px">3</div>
+        <div style="font-size:13px;color:var(--color-text-secondary)"><strong style="color:var(--color-text-primary)">Apply patterns</strong> — which category? Which pattern fits? Then write the code.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

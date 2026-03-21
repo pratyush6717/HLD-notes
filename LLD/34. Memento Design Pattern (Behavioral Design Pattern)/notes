@@ -1,0 +1,171 @@
+Nice—this is actually one of the most practical patterns (undo/redo, versioning, rollback). I’ll compress everything into a super-clear mental model + interview-ready explanation.
+
+🧠 1️⃣ What Memento REALLY is
+
+👉 One-line definition:
+
+Memento pattern stores object state snapshots so you can restore (undo) later
+🎯 Core Use Case
+UNDO / REDO functionality
+
+Examples:
+
+Text editor undo
+
+Config rollback
+
+Game save/load
+
+Transaction rollback
+
+🧩 2️⃣ 3 Components (Must Remember)
+🟢 1. Originator (Main Object)
+The object whose state we want to save
+
+Example:
+
+Configuration
+Editor
+GameState
+🟡 2. Memento (Snapshot)
+Stores state of Originator
+
+👉 Immutable snapshot
+
+🔵 3. Caretaker (History Manager)
+Stores list of mementos
+Handles undo/redo
+🔥 3️⃣ Visual Flow (VERY IMPORTANT)
+Originator → createMemento() → Memento → Caretaker stores
+
+Caretaker → undo() → returns Memento → Originator restores
+⚡ 4️⃣ Your Example (Simplified)
+Step 1: Originator
+class Configuration {
+    int height;
+    int width;
+
+    Memento createMemento() {
+        return new Memento(height, width);
+    }
+
+    void restore(Memento m) {
+        this.height = m.height;
+        this.width = m.width;
+    }
+}
+Step 2: Memento
+class Memento {
+    int height;
+    int width;
+
+    Memento(int h, int w) {
+        this.height = h;
+        this.width = w;
+    }
+}
+Step 3: Caretaker
+class Caretaker {
+    Stack<Memento> history = new Stack<>();
+
+    void save(Memento m) {
+        history.push(m);
+    }
+
+    Memento undo() {
+        return history.pop();
+    }
+}
+Step 4: Client Flow
+Configuration config = new Configuration();
+Caretaker caretaker = new Caretaker();
+
+// State 1
+config.height = 5;
+config.width = 10;
+caretaker.save(config.createMemento());
+
+// State 2
+config.height = 7;
+config.width = 12;
+caretaker.save(config.createMemento());
+
+// State 3
+config.height = 9;
+config.width = 14;
+
+// UNDO
+config.restore(caretaker.undo());
+🧠 5️⃣ KEY Insight (Interview Gold)
+❗ Why not store object directly?
+Encapsulation break ❌
+✅ Memento solves this
+Originator decides:
+- what to save
+- what to restore
+
+👉 External world doesn't see internal details
+
+🔥 6️⃣ Why It’s Powerful
+✅ Encapsulation safe
+No direct access to object internals
+✅ Easy undo/redo
+Just push/pop snapshots
+✅ Flexible
+Can store partial state or full state
+❌ 7️⃣ Drawbacks
+❌ Memory heavy
+Many snapshots → high memory usage
+❌ Performance
+Deep copy cost (big objects)
+🧠 8️⃣ When to Use (Important)
+
+Use Memento when:
+
+✔ Need undo/redo
+✔ Need rollback
+✔ Need version history
+✔ Want encapsulation safe state saving
+⚡ 9️⃣ Interview Triggers
+
+If interviewer says:
+
+“Design undo functionality”
+“Save previous states”
+“Rollback system”
+“Version history”
+
+👉 Your brain:
+
+MEMENTO PATTERN ⚡
+🆚 10️⃣ Memento vs Command (Common Confusion)
+Memento
+Stores STATE
+Command
+Stores ACTION
+Example:
+Pattern	Stores
+Memento	height=5, width=10
+Command	"turn AC ON"
+
+👉 Combine both → powerful undo system
+
+🧠 11️⃣ Memory Trick
+Memento = Memory Snapshot
+🎯 12️⃣ Perfect Interview Answer
+Memento is a behavioral design pattern used to capture and restore an object's state without exposing its internal structure. It is mainly used to implement undo/redo functionality.
+🚀 13️⃣ Real-world Mapping
+📝 Text Editor
+Originator → Document  
+Memento → Text snapshot  
+Caretaker → Undo stack
+🎮 Game
+Originator → Game state  
+Memento → Save file  
+Caretaker → Save slots
+🔥 Final Understanding
+Before:
+Object → State lost ❌
+
+After:
+Object → Snapshot → Restore anytime ✅

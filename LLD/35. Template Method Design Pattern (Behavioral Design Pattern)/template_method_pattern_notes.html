@@ -1,0 +1,270 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .code-bad { border-left: 3px solid #E24B4A; }
+  .step-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+  .step-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; flex-shrink: 0; }
+  .step-friend { font-size: 12px; color: var(--color-text-secondary); flex: 1; }
+  .step-merchant { font-size: 12px; color: var(--color-text-secondary); flex: 1; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('code')">Code</button>
+    <button class="sub-btn" onclick="show('design-points')">Key design points</button>
+    <button class="sub-btn" onclick="show('vs-strategy')">vs Strategy</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box">
+      <strong>One line:</strong> Template Method defines a fixed workflow in the parent — subclasses customize individual steps.<br><br>
+      <strong>Memory trick:</strong> Recipe. Steps are fixed (Step 1 → Step 2 → Step 3). Cooking style differs per chef.
+    </div>
+
+    <div class="highlight"><strong>Core idea:</strong> Same process. Same steps. Same order. But different implementations per step.</div>
+
+    <div class="section-title">Payment flow — same skeleton, different behaviour</div>
+    <div class="box" style="margin-bottom:16px">
+      <div style="display:grid;grid-template-columns:120px 1fr 1fr;gap:8px;align-items:center">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary)">Step (fixed)</div>
+        <div style="font-size:11px;font-weight:500;color:#185FA5">Pay to Friend</div>
+        <div style="font-size:11px;font-weight:500;color:#854F0B">Pay to Merchant</div>
+        
+        <div class="step-badge" style="background:#EAF3DE;color:#27500A">1 Validate</div>
+        <div class="step-friend">Basic check</div>
+        <div class="step-merchant">Strict KYC check</div>
+        
+        <div class="step-badge" style="background:#E6F1FB;color:#0C447C">2 Debit</div>
+        <div class="step-friend">Debit full amount</div>
+        <div class="step-merchant">Debit amount</div>
+        
+        <div class="step-badge" style="background:#FAEEDA;color:#633806">3 Fees</div>
+        <div class="step-friend">0% — no fees</div>
+        <div class="step-merchant">2% transaction fee</div>
+        
+        <div class="step-badge" style="background:#E1F5EE;color:#085041">4 Credit</div>
+        <div class="step-friend">Credit full amount</div>
+        <div class="step-merchant">Credit minus fee</div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Why it matters:</strong> The order (validate → debit → fees → credit) must NEVER change — wrong order = money lost. Template Method enforces this with <code style="font-family:var(--font-mono);font-size:11px">final</code> keyword. Child classes customize the steps but can never reorder them.</div>
+  </div>
+
+  <!-- CODE -->
+  <div class="sub-panel" id="sub-code">
+    <div class="code-block code-good">// Abstract class — owns the template
+abstract class PaymentFlow {
+
+  // TEMPLATE METHOD — final, child can NEVER override
+  public final void sendMoney() {
+    validate();        // step 1
+    debit();           // step 2
+    calculateFees();   // step 3
+    credit();          // step 4
+    // Order is locked. Always. No exceptions.
+  }
+
+  // Steps = abstract → child MUST implement
+  abstract void validate();
+  abstract void debit();
+  abstract void calculateFees();
+  abstract void credit();
+}</div>
+
+    <div class="code-block code-good">// Concrete class 1 — Pay to Friend
+class PayToFriend extends PaymentFlow {
+  void validate()       { System.out.println("Basic validation"); }
+  void debit()          { System.out.println("Debit full amount"); }
+  void calculateFees()  { System.out.println("No fees (0%)"); }
+  void credit()         { System.out.println("Credit full amount"); }
+}
+
+// Concrete class 2 — Pay to Merchant
+class PayToMerchant extends PaymentFlow {
+  void validate()       { System.out.println("Strict KYC validation"); }
+  void debit()          { System.out.println("Debit amount"); }
+  void calculateFees()  { System.out.println("Apply 2% fee"); }
+  void credit()         { System.out.println("Credit after fee deduction"); }
+}</div>
+
+    <div class="code-block code-good">// Client — same interface, different behaviour
+PaymentFlow p1 = new PayToFriend();
+p1.sendMoney();
+// Basic validation → Debit full amount → No fees → Credit full amount
+
+PaymentFlow p2 = new PayToMerchant();
+p2.sendMoney();
+// Strict KYC → Debit amount → 2% fee → Credit after deduction
+
+// Both follow: validate → debit → fees → credit. Always.</div>
+  </div>
+
+  <!-- KEY DESIGN POINTS -->
+  <div class="sub-panel" id="sub-design-points">
+    <div class="highlight"><strong>3 design decisions that make Template Method work — all matter.</strong></div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+      <div style="padding:12px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;gap:12px">
+        <div style="width:30px;height:30px;border-radius:50%;background:#EAF3DE;color:#27500A;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0">1</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px">Template method = <code style="font-family:var(--font-mono);font-size:11px">final</code></div>
+          <div style="font-size:13px;color:var(--color-text-secondary)">Child classes CANNOT override <code style="font-family:var(--font-mono);font-size:11px">sendMoney()</code>. This guarantees the order. Without final — child could override the whole method and bypass the flow. That breaks the pattern.</div>
+        </div>
+      </div>
+      <div style="padding:12px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;gap:12px">
+        <div style="width:30px;height:30px;border-radius:50%;background:#E6F1FB;color:#0C447C;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0">2</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px">Steps = <code style="font-family:var(--font-mono);font-size:11px">abstract</code></div>
+          <div style="font-size:13px;color:var(--color-text-secondary)">Each step is abstract — child MUST provide implementation. No default = no lazy subclass. If a step has a sensible default, make it non-abstract (hook method).</div>
+        </div>
+      </div>
+      <div style="padding:12px 14px;border-radius:8px;border:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);display:flex;gap:12px">
+        <div style="width:30px;height:30px;border-radius:50%;background:#FAEEDA;color:#633806;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0">3</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px">Control stays in parent</div>
+          <div style="font-size:13px;color:var(--color-text-secondary)">Parent = algorithm skeleton (what and in what order). Child = step implementation (how). Child never controls the flow — only fills in the blanks.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Real-world usage</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <span class="tag tag-blue">JdbcTemplate (Spring)</span>
+      <span class="tag tag-blue">RestTemplate (Spring)</span>
+      <span class="tag tag-teal">JUnit @Before → @Test → @After</span>
+      <span class="tag tag-teal">Order processing (validate → pay → invoice → notify)</span>
+      <span class="tag tag-amber">Game loops (init → play → cleanup)</span>
+    </div>
+  </div>
+
+  <!-- VS STRATEGY -->
+  <div class="sub-panel" id="sub-vs-strategy">
+    <div class="highlight"><strong>Template Method and Strategy both allow varying behaviour — but through completely different mechanisms.</strong></div>
+
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box" style="border-color:#185FA5">
+        <div class="box-label" style="color:#185FA5">Template Method — Inheritance</div>
+        <div class="box-sub" style="margin-bottom:8px">Parent defines the flow. Subclasses fill in steps. Flow is fixed. Decided at compile time.</div>
+        <div class="code-block" style="border-left:3px solid #185FA5;margin-bottom:6px">abstract class PaymentFlow {
+  final void sendMoney() {
+    validate(); debit(); credit();
+  }
+  abstract void validate(); // child fills in
+}</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Inheritance-based. Parent controls flow.</div>
+      </div>
+      <div class="box" style="border-color:#0F6E56">
+        <div class="box-label" style="color:#0F6E56">Strategy — Composition</div>
+        <div class="box-sub" style="margin-bottom:8px">Client injects algorithm object. Algorithm is interchangeable. Flow NOT enforced.</div>
+        <div class="code-block" style="border-left:3px solid #1D9E75;margin-bottom:6px">class Context {
+  Strategy strategy; // injected
+  void execute() { strategy.run(); }
+  // Client can change strategy anytime
+}</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Composition-based. Client controls algorithm.</div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Template Method</th><th>Strategy</th></tr>
+      <tr><td>Mechanism</td><td>Inheritance</td><td>Composition</td></tr>
+      <tr><td>Flow control</td><td>Parent class (fixed)</td><td>Client (flexible)</td></tr>
+      <tr><td>Change at</td><td>Compile time (subclass)</td><td>Runtime (inject strategy)</td></tr>
+      <tr><td>Steps vary?</td><td>Yes — individual steps</td><td>Yes — full algorithm</td></tr>
+      <tr><td>Best for</td><td>Fixed workflow, varying steps</td><td>Interchangeable algorithms</td></tr>
+    </table>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Definition:</strong> Template Method is a behavioural pattern where a base class defines the skeleton of an algorithm, and subclasses override specific steps without changing the overall flow.<br><br>
+      <strong>Category:</strong> Behavioural. Uses inheritance.
+    </div>
+
+    <div class="section-title">Trigger words → Template Method</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
+      <span class="tag tag-amber">Same process, different implementations</span>
+      <span class="tag tag-amber">Steps must follow same order</span>
+      <span class="tag tag-amber">Enforce workflow structure</span>
+      <span class="tag tag-amber">Consistency + customisation</span>
+    </div>
+
+    <div class="section-title">Common mistake</div>
+    <div class="code-block code-bad" style="margin-bottom:12px">// WRONG — child overrides the whole method
+class PayToFriend extends PaymentFlow {
+  @Override
+  void sendMoney() { // ❌ defeats the pattern
+    credit(); // skips validate + debit!
+  }
+}</div>
+    <div class="code-block code-good" style="margin-bottom:16px">// CORRECT — template method is final, child overrides only steps
+class PayToFriend extends PaymentFlow {
+  void validate() { ... }  // ✔ only steps
+  void debit()    { ... }  // ✔
+  // sendMoney() is final — can't override
+}</div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Template Method</td><td>Fixed workflow skeleton in parent, steps customized by subclasses</td></tr>
+      <tr><td>final keyword</td><td>Guarantees flow order — child cannot bypass or reorder steps</td></tr>
+      <tr><td>abstract steps</td><td>Forces child to implement each step — no lazy defaults</td></tr>
+      <tr><td>vs Strategy</td><td>Template = inheritance + fixed flow. Strategy = composition + runtime swap.</td></tr>
+      <tr><td>Senior-level insight</td><td>Consistency + flexibility. Enforces business rules. Prevents wrong-order bugs.</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

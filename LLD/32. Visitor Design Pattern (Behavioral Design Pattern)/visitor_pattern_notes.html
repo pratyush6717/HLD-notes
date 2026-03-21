@@ -1,0 +1,268 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .code-bad { border-left: 3px solid #E24B4A; }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .pain ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('structure')">Structure + code</button>
+    <button class="sub-btn" onclick="show('dispatch')">Double dispatch</button>
+    <button class="sub-btn" onclick="show('compare')">vs Strategy</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box">
+      <strong>One line:</strong> Move operations OUT of the class into separate visitor classes — object stays clean, operations grow freely.<br><br>
+      <strong>Mental model:</strong> Object = Data. Visitor = Operations. Room = data, PricingVisitor = what to do with it.
+    </div>
+
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Without Visitor — class explosion</div>
+        <ul>
+          <li>Room.getPrice() + maintain() + reserve() + clean() + tax()...</li>
+          <li>Add new feature → modify Room → retest everything</li>
+          <li>50 methods in one class = nightmare</li>
+          <li>Violates OCP + SRP</li>
+        </ul>
+      </div>
+      <div class="cure">
+        <div class="label">With Visitor — clean separation</div>
+        <ul>
+          <li>Room only has accept(visitor)</li>
+          <li>Add CleaningVisitor → Room untouched</li>
+          <li>Add TaxVisitor → Room untouched</li>
+          <li>OCP + SRP satisfied</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-title">Before vs after</div>
+    <div class="grid">
+      <div class="code-block code-bad" style="margin-bottom:0">// BAD — class bloat
+class Room {
+  void getPrice()   { ... } // op 1
+  void maintain()   { ... } // op 2
+  void reserve()    { ... } // op 3
+  void clean()      { ... } // op 4 (NEW)
+  void calcTax()    { ... } // op 5 (NEW)
+  // Room grows every time a new operation added
+}</div>
+      <div class="code-block code-good" style="margin-bottom:0">// GOOD — Visitor Pattern
+class Room {
+  void accept(RoomVisitor v) { v.visit(this); }
+  // Room never changes. Operations = visitor classes.
+}
+
+class PricingVisitor   { visit(SingleRoom), visit(DoubleRoom) }
+class MaintenanceVisitor { ... }
+class CleaningVisitor   { ... } // new op — Room untouched</div>
+    </div>
+  </div>
+
+  <!-- STRUCTURE + CODE -->
+  <div class="sub-panel" id="sub-structure">
+    <div class="code-block code-good">// 1. Element interface
+interface Room {
+  void accept(RoomVisitor visitor);
+}
+
+// 2. Concrete Elements
+class SingleRoom implements Room {
+  public void accept(RoomVisitor visitor) {
+    visitor.visit(this); // 🔥 the magic — pass self
+  }
+}
+class DoubleRoom implements Room {
+  public void accept(RoomVisitor visitor) {
+    visitor.visit(this);
+  }
+}</div>
+
+    <div class="code-block code-good">// 3. Visitor interface — all room types listed
+interface RoomVisitor {
+  void visit(SingleRoom room);
+  void visit(DoubleRoom room);
+}
+
+// 4. Concrete Visitors — operations separated
+class PricingVisitor implements RoomVisitor {
+  public void visit(SingleRoom r) { System.out.println("Single = ₹1000"); }
+  public void visit(DoubleRoom r) { System.out.println("Double = ₹2000"); }
+}
+
+class MaintenanceVisitor implements RoomVisitor {
+  public void visit(SingleRoom r) { System.out.println("Maintain single"); }
+  public void visit(DoubleRoom r) { System.out.println("Maintain double"); }
+}
+
+// 5. Client — same room, different visitors
+Room room = new SingleRoom();
+room.accept(new PricingVisitor());      // Single = ₹1000
+room.accept(new MaintenanceVisitor());  // Maintain single
+// Add new operation? Just add new Visitor class. Room unchanged.</div>
+  </div>
+
+  <!-- DOUBLE DISPATCH -->
+  <div class="sub-panel" id="sub-dispatch">
+    <div class="highlight"><strong>Double dispatch = the method called is determined by TWO types — the visitor type AND the element type.</strong> This is what makes Visitor powerful and unusual.</div>
+
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Single dispatch (normal Java)</div>
+        <div class="box-sub" style="margin-bottom:8px">Method determined by ONE type — the object you call on.</div>
+        <div class="code-block code-bad" style="margin-bottom:6px">room.someOp(visitor);
+// Only room's type decides the method
+// Visitor's type = ignored</div>
+        <div style="font-size:12px;color:#A32D2D">Can't vary behaviour based on both room AND visitor type simultaneously.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Double dispatch (Visitor)</div>
+        <div class="box-sub" style="margin-bottom:8px">Step 1: room.accept(visitor) → calls based on room type. Step 2: visitor.visit(this) → calls based on visitor type.</div>
+        <div class="code-block code-good" style="margin-bottom:6px">room.accept(visitor);   // dispatch 1: room type
+// inside accept():
+visitor.visit(this);   // dispatch 2: visitor type</div>
+        <div style="font-size:12px;color:#0F6E56">Method = f(room type) × f(visitor type)</div>
+      </div>
+    </div>
+
+    <div class="section-title">Dispatch matrix</div>
+    <table class="compare-table">
+      <tr><th>Visitor</th><th>Room = SingleRoom</th><th>Room = DoubleRoom</th></tr>
+      <tr><td><span class="tag tag-blue">PricingVisitor</span></td><td>visit(SingleRoom) → ₹1000</td><td>visit(DoubleRoom) → ₹2000</td></tr>
+      <tr><td><span class="tag tag-teal">MaintenanceVisitor</span></td><td>visit(SingleRoom) → maintain single</td><td>visit(DoubleRoom) → maintain double</td></tr>
+      <tr><td><span class="tag tag-amber">CleaningVisitor</span></td><td>visit(SingleRoom) → clean single</td><td>visit(DoubleRoom) → clean double</td></tr>
+    </table>
+
+    <div class="highlight"><strong>The MAGIC line:</strong> Inside <code style="font-family:var(--font-mono);font-size:11px">accept()</code>, calling <code style="font-family:var(--font-mono);font-size:11px">visitor.visit(this)</code> — <code style="font-family:var(--font-mono);font-size:11px">this</code> is the concrete room type. Java overload resolution picks the right <code style="font-family:var(--font-mono);font-size:11px">visit()</code> method based on the concrete type. Two dispatches → two types → one correct method.</div>
+  </div>
+
+  <!-- COMPARE -->
+  <div class="sub-panel" id="sub-compare">
+    <div class="highlight"><strong>Visitor vs Strategy — most common confusion.</strong> Both separate behaviour from objects. Different purpose.</div>
+
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box" style="border-color:#185FA5">
+        <div class="box-label" style="color:#185FA5">Strategy — change HOW</div>
+        <div class="box-sub" style="margin-bottom:8px">Swap the algorithm used by an object. One algorithm at a time. Same type of operation, different implementation.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          Payment → UPI / Card / NetBanking<br>
+          Same operation (pay), different method<br>
+          Object behaviour changes at runtime
+        </div>
+      </div>
+      <div class="box" style="border-color:#0F6E56">
+        <div class="box-label" style="color:#0F6E56">Visitor — add WHAT</div>
+        <div class="box-sub" style="margin-bottom:8px">Add entirely new operations without changing the object. Multiple different operations on same object structure.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          Room → Pricing / Maintenance / Cleaning<br>
+          Different operations, same objects<br>
+          Object structure is stable
+        </div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Strategy</th><th>Visitor</th></tr>
+      <tr><td>Changes</td><td>Algorithm/behaviour of operation</td><td>Adds new operations</td></tr>
+      <tr><td>Object modified?</td><td>No (injects strategy)</td><td>No (adds visitors externally)</td></tr>
+      <tr><td>Good when</td><td>Operations stable, algorithms vary</td><td>Elements stable, operations grow</td></tr>
+      <tr><td>Dispatch</td><td>Single (context type)</td><td>Double (element + visitor type)</td></tr>
+      <tr><td>Shortcut</td><td>Interchangeable behaviour</td><td>Add operations externally</td></tr>
+    </table>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Definition:</strong> Visitor is a behavioural pattern that allows adding new operations to existing object structures without modifying those objects — by separating operations into visitor classes and using double dispatch.
+    </div>
+
+    <div class="section-title">The key trade-off — memorise this</div>
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Visitor is GOOD when</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          <span style="color:#0F6E56">✔</span> Elements are STABLE (rarely add new room types)<br>
+          <span style="color:#0F6E56">✔</span> Operations keep growing (pricing, tax, maintenance...)<br>
+          <span style="color:#0F6E56">✔</span> Want OCP — add operations without touching objects
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Visitor is HARD when</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          <span style="color:#A32D2D">✗</span> New element types added frequently<br>
+          <span style="color:#A32D2D">✗</span> Add TripleRoom → update ALL visitors<br>
+          <span style="color:#A32D2D">✗</span> Violates OCP on the element axis
+        </div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Visitor definition</td><td>Add operations externally without changing objects. Object = data, Visitor = work.</td></tr>
+      <tr><td>accept()</td><td>Element method that calls visitor.visit(this) — the double dispatch trigger</td></tr>
+      <tr><td>Double dispatch</td><td>Method chosen by 2 types — visitor type + element type. Java overloading resolves this.</td></tr>
+      <tr><td>OCP benefit</td><td>New operation = new Visitor class. Zero changes to Room, SingleRoom, DoubleRoom.</td></tr>
+      <tr><td>Trade-off</td><td>Adding new element type requires updating ALL visitors — painful at scale.</td></tr>
+      <tr><td>vs Strategy</td><td>Strategy = swap algorithm. Visitor = add new kind of operation.</td></tr>
+      <tr><td>When to use</td><td>Stable element structure + operations keep growing</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

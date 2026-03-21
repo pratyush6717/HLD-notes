@@ -1,0 +1,248 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .code-bad { border-left: 3px solid #E24B4A; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('components')">Components + code</button>
+    <button class="sub-btn" onclick="show('types')">Multiple iterators</button>
+    <button class="sub-btn" onclick="show('compare')">vs For loop / forEach</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box">
+      <strong>One line:</strong> Iterator provides a way to traverse a collection without exposing its internal structure.<br><br>
+      <strong>Memory trick:</strong> Collection = Data. Iterator = Cursor moving over data.
+    </div>
+
+    <div class="highlight"><strong>You use this every day:</strong> <code style="font-family:var(--font-mono);font-size:11px">Iterator&lt;Integer&gt; it = list.iterator();</code> — Java's entire collection framework is built on this pattern. ArrayList, LinkedList, HashSet, Stack — all expose the same Iterator interface.</div>
+
+    <div class="grid">
+      <div>
+        <div class="code-block code-bad" style="margin-bottom:8px">// BAD — client must know internals
+if (collection is ArrayList) {
+  for (int i = 0; i < list.size(); i++) ...
+}
+if (collection is LinkedList) { ... }
+if (collection is HashSet) { ... }
+// Different traversal for each type</div>
+      </div>
+      <div>
+        <div class="code-block code-good">// GOOD — Iterator Pattern
+Iterator&lt;Book&gt; it = collection.iterator();
+
+while (it.hasNext()) {
+  Book b = it.next();
+  // Works for ANY collection type
+}</div>
+      </div>
+    </div>
+
+    <div class="section-title">Two key rules</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Who knows traversal logic?</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          <span style="color:#0F6E56">✔</span> Iterator knows how to traverse<br>
+          <span style="color:#A32D2D">✗</span> Client does NOT know structure<br>
+          <span style="color:#A32D2D">✗</span> Client doesn't know if it's array, hash, or list
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Who stores data?</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          <span style="color:#0F6E56">✔</span> Aggregate (Collection) stores data<br>
+          <span style="color:#A32D2D">✗</span> Iterator just traverses — doesn't own data<br>
+          Iterator is a cursor, not a container
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPONENTS + CODE -->
+  <div class="sub-panel" id="sub-components">
+    <div class="code-block code-good">// 1. Iterator interface
+interface Iterator&lt;T&gt; {
+  boolean hasNext();
+  T next();
+}
+
+// 2. Aggregate (Collection) interface
+interface Aggregate&lt;T&gt; {
+  Iterator&lt;T&gt; createIterator();
+}
+
+// 3. Concrete Aggregate
+class Library implements Aggregate&lt;Book&gt; {
+  List&lt;Book&gt; books = new ArrayList&lt;&gt;();
+  void addBook(Book b) { books.add(b); }
+
+  public Iterator&lt;Book&gt; createIterator() {
+    return new BookIterator(books); // gives out iterator
+  }
+}</div>
+
+    <div class="code-block code-good">// 4. Concrete Iterator
+class BookIterator implements Iterator&lt;Book&gt; {
+  List&lt;Book&gt; books;
+  int index = 0;
+
+  BookIterator(List&lt;Book&gt; books) { this.books = books; }
+
+  public boolean hasNext() { return index &lt; books.size(); }
+
+  public Book next() { return books.get(index++); }
+}
+
+// 5. Client — no knowledge of Library internals
+Library lib = new Library();
+lib.addBook(new Book("Clean Code"));
+lib.addBook(new Book("System Design"));
+
+Iterator&lt;Book&gt; it = lib.createIterator();
+while (it.hasNext()) {
+  System.out.println(it.next().title);
+}</div>
+
+    <div class="highlight"><strong>Who creates the iterator?</strong> The Aggregate (Library) — not the client. This is important: collection knows its own structure best, so it creates the right iterator for itself.</div>
+  </div>
+
+  <!-- MULTIPLE ITERATORS -->
+  <div class="sub-panel" id="sub-types">
+    <div class="highlight"><strong>Same collection → multiple iterators possible.</strong> Each iterator walks the data differently. This is why Iterator is more powerful than just using for loops.</div>
+
+    <div class="grid-3" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Forward iterator</div>
+        <div class="box-sub" style="margin-bottom:6px">Normal — index starts at 0, increments.</div>
+        <div class="code-block" style="margin-bottom:0;border-left:3px solid #185FA5;font-size:11px">int index = 0;
+hasNext() → index &lt; size
+next() → books.get(index++)</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#A32D2D">Reverse iterator</div>
+        <div class="box-sub" style="margin-bottom:6px">Index starts at end, decrements. Same interface!</div>
+        <div class="code-block" style="margin-bottom:0;border-left:3px solid #A32D2D;font-size:11px">int index = size - 1;
+hasNext() → index &gt;= 0
+next() → books.get(index--)</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Filtered iterator</div>
+        <div class="box-sub" style="margin-bottom:6px">Skip items that don't match. Still same interface!</div>
+        <div class="code-block" style="margin-bottom:0;border-left:3px solid #1D9E75;font-size:11px">// Only return books with rating > 4
+hasNext() → find next match
+next() → return matched item</div>
+      </div>
+    </div>
+
+    <div class="code-block code-good">// All three used identically by client
+Iterator&lt;Book&gt; forward  = lib.createForwardIterator();
+Iterator&lt;Book&gt; reverse  = lib.createReverseIterator();
+Iterator&lt;Book&gt; filtered = lib.createFilteredIterator(4.0);
+
+// Same while loop works for all three!
+while (forward.hasNext()) { System.out.println(forward.next()); }
+while (reverse.hasNext()) { System.out.println(reverse.next()); }
+while (filtered.hasNext()) { System.out.println(filtered.next()); }</div>
+  </div>
+
+  <!-- COMPARE -->
+  <div class="sub-panel" id="sub-compare">
+    <div class="section-title">For loop vs Iterator vs forEach</div>
+    <table class="compare-table">
+      <tr><th>Feature</th><th>For loop (index)</th><th>Iterator</th><th>For-each</th></tr>
+      <tr><td>Works for all DS?</td><td>No — needs index</td><td>Yes — any collection</td><td>Yes (uses iterator)</td></tr>
+      <tr><td>Safe remove?</td><td>No — ConcurrentModificationException</td><td>Yes — it.remove()</td><td>No</td></tr>
+      <tr><td>Multiple strategies?</td><td>No</td><td>Yes (forward, reverse, filtered)</td><td>No</td>
+      </tr>
+      <tr><td>Client knows structure?</td><td>Yes (index, size)</td><td>No (abstracted)</td><td>No</td></tr>
+      <tr><td>Code simplicity</td><td>Medium</td><td>Medium</td><td>Simple</td></tr>
+    </table>
+
+    <div class="highlight"><strong>ForEach internally uses Iterator.</strong> <code style="font-family:var(--font-mono);font-size:11px">for (Book b : books)</code> compiles to <code style="font-family:var(--font-mono);font-size:11px">it = books.iterator(); while(it.hasNext()) { b = it.next(); }</code>. So when you write for-each, you're using Iterator Pattern without knowing it.</div>
+
+    <div class="highlight"><strong>When to prefer explicit Iterator over for-each:</strong> Use explicit iterator when you need <code style="font-family:var(--font-mono);font-size:11px">it.remove()</code> during traversal. for-each doesn't expose remove() safely.</div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Definition:</strong> Iterator pattern provides a way to access elements of a collection sequentially without exposing its internal structure.<br><br>
+      <strong>Java example:</strong> <code style="font-family:var(--font-mono);font-size:11px">collection.iterator()</code> → <code style="font-family:var(--font-mono);font-size:11px">hasNext()</code> → <code style="font-family:var(--font-mono);font-size:11px">next()</code>
+    </div>
+
+    <div class="section-title">Interview Q&A</div>
+    <table class="compare-table">
+      <tr><th>Question</th><th>Answer</th></tr>
+      <tr><td>Why not expose collection directly?</td><td>Breaks encapsulation — client becomes tightly coupled to data structure</td></tr>
+      <tr><td>Where is iterator used in Java?</td><td>Entire collection framework — ArrayList, LinkedList, HashSet, TreeSet, etc.</td></tr>
+      <tr><td>Can we have multiple iterators?</td><td>Yes — forward, reverse, filtered. All same interface, different logic.</td></tr>
+      <tr><td>Who creates the iterator?</td><td>The Aggregate (collection) — it knows its own structure best</td></tr>
+      <tr><td>ForEach vs Iterator?</td><td>ForEach uses Iterator internally. Explicit Iterator needed for safe remove().</td></tr>
+    </table>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Iterator definition</td><td>Cursor over data — traversal without exposing structure</td></tr>
+      <tr><td>Iterator knows</td><td>How to traverse (hasNext, next, index logic)</td></tr>
+      <tr><td>Collection knows</td><td>How to store data. Creates the right iterator for itself.</td></tr>
+      <tr><td>Category</td><td>Behavioural — defines how objects interact during traversal</td></tr>
+      <tr><td>Real Java</td><td>java.util.Iterator, Java for-each (syntactic sugar over Iterator)</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

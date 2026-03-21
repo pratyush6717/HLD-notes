@@ -1,0 +1,107 @@
+Adapter Pattern — One Line
+Converts one interface into another that client expects
+🔥 Core Idea
+Incompatible → Compatible (via Adapter)
+⚡ Real-Life Intuition
+🔌 Plug & Socket Adapter
+4
+🧠 Mapping
+Client → Plug  
+Existing System → Socket  
+Adapter → Converter
+🔥 Structure (MOST IMPORTANT)
+Components
+Client → calls Target interface
+
+Target → expected interface
+
+Adapter → implements Target + uses Adaptee
+
+Adaptee → existing incompatible class
+Visual Flow
+Client → Adapter → Adaptee
+🧠 Aha Line
+Adapter = Translator between two systems
+💻 Your Example (Weight Machine)
+Problem
+Existing → Pounds  
+Client → Kilograms
+Solution
+Adapter converts pounds → kg
+Code Flow
+Adaptee (Existing)
+class WeightMachine {
+    double getWeightInPounds() {
+        return 28;
+    }
+}
+Target (Expected)
+interface WeightMachineAdapter {
+    double getWeightInKg();
+}
+Adapter
+class WeightMachineAdapterImpl implements WeightMachineAdapter {
+
+    private WeightMachine machine;
+
+    public double getWeightInKg() {
+        double pounds = machine.getWeightInPounds();
+        return pounds * 0.45;
+    }
+}
+Client
+adapter.getWeightInKg();
+🧠 What Happened Internally
+Client → Adapter (asks for KG)
+Adapter → Adaptee (gets Pounds)
+Adapter → converts → returns KG
+🔥 Real Industry Examples
+1️⃣ API Response Transformation
+External → XML  
+Your system → JSON  
+Adapter → converts XML → JSON
+2️⃣ Third-party Integration
+Payment Gateway A → format A  
+Your system → format B  
+Adapter handles mapping
+3️⃣ Spring Boot (Hidden Usage)
+@RequestBody → Object mapping  
+DTO ↔ Entity conversion
+🔥 When to Use (INTERVIEW GOLD)
+✔ Interfaces don’t match
+✔ Reuse existing class without modifying it
+✔ Third-party integration
+✔ Legacy system integration
+✔ Data format conversion
+❌ When NOT to Use
+❌ If you can change original class
+❌ If no incompatibility exists
+🔥 Adapter vs Decorator (IMPORTANT)
+Adapter
+Changes interface
+Decorator
+Adds behavior
+Shortcut
+Adapter → Convert  
+Decorator → Enhance
+🔥 Adapter vs Proxy
+Adapter
+Fix incompatibility
+Proxy
+Control access
+🧠 Quick Comparison Table
+Pattern	Purpose
+Adapter	Convert interface
+Decorator	Add functionality
+Proxy	Control access
+🎯 Interview Answer
+Definition
+Adapter pattern converts the interface of a class into another interface that clients expect.
+Real Example
+XML → JSON converter
+Key Benefit
+Reuse existing code without modifying it
+🧠 Final Intuition
+If two systems can't talk → use Adapter
+🔥 Ultimate Aha
+Adapter = Compatibility Layer

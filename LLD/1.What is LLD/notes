@@ -1,0 +1,133 @@
+PK — chalo isko bhi same style me “feel aaya” mode me todte hain 🔥
+Low Level Design (LLD) bahut log confuse kar dete hain, but actually ye simple hai.
+
+🧠 1️⃣ LLD kya hai (1 line me)
+LLD = classes + objects + unka interaction
+📍 2️⃣ System me LLD kaha aata hai
+HLD → LLD → Code
+🔥 Samajh like this:
+🏗️ HLD
+Order Service → Product Service → Payment Service
+
+👉 Big picture (architecture)
+
+⚙️ LLD
+OrderService class
+ProductClient class
+PaymentHandler class
+
+👉 Inside ek service kya ho raha hai
+
+💻 Code
+class OrderService {
+   void placeOrder() {}
+}
+
+👉 Actual implementation
+
+🧠 Aha Moment
+HLD = system ka map
+LLD = building ka blueprint
+Code = actual construction
+🎯 3️⃣ Purpose of LLD
+✅ 1. Clean code
+Readable
+Structured
+✅ 2. Maintainable
+Change karo → system na toote
+✅ 3. Testable
+Unit test easy ho
+🧠 Aha
+Bad LLD = messy code
+Good LLD = easy life
+🧱 4️⃣ LLD Categories (MOST IMPORTANT 🔥)
+🟢 1. Creational
+💡 Meaning
+Object kaise banega?
+🔥 Example
+Singleton → ek hi object
+Factory → decide kaunsa object banana
+Builder → step by step object
+🧠 Aha
+Creation control = Creational
+🟡 2. Structural
+💡 Meaning
+Objects ka arrangement kaise hoga?
+🔥 Example
+Car = Engine + Wheel + Steering
+🧠 Aha
+Structure = skeleton of system
+🔵 3. Behavioral
+💡 Meaning
+Objects baat kaise karenge?
+🔥 Example
+Order → Payment → Notification
+🧠 Aha
+Behavior = system ka flow / interaction
+🧠 Ultimate Aha
+Creational → banega kaise
+Structural → judega kaise
+Behavioral → chalega kaise
+🔗 5️⃣ IS-A vs HAS-A (VERY IMPORTANT 🔥)
+🟢 IS-A (Inheritance)
+💡 Meaning
+Child is type of parent
+Example
+Car IS-A Vehicle
+Dog IS-A Animal
+Code thinking
+class Vehicle {}
+class Car extends Vehicle {}
+🧠 Aha
+IS-A = inheritance
+🟡 HAS-A (Association)
+💡 Meaning
+Ek object dusre ko rakhta hai
+Example
+Car has Engine
+Library has Books
+🧠 Aha
+HAS-A = relationship
+⚡ 6️⃣ HAS-A ke 2 types
+🟢 Aggregation (Weak)
+💡 Meaning
+Objects independent hain
+Example
+Library → Books
+
+👉 Library delete → Books still exist
+
+🧠 Aha
+Loose relation
+🔴 Composition (Strong)
+💡 Meaning
+Objects dependent hain
+Example
+House → Rooms
+
+👉 House delete → Rooms bhi delete
+
+🧠 Aha
+Tight relation
+🧠 Final Shortcut (Interview Hack 🔥)
+Instead of remembering UML symbols
+Just think:
+IS-A → inheritance
+HAS-A → relation
+Diagram hack
+Car → Engine (HAS-A)
+Car → Vehicle (IS-A)
+🧪 7️⃣ Real Interview Thinking
+❌ Galti kya karte log
+Seedha code likhne lagte
+✅ Sahi approach
+1. Classes identify karo
+2. Relationship define karo
+3. Then code likho
+🧠 Aha
+LLD bina soche code = mess
+LLD soch ke code = clean system
+💥 Final Mental Model
+LLD = "andar kya ho raha hai"
+🔥 One Line Summary
+LLD = design of classes, relationships, and interactions inside a system

@@ -1,0 +1,303 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .code-bad { border-left: 3px solid #E24B4A; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .chain-node { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; }
+  .chain-arrow { font-size: 18px; color: var(--color-text-tertiary); }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .pain ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('structure')">Structure + code</button>
+    <button class="sub-btn" onclick="show('types')">2 types of COR</button>
+    <button class="sub-btn" onclick="show('real')">Real systems</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box">
+      <strong>One line:</strong> Request passes through a chain — each handler decides: handle it or forward to next.<br><br>
+      <strong>Final mental model:</strong> "Main nahi kar pa raha? → Next bhai tu dekh"
+    </div>
+
+    <div class="section-title">Chain flow — Logging example</div>
+    <div class="arch-flow" style="margin-bottom:16px">
+      <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Request: INFO level log</div>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        <div class="chain-node node-gray">Client</div>
+        <span class="chain-arrow">→</span>
+        <div style="text-align:center">
+          <div class="chain-node node-red">DEBUG ✗</div>
+          <div style="font-size:11px;color:#A32D2D;margin-top:2px">skip</div>
+        </div>
+        <span class="chain-arrow">→</span>
+        <div style="text-align:center">
+          <div class="chain-node node-green">INFO ✔</div>
+          <div style="font-size:11px;color:#0F6E56;margin-top:2px">handled</div>
+        </div>
+        <span class="chain-arrow">→</span>
+        <div style="text-align:center">
+          <div class="chain-node" style="background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);color:var(--color-text-tertiary)">ERROR</div>
+          <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:2px">not reached</div>
+        </div>
+        <span class="chain-arrow">→</span>
+        <div style="text-align:center">
+          <div class="chain-node" style="background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);color:var(--color-text-tertiary)">FATAL</div>
+          <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:2px">not reached</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Real-life examples</div>
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">ATM withdrawal — ₹150</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          ₹100 handler → dispenses ₹100<br>
+          ₹50 handler → dispenses ₹50<br>
+          ₹20 handler → not needed<br><br>
+          Each handler processes its amount, passes rest forward
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Why better than if-else</div>
+        <div class="code-block code-bad" style="margin-top:6px;margin-bottom:6px">// Rigid if-else
+if(level == DEBUG) ...
+else if(level == INFO) ...
+else if(level == ERROR) ...</div>
+        <div style="font-size:12px;color:#0F6E56">COR → each handler is independent class. Add new handler → zero changes to existing code (OCP).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STRUCTURE + CODE -->
+  <div class="sub-panel" id="sub-structure">
+    <div class="highlight"><strong>Key design insight:</strong> Handler IS-A Handler (substitution) + HAS-A next Handler (chain link). This IS-A + HAS-A combo is what makes the chain work.</div>
+
+    <div class="code-block code-good">// Abstract Handler
+abstract class LogHandler {
+  protected LogHandler next;
+  
+  void setNext(LogHandler next) { this.next = next; }
+  
+  abstract void handle(String level, String message);
+  
+  // Helper — pass to next if set
+  void passToNext(String level, String message) {
+    if (next != null) next.handle(level, message);
+  }
+}</div>
+
+    <div class="code-block code-good">// Concrete Handlers
+class DebugHandler extends LogHandler {
+  void handle(String level, String msg) {
+    if (level.equals("DEBUG")) System.out.println("[DEBUG] " + msg);
+    else passToNext(level, msg); // forward if not mine
+  }
+}
+class InfoHandler extends LogHandler {
+  void handle(String level, String msg) {
+    if (level.equals("INFO")) System.out.println("[INFO] " + msg);
+    else passToNext(level, msg);
+  }
+}
+class ErrorHandler extends LogHandler {
+  void handle(String level, String msg) {
+    System.out.println("[ERROR] " + msg); // handles everything else
+  }
+}</div>
+
+    <div class="code-block code-good">// Chain setup — constructor chaining
+LogHandler chain = new DebugHandler(
+                     new InfoHandler(
+                       new ErrorHandler(null)
+                     )
+                   );
+// Chain built inside → outside
+
+// Client just calls the first
+chain.handle("INFO", "Server started"); // → InfoHandler handles it</div>
+
+    <div class="highlight"><strong>Aha on constructor chaining:</strong> Chain builds from inside → outside (last handler first). But requests flow outside → inside (first handler first). The nesting is the chain — deepest node has null as next.</div>
+  </div>
+
+  <!-- 2 TYPES OF COR -->
+  <div class="sub-panel" id="sub-types">
+    <div class="highlight"><strong>Two distinct variants of Chain of Responsibility.</strong> Most people only know Type 1. Type 2 is what Spring Security and Servlet Filters use.</div>
+
+    <div class="grid">
+      <div class="box" style="border-color:#1D9E75;border-width:2px">
+        <div class="box-label" style="color:#0F6E56">Type 1 — Single handler (Stop)</div>
+        <div class="box-sub" style="margin-bottom:10px">First handler that can process it → handles → stops. Rest don't see the request.</div>
+        <div class="arch-flow" style="padding:10px 12px">
+          <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:12px">
+            <span class="chain-node node-red" style="padding:5px 10px;font-size:11px">H1 ✗</span>
+            <span>→</span>
+            <span class="chain-node node-green" style="padding:5px 10px;font-size:11px">H2 ✔ STOP</span>
+            <span style="color:var(--color-text-tertiary)">→ H3 never runs</span>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--color-text-secondary)">Examples: logging (log4j), ATM dispensing, approval workflows</div>
+      </div>
+      <div class="box" style="border-color:#185FA5;border-width:2px">
+        <div class="box-label" style="color:#185FA5">Type 2 — All handlers process (Pass-through)</div>
+        <div class="box-sub" style="margin-bottom:10px">Every handler runs. Each adds behaviour, then passes forward. Pipeline style.</div>
+        <div class="arch-flow" style="padding:10px 12px">
+          <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:12px">
+            <span class="chain-node node-blue" style="padding:5px 10px;font-size:11px">H1 ✔</span>
+            <span>→</span>
+            <span class="chain-node node-blue" style="padding:5px 10px;font-size:11px">H2 ✔</span>
+            <span>→</span>
+            <span class="chain-node node-blue" style="padding:5px 10px;font-size:11px">H3 ✔</span>
+            <span>→ done</span>
+          </div>
+        </div>
+        <div style="margin-top:8px;font-size:12px;color:var(--color-text-secondary)">Examples: Spring Security filters, Servlet filters, Node.js middleware</div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Spring Security is Type 2:</strong> Request → Authentication Filter → Authorization Filter → CORS Filter → Controller. Every filter runs in sequence. This is COR as a pipeline.</div>
+  </div>
+
+  <!-- REAL SYSTEMS -->
+  <div class="sub-panel" id="sub-real">
+    <div class="section-title">COR in production systems</div>
+    <div class="grid-3" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Logging — log4j/slf4j</div>
+        <div class="box-sub">DEBUG → INFO → WARN → ERROR → FATAL. Each level is a handler. Request flows until matching level handles it.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Servlet Filters</div>
+        <div class="box-sub">HTTP request → Filter1 (auth) → Filter2 (logging) → Filter3 (compression) → Controller. All filters run (Type 2).</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#854F0B">Spring Security</div>
+        <div class="box-sub">Authentication chain — multiple filters handle different security concerns. Each passes request along after processing.</div>
+      </div>
+    </div>
+
+    <div class="arch-flow" style="margin-bottom:16px">
+      <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Node.js Express middleware (Type 2)</div>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px">
+        <span class="chain-node node-gray" style="font-size:12px">HTTP Request</span>
+        <span class="chain-arrow">→</span>
+        <span class="chain-node node-blue" style="font-size:12px">Auth Middleware</span>
+        <span class="chain-arrow">→</span>
+        <span class="chain-node node-blue" style="font-size:12px">Rate Limit</span>
+        <span class="chain-arrow">→</span>
+        <span class="chain-node node-blue" style="font-size:12px">Logger</span>
+        <span class="chain-arrow">→</span>
+        <span class="chain-node node-green" style="font-size:12px">Route Handler</span>
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:var(--color-text-tertiary)">Each middleware calls next() to pass to the next. COR pattern exactly.</div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>One-liner:</strong> Chain of Responsibility decouples sender from receiver by passing the request through a chain until a handler processes it.<br><br>
+      <strong>Category:</strong> Behavioural
+    </div>
+
+    <div class="grid" style="margin-bottom:16px">
+      <div class="cure">
+        <div class="label">Advantages</div>
+        <ul>
+          <li>Loose coupling — client doesn't know who handles</li>
+          <li>Extensible — new handler = new class (OCP)</li>
+          <li>Clean — no giant if-else in one place</li>
+          <li>Dynamic — chain configurable at runtime</li>
+        </ul>
+      </div>
+      <div class="pain">
+        <div class="label">Disadvantages</div>
+        <ul>
+          <li>Request may go unhandled if no match</li>
+          <li>Debugging tricky — flow is indirect</li>
+          <li>Long chain = performance impact</li>
+        </ul>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>COR definition</td><td>Chain of handlers — each processes or forwards. Decouples sender from receiver.</td></tr>
+      <tr><td>IS-A + HAS-A</td><td>Handler IS-A Handler (polymorphism) + HAS-A next Handler (chain link)</td></tr>
+      <tr><td>Type 1 (stop)</td><td>First matching handler processes — stops. Logging, ATM, approval flows.</td></tr>
+      <tr><td>Type 2 (pass-through)</td><td>All handlers process — pipeline. Spring Security, Servlet Filters, Express middleware.</td></tr>
+      <tr><td>vs if-else</td><td>if-else = rigid (one class). COR = flexible, extensible (OCP-compliant).</td></tr>
+      <tr><td>When to use</td><td>Multiple handlers possible, order matters, decouple sender from receiver</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

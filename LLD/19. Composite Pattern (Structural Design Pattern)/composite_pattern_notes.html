@@ -1,0 +1,306 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .code-bad { border-left: 3px solid #E24B4A; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .tree-item { font-family: var(--font-mono); font-size: 13px; color: var(--color-text-secondary); line-height: 2; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('filesystem')">File system code</button>
+    <button class="sub-btn" onclick="show('calculator')">Calculator example</button>
+    <button class="sub-btn" onclick="show('compare')">vs Decorator / COR</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box">
+      <strong>One line:</strong> Treat individual objects and groups of objects the SAME way.<br><br>
+      <strong>Ultimate aha:</strong> Composite = Recursion + Polymorphism. If your problem looks like a TREE → think Composite.
+    </div>
+
+    <div class="grid">
+      <div>
+        <div class="code-block code-bad" style="margin-bottom:8px">// BAD — instanceof everywhere
+if (obj instanceof File) {
+  obj.showFile();
+} else if (obj instanceof Directory) {
+  for (Object child : dir.children) {
+    // repeat for each child type...
+  }
+}</div>
+        <div class="code-block code-good">// GOOD — Composite Pattern
+obj.ls(); // works for File AND Directory
+// No instanceof. Polymorphism handles it.</div>
+      </div>
+      <div>
+        <div class="arch-flow">
+          <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">File system tree</div>
+          <div class="tree-item">
+            <span style="color:#633806">📁 root/</span><br>
+            &nbsp;&nbsp;<span style="color:#633806">📁 Documents/</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0C447C">📄 resume.pdf</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0C447C">📄 cover.docx</span><br>
+            &nbsp;&nbsp;<span style="color:#633806">📁 Photos/</span><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0C447C">📄 trip.jpg</span><br>
+            &nbsp;&nbsp;<span style="color:#0C447C">📄 notes.txt</span>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">ls() on root → automatically recurses through the whole tree</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">3-component structure — always the same</div>
+    <div class="grid-3">
+      <div class="box" style="text-align:center">
+        <div class="box-label" style="color:#185FA5">Component (interface)</div>
+        <div class="box-sub" style="margin-bottom:6px">Common interface both Leaf and Composite implement.</div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-tertiary)">FileSystem<br>└── ls()</div>
+      </div>
+      <div class="box" style="text-align:center">
+        <div class="box-label" style="color:#0F6E56">Leaf</div>
+        <div class="box-sub" style="margin-bottom:6px">Individual object. No children. Does the actual work.</div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-tertiary)">File<br>└── ls() → prints self</div>
+      </div>
+      <div class="box" style="text-align:center">
+        <div class="box-label" style="color:#854F0B">Composite</div>
+        <div class="box-sub" style="margin-bottom:6px">Group of objects. HAS children. Delegates to them.</div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-tertiary)">Directory<br>└── ls() → recurses</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILE SYSTEM CODE -->
+  <div class="sub-panel" id="sub-filesystem">
+    <div class="highlight"><strong>The key line that makes Composite powerful:</strong> Directory.ls() just calls child.ls() for each child — it doesn't care if the child is a File or another Directory. Recursion is automatic.</div>
+
+    <div class="code-block code-good">// Component interface — the contract
+interface FileSystem {
+  void ls();
+}
+
+// Leaf — no children, does actual work
+class File implements FileSystem {
+  String name;
+  File(String name) { this.name = name; }
+  
+  public void ls() {
+    System.out.println("📄 " + name);
+  }
+}</div>
+
+    <div class="code-block code-good">// Composite — contains children, delegates
+class Directory implements FileSystem {
+  String name;
+  List&lt;FileSystem&gt; children = new ArrayList&lt;&gt;();
+
+  Directory(String name) { this.name = name; }
+
+  void add(FileSystem f) { children.add(f); }
+
+  public void ls() {
+    System.out.println("📁 " + name + "/");
+    for (FileSystem child : children) {
+      child.ls(); // 🔥 no instanceof — just call
+    }
+  }
+}</div>
+
+    <div class="code-block code-good">// Usage — builds the tree
+Directory root = new Directory("root");
+Directory docs = new Directory("Documents");
+docs.add(new File("resume.pdf"));
+docs.add(new File("cover.docx"));
+
+root.add(docs);
+root.add(new File("notes.txt"));
+
+root.ls(); // recursively prints entire tree</div>
+
+    <div class="highlight"><strong>HAS-A insight:</strong> Directory IS-A FileSystem (implements interface) + HAS-A list of FileSystem objects. The children can be Files or Directories — it doesn't care. Same IS-A + HAS-A combo as Decorator and Proxy.</div>
+  </div>
+
+  <!-- CALCULATOR -->
+  <div class="sub-panel" id="sub-calculator">
+    <div class="highlight"><strong>Expression trees are Composite Pattern.</strong> Number = Leaf (no sub-expressions). Operation = Composite (has left + right sub-expressions). evaluate() recurses through the tree.</div>
+
+    <div class="grid">
+      <div class="arch-flow">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">2 * (1 + 7) as a tree</div>
+        <div class="tree-item">
+          <span style="color:#633806">Multiply (Composite)</span><br>
+          &nbsp;&nbsp;<span style="color:#0C447C">2 (Leaf)</span><br>
+          &nbsp;&nbsp;<span style="color:#633806">Add (Composite)</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0C447C">1 (Leaf)</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0C447C">7 (Leaf)</span>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">evaluate() on root → 2 × (1+7) = 2 × 8 = 16</div>
+      </div>
+      <div>
+        <div class="code-block code-good">// Interface
+interface Expression {
+  int evaluate();
+}
+
+// Leaf — just a number
+class Number implements Expression {
+  int val;
+  Number(int val) { this.val = val; }
+  public int evaluate() { return val; }
+}
+
+// Composite — an operation
+class Add implements Expression {
+  Expression left, right;
+  Add(Expression l, Expression r) {
+    this.left = l; this.right = r;
+  }
+  public int evaluate() {
+    return left.evaluate() + right.evaluate();
+  }
+}
+class Multiply implements Expression {
+  Expression left, right;
+  Multiply(Expression l, Expression r) {
+    this.left = l; this.right = r;
+  }
+  public int evaluate() {
+    return left.evaluate() * right.evaluate();
+  }
+}
+
+// Build: 2 * (1 + 7)
+Expression expr = new Multiply(
+  new Number(2),
+  new Add(new Number(1), new Number(7))
+);
+System.out.println(expr.evaluate()); // 16</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARE -->
+  <div class="sub-panel" id="sub-compare">
+    <div class="section-title">Composite vs Decorator vs Chain — clear once and for all</div>
+    <table class="compare-table">
+      <tr><th>Pattern</th><th>Structure</th><th>Purpose</th><th>Shortcut</th></tr>
+      <tr><td><span class="tag tag-amber">Composite</span></td><td>Tree (1 → many children)</td><td>Uniform treatment of whole and part</td><td>Tree dikhe → Composite</td></tr>
+      <tr><td><span class="tag tag-blue">Decorator</span></td><td>Linear layers (wrap → wrap → wrap)</td><td>Add behaviour dynamically</td><td>Layer dikhe → Decorator</td></tr>
+      <tr><td><span class="tag tag-teal">Chain of Resp.</span></td><td>Linear chain of handlers</td><td>Pass request until one handles</td><td>Handler chain → COR</td></tr>
+    </table>
+
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Composite vs Decorator (deep)</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          Both use IS-A + HAS-A same interface trick.<br><br>
+          Composite: HAS-A <strong style="color:var(--color-text-primary)">list</strong> of children → tree<br>
+          Decorator: HAS-A <strong style="color:var(--color-text-primary)">one</strong> wrapped object → chain<br><br>
+          Composite = part-whole hierarchy<br>
+          Decorator = behavior enhancement
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Composite vs COR (deep)</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">
+          Both pass work along a structure.<br><br>
+          Composite: <strong style="color:var(--color-text-primary)">ALL</strong> nodes participate (ls() recurses everywhere)<br>
+          COR: <strong style="color:var(--color-text-primary)">ONE</strong> node handles (stops when matched)<br><br>
+          Composite = full traversal<br>
+          COR = first match wins
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Definition:</strong> Composite Pattern allows you to treat individual objects and compositions of objects uniformly — removing instanceof checks using polymorphism.<br><br>
+      <strong>Ultimate trigger:</strong> If the problem looks like a TREE → think Composite.
+    </div>
+
+    <div class="section-title">When to use</div>
+    <div class="cure" style="margin-bottom:16px">
+      <div class="label">Use Composite when</div>
+      <ul>
+        <li>Tree / hierarchy structure in the problem</li>
+        <li>Objects contain same-type objects (recursive composition)</li>
+        <li>Need to treat whole and part the same way</li>
+        <li>Want to eliminate instanceof checks with polymorphism</li>
+      </ul>
+    </div>
+
+    <div class="section-title">Real-world examples</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
+      <span class="tag tag-blue">File system (File + Directory)</span>
+      <span class="tag tag-blue">UI components (Button inside Panel inside Window)</span>
+      <span class="tag tag-teal">HTML DOM (element contains elements)</span>
+      <span class="tag tag-teal">Expression trees (calculator, compilers)</span>
+      <span class="tag tag-amber">Menu systems (MenuItem inside Menu)</span>
+      <span class="tag tag-amber">Org chart (Employee inside Department)</span>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Definition</td><td>Uniform treatment of individual and group objects — Tree + Polymorphism</td></tr>
+      <tr><td>Leaf</td><td>Individual node — no children, does actual work</td></tr>
+      <tr><td>Composite</td><td>Group node — has children, delegates to them via recursion</td></tr>
+      <tr><td>IS-A + HAS-A</td><td>Directory IS-A FileSystem + HAS-A List&lt;FileSystem&gt; — enables transparent recursion</td></tr>
+      <tr><td>Key benefit</td><td>Removes instanceof — just call the method, recursion handles the rest</td></tr>
+      <tr><td>vs Decorator</td><td>Composite = 1→many (tree). Decorator = 1→1 wrapped (layers).</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

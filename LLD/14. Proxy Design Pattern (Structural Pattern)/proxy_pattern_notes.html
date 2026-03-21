@@ -1,0 +1,309 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .flow-node { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .pain ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('types')">4 types</button>
+    <button class="sub-btn" onclick="show('code')">Code</button>
+    <button class="sub-btn" onclick="show('spring')">Spring usage</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box">
+      <strong>One line:</strong> Proxy = a control layer between client and real object. Client never talks to real object directly.<br><br>
+      <strong>Gatekeeper analogy:</strong> You (client) → Security Guard (proxy) → CEO (real object). Guard decides: allow, deny, log, or modify.
+    </div>
+
+    <div class="section-title">Core flow</div>
+    <div class="arch-flow" style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span class="flow-node node-gray">Client</span>
+        <span style="color:var(--color-text-tertiary);font-size:18px">→</span>
+        <div style="text-align:center">
+          <span class="flow-node node-amber">Proxy</span>
+          <div style="font-size:11px;color:#854F0B;margin-top:3px">check role / log / lazy load</div>
+        </div>
+        <span style="color:var(--color-text-tertiary);font-size:18px">→</span>
+        <div style="text-align:center">
+          <span class="flow-node node-teal">Real Object</span>
+          <div style="font-size:11px;color:#085041;margin-top:3px">actual work</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:13px;color:var(--color-text-secondary)">Proxy IS-A Subject (same interface) + HAS-A RealSubject (delegates to it when allowed)</div>
+    </div>
+
+    <div class="section-title">3-component structure</div>
+    <div class="grid-3">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Subject (interface)</div>
+        <div class="box-sub">Contract both Proxy and Real Object implement. Client programs to this interface only.</div>
+        <div style="margin-top:6px;font-family:var(--font-mono);font-size:12px;color:var(--color-text-tertiary)">EmployeeDao</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Real Subject</div>
+        <div class="box-sub">Does the actual work. Client never directly instantiates or calls this.</div>
+        <div style="margin-top:6px;font-family:var(--font-mono);font-size:12px;color:var(--color-text-tertiary)">EmployeeDaoImpl</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#854F0B">Proxy</div>
+        <div class="box-sub">Intercepts all calls. Applies control logic, then delegates to Real Subject (if allowed).</div>
+        <div style="margin-top:6px;font-family:var(--font-mono);font-size:12px;color:var(--color-text-tertiary)">EmployeeDaoProxy</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPES -->
+  <div class="sub-panel" id="sub-types">
+    <div class="highlight"><strong>4 types of proxy — same structure, different purpose.</strong></div>
+
+    <div class="grid" style="margin-bottom:12px">
+      <div class="box" style="border-color:#A32D2D">
+        <div class="box-label" style="color:#A32D2D">1 — Protection Proxy</div>
+        <div class="box-sub" style="margin-bottom:8px">Role-based access control. Checks permissions before delegating.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          User → Proxy → check role<br>
+          Admin ✔ → delete allowed<br>
+          Non-admin ✗ → Exception thrown
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--color-text-tertiary)">Your example. Spring @PreAuthorize is this.</div>
+      </div>
+      <div class="box" style="border-color:#185FA5">
+        <div class="box-label" style="color:#185FA5">2 — Virtual Proxy</div>
+        <div class="box-sub" style="margin-bottom:8px">Lazy loading. Creates expensive object only when actually needed.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          ImageProxy created immediately<br>
+          Real image loaded only when display() called<br>
+          Performance boost for heavy objects
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--color-text-tertiary)">Hibernate lazy-loaded entities use this.</div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="box" style="border-color:#0F6E56">
+        <div class="box-label" style="color:#0F6E56">3 — Remote Proxy</div>
+        <div class="box-sub" style="margin-bottom:8px">Access a remote object as if it's local. Hides network complexity.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          Client calls local proxy method<br>
+          Proxy serializes and sends over network<br>
+          Returns response transparently
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--color-text-tertiary)">RPC, REST clients, gRPC stubs.</div>
+      </div>
+      <div class="box" style="border-color:#854F0B">
+        <div class="box-label" style="color:#854F0B">4 — Logging / Monitoring Proxy</div>
+        <div class="box-sub" style="margin-bottom:8px">Pre/post processing. Log before call, measure latency after.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          Log request details<br>
+          Call real object<br>
+          Log response + duration
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--color-text-tertiary)">AOP, Spring interceptors, Prometheus metrics.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CODE -->
+  <div class="sub-panel" id="sub-code">
+    <div class="code-block code-good">// Subject interface
+interface EmployeeDao {
+  void create(String role, Employee emp);
+  void delete(String role, int id);
+}
+
+// Real Subject
+class EmployeeDaoImpl implements EmployeeDao {
+  public void create(String role, Employee emp) {
+    // actual DB insert
+  }
+  public void delete(String role, int id) {
+    // actual DB delete
+  }
+}</div>
+
+    <div class="code-block code-good">// Proxy — Protection proxy with RBAC
+class EmployeeDaoProxy implements EmployeeDao {
+  private EmployeeDaoImpl realDao = new EmployeeDaoImpl();
+
+  public void create(String role, Employee emp) {
+    if (role.equals("ADMIN") || role.equals("MANAGER")) {
+      realDao.create(role, emp); // delegate
+    } else {
+      throw new IllegalAccessException("Not allowed");
+    }
+  }
+
+  public void delete(String role, int id) {
+    if (role.equals("ADMIN")) {
+      realDao.delete(role, id); // only admin
+    } else {
+      throw new IllegalAccessException("Not allowed");
+    }
+  }
+}
+
+// Client — talks only to proxy, never to real object
+EmployeeDao dao = new EmployeeDaoProxy();
+dao.delete("ADMIN", 101);   // ✔ allowed
+dao.delete("USER", 101);    // ✗ exception</div>
+
+    <div class="highlight"><strong>IS-A + HAS-A combo:</strong> EmployeeDaoProxy IS-A EmployeeDao (implements interface — transparent to client). EmployeeDaoProxy HAS-A EmployeeDaoImpl (holds reference, delegates when allowed).</div>
+  </div>
+
+  <!-- SPRING USAGE -->
+  <div class="sub-panel" id="sub-spring">
+    <div class="highlight"><strong>Spring uses Proxy pattern everywhere.</strong> Most Spring magic is a proxy wrapping your class and adding behaviour around your methods.</div>
+
+    <div class="grid-3" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">@Transactional</div>
+        <div class="box-sub" style="margin-bottom:8px">Spring wraps your method in a transaction proxy.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          Call → Proxy<br>
+          → begin transaction<br>
+          → your method<br>
+          → commit / rollback
+        </div>
+        <div style="margin-top:6px;font-size:11px;color:var(--color-text-tertiary)">You write business logic. Proxy adds transaction.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">AOP (Aspect)</div>
+        <div class="box-sub" style="margin-bottom:8px">Spring creates a proxy that intercepts calls and runs your @Around, @Before, @After advice.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          ✔ Logging<br>
+          ✔ Security checks<br>
+          ✔ Performance metrics<br>
+          All without touching business code
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#854F0B">Hibernate lazy loading</div>
+        <div class="box-sub" style="margin-bottom:8px">Virtual Proxy pattern. Entity returned is a proxy — DB hit only on first access.</div>
+        <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+          Order returned immediately<br>
+          order.getItems() → DB queried now<br>
+          Performance until you actually need it
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Spring AOP mechanism:</strong> When you annotate a class, Spring doesn't modify your class. It creates a CGLIB or JDK dynamic proxy that wraps your class. That proxy intercepts all method calls. This is the Proxy pattern running in production every time you use Spring.</div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Definition:</strong> Proxy pattern provides a surrogate or placeholder for another object to control access to it.<br><br>
+      <strong>Key point:</strong> Client never interacts with the real object directly.
+    </div>
+
+    <div class="section-title">Proxy vs Decorator vs Adapter — the classic confusion</div>
+    <table class="compare-table">
+      <tr><th>Pattern</th><th>Purpose</th><th>Interface</th><th>Shortcut question</th></tr>
+      <tr><td><span class="tag tag-amber">Proxy</span></td><td>Control/restrict access to real object</td><td>Same interface</td><td>"Should I allow this call?"</td></tr>
+      <tr><td><span class="tag tag-blue">Decorator</span></td><td>Add/enhance behaviour dynamically</td><td>Same interface</td><td>"Let me add something on top"</td></tr>
+      <tr><td><span class="tag tag-teal">Adapter</span></td><td>Convert one interface to another</td><td>Different interface</td><td>"Let me translate this call"</td></tr>
+    </table>
+
+    <div class="grid" style="margin-bottom:16px">
+      <div class="cure">
+        <div class="label">Advantages</div>
+        <ul>
+          <li>Access control — security layer</li>
+          <li>Add behaviour without modifying code</li>
+          <li>Lazy loading — performance boost</li>
+          <li>Separation of concerns</li>
+        </ul>
+      </div>
+      <div class="pain">
+        <div class="label">Disadvantages</div>
+        <ul>
+          <li>More classes — complexity increases</li>
+          <li>Indirection — debugging harder</li>
+          <li>Slight performance overhead</li>
+        </ul>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Proxy definition</td><td>Surrogate that controls access to real object — client never touches real object directly</td></tr>
+      <tr><td>IS-A + HAS-A</td><td>Proxy implements same interface (IS-A) + holds real object (HAS-A) — transparent to client</td></tr>
+      <tr><td>Protection proxy</td><td>RBAC — check role before delegating. Spring @PreAuthorize uses this.</td></tr>
+      <tr><td>Virtual proxy</td><td>Lazy loading — create expensive object only on first use. Hibernate entities.</td></tr>
+      <tr><td>Spring connection</td><td>@Transactional, AOP aspects, Hibernate lazy loading — all use dynamic proxies under the hood</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

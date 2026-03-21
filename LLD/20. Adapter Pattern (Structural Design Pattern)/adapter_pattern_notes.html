@@ -1,0 +1,259 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .flow-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .flow-node { padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; }
+  .flow-arrow { font-size: 18px; color: var(--color-text-tertiary); }
+  .node-blue { background: #E6F1FB; color: #0C447C; }
+  .node-teal { background: #E1F5EE; color: #085041; }
+  .node-amber { background: #FAEEDA; color: #633806; }
+  .node-green { background: #EAF3DE; color: #27500A; }
+  .node-red { background: #FCEBEB; color: #791F1F; }
+  .node-gray { background: #F1EFE8; color: #444441; }
+  @media (prefers-color-scheme: dark) {
+    .node-blue { background: #0C447C; color: #B5D4F4; }
+    .node-teal { background: #085041; color: #9FE1CB; }
+    .node-amber { background: #633806; color: #FAC775; }
+    .node-green { background: #27500A; color: #C0DD97; }
+    .node-red { background: #791F1F; color: #F7C1C1; }
+    .node-gray { background: #444441; color: #D3D1C7; }
+  }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('code')">Weight machine code</button>
+    <button class="sub-btn" onclick="show('real')">Real examples</button>
+    <button class="sub-btn" onclick="show('compare')">vs Proxy / Decorator</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box">
+      <strong>One line:</strong> Adapter = bridge between incompatible interfaces. Client expects one interface, existing system speaks another — adapter translates.<br><br>
+      <strong>Category:</strong> Structural — clubs two incompatible interfaces into one working structure.
+    </div>
+
+    <div class="section-title">Core flow — always the same</div>
+    <div class="arch-flow" style="margin-bottom:16px">
+      <div class="flow-row">
+        <div style="text-align:center">
+          <span class="flow-node node-gray">Client</span>
+          <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:3px">expects KG</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div style="text-align:center">
+          <span class="flow-node node-amber">Adapter</span>
+          <div style="font-size:11px;color:#854F0B;margin-top:3px">converts pounds → KG</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div style="text-align:center">
+          <span class="flow-node node-teal">Adaptee (existing)</span>
+          <div style="font-size:11px;color:#085041;margin-top:3px">returns pounds</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:13px;color:var(--color-text-secondary)">Client never sees the Adaptee. Adapter handles all translation. Client only knows the interface it expects.</div>
+    </div>
+
+    <div class="section-title">4 components</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:16px">
+      <div class="box" style="padding:10px 12px;text-align:center">
+        <div class="box-label" style="color:#444441">Client</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Uses adapter interface. Doesn't know about adaptee.</div>
+      </div>
+      <div class="box" style="padding:10px 12px;text-align:center">
+        <div class="box-label" style="color:#185FA5">Adapter interface</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">What client expects. Methods in client's language.</div>
+      </div>
+      <div class="box" style="padding:10px 12px;text-align:center">
+        <div class="box-label" style="color:#854F0B">Concrete adapter</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Implements adapter interface. HAS-A adaptee. Does translation.</div>
+      </div>
+      <div class="box" style="padding:10px 12px;text-align:center">
+        <div class="box-label" style="color:#0F6E56">Adaptee (existing)</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Existing system. Can't change it. Speaks different language.</div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>IS-A + HAS-A combo:</strong> Adapter IS-A adapter interface (same contract as client expects) + HAS-A adaptee (holds existing system to delegate to). Both relationships in one class.</div>
+  </div>
+
+  <!-- CODE -->
+  <div class="sub-panel" id="sub-code">
+    <div class="highlight"><strong>Scenario:</strong> Weight machine returns pounds. Client only understands kilograms. Can't change the existing weight machine. Add an adapter.</div>
+
+    <div class="code-block code-good">// Adaptee — existing system, returns pounds
+// Can't change this — it's an external/legacy product
+interface WeightMachine {
+  double getWeightInPound();
+}
+
+class WeightMachineForBabies implements WeightMachine {
+  public double getWeightInPound() {
+    return 28.0; // always returns in pounds
+  }
+}</div>
+
+    <div class="code-block code-good">// Adapter interface — what CLIENT expects
+interface WeightMachineAdapter {
+  double getWeightInKg();
+}
+
+// Concrete adapter — IS-A adapter interface, HAS-A adaptee
+class WeightMachineAdapterImpl implements WeightMachineAdapter {
+  WeightMachine weightMachine; // HAS-A existing system
+
+  WeightMachineAdapterImpl(WeightMachine wm) {
+    this.weightMachine = wm;
+  }
+
+  public double getWeightInKg() {
+    double weightInPound = weightMachine.getWeightInPound(); // talk to adaptee
+    return weightInPound * 0.45;  // translate — pounds to KG
+  }
+}</div>
+
+    <div class="code-block code-good">// Client — only knows WeightMachineAdapter
+WeightMachineAdapter adapter = new WeightMachineAdapterImpl(
+  new WeightMachineForBabies()
+);
+
+double weightInKg = adapter.getWeightInKg(); // ✔ gets KG
+// Client never knew pounds existed</div>
+  </div>
+
+  <!-- REAL EXAMPLES -->
+  <div class="sub-panel" id="sub-real">
+    <div class="highlight"><strong>Adapter is everywhere — in hardware, software, and system integration.</strong> Any time two incompatible systems need to talk, an adapter is the solution.</div>
+
+    <div class="grid-3" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Power adapter</div>
+        <div class="box-sub">Socket (square pins) + Power plug (oval pins) = incompatible. Adapter bridges them. Classic real-world example.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">XML → JSON</div>
+        <div class="box-sub">Server returns XML. Client needs JSON. Adapter parses XML and outputs JSON. Client never sees XML.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#854F0B">External API shield</div>
+        <div class="box-sub">Your company reads from adapter. External API changes format? Adapter absorbs the change. Your 10 internal components are unaffected.</div>
+      </div>
+    </div>
+
+    <div class="arch-flow" style="margin-bottom:16px">
+      <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">External API change — Adapter absorbs it</div>
+      <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.9">
+        Before: External API returns <code style="font-family:var(--font-mono);font-size:11px">format=1</code> → Your 10 components read format=1<br>
+        API changes to <code style="font-family:var(--font-mono);font-size:11px">format=1#</code> → All 10 components break<br><br>
+        With Adapter: 10 components read from adapter → adapter reads format=1# → converts to format=1<br>
+        API changes → <strong style="color:#0F6E56">only adapter changes. 10 components untouched.</strong>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Java standard library examples:</strong> <code style="font-family:var(--font-mono);font-size:11px">Arrays.asList()</code> adapts an array to a List interface. <code style="font-family:var(--font-mono);font-size:11px">InputStreamReader</code> adapts a byte InputStream to a character Reader. These are Adapter pattern in action.</div>
+  </div>
+
+  <!-- COMPARE -->
+  <div class="sub-panel" id="sub-compare">
+    <div class="highlight"><strong>The most important distinction in structural patterns:</strong> Proxy = same interface, Decorator = same interface + add behaviour, Adapter = DIFFERENT interface converted.</div>
+
+    <table class="compare-table">
+      <tr><th>Pattern</th><th>Interface</th><th>Purpose</th><th>Shortcut</th></tr>
+      <tr><td><span class="tag tag-amber">Adapter</span></td><td>Converts old → new</td><td>Bridge incompatible interfaces</td><td>"They speak different languages"</td></tr>
+      <tr><td><span class="tag tag-blue">Proxy</span></td><td>Same interface</td><td>Control access to real object</td><td>"Gatekeeper — same language"</td></tr>
+      <tr><td><span class="tag tag-teal">Decorator</span></td><td>Same interface</td><td>Add behaviour dynamically</td><td>"Enhance — same language"</td></tr>
+      <tr><td><span class="tag tag-green">Facade</span></td><td>Simplifies multiple interfaces</td><td>Single simplified entry point</td><td>"One simple door to complex system"</td></tr>
+    </table>
+
+    <div class="grid">
+      <div class="box">
+        <div class="box-label" style="color:#854F0B">Adapter vs Proxy</div>
+        <div class="box-sub">Both have IS-A + HAS-A. Key difference: Proxy uses SAME interface as the real object. Adapter CONVERTS to a DIFFERENT interface. If interfaces match → Proxy. If interfaces differ → Adapter.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Adapter vs Decorator</div>
+        <div class="box-sub">Decorator wraps and enhances — same interface, adds features. Adapter translates — different interface, enables compatibility. Decorator = "power-up." Adapter = "translator."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Definition:</strong> Adapter pattern bridges the gap between two incompatible interfaces — allowing an existing class to be used where a different interface is expected, without modifying it.<br><br>
+      <strong>Category:</strong> Structural — clubs incompatible interfaces to solve bigger integration problems.
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Adapter definition</td><td>Bridge between incompatible interfaces — translates one to another</td></tr>
+      <tr><td>Adaptee</td><td>Existing system you can't change — speaks wrong language</td></tr>
+      <tr><td>IS-A + HAS-A</td><td>Implements expected interface (IS-A) + holds adaptee (HAS-A) → translates calls</td></tr>
+      <tr><td>Key benefit</td><td>Use existing code without changing it — OCP compliant</td></tr>
+      <tr><td>vs Proxy</td><td>Proxy = same interface. Adapter = different interfaces converted.</td></tr>
+      <tr><td>vs Decorator</td><td>Decorator adds behaviour (same interface). Adapter translates (different interface).</td></tr>
+      <tr><td>Real usage</td><td>External API integration, XML→JSON, legacy system wrapping, Java InputStreamReader</td></tr>
+    </table>
+
+    <div class="section-title">Full structural patterns recap</div>
+    <div class="box">
+      <div style="font-size:13px;color:var(--color-text-secondary);line-height:2">
+        <span class="tag tag-amber">Adapter</span> → bridge incompatible interfaces (translate)<br>
+        <span class="tag tag-blue">Proxy</span> → control access to same-interface object (gatekeeper)<br>
+        <span class="tag tag-teal">Decorator</span> → add behaviour by wrapping same-interface object (enhance)<br>
+        <span class="tag tag-green">Composite</span> → tree of same-interface objects (recurse uniformly)<br>
+        <span class="tag" style="background:#EEEDFE;color:#3C3489">Facade</span> → single simplified interface to complex subsystem
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

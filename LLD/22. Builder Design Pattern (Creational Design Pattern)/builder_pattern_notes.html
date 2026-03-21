@@ -1,0 +1,287 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .code-bad { border-left: 3px solid #E24B4A; }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .pain ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('code')">Code</button>
+    <button class="sub-btn" onclick="show('vs-decorator')">Builder vs Decorator</button>
+    <button class="sub-btn" onclick="show('vs-factory')">Builder vs Factory</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box">
+      <strong>One line:</strong> Builder constructs complex objects step-by-step — separating construction from representation.<br><br>
+      <strong>Trigger:</strong> Constructor is messy? Too many optional fields? → Use Builder.
+    </div>
+
+    <div class="grid">
+      <div>
+        <div class="code-block code-bad" style="margin-bottom:8px">// BAD — messy constructor
+new Student(1, "PK", 25, "Dad name",
+  "Mom name", null, null, "address", ...);
+// Which param is what? No idea.</div>
+        <div class="code-block code-good">// GOOD — Builder Pattern
+Student s = new Student.Builder(1)
+    .setName("PK")
+    .setAge(25)
+    .build();
+// Readable. Only set what you need.</div>
+      </div>
+      <div>
+        <div class="pain" style="margin-bottom:10px">
+          <div class="label">Without Builder</div>
+          <ul>
+            <li>Huge constructor with 10+ params</li>
+            <li>Wrong order = wrong object (no compile error)</li>
+            <li>Constructor explosion for optional combos</li>
+            <li>Hard to read what's being set</li>
+          </ul>
+        </div>
+        <div class="cure">
+          <div class="label">With Builder</div>
+          <ul>
+            <li>Mandatory fields in Builder constructor</li>
+            <li>Optional fields via fluent setters</li>
+            <li>Readable — each line tells you what it sets</li>
+            <li>build() creates the final immutable object</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight"><strong>Method chaining aha:</strong> Each setter returns <code style="font-family:var(--font-mono);font-size:11px">this</code> (the Builder) — that's what enables fluent chaining. build() at the end assembles and returns the final object.</div>
+
+    <div class="section-title">Real Java example — StringBuilder IS Builder</div>
+    <div class="code-block code-good">new StringBuilder()
+    .append("Hello")   // step
+    .append(" PK")     // step
+    .append("!")        // step
+    .toString();        // build() — returns final string</div>
+  </div>
+
+  <!-- CODE -->
+  <div class="sub-panel" id="sub-code">
+    <div class="code-block code-good">// Product — private constructor
+class Student {
+  int roll;      // mandatory
+  String name;   // optional
+  int age;       // optional
+  String father; // optional
+
+  // Private — only Builder can create
+  private Student(Builder b) {
+    this.roll   = b.roll;
+    this.name   = b.name;
+    this.age    = b.age;
+    this.father = b.father;
+  }
+
+  // Inner Builder class
+  static class Builder {
+    int roll;      // mandatory
+    String name;
+    int age;
+    String father;
+
+    public Builder(int roll) {    // mandatory in constructor
+      this.roll = roll;
+    }
+
+    public Builder setName(String name) {
+      this.name = name;
+      return this; // 🔥 returns Builder for chaining
+    }
+
+    public Builder setAge(int age) {
+      this.age = age;
+      return this;
+    }
+
+    public Builder setFather(String father) {
+      this.father = father;
+      return this;
+    }
+
+    public Student build() {
+      return new Student(this); // assemble
+    }
+  }
+}</div>
+
+    <div class="code-block code-good">// Client — clean, readable, flexible
+Student s1 = new Student.Builder(1)
+    .setName("PK")
+    .setAge(25)
+    .build();
+
+// Different student — different optional fields
+Student s2 = new Student.Builder(2)
+    .setName("Rahul")
+    .setFather("Mr. Sharma")
+    .build(); // age not set — fine!</div>
+
+    <div class="highlight"><strong>Key design decision:</strong> Mandatory fields go in Builder's constructor (can't skip). Optional fields are setters (skip freely). build() creates a valid object regardless of which optionals were set.</div>
+  </div>
+
+  <!-- BUILDER vs DECORATOR -->
+  <div class="sub-panel" id="sub-vs-decorator">
+    <div class="highlight"><strong>90% of people confuse these.</strong> They look similar because both involve "adding things step by step" — but they solve completely different problems.</div>
+
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box" style="border-color:#185FA5">
+        <div class="box-label" style="color:#185FA5">Builder — Construction</div>
+        <div class="box-sub" style="margin-bottom:10px">Creates a new object step by step. Once built, object is fixed. Used at object creation time.</div>
+        <div class="code-block code-good" style="margin-bottom:6px">// Static structure — set at build time
+Pizza p = new Pizza.Builder()
+    .size("large")
+    .cheese(true)
+    .mushroom(true)
+    .build();
+// Pizza is now immutable</div>
+        <div style="font-size:12px;color:#A32D2D">Problem: PizzaWithCheese + PizzaWithMushroom + PizzaWithCheeseAndMushroom = class explosion</div>
+      </div>
+      <div class="box" style="border-color:#0F6E56">
+        <div class="box-label" style="color:#0F6E56">Decorator — Enhancement</div>
+        <div class="box-sub" style="margin-bottom:10px">Adds features to an existing object dynamically at runtime. Object keeps its interface. Infinite combinations.</div>
+        <div class="code-block code-good" style="margin-bottom:6px">// Dynamic stacking — flexible
+Pizza p = new Mushroom(
+    new Cheese(
+        new BasePizza()
+    )
+);
+p.getCost(); // 200+20+40 = 260</div>
+        <div style="font-size:12px;color:#0F6E56">Add any combination without new classes</div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Builder</th><th>Decorator</th></tr>
+      <tr><td>Goal</td><td>Create a new object</td><td>Enhance existing object</td></tr>
+      <tr><td>When</td><td>At object construction time</td><td>At runtime, dynamically</td></tr>
+      <tr><td>Result</td><td>New, complete, often immutable object</td><td>Same object + added behaviour</td></tr>
+      <tr><td>Pattern type</td><td>Creational</td><td>Structural</td></tr>
+      <tr><td>For pizza toppings</td><td>Class explosion for combinations</td><td>Infinite combinations, few classes</td></tr>
+    </table>
+
+    <div class="insight-box">
+      <strong>Permanent shortcut:</strong><br>
+      Builder = Construction → build new house step by step<br>
+      Decorator = Enhancement → renovate existing house room by room
+    </div>
+  </div>
+
+  <!-- BUILDER vs FACTORY -->
+  <div class="sub-panel" id="sub-vs-factory">
+    <div class="highlight"><strong>Both are Creational patterns — but they handle different levels of complexity.</strong></div>
+
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box">
+        <div class="box-label" style="color:#185FA5">Factory — One-shot creation</div>
+        <div class="box-sub" style="margin-bottom:8px">Hides which class is created. Simple objects. Client passes type, gets object.</div>
+        <div class="code-block code-good" style="margin-bottom:0">Shape s = ShapeFactory.getShape("CIRCLE");
+// Done in one call. No steps.</div>
+      </div>
+      <div class="box">
+        <div class="box-label" style="color:#0F6E56">Builder — Step-by-step creation</div>
+        <div class="box-sub" style="margin-bottom:8px">Handles complex objects with many optional fields. Client controls every step.</div>
+        <div class="code-block code-good" style="margin-bottom:0">Student s = new Student.Builder(1)
+    .setName("PK").setAge(25).build();
+// Multiple steps, full control.</div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Factory</th><th>Builder</th></tr>
+      <tr><td>Complexity</td><td>Simple objects</td><td>Complex objects, many optional fields</td></tr>
+      <tr><td>Client control</td><td>Minimal — just picks type</td><td>Full — sets each attribute</td></tr>
+      <tr><td>Steps</td><td>One call</td><td>Multiple chained calls + build()</td></tr>
+      <tr><td>Use when</td><td>Which class to create is the concern</td><td>How to construct the object is the concern</td></tr>
+    </table>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Definition:</strong> Builder pattern constructs complex objects step-by-step, separating construction from representation — avoiding huge constructors and enabling readable, flexible object creation.
+    </div>
+
+    <div class="section-title">Creational patterns full recap</div>
+    <div class="box" style="margin-bottom:16px">
+      <div style="font-size:13px;color:var(--color-text-secondary);line-height:2">
+        <span class="tag tag-blue">Simple Factory</span> → one class creates all objects (centralized)<br>
+        <span class="tag tag-blue">Factory Method</span> → one factory per type (distributed, SRP)<br>
+        <span class="tag tag-blue">Abstract Factory</span> → creates complete family of related objects<br>
+        <span class="tag tag-green">Builder</span> → step-by-step construction of complex object<br>
+        <span class="tag tag-amber">Singleton</span> → one instance globally
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Builder definition</td><td>Step-by-step object construction — mandatory in constructor, optionals as setters</td></tr>
+      <tr><td>Method chaining</td><td>Each setter returns this (Builder) → fluent API. build() returns final product.</td></tr>
+      <tr><td>vs Decorator</td><td>Builder = construction (new object). Decorator = enhancement (existing object, runtime).</td></tr>
+      <tr><td>vs Factory</td><td>Factory = one call, simple. Builder = multiple steps, complex with optionals.</td></tr>
+      <tr><td>Real Java</td><td>StringBuilder, Lombok @Builder, Spring UriComponentsBuilder</td></tr>
+      <tr><td>When to use</td><td>Many optional fields, want readable construction, avoid constructor overload</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

@@ -1,0 +1,293 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .container { padding: 16px 0; font-family: var(--font-sans); }
+  .sub-nav { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .sub-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 13px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .sub-btn:hover { border-color: var(--color-border-primary); color: var(--color-text-primary); }
+  .sub-btn.active { background: var(--color-text-primary); color: var(--color-background-primary); border-color: var(--color-text-primary); }
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+  .section-title { font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 12px; }
+  .highlight { padding: 12px 16px; border-radius: 8px; background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 12px; }
+  .highlight strong { color: var(--color-text-primary); font-weight: 500; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .box { padding: 14px 16px; border-radius: 10px; border: 1px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+  .box-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .box-sub { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  .compare-table th { text-align: left; padding: 8px 12px; color: var(--color-text-secondary); font-weight: 500; font-size: 12px; border-bottom: 1px solid var(--color-border-tertiary); }
+  .compare-table td { padding: 8px 12px; color: var(--color-text-primary); border-bottom: 1px solid var(--color-border-tertiary); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--color-text-secondary); font-size: 12px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-right: 4px; margin-bottom: 4px; }
+  .tag-blue { background: #E6F1FB; color: #0C447C; }
+  .tag-teal { background: #E1F5EE; color: #085041; }
+  .tag-amber { background: #FAEEDA; color: #633806; }
+  .tag-green { background: #EAF3DE; color: #27500A; }
+  .tag-red { background: #FCEBEB; color: #791F1F; }
+  @media (prefers-color-scheme: dark) {
+    .tag-blue { background: #0C447C; color: #B5D4F4; }
+    .tag-teal { background: #085041; color: #9FE1CB; }
+    .tag-amber { background: #633806; color: #FAC775; }
+    .tag-green { background: #27500A; color: #C0DD97; }
+    .tag-red { background: #791F1F; color: #F7C1C1; }
+  }
+  .insight-box { padding: 14px 18px; border-radius: 10px; border: 2px solid var(--color-border-secondary); background: var(--color-background-secondary); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .insight-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .code-block { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 8px; padding: 10px 14px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-primary); line-height: 1.9; margin-bottom: 8px; }
+  .code-good { border-left: 3px solid #1D9E75; }
+  .arch-flow { background: var(--color-background-secondary); border: 1px solid var(--color-border-tertiary); border-radius: 10px; padding: 14px 16px; }
+  .snap-slot { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; font-family: var(--font-mono); text-align: center; margin-bottom: 4px; }
+  .cure { border-left: 3px solid #1D9E75; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .cure .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #0F6E56; }
+  .cure ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+  .pain { border-left: 3px solid #E24B4A; padding: 12px 14px; background: var(--color-background-secondary); border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .pain .label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: #A32D2D; }
+  .pain ul { padding-left: 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.7; }
+</style>
+
+<div class="container">
+  <div class="sub-nav">
+    <button class="sub-btn active" onclick="show('overview')">Overview</button>
+    <button class="sub-btn" onclick="show('code')">Full code</button>
+    <button class="sub-btn" onclick="show('insight')">Encapsulation insight</button>
+    <button class="sub-btn" onclick="show('compare')">vs Command</button>
+    <button class="sub-btn" onclick="show('interview')">Interview guide</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="sub-panel active" id="sub-overview">
+    <div class="insight-box">
+      <strong>One line:</strong> Memento stores object state snapshots so you can restore (undo) later — without exposing internal structure.<br><br>
+      <strong>Memory trick:</strong> Memento = Memory Snapshot.
+    </div>
+
+    <div class="section-title">3 components — always the same</div>
+    <div class="grid-3" style="margin-bottom:16px">
+      <div class="box" style="border-color:#0F6E56;text-align:center">
+        <div class="box-label" style="color:#0F6E56">Originator</div>
+        <div style="font-size:20px;margin:6px 0">📦</div>
+        <div class="box-sub">Main object whose state we save. Creates + restores mementos.</div>
+        <div style="margin-top:6px;font-size:12px;color:var(--color-text-tertiary)">Configuration, Editor, Game</div>
+      </div>
+      <div class="box" style="border-color:#185FA5;text-align:center">
+        <div class="box-label" style="color:#185FA5">Memento</div>
+        <div style="font-size:20px;margin:6px 0">📸</div>
+        <div class="box-sub">Immutable snapshot of state. Stores what Originator decides to save.</div>
+        <div style="margin-top:6px;font-size:12px;color:var(--color-text-tertiary)">ConfigSnapshot, TextState</div>
+      </div>
+      <div class="box" style="border-color:#854F0B;text-align:center">
+        <div class="box-label" style="color:#854F0B">Caretaker</div>
+        <div style="font-size:20px;margin:6px 0">🗂️</div>
+        <div class="box-sub">Manages the stack of mementos. Handles undo/redo. Doesn't read memento contents.</div>
+        <div style="margin-top:6px;font-size:12px;color:var(--color-text-tertiary)">UndoStack, SaveSlots</div>
+      </div>
+    </div>
+
+    <div class="section-title">Flow</div>
+    <div class="arch-flow" style="margin-bottom:16px">
+      <div style="font-size:13px;color:var(--color-text-secondary);line-height:2">
+        <strong style="color:var(--color-text-primary)">Save:</strong> Originator → createMemento() → Caretaker.save(memento)<br>
+        <strong style="color:var(--color-text-primary)">Undo:</strong> Caretaker.undo() → returns Memento → Originator.restore(memento)
+      </div>
+    </div>
+
+    <div class="section-title">Real-world mappings</div>
+    <table class="compare-table">
+      <tr><th>Use case</th><th>Originator</th><th>Memento</th><th>Caretaker</th></tr>
+      <tr><td>📝 Text editor</td><td>Document</td><td>Text snapshot</td><td>Undo stack</td></tr>
+      <tr><td>🎮 Game</td><td>Game state</td><td>Save file</td><td>Save slots (1, 2, 3)</td></tr>
+      <tr><td>⚙️ Config</td><td>Configuration</td><td>Config snapshot</td><td>History list</td></tr>
+      <tr><td>💳 Transaction</td><td>Account state</td><td>Balance snapshot</td><td>Rollback log</td></tr>
+    </table>
+  </div>
+
+  <!-- CODE -->
+  <div class="sub-panel" id="sub-code">
+    <div class="code-block code-good">// Originator — decides what to save and restore
+class Configuration {
+  int height, width;
+
+  void setConfig(int h, int w) {
+    this.height = h; this.width = w;
+  }
+
+  Memento createMemento() {
+    return new Memento(height, width); // snapshot
+  }
+
+  void restore(Memento m) {
+    this.height = m.height;
+    this.width = m.width;
+  }
+}
+
+// Memento — immutable snapshot
+class Memento {
+  final int height, width; // final = immutable
+
+  Memento(int h, int w) { this.height = h; this.width = w; }
+}
+
+// Caretaker — manages history, never reads memento content
+class Caretaker {
+  Stack&lt;Memento&gt; history = new Stack&lt;&gt;();
+
+  void save(Memento m) { history.push(m); }
+
+  Memento undo() {
+    if (!history.isEmpty()) return history.pop();
+    return null;
+  }
+}</div>
+
+    <div class="code-block code-good">// Client — save + undo flow
+Configuration config = new Configuration();
+Caretaker caretaker = new Caretaker();
+
+// State 1 — 5×10
+config.setConfig(5, 10);
+caretaker.save(config.createMemento());  // snapshot saved
+
+// State 2 — 7×12
+config.setConfig(7, 12);
+caretaker.save(config.createMemento());  // snapshot saved
+
+// State 3 — 9×14 (not saved)
+config.setConfig(9, 14);
+System.out.println(config.height); // 9
+
+// UNDO — back to state 2
+config.restore(caretaker.undo());
+System.out.println(config.height); // 7
+
+// UNDO again — back to state 1
+config.restore(caretaker.undo());
+System.out.println(config.height); // 5</div>
+
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px">
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:6px">Stack state</div>
+        <div class="snap-slot" style="background:#E1F5EE;color:#085041">Memento(7, 12) ← top</div>
+        <div class="snap-slot" style="background:#E6F1FB;color:#0C447C">Memento(5, 10)</div>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:6px">After first undo</div>
+        <div class="snap-slot" style="background:#E6F1FB;color:#0C447C">Memento(5, 10) ← top</div>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:6px">After second undo</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary);font-style:italic">Stack empty</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENCAPSULATION INSIGHT -->
+  <div class="sub-panel" id="sub-insight">
+    <div class="highlight"><strong>The most important insight — why not just copy the object directly?</strong></div>
+
+    <div class="grid">
+      <div class="pain">
+        <div class="label">Store object directly (bad)</div>
+        <ul>
+          <li>Caretaker gets full reference to Configuration</li>
+          <li>Can read and modify internal fields</li>
+          <li>Breaks encapsulation</li>
+          <li>Internals exposed to outside world</li>
+        </ul>
+      </div>
+      <div class="cure">
+        <div class="label">Memento pattern (good)</div>
+        <ul>
+          <li>Originator decides WHAT to save</li>
+          <li>Originator decides HOW to restore</li>
+          <li>Caretaker only holds Memento — can't read it</li>
+          <li>Internal state never exposed outside</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <strong>The encapsulation rule:</strong><br>
+      Originator = only one who can read/write its own state<br>
+      Memento = opaque to Caretaker (black box)<br>
+      Caretaker = only stores + returns — never inspects<br><br>
+      This is why Memento fields are often package-private in Java — Caretaker is in a different package and can't see them.
+    </div>
+  </div>
+
+  <!-- VS COMMAND -->
+  <div class="sub-panel" id="sub-compare">
+    <div class="highlight"><strong>Memento and Command both support undo — but they store completely different things.</strong></div>
+
+    <div class="grid" style="margin-bottom:16px">
+      <div class="box" style="border-color:#185FA5">
+        <div class="box-label" style="color:#185FA5">Memento — stores STATE</div>
+        <div class="box-sub" style="margin-bottom:8px">Takes a snapshot of the object's state. Restoring reverses to that snapshot.</div>
+        <div class="code-block" style="border-left:3px solid #185FA5;margin-bottom:6px">// What's stored:
+Memento { height=5, width=10 }
+
+// Undo = restore snapshot
+config.height = 5
+config.width = 10</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">State-based undo</div>
+      </div>
+      <div class="box" style="border-color:#0F6E56">
+        <div class="box-label" style="color:#0F6E56">Command — stores ACTION</div>
+        <div class="box-sub" style="margin-bottom:8px">Records what action was taken. Undo = reverse that action.</div>
+        <div class="code-block" style="border-left:3px solid #1D9E75;margin-bottom:6px">// What's stored:
+TurnOnACCommand { execute(), undo() }
+
+// Undo = call reverse action
+ac.turnOff()</div>
+        <div style="font-size:12px;color:var(--color-text-tertiary)">Action-based undo</div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Feature</th><th>Memento</th><th>Command</th></tr>
+      <tr><td>Stores</td><td>State (snapshot)</td><td>Action + receiver</td></tr>
+      <tr><td>Undo by</td><td>Restoring state</td><td>Calling reverse action</td></tr>
+      <tr><td>Memory</td><td>High (full state copies)</td><td>Low (just action reference)</td></tr>
+      <tr><td>Combine?</td><td colspan="2" style="color:#0F6E56">Yes! Command for actions, Memento for state snapshots → powerful undo system</td></tr>
+    </table>
+  </div>
+
+  <!-- INTERVIEW GUIDE -->
+  <div class="sub-panel" id="sub-interview">
+    <div class="insight-box">
+      <strong>Definition:</strong> Memento is a behavioural pattern that captures and restores an object's state without exposing its internal structure — primarily used for undo/redo functionality.
+    </div>
+
+    <div class="section-title">Interview trigger → Memento</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">
+      <span class="tag tag-amber">Design undo functionality</span>
+      <span class="tag tag-amber">Save previous states</span>
+      <span class="tag tag-amber">Rollback system</span>
+      <span class="tag tag-amber">Version history</span>
+      <span class="tag tag-amber">Game save/load</span>
+    </div>
+
+    <table class="compare-table">
+      <tr><th>Concept</th><th>One-liner</th></tr>
+      <tr><td>Memento definition</td><td>Snapshot-based state saving for undo/redo without exposing internals</td></tr>
+      <tr><td>Originator</td><td>Creates + restores mementos. Decides what state to capture.</td></tr>
+      <tr><td>Memento</td><td>Immutable snapshot. Opaque to Caretaker.</td></tr>
+      <tr><td>Caretaker</td><td>Holds history stack. Never reads memento content. Just push/pop.</td></tr>
+      <tr><td>Encapsulation benefit</td><td>Outside world never sees object internals — only Originator reads its own memento</td></tr>
+      <tr><td>vs Command</td><td>Memento = stores state (what it was). Command = stores action (what was done).</td></tr>
+      <tr><td>Trade-off</td><td>Memory heavy — each snapshot = full state copy</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sub-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>

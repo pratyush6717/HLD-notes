@@ -1,0 +1,164 @@
+This was a heavy concept (Visitor + Double Dispatch) — but honestly, once you “see it right”, it becomes very simple.
+
+I’ll simplify it so you can:
+
+💡 Understand clearly
+
+🧠 Explain in interview
+
+⚙️ Implement without confusion
+
+🧠 1️⃣ Problem (Why Visitor Exists)
+
+You already saw this:
+
+class Room {
+    getPrice()
+    maintain()
+    reserve()
+}
+❌ Problems
+1. Class keeps growing
+Room → 3 methods → 10 → 50 → 💥 messy
+2. Every new operation → modify class
+Add feature → change Room → retest everything
+🎯 Core Idea (Visitor)
+Move operations OUT of the class
+🔥 Final Mental Model
+Object = Data
+Visitor = Operations
+🧩 2️⃣ Structure (Super Simple)
+Step 1: Element (Data Holder)
+interface Room {
+    void accept(RoomVisitor visitor);
+}
+Step 2: Concrete Elements
+class SingleRoom implements Room {
+    public void accept(RoomVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+class DoubleRoom implements Room {
+    public void accept(RoomVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+Step 3: Visitor Interface (Operations)
+interface RoomVisitor {
+    void visit(SingleRoom room);
+    void visit(DoubleRoom room);
+}
+Step 4: Concrete Visitors
+💰 Pricing
+class PricingVisitor implements RoomVisitor {
+    public void visit(SingleRoom room) {
+        System.out.println("Single room price = 1000");
+    }
+
+    public void visit(DoubleRoom room) {
+        System.out.println("Double room price = 2000");
+    }
+}
+🛠️ Maintenance
+class MaintenanceVisitor implements RoomVisitor {
+    public void visit(SingleRoom room) {
+        System.out.println("Maintain single room");
+    }
+
+    public void visit(DoubleRoom room) {
+        System.out.println("Maintain double room");
+    }
+}
+Step 5: Client
+Room room = new SingleRoom();
+
+room.accept(new PricingVisitor());
+room.accept(new MaintenanceVisitor());
+🔁 3️⃣ Flow (VERY IMPORTANT)
+Call:
+room.accept(visitor)
+Inside accept:
+visitor.visit(this)
+
+👉 This is the MAGIC
+
+⚡ 4️⃣ Double Dispatch (Simplified)
+❌ Normal (Single Dispatch)
+room.accept(visitor);
+
+👉 Decides method based on:
+
+only room type
+
+✅ Visitor (Double Dispatch)
+visitor.visit(room);
+
+👉 Decides method based on:
+
+1️⃣ Visitor type (Pricing / Maintenance)
+2️⃣ Room type (Single / Double)
+🔥 Meaning
+Method = f(Visitor Type + Element Type)
+🧠 Easy Example
+Visitor	Room	Method Called
+Pricing	SingleRoom	visit(SingleRoom)
+Pricing	DoubleRoom	visit(DoubleRoom)
+Maintenance	SingleRoom	visit(SingleRoom)
+
+👉 That’s double dispatch
+
+🎯 5️⃣ Why It Solves Problem
+✅ Add new operation → NO class change
+Add CleaningVisitor → Done ✅
+Room class untouched
+✅ No class bloat
+Room = clean
+Visitors = grow
+✅ Open/Closed Principle
+Open for extension
+Closed for modification
+❌ Tradeoff (IMPORTANT)
+❌ Adding new element is HARD
+Add new room type → update ALL visitors ❌
+
+👉 So:
+
+Visitor is good when:
+✔ Elements are stable
+✔ Operations keep changing
+🆚 Visitor vs Strategy (CONFUSION KILLER)
+Strategy
+Change HOW something is done (algorithm)
+
+Example:
+
+Payment → UPI / Card / Netbanking
+Visitor
+Add WHAT to do (operations)
+
+Example:
+
+Room → Pricing / Maintenance / Reserve
+🔥 Difference
+Strategy = interchangeable behavior  
+Visitor = adding new operations
+🧠 Interview Answer (Perfect)
+Visitor pattern is a behavioral design pattern that allows adding new operations to existing object structures without modifying those objects, by separating operations into visitor classes and using double dispatch.
+🚀 When to Use
+
+Use Visitor when:
+
+✔ Many operations on same object
+✔ Object structure is stable
+✔ Operations keep increasing
+✔ Want clean separation
+🧠 Memory Trick
+“Object holds data, Visitor does work”
+🔥 Final Visualization
+Before:
+Room → 10 methods ❌
+
+After:
+Room → accept()
+Visitors → all operations ✅
