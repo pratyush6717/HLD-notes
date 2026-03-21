@@ -87,8 +87,11 @@
   .pill { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; margin: 2px; }
   .sep { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
+  .menu-btn { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 100; background: var(--blue); color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3); font-size: 15px; cursor: pointer; font-family: var(--sans); }
   @media (max-width: 768px) {
-    .sidebar { transform: translateX(-100%); }
+    .menu-btn { display: block; }
+    .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; width: 100%; max-width: 320px; box-shadow: 4px 0 15px rgba(0,0,0,0.5); }
+    .sidebar.open { transform: translateX(0); }
     .main { margin-left: 0; padding: 16px; }
     .grid2, .grid3 { grid-template-columns: 1fr; }
   }
@@ -116,6 +119,7 @@
     <div class="page-meta">51 topics from OOP fundamentals to Java 21 modern features</div>
   </div>
   <div id="topics-container"></div>
+  <button class="menu-btn" onclick="toggleMenu()">☰ Topics</button>
 </div>
 </div>
 
@@ -1673,7 +1677,9 @@ function renderTopics() {
   container.innerHTML = html;
 }
 
+function toggleMenu() { document.querySelector('.sidebar').classList.toggle('open'); }
 function showTopic(id) {
+  document.querySelector('.sidebar').classList.remove('open');
   document.querySelectorAll('.topic-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
   const panel = document.getElementById('panel-' + id);
