@@ -1,0 +1,519 @@
+# Back-Of-The-Envelope Estimation for System Design Interview
+
+Hello.
+Hey guys.
+Welcome to Concept and Coding.
+And today I am going to tell you about the back of the envelope estimation which you are going to use.
+Like every time you gonna solve any high level design question right.
+In an interview or as a practice you have to face the back of the envelope estimation.
+And that's why today in this, uh, topic, I will cover the estimation of Facebook, right, as a sample,
+as a practice.
+And also I'll tell you, like, uh, step by step, how to come up with this kind of estimation.
+Okay.
+So let's, uh, proceed further.
+But before doing an estimation of Facebook, I will tell you, like what is back of the envelope estimation.
+First, those who don't know.
+So I'll tell you what is this.
+So let's consider this.
+Let's if we directly jump into the question, let's say I say that design Facebook.
+So I just simply say that, okay, I will take a load balancer.
+Then here I will have CDN.
+Right.
+Then I have uh, multiple processors or servers.
+Then here I will have cash.
+Then I will have some data base.
+Let's say this is how.
+So this is just a randomly I'm taking.
+But what I'm trying to say is that if you directly jump into the design part, then interviewer can
+ask, do you really need load balancer?
+Do you really need CDN?
+How many servers you gonna need?
+What should be the capacity right?
+Do you really need cash?
+And if yes, what?
+What is the size of storage size?
+So if you are not able to answer all of this, even if your design is correct, you are in a trouble,
+right?
+Because it will give an impression that you started the design without considering the system constraints.
+Right.
+So let's that's where the back of the envelope estimation comes into the picture.
+Key feature of a load balancer design.
+Yes I am gonna use a load balancer.
+But what if there is not much traffic.
+There is no need of load balancer itself, right?
+There is no need of taking a server itself.
+Then it's a wastage of resource.
+So that's where the back of the envelope estimation comes into the picture.
+So that we are not under utilized for over overlay system.
+Otherwise it would be a wastage of resources.
+Right.
+So now you know right.
+What is the use.
+What is the need of back or back of the envelope estimation.
+So this was the need.
+So we need why we need this right.
+So it drives our decision.
+For system design.
+Right.
+So in a simple way, if I can say what is the back of the envelope estimation.
+So back of the envelope estimation drive our decision for system design load balancer.
+It is driving my decision based on some numbers which we have come up with.
+Right.
+You got it.
+Okay.
+So now with this one I will tell you about some considerations first.
+Right.
+So before starting the estimation of Facebook.
+So I want to tell you something about basics of back of the envelope estimation so that you are totally
+in line with me when I'm proceeding with this values.
+So couple of consideration I am taking.
+First of all these are the rough numbers rough?
+Or you can say that t shirt size.
+T shirt size estimation.
+So it's a rough estimation or a t shirt size estimation means it is a high level estimation, not exact.
+It's a not accurate.
+So whatever the numbers I'm going to come up with estimation of Facebook.
+It is not actually met with the real Facebook right.
+It's just an estimation.
+Second thing is do not spend much time, do not spend much time.
+Why?
+Because see 97 or 98% of the time interviewer is expecting that whatever the design you have to make,
+that should be scalable.
+And whenever you have to make a scalable design, you have to come up with CD and cash, right?
+Multiple servers, load balancer, all these things has to come.
+Right.
+So this number which we are estimation number, which we are just coming up, That is just like, yes,
+you know these things, right?
+But it is not impacting your design in real world.
+It is impacting it drives our decision.
+But in interview and interview it is impacting, uh, your decision most probably 95% of the time.
+No, because, uh, interviewer is expecting a scalable design and scalable design.
+The chances are we use all these things, right?
+So whatever the number, you are gonna come up with you again, do the same designing.
+So that's what I am saying.
+Do not spend much time.
+Most of the chances it gonna not much impact your design in the interview.
+Right.
+So and also last thing last consideration keep the assumption value simple.
+Keep the assumption value.
+Simple don't take 275 million users, right?
+Always take into multiplication of ten or it is easy to compute.
+10 million.
+100 million, right?
+Thousand.
+Like this?
+500.
+But never take 435, which is very difficult to compute or remember also.
+Right?
+So keep the assumptions value simple and which will really help you in computation.
+Right.
+So now you know what is the need of back of the envelope estimation and what is the definition.
+Also and few consideration which is important.
+Now before starting the question again last some cheat sheet I want to give you two cheat sheet.
+So everything is in multiple of three zeros.
+So three zeros.
+So traffic.
+Storage.
+So you're both important.
+This is very, very important.
+Always before starting of the high level design interview, keep this in hand with you.
+That three zero is 1000.
+Storage is KB.
+Six zero is just a thousand million billion trillion I think quadrillion something right.
+So 6090 12 zero 15 0 or 3 333 plus three plus three plus three plus three.
+Similarly KB are bigger than KB is MB, then GB, then TB, then PB, petabyte terabyte, gigabyte,
+megabytes and kilobytes.
+Right.
+So keep this in handy.
+Key thing zero value change right?
+Also, one more thing is whenever you design something right, you have to come up, deal with the data.
+Either you have to deal with character, you have to deal with some values long or double, and you
+have to deal with images, videos, etcetera, etcetera, etcetera.
+So always keep that okay.
+Character I am assuming it would be two bytes right.
+So you know right.
+Characters are of two type like Ascii and Unicode.
+So Ascii is one byte and Unicode is two byte.
+So I am assuming for my like what if the if I have to deal with the characters, I will consider this
+a two byte long and double.
+I will consider it as eight byte and image average image size.
+I would say that I will consider as a let's say 300 KB, right?
+So these are the basic assumptions which you have to do.
+So this is very important.
+And this is also gonna important like based upon the question which we are getting for the designing.
+Okay.
+So till now, everything looks good, right?
+Simple.
+Now, second thing is, when we are saying that back of the envelope estimation and we know that what
+we have to estimate, we have to estimate the numbers.
+Like how many servers.
+Right.
+How what is the storage capacity.
+So generally I compute three things from the back of the envelope.
+Number of servers.
+We gonna need right Ram and the storage capacity.
+So there could be a lot more things which we have to come up with.
+But generally I always compute these three things.
+Right.
+Which are very, very important resources in our system design.
+Right.
+So this is just my way.
+Like what I compute.
+But yes, definitely you can refer.
+And like what all other things we can compute, right.
+So you can definitely add.
+So I come up with this three.
+And last is trade off based on the cap theorem I defined.
+Like what is the trade off I am doing for my system.
+I will tell you about this thing.
+So these three values I compute.
+Then I tell the trade off and then I go with the design.
+So with this information now I am going to start.
+And one before this thing I have one more important thing I want to tell you.
+So this is very important cheat sheet right.
+So just take remember this formula X let's say million x million user.
+Into take anything m b y m b.
+If I am doing a storage calculation so what it will become it will become x y this x Y.
+Multiply and million has.
+How many zeros?
+Million has six.
+Zero.
+MB has again six zero.
+So how many zero.
+It will become 1212 is TB so it x y TB for example.
+Another example I can take is let's say I have 5 million user.
+Into two kilobyte.
+So what the what is the storage capacity I need.
+Uh million has six zeros.
+Kilo KB has three.
+So it become nine.
+So nine is uh GB so it be GB.
+And what is the value five to the 1010 GB storage I needed.
+Right.
+If 5 million user require use two kb then ten GB I gonna need it.
+So remember this formula right now based on the number of zeros, we will find out like, okay, what
+is the storage capacity for that zero.
+And we will just multiply it.
+Now I am going to start this over estimation of Facebook.
+Right.
+I will tell you step by step right.
+If there is any doubt ping me on the comment section guys.
+Estimate of Facebook.
+And you already know some very basics about the, uh, back of the envelope.
+Consideration to this basic cheat sheet, right.
+Or a formula which is going to help you a lot, or compute right back of the envelope.
+Compute.
+Right.
+Or what important do not spend much time on this.
+So let's start guys.
+Because as I already told you, it's gonna not impact our design in the interview.
+Right.
+Okay.
+So I am going with the estimate of Facebook now.
+Right.
+So always first is you have to come with a traffic go step by step traffic estimation.
+So with the traffic estimation what we gonna have come up with is like so I am building a Facebook.
+Right.
+So here traffic estimation is let's say total user.
+So always take into multiplication.
+So I am assuming that total users of Facebook is 1 billion.
+Right.
+Then the second part in the traffic estimation is d a daily active users.
+Right.
+So daily active users considered is like uh, we can say that 25% of total users, right?
+So 25% of total users, uh, this become 250 million.
+Users.
+Right.
+So with this thing now traffic estimate.
+Now, when we are saying daily active users or 250 million users.
+So can we come up with an estimate like daily how many request query we can get.
+Right.
+So you know that in any system we have a read operation and write operation.
+So we can say that let's say he is uh, every user is doing five read and two write operation.
+So almost seven query now.
+So we need to come up with like traffic estimation.
+We are computing right.
+So we have to come up with like what is the per second traffic we gonna get.
+So currently we have the daily data.
+So 250 million Users which are daily active users.
+Giving us seven query right.
+So these are per day.
+So we have to divide it by seconds in a day.
+So we you can compute it right.
+So in one day so in one hour 60 into 60 into 24.
+So this many seconds we have in a day.
+So generally this come as ah you are like 86,400 something.
+Generally this second comes up right.
+So this many seconds.
+So what I told is always do an assumption which is easy to remember.
+And we can do an assumption in this right.
+So always do some round off also.
+So I am making a one lakh seconds right.
+So with this what we are getting is we are getting.
+18 k query per second.
+So this is the traffic which we are estimating that per second I am going to get 18 k request.
+So estimation.
+Now the second part is storage assumption.
+And assume every user is doing two posts two posts.
+Right.
+And each post is of you can say that we can come up with some characters.
+Let's say each post is of 250 characters.
+Right.
+10% of the users.
+Is uploading one image also.
+it's possible right?
+In the Facebook we can also upload a image also.
+Right.
+So this is the assumption which I am doing.
+So every daily active users is doing two posts and each post is of 250 characters.
+Right.
+And also we are assuming that 10% of the daily active user is uploading one image and one image.
+We have already known that it is of 300 kbps size.
+This is the assumption which we have kept right?
+Okay, so now let's start with this one.
+First one post.
+250 character.
+And we I told you in the start itself that I am estimating that one character is two byte.
+So how many bytes we gonna need 250 50 into two, 250 character into two bytes.
+So one post I am going to need 500 bytes, right?
+So for two post I am going to need 500 bytes into two.
+So it's a 1000 byte.
+Or you can say that one kilobyte.
+Right.
+So now we have to say that every uh do a doing two posts.
+So how many daily active users we have in our system.
+250 million users.
+So 250 million.
+Users doing two posts daily, one KB write two posts turned out to be one KB.
+So how many memory can you tell me?
+Million is six zero KB is three zero.
+So total nine zero.
+So nine zero is GB right?
+First we write B and then we have 250 into one.
+So it turned out to be 250 GB.
+We gonna need it just for the post per day.
+Right.
+Now similarly what we have is we told that 10% of the user uploading one image.
+Right.
+So 10% of the users of daily active user.
+10% is 25 million.
+Users.
+Right.
+So what we are doing is 25 million users into one image or one image.
+We have kept for 300 KB.
+Can we compute it?
+Six zero KB is three zero.
+So total 9090 is again I think uh GB only.
+GB 25 into 300.
+So here 25 into 300 is 7500.
+Right.
+So can we simplify this one.
+So we know that it's let's say it's a 7000 GB right.
+So seven into 1000 GB.
+So three zeros.
+We are going to add more.
+So after GB what is the next TB.
+So it's around seven TB.
+Or if you want to go at a higher level we can say that around eight TB just for taking a peek right.
+Eight TB you got it right.
+How we just how this cheat sheet is helping us.
+So this is the storage capacity which we are coming up with for.
+Image for post daily.
+We gonna need 250 GB per day.
+And for image we need eight TB per day.
+And let's say we want to store the data for five years total 102 five days.
+So we can estimate it around 2000 days.
+Right.
+So one day you gonna need that much data.
+Right?
+So now we can easily compute right.
+How much data.
+So 2000 into 250 GB for the post.
+And for the image you're gonna need 2000.
+And for each day you need eight terabyte.
+Right.
+So we can compute we can come up with this values.
+And that would be our storage capacity, right?
+So with this one you would get around 500 TB.
+And this one you will get around 16 petabyte.
+Right.
+So this is my storage capacity for five years I'm gonna need it.
+Right.
+So if you see the real time Facebook it would be huge.
+But this is how we are coming up with an estimation based upon this.
+So now I have a traffic estimation I have a storage estimation.
+Now the another main part we have to do is Ram estimation.
+So now with Ram estimation what we can do is.
+So let's do some assumption.
+We can ask the interviewer.
+Like we can say that for each.
+User we are putting a cache like last five posts.
+Last five posts.
+We are putting into cash.
+Right.
+So this is what so we know post is 500 bytes.
+Now we need five posts.
+So five into five.
+This will become 2500 bytes.
+So now when we are saying for each daily active users right.
+We are keeping last five posts.
+So daily active users.
+So we have around 250 million.
+Daily active user.
+Right.
+So for each 250 million users we are putting five posts into the cache, which is nothing but a 2500
+bytes.
+Right.
+So this 2500 bytes, can we do a simple round up estimate like around three KB.
+Right.
+So we can guess that 3000 bytes and then 3000 bytes.
+We can say that three KB and this is 250 million.
+Now we can come up with the memory space.
+So three 250 million is six zero KB is three zero.
+So definitely it's a GB right.
+And two 5250 into three we can come up with I think it is 750 GB.
+So 750 GB is required.
+The memory space.
+This is the memory space.
+So for each user if last five posts I have to keep in memory then I need 750 GB memory.
+So now here you can say that if one machine can hold 75 GB of data in memory.
+Right.
+Then how many machines you gonna need?
+You're gonna need ten machines for caching.
+Are you there?
+The caching nodes will be present into this ten machines.
+You got it.
+Like, how much Ram you gonna need?
+750 GB.
+And to use this Ram, how many machines you gonna need it?
+Right.
+So based on this Ram, we can say that our latency, since we are going to use this Ram.
+So you can give an estimation that latency is 95% of the time.
+My request would be I would serve into 500 milliseconds.
+Just come up with this number.
+It will give an impression that yes, you take care of latency also, right.
+So here just say that okay.
+My latency is 95% of the time is 500 milliseconds, right?
+Based.
+So generally in the real world, I think it will consider, uh, like lot of more things to come up
+with this number.
+But for the estimation, I'm just saying you can put an estimation that 95% of the time, 500 milliseconds.
+One request I will serve.
+So now you know, right, you have 18 K uh, queries, 18 K requests per second.
+Right.
+And you can say that my one machine can have 50 threads, or you can say that one machine or one server,
+I am saying okay, let's put a one server.
+One server has let's say 50 threads okay.
+Multiple threads.
+Server one server has 50 thread.
+Right.
+And you can say that they can.
+So in what we are saying is 500 milliseconds.
+So one second has or two 500 milliseconds.
+Right.
+So any requests of 101 server can serve 100 requests per second.
+500 milliseconds may ask request server.
+So eight second though right in one second I can serve two requests.
+And how many threads there are there.
+50.
+So 100 requests per second.
+I can serve with the one server, but we have 18 requests per second.
+So how many servers I am needed?
+How many servers?
+18 divided by 100.
+So you need around 100 servers.
+Application servers.
+You need it, right?
+So here, if you see that I have come up with this number, it might not be correct.
+Right.
+It's not matching to the exact this thing.
+It would be very very far away.
+But it's just a estimation like how we are coming up with this value.
+So now we have come up with this three thing which we wanted to compute.
+Uh, so here we are.
+Right.
+Number of servers is 180 servers I'm gonna use Ram is 750 GB and I'm going to use ten machine.
+I'm going to put the cache node in ten machines.
+And storage capacity is uh how much we have come up with.
+So for five years it's around for post.
+I'm going to use the 500 terabyte.
+And for image it's going to be 16 petabyte right.
+So these are the assumptions which I have come up with.
+So based on this assumption.
+Now the last part is trade off.
+You know about cap theorem, right?
+I have already made a video on the Cap theorem.
+So this is like consistency.
+This is availability.
+So it's like this.
+Right.
+So it's like this not this.
+This.
+So this is consistency.
+This is availability.
+This is partition tolerance right.
+So what does cap says that at a particular point of time you can only achieve two.
+Either you can do CA or AP right here.
+You can have CA here you can have CP or here you can have AP.
+So either one of them you can have.
+So in detail you can check the video.
+So here based upon the uh requirement I would say that I would go with the availability and partition
+tolerance I would drop.
+So this is my trade off I would drop the consistency, right?
+I don't.
+So let's say I have a different data stores, but I would drop the consistency.
+In this case I will keep the availability and partition tolerance.
+So partition tolerance says that.
+So there are different nodes right.
+So DB node even it's a breakage.
+Right.
+There is a failure right.
+There is a now become a partition.
+Are you still are your system is still up or not.
+Yes.
+For Facebook this is the requirement.
+Even if there is a breakage right in the system, right over the network.
+If there is a breakage, my system should be able to take a traffic right and availability is right.
+Even out of this two nodes, if one of the node is down, can we still serve system or not?
+Yes, we should be still should be able to serve our system.
+So these two are something for Facebook.
+We can say that these are very much needed.
+So this is my trade off.
+You can discuss with the interviewer.
+Right.
+Does consistency matter or not.
+Then you can tell the trade off.
+So this interviewer will get to know okay you are aware of the cap theorem.
+So you got it right.
+This is little bit tricky.
+You can say that but very simple also.
+But we don't have to spend much time.
+So this calculation today I went very slowly so that you observe like whatever I am trying to do right.
+You are able to observe it like.
+But once you are able to do some more practice with it, right, you should be able to come up with
+this estimate numbers.
+So that's why I say that it's a rough numbers, right.
+And rough numbers should be very quick to come up with never spend.
+So just never spend more than ten minutes on this.
+So never spend more than ten minutes on this right?
+Try to.
+It should be less than ten minutes only to come up for the back of the envelope estimation.
+So it's always better that ask the interviewer first.
+False.
+Do you really need back of the envelope estimation for this?
+If we say yes, then do it.
+But don't take more than ten minutes because we know that it is not going to impact our design.
+We still have to use it most probably.
+So okay guys, I hope you able to understand what is back of the envelope estimation.
+I have told you my approach generally how I proceed further with this, right?
+But definitely I will just before going, I also want to say that these numbers are just an estimation
+and real numbers are totally different, right?
+And this is just my way of computing the back of the envelope.
+There could be lot more consideration which we have to do, which might I am not doing it right.
+So just do your analysis.
+But this is my approach.
+I hope you like it, and I hope it would be helpful for you in further analysis of the back of the envelope
+estimation, and it will help you in the interviews also.
+Okay, guys.
+Bye.
+Good night.

@@ -1,0 +1,351 @@
+# Bridge Design Pattern (Structural Design Pattern)
+
+Hey guys.
+Welcome to Concept Encoding.
+And this is Shreyansh.
+Today I am going to cover the bridge design pattern in the LD.
+So now in the LD roadmap I am making this as also right bridge design pattern.
+Bridge pattern okay.
+So we have covered all this and still so many things pending.
+We will cover all these things.
+So now mostly patterns are almost done.
+We will do.
+Now let's see questions.
+Lot more questions okay.
+Now let's switch to the bridge design pattern.
+So let's see its definition first.
+Then I will tell you that how it is very very similar to strategy.
+So let's see its definition.
+First bridge pattern decouples an abstraction from its implementation so that two can vary independently.
+Right.
+Just read one more time and then I will tell you with an example.
+Right.
+Uh, with this example itself, you will uh, get clarified with this definition very easily.
+So read one more time.
+Bridge pattern decouples.
+What abstraction from its implementation.
+So this is its UML.
+So this is abstraction.
+This is implementer.
+Right.
+So it decouples an abstraction from its implementation so that two can vary independently.
+So let's say if you want to increase more concrete implementer you can add it here.
+If you want to add more child classes for this abstraction you can add here.
+So that's why I say that it decouples an abstraction and implementation so that they both can vary independently.
+Right.
+We will come to this UML again.
+But let's see first an example and understand this definition properly.
+So I come up with an example is this let's say living thing right.
+What living thing.
+So this is an abstract class.
+This one.
+This is an abstract class, right?
+So here I have created one abstract method.
+Breathe process.
+Breathe.
+Process.
+So now I created a three child classes dog fish and tree.
+Right.
+And I have a breathe process method.
+So it's a abstract method right.
+So they have to implement it.
+So if you see that dog has its own breathe process it breathe so it breathe through nose.
+Inhale oxygen from air and exhale carbon dioxide.
+Similarly fish has its own breathing process.
+Breathe through grills.
+Absorb oxygen from water.
+Release carbon dioxide.
+Tree has its own breathing process.
+Breathe through leaves.
+Inhale carbon dioxide.
+Exhale oxygen.
+Okay, so now if you see that this is nothing but a simple inheritance, you will ask, hey, this is
+nothing but a simple inheritance, right?
+Uh, so parent class has this method and all the child class just implemented those methods.
+But what is the problem here?
+What is the problem here?
+Right.
+Which bridge pattern is trying to solve?
+Now we will see the problem.
+Which bridge pattern try to solve in this thing.
+Okay.
+So here the problem is now let's say I want to introduce new breathing process.
+New breathing process.
+So this is a process right.
+Let's say I want to uh like breathing process.
+Let's say for bird let's say bird breathing process.
+Is it inhale through.
+Pass like they have a beak.
+And on the beak they have small holes.
+So that's called nuts right.
+So let's say they now it's a different breathing process.
+Inhale oxygen exhale carbon dioxide.
+So it's a different breathing process.
+Now the problem here is you cannot add this new breathing process because currently it is very tightly
+coupled with the abstraction.
+So until and unless this will not add.
+Third.
+Right.
+So another class.
+But then only you can add this breathing process.
+Inhale through nose and exhale through mouth.
+Let's say breathing process something.
+So what I'm trying to say is that here, even if you wanted to add a new breathing process, you cannot
+add it because it's very tightly coupled here.
+Tightly coupled with what with abstract class, until, until and unless abstract class is, there is
+no child class present which use that breathing process.
+You cannot add it, right?
+So they cannot Not very independently.
+They are very tightly coupled.
+You understand the problem, right?
+You got it.
+So the problem here with this example is very clear, right?
+If you want to add a new breathing process let's say anything right.
+Somebody inhales uh let's say something carbon dioxide and and uh exhale also carbon dioxide both inhale
+carbon dioxide.
+Exhale carbon dioxide.
+So it's a totally different process right.
+But you cannot add it unless and until and unless there is one child class added into this abstract
+which uses that which uses that breathing process.
+So why.
+Because it's a tightly coupled this implementation and abstraction.
+So how to resolve this.
+So I have divided into this part.
+So what I have done is so living thing I have maintained the same thing Abstract class, living thing.
+Right?
+But what I have done is I have taken out the breath thing.
+This is right.
+This process, this implementation breathing process I have taken out in a different interface.
+So I have created one breath implementer.
+So I have created one implementer which is known as breathe.
+I given a name breathe implementer.
+Right.
+So it says it has one method breathe.
+It's an interface.
+Now I've created a child classes.
+And with the different processes.
+Land.
+Breathe.
+So I give it a name.
+Land.
+Breathe.
+So it's has its own implementation.
+Okay.
+Breathe through nose.
+Inhale oxygen.
+Exhale carbon dioxide.
+Similarly, I have created one child class water.
+Breathe.
+Implementation.
+Breathe through gills, absorb oxygen and release carbon dioxide.
+Similarly, I have given one child class or tree.
+breathe through leaves.
+Inhale carbon dioxide and exhale oxygen.
+Right now here, what I have done is in the previous abstract class living thing, what I have done
+is I have a reference of this implementer.
+I have a reference of this implementer.
+Right now again I have the same method breathe process right here I have a breathe process.
+Breathe process.
+Now it's child class dog same dog fish tree.
+So I have also have a child class dog fish tree.
+But here now see the difference.
+Now in the dog constructor it is passing the breathe implementer.
+It wanted fish.
+It is passing to its parent.
+What is the breathe implementer?
+It wanted similarly tree it passes to its parent.
+What is the breathe implementer it wanted?
+And in the breathe process earlier we were having all this logic here, but now we have separated this
+logic into the separate classes here in the process.
+Now we are just doing breadth implementor, whatever the implementor would be call its breadth method,
+whether if it's using land breadth implementor, it will call this method.
+If it is using water breadth Implementor it will call this method right.
+So here, if you see that if how the client will invoke this.
+So it will create an object of this living thing.
+So living thing let's say I'm creating a fish object.
+New fish I'm creating a this object new fish and putting it into its parent class living thing.
+And what is the breadth implementor I am passing, I'm passing a water breadth implementor to it water
+breathe implementer.
+So this method will call water breathe.
+Implementer will be set here.
+Right.
+And when I call breathe.
+Process fish dot breathe process.
+Is it will not be implemented.
+Now what is the breadth?
+Implementor.
+This one.
+Water it.
+Breathe.
+So it will call water.
+Breathe.
+Implemented.
+Dot.
+Breathe.
+This one.
+So now what is the advantage of this?
+Right.
+Now the same part we have divided into like this.
+Now what is the advantage?
+So advantage is what is.
+It decouples an abstraction from its implementation so that two can vary independently.
+Now here let's say in future I need to add one more breathing process.
+I can add it simply, I can add it simply.
+Let's say breathing process of uh, something let's say public, uh, another x, y, z, uh, breathe
+implementation.
+I can add its new breathing process like inhale carbon dioxide.
+Right.
+And exhale carbon dioxide.
+Right?
+So it's a total different breathing process.
+So I, I it can vary independently of abstraction, even though abstraction is abstraction.
+If you see that this one is nothing changed.
+Even there is no child class which is using this, but still it can grow.
+It can vary from its abstract, this thing.
+Right.
+So that's why this is UML.
+So you have an implementer.
+It's concrete.
+You have an abstraction.
+It's concrete.
+And here it has a reference of implementer.
+And here in the function which it has it ultimately invokes its this methods.
+Right.
+So you understood this bridge.
+So this is nothing but a you can say that it is considered as a bridge.
+Right.
+Similarly let's say for tree what will happen.
+So let's say living thing, let's say I'm creating a tree object equals to new.
+tree.
+And let's say I want to give it a capability of land water tree or this.
+So let's say I want to give it a tree right.
+Sometime let's say uh, yeah.
+Tree bridge implementer give let's say new I'm giving a this one new tree breathe implementation.
+New tree breathe implementation.
+I am giving it.
+So now here if you see that the tree object what I am passing tree breathe implementation I'm passing
+this one.
+Right.
+And when I am calling this object tree object dot tree object dot.
+Breathe.
+Process.
+Breathe.
+Process what it will call breathe.
+Implementer.
+This is the breathe implementer.
+Right?
+Tree.
+Breathe.
+Dot.
+Breathe.
+So this will get invoked right?
+So now just see this even for tree if I want this.
+The new one xyz, which is added inhale CO2 and exhale CO2.
+Inhale carbon dioxide.
+Exhale carbon dioxide I can change it on the runtime.
+Let's say I can give x y z.
+Uh what is that breathe implementer.
+So it will call this now.
+So now here this is the problem.
+Breathe bridge pattern solves that.
+Both implementer and abstractor can vary independently.
+This can grow.
+This can grow independently of the each other okay.
+Got it.
+So this is the one.
+But now you might if you have gone through strategy pattern right you might now strike till now.
+Hey isn't it very similar to strategy.
+So this is the strategy pattern.
+So here if you see that it has uh strategy.
+Interface.
+Let's say I created the same example.
+Let's say I have created a breathing strategy.
+Breathing strategy.
+I can have a different, let's say land breathe strategy.
+Similarly I can have.
+Water breathe strategy.
+And one more I can have is tree breathing strategy.
+And similarly I can have more.
+Right.
+This strategy is used by one context class which has this strategy.
+Object.
+Strategy.
+Object And clients use this, right.
+So now here, if you see that it is very, very similar to what we have here, we call an implementer.
+Nothing.
+It's in the strategy.
+It's nothing but a strategy.
+We call it strategy interface.
+And we have this right.
+So here we have land strategy water with strategy tree based strategy.
+So and here it's a concrete where it has an object of its strategy which can have either land water
+or tree.
+Right.
+And it has one function.
+That will just call that whatever the object dot let's say breathe.
+And it has breathe method.
+It has breathe method breathe method.
+So it calls object dot breathe.
+So now whatever the object you have said it will call it.
+So this is exactly same as bridge pattern.
+Now how is the different like.
+Now the difference is only on the intent.
+So see in you will learn so many design patterns and lot of design patterns are very similar but difference
+in the intent.
+So you have to understand the intent of what is the intent of strategy pattern.
+So the intent of strategy pattern is that change the behavior of this object which it call context.
+Here in the bridge it call as abstract class.
+So in the intent of the strategy pattern, its intent is to change the behavior of this object on runtime.
+Let's say for example, client clients create an object of let's say this context, right?
+Uh, let's say I will call this context as the living thing itself.
+Living thing, which you are creating.
+So let's say it's creating an object of this thing, living thing.
+Right.
+Object equals to.
+new living thing.
+Now let's say it has a constructor where it.
+I'll pass the strategy object.
+It can pass land, new land breathe strategy.
+Or it can also pass living thing.
+New water.
+Breathe water breathe strategy.
+Right.
+So this client can change anything, either land, breathe water, breathe into the same object.
+So the intent of the strategy is to change the behavior of this object dynamically on runtime.
+Right.
+So currently if you see that for this living thing object it passed the land breathe object.
+So when this method will call it change the behavior of this one object dot breathe.
+So it will call this breathe.
+Now it pass water breathe strategy into this one.
+So when you call object dot breathe it call this.
+So you are changing the behavior of this object on runtime.
+Which one will you pass?
+But what is the intent of bridge pattern?
+The intent of the bridge pattern is that if this class grows, let's say now this is, uh, change it
+to abstract, right?
+Change it to abstract.
+And this class grows.
+Now bridge pattern.
+Uh, intent is that both should grow independently, right?
+So let's say if this class grows.
+This class grows.
+Let's say it has only living thing currently.
+But now, in future, if this class grows and it has certain methods, divide it.
+Like how we divided it into an implementer.
+So bridge pattern is designed from that perspective.
+Separate the logic whatever the logic you have into implementer so that both can vary Very independently.
+Both can increase or decrease independently, but somehow the UML turned out to be the same.
+Only intent is different.
+You understood that only intent is different, but the UML wise and coding wise, if you see that mostly
+it's almost same, right?
+So don't confuse it like sometime only intents differs.
+What bridge pattern try to solve?
+What strategy pattern try to solve.
+But the solution they might have come is very very similar.
+Okay, so I think with this example it's very clear that what is the problem here.
+Like you cannot grow more a process and how it resolved it by separating it out and how it's very similar
+to strategy pattern but how different from the intent.
+Okay guys, see you and I hope you got this bridge pattern.
+Uh, like with example found very easy.
+See you guys soon.
+Bye.

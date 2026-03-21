@@ -1,0 +1,493 @@
+# Introduction: Microservices (English Dubbed) | Better with 1.25x playback speed
+
+Hello guys.
+Welcome to Concept Encoding.
+So today we have the third video in the High Level Designer series.
+We have already covered two videos.
+And this third part is on monolithic versus microservices covering all important microservices patterns.
+Let's understand what architectures we have.
+We have two types of architectures monolithic and microservices.
+Monolithic and microservices.
+So what do you understand by monolithic?
+First let's understand the meaning of monolithic.
+Nowadays we refer to monolithic as legacy applications.
+When you join a company, they might say this is a legacy application that needs to be migrated to microservices.
+So legacy is also now used as monolithic applications because nowadays no one uses it.
+Why is it not use because in monolithic.
+Let's assume you are building an online.
+Store.
+So you have put all functionalities into one application, just one application.
+It takes care of everything like generating orders, managing product inventory, login, management,
+billing, payment and all back end functionalities are in one application and that's why it's called
+a monolithic single application where everything is.
+So what are its dis?
+Advantages?
+What are its disadvantages that force us to move from monolithic to microservices?
+The first disadvantage is what I would call here.
+Overloaded ID.
+You might have noticed that whenever you try to load your company's legacy application on an ID, it
+either doesn't load or takes a long time because it becomes so large, sometimes reaching gigabytes.
+So it becomes an overloaded ID.
+It becomes very difficult to load it on the ID, and you know how important the ID is for a developer
+to work.
+So first is the overloaded ID.
+Second.
+Scaling is very hard.
+Okay.
+What does scale mean?
+Scale means to grow.
+Alright.
+When do you grow?
+When all your operations are fast first, your CI jobs are fast.
+Okay.
+What do you mean by CI continuous integration?
+So when you talk about DevOps where your regression, running it, pushing it, monitoring it all these
+are fast.
+Then your scaling will also be fast.
+Slowly.
+Right?
+I mean scale is not like you are just increasing it.
+Scaling.
+I would also say that all your sub operations okay, how easy it is to manage them.
+Scaling will be that easy to if scaling is very hard here.
+Why is that?
+Because all the functionality is within this within one.
+Okay, if you have to change anything, let's say I have to change one line.
+There's an online bug I need to fix.
+So what will you do?
+First you'll do regression on the whole thing.
+Push the whole thing.
+It will be monitored okay.
+So it takes a lot of lot of time okay.
+And if you have to change one line then here you have to see that this is a very tightly coupled.
+This is a very tightly coupled application.
+Okay.
+What does tightly coupled mean?
+If you change one line, it might impact so many domains.
+In this there are no domains.
+Everything is in one application.
+But what I'm trying to say is let's say you have order code, then you have product code, then you
+have payment code all within one.
+If you fix one line here, it might be that the product is also using the same code.
+The order is also using the same code, so it will impact both.
+So you have this very tightly coupled okay.
+So whenever you have to change something you have to test everything okay.
+And then you have to deploy the entire application again deploy the entire application again.
+Right.
+And here it takes a lot of lot of lot of time okay.
+Very.
+It will take time to deploy.
+And it will take a lot of time for regression to end.
+And the biggest thing is if one application is in GB okay, let's assume there is a particular piece
+of code.
+Meaning let's assume it's payment billing.
+All functionality is put inside one, but I just have ordering.
+The capacity for ordering is very high, meaning the API for ordering the code in it is coming in very
+high.
+Okay, how you would scale.
+If you have to do scaling, you will have to add another server with the entire application GB.
+If this is ten GB, then a whole one and another ten GB application server will have to be added.
+Even if I just have to scale the functionality of the order, it is not possible.
+Let's assume I have a product inside it, a piece of code.
+When a piece of business logic, let's assume I just have to scale it.
+Is it possible in monolithic?
+No, you have to scale the entire application, which is much costlier also, and it is very difficult
+to scale.
+Okay.
+And why scaling difficult?
+Because firstly you saw that debugging is very hard.
+CI job regression run deployment is very hard, right?
+If you have to fix the code, just fix the code then how difficult it will become when there is such
+a.
+Large code base.
+Okay, so I can go on and on about this disadvantage.
+Okay.
+What are the disadvantages of monolithic.
+So after so many disadvantages now let's see why there was a need for microservices.
+Okay.
+All the disadvantages of monolithic are an advantage of microservices.
+Okay.
+So now here I have divided a very large application into small parts and divided it into small services
+like one product, one order management, one billing one payment.
+One account management one login.
+I can go on different services, right?
+If I find a bug in any one of them, I just have to debug it in the service, fix it here and deploy
+it here.
+Okay, so how easy has it become?
+All right.
+So earlier I was taking the entire overall.
+Now I need to work on just one service.
+Okay.
+So managing the component has become very, very easy.
+Yes.
+Managing has become very easy for the developer.
+The second thing is scaling.
+I am getting a lot of traffic for orders so I can scale just the order.
+Okay.
+I can add more of its services to it.
+All right.
+So scalability is very good.
+I can scale what I need.
+You can see it's pocket friendly also.
+Why should I pay to scale my login when the work is getting done as it is?
+I can scale the component I need.
+Okay.
+So there are a lot of advantages.
+All the disadvantages of microservices in monolithic.
+That is an advantage of microservices.
+And this is a very good interview question.
+What are the advantages and disadvantages of microservices.
+It's very good.
+It's a very important interview question.
+There are many advantages.
+All the disadvantages we saw are actually advantages okay.
+And now let's look at its disadvantages.
+Right.
+So now let's look at the disadvantages.
+Now what are the disadvantages.
+The first thing.
+The first disadvantage is that this proper breakage means the way we broke the monolithic service into
+small services, it should be done properly, so there should be some understanding of how I should
+break it.
+So the first disadvantage is that it should be done properly.
+If it's not properly divided into microservices, it might cost a lot.
+Of.
+So let's say I divided this monolithic into four components, but it should be loosely coupled.
+The thing with microservices is that all the services you are making should be loosely coupled.
+But let's assume I made it in such a way that it's not loosely coupled.
+So whatever request comes in.
+So I have to do a lot of communication okay.
+This has a dependency on this.
+This has a dependency on this meaning.
+To complete one request, it's become quite tightly coupled.
+Meaning if I have to change something in this, then I have to change this, to change this to okay,
+if I have to change this, then I will have to change this to.
+So I haven't created a loop system.
+Okay.
+So what will happen is that here when one service communicates with another service there is latency.
+Latency issue.
+So our latency can go up where here.
+Assume one API was working in 5 milliseconds or 2 milliseconds or five milliseconds.
+Here it might start working in ten milliseconds due to latency.
+So latency can increase if we don't divide the components properly.
+And if we don't decompose the monolithic system properly.
+Undershoot.
+So this is a big disadvantage that if you don't design microservices properly, they won't remain loosely
+coupled internally.
+We are still saying this is service one.
+This is service two.
+But if you see they are not loosely coupled they are very tightly coupled.
+What does loosely coupled mean?
+Loosely coupled means that I can scale a particular service.
+Okay.
+I can change anything in it without making an impact on the other service.
+But if I'm making it tightly coupled, then if I'm scaling this, it might be that I have to scale this
+too.
+So there will be a problem here.
+So this is the first disadvantage.
+Second.
+Now you will see that deployment happened live.
+Okay.
+So this is service one.
+Service two.
+Service three.
+Okay.
+Now this service is live.
+It made several new code changes, new code changes, made new code changes and it went live.
+Because of these changes.
+Maybe S2 services using S3.
+Okay, if you assume earlier it used to send a response.
+But after the new changes it did a dash something change in the response?
+Exactly.
+Something change in the behavior of a try.
+It will break a try.
+It will break S2.
+So one is using S2 and this got break.
+This also got break.
+So what happens here is that firstly it's very difficult to monitor which components I need to monitor.
+If I'm pushing this because it's clients can break.
+If I changed something in its response or something that S2 is using due to the new code and changes
+from S3.
+Okay, so there's a bit of complexity here that whenever a service goes live, its clients can get impacted,
+making debugging a bit hard.
+Assume this broke so the engineer from this team will come and start debugging it.
+So they'll say oh, it's failing because of S2.
+I'm calling S2.
+It will go to the S2 team.
+Now the S2 team engineer will say, okay, we got failed because of S3.
+Then S3 will come and solve the problem.
+So by looking at the R it is very confusing where the error lies in who is the culprit.
+Okay if S3 is the culprit, but S3 is running perfectly but its clients broke.
+So here monitoring becomes.
+A bit difficult.
+Okay, the third most main very very important.
+Transaction management.
+Okay.
+Assume this one DB one.
+dv okay.
+And one request.
+Comes I can create a transaction.
+And I told you that the properties of SL should be fulfilled so I can start the transaction.
+Once the DB operation is complete, I can stop.
+But in microservices what happens?
+This application has its own DB.
+This application has its own DB, this application has its own DB.
+So it can only start a transaction.
+Stop a transaction okay.
+But if a request is coming and it needs to be processed by more than 1 or 2 services, assume service
+one and service two will together process a request in 2000.
+So if you look here, a common transaction cannot be made.
+It's not possible because it's 2D right.
+So transaction management what is this got success and this got fail.
+What is this God?
+This God fail.
+Alright, so what's simple here?
+If only one DB is successful, we will proceed.
+If it fails, we will roll back.
+If there are ten tables and out of ten tables.
+Eight tables are successful and insertion fails in two tables.
+Then I will roll back.
+But what about this here?
+Insertion is successful in tables, but it failed in this DB, so I will have to roll back here as well.
+So transaction management is a little difficult.
+So there are some disadvantages in microservices.
+But we have a solution.
+Now comes the second part of the video.
+We can divide microservices into two parts micro and service.
+Now we are saying it should be micro.
+Micro means small.
+How small?
+How much small?
+Is there any definition of this?
+I'm saying to break a monolithic right, or if a new application is to be made from the start as microservices,
+then how many small services should I make?
+So there should be some pattern right to guide me.
+I will tell you a high level where different patterns are used and which one we are covering up now.
+So now look here.
+What are the different phases of microservices.
+The first is.
+Decomposition.
+The second is.
+Database.
+The third is.
+Communication.
+The fourth is.
+Integration and governance.
+Let me start with this.
+What do they mean?
+All right, so each level has a meaning.
+Okay.
+Let's assume it's a monolithic service.
+So decomposition is defining some patterns for me based on those patterns.
+Can I decompose this big one into smaller parts.
+All right.
+How small.
+How much micro okay.
+So there are different patterns.
+Which patterns are there.
+Decompose by.
+Business capability.
+All right.
+What's the second one.
+Decomposed by sub domain.
+The first phase is decomposition dividing a large service into smaller ones.
+Or if you are automatically creating a new service, then how to decide how small a service should be?
+There are different patterns.
+So here it is the database.
+Now you have made small services.
+Now should I keep a separate database for each one.
+Or should I maintain a common database for everyone.
+This is my database.
+There is a common database for all of them here.
+They all are using the same thing.
+Okay, so different design.
+So what is here is service on the database.
+Or database shared.
+Next is communication.
+Now you have created different services.
+How will they communicate with each other.
+There are different ways for that.
+We have different patterns.
+So different patterns are explained like you can do API communication via API via events and minimal.
+But you understand what communication is.
+Then comes integration.
+This microservice also needs to be integrated with the level like user interface.
+So some other applications how will they integrate with each other.
+Okay.
+So there could be something like API gateways and many other patterns.
+Okay.
+So you will see that at many phases these are different phases.
+You can call them different phases from starting to create microservices to breaking down one big service
+into pieces.
+Right up to the end finally comes observability.
+To monitoring.
+How many patterns are there?
+So at each phase.
+At the decomposition phase, I chose this pattern at the database phase I use this pattern at the communication
+phase.
+Let's say I use this pattern at the integration phase.
+Let's say out of this I use this pattern.
+So mixing all the patterns together then your microservices form.
+So you saw how complex it is.
+Have you ever thought that microservices involve so much.
+Right.
+In interviews we directly say that this is the.
+Here you take a load balancer and here are different microservices.
+And okay we keep making them quickly.
+But here many questions can arise about how you will divide in microservices.
+Why.
+Okay.
+So this is where patterns help in deciding whether to divide microservices or not.
+Which microservice will be suitable for which question.
+So today we open the decomposition pattern.
+All right.
+Now here teaching first our.
+Decomposition pattern.
+You understand the meaning of decomposition pattern.
+I have to divide one big into small parts.
+How small?
+How much?
+How much small?
+That's what the decomposition pattern tells.
+So in this we have to decompose.
+Subdomains.
+This is called d d d there.
+And one is decomposition business functionality.
+And this is also called capability.
+All right.
+So decomposition here we have two patterns.
+So let's look at the first pattern.
+Business capability.
+Business capability pattern.
+So what does business capability say.
+Let's take an example of some online order application.
+So here what business functionality do I have.
+All right so what can I have here.
+Order management.
+Product management.
+All right.
+These are all different business functionalities.
+You can say what is its job.
+Its job is just to manage orders.
+Manage the incoming orders.
+What is its job to manage inventory then what is one account management.
+Login.
+All right.
+Billing.
+Payment.
+All right so I can go on.
+So here you will see how we have divided each one based on business functionality.
+What is its job?
+The one whose job is to take orders, make it a separate service.
+The one whose job is to handle products.
+Make it a separate service.
+The one whose job is to handle user accounts.
+Make it a separate service.
+Make logging a separate service billing payment.
+So what have we done here?
+According to your business capability business function you create services.
+So what is the challenge here?
+Here one challenge is that you should have good knowledge.
+Of what functions are there in your business.
+If you don't have clarity on this, then it becomes a bit difficult to decide whether this service will
+be made or not.
+So the first thing necessary in this is good knowledge of your business functionality.
+Business capability.
+All right then only you would be able to determine the proper business This functionality okay.
+So you can divide it in this way.
+So the first thing is to divide based on business capability.
+It doesn't matter how small it is.
+And here if you say there's no definition of small micro assume for one application this much is micro.
+But for someone else this is micro.
+For someone such a big application can be one micro.
+It depends on how big a project we are making, how much one service will be called micro for someone.
+Such a small application is a micro service.
+For someone, it's so big.
+For someone, it's bringing such a big micro.
+So that depends.
+So order management itself is very big, but.
+If you look at it for this these are micro services.
+This is known for him.
+It's known micro.
+This is known micro.
+This much services.
+Micro.
+You got it right.
+There's no definition of micro.
+Micro is used in context in which context someone considers themselves.
+Micro order management itself is a very big application.
+Okay.
+But the way we are designing it, in that case it is a micro service because here I have divided based
+on business capability.
+So this is one micro service.
+This is another micro service.
+Okay.
+So now let's come to the second divided by subdomain.
+Okay.
+In divided by subdomain.
+Now what happens is I told you that here one module can be very big in itself right.
+When it can be very big in itself, can we divide it into submodules or not?
+Okay.
+So that's why it is known as domain driven design okay.
+Here what BDD is also called domain.
+Driven design.
+Now, what it says is that domain driven means you have one order management as one domain.
+Okay, this is not a microservice.
+I'm not calling it a microservice yet.
+So I said, okay.
+Order management is one domain.
+This is one domain here.
+What we were calling this this became one service.
+This is my microservice.
+But in the subdomain.
+What am I saying.
+Decompose by subdomain.
+This is my domain okay.
+A domain can have multiple microservices.
+Payment is one domain.
+Okay.
+Within payment there can be many microservices.
+Forward.
+You can see forward payment when here user one is making a payment and you can say one reverse payment
+where it means refund, etc..
+All this is coming.
+So there are different microservices right?
+So here I am dividing based on domain.
+But here I have done it based on business capability.
+Order is one business capability functionality.
+Make this one service.
+But you will see here that by subdomain you can divide one domain into more pieces.
+Order management can be divided into order tracking.
+Here what else can be related to order order tracking.
+Order placing I am placing an order okay.
+Similarly.
+Like this.
+Okay.
+Divided into small subdomains.
+Similarly payment.
+The example I gave you.
+What happens in payment one user has to pay another user.
+So after making the payment it may also need to be referred back to the user.
+So it has two domains.
+One is like payment forward payment where I am making the payment.
+The second is reverse payment.
+I am reversing it back where I added another capability referred capability became another capability.
+Here the capability became the capability to make a payment.
+So you see I divided it domain wise.
+Okay.
+So you understood the difference.
+What is the first difference?
+They seem very similar.
+But there is a big difference here.
+I first defined the domain that this is a domain.
+And within that domain I extracted small independent services okay.
+But in the first one what was happening in business functionality was that I saw the functionality.
+This is one functionality order, management order.
+It is all related functionality of order.
+Make it one service.
+This is all related to payment.
+Make it one service.
+But in sub domain it is not like that.
+Got it guys.
+So ten.
+What nose decomposition part?

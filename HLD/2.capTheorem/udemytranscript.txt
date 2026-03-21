@@ -1,0 +1,281 @@
+# CAP Theorem (English Dubbed) | Better with 1.25x playback speed
+
+Hello guys.
+Welcome to Concept Coding.
+So today is our second video on high level design where you will see cap theorem with very easy examples.
+In an interview you might be directly asked to define cap theorem and explain it.
+If not, when you design a system, especially a high level design, you need to think about this first,
+because your entire design changes, you have to make some trade offs.
+And if we don't consider those trade offs early on, it becomes very difficult to change the system
+design after it's fully developed.
+That's why it's important and comes in the very starting phase.
+So now I'll tell you what Cap theorem is in very simple terms and with examples.
+Cap system defines desirable properties.
+So these are desirable properties.
+Of a distributed system.
+With replicated data.
+Remember this line?
+All right, so what are these desirable properties?
+Cap R.
+Stands for availability and P stands for partition tolerance.
+So these three are the desirable properties of a distributed system.
+Distributed system means here I have also these are all nodes.
+Okay.
+Assume these are db nodes.
+DB node b I also have this db node db node c okay.
+Now this is how it is.
+If let's assume an application.
+So it's a distributed system where the application can query be and can also query C and assume that
+B's server is in India and this is in the US.
+So my DB is spread across different continents, but they are synchronizing with replicated data stores.
+Okay.
+The data in B is the same as the data in C.
+So it's a distributed system with replicated data.
+Okay.
+With replicated data.
+Meaning the data in B is what I'm replicating in C.
+So assume this is a very short term example of a distributed system.
+Let's take this example.
+So what did we say.
+Desirable properties of a distributed system with replicated data.
+These are the three desirable properties.
+But the good part is or you can say the unique part is that all three cannot be used together.
+Okay.
+So assume this is my consistency.
+This is my availability and this is my partition tolerance.
+So either I can use Sia.
+Or I can use CP or I can use AP availability and partition.
+But I cannot use this.
+This area is not usable.
+All cap cannot be used together, meaning all three properties cannot be used together in a distributed
+system where we have replicated data.
+Why?
+Let's see this with an example of why this is very important and understanding partition tolerance is
+very important.
+There is a lot of confusion in partition tolerance.
+So let's see this with a simple example.
+So first what do you understand by consistency.
+When I say consistency Consistency means if you assume that currently node B has data, node B has assume.
+Currently the data is a equals four, and A wrote that write a equals five.
+So B changed itself to five.
+Successful right happened.
+So whenever a successful write happens we will replicate this data to C.
+So what it had.
+As four it will also change itself to five C will also.
+So what consistency says is that even if A wrote here on B.
+But when it reads from here it should still get five.
+So consistency means getting consistent data okay, so after a successful write in any node, if it
+reads from any other node, it should get the same data.
+That is what consistency is.
+What do you mean by availability?
+Availability means that every request receives a response whether it is successful or not.
+It ensures that the system is always operational.
+What does availability say?
+Let's assume I have two DB nodes B and C.
+So availability says that all nodes meaning b c both nodes should at least respond.
+It's not necessary, but they should respond.
+So all nodes should respond.
+Either with success or failure they should respond with something like I couldn't fetch the data or
+the data was fetched.
+At least both should respond.
+So it means that as long as all DB nodes are responding, it means it's available.
+What do you mean by partition tolerance?
+Now let's understand partition tolerance, which is very, very important and where most confusion occurs.
+Partition tolerance means that when two nodes.
+B and C are replicating data between each other.
+These are DB nodes.
+This is also a DB node.
+If because whenever an update operation comes here, anything comes.
+They replicate to each other.
+If.
+Let's assume there's some breakage here in communication okay.
+But my system, the overall system, let's assume it's hidden.
+The user, the hidden, doesn't know whether the data is being replicated or not.
+They only know how to query.
+And they don't know if they're querying from C or from whom.
+So if I say in user terms, the user doesn't know whether he's querying A or B, okay.
+The user only knows that he's querying a system internally whether he's querying from B or C.
+That's the problem of a distributed system.
+What is it for one?
+For the application is just about querying.
+So let's assume what partition tolerance says is that if the communication between B and C breaks,
+but F is still able to query.
+So that is like partition tolerance okay.
+Inside, if you see in a way a partition has occurred, B is separate, C is separate.
+They can't communicate with each other, but F is still able to cover one is still querying and getting
+requests from here.
+And responses are also being received.
+So it means it's partition tolerant.
+It means the system is up, the system is up, the system hasn't gone down, but it's still able to
+query.
+A is still getting data, but how it's being fulfilled inside.
+We'll see.
+But that partition tolerance is if there's a partition breakage here in my communication.
+But the system is up a is still able to query.
+So now let's see the first thing.
+Why can't we use all three together.
+Why we cannot use all three together.
+Okay.
+So now let's see here.
+Let's understand it this way.
+What are the possibilities?
+Consistency.
+Availability.
+Consistency partition and availability partition.
+These three are possible.
+What is not possible?
+Cap.
+Not possible.
+All three can't be achieved together.
+And let's see why.
+So first let's see why CP can't be together.
+So let's assume we take the same example.
+B and C are db nodes where our data is replicated into each other.
+Okay, now let's assume first What did I say?
+I'm taking cap.
+Whatever design I make for the system, I'm saying I need all three cap I need.
+See?
+Meaning consistency should be there.
+Meaning the data here should be the same as the data there at any point of time.
+If it's read anywhere after that, read from anywhere, write anywhere.
+And if I read from anywhere, the same data should come.
+Consistency is possible.
+Now I need availability to that.
+If I query B, it should respond.
+If I query C, it should respond to okay, CS is possible.
+Now I said my system should be partitioned all line meaning I said that my system here both have broken.
+Even then all these properties should be maintained in all three and the system should be up, the system
+should be up and it should be consistent.
+Is it possible?
+Let's see.
+So now you will see that here.
+My break has happened.
+Partition has happened.
+Okay, so now assume I said make a request to write six.
+Here I changed and did it.
+Now this request will learn that update tours.
+But here there is a partition breakage okay.
+So this request will go ahead.
+Otherwise what happened.
+It couldn't update to five.
+Assume the breakage was for five minutes.
+So for five minutes the system remained inconsistent.
+Okay.
+Updated itself to six, but we couldn't send the request to see to update itself.
+Okay.
+So what happened with this?
+It became inconsistent for the five minutes this thing happened.
+And if request reaches to node C then it will return stale data.
+So we can't maintain consistency.
+If I drop consistency, then what do I have?
+AP means available and partition is there.
+So this one happened that a, B, c.
+That here a cost was five a cost was five.
+When A wrote wrote here made a cost six.
+And there was a partition here.
+There was a partition here due to communication gap.
+So a updated itself to six b the B node, the value of a in it became six.
+But due to partition communication breakage c became inconsistent.
+So what I'm saying here is I drop c here I dropped C but B is still available.
+If a query is B, it will still respond.
+Success or failure.
+C will still respond success or failure.
+So both are available.
+So availability is maintained.
+And partition tolerance means that even if the system is broken one can still query.
+The system is not down but consistency is not maintained when querying A6 is coming, C when querying
+C five is coming.
+Consistency is not there, but AP is possible.
+Okay, now let's try another use.
+Try to find another use.
+But now I'm saying that no I can't lose consistency.
+Okay I can't lose consistency because this partition has happened here.
+Let's see once again.
+So here what I said is.
+Here is one node D cost five.
+It takes DS five and is writing DS six.
+Okay, so I said that if when.
+C and A I have taken consistency.
+Availability is there.
+Now I have a partition okay.
+Partition happened for five minutes okay.
+So I said no I need consistency I can't drop consistency.
+So in partition tolerance if I need the same data, no matter how many times I read or write, I will
+have to take one node down.
+Okay.
+So what I'm doing here is if the system still needs to be up okay.
+So I'm taking this down.
+Down the C I took C down okay.
+So internally all requests are being fulfilled by B.
+Okay.
+So what I did here is achieved consistency.
+So a what a did a wrote to be here updated six.
+So here it became six.
+But I have kept one down.
+So here even when there is breakage, I don't have to update because it is down.
+This request won't be fulfilled.
+Okay, so any new read request will come to be.
+So I will always have consistent data.
+If six is written, six will be received.
+Okay, so I achieved consistency, but to keep the system up I had to give up availability.
+So CP is possible.
+C p cp is possible.
+I achieved CP but removed availability.
+Why?
+Because I needed the system up.
+Because I needed CP.
+The system needed to be up, but also needed to be consistent.
+So to maintain consistency I had to take one note down.
+So not all nodes are up.
+Only one node is up.
+Okay, now the third thing is here.
+So now here you'll see a, b, c.
+Now I'm saying that I need consistency and availability.
+Okay.
+So I if a partition happens here okay.
+So it means.
+They can't sync with each other.
+But I need consistency and availability.
+Meaning this should be up.
+This should be up.
+Consistency should be maintained here.
+Case two is five here.
+Case two is five.
+So it means the partition p.
+Is not partition tolerant.
+If the partition happens my system can't stay up.
+It's not partition tolerant.
+If the partition happens, my system will go down.
+Okay.
+So I can achieve k.
+But by removing partition, meaning the system can't stay up.
+But I will achieve k.
+But my partition tolerance is not their partition.
+Tolerance means that now my request can't be fulfilled after partition.
+My system is not tolerant.
+According to that, I will have to stop the request.
+One should not query one.
+Neither can it query B nor C.
+Assume it is allowed to query it wrote so I know it will write, but due to communication gap inconsistency
+will happen.
+So I shouldn't allow it to write.
+Okay, so I will have to stop the system for a while until this partition tolerance is removed.
+Okay, I hope you understood all these use cases.
+Why Cap can't be possible together.
+And while doing this cap, how we derived c cp AP okay.
+And now in the real world if you see p is very much required.
+So whatever system you design never trade off on partition tolerance, because nowadays distributed
+architecture is in use and distributed systems are in use.
+So it's a very common scenario that communication comes here and communication comes.
+Communication breakage comes.
+This doesn't mean we stop the system.
+If communication breakage comes for ten minutes.
+For ten minutes any system is down.
+Any company is down.
+That is not good.
+So we have to keep the partition, but we have to choose one from C and a either CP or C okay.
+Or then AP or then choose C from C a or choose a from c a.
+So these are the kind of options in interviews.
+When asked what would be your trade off on consistency availability partition okay, okay, we will
+never trade off for partition.
+We will trade off only between consistency and availability, remember.

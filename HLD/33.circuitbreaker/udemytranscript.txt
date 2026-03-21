@@ -1,0 +1,335 @@
+# Service Discovery Introduction
+
+Hey guys, and welcome to Concept Encoding.
+And today in microservices topic I am going to cover a very important part is service discovery.
+Okay.
+So in microservices service or component are created and deleted dynamically.
+We can know that right.
+So let's say our instance is itself.
+Let's say we have our microservices order.
+Definitely in microservices one of the advantage is that we can have as many instances based on the
+traffic, but these number keep on changing.
+If traffic is more, I can spawn more instances.
+If traffic is less, I can reduce the number of instances.
+So instances are created and deleted dynamically.
+We cannot hard code the URL of a particular instance.
+It's not scalable and not feasible.
+So till now while we seen Rest template Rest client fan client order service is making call to product,
+service and everywhere we have hard coded the URL, so it's okay for the testing perspective.
+But in production we never hard code these URLs, right?
+So in above example, order service has hard coded the URL of the product service.
+And it is okay till we have only one instance of product service.
+If you have only one instance then it's okay.
+You can hard code it.
+But in case if you have multiple product service instance, right.
+And which is very very possible.
+Right.
+Let's say in this scenario.
+So I have instance one, instance two instance three all have different your IP address and port number
+all has different IP address and port number.
+But if you have hard coded the URL your traffic will always goes to one of the service only always goes
+to one of the service only.
+Okay.
+And it is also possible that a particular stance can be removed, but since you have hard coded it,
+you will try to connect to an instance which is removed.
+Then you will face connectivity issue, right?
+So there are a lot of challenges like first is single point of failure.
+Single point of failure is is hard coded instance of product service goes down order service will not
+be able to communicate with other instance.
+That's what I told.
+Like if you have hardcoded it and I have removed this instance, then you won't be able to communicate
+it.
+So it's a single point of failure.
+No load balancing.
+So even though I have three services, since you have a hard coded it every time the traffic goes to
+this instance only.
+Even though my these two other instances are sitting idle okay.
+Tight coupling.
+So because of hard coded URL in the order service, there is a tight coupling between order service
+and product service.
+Now let's say that I have to move the product service okay.
+And maybe it's IP and port address need to be changed.
+Then you first have to update the order service and then only you can migrate your product service.
+Otherwise it's not possible.
+Okay.
+So it brings the tight coupling difficulty in testing different environment might use different URL
+which require frequent changes in your config.
+So if you have hardcoded it let's say now you are testing on r dev.
+Then you need to change this.
+If you're testing on stage you need to change this.
+Okay.
+So with different test environment a production QA dev different URL.
+And then you have to keep on changing it if you are doing a hard coded.
+So one of the way we can overcome all this limitation is our service discovery.
+And there are different tools like Eureka or Console.
+Okay so I am covering Eureka, which is like pretty much, uh, popular in the industry.
+So.
+But you can also go with the console also, the concept wise, very much similarity.
+Okay.
+So if you understand one other, you can easily grasp like what's going on.
+So in service discovery there are two parts server and client.
+So server act as a phone book okay.
+Has all the instances info of the registered client like service name, instance ID, IP, port number,
+health etc..
+So what is that server?
+Server is the one which.
+So this is the server.
+Server is the one which actually keeps the details of all the instances.
+So instance one details instance two details 345.
+All the different instances.
+It keeps the detail.
+Only thing is only for the registered clients, so clients have to register them.
+So if you have multiple clients.
+Client one.
+Client two.
+Client three.
+So they have to register with the server.
+And then only it would be maintaining the data of it.
+We will see that how it is maintaining how they can register it.
+But just understand that for now that it is a phone book only for the registered clients.
+So clients have registered and after that, once it is registered, then Eureka Server.
+You can consider it as a phone book.
+Like if you want a particular details of a registered client you can get all the info that for this
+is the client.
+These are the instances.
+This is the IP address, port number, health status up and down.
+So if this client has ten instances all the details you can get it.
+Similarly Eureka client most of the popular two client does is first register itself with the server
+that let's say if you have a client, what you can do with the client.
+First is register itself with the server that hey server, maintain my instances and its info.
+Okay?
+Another is discover an instance.
+Let's say that if this client one needs the detail of client two, like this.
+Client two has multiple instances okay.
+And this client two is also registered with the server.
+Means server is maintaining these all instances info.
+Now this client one need the details of client to.
+What it will do is discovers an instance.
+So it will ask the server that hey I want to talk to client two.
+Can you tell me the instances available.
+So server.
+Now since it's a phone book, it can return all the possible instances of client two which are up.
+Okay.
+So now see this diagram.
+This is going to be flow now.
+So now order service first.
+UST get the list of a product service from the Eureka.
+If it has to invoke the product service, Eureka server will return the product service instances detail.
+If there are ten instances of the product, it will return all the ten details which are up okay, and
+after that it will order.
+Service is the one which choose a particular instance and then makes a call.
+So as a curious engineer, the few things which comes to your mind is that how does Eureka Server know
+whether a client is up or down?
+Where and how the data is stored in the Eureka server?
+What if Eureka Server itself goes down?
+Is it a single point of failure or not?
+Now earlier Order service is directly calling product service.
+Now it is making like order service is calling Eureka server.
+And then after that Eureka server is giving the list and then order service is services making a call
+to product service.
+So it's like a first hop.
+Second hop.
+So now does it cause a latency issue?
+Okay.
+So we will see all this answer like uh, which is very important from the interview perspective and
+also our understanding also.
+So first thing is how does Eureka Server knows whether a client is up or not.
+So Eureka server know by two way.
+First is client de registration request.
+Another is through client heartbeat.
+Let's say that first when client application is gracefully shut down, then Eureka client send a registration
+request to Eureka server.
+It marked the client status as down.
+Okay, so now let's say that currently product service is up.
+Okay.
+Now I shut down this product service application from the ID, I shut down this application.
+So if you see the logs you will see that hey, it will call Unregistering application with Eureka with
+status down it is calling the Eureka server with status down.
+And after that and if you check the server Eureka server logs it, received it registered instance this
+with status down and then it updated the status with down for this one.
+Okay, so one is through.
+If gracefully things happening, then de-registration call happen from client to server.
+And with that Eureka server know that client is down.
+But now let's say assume that your client got shut down, but without any without sending any de-registration
+request, maybe because of network issue or something, then how it will know.
+It will know through heartbeat.
+Every client periodically sends heartbeat to the Eureka server.
+Okay, so Eureka server.
+Wait for the heartbeat from the client for a particular interval.
+If no heartbeat receive within that time interval, it remove the client instance itself.
+It consider it dead.
+The second is how does Eureka server restores the data?
+Eureka server only stored data in memory.
+There is no, uh, you can say that DB persistence know only in memory.
+It creates a map string comma list, uh, instance info.
+Okay, so here, if you see that the key is your app name slash instance ID.
+So this is generally your key.
+What is the app name and what is the particular instance id IP port number and the particular service?
+Okay.
+This totally generate a unique instance unique instance because IP is different port number IP port
+number and the product app name.
+This makes a unique instance.
+So this is your key.
+And in the value you have the value of like app name, IP address, host name, port, whether this
+is up or down when it was last renewed, lease duration, etc..
+Okay, so this is how Eureka server stores the data.
+But there is remember there is no DB persistence.
+It's all in memory.
+Now what if Eureka server goes down itself?
+Is it a single point of failure?
+So now let's say we know that Eureka server is storing the data in memory.
+So I have this map.
+I have this map in memory.
+Right.
+Eureka server.
+Now if this server goes down this all this info goes away with it.
+Now if order service has to call the product service it will call this server.
+Will it be available?
+No.
+It's gone.
+It's down.
+So is it.
+Eureka server is bringing a single point of failure in our application.
+No.
+So if you are using a single Eureka server, then.
+Yes.
+But generally three nodes are used.
+Okay.
+It's used in a Eureka server cluster.
+We create Eureka server cluster.
+So three servers are running into different machine or container with different IP and port number.
+Okay.
+So on three different machine three Eureka servers are running okay.
+And here each server is a client tool.
+This is very important.
+So now let's say that you have a cluster of three Eureka server.
+Server one.
+Server two.
+Server three.
+Eureka.
+Server 123.
+Now this server has to register itself Self to both this server.
+First it has to registered, right.
+Second, it also has to take.
+Whatever the data present into S2.
+So it has to discover also.
+Okay.
+So means this server is also now becomes a client.
+So the same thing each server is a client.
+Two as they have to register themselves, fetch the registry, replicate the changes.
+So now let's say that your three servers which are running into three different machines.
+So configuration for them would be like let's say for server one would be application name, port number,
+your host name instance like on which port number it is running or IP address.
+Okay.
+Now here if you see even for the server I am registering Eureka dot client dot registered with Eureka.
+True.
+Yes, I want to register it.
+Also I am making it true at Eureka dot client dot fetch registry.
+True.
+Yes, I want to fetch the details also.
+So even though it is a server, I am treating it as a client also.
+Okay, so it's a client of whom?
+So for its server would be these two.
+Server Eureka server which is running on 8762.
+This one second Eureka Eureka two server.
+And the Eureka server which is running on 8763.
+This one.
+So for this.
+So this is a client for this two.
+So it registered itself with this two servers.
+Similarly server two is also a client of server two.
+Now is a client of this.
+And this okay.
+Similarly server three is a client of one and two server.
+Okay.
+And in the client application property we can say that, hey, we can put all three servers here.
+So one, two three.
+Okay.
+That's all we have to do.
+So here internally the Eureka server internally whenever any.
+Let's say this is server one.
+Server two, server three okay.
+They have their maps all sync up.
+Any new entry happen here.
+Let's say instance one certain detail.
+It will update the detail here.
+So it's eventual consistency.
+It's not like always you will get like.
+So let's say that the data present into server one instance detail.
+So eventually it will also be present into S2.
+And eventually it will also be present into S3.
+Okay.
+But there is no guarantee that your client now your client can request to anybody.
+Let's say that if your Eureka Server one is down, it can call Eureka Server two also.
+So there is no guarantee that the instance one detail which is present in S1 is properly sync up in
+S2.
+Eventually it will, but there is no guarantee that let's say if request goes into S2, you will get
+the data.
+You might not, but if you retry, you might okay, because they keep on syncing up the data.
+But there could be some delay.
+And because of that, if your request goes to server one, you might see the data.
+If it goes to server two, you might not.
+So service discovery is a provide eventual consistency okay.
+So your client is now configured this three service discovery URLs.
+So if one server is down it will not impact the client availability.
+Now.
+So there is no single point of failure.
+Can it cause a latency issue?
+Like earlier we were making a direct call from order service to product service.
+Now, first, uh, I have to invoke Eureka Server and then make the actual call.
+No, Eureka server does not get called for every request at application startup itself.
+The client, let's say order service need to call to product service.
+So at application startup itself it fetch the registry.
+So it will fetch everything from Eureka server at the time of application startup.
+And it will put into its cache locally order service put into it cache locally.
+Now all the future call.
+It will use this local copy only to find the instance it will not call Eureka server and we can control
+this conflict like after how after how much seconds client will refresh it.
+Cache copy because now you have put this data into the cache.
+Okay.
+So the original data which is present into the server, it might get changed certain instances from
+up change to down or it got removed itself totally or new got added.
+How this cache copy get updated.
+So we can configure this Eureka dot client dot registry fetch interval.
+Second, whatever.
+The second you will put after that seconds it will update its cache copy.
+Okay.
+So this is the client configuration.
+And what if the local cache is stale.
+Can this lead to calling a dead instance possible.
+Right.
+Let's say that here instance one was marked as down.
+So order service product service.
+And let's say this is server.
+And here instance one is up and during application startup it maintain the copy instance one up.
+But later on let's say that it has make it down instance one is down.
+But let's say that this time is not yet happen.
+It has not refreshed its copy yet.
+You have given such a big time interval.
+Let's say I have given it as something.
+Let's say that, uh, something thousand.
+So I have given very big interval like or let's say 10,000, something like.
+So it hasn't updated its copy cached copy.
+So it might got stale.
+So even though this order service see that.
+Hey this instance one is up.
+It will try to call but actually it's down okay.
+So you have to be very careful with this timing if you keep it very less.
+If you keep it.
+Let's say this is order service.
+This is your Eureka server.
+If you keep this, let's say one second.
+So after one second, it will always make a call and keep on doing refresh refresh refresh refresh.
+Okay.
+That is also not good.
+If you keep it too large, then you might get stale data here.
+And it might possible that you are in your cached copy.
+It's showing up, but actually it's down.
+And when you try to call it ultimately fail.
+So it's a trade off.
+So you have to have a proper.
+This number should come up with a proper that this cache copy should be updated in how much time.
+So that you have always have the latest data.
+Also you don't keep on refreshing it as many as possible.
+Like we don't want that.
+We want as minimum as possible refresh but still the data as fresh okay.

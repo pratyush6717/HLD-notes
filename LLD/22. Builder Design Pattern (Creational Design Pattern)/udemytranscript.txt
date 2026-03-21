@@ -1,0 +1,472 @@
+# Builder Design Pattern (Creational Design Pattern)
+
+Hello.
+Hey guys.
+Welcome to Concept and Coding.
+And today I will tell you a very important design pattern which is builder design pattern.
+I'll tell you about its, uh, problem.
+What is this problem and how we resolve it.
+I'll show you the real world solution like.
+And we are using it day to day like you might have heard of Stringbuilder, right?
+You are using it, right?
+So Stringbuilder is based upon totally on the builder design pattern.
+And the third and very most another, uh, so many people have confusion regarding it is like builder
+versus decorator.
+If you see my decorator design pattern video and check out the comment section, you will see many people
+have asked that can it be solved through builder or not?
+Right.
+So I know that why this confusion happens and I'll try to clarify on today.
+Right.
+So now without wasting time, let's jump to it.
+So first of all, you already know that builder design pattern is nothing but a creational design pattern.
+And what is Creational design pattern?
+Creational design pattern helps in creation of an object, so it is a Creational design pattern helps
+in creation of an object, right?
+I'll tell you its definition later, but first let me explain what are the problem it is solving.
+So let's see the problem.
+So consider any use case or any object where there are lot of optional fields.
+So I have think of a student.
+So let's say inside a particular student roll number is only mandatory.
+This is only mandatory rest.
+All are optional.
+Rest all are optional.
+This is optional.
+This is everything is optional.
+Only mandatory is roll number and currently I have taken only six seven uh, properties.
+Let's say this in real.
+This students have around 50 properties, right.
+And all are optional except roll number.
+So now how it's constructor will gonna be look like.
+So let's say if this has so many optional parameters and its constructor, let's say first of all it's
+if you have so many parameters, if you have so many properties itself, our constructor would be become
+huge, right?
+So we cannot have constructor like this.
+So one thing is we have a very big constructor parameter list.
+Because of so many optional fields right.
+So this is one problem which we can think of.
+What another problem can come because of this so many optional thing.
+So this is another way is another problem.
+Which have come is, let's say instead of one big constructor, I can have multiple small, small constructor.
+I know that only roll number is mandatory.
+So let's say I am creating one student.
+I am only creating a student with roll number and age.
+So I need only this constructor.
+I don't need to add more parameter.
+So now let's say another student I am creating, but I am student creating with roll number, age and
+name.
+So I created another constructor.
+So let's say I have another use case roll number father name mother name.
+Somebody is putting while creating a student roll number.
+Father name mother name.
+So they have added one more constructor.
+So we see that because of this optionals, one more issue comes is that the number of constructor can
+become huge, right?
+And there is one more problem with this is like let's say if you are about to create one more constructor
+Student roll number.
+Integer.
+Roll number.
+And let's say a string.
+Father name.
+And instead of mother name, you want to use student name.
+Name.
+Can you use it?
+String name.
+Can you use it?
+No.
+It will throw compilation error because signature is same of both the constructor int string string.
+Even though here it is mother name and here it is student name.
+But still signature is same and compilation will fail.
+So there are lot of issues can come in when you are using an then when there are lot of optional fields,
+right.
+So we need to find a way to handle those.
+So that's where builder design pattern comes into the picture right.
+So this was the problem I hope this problem is clear right guys.
+What problem can happen because of this.
+Optional fields.
+And just these are 456 fields.
+Just think about 100 fields, right?
+It can cause a lot of problems.
+So that's where builder design pattern comes into the picture.
+So now let me tell you how it solved it.
+Right.
+So now let's come see the builder design pattern.
+Okay I'll tell you within code itself also.
+And I have pushed this code here.
+This is my GitLab in the description and at the channel homepage also you can see.
+So in go inside low level design design patterns and you will see builder design pattern.
+Okay so first of all what is this definition.
+So as you already know builder design pattern is nothing but a creational design pattern right.
+And it also says that it is a step by step object creation process object creation.
+So it creates an object step by step right.
+So now question comes hey what do you.
+What do you mean by step by step?
+Object creation.
+So, for example, take a house.
+What?
+So this is a very big object house.
+House is a very big object.
+So this house is composed of roof window, door right.
+Walls let's say.
+So what we can do is step by step.
+So let's say before it will say that hey add roof.
+So till now this house is constructed.
+No.
+Till now it is some in mediator form right.
+Then it will say that hey add window.
+Then it will say add a before window.
+It will say that a add wall.
+Add wall.
+And then it would say that add door.
+So you are saying step by step we have to perform something at door, right?
+Then it will say that at window.
+And once all done, then we will say that build.
+Now it will make a house to us.
+So you got it right.
+Step by step.
+So we first created, let's say wall.
+And then second we have added a roof to it.
+And then we have added door.
+Then we have added window.
+And then we are saying that hey now call the build method and then it will return a house actual house.
+This is the object we wanted but at a particular each step.
+Currently it is some mediator form.
+Or you can say that in the builder form.
+So in the builder form after adding a wall, it is still in a builder object form.
+It is still in a builder form, builder form, builder form.
+And when the ultimate build method is called it Return the house object.
+Don't get confused.
+Just understand this.
+What I mean by step by step.
+So I wanted to create a big object house.
+But we have divided into different steps.
+These steps are thing as a method.
+So different methods.
+So after each method it is in in some mediatory form right.
+When all the methods are completed which is required to complete this house.
+After that we call the build and we get a house.
+Okay.
+So before jumping into the builder design pattern, I want to show you the string builder.
+What we have discussed as of now.
+Methods.
+Mediator form.
+Mediator forms.
+I will tell you with this one.
+So here just see that.
+Let's open the string builder.
+Yeah.
+So this is the string builder.
+The string builder is nothing but a based upon builder design pattern.
+So here if you see that in string builder.
+So we have certain methods.
+So here if you see that it has certain methods append method.
+Right.
+It is just consider those as an steps.
+So delete character add delete right.
+So after every step after every method does it giving us a final object.
+No it is giving us returning us certain military object.
+So what is that Mediatory object?
+String builder itself so means builder itself.
+So let's say if this is house and we have making a house builder some builder where we have put this
+methods add wall, add door, add small small methods.
+So what would be the return type in this case house builder itself.
+You got it.
+So see dot append what it is returning string builder itself.
+And when all the methods are done and when we call build method.
+Or it can be any name, let's say a final method or you got it right build method.
+I just say that yeah.
+Now build it so it will return me the actual object.
+So here in the example of Stringbuilder, when we do two string, it will return me the actual object.
+What was the actual object is new string okay.
+So you got it.
+What I mean by step by step okay.
+So now let's jump into that.
+How for our student example how this will work.
+So let me use an example.
+So we have an student object.
+So you know that what was the challenge with the object.
+Because we have a lot of optionals.
+So here I have certain mandatory field and lot of options.
+So now in the constructor you will see the first difference in the builder design pattern.
+The first difference is I am not creating a constructor with all the parameters, or I am not creating
+multiple small small constructor.
+Right?
+What I did is I passed the builder object, right?
+So means here in the student constructor what object I have student builder object.
+Right.
+And all its mandatory and optional fields are getting filled from this.
+This dot roll number equals to builder object dot roll number like this.
+Right.
+So one advantage we got is like we don't have to put lot of parameters inside the constructor.
+And also we don't need a small, small constructor, right?
+Whatever the values builder had, it were filled up.
+Okay, now one thing, another get cleared with this is like builder will have all this parameters also.
+That's why that's how we are able to fill the respective fields right in that so means in the student
+builder.
+Let's say whatever whatever the object, whether it's a house, then you have a house builder, you
+have a car, you have a car builder, you have a pizza, you have a pizza builder.
+So here in our example student, we have to create a student builder.
+Right.
+So I told you that since we student builder is the one which is getting passed to the student constructor
+means student builder has all the fields, all the parameters.
+So let's check the student builder.
+Yeah.
+So here if you see that the student builder has all the parameters.
+So this is one more disadvantage.
+So this is the disadvantage of builder design pattern.
+There is a certain code duplicacy and the line of the code gets increased.
+So student also has the parameters here.
+And student builder also has this all parameters because we have to pass it to the student constructor
+okay.
+That is one disadvantage.
+So now here.
+So this can be an either interface or either abstract either interface or either an abstract.
+And we can have a concrete builder we can define.
+So let's say a student right.
+So I have constructed two let's say engineer engineer.
+Student builder and MBA A student builder so we can have multiple builders, right?
+Student builder.
+It's an interface or abstract.
+We can have different type of builders.
+Okay.
+So now see this what I told you in the builder that we have steps.
+A small step.
+What this steps is nothing but a method right.
+So in our house example add wall.
+Add roof, add door.
+These are the methods right.
+But in our student what are all the methods set roll number.
+So what are the fields which we have.
+Set roll number.
+Setters set roll number set.
+Age.
+Set.
+Name.
+Set.
+Father.
+Name.
+Set.
+Mother name.
+Set.
+Subject.
+So all this setter methods.
+Right.
+And just to differentiate between an engineer student builder and MBA student builder, the one set
+subject method, I have just differentiated it just to show you that we can have multiple builder also.
+right.
+So in the engineer student builder the subject is DSA, OS Computer architecture.
+And in the MBA student builder we can have economics, business study, operation management.
+Okay.
+So they have certain methods.
+They have certain methods.
+Certain methods set rule number.
+Set subject set age.
+Similarly it is also had certain set rule number set its own subjects set age.
+Right.
+And what I told you right here in each method.
+Currently it is in mediatory form.
+And it would be what would be the return type builder itself.
+So here if you see that for all the return setters, what is the return type builder itself.
+Right.
+We set it and return the builder itself when we return the final object during build method.
+So we will have build method.
+So we will have build method and build method will return the final object.
+What is the final object.
+Student.
+So here if you see that I created a build object build method.
+Build method is returning the final object a student.
+So new student and pass the builder.
+And from this builder this parameters the final students get filled up.
+Okay.
+Second layer got properly clear this builders right.
+So this is where this is the most important part.
+Like so we are creating a builder.
+So which has similar properties.
+And it has this methods.
+And these methods return types are builder itself.
+Right.
+And we have a build method which ultimately returns the student in this case.
+And there become a third layer, which is nothing but a director, which is called as director.
+So director is nothing but which calls this methods in a particular manner.
+So I told you that we have like first we have to call, let's say add wall, then we have to put roof.
+Then we have to put door.
+Who will who will direct it.
+Director will direct it.
+Right.
+So we are not we are just a student.
+Right.
+So for us it's a setter method.
+So we can call in any manner.
+So but director can take a responsibility.
+Right.
+Okay.
+In which order.
+I can have to call the method.
+And after that when that particular, uh, object is done I can call a build method.
+Right.
+So director method is the one which has the builder object and then it calls the method.
+So let me show you the director method here.
+So director method has a builder Whether it can have, let's say, engineering student builder or MBA
+student builder.
+Right.
+So based upon a builder, it will construct a student.
+How in step by step.
+So here it is calling a method.
+First let's say this it is storing the engineer student builder.
+So this method will get invoked.
+So now it is calling hey call set roll number.
+Now set roll number is builder itself.
+Then for this builder set age set name set subject.
+And ultimately we'll call the build.
+And then it will return the student.
+So you got it right in this our student use case.
+There is no sequence right.
+But you got it right.
+What is the director uh usage.
+It can provide you help you in the some business logic and sequencing also.
+Hey call this step one.
+This is step two.
+This is step three.
+Now my complete object is done.
+Now call the build object.
+So similarly for MBA, put a roll number.
+Put an age put name.
+Hey I also need another name and another name for MBA.
+So I have added that.
+But for engineering student I don't need I didn't added that and last it calls the build.
+So till this point everything is mediator.
+It's a builder only and last it will call the student.
+Okay, you got it.
+The use of director director is the one which guides like, which invokes the method and calls the build
+method and ultimately returns the object to the whom to the client.
+So now client will call director right and pass what student he wanted.
+So now if you see the client method clients calls to director it created director one, director two.
+And for the director one it passed engineering student.
+And for the second director I passed MBA student.
+All it has to do is create student, right?
+What it called create student.
+That's all.
+Nothing much.
+Now, if you see that client looks very easy.
+Hey, just create me a student.
+Director will do that, okay?
+You have engineering student.
+Okay, I'll call its method.
+Whatever it's required to create an object of this engineering student.
+I will call this method and then call, build and return you an object.
+It will say hey okay it is MBA student.
+I will call this method.
+And whatever methods are required to build an MBA object, maybe step one.
+Step two.
+Step five.
+Not all.
+I will create an object I'll call build and then return it.
+You got it right.
+Easy.
+So this is your builder design pattern.
+And with this one I'll tell you why it is getting so much confused with decorator.
+It's the whole culprit is bizarre example.
+I'll tell you why.
+So first of all, builder design pattern is your Creational design pattern.
+Creational design pattern means it is responsible for creation of an object.
+And decorator design pattern is your structural design pattern.
+Structural design pattern is like helps you in creating a complex objects right structure like upon
+building a structure, right?
+So it helps you in creating a complex object with a small small objects.
+And it helps in creating an object, not constructing.
+Right.
+Not constructing the structure.
+Now the culprit is bizarre example.
+Let's understand with the pizza example how they differ.
+So now let's say we have a base pizza.
+We have a base pizza, so this base pizza can be decorated with cheese.
+I will take a small example.
+I will don't make it too big.
+Mushroom.
+Only two things.
+So this base pizza can be decorated with cheese.
+And then this again.
+This again itself is a pizza only.
+And then this again can be decorated with mushroom.
+And this again is pizza only.
+And ultimately you get a pizza.
+Okay.
+Understandable.
+But how we can solve it.
+Builder design pattern right.
+Can builder design pattern be used to create a pizza?
+Let's see.
+So here let's say my the where we take a student.
+So now here I have a pizza.
+And pizza has lot of optionals right.
+So let's say it is base.
+So it is base is let's say crust could be thin crust thick crust whatever.
+Let's say this is mandatory.
+What are its options?
+Let's say cheese.
+Cheese is optional.
+Possible, right.
+Mushroom.
+Mushroom is optional.
+And there could be many.
+But I told I will take simple.
+So let's say this is my base pizza.
+Like kind of a normal pizza class.
+Then what is the second layer?
+Pizza builder.
+Right.
+So this might be an abstract or interface which will have all these things now.
+Pizza builder can be many like let's say I have, uh, pizza plus cheese.
+Base.
+Pizza plus mushroom.
+Builder.
+Builder or I have base Pizza Plus or let's say for now, this two base Pizza plus cheese builder base
+pizza plus mushroom builder, right.
+These two builders I have, and let's say I have a director.
+So director will say that.
+Hey.
+Okay, you need to create, uh, base pizza.
+Normal pizza with cheese.
+Okay.
+So what it will do is it will call its steps.
+Let's say add add crust.
+It will have one method add crust.
+Right.
+This will also have method add crust.
+So let's say it is adding thin crust.
+Then it will have method add cheese.
+So it will call.
+So director will call that okay.
+You want this pizza I it will take out this object and then it will call its method add crust.
+Then it will add add cheese and then it will call build and return the pizza.
+Now the second time you want the hey I want pizza with mushroom.
+So it will take out okay.
+This is the constructor.
+This is the builder.
+So it will call its method add crust, add mushroom and then build add crust add mushroom then build
+and it will return an object.
+Now where the decorator and builder got differ.
+Now let's say you got another request.
+Hey I want this pizza plus cheese plus mushroom.
+Will you able to do it?
+No.
+Because builder design pattern cannot handle dynamic request.
+You have to create one class based pizza with plus cheese plus mushroom.
+This is all its steps built.
+So it it.
+Okay.
+You want this builder.
+Then it will call its steps and then build.
+But with the decorator this can support dynamic.
+Using this it can support dynamic.
+So I hope you got the difference builder.
+With builder design pattern you cannot support dynamic nature of an object.
+But with decorator even the dynamic representation of an object.
+Any use case we can support.
+Okay guys, I hope you got it.
+The builder design pattern or or your code already have description, so go ahead and if there is any
+doubt let me know.
+I can also take one live session on it to clear more doubts, but I hope this would get cleared.
+Your doubts with the builder design pattern.
+Okay, guys.
+Bye.
+Good night.

@@ -1,0 +1,345 @@
+# Command Design Pattern (Behavioral Design Pattern)
+
+So.
+But before we I tell you about command design pattern, let me first tell you a simple use case and
+see what problem exists today, which and how command design pattern solves it.
+Right.
+So let's take this example.
+So as I told you, what things comes to our mind is generally remote control text editor cut copy command.
+So I have taken a use case of remote control right.
+So I have created one simple class air conditioner.
+Class.
+Right.
+And what does air conditioner has whether it is on or off and its temperature.
+So I have declared one method turn on the AC where I'm changing this flag to true and system is on.
+Similarly, I have turn off the AC where I am making this flag to false and your AC will be now off
+state.
+Similarly, I have one temperature set temperature method where whatever the user wanted to desired
+temperature to have, it will put the temperature in the input, we will set the desired temperature.
+Okay.
+So this is very very basic air condition class.
+And this is your client and how client use it.
+It first has to create an AC object.
+Yes AC now exists.
+Now it will operate it.
+It will turn on the AC.
+It will set the temperature and turn off the AC.
+Very simple.
+Do you see any issues in this?
+Right.
+Do you see any issue?
+Stop the video.
+Think about it.
+Put it into the comment.
+What all issues do you think?
+Then proceed further.
+So let me tell you what all the issues I see in this example first issue which I see is your lack of
+abstraction.
+So here, if you see that the client has to has the knowledge of okay, turn on the AC, set the temperature,
+turn off the AC.
+What if tomorrow today it is very simple.
+One method.
+Turn on the AC.
+AC got turned on.
+What if there are a set of methods is given and these set of method has to be performed to turn on the
+AC.
+Let's say that there is not.
+No one method exists.
+Turn on the AC.
+There is certain steps or set of methods exist, and these method has to be executed to turn on the
+AC.
+Let's say then client has to has the knowledge about that.
+Okay, if it want to turn on the AC then it has to know about all these steps.
+Right.
+So there might be many, many internal sequence of steps might be happening when you click on the button
+turn on the AC.
+So what I'm trying to say is that let's say this is a very straightforward example, but let's say in
+the real world, if air conditioner class has so many methods and there is nothing like turn on AC method,
+there might be a certain small small methods existing and you have to perform those steps to turn on
+the AC.
+Then client has to has the knowledge about of all it and any change on those steps client get impacted
+also.
+So first thing is lack of abstraction today.
+Process of turning on AC is simple, but if there are more steps client has to aware all that which
+is not good.
+So that is first problem I see is there is a lack of abstraction.
+Second thing is undo redo functionality.
+So see whenever sometimes uh things is like command control C, control V these are all command copy
+command delete command paste command.
+The one thing which comes to my mind is how you will undo the operation, how you will implement the
+undo operation, how you will implement the redo operation.
+Right.
+So in this let's say for this example, if you have turn on the AC, if you have to undo it right,
+how you will do undo it.
+Is there a way you will.
+You will call another command turn off.
+But that's not undoing.
+So let's say you have invoked ten times certain commands now, and you have to undo it.
+Right.
+So that capability, how you will build it here in the simple.
+Right.
+Because we are talking about command.
+And you know that wherever the command happens, it's possible that we have a feature called undo.
+Also, this is a very, very important interview question.
+Also how you will perform or implement the undo redo operation.
+Right.
+So that things which is like what if I want to implement the undo redo capability, how it will be handled.
+Well client gonna handle it.
+If yes, then that's a very, very bad design.
+If client has to keep the knowledge about what all command it has or what all command and the sequence
+of commands it has given, and whenever undo has been done, it has to do in the reverse order.
+So client never should have knowledge about this.
+It just give like okay I need to do undo.
+Then who will do?
+Will air condition will do.
+No.
+Air condition is a dumb operation like dumb object.
+It's like on if somebody will say hey, turn on, it will get turned on.
+If somebody will set the temperature, it will get temperature.
+Why?
+It will take a responsibility to do the undo operation.
+So who will do so in this design I would also see a problem of undo redo functionality.
+It's very difficult to implement.
+The third one is difficulty in code maintenance which I see.
+So what if in future we have to support more commands for more devices?
+So let's say today we have air condition.
+Let's say we have another called bulb.
+So today was only air condition.
+Let's say I have added another bulb.
+So bulb also has something called is on turn on bulb.
+Turn off bulb right.
+So does client.
+Should have now air condition functionality.
+Then it should have a bulb control functionality.
+Turn on the bulb.
+Turn off the bulb.
+Right.
+So that become code maintenance become very, very difficult.
+If there are hundred devices will now client will become has to know about all the hundred devices also
+right.
+So it become become very very difficult in code maintenance because your client will become very very
+bulky and very, very tight coupled with these objects.
+Right.
+Anything got changed into this client will get impacted.
+So these are the three major issues which I see today.
+It might not be an issue very simple.
+But because of this three in future development it might cause an issue.
+Okay.
+So now how to resolve it.
+How command design pattern resolves it.
+So what command pattern does it.
+It divide the logic into three parts.
+So there is simple.
+In this simple air condition and client it divide.
+It identifies the three things.
+Who is the receiver?
+Who is receiver?
+So it put receiver code into the receiver class.
+Then invoker who is the invoker?
+He put the invoker related code here and there is something called command okay.
+So now invoker generates a command and this command is intended for particular receiver okay.
+So now your client use this invoker to generate a command which is intend or control a particular receiver.
+So now let's see this the same example air condition with the command design pattern.
+So first of all let's see this the receiver.
+So air condition I told you it's a receiver.
+So it's the same example I have used as the above.
+It has two things is on temperature.
+I have a method.
+Turn on AC, turn off AC.
+Set the temperature right.
+Very simple.
+This is a receiver.
+Okay then what I need was is this command.
+So invoker use this command to control the receiver.
+So there is a something called now command.
+This is the second part is command.
+So this is your first part receiver.
+Second part is your command.
+So in command there can be multiple commands.
+It's not like so remote has let's say 20 buttons.
+So for each button there could be a different different command let's say.
+So I have created an interface.
+Interface command I command right.
+And I have put one method execute.
+So I have created different different command.
+Turn AC on command.
+Turn AC off command.
+Similarly, you can put another, let's say, uh, set temperature command.
+Right.
+Just I'm saying what all different, different things can come.
+You can put other different command with one remote control with one.
+Like what?
+All commands are possible through one invoker.
+So this is your invoker, like a remote.
+So one particular invoker can generate what all commands.
+You can put it here, expand it.
+There could be 20 command, 30 command 40 command.
+No matter what.
+Whatever the invoker can generate a command, you can put it here.
+Okay.
+But let's say for this example, I have taken that only two commands are possible.
+Turn AC on command.
+Turn AC off command okay.
+So this is an abstract method.
+So both the classes concrete command class has to implement the this right.
+So here if you see that they have an object of what receiver.
+So that's why I have put that the concrete command class has receiver.
+Right.
+So here we have an AC object.
+So this I am using the constructor to initialize this object.
+Right.
+So now but this is the main part.
+So here I am using this AC dot turn on.
+And in the turn off command what it is doing calling the method turn off.
+So one thing you might have noticed that what we have done is so this turning on logic, turning off
+logic, I have put up in an appropriate command class right today.
+It is very simple, but maybe in future if this get changed, only this particular command class will
+get changed.
+If there is a change in the receiver to do a particular command, only particular command class get
+changed if the process of turning on the AC gets changed.
+Only this particular class turn AC on command will get changed, right?
+So they have the receiver object and through this they are performing their command.
+Okay now this is the third which is invoker.
+So here I have my remote control.
+So I told you that this remote is your invoker.
+So this remote has, you can say that button which generates a command.
+So they have access to command.
+So here remote control has command object.
+It has remote control has command object.
+Right.
+So now I am setting the command whatever the command whichever the button client will press that command
+will get set into this.
+And whenever the button is pressed what it will do is command execute command dot execute.
+Okay, so it will make sense with this.
+Now now let's say this is the client.
+So first I am creating an object AC object.
+So let's say AC got exist.
+Then I am creating a remote.
+Let's say remote now remote exists.
+Now what I am setting is.
+So let's say there is one button.
+Understand that remote has only one button right?
+So and the remote object I am setting a command.
+What is the command I am setting?
+Turn AC on command.
+Okay, so in the remote control I am setting the command.
+What command?
+I am setting one particular command.
+Right.
+Let's say I put turn AC on command here.
+So this command has turn AC on command.
+So I have set the command here.
+Turn AC on command okay.
+So this is has the turn AC on button now.
+So this is the real code of the object.
+So till now what I have done is I have I've done a setup, I have a setup for the AC, I have created
+the remote, I have done the remote has a button which internally might be.
+I have set up the turn on AC command.
+Okay, so now this is actually what clients are interested in.
+Client will just simply press the button.
+So now client will simply press the button.
+Press button.
+Now what will happen is remote object my control press button.
+So this method get invoked.
+What it will do command dot execute.
+What command it has is this button already has turn on AC command set right.
+So turn on AC command so it will call dot execute.
+Turn on AC command execute.
+It will turn on the AC.
+It will change its status okay.
+So now here if you see that the client here the client doesn't have to worry about it all.
+Have to worry about Press button, that's all.
+It doesn't have to worry about anything.
+This three line of code set up AC object remote.
+This is.
+You can say that for testing purpose, we have to create.
+We have to create an AC.
+We have to create a remote.
+We have to create a button for that one.
+Right.
+But all client has to do is press the button.
+Once it press the button the in the remote control.
+When it press the button, a particular command will be used to invoke the.
+Receiver particular method.
+Okay.
+Got it.
+So now the question comes is hey how you will perform the undo redo functionality.
+Let's say interviewer has asked me design the copy paste undo redo functionality of a text editor how
+you will do it.
+So I have solved this simple with this is like the same thing.
+First receiver is there.
+Does receiver change?
+No, it is exactly the same.
+Turn on AC, turn off AC, set temperature so there is no change in the receiver.
+Second this is your command.
+So here I have added one method undo.
+So for each command whatever it's this is exactly same as the previous one I'm setting using the constructor
+to assign the air condition object.
+And in the execute what this command is turn on.
+So in execute it will turn on the AC.
+Then I have one more method undo.
+So what it will do is undo what it has to do.
+It has to do turn on the AC undo in this it will do turn off the AC.
+Similarly turn off command.
+What execute it has to do is turn off and undo its turn on opposite right.
+So I have added one undo method here.
+Third is your invoker.
+So this is your remote control.
+So here what I have done is because from the remote control from this invoker, I will generate the
+command because here whenever I press the button, I am generating one command, right?
+So here I have used a stack command history.
+Right?
+So now what I am doing is this is exactly same.
+I will set the command which command I want to invoke.
+Assuming the same thing a remote control has, let's say only one button.
+And whenever you press a particular button, one of the command will get generated, which I will set
+into here.
+So I will set the command first.
+And whenever a particular button get clicked press button.
+It will execute that command.
+So let's say I have turn AC on command.
+So it will call its execute option.
+But I am also adding into an stack a stack of command.
+So let's say turn on AC command.
+Second time button pressed it will again add into stack.
+Turn on AC something right.
+So what I'm trying to say is that in the remote control, which is an invoker, which is the place from
+where the command get generated, you can put a stack and whenever the command is generated, you can
+put that command into a stack here.
+Right.
+And what will happen is it can we can expose one undo method here in the invoker itself.
+What it will do is it will check the stack and pop up the last element.
+So last element would be one command only.
+Right.
+What.
+Because we are doing different command.
+So it take out a one command.
+And now what it will do is it will do call the undo operation.
+So if command pop out or turn AC on it will call its undo operation.
+It will turn off the AC if the top command was turn off the AC.
+So it will take out its undo.
+It will do turn on the AC and the client simply has to do it.
+This is just a setup.
+I have set up an AC.
+I have now a remote and let's say in the remote.
+I have set the command to turn on the AC.
+Turn AC on command.
+Right now I am just pressing the button.
+What it will do is press button.
+It will command or execute.
+It will turn on the AC and after that it will put into a stack, uh, this command.
+Right.
+This is the command turn AC on command.
+It will put into the stack.
+Now I want to do undo.
+I will just simply call undo method.
+What it will do is it will take out from the pop okay.
+Turn AC on command.
+It will call its undo method.
+It will revert what it has done.
+So here if you see that client doesn't have to worry about the undo redo functionality, it just okay
+guys, hope this is helpful.
+Right.
+And if you have any doubt, please feel free to ping me on the comment section.
+Thank you.
+Bye.

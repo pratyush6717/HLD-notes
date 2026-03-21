@@ -1,0 +1,716 @@
+# Handle Distributed Transactions | Two-Phase Commit (2PC), 3PC and SAGA Pattern
+
+Hello.
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And today we are going to do a very very important question in high level design which is distributed
+transaction handling.
+So I'm making it tick Mark.
+Right.
+So this is the question which has been asked to me also in so many interviews.
+Right.
+So no matter you have two years of experience or if high level design round is happening, this is something
+which is very, very, very important.
+No matter two years, five years, eight years, no, this is something which everybody has to know.
+If you are appearing for a high level design interview and apart from interview in the Daily, as a
+software engineer, when you are working in a company, this is something you're gonna deal with it.
+Okay.
+So let's start with this.
+So transaction handling in distributed system.
+So before even doing this first understand what is transaction very quickly.
+Then we'll jump into how to handle it.
+So transition is refers to a set of operations which need to be performed against the DB.
+Right.
+Or we can say that it's a simply say group of tasks which need to be performed against the DB, right?
+For example, this is your DB which has record for A and B, let's say A has ₹100, B has ₹50, and
+you are doing it from ₹100 credit to B ₹100.
+So here, if you see that this is one transaction, right?
+Let's say I can create one transaction and this is the set of operations inside it, right?
+This set of operation has been performing against the DB, right.
+So I can make this as a transaction.
+Right?
+Which is is a set of operations which are performed against the DB.
+Now, what are the properties of a transaction you might already heard about?
+Asset property first is atomicity.
+Atomicity says that all operation in a single transaction should be success or all should fail.
+Let's say this is a transaction.
+It has two operation, right?
+Let's say first a debit a ₹100 is getting executed.
+This got success.
+Now credit B ₹200 to B.
+Now let's say this got failed.
+So according to this one, this property, what will happen is even the A will get rollback because
+it will say that either all should be success or all should be fail, right?
+So if any transaction or any operation in a transaction get fail, all the success one will also get
+rolled back okay.
+Second is consistency.
+So before the transaction let's say this before the transaction, what is the state of the DB ₹100?
+B is ₹50.
+So this is before.
+After the transaction has been done, what should be the state?
+A should be debit from a 100.
+So it should become zero B credit.
+It should be ₹150.
+Okay, so what does consistency say is that DB should be in consistent state before and after the transaction.
+So this is a consistent state before the transaction after this transaction has been performed on it.
+This should be the state.
+So this is again a consistent state.
+But it should not be like A has been done 100.
+It makes zero but B got failed and nothing happened.
+So B is still let's say ₹50.
+This is inconsistent.
+It should not be like this.
+So before and after the transaction DB should be inconsistent.
+State isolation.
+Isolation says that if there are more than one transaction that is running concurrently.
+It appears that they are running in a serialized manner, right?
+So it is possible that there are so many transaction happening.
+So this is one transaction debit from a ₹100 credit to be let's say ₹100.
+There could be another transaction running which says that debit from be let's say ₹150 credit to see
+₹150.
+Right.
+There could be more transaction happening.
+But isolation property says that even though they are multiple transaction happening concurrently because
+they are going to.
+So each DB operation is going to put a lock.
+You know that whenever you touch a row, insert update anything, it put a lock, right.
+So isolation says that.
+So whenever there are concurrent transactions happening, right, because of this property, it will
+look like they are happening in a sequential, let's say first transaction happen, then transaction
+two happen, or first transaction two and transaction one all of its operation together, all of its
+operation together.
+But it is not like that a set of operation one is this transaction one operation.
+This is transaction two.
+This is transaction one.
+This is transaction two.
+No, it will always be like sequential manner.
+First either all transaction two, then all transaction one or all first transaction one then transaction
+two.
+That's what isolation property says.
+And last one is durability.
+After the transaction successfully successfully completed, no matter even if the DB fails, data should
+not get lost.
+That's what it say.
+Even if your DB get failed after transaction is successful, data should get persisted.
+Okay, so now you know high level.
+What is transaction.
+Okay.
+So and you might know already done this in your coding.
+Now let's say you have a DB.
+Currently you have let's say one DB right.
+So you have two rows A and B.
+And when you are creating a transaction.
+So let's say I am creating a transaction now right.
+So this is I'm creating one transaction.
+Begin transaction.
+And you know that whenever you begin a transaction you create you create a transaction on a particular
+DB.
+Now let's say your DB name is T, right.
+So you are starting this transaction on t t db.
+This is the DB name.
+Right.
+So now withdrawal money from ₹100.
+So let's say this is all already has 100.
+This has or this is a has ₹200 B has ₹100.
+So withdrawal withdraw money from a so it will.
+What it will do is it will put a lock here.
+It will put a lock here and update it to 100.
+So now if you see that lock is currently exist deposit money to be.
+So it is now going to touch this b row.
+So it will before it.
+First it will put a lock here.
+It will increase it to 100 200 right.
+If all success.
+Yes.
+This is also successfully updated.
+This is also successfully updated both the operation.
+Then it will do commit.
+So now after the commit lock will be removed and the changes will get persisted properly.
+Right.
+Otherwise, if any of the operation get failed, let's say A got success, B got failed, we will do
+rollback.
+So all the success one.
+Also we will revert the changes back, right.
+And ultimately we close the transaction.
+So this is work fine.
+Why?
+It will work fine.
+Because we are dealing with only one DB and all the operations are in A for a particular one DB.
+But now let's say if I ask you, hey how to handle this in distributed system where operation involves
+multiple databases.
+Or another way of asking is as transaction is local.
+I told you transaction is local.
+So local in the sense is only one particular DB it can run as transaction is local to a particular database.
+How we will satisfy the transaction property in distributed system.
+So now if you see this example right now here in this example, let's say you are purchasing something
+from an e-commerce.
+And you know that in e-commerce, uh, both order and inventory get touch whenever you buy something.
+So now let's say we have two DB.
+One is order db and let's say another is.
+Inventory db.
+Okay.
+So now I told you that transaction is local to a particular database.
+So you can have transaction here.
+And you can have transaction on this DB also.
+Right.
+All the asset properties you can have here.
+And for this transaction you can have maintain the asset property here.
+Right.
+Now what you're trying to do is you are trying to update the order DB let's say order count was uh order
+certain count was 100 and you want to increase it by one.
+So you update the order DB by one.
+So here the transaction is local.
+So it will change it to let's say 101 and done completed.
+So this got persisted.
+Fine.
+Now you are wanted to update the inventory DB.
+So let's say you wanted to, uh, so inventory count was 500.
+You wanted to reduce by 100.
+You wanted to make it 400.
+But this got failed.
+And when this got failed, it will only roll back if on this DB, if there is any more transaction.
+Right?
+Since there is no any other transaction, it it won't roll back this one because this is another DB,
+right?
+So this will not work whenever you are.
+Whenever you are set of operation includes multiple databases.
+You can't use the transaction one transaction because transaction is local to a particular database,
+right.
+If one database is done that got persisted.
+If another operation in another database got failed, it can't go into another database or transaction
+and rollback that one, right.
+Because transaction is local to a particular database, right?
+So they have their own transaction manager.
+They have their own transaction manager.
+Now what how to handle this situation.
+So we have three ways to handle this situation.
+Very very important.
+Don't even miss this one.
+So first is two phase commit which is very popular and very much used three phase commit which is an
+improvement of two phase but not much used because of complexity.
+Saga pattern is still used very much.
+This is also used a lot, right.
+Because it solves a different set of problem itself.
+But it takes care of the distributed system transaction, right?
+now.
+Let's see, uh, one by one.
+And just make sure that you understand the concept and all the interview question has been asked.
+I will share all the interview question that has been asked to me on top of this also.
+So now let's say two phase commit.
+As the name says, there are two phases in this protocol.
+One is voting.
+Or you can say that prepare phase, another is decision.
+Or you can say that commit phase.
+So prepare or commit or voting or decision.
+So there are two phases.
+Now let's understand with this one.
+So here in the two phase commit.
+We need something called transaction coordinator.
+So transaction coordinator is the one which interacts with all the participants.
+So participants here in this case is you want to update order and inventory DBS right.
+Let's say they are microservices.
+So one participant is order, another is inventory.
+Right.
+So these are the two participants.
+And coordinator is the one on which this coordinator support both the participant.
+Right.
+So that is the prerequisite that coordinator should have supported the all the participant on which
+you wanted to perform the set of operations.
+Okay.
+So now let's say application says that hey these are all my set of operations.
+Now do it.
+Transaction coordinator.
+So what transaction coordinator will do.
+It will first start the transaction and whatever the operations.
+Or you can said that the transactions are the set of operations which we have to run.
+It will pass this to all the respective microservices that hey update yourself update let's say update
+query to inventory.
+Also update query to this.
+So till now we are good that we send the.
+We started the transaction coordinator and it set the update query to the order microservice.
+Also it set the update query to the inventory inventory microservices.
+Let's say the same update query is like update order db update inventory db.
+Let's say okay.
+Now the phase one begins after this one.
+So now in the phase one what is the phase one prepare phase or voting phase?
+So here in the phase one the coordinator asked all the participants that are you prepare.
+Are you prepared to commit.
+Right.
+So it send this message to the participant inventory also.
+And it also sent it to the order also.
+Are you prepare Appear.
+Then if you see that this operation order is successfully able to put it.
+So now you know that whenever any update operation comes, order will have put a lock in its transaction
+and made the changes right.
+Inventory also has put the lock on its row and made the changes, but not yet committed.
+But it has made the changes in the DB but not yet committed.
+Okay, so now let's say it successfully updated it.
+It successfully updated it.
+So order will say that yes okay I am prepared to commit inventory will also say that yes I am also prepared
+to commit.
+So now in the phase two begins.
+So in the phase two when coordinator get all the responses from the participant.
+If all the participant says that okay, yes, we are prepared to commit, then what it will do is it
+will do decision making Right.
+That's why it is called decision.
+Second phase is also decision or commit.
+So now it will do take a decision.
+Okay.
+Everybody is ready to commit.
+Prepare to commit.
+Yes.
+Prepared.
+Then it will send the commit to all the participants.
+Hey let's commit okay.
+And they will just say that.
+Yes.
+Done.
+If any of the operation let's say.
+Let's say this.
+If update is successful in order.
+But update operation is failed in inventory.
+Okay.
+So it would have it it the update of the inventory is failed.
+What it will do.
+So in the phase one it would have sent prepared.
+So order is success.
+So it would send okay.
+But inventory this update query got failed.
+So it would say that no write not prepared to commit.
+Now in the phase two, if what it says that it will send the commit only if it get okay from all.
+But if anybody says that no, what it will do is it has to abort.
+So it will send abort message.
+Hey abort to the inventory and abort to the order also.
+So it will send abort to the all and it will abort it.
+So even whatever the query got.
+Uh, updated DB, but not yet committed.
+So now because inventory is failed, it send the node to the coordinator.
+The coordinator take the decision that okay, one of the participant is failed.
+Then I have to abort everybody.
+So it will send abort to all the participant.
+And then it closed the transaction and return okay.
+So this is very simple, right?
+We haven't discussed now the actual interview questions come.
+What kind of issue can come.
+One is transaction coordinator can fail.
+Second participant get failed okay.
+Because of these two things, what else can happen is because of these two things, what all can happen
+is either this prepare message.
+The prepare message is lost.
+Prepare message lost means participant haven't got the prepare message because let's say coordinator
+got failed.
+What could be the other problem can come because of this transaction coordinator fail and participant
+got failed.
+Or it could be possible that this okay message got lost.
+This is also get lost.
+Let's say uh, participant got filled.
+Participant.
+Couldn't able send the okay message.
+What all program can come is, uh, if coordinator get fail, let's say it couldn't even send the decision.
+Either commit or abort message is lost.
+This message.
+This message is lost.
+Let's say because of coordinator is down.
+So all these three problems can come.
+All these three problems can come because if anybody of this get failed.
+Okay.
+So now how it deals with it.
+So before I tell you how it deals with it, just remember one thing that they also maintain a log file.
+Okay.
+So now let's see what will happen is now here the coordinator when it is sending a prepare message.
+So it will also have this log file.
+So this log file is you can say that it's a permanent storage.
+This is a permanent storage.
+So in the log file it just says that send let's say prepare message.
+Okay.
+Now participant has got this one.
+Now the participant will say that yes you can I am okay sending the okay.
+So each participant can maintain their own log file also.
+So here order microservice maintaining one log file inventory microservices also maintaining one log
+file.
+And it will say that yes okay I am sending okay.
+This will say that okay I'm sending okay.
+Now in the phase two let's say this coordinator has made the decision.
+So it will update its log file in the log file we already have let's say prepare message okay.
+And now it will say that let's say it has taken a decision that, yes, I have to commit.
+Everybody has said, okay, okay, all participant has said, okay, I am taking a decision that I have
+to commit.
+So it will first write its decision into the log file commit.
+This is a permanent one okay.
+And then it will send it.
+And when it send it each participant can also write that what they got whether.
+Yes.
+So earlier they send okay okay.
+Now they can even write.
+Yes.
+Commit commit.
+They got commit.
+Right.
+So what I am trying to say is that coordinator participant they before taking every step before sending
+a message.
+So coordinator before sending a message to the participant right in a log file.
+Right.
+And similarly participant before even sending the response it also write in their log file.
+So each and this is the permanent storage.
+So anybody got failed and they come back, they can see their log file and see what happened last,
+but how they will use this log file.
+Let's see this.
+But what are the possible use cases.
+So now let's first see this.
+What happened to this use case.
+This use case when prepare message get lost itself okay.
+So now let's see prepare message get lost.
+This message got lost.
+So now what will happen okay.
+Inventory has already put a lock on a transaction.
+Right now it's prepare to commit message from the coordinator.
+It didn't get it.
+Waited for a particular point of time.
+It didn't get.
+What it will do is it will do abort.
+It will do.
+Abort the transaction.
+So inventory what it inventory micro services after it has updated its operation.
+It has put a lock.
+Now it waited for the transaction coordinator to send a prepare to commit message.
+Prepare message right.
+It didn't get it.
+So what it will do is it can assume that yes code.
+There might be some issue at the coordinator.
+So it is fail to it is safe to do the abort.
+And it is possible that after participant two has done the abort.
+Now after that a prepare message comes what it can send.
+It can simply say no.
+And when the coordinator receives no, it will abort all the participant.
+So this is safe to do.
+Abort.
+If prepare message is lost okay, this makes sense.
+Now let's say the second use case.
+What if.
+Okay.
+Message was lost.
+What if this message was lost?
+So let's say coordinator has send the prepare message right.
+And now it is waiting for the participant to return me a okay message.
+Now let's say it.
+It got the okay message from order.
+But from inventory this message is lost.
+Maybe because inventory microservices might have down.
+So what it will do.
+So transaction coordinator will wait for some time after the timeout happen.
+It will do abort right?
+It will abort the transaction.
+Transaction coordinator will abort the transaction.
+So this decision will be taken by transaction coordinator.
+Transaction coordinator will abort the transaction.
+And here participant.
+Abort the transaction.
+Because prepare message was not sent by coordinator here.
+Participant hasn't sent the okay message.
+So after a particular point of time, abort has been happen.
+So now let's say after some time this inventory comes up.
+Now it is up.
+Now it will say that, hey, what happened to this transaction where I have put the lock?
+Now, what happens to this transaction?
+Shall I do abort or shall I do commit what I do?
+So it can simply ask the coordinator, hey, what shall I do for this transaction?
+Coordinator can check its log and say that.
+Okay, we have done the abort.
+You can do the abort.
+Okay.
+Here you can say that abort.
+The transaction is a safe state.
+Now the third part is what will happen if the commit message.
+Get lost.
+If this get lost now, what will happen?
+Now, this is where the problem happens.
+Because this is where it is blocking the whole system, blocking the whole two phase protocol.
+So now here, if you see that between this phase.
+This is known this is a blocking phase.
+Because now let's say a participant has sent okay okay.
+Now just understand with this this is very important.
+So this is coordinator this is participant.
+It has sent prepare.
+It has sent okay okay.
+Phase one done.
+Now as a part of phase two.
+Now let's say this message got lost or this goes down coordinator goes down.
+Now what it will do participant.
+Because there could be so many participants, it is possible that the commit message has been sent to
+it.
+Okay.
+But this participant.
+It didn't get anything.
+Now what it will do.
+So it is blocked.
+Now it has to wait for the coordinator to come up and then it will ask, hey, what happened?
+What happened to the transaction?
+Now it will send that hey, whether it is abort the transaction or whether we have to commit the transaction.
+So coordinator can check its log and it will say that what decision he has taken, whether it has to
+commit or we have to abort the transaction so it can identify from its the log which is maintaining
+right.
+And based on the log.
+When the participant asked, hey, what I have to do, then it will tell.
+But here if you see that but participant cannot take its own decision.
+So that's what the issue with this two phase commit is.
+And to resolve this issue only we have three phase commit.
+So now here if you see that in the two phase commit.
+The problem here is the decision which coordinator has taken whether to commit or abort.
+Currently it's holding at a coordinator only participant doesn't know what decision coordinator has
+taken.
+He doesn't know.
+All participant doesn't know.
+So in the three phase commit you can say that the phase two is divided into two parts.
+So prepare phase is same as two.
+It is exactly same as two PC but the.
+The commit phase or decision phase of two PC now has been divided into two parts of the three phase
+commit.
+So one is precommit phase, another is commit phase.
+And in the precommit phase, this precommit phase, what actually has been happening is whatever the
+decision The coordinator has taken whether to commit or abort, it will send it to the participant also.
+Right.
+Only decision.
+It's not say that hey, you commit, you abort.
+No, it is just like I have taken this decision I am sending.
+I am informing you to.
+In case if IAM goes down, you guys should not block because of me.
+You guys use this and take your own decision.
+Now let's see how.
+So this is a non.
+Blocking protocol.
+So here the same thing.
+Let's say I wanted to perform an operation on order and inventory microservice.
+I started the transaction I have.
+Triggered the update query.
+It has put certain log.
+It has put certain lock on its transaction.
+Now the phase one begins in the phase one.
+It is very similar to the two PC.
+Are you prepared to commit?
+It will say okay.
+It will also say ask the all the participants.
+Are you also prepared to commit?
+It will say also okay.
+Now in the phase two.
+Phase two is your pre commit phase right.
+So this is your pre commit phase.
+So now here it will do a decision.
+And what decision it will take a okay I got all okays from all the participant means I am good to go
+with the commit right.
+So it will again.
+It is also maintaining the log file.
+So it is also has a log file also.
+So in the log file it will do that.
+Yes.
+Uh Pre-commit is commit.
+I want to commit because I want.
+I got a okay message from all so it will send a pre-commit message pre-commit information commit.
+Do commit.
+Or let's say if anybody says know what Pre-commit what decision it will say is that abort.
+So it will send the same pre-commit message that you have to abort.
+But what it is actually we are doing is we are just sharing the information.
+We are not telling the participant to commit or abort now.
+No, we are just sharing the information what coordinator has taken.
+Right?
+So it will also tell the order service that this is the Pre-commit message.
+You don't have to commit or abort.
+It is just like what decision I am making.
+I am also sharing with you that say I wanted to commit.
+Okay.
+So it says that okay, so they can just acknowledge it that yes, we got it.
+Okay, now let's say that in the phase three, it is actually the commit phase.
+Now it will actually say that.
+Yes, commit whatever the decision they have make.
+Now they said commit commit.
+And now actually they will actually commit the transaction.
+And they will say that.
+Yes.
+Done.
+Right.
+So now you can ask that how it is unblocking the participant, the previous use case which we have seen.
+So now let's say the same use case.
+The same use case.
+You have a coordinator you have a participant.
+First it sent prepare it send okay okay.
+Now it maintain a log file.
+Let's say all the participant had sent okay.
+So it's prepared to commit is yes commit right.
+It will send one.
+Prepare to commit to all.
+Prepare to commit message.
+But now, let's say after that it got failed, right?
+Say it is got failed after this.
+So at phase three it got failed.
+But prepare to commit has been done and it sent the prepare to commit message.
+So now here, if you see that participants are unblocked how they can check that.
+Hey okay.
+Coordinator has taken a decision that it has to commit.
+So we are safe to do the commit.
+So participant after a timeout they can check their prepare to commit message that yes they got it right.
+Because participant also maintains the log file.
+They will log everything whatever is happening.
+So they will check that yes we got prepared to commit and which they wanted to commit.
+Let's commit it.
+So participant will commit it.
+No problem.
+If coordinator says that abort Participant.
+What it will do is that it will it will check the after.
+If the phase three, it will not actually get abort.
+It will say that okay, in the pre-commit what I got in the Pre-commit it get to know that coordinator
+has taken a decision that I have to abort.
+It will abort it.
+So now it is not blocking on coordinator that what I have to do.
+And when the coordinator comes up again right it will coordinator will check its own pre-commit file.
+Okay.
+I have taken a decision to abort it.
+I will try to do an abort.
+Right.
+So everything is already done.
+So participant is unblocked actually.
+Right.
+But now you can ask that hey what will happen?
+What if this pre-commit got failed itself?
+Let's say this pre-commit before everybody say okay, what about this use case coordinator participant
+Prepare message.
+Okay, now prepare to commit.
+Prepare to commit.
+Message got failed.
+Right now, let's say or before even message.
+You say that even in the log file, there is nothing like a prepare to commit before itself.
+Coordinator got failed right before itself.
+Coordinator got failed.
+What this will do.
+What participant will do right.
+So what participant will do is participant can know that.
+So one more thing which I haven't tell you in the two piece and three piece that or every participant
+knows about each other right.
+Transaction coordinator what message does is it also makes sure that each participant knows about each
+other.
+Right.
+So they can each participant can even query other participant.
+Or you can say that it can query other participant.
+Hey, have you got any message from coordinator or not?
+Right.
+So this capability also present into two phase three phase both.
+So now in this case let's say there are two participant.
+Participant one.
+Participant two.
+So they send the okay now participant one and participant two waiting for the prepare to commit message.
+Prepare to commit message but prepare to message.
+Commit message haven't come.
+So participant one they can talk with each other and they will say that hey have you got any prepare
+to commit message from the coordinator.
+They both can.
+They say no we haven't got it.
+So now they can say that okay means coordinator might have failed even before he knows what to do,
+right?
+Even before what?
+What decision it has to take so they can simply do abort.
+Let's abort the transaction.
+Because it is possible that coordinator might not even have taken the decision and when the coordinator
+comes up, coordinator will check its log, file coordinator will check its log file and it will say
+that hey, okay, what decision I have taken, it will say that I have nothing in my log, means I might
+have not sent any pre-commit message to the participant so it is safe to abort.
+So it will also try to abort it, which is already done.
+Right.
+So here if you see that also participants can use the pre-commit by talking to each other that have
+you got any pre-commit?
+If nobody got means they are safe to abort.
+Right.
+So these are the ways which through which.
+In three phase the participants are trying to unblock themselves.
+Right.
+Uh, from if coordinator get failed, they should not get blocked.
+Okay.
+So but again this is very very complex to build here.
+So that's why.
+Three phase commit is not very popular.
+But there is one more thing is called saga pattern.
+I have already created one detailed depth video of saga pattern, but I will just tell you how it is
+different from two and three.
+So two PC and three PC are synchronous in nature.
+So this is synchronous.
+This is also synchronous.
+This is asynchronous.
+I'll tell you why how it is asynchronous.
+So this is all while transaction is happening in the single flow.
+It's happening and customer is waiting.
+You can say that for a transaction to complete.
+So this is synchronous Saga pattern is asynchronous and also where the Saga pattern use Saga pattern
+is used when it's a long trailing activity or long trailing transaction, and it is not feasible to
+put a 2 or 3 pieces.
+For example, let's say participant one, participant two, participant three, participant four, participant
+five, and transaction happening.
+So now let's say it goes here.
+Then from here it says that.
+Now you do.
+So it has put into its DB.
+So now participant two will do something.
+After it successful it will write into its DB commit.
+So now in saga pattern you will see that one thing is it's a long transaction.
+So many participant involved and it's like a sequential.
+You can say that okay one participant does.
+Then participant two has to do something.
+When Participant two done.
+Participant three has to do something when participant three done.
+Participant four has to do something like this, then it is not feasible that because I told you whenever
+is in two pieces, whenever you do update something, it put a lock.
+It is not feasible to put keep the log till all completed successfully and then release it right.
+It's gonna be very bad if because this is something very long trailing activity which is happening.
+So that's where saga pattern is used in this case right.
+So now here in this case that okay.
+Participant one you do your update committed.
+Now if participant one work is completed it will say that okay.
+Now participant two you can start your work now.
+Participant two will do its update completed.
+Unlock whatever the lock it has put now.
+Participant three only can work one.
+P2 can because it says that if P2 is fail, P3 cannot even start.
+Let's say you have.
+There is a kind of a transaction which is like kind of a sequential in nature.
+After P1, p2 can start P2, only P3 can start.
+So now p2 will make said, okay, I am done.
+You do your work.
+Okay, it invokes it so it will do.
+Update.
+It will write this DB commit p4 writes is db commit now p5.
+While doing an update let's say p5 got failed, now P5 got failed.
+Now what will happen?
+Why?
+I am saying that saga is asynchronous in nature.
+Asynchronous now p5.
+What it will do is it will make P4 to rollback how it might publish an event, it might publish an event
+and maybe some cue that, some message that failed, some message which got failed.
+Now P4 can read this and get determined that okay P got failed, P5 got failed.
+I have to roll back my transaction so it will roll back it.
+When it got roll back, it might make P3 to roll back.
+And when P3 can roll back it might publish an event at which P2 can read and it will roll back itself,
+and P2 can, once it roll back, it will publish a message which P1 can read.
+It will roll back.
+Okay, so now you know how Saga can help in a different scenario.
+So saga is totally you can say that helps in a.
+So this is again a distributed system.
+This is again a one transaction.
+But the thing is this transaction is of long trailing P2 can only work after P1 is successful.
+Right.
+P3 can only work after P2 is successful, so they have to commit it.
+They can't put a lock open lock.
+Put a lock there till all completed, right.
+So if once if anybody fails, they can make others revert back.
+Right.
+But it's in asynchronous nature.
+They can put a queue.
+Publish a message.
+Other previous one can read that message and say that okay what happened to that?
+And it might revert it.
+So you got it.
+Saga so is saga have already discussed in depth, but I just wanted to tell you that saga is asynchronous.
+And what is the use case where Saga try to solve it?
+Two pieces and three pieces are synchronous and this is what their use cases.
+I hope this is very, very much clear.
+But still, if you have any doubt, please let me know in the comment section.
+We can have more discussion on top of it.
+Okay guys.
+Thank you.
+Bye.

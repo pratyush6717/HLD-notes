@@ -1,0 +1,319 @@
+# Iterator Design Pattern (Behavioral Design Pattern)
+
+Hey guys.
+Welcome to Concept Encoding.
+And this is Shreyansh.
+And today we are going to do a iterator pattern okay.
+So let's start.
+So before we jump into how iterator pattern works let's first understand what is the usage of the iterator
+pattern.
+And to understand the usage of iterator pattern there is no better example than Java collection itself.
+So this is the diagram which I have taken from my Java playlist, right where I have explained the collection
+in depth.
+So here, if you see that in the Java collections there are different types of collection like priority
+queue, array, dequeue, linked list ArrayList stack Hashset linked Hashset.
+Right.
+Each stores the data in their particular manner like linked list uses which data structure linked list
+ArrayList using which data structure arrays.
+Right?
+So each maintains the collect the data in their own manner, right?
+But whenever you want to iterate over it?
+Do you client does have to know that okay this is linked list.
+I have to access in this particular manner.
+No okay.
+This is stack.
+I need to access the element in this particular manner.
+Does client bother about the knowledge of how to access the element?
+No.
+So for this collection has provided one iterator method.
+So here in this example I have created a new linked hash set.
+This and I have stored certain data.
+Now it might used uh hash HashMap internally.
+Right.
+Uh on HashMap plus linked list internally to store the data, whatever it would be.
+Right.
+But does client.
+So this is let's say you are this is your client.
+Does client has to have this knowledge about it.
+Like okay if I want to iterate I am accessing linked hash set.
+So it should be accessed in this manner?
+No.
+So client doesn't bother about what type of collection it is, right.
+How the data is stored in this particular collection.
+It knows that the collection has given me this iterator method.
+Once I get this iterator object, I can use Hasnext and next and it will help me to iterate.
+Hasnext will tell that okay, is there any more element?
+If yes, go inside and get me the value out of it.
+Okay, so now no matter if I'm using linked hash set here or Priorityqueue here or stack here, this
+logic will remain the same.
+This will work for all.
+Okay, but you can ask me a question, right?
+Hey, how this actually works, right?
+How this iterator which collections expose this iterator method, how this actually works.
+Actually that this iterator pattern.
+So if you understand the iterator pattern, you will get your answer that how this code works for all
+type of collections.
+Okay.
+So now let's go into deeper.
+It is a behavioral design pattern okay.
+That provide a way to access element of a collection sequentially.
+So that is the first use.
+It helps you to access element of a collection sequentially without exposing the underlying representation
+of the collection.
+You don't have to worry about what is the underlying data structure used to store the data.
+You can it iterator pattern can help you to access the element sequentially, right?
+You don't have to worry about the underlying representation of the collection.
+But how?
+Let's see this.
+So let's see this UML first.
+Then we'll see an example okay.
+So here in this UML what the first we have is iterator right.
+This is the first iterator is the interface which has exposed this two method Hasnext.
+And next.
+Okay.
+So has next usage.
+Is that okay.
+If there are any more element in a collection it should return true.
+And when the next method will be invoked, it should return the value which the current pointer is pointing
+to okay.
+Then it is implemented by the concrete iterator, right?
+So the Hasnext and next implementation is done by this there can be many concrete iterator.
+There can be.
+So this is concrete iterator one.
+Concrete iterator two.
+There can be concrete iterator three.
+There can be many concrete creator.
+And each one can implement their own hasnext.
+And next right Depending upon the data structure.
+Data collections.
+Okay.
+So now let's first understand this with our Java collections how it is done.
+So here if I go here inside this collection.
+So this is the iterator.
+Iterator.
+So there is a class called iterator which is uh it's an interface.
+So this is the interface which is first created in Java collections also package also iterator right.
+It has this two method Hasnext and next.
+Now there can be many concrete iterators.
+Now let's see that which all things has implemented.
+Let's open ArrayList.
+If I open ArrayList let's see which implements iterator okay.
+So here iter is the class which is implementing the iterator.
+So in ArrayList there is something called iter.
+Now here.
+If you see that it has implemented the hasnext.
+If cursor is not equals to the size of the collection means yes, there is still some items and cursor
+will keep on increasing.
+Whenever you call next.
+Right.
+So cursor it will I plus I plus one right.
+And the next will return the element okay.
+So it has its own because in the ArrayList the collection it has to work.
+So it has written its own logic how to how to fetch the next element.
+So what I am trying to say that here you can have as many iterator as possible.
+So each one, each class here has implemented the iterator.
+They have created a class.
+You can say that they have created a class local class where they have implement this iterator and implement
+these two methods.
+So we can have for this iterator we can have many write iterators right.
+And they work on this collections.
+Whatever the collection, if it is a linked list they know that how to do hasnext and next right.
+So this collection we will set it up.
+I will show you an example.
+So if this collection is let's say an array, they will know that okay how to fetch it.
+If it is an stack they know how to fetch hasnext.
+And next.
+Right.
+So they work on this collection and perform this so we can have as many iterator as possible okay.
+Now what is this aggregate.
+Now let's see the third class which is present.
+So aggregate is also an interface.
+So aggregator is aggregate is something which collects the data.
+So here in this example these are all aggregate priority queue array dequeue.
+These are all aggregate array list if you see that.
+They are maintaining the collection there.
+This is the maintaining.
+They are maintaining a collection of the data.
+So aggregate is what aggregate is maintaining the collection.
+It is maintaining the collection.
+Here the list.
+Right.
+So this is just a one example I have taken concrete.
+There can be many concrete.
+Let's say uh for example uh if you are maintaining let's say ArrayList, then as soon as we have seen
+this, it is maintaining an internally using an array data structures to hold the data.
+Right.
+So it would be using array.
+Maybe if you are using linked list it is using linked list data structure.
+So first node second node like last node it is using that one okay.
+But what does aggregate means is it is a collection of data.
+So for this example I have taken it as a list.
+So I am using as it is maintaining a list okay.
+And this aggregate also expose a method.
+Create iterator means it also provide a method which help us to iterate over this collection.
+Right?
+So each whatever the concrete aggregate you will write, they have to provide the implementation of
+this create iterator and they should return an object of this.
+Which concrete iterator you should use to iterate that collection.
+Now let's see an example.
+It will clarify fully, right?
+So now I am taking an example of book and library.
+So here I have created a book very simple class like which has a book name and the price.
+The book constructor is used to set the book and price and this is the getter setter getter method setter.
+I'm using the constructor.
+Okay, so now here I am first creating an aggregate right?
+So aggregate I have created and its concrete implementation I have created is library right.
+So library it is very similar to consider this as this priority queue.
+Eric queue.
+So they are maintaining a collection.
+So for now simplicity I am using a list as a collection.
+So it's maintaining a list of what books.
+Right.
+All these books it is maintaining a list.
+So I am maintaining the list of books and using the constructor to set this variable.
+Okay.
+And in the aggregate interface I have this abstract method where it is a create iterator.
+So a library has to implement provide the implementation for this there it has to tell hey which iterator
+you should use to access this.
+Now, I told you that there can be so many iterators, right?
+So each aggregator has to choose its own iterator depending upon what data structures.
+Right?
+So I define the iterator.
+So here now we see that in a particular interface iterator.
+These are the two methods Hasnext and next.
+So I have written book iterator which implements this iterator right.
+And it has the collection which it has to work on right.
+So I pass this book list from library in this constructor.
+And this gets set right.
+And it will return this book iterator object.
+It will return this.
+So it creates.
+So this create iterator will create the book iterator for this and return.
+Now using this object, we can access over this list of books using Hasnext and next.
+So Hasnext you can say that okay, currently I have put index equals to zero.
+So Hasnext is zero is less than book size.
+Let's say they are.
+What is the book size.
+So for example 1234.
+Yes there are more books.
+So whenever somebody do next I will get that book and increment the index.
+So index will increment.
+So it will become one.
+Then somebody do is there any more data.
+Yes it is.
+More data is present.
+So it will return true.
+Then somebody do.
+Next it will fetch that and increment it.
+It will go to like this.
+So this book iterator if you see help us in iterating the list of books this collection.
+Right.
+So this is the client.
+So in the client I have created a list of books.
+I have created a list of books and I have put four books right.
+I have created a library, and in the library I have set this books.
+Okay, so now my library is set.
+I have set the books like this library has.
+These are the books list.
+Now if I want to iterate now this is the client right.
+So client doesn't bother whether what internally how this library is storing this list of books I don't
+care I want to iterate it so it can invoke the create iterator method.
+Right.
+So I call the create iterator method of the library.
+I got the iterator object.
+So what object it returned?
+New iterator this one right.
+Now what I will do is I will do.
+Hey has next.
+Yes.
+If there is more value dot.
+Next return me the value and I will print it.
+Then again, Lupe will go.
+Has there more value?
+It will say yes.
+Then it will get the value dot next and then print it right.
+And using this index every time I do next index will increment.
+So I will get different different value.
+And once the index will be your for means we are iterating all the elements.
+It will come out of the loop.
+Now there is doesn't matter.
+So currently today we have only library.
+Now let's say you have some other aggregate concrete aggregator or some other concrete aggregator right.
+So now doesn't matter.
+Today you have created new library.
+Tomorrow you can create some new some other class concrete aggregator two class, some other class.
+This would remain the same.
+Why?
+Because they would be.
+They would also have to implement the create iterator method.
+this and they should provide which iterator to use either book iterator you want me to use, or some
+other iterator you want me to use.
+And whichever iterator will do that has to implement this two methods Hasnext and next right.
+So for this client has next and next only it has to know what they will do.
+Hasnext if true, it will return true if there are more value, next will return me the value.
+But it doesn't have to understand what is the logic I have to do to fetch the next value.
+Is it an array or linked list or data structure like whatever it is, stack trees, whatever where I
+have stored the data, all this logic would be present into this iterator concrete iterator to hasnext.
+It will do an next there that there will.
+It will have the logic to fetch right.
+So for client this logic will remain the same.
+You got it.
+So now let's see the collections here also.
+So here the collection.
+This is your what.
+This is your.
+Aggregate right.
+Aggregate expose the method.
+Create iterator.
+So there it has exposed the iterator.
+Right.
+So we have given the name create iterator.
+It has given iterator.
+Now there are concrete aggregate.
+So what are the concrete aggregate aggregate in this collection.
+These are the concrete classes.
+This all pink purple one.
+Right.
+Pink one.
+So these are all the concrete aggregate.
+So now let's go to any let's say ArrayList.
+Right.
+So here.
+Concrete aggregate what it has.
+It maintains the collection.
+So I have already showed you that this is the ArrayList.
+It is maintaining the collection.
+So it is keep on storing the data.
+Now this concrete aggregate also has to implement this create iterator.
+So in this example it was iterator.
+So iterator it has to implement.
+Okay.
+So here if you see that it has implemented the iterator.
+So it is returning the new iterator objects.
+So like we are returning the new book iterator right.
+It is returning its new iterator which is should be used to iterate the collection.
+So now let's go into this one.
+So here it implements the iterator.
+So this is this part.
+So it implements this iterator.
+So iterator is an interface I have already showed you which has hasnext.
+So iter is the one which implements this.
+And it has Has next and next like how to access it.
+It is defined.
+So it is working on this element's data right.
+So if there are more iterators you can add it.
+Right.
+And if there are more aggregate you can add it for each aggregate.
+You can define which iterator to use.
+And with this client can access without worrying about what data structure is used internally to store
+this data.
+It doesn't have to bother it.
+With the help of the iterator pattern, it can simply access it using this.
+Okay, I hope you got it.
+It's a very like the biggest client of iterator pattern you can say is the Java collection itself.
+So do practice it one more time and you will find it very easy.
+So it's very very straightforward.
+And if there is any doubt uh, please ping me on um comment section.
+We can discuss more.
+Thank you guys.
+Bye.

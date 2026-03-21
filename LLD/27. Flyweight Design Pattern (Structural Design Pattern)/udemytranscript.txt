@@ -1,0 +1,524 @@
+# Flyweight Design Pattern (Structural Design Pattern)
+
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And today we are going to do this flyweight design pattern right.
+So I am making it right also okay so now let's go more deeper into this flyweight design pattern.
+So two important questions comes on top of this design pattern.
+And this one has been recently asked right.
+Design a word processor or text editor.
+And another is design in gaming scenario.
+So there are a lot of games.
+Uh, I will tell you the different scenarios in which this design pattern can be used.
+Right.
+So these are the two areas where this design pattern is widely used okay.
+So let's first start with its definition like what is this definition says.
+So first of all it's a structural design pattern right.
+And what it helps to reduce the memory usage.
+This pattern helps to reduce the memory usage by sharing data among multiple objects.
+So you you should get one hint that whenever interviewer says that, uh, hey, we need to reduce the
+our memory is very limited.
+So it should strike in your mind that it can it be solved through flyweight design pattern or not.
+Because its main purpose is to reduce the memory only.
+Right?
+But how?
+By sharing the data among multiple objects.
+So I'll tell you how it does.
+How it shares the data among multiple objects.
+Okay.
+So we'll come to this one in more depth.
+So let me first explain you the issue.
+Right.
+Uh, through a gaming scenario first.
+And I will also tell you the issue with the word processor, how it solves it.
+So now let's see first gaming scenario.
+So now let's say I am trying to create a game where I have to create an army of robots.
+Or you can say that, uh, I have to create so many robots of different forms.
+Different types, let's say human robots, uh, human robots, and, uh, let's say a robotic dogs.
+Okay.
+So, uh, let's say I have to create so many an army of robots, right?
+So many robots I have to create.
+So how we can do it?
+It's, uh, we can create a simple class.
+What?
+All information this class can have the position x axis and y axis, where the exactly the robot has
+to be shown.
+Okay.
+Type whether the robot which you are creating is it of human robot or humanoid or it's a dog robot.
+Or you can say that it's a robotic dog.
+What type it is.
+Okay.
+And the body so generally spreads generally in computer graphics means a small 2D bitmap.
+So it represents a either an image or animation, right?
+So generally I've created a empty class for showcasing this.
+But understand this a sprite in computer graphics something creates a image.
+It creates an image.
+It's a bitmap array 2D array okay.
+And this is a very heavy heavy object.
+Okay.
+So now let's see that it is creating a.
+So I have just created a constructor to initialize this okay.
+So very basic object right.
+We have x axis y axis type of robot humanoid or robotic dog.
+And the are it's bitmap array where actually uh helps to create a this image okay.
+Now let's say in the main method I told you I want to create an army.
+Let's say I want to create five lakhs of human robots.
+Five lakhs of robotic dog.
+So I am running this for loop five times for human robots.
+Uh, not five times.
+Five lakh times for human robots and five lakh times for robotic dogs.
+Okay, so I am creating a new robot, right?
+Each time when the loop iterates, I create a new robot.
+Give it a different x axis y axis where I want to show.
+So I am creating a human robot.
+So I gave it a type that it's a humanoid and I gave it a this sprite, that image, human image.
+Right.
+So just assume that it has all the humanoid sprite, like how it will create a human image.
+It has all the information, right?
+So this will run five lakh times.
+So it will create a army of human robots of five lakh, right?
+Similarly, I will run a five lakh times for robotic dogs.
+So I am creating a new robot x axis y axis.
+I gave it a type of robotic dogs and the image, the sprite.
+The graphics which I am sending is for robotic dog sprite.
+Assume that it this object has information.
+How to render the robotic dog in image.
+How to render its image.
+Everything in the bitmap arrays.
+Okay, so how many total objects will be created?
+Total ten lakh objects will be created.
+Now you know that each object takes some memory.
+Take some space in the memory, right?
+So now analyze this okay.
+How many are what one object take how many space.
+So it's an integer.
+So integer is let's say in Java it's four byte.
+So this is let's say it's a four byte string.
+Let's say I am allowing 50 character To generally let's say Max, I can take so one character is one
+byte.
+So let's say this is 50 byte.
+And this is generally a heavy object.
+So let's say this could be in KBS.
+So I will assume that let's say 30 KB or something.
+Right.
+So now overall you can assume that.
+So 30 plus something something something just do an estimate that okay it's 31 KB.
+It is required one object required 31 KB.
+Assume that okay.
+Just uh round off.
+So for ten one object 31 KB for ten lakh, how many memory into 31 KB.
+Right.
+So it's I think, uh, it will become your GB 31 GB in memory.
+So and let's say if your interviewer say that, hey, we have only 25 GB or 16 GB in memory.
+So definitely this would crash.
+Right.
+So now we have to come up with something where we can save the memory.
+So you understand the issue.
+Now see, observe and understand where to use this pattern now.
+Right.
+So now you have seen one example.
+Now I'll tell you how do you determine that this pattern you have to use.
+First hint when memory is limited interviewer is saying hey memory is limited.
+Memory is limited, memory is limited.
+So this is our first.
+And that memory should be limited.
+Then only we have to use this pattern.
+If there is no issue for the memory, generally it can be avoided.
+Second, when objects share the data right?
+So now here, if you see that I have created five lakh objects of human right, so where they actually
+differs, where they actually are they sharing certain data?
+Yes, they are sharing the data.
+So for all the five lakh human objects type is same.
+So this type is same.
+And even the humanoid sprite, the image rendering part is also same.
+So all the robots was gonna look like same.
+All the robots gonna look like same.
+So the same sprite we are sending, the same image gonna be rendered for each robot.
+Humanoid robot.
+So these two are shared between all five lakh human robots.
+Okay.
+So, yes, when object shares the data, then this pattern can be used.
+Okay.
+And creation of object is expensive.
+So now here, if you see that the creation of object is expensive, this is, uh, creating this sprite
+object.
+2D bitmap array is a very expensive object also.
+So these are all your hints that yes, flyweight can be used.
+Okay.
+Memory is limited.
+Object shares the data.
+And if if two objects doesn't share any data, you can't use flyweight for sure, right.
+And creation of object is expensive.
+Then it's another hint.
+So I also wanted to tell you about this two words, which you will, uh, see a lot in this, uh, pattern.
+One is intrinsic data and extrinsic data.
+Generally I say is Andrew or Barry.
+So I would say that what intrinsic data is, the data which is shared among objects are called instancing
+data.
+So here in the robots I have created five lakh of robots of humans.
+So all five lakhs are sharing this two type and body.
+So this is known as your intrinsic data right.
+Extrinsic data is changes based on the client input and differ from one object to another.
+So here if you see that the client is putting certain value right for the x axis y axis.
+So it so extrinsic data is changed based on the client input.
+So now here if you see that my x axis and y axis change based on the client input where I want to showcase
+the robot.
+So this is your extrinsic data.
+And two robots cannot share this.
+So two robots have different x axis y axis.
+So they cannot share this data.
+So all the data which cannot be shared between two objects and its value coming from the client, those
+are known as extrinsic data.
+All the fields.
+Or you can say that all the data which is shared among the different objects, that is known as instancing
+data.
+Okay.
+So just understand this.
+We're gonna use this term okay.
+So now you know that in what scenarios we have to use this pattern.
+Now let's see how to solve the issue in the gaming scenario.
+How to solve the issue.
+So first let's go through these four steps.
+And then we'll uh see the demo.
+So from object remove all the extrinsic data and keep only instancing data.
+So what first step says that remove from this whatever the object which you are creating remove all
+the extrinsic data from it.
+So here extracting data is these two.
+So remove this remove this remove all the extrinsic data and keep only instancing data.
+Okay.
+And after that, this object is called as flyweight object.
+So now this objects generally which has only instancing data means data which is shared among different
+objects.
+These kind of objects is known as flyweight object generally.
+Okay.
+So the first step is remove all the data from the object.
+Then this class can be immutable.
+Immutable means.
+You can once it once you have uh give the value to this field, you cannot change it.
+So you know right how to create a class.
+Immutable.
+You can make those private and only provide the getter no setter methods when there is no setter method.
+You can't even change these values only one time during constructor you can assign the value After that,
+you won't be able to change its value.
+So they are immutable.
+Okay, so second thing is, since we are saying that these are the common data, these are the interesting
+data which are shared among multiple objects.
+So we can make them immutable so that once the value is defined it cannot be changed again.
+Okay.
+What.
+And what about the extrinsic data which we have removed so that can be passed to the flyweight class
+in method parameter so that we can pass this an extra method parameter.
+We'll see.
+And another last is just remember this.
+Just keep this point.
+We will see and it will get more clarity.
+Uh once the object is created it is washed and reused whenever required.
+Okay.
+Now let's see with an example.
+And this four points will become more clear to you.
+I am now changing this robot the issue into a proper solution now.
+So first I created an interface, let's say robot I robot interface.
+Robot okay.
+And I told that in a game I want two type of robots human robots and robotic dog.
+And both implement this interface.
+Okay.
+So now here, if you see that from the robot I have removed the extrinsic data x axis y axis which changes
+I kept only the intrinsic data.
+So intrinsic data was type and the body.
+So I kept type and body right.
+And I made them private.
+And the constructor through which I will set this for the first time.
+And I have made I have only made the public getters.
+There is no set method.
+So once you create an object and define this value, there is no way you can change the value for this
+one.
+Okay, so now I have created this immutable class right?
+And I have kept only instance data.
+Similarly for the robotic only I have kept only the instance data.
+And I have make it immutable.
+Only getter methods is there.
+Okay.
+And in the interface of this robot I have put a display method.
+Right.
+Uh, so I have.
+So it has to implement this as it's a child of this.
+So now here, if you see that in a method, I am passing the x axis y axis.
+So I told you that extrinsic data can be passed to the flyweight class in a method parameter.
+And in the robot x axis.
+Y axis is something which changes, right?
+So that's why I am passing it through method parameters.
+Now let's see how to use this.
+So now I have created a flyweight of a class.
+You can say that private class with this.
+Now, last thing we have to see is that okay we have to cache it.
+Also how to cache it.
+So to build a caching.
+So let's say we create a robot factory okay.
+So now here if you see that I created a map string and robot.
+So now here if you see that this is something interesting data shared among all the objects.
+So now I have used type as a key here okay.
+So type would be humanoid or robotic dog.
+If it's a humanoid I can return this object because it has the same sprite and same type.
+Okay.
+So that's why I am in the map.
+Robotic map.
+Uh, this one I am creating a cache.
+The first one is your key and this is your value.
+So key.
+I am going to be used as a this type with a humanoid or robotic dog.
+And then I will return the object.
+So I have in the factory I have created a method create robot and in the input I am getting robot type.
+Okay.
+Which object you want to create?
+Robot or humanoid or robotic dog?
+So first before even creating this is important.
+Before even creating the object, I am first checking in the cache.
+Now.
+Hey, does this robot type means humanoid?
+Let's say I want humanoid.
+Hey, does humanoid exist in your cache?
+Right?
+It says that yes, it exists.
+Then I will return the same object.
+So now let's say I have two objects.
+I have already created one object of humanoid, right?
+I know that another object is also going to be the same, only differs in the location x axis y axis.
+So that's why I am in the humanoid robot objects I have kept only which are shared among data.
+So type I can safely use as a key.
+And because it's body this data can I can reuse it for rendering.
+Right.
+So that's why if robot type is present into the cache I will return the object.
+If not, then I will create one humanoid robot.
+Right.
+I will create one time I have to create the sprite because let's say first time, the first time it
+is coming.
+Right after that I will put into the cache.
+Similarly for the robotic.
+Now let's see how to use it.
+So first time I am creating a first robot for I am.
+So this is my screen.
+Let's say I am trying to create a robot army.
+Uh, five lakh uh, humanoid and five lakh.
+Are your dog robotic dog.
+So first time I am doing robotic factory dot create robot humanoid, right?
+So cash, your map is empty first.
+So does robotic cash.
+Contains, uh, robot type is humanoid.
+Does it contains?
+No, it is empty.
+So what it will do is it will construct this, uh, bitmap array, its image, then it will create an
+object and then put it into the cache.
+So now in the cache I have like okay, humanoid and its object.
+Okay.
+Now once you have got the object of humanoid, I am calling the display method with the location where
+to this.
+So now I will call this humanoid display method and pass the x axis y axis extrinsic data and it will
+just use the graphics and the location and it will render the image.
+So my first image, let's say render at this place.
+Now I want to create another robot.
+Now let's see this again I'm calling a factory dot create robot humanoid.
+So I go this and I check.
+Now I am first checking the cache.
+Hey.
+Humanoid exist?
+Yes, yes, it become true.
+Yes.
+Exists.
+So now it will return the same object.
+Now it will return the same object.
+So it is not created another object.
+So now I got the same object.
+So now means I am sharing the data.
+Right now I am calling the display method and just passing the different location where it has to be
+rendered.
+So it calls the display method.
+Pass the extrinsic data.
+Now it will use the graphics like okay, how to display the image of the humanoid, but it will render
+it at different location x axis y axis.
+So another robot will get displayed.
+So now here, if you see that only one time object is constructed for this robot, only the extrinsic
+data differs in location, right?
+It's only rendering part is uh differs but object creation part we are reusing the objects.
+We are reusing the object.
+Similarly for uh, dog robotic dog, only one time object is created.
+The second time they gonna call a robotic dog, they will use the same object.
+Right.
+And just put a different display at the location.
+Okay, so you got it.
+So this is the game.
+Now we will see also the text editor.
+So now you just see that you have uh interface.
+Then you have, uh, concrete classes.
+You can say that which is a child of it.
+Then you have one factory which does the caching.
+And then it's your driver method, uh, which calls this.
+Okay, so you understood this, right?
+Now let's see word processor one.
+So I think when you see this example also it will get more clarity.
+So now let's see that uh.
+In the word editor you have to have a let's say you have.
+So this is I want to type in a word editor.
+This is the data we want to write into the word processor.
+Okay.
+So you have to type t h I s space is something like this.
+How we will do it.
+So let's say I have created a simple character class.
+Let's say.
+So I'm telling you the first issue.
+So character.
+What character I want to have let's say t.
+So let's say first I have to put T then h.
+So so character is let's say t.
+What is the font type.
+So what.
+Because there are so many font types.
+So let's say what is the font type the size and the row column.
+So let's say this is your row.
+This is your column where to put this t okay.
+And the constructor and the getter setter.
+Now just see this example uh here.
+So now I want to in the editor text editor I want to write this.
+This is the data we want to write into the word processor okay.
+So now how many total characters are there.
+58 characters.
+So 12345.
+So till 58 characters we have.
+How many?
+T is coming?
+Seven times one, two.
+Three, four.
+Right.
+And if you see that all t looks exactly the same, all T looks exactly the same.
+Even the size is same.
+Okay?
+Only the differs in the x axis y axis their coordinates.
+Okay.
+So this is one.
+Notice similarly you see that h h is repeated three times.
+All looks same only differs in the x axis y axis.
+But if we don't use the flyweight pattern how you will.
+So whatever we have done, what we have to do is we have to create a new object every time.
+Okay.
+First is T so I have to put a T like this font type is this size is this row and column.
+So let's say this is my row.
+So okay I put t okay, then I have to put H at row zero, column one.
+Let's say I put H, okay.
+The same area and all.
+So you have to do it for 58 times because there are 58 character.
+But understand that there is a document which have lakhs of character.
+So will you create a lack of object?
+No.
+This would become a memory issue.
+Then how to resolve this?
+Okay.
+So the flight rate can be helpful in this.
+So the same way first created an interface.
+Let's say I have put a given a name interface letter I letter the display.
+Now here the first thing that you you notice this thing that only this in this class these are same.
+This is same.
+So this is your intrinsic data character font type size.
+Let's say t.
+So all t which will come.
+Let's look exactly the same.
+The character is same.
+T t t t t.
+Font type is also same.
+Size is also same.
+Only they are different in the row and column.
+So this is your extrinsic data.
+So as part of flyweight what we have done is from the object keep only intrinsic data.
+Remove the extrinsic data.
+So I have removed the row and column from it.
+I have kept only the extrinsic data which will always remain a constant okay.
+And if you see that I make them immutable private method and only getter method.
+No setter methods okay.
+And in the interface I have one display method.
+So I have implemented Overrided that display method and provided extrinsic data should be passed as
+a parameter method parameter.
+So I am passing the data row and column here.
+Now let's see one factory because we need a caching also, right?
+So I created a factory letter factory.
+Okay.
+So now uh here the key I have chosen a character.
+Yeah, I have chosen a key as a character, let's say t.
+So once, uh, if user is wanted to type T, if already t is created, I will take out it.
+Okay.
+The font type, the size will all will be the same.
+Only.
+Okay.
+So the key I am using is the character and then the object.
+So now let's say I have written this method.
+Create a letter and user want to type t.
+Let's say let's say here letter factory dot create letter.
+So it is calling this method what it wanted to type t.
+Let's say I wanted to type t.
+So first character value is your T currently.
+So first initially your map is empty.
+So character cache contains key.
+No it doesn't contains key.
+So it goes into the else part.
+So it creating a new document character it creating a new document character it passing the character
+value which is nothing but a t uh format I am using is let's say Arial and ten.
+Okay.
+So this data is set and this object has been put into the cache.
+And the key I have used it character value.
+So t now let's say second time I want and uh before even setting time.
+So the t now I am calling the display method row zero column zero.
+So whatever the object got created for this character I am calling it a display method.
+Okay, I now I want to display it.
+Now it will display at this row and column or some coordinates.
+So now this T would be printed.
+Let's say this is row zero.
+Column zero.
+Now let's say I want to create another object again.
+T so letter factory dot create a letter.
+So it will call this method again.
+Now I am passing again T.
+So now before even first creating another object first it will check.
+Hey character cache does contain this T.
+Yes it contains.
+So it will reuse this object right.
+So it will reuse this object.
+So now it will return the this object only.
+Now this object dot display okay.
+So this is object.
+So this object dot display row column.
+So it will just say that row column and just display this character.
+Okay.
+So at row zero, sixth column, maybe, uh, it will row zero six column.
+It will display another T.
+So now here, if you see that we are creating only one object for T, no matter if there are thousand
+times I have to type t, only one object is created for the t.
+Similarly, for one object I would be created for a similarly capital A, I have create one object,
+right?
+So you got it right for each character, each different character I will create one object.
+Right.
+So all this different.
+So let's say T is used 1000 time.
+All this 1000 characters will share certain properties.
+So I am currently in this example the what properties they are sharing.
+Okay the character name is same.
+Let's say this T the font type, the font type of all are same.
+Let's say Arial Aerial size is all same.
+Okay.
+But let's say you have a different use case that okay.
+Font type can be different.
+Size can be different.
+Then that could be another.
+You have to create some other key.
+But this is a simple example.
+I wanted to show that in the text editor memory issue can come and how you can resolve it using flyweight
+pattern.
+Okay.
+As in you see in this example we created two t with only one object.
+Similarly, if there are 1000, you have to type t t t t t.
+Only one object will be created.
+Only differs in extrinsic data which is coordinates.
+Okay, so that's all about the flyweight design pattern.
+Guys, if you have any question any doubt please let me know and go through this.
+Once again you will get more clarity right and try to implement it with some different example guys.
+Okay guys.
+See you.
+Thank you.
+Bye.

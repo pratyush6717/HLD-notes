@@ -1,0 +1,379 @@
+# Factory & Abstract Factory pattern (Creational Design Pattern)
+
+Share on this site.
+Welcome back.
+And today in low level design we are going to cover factory pattern and abstract factory pattern.
+Okay so let's understand the problem first.
+So let's say that this is our product shape.
+It's an interface.
+And we have multiple child classes like circle square right.
+So circle is a shape a square is a shape.
+And we have multiple classes in our project class A, class B, class C, class D, class C.
+And they are using this product.
+So they are creating a new object.
+Okay.
+So let's say class A is creating new circle.
+Class B is creating new square.
+So like this the object creation is used.
+Or you can say that it is spread across our whole repository.
+Okay.
+So the problem with this is that in future let's say the instance Stan's creation.
+Logic for circle is change.
+Say we need to pass now.
+New circle and the radius.
+We need to pass the radius.
+New circle and you have to pass the radius.
+Now all the classes which is doing new circle.
+New circle right everywhere we have to make a change.
+So this is becoming too complex and difficult to manage.
+So that's where our factory pattern comes into the picture which is the creational design pattern.
+And it controls the creation of an object like so it used when we want to encapsulate object creation
+and related creation logic at one place.
+So if we want to control the object creation and we want to hold it, encapsulate it only at one place,
+that's where the factory pattern comes into the picture.
+So many times when we are learning, we get confused because there are two flavors of it simple factory
+pattern and factory method pattern.
+This is something which is there in the books, okay, and simple factory pattern is something which
+is you might see in industry.
+So when you are working in an in your company, if you see the code, you will see that many people
+or many engineers are following simple factory pattern.
+But if you read the books you will see factory method pattern.
+So it creates contradiction like which one is right?
+Which one is wrong.
+So generally both are right.
+But I would say that this is in the books, which is factory method pattern.
+But this is also not wrong.
+It's a highly used simple factory pattern is also used a lot in industry, but it is nowhere like uh,
+official.
+Okay, so let's first see simple factory pattern.
+So we have our product shape and it has certain method.
+And we have our child class like circle which is a shape.
+Square is a shape.
+So it's a child class of shape.
+So circle is just providing an implementation for these abstract method.
+Very simple.
+Nothing special in this.
+So only thing is like we have a parent and we have a child.
+So this is let's say our product.
+Okay.
+Now in the simple factory we have one class factory class shape factory.
+In the shape factory we create one method which is static.
+Okay.
+So so that it can be invoked with the class itself.
+Because at this point of time, we haven't created any object and we want an object of a particular
+shape.
+So we have created a shape factory inside that we have create shape method, which is static so that
+it can be invoked through a class itself.
+Now if you see inside it, it has certain if else if condition, if whatever the shape type you wanted,
+it could be a string or let's say here.
+In this case it's an enum circle square.
+But let's say if it is a string also.
+So if shape type which you want is circle, then it returns a new circle object.
+If the shape type which you wanted is square, then it will return a new square object.
+So now everywhere, whatever the code, let's say class A, so now it will not do new circle directly.
+It will invoke this factory like this.
+It will invoke the factory shape.
+Factory dot create shape.
+Hey, give me an object of circle and it will give you an instance.
+So now the logic of.
+or creation of an object holds only at one place in future.
+Any change is happening only happened at one place.
+We don't have to touch different classes in a repo.
+But there is one disadvantage.
+Disadvantage is that it violates open closed principle.
+If any new shape is introduced, then we have to touch this factory class.
+Yeah.
+So let's say that rectangle class is introduced.
+So here in this case we have a new rectangle class.
+New rectangle class.
+So we have to update this factory method also.
+So inside this we already have circle.
+We already have a square.
+Now we have to put else if if the shape if you want it is rectangle.
+Create an object of rectangle.
+So it violates open closed principle that whenever any new shape is introduced this method will also
+need to be changed.
+Okay.
+Another thing is that this factory class can become bloated over time.
+Say, if object creation logic is complex, it is not simple as new circle.
+It is complex.
+Say in this example, if shape type equals to equals to circle, this is just for example.
+So I am just loading a configuration.
+I am validating the configuration.
+I am initializing some resources in db.
+Let's say something something and then creating a circle object.
+Just assume that it's a lot of complex process to create an object.
+So what would happen is your this class become bloated very difficult to manage okay.
+And also it violates single responsibility principle.
+Why?
+Because now this class is doing two things.
+First is selection okay.
+Based on the shape type it need to select okay.
+Whether I have to create a circle object or a square object.
+After that, it also has construction logic.
+All the logics present inside it is also controlled or managed by it.
+So in future if rectangle comes again this class change, or if construction logic change, let's say
+now you don't need to validate.
+Then again this class change.
+So it is doing two things now.
+So it's also valid single responsibility principle.
+So this simple factory pattern is used when your use case is very simple.
+Okay.
+And that's where next is factory method pattern comes into the picture.
+So understand this factory method pattern is that we have a shape circle square.
+This is our product.
+No nothing different in that.
+Okay.
+Now we have an equivalent factory.
+So we have a shape factory.
+And it has a method let's say create shape and it returns the shape object.
+This object it returns the object.
+Now this shape factory has a child class.
+Let's say whatever the child class here, we have a product circle.
+So we have a circle factory square a square factory.
+So you can say that we have one factory for one product.
+One factory for one product okay.
+And this creates shape.
+So in the create shape it we we can have the logic of creation of a circle instance in square factory
+create shape method.
+It.
+We can have a logic to create an object of square instance okay.
+So this is the first part.
+And then we have shape factory method.
+Now let's say here we have if else condition.
+So if shape type if the shape type you want is circle you want circle factory.
+So it will return an object of circle factory okay.
+And using that circle factory you can call create shape.
+And it will give you a circle object.
+Else if shape type equals to equals to square, we need to return the square factory.
+So it will return a square factory.
+And this code can be keep outside of the else because it is same.
+Then you can call create shape and you get a square object.
+You understood that.
+So this is factory method pattern where for each product we have a respective factory.
+And that takes care of creation of an object.
+Now here if you see that advantage is same so how we will invoke it.
+So shape factory method this this class.
+This is also a static dot get shape instance get shape instance whatever you want circle.
+So it will go like okay you want circle.
+So it will first create a circle factory.
+And from the circle factory it calls Create shape which returns you the circle shape.
+So one thing is the same advantage what we have for simple Factory, that the instance creation logic
+is there within this factory methods.
+So let's say that in future any change in the logic of initiation of an object of a circle.
+Only circle factory is impacted if in change in the square only square factory logic get impacted.
+Also another thing is it solves the bloating issue and it also solves single responsibility violation.
+How?
+Because now we have different factory for each objects like circle.
+Square.
+So all the complex let's say that there are two complex a process to create an object of a circle.
+So it will reside under Circle Factory.
+Whatever the different object creation process of a square factory, it will reside under square Factory.
+Okay.
+So creation logic we have taken out.
+So now here if you see that shape factory create shape within this create shape of the circle factory.
+It has its own logic.
+How to create an object.
+Similarly for Square Factory it might have a different logic to create an complex object.
+But the thing is, we have taken out the object creation logic from the selection.
+So now we are selection is doing outside.
+So this is selection process.
+So in the simple factory what we have is selection and your object creation both is happening.
+But in the factory method we have object creation.
+We have taken out separately.
+But the selection here we have Okay.
+Disadvantages is still there is a violation of open closed principle where in the selection in the selection
+process.
+So now let's say that in future you have added rectangle factory.
+Okay.
+So you have a rectangle shape.
+You already have a circle.
+You already have a square.
+And now you also have rectangle.
+Similarly we have shape factory.
+Earlier you have circle factory square factory.
+Now you have added rectangle factory.
+Okay so here it is.
+Follow the open closed principle because new we are able to add rectangle properly without touching
+this.
+Similarly, in the shape factory where we are creating an instance, the object creation logic is now
+following the OCP of open closed principle properly, but the selection process is still following are
+Uh, violating the open closed principle.
+So if shape equals to equals to circle, it need to create a circle factory.
+If shape equals to equals to square it need to have a square factory.
+So we have to add it here.
+If shape equals to equals to rectangle we have to return the rectangle factory.
+So there is still a open closed principle violation.
+It is not resolved fully.
+So it's not a full proof.
+Okay.
+But only thing is it resolves single responsibility principle.
+So earlier we have selection plus creation together.
+But now in the uh this is in the simple factory pattern and the factory method pattern, we have different
+creation logic and different selection logic.
+Okay.
+So this solves the single responsibility principle, but still there is a violation of open closed principle.
+I told you where in the selection process.
+So both is clear.
+Now let's move to Abstract Factory.
+So again, confusion comes because Abstract Factory can be now built on Simple factory and can be built
+on factory method pattern.
+Okay.
+And in industry you might see in both.
+So and I'm not saying both are wrong.
+It's just depend like which one is fulfilling your use case.
+So abstract factory you can say that it is nothing but a factory of factories.
+So I am currently telling you which is built on simple factory, abstract factory which is built on
+simple factory where each subfactor is itself a simple factory.
+So consider this simple example product.
+So I have a let's say car exterior and car interior okay.
+So two products.
+So this is product one.
+Product two.
+So car interior economy car interior luxury car interior.
+So those are child of this one.
+Similarly, car exterior also has two child.
+Economy exterior.
+Luxury interior and they have certain methods.
+Now in the simple factory we have individual factory for both.
+So we have let's say car interior factory, interior factory.
+We have one method get interior, which is static and based on the type we are deciding if type is equals
+economy we are returning economy interior object.
+If type is equal luxury we are returning luxury interior object.
+Similarly we have one factory.
+For exterior factory the same.
+We have a get exterior method which is static and based on type.
+We are deciding which object to return if type is equal economy we are returning economy exterior.
+If type is luxury we are returning luxury exterior.
+Very simple.
+Factory method Okay.
+Now the third step is abstract factory.
+Factory of simple factories.
+So here we.
+On top of it we have added one producer.
+Okay.
+So it has a method get factory and give it a choice.
+So if choice is equals interior now it will return me this factory.
+Interior factory.
+If choice is equal exterior it will give me the exterior factory.
+And once you got the factory, you can now get an specific object like this.
+So first I am using Car Producer factory to get a factory of interior.
+Once I got Interior factory, I am calling it to get a specific.
+So I am calling get Interior Luxury so it will give me luxury interior object Okay.
+And using that I call the method.
+So it's a factory of factory.
+So we have two individual simple factory.
+And we have a abstract factory which returns the factory object itself.
+Okay.
+So this is like built on simple factory.
+Now we have something called Abstract factory which is built on factory method.
+But here this is from the book size.
+So you will find in books this one.
+But maybe in industry you might see if you are using Abstract Factory you might see this also.
+Okay so it's not like that one is wrong.
+So now abstract method abstract factory which is built on factory method.
+So here this is important that here we have multiple factories.
+Each factory produce a complete family of products that work together.
+So that's why I took this example.
+So car interior, car exterior.
+You can say that it is a part of one product.
+Okay.
+So this is product one.
+Product two.
+You can say that both are part of one product and they should work together.
+Okay.
+So whenever there are scenarios then only we have to go with the abstract factory.
+So one thing is that whenever we have different products, different products which are related and
+need to be worked together, and based on that scenarios, we have to pick a object of either this or
+this.
+So that's where the abstract factory comes into the picture.
+So in the abstract factory which is built on factory method.
+It says that we have a multiple factories.
+Each factory produces a complete family of product, complete family of product.
+Okay, so understand this with an example.
+And then we will come to this line again.
+So here we have first product families car interior car exterior no change.
+Like previously we have economy interior luxury interior.
+And similarly for car exterior we have economy exterior luxury exterior.
+Now we have one interface abstract factory interface.
+So if you remember the factory method factory method pattern.
+There we have let's say car interior.
+So it would have one car interior factory and then it would have one method for economy interior factory.
+Then it will have one luxury interior factory.
+Similarly, we will have one factory for car exterior factory, car exterior factory.
+And then we have individual individual factory for economy exterior factory, luxury exterior factory.
+Okay.
+So this is how factory method pattern does.
+But in the abstract factory it combine it group the related products.
+How?
+Now here, if you see the car factory.
+I have car, not car interior.
+Not car exterior factory I have car factory.
+Now this car can be categorized into economy and luxury.
+So that's why I have two child economy car factory.
+Luxury car factory okay.
+And here I have two.
+Abstract method.
+Create interior.
+Create exterior.
+So in the economy car factory child class we have create interior, create exterior.
+So create interior will create an object of economy interior and create exterior will create an object
+of economy exterior.
+So here you will see that we are creating an object of multiple products within one factory.
+Within one factory we are creating an object of multiple products which work together.
+Similarly, we have luxury car factory inside the luxury luxury car factory we have we have to provide
+an implementation of create interior, create exterior.
+So create interior luxury interior.
+So this one and luxury exterior in the create exterior one okay.
+So it's not economy.
+It's luxury because it's a luxury car factory okay.
+So what this line says that we have multiple factories.
+Yes we have one economic car factory.
+We have luxury luxury car factory.
+Each factory produces a complete family of products that work together.
+So it creates an object of interior, it creates an object of exterior.
+It might be have different different projects.
+It takes care of creating an object for those also.
+So earlier in the factory method, each factory is only responsible for creating an object of one product
+1 to 1.
+But in the abstract factory which is using factory method, here we are grouping the related products
+into one factory.
+Okay, and this is just one default method which I have added just for use usage of it that uh produce
+complete vehicle.
+So it will have first create interior exterior and then it will add components there method.
+It will invoke it.
+So this is just a usage of it.
+So now we have a factory provider like how we used to have in a factory method the selection process.
+The selection process.
+So based on the card type.
+So okay you want economy.
+So I will create an economy car factory this one.
+So if you want a premium or luxury I will create a luxury car factory.
+This one.
+So this is exactly same as what a factory method pattern used to do.
+Selection process.
+No difference in that okay.
+And then we will use it here like this.
+So only difference is here.
+This is important part in the abstract.
+Abstract factory which is using the factory method pattern.
+In the factory method pattern we used to have.
+Again I am saying we used to have a factory of a particular individual products.
+Okay.
+But here in the abstract factory we group related products together.
+So I have group in the economy class, economy car factory.
+Now all the products which is required to work to make this economy car.
+I have it.
+Got it.
+So nothing is wrong.
+Both are right.
+And it just depend like what's your use case?
+Okay.
+So if you have very, very simple use case, very, very simple scenarios, you will see that in industry
+many engineers use the simple factory patterns.
+Okay.
+But if you have if you want to use like uh, if you have very complex you can say that creation logic,
+I would say that then you can go for factory method pattern.
+Okay.
+If you have any doubt let me know.
+We can discuss further into the comment section by.

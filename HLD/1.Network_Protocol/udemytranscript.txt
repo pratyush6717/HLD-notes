@@ -1,0 +1,260 @@
+# Network Protocols (English Dubbed) | Better with 1.25x playback speed
+
+Hello.
+Hey guys.
+Welcome to Concept Coding.
+So today what we are starting is our first video on high level design which is known as network protocols.
+And as planned.
+So here we will first cover network protocols all client models peer to peer model TCP UDP.
+When to use.
+WebSockets business TC because let's assume if you want to design WhatsApp which protocol to use.
+If I want to create something like Google Meet for video calling streaming which protocol to use.
+So we should know that.
+So let's read the basics once what it is.
+So let's start.
+So the network protocol here you will see that whenever we have two.
+Systems okay.
+Two computers communicate over the network okay.
+What rules and regulations it defines.
+So network protocol defined rules so that two systems can communicate with each other.
+Okay.
+Even if both know the same language, they will be able to talk.
+So that's where network protocol helps.
+So here it defines some rules that if you want to send a message send it in this way.
+So you must have studied in college that here we have seven kinds of network seven layers.
+Seven layers I think.
+Application layer.
+Presentation layer.
+Session layer.
+Transport layer.
+Network layer.
+Data link layer kind of this thing.
+So here we will cover all.
+Here we will cover two important ones application layer and transport layer.
+That's all.
+So let's start with the application layer first.
+So I will divide the application layer into two parts.
+First client server protocols.
+calls.
+And what I will do is peer to peer protocols.
+Okay.
+In client server which protocols do we have HTTP.
+FTP.
+SMTP WebSockets.
+These are all client server protocols in peer to peer one is like web RTC.
+Okay so here the most important ones are our http websockets, web RTC.
+These are the most important and widely used in a high level design okay.
+So now let's quickly see what client server is and what peer to peer is okay.
+In client server.
+What happens here.
+Let me create some space.
+Let's take client server Okay.
+In client server, what happens is that here we have one.
+Web browser.
+Which is considered as the client.
+And we have another system which is called the web server which is running among us.
+So we call it the server.
+So what happens inside this is that in the client server model the client makes a request.
+And the server gives a response back.
+Okay.
+So it's one way communication that the client will always initiate the talk with the server.
+And the server will respond to it.
+So whether you take HTTP, ftp, smtp it's like the same thing.
+But WebSocket is a little different okay.
+So how is WebSocket different.
+Because in WebSocket there is also a client.
+There is a server.
+So here there is a client.
+There is a server but WebSocket is a bidirectional communication so the client can talk to the server.
+The server can talk to the client.
+Okay.
+That's the only difference.
+But is it peer to peer.
+No, WebSocket is not peer to peer.
+Many times we make the mistake of calling WebSocket peer to peer.
+So now look here.
+If I have a server and I have client one.
+And here I have client.
+Two.
+So the client can talk to the server.
+The server can talk to client one.
+The client can talk to the server.
+The server can talk to client two.
+But they will not talk to each other.
+So it's not a peer to peer.
+Okay.
+And whenever we and this WebSocket.
+Comes into play whenever we want to design something like WhatsApp telegram.
+So whenever we want to design a messaging app we will use WebSocket here.
+Right.
+Because let's assume a message comes to the server.
+So the server has to send it to the client.
+The message is okay because the client will not keep asking every now and then.
+Did the message come?
+No, because that would be inefficient.
+So whenever a message comes we needed the server to talk to.
+So that's where the WebSocket comes into the picture.
+Bidirectional talk.
+Okay.
+So now let's quickly see you already know what HTTP Hypertext Transfer Protocol is.
+So it can be used.
+So the first thing is that it is connection oriented okay.
+So it is connection oriented.
+Here a connection is created.
+Okay.
+And here we access web pages.
+Inside web pages there are hypertext where we jump from one page to another.
+And here what happens is then file transfer protocol.
+In file transfer two connections are maintained.
+One is the control connection, the other is the data connection.
+Data connection can be created and disconnected, but the control connection always remains in FTP.
+So this is the difference in SMTP.
+SMTP is always used with iMap and Pop.
+So SMTP is used for.
+SMTP is used for sending the mail.
+Sending the email iMap is used for receiving the mail.
+Accessing the mail.
+Accessing and reading the mail.
+Pop pop3 is not used much these days in Pop3.
+What happens is that whenever the mail is read, it kind of downloads it, and then it gets deleted
+from there.
+In iMap, what happens is that it's read from the server so we can read it on multiple computers, but
+that's SMTP with iMap is widely used.
+Okay.
+So now you see even inside this there is a client.
+So here what happens is there is an MTA message transfer agent.
+It's client.
+So these are users.
+Users send messages here.
+There is a user agent user send messages to MTA client.
+MTA client talks to Mtas and message transfer agent.
+Message transfer agent passes to the user agent again and here it delivers the mail.
+The mail is coming from here.
+Here we have mails and mail receive okay.
+So it works in this way.
+So here also you see you have a client here also we have a server okay.
+So we will not go much deep into what SMTP is.
+But what I want to tell you is that there is a client server.
+You should understand what the difference between client server and peer to peer is.
+Why WebSocket is a client server model okay, it's clear.
+Now let's see once what is in peer to peer.
+We have seen WebSocket understood this.
+What happens in peer to peer is that here we have a server.
+Here we have a client here I have one more client.
+They all can talk with each other okay.
+All three can talk to anyone and all can be clients.
+All can be servers, whoever has the data.
+Okay, so that's called peer to peer.
+And here you will see that WebRTC is a peer to peer protocol.
+Okay.
+It doesn't need to go to the server.
+It can directly talk between two machines.
+That's why it is fast.
+And now why is it fast?
+Let's see one more here.
+Now here it is.
+Understood.
+Now I am moving to the next one.
+Transport layer.
+Transport layer and network layer.
+So now here we have two tcp ip and udp ip.
+Okay.
+So what happens in tcp IP.
+In tcp IP you must know that here we first maintain a virtual connection okay.
+Data goes through that virtual connection okay.
+And here what happens is we make small packets.
+Data packets.
+And give them sequences.
+Now those data packets are going okay.
+The connection we made okay.
+So here on the server side if two came one came.
+But after that sequencing happens.
+So here in TCP IP ordering is maintained.
+And if any data packet doesn't arrive assume three didn't come.
+Then what happens is acknowledgement and every packet is acknowledged.
+Acknowledgement for one.
+Acknowledgement for two.
+If someone doesn't receive acknowledgement, it sends again.
+So in TCP IP we understand what happens is that ordering takes place here is divided into small packets.
+Ordering happens.
+Acknowledgement happens.
+Connection is maintained now in UDP.
+What happens is that the data that needs to be sent, the first thing is no connection is maintained
+here.
+There are various connections and it divides it into small data grounds and sends it here.
+It sends it parallelly on multiple virtual connections.
+Okay?
+Not on one connection.
+So now it's possible here that the first packet ordering is maintained.
+Ordering is not maintained because we are not doing ordering here.
+So if the first packet came later, the one sent earlier came later.
+This one came first.
+So that's possible okay.
+But what's the specialty of UDP.
+It's fast.
+And why is it fast.
+You found out because we are not doing acknowledgment not maintaining connection not maintaining ordering
+okay.
+We just send it.
+So it's just a best effort.
+Just try it best.
+It's best for it.
+Mechanism to transfer data.
+And when does UDP come into play UDP comes into play when we do live streaming Okay, when we do video
+calling, when I'm doing video calling.
+Assume I miss something.
+Okay.
+But you will keep listening ahead, right?
+What was missed earlier?
+You won't listen to it again.
+So these are the use cases where UDP comes in picture okay.
+And WebRTC uses UDP here.
+At the lower layer okay.
+So this is the protocol WebRTC protocol UDP protocol to transfer data.
+And because it's fast because I'm live streaming.
+So my data is fast access.
+So wherever I require data to be fast I will use UDP wherever ordering is not an issue.
+Data packet loss is okay.
+So it's okay.
+Okay.
+And when to use WebSocket.
+You found out when we have to design a messaging app we will use WebSocket there.
+Why?
+Because I need two way communication.
+Because if user one here you see user two send a message to user one.
+Client one.
+Then the message came to the server.
+Now the server has to tell the client that you received the message.
+Okay, so I have to talk server to client two.
+So it's two way communication.
+So I will use WebSocket when I need two way communication.
+In case of messaging app and otherwise based on the requirement I will use http.
+I will use FTP.
+We never use FTP.
+You must have seen because in FTP the data connection that is made.
+Guys it's not encrypted.
+So here is the client.
+Here is the server okay.
+Here a control connection is made.
+And here a data connection is made.
+So whatever file is transferred from this data connection that is not encrypted.
+So that's why FTP is not secure.
+That's why we are not using it.
+That's why we are using Https secure transfer protocol.
+Hypertext Transfer Protocol secure.
+So we are using HTTP that's why.
+So guys overall you understood what network protocols are okay.
+What client server is what peer to peer is and in which use cases we will use them.
+Mostly HTTP will be used when we design a messaging app.
+Then WebSocket will be used when we make something like live streaming video, video calling, etc.
+then UDP will be used, WebRTC will be used and when to use TCP we also found out.
+So with this our first base is done and we will move to the second.
+So let's start from the base okay.
+We.
+Will cover up very quickly too.
+But the base should be good.
+When to use what.
+Okay guys if you like the video please subscribe to it and definitely share it.
+Iron.
+And have a good day.
+Bye.

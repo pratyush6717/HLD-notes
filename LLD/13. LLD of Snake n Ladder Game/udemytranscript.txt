@@ -1,0 +1,845 @@
+# LLD of Snake n Ladder Game
+
+And they said welcome back.
+And today in low level design we are going to cover the snake and ladder game.
+So let's see, uh, about the game so that we are all on the same page.
+So generally, we have all played this game in our childhood that there is a ten by ten board generally
+numbered from, let's say, 1 to 100.
+Okay.
+And on this board, some on random positions, there are letters, let's say from 25 to this reaching
+to 74.
+And also there are snakes.
+There can be more than one letter and more than one snake also.
+So let's say 63 position the snake bites.
+Then the player goes down back to let's say 12 and on later means that if a player comes to 25, it
+can, uh, stare up.
+It can move up this stair and reach to the 74.
+So it's a jump.
+Okay.
+So generally a board we have of ten by ten matrix metrics, and there are multiple letters and multiple
+snakes drawn on it.
+Okay.
+And it's a generally a two player game, but more players can also join the game and each player takes
+the turn.
+Alternatively.
+And whichever player has the turn, they roll the dice and they move according to the number they got
+on the dice.
+So let's say a player one and player two are playing the game.
+So it's a player one turn.
+So player one turn, uh, roll the dice and let's say it got five.
+So it moves forward five times like so from currently it's on position zero let's say.
+So it will move to 12345.
+So now player one reached till this step.
+So next alternatively player two turns comes and then it will roll the dice.
+And whatever the number comes okay.
+Let's say it comes three.
+So it moves forward three steps.
+so player two will reach to three.
+So this is our player two.
+And they move like in a sequence manner generally five then 6789 1011.
+Like this.
+Okay.
+So they have to reach till 100.
+Now this Ladders and snakes comes into the picture.
+Let's say uh, here in this case player one is at uh, there is a ladder at let's say six.
+Assume that there is a ladder at six and its ending is at, let's say 33.
+Okay.
+Now player one turns come and roll the dice and it got one.
+So it will move one step.
+And when the player one move one step it reaches 2.6.
+And this six there is a ladder.
+So now it can jump to the end position of this letter which is 33 okay.
+So similarly if the player reaches to a point where snake head is there, then it has to go down to
+its tail ends where its tail ends.
+Okay, so this is a game which continues till any one of the player finishes the game by reaching to
+the hundred.
+Okay, so understood the game like so.
+The three main components.
+Is this the dice okay.
+The letters and the snake.
+So I hope we are all in sync.
+How generally this game is played okay, let's clarify the requirements.
+When interviewer has given us this question, we understood the flow generally.
+Now we have to gather the requirement okay.
+We understood that it's a ten by ten board, but do we need it a configurable right.
+It can be of n by n.
+So if interviewer say yes then this is one of our requirement that we don't, uh.
+We can.
+It should be easily extensible.
+Got it.
+How many dice this can be played with?
+One.
+Two, three?
+How many?
+So if interviewer says that.
+Yes.
+Uh, you can go currently go with one.
+But it should be scalable.
+So that is one another requirement which got clarified okay.
+So it should be scalable also means player can play with more than one dice.
+Also how many number of players uh number and the place of snakes and ladders.
+So interviewer will say that okay, during game setup you should be able to dynamically add them onto
+the board.
+So okay we we need to do that.
+Also number of players we're gonna play two players.
+But generally interviewer says that it should be scalable.
+More than two players should be able to play the game.
+And what's your winning strategy like uh any player wins the game should get finished.
+Game should get finished.
+So generally this is the requirement which we can come up with.
+And we can clarify it with the interviewer based on our understanding about the game.
+Okay.
+Now based on the game flow and the requirement clarification, we can come up with the objects which
+we can identify.
+The first thing we can identify is the board.
+Okay.
+So this is will be our first object.
+Okay.
+The second object which we can easily come up with is like each player need.
+How many dice.
+Like so this dice is also one object.
+Okay.
+So dice is my another object.
+Then we have number of players so the player can be one object.
+Similarly snake and later could be one object.
+And also one more thing is that.
+So this board which we are saying that n by n array.
+So let's say ten by ten.
+So generally here if you see these are small small cells 0 to 9 let's say.
+So total 100 cells okay.
+So each cell has certain information about the jump.
+You can say that whether it's a ladder or there is a snake.
+So all we have to worry about start point okay.
+And whatever the end point is there we need to take the player to that point okay.
+So if this cell has a start point that is important.
+So this cell need to store information about if there is a ladder on it or not okay.
+Similarly if any cell has a snake so it has to has that information whether this cell has any snake
+on it or not.
+So we need one cell object also so we can discuss more about this cell.
+But for now this cell I am representing this one okay.
+Where we have like, uh, info about the leader or the snakes.
+Cool.
+Now before we jump to the UML, I will spend couple of more minutes on the board because I see lot of
+engineers get confused here.
+Why?
+In UI the board is represented as generally like one, two, three, four, five, six, seven, eight,
+nine, ten.
+And after that, like this 1112.
+And here it goes to 20.
+Then starting from here 21 to 30 and then 31 to here, 40 likewise.
+So it goes like this.
+So generally it defined like this.
+And similarly here Last 100.
+Okay.
+So here engineer complicates the thing that okay it's a zigzag matrix but it's not.
+So here if you see after 910 the we have to move the player to let's say 11 only.
+So they always go in sequence.
+So it's not a zigzag form, it's just a way of representation at the UI.
+So at the back end when we create a matrix let's say n by n, we don't have to handle this zigzag.
+We don't have to handle this zigzag.
+So it's not a zigzag.
+So at UI it looks like players are moving in a zigzag form.
+But actually if you see they are moving in a sequential like after based on the number, let's say on
+a dice they got five and current position is eight.
+So they will move the five steps nine, ten, 11, 12.
+Like this.
+Okay, so they are moving in sequence.
+There is no zig zag.
+So this is very simple.
+So it's just a 2D matrix.
+Okay.
+And we can handle 2D matrix like zero to here we have nine 0 to 9.
+And we have each cell we have different different cell.
+Okay.
+Either you want to give the numbering you can give the numbering.
+Let's say this is 12349.
+This is ten 1112.
+Like this.
+You can give the numbering but that also not required.
+Let's say you are user is currently at position eight and it rolls the dice.
+And it got certain what let's say three.
+So its new position should be 11.
+So if we have to calculate the cell what we can do is let's say it's ten by ten matrix.
+So we should need to know the row and column of the cell.
+So 11 divided by ten.
+So it would be one.
+So row is one column would be 11 by 11 mod ten.
+So that's one.
+So row one column one.
+This would be your new position of the player okay.
+So row one column one.
+So this will be 11 would be nine.
+So here we have a 1011 okay.
+So it's very simple representation of a matrix.
+And we don't even want to give the numbering like whatever the position would be let's say after 11
+uh it rolls the dice and it got three.
+So what is the next position for ten.
+So you know that what row and column you have to take out 14 divided by ten.
+So first row 14 mod ten for first row.
+And fourth column is the cell which you are interested in.
+So 12 then you have 1314 01234 first row fourth column is your 14th cell.
+How UI is representing in a zigzag form?
+That's uh, like we don't have to go into that the UI form.
+But all we know is that from the way this game is played is in a sequential manner.
+Like after each step, user proceed in a sequential manner eight, nine, ten, 11, 12.
+Like this 20, 2122.
+So there is no zigzag, actually, and that's where I see and, uh, engineer complicate the matrix,
+uh, logic.
+And they stuck at one point.
+Okay.
+So let's proceed further and I think things will get more clarified.
+But this is just I wanted to highlight because this I have seen uh, some engineers make problem in
+the interview.
+Okay.
+So let's start the UML.
+So the first object is like a player.
+We have come up with the player right.
+So player we have information.
+We can store information about name what is the player ID and what is the current position on the board.
+Okay.
+So for now you can also add name.
+For now I have only ID and the current position.
+So that's the code also.
+Let's see.
+So this is the player.
+So in the player I have ID every player can have a unique ID.
+And uh so generally ID is a string.
+So we can give a name also to this one and the current position okay.
+So current position let's say player generally lies within 0 to 99 only.
+So that's the only window.
+So let's say currently its position is uh 33.
+Now its rolls a dice and it got six.
+So its next position would be plus six okay.
+So its new position would be 39.
+So no matter what The player range is 0 to 99 only.
+So what is current position?
+We will use that.
+Okay so this is the player object.
+The second object is dice.
+So here if you see in the dice I have one important thing is dice count.
+So whenever I will create a dice object I am providing the dice count means with how many dice we are
+playing the game because during requirement gathering interview has said that interviewer has said that
+yeah, it should be scalable.
+You can go with one, but it should be scalable.
+So that's why whenever we will create a dice object, we will give one.
+But if in future user player want to play with more than one dice, they should be able to do that.
+So in dice count they can let's say put two okay.
+And also I have added one method into the dice roll dice.
+So in the roll dice, the logic is very simple.
+Now let's say that, uh, if you have used only one dice, count means you are playing only with one
+dice.
+So you will just.
+I am just hitting this random randomly.
+I am finding a number between min and max.
+Between 1 and 6, right?
+Including the six.
+Give me one random digit.
+Okay.
+If it is a only one, dice and return it.
+But if it is more than one dice, let's say dice count.
+You have given two.
+So I am running the loop two times.
+Okay.
+And whatever the number I get each time, let's say first time the random you got three and second time
+I got four.
+So my total count which player can move is that seven.
+So this is let's say dice one, dice two.
+So two times I am running the loop.
+So.
+Got it.
+Why why I use dice count.
+So let's say if you are playing with the dice, you have to run this loop three times.
+So let's say on the first dice you got three.
+On the second dice you got four.
+And on the dice three you got let's say two.
+Okay.
+So the total sum would be nine.
+So you have to return nine so that player can move nine step forward.
+So this is how I designed the dice so that it is scalable.
+So till now we have two objects player and dice done.
+Then snake and later object.
+So now here focus that either we can have two classes one for snake, one for later.
+So see the property of snake and later very important that say this is one one particular cell.
+This is another particular cell.
+This is a later this is 22.
+And this is let's say 54 okay.
+So Focus on.
+Don't focus on the cell.
+Focus on the leader.
+So here we have a start point.
+And here we have end point.
+Similarly for snake there is a snake.
+Okay.
+And let's say it is uh 94.
+And it is coming back to let's say 21 okay.
+So it's a start point is here and end point is here.
+So here, if you see both the object, either snake or leader has one thing in common that they have
+a start position.
+And end position leader also has a start position and end position.
+So only differ is that in the leader, start position is a smaller position and the end is higher.
+So because when the player reaches this point it goes up, start is lower and end is higher position.
+But in snake start is higher position and end is lower position okay.
+That's the only difference.
+But their class structure is very similar.
+Start position and end position.
+So why we need two objects?
+Why can't we have a simply create one jump object.
+Okay so that's what I did.
+So I created one jump object.
+And it has this start position and end position.
+That's all.
+See for us for a player point of view it's just a jump whether you are jumping higher or jumping lower.
+Okay.
+If it is a leader okay.
+If it's a leader, then whatever the end position is, you are moving the player or you are jumping
+making the player jump to that higher position.
+If it's a snake, we don't care.
+Like if this cell has certain, uh, start end position.
+So if this is the start position where currently the player has, then whatever the end position is,
+I need to jump the user or player to that position, whether it's a high or bottom, we don't know.
+Okay.
+And all you can say that we don't know means we don't care.
+It's just a jump.
+Okay, you got it.
+What I'm trying to say, let's say the player is at this position.
+22 player comes to this position now, and this cell has certain info that this is the start and this
+is the end.
+There is certain jump and this is the start.
+This is the end.
+Now player one just see that okay.
+If there is any jump associated with this cell, whatever the end position is I need to go there okay.
+Now if this end position is higher or lower how do we care.
+Like if it's a later it goes higher position.
+If it's a snake, whatever the end position is, the player one should goes to that one okay.
+So all we interested in start and end position that we need to make the player jump to that end position.
+Whether that position is higher or lower, we don't care.
+Okay, so that's why I used only one object jump instead of two snake and later.
+Okay.
+So that is clear.
+Like why instead of Snake and ladder we have only one jump.
+Now another object is sell.
+I already mentioned that in a board.
+So this board is of ten by ten matrix.
+Of what?
+Ten by ten of what?
+So ten by ten of this particular cell.
+Okay.
+And this cell has certain information.
+Information like whether there are any jump object is there or not, whether any jump there or not.
+So now here, if you notice that I am not putting that hey later is there.
+Hey, snake is there because we don't care.
+Now I only associate that this cell has certain jump and the jump has a start and end position.
+So yes, this is the start position of the jump.
+Okay, so whatever the cell we have now let's say that jump is, uh, jump start point.
+Start point is 53 and end point is 12.
+We know that it's a snake because from high it's going to the bottom.
+But I mentioned you that when we are proceeding with the game at the back end.
+So see it's just a representation in the UI that it's a snake.
+But at a back end, if you see it's just a jump from this position, you are jumping lower.
+Okay.
+So now here, if you see that if this is the jump position, we just need to assign up to a particular
+cell to this jump okay.
+And this board has a matrix ten by ten matrix.
+So we know that start position is 53.
+So if we need to find out the cell we can easily find it 5310 by ten matrix.
+Right.
+So fifth row 53 mod ten third column okay.
+So 012345.
+Likewise it goes similarly the column.
+So we can easily determine the cell where we have to put this jump object because at the jump this cell.
+Where like this jump object we need to associate with cell where the start point is.
+There means at this point at this cell this jump is applicable.
+And whenever the player comes to this point, this cell, it need to jump to this end point.
+Okay.
+So that's why we are using the jump start point.
+And we will determine which cell contains that jump.
+And we can easily do with this.
+When we will see the example you will get more clear.
+So here in the cell what we are having is each cell has jump.
+Let's say this cell has nothing.
+So jump would be null.
+Okay.
+So if this cell has certain jump associated whether snake or letter we don't care.
+So it would have a jump object associated.
+Okay.
+So our cell is also created.
+And here you know that cell has jump.
+So it has a relationship with the jump.
+Cool.
+Now our next is bored.
+So bored is nothing but a n by N cells.
+So I have created a bored class which has cells that is nothing but a 2D representation 2D array of
+cell.
+So it's an n by n.
+So that's why we don't want to hard code ten by ten.
+Okay.
+So whenever we create an object of bored.
+So here if you see if you see the bored, whenever we create an object of bored we will ask that.
+Give us the bored size so that many cells we will create.
+So it's dynamic.
+Like if you want ten by ten we can create ten by ten.
+If you want 20 by 20 we can create 20 by 20.
+So that is also scalable.
+Okay.
+And also we have exposed one method that add snakes and ladder into the board.
+Like uh here we can add the snakes and ladders.
+So like how many snakes you wanted, how many letters you wanted because that also is one of the requirement.
+Okay.
+So number and the place of snakes and ladder should be defined at the game startup.
+Okay.
+So who will define the snakes and Ladders board.
+Board is the correct choice because board has info about cell.
+Okay.
+And that's why add snakes and later info.
+I have put it into the board while creation of the board object.
+I only ask how many snakes, how many letters you wanted to add in the board.
+Okay.
+And we have written we can have different logics.
+So I will uh, tell you this logic, what I have done here.
+So I am just initializing my board with this many snakes, this many letters.
+Okay.
+So here, if you see the logic here, what I am doing is let's say you have added here two snakes.
+Two snakes and three letters I wanted.
+So what I am doing is I am iterating first number of snakes you wanted.
+So let's say two snakes.
+So this loop will run two times okay.
+Now first time it I'm what I'm trying to do I'm finding out two numbers between let's say 0 to 99.
+So currently I am our board is n by n right.
+Or let's say ten by ten.
+So I'm starting from zero.
+So it's let's let's say finished at 99 okay.
+If you want to start at one then it will finish at 100.
+So generally our matrix is like n by n starting from zero.
+So I am getting one number from between 0 to 99.
+So here I am finding out a head and tail of a snake.
+Okay so two snakes I have to create.
+So two random number random number one, which is like a head random number two, which is like a tail.
+Okay, so let's say I got here 55 as a head and tail.
+I got let's say uh, 30.
+Okay.
+So I'm trying to get two numbers which in this head is higher and tail is lower.
+So that's what I am trying to do.
+So this condition is nothing but like because in Snake head like this jump is like from head is higher
+and the tail is lower.
+So player jump is from down top to bottom.
+So but let's say if random number is let's say this is 30, head is 30 and tail is let's say 60, then
+it is not a snake, right.
+Snake jump should be downward.
+So that's what I am doing here.
+So head should always be higher than the tail.
+But if it is not.
+Continue.
+Uh.
+Getting the random numbers.
+But if your head and tail is proper according to the snake behavior, let's say 55 head is higher and
+the tail is 30, which is lower than head, then yes, it is correct.
+And then we are creating a new jump object.
+Okay.
+So I creating a new jump object which start position is this head 55 and end position is your the tail
+which is 30.
+Okay.
+So this jump object I have created.
+Now this jump object need to be assigned to one of the cell okay.
+So which cell we have to assign it to the start one.
+Like when the player reaches to this position 55, then only the snake will bite the player.
+So 55 we have to find out the cell which is at 55 position.
+So it's a let's say ten by ten.
+So divide by ten this fifth row 55 mod ten.
+So fifth column okay.
+So this fifth fifth.
+So this is the cell we have to take out.
+And we have to assign jump object to it.
+So that's what I am doing I get the cell from the head let's say 55 the same thing row and column I
+got the cell object and each cell has jump right.
+So I'm assigning that jump object to this one to this cell okay.
+So one object is created.
+Similarly I will iterate next time because I have to create two snakes.
+So once all the snakes are created and the cells jumps are assigned, then it breaks this loop and then
+it moves to the next, where I am assigning the number of letters.
+So later is also the same logic.
+Okay, only differ is that in the letter.
+Now start is lower and end is higher.
+So when I am taking out two random number which is let's say start and end.
+So only I should proceed when start is lower than the end.
+But if it is not, then I have to continue till this random number is in proper order.
+Okay, once you got a proper random numbers according to the behavior of a letter, that start is lower
+than the end, then we will create a jump object at the start and end, and we will assign this jump
+object to a cell which is at start position.
+Okay, the same thing, because once the user comes to this start position, then only it moves to this
+end.
+Okay so understood this board how we are adding the snakes and later.
+Okay.
+So that object is also done.
+And the last object is the game which is considered as an orchestrator.
+So in the game what all you need.
+I need a board.
+So this game has board.
+You need a dice.
+So game has dice.
+And also I am using a DK of player.
+Why?
+Because let's say two players are playing player one and player two.
+With DK you can easily remove an element from the start and add it at the back.
+So we have to give alternate chance to the players, right?
+So I should be able to delete the player from the start and add it at back once the player one has taken
+its turn.
+So next time when player two taken its turn, I should be able to remove it from front and should be
+able to add it at back.
+So that's why I took a deck of player.
+Okay, so it also has relationship with the player.
+And this game has two things initialize game and start game.
+Okay.
+So this is all the UML is required for a snake and ladder.
+Okay.
+Now we will see how this everything is clubbed together and it's working.
+So let's move to the game.
+So game has board, game has dice and game has a deck of players okay.
+So first thing so this is our demo.
+So first thing is I am creating an object of a game.
+So I am creating an object of a game.
+So what's happening inside a game.
+We are initializing it.
+Okay.
+We are initializing means we have to initialize this the board, the dice, the player, we have to
+initialize it.
+So depending upon the interviewer.
+So see this initialization generally have uh used to be done by the let's say client.
+So consider this is our we can get this information from the client also.
+So for now I am putting this information directly here.
+But since it's a method we can easily get this info from the client.
+What is the port side.
+What is the number of snake.
+What is the number of letter?
+Okay.
+So in the initialization first we are I am initializing the board.
+Create a board of size 1010 by ten and add five snakes and four letters.
+So I am creating a new board.
+So I am creating a new.
+Board here okay.
+And inside a new board what is happening is it is first initializing the cells Okay so board has 2D
+array of cells object right.
+So first size is board size is ten.
+So here I am iterating it and creating a cells object.
+So here.
+3456789 ten.
+Like this.
+This many cells objects I am creating currently.
+First it is all by default.
+Like this I am creating 01234 like this.
+Till 9012.
+Like this.
+Till all nine.
+Okay, so currently I have created a new cell.
+Okay.
+So this cell has currently no information okay.
+But only thing is I have initialized it for now.
+Okay.
+What else?
+Uh, here it does this.
+So we have initialized the cells in the board, and now I am adding the snake and ladder.
+So how many snakes?
+And later five snakes.
+Four letters.
+I already told you the logic about the adding the snakes and letter so randomly it will add.
+Like four snakes, four letters, like five snakes and four letters.
+It will add it into the board at different different positions.
+Okay, so let's say at this position it added snakes.
+Cool.
+So so this is two things happening into the first thing like uh, when we call the initialize game the
+board is created.
+And then so this is initialized and then dice.
+So currently I am playing it with only one dice.
+But if you want to play it with two we can ask from the client and give that number.
+So in the new dice, whatever the dice count is we will put it Okay.
+So our dice is also initialized.
+And the players.
+So here I am adding the player.
+So I created two players.
+Player one starting at position zero.
+Player two starting at position zero, both starting at zeroth position and add it into the deck.
+So all these three things are initialized.
+So to play a game we need board.
+It's initialized.
+We need dice.
+It is also initialized.
+And player it is also initialized.
+So initialization is happen when we create an object of a game.
+Okay.
+So when we create an object of a game initialization happen.
+Now we invoke the start game.
+Okay.
+So now when the start game is happened.
+So it just like an orchestrator for the complete.
+So here if you see we are iterating over this loop till we don't see any winner.
+So till winner is equals to equals to null.
+Keep going, keep going, keep going, keep playing the game.
+Okay so now what is the first step.
+So currently here if you see this is our board.
+And in the both player one and player two is at position zero let's say.
+And they are in dequeue player one.
+Player two.
+This is all things we have set up and we have only one dice.
+Okay.
+So first check whose turn it is.
+So we are taking out the player.
+So here from the player list we remove the first and add it into the last.
+So this is we remove it from the first.
+So this is the player which turn it is.
+So current player is player one.
+And we also added it to the last.
+So now currently player turn is player one.
+Okay, so this is just I am printing that player turn is this and its current position is this.
+So currently player turn is player one.
+Current position is zero.
+Now it has to roll the dice.
+So I'm calling dice dot roll dice okay.
+Because this already has an object of dice.
+So I am calling the roll dice.
+So roll dice has.
+We have only one dice right?
+While creating an object we have provided dice count one, so this will only run one time.
+So only one time.
+We take out a random number between this min and max one and six.
+So whatever the num we get, it will return.
+Now let's say dice number we got is.
+Let's say the dice number we got is four.
+So what we are doing is next we are taking out the new position.
+The new position is new position of player one is zero plus four For.
+Okay.
+So player is now have to go to this position.
+So now I am checking.
+I am doing a jump check that whatever the position new position player one has got, is there any jump
+associated with it.
+So let's say 01234.
+So here fourth position we need to take out a cell.
+So how we can take out a cell.
+So it's a ten by ten matrix right four divided by ten four mod ten.
+So this is your row which is zero.
+This is your column which is four.
+So 01234.
+So this is the column which we have to put row zero column four.
+So this is the cell we have to pick.
+Is there any jump associated with it currently.
+No there is no jump.
+This cell has no jump because cell has jump information.
+Okay.
+So currently it has no jump associated.
+So I'm checking a jump check.
+Now let's see how I am doing a jump check.
+So here if you see if both dot get cell new position the same thing like what I did here.
+Whatever the new position is let's say here I am doing finding out the row and column taking out that
+particular cell.
+Taking out this particular cell.
+If this cell jump is not equal to null, means yes, there is some jump associated with it.
+Okay.
+And jump start is equals to equals to new position that this currently the new position is for.
+Right after rolling the dice player one reaches to this fourth position.
+Yes.
+So this is you can say that that's the validation.
+So yes The jump start is this point itself.
+Now what?
+Wherever it goes, it's tail.
+Or you can say that it's end.
+We will jump the user to that position.
+So jump by.
+So what I am doing is so this is just a printing to determine whether it's a leader or a snake.
+Okay.
+We don't need it.
+I'm just checking that okay.
+If start is lesser than the end then means there is a leader on that particular cell.
+Otherwise there is a snake.
+Okay, so I'm just printing just for printing purpose.
+That jump is done by leader or jump is done by snake who has done it.
+But generally if that particular cell, if that particular cell has a jump object, then this is the
+end position I am returning.
+So here if you see player new position would now change to this jump and position wherever it is.
+Okay, so it would be the jump and position if there is a jump associated with this cell.
+If no if there is no jump associated with this cell, like if it is null, whatever the current position
+is, return that.
+Okay.
+So let's say if this cell has no jump associated, whatever the current position, after rolling the
+dice it will return that only.
+Okay.
+But if there is jump associated it the new position would be whatever the end point of the jump, whether
+it's up or high, we don't care.
+Okay.
+And we are assigning the player current position to this whatever the new position we have got.
+So this is clear right?
+What would be the new position if the cell has no jump associated it.
+Then what?
+After rolling up the dice, whatever we got, we just add it into current position and this would be
+the new position.
+But if this new position, if this cell has jump associated with it, then whatever the end point of
+that jump, whether it's a snake bite, then it would be a lower or whether it would be higher.
+That would be our new player position.
+Okay, so the player turn was, let's say player one and its new position is this one.
+Whatever the new position is either after the jump end point or if there is no jump associated only
+after rolling the dice.
+Okay.
+And now I have to check whether the winning condition has been achieved or not.
+So when the winning condition will happen, let's say after rolling the dice if user has reached the
+end position.
+So that's where I'm checking if the player new position is greater than the board size.
+Board size is, let's say 100 If it reads that or equals to that one means the player has won the game.
+If it reads till the last cell or it crossed, it means the player has win.
+But if not, the game will continue.
+So in the next run, what would happen is find the player turn.
+Find the player turn.
+What would happen is in the D Q who is at the front?
+Player two.
+So current player is become player two.
+And it we will take it out and put it at the back.
+Okay.
+And uh, current position is is zero.
+Now what it will do is it will roll the dice.
+So we have only one dice.
+So let's say we got six roll dice.
+We got six.
+So for now current position is six.
+So we take out a cell.
+Particular cell uh row and column.
+So six divided by ten zero six mod ten is this is the column six.
+So zero comma six.
+So zero comma let's say six.
+So this is the cell.
+Now we check.
+Hey is there any jump associated with this.
+So we are checking a jump check.
+If this jump has no jump associated with it it will return this whatever the new position is.
+This only if there is a jump associated with it will return the position of a jump end.
+Okay, so whatever the position we got that we will assign it to current player position okay.
+So current player position would be either zero plus six either six.
+If there is a jump then its end position.
+But currently let's say there is no jump associated with it.
+So it would be six.
+After that we are checking a winning condition.
+Thus six is greater than equals to let's say 99 no.
+So game will continue.
+So it will again goes here.
+Okay.
+So this will repeat again and again.
+So if you play the game so now here if you see if I play the game.
+This is it printing.
+So here if you see player one current position is zero okay.
+Now what would happen is player one current position is zero for for now.
+Now it will roll the dice.
+Okay.
+And uh, after rolling the dice, we will see the jump check.
+And whatever the new position will come, we will assign to that one.
+And then we are printing player one.
+Now new position is two.
+So here if you see if there is any jump happen we are also printing it here.
+So currently means there is no jump happened to this player.
+So means in the dice it got two.
+Similarly, player two turns come.
+Current position is zero.
+New position is six.
+Okay, now player one turn.
+So currently player one was at two position.
+So it is starting from two.
+Now it rolls the dice.
+It got new position is four.
+So they will continue playing the game.
+Now let's see a point where.
+So they are continuously reaching to a position.
+Now let's see.
+Yeah.
+Jump down by stay.
+So player one turn which is currently at 77th position.
+Now what happens is it rolls a dice.
+It might get certain point a certain number.
+Let's say four five something.
+Now we are checking this player new position.
+Let's say 77 plus.
+Uh it got three.
+So total 80.
+So this is, this should be the new position of the current player.
+Okay, so we are checking at 80th position.
+Is there any jump or not?
+Yes, there is a snake present.
+Okay.
+So jump is not equal to null at 80th position.
+And uh here if you see that this is just for printing purpose.
+So whatever the end position of that jump we are assigning to it.
+So end position is 35.
+So ultimately earlier it was 77.
+But after rolling the dice it comes to 35.
+Why.
+Because there was a snake present at 80.
+So there was a snake present at 80 which bites the player one.
+And it comes back to 35.
+Okay.
+So now next time when the player one runs, it will run from 35.
+And again this will continue.
+Let's see any letters we got.
+Yes.
+So player one current position is 56 okay.
+Now it throws the dice.
+Now let's say 56, and the dice it throws is two.
+So 58.
+So at 58 cell let's say you can calculate right 58 divided by ten.
+Fifth row 858 mod ten eighth column.
+So we can take out cell five comma eight.
+So we will take out this cell.
+Okay.
+We will take out this particular cell.
+And we'll see any jump is associated or not.
+And here if you see there was a letter.
+So means the end position.
+We will use it.
+So earlier it was in 56.
+Now it moved to 77.
+And this game continues.
+And ultimately the player who reached to this position 100 is the winner.
+And the game stops.
+See there could be some validations missing.
+Okay.
+Having a full proof validation is not our major agenda in this one.
+The major agenda is that how we can build this game.
+So this is the most simplistic, simplistic, simplistic way we can design this game.
+So I will tell you another way.
+Generally engineers use in the interview.
+So they create.
+So they have two classes.
+Generally they create one class for snake.
+Also they have like a start point end point.
+They also create one more class for later.
+They have a start point end point.
+And they create a game object in that they put a list of let's say snake, and they also put a list
+of later.
+And generally what they do is that whenever they get a number, let's say 1332, so they iterate over
+this list, okay.
+Whether whether there is a snake or later in this.
+So they iterate over this list.
+Then they treat over this list and try to find out.
+So this I don't feel more intuitive because y.
+For every dice run y, you need to iterate over this two list to determine whether on this particular
+cell you have a snake or later present.
+We can easily put that on a each cell.
+We can have the jump itself.
+You don't have to put uh snake or later.
+Also, it's a jump whether a lower jump or a higher jump, we don't care.
+Okay.
+So we can associate the cell with a jump itself.
+Now, whatever the number player at current position, we can take out of that cell itself.
+Okay.
+We can easily find out through row and column we can take out the cell.
+And once we got the cell, we can know that a jump is associated or not.
+If it is null means there is no jump.
+I don't need to check for snake letter if there is a jump again.
+Whatever the end position is, I just need to take the player to that position itself.
+Finish.
+Okay, so I told you what mistakes generally engineer does.
+So one is this list.
+This is not intuitive.
+Another is that this zigzag flow of the matrix.
+So this is something where uh, this becomes super complicated.
+So once if you goes into this zigzag trap, right, then it this quotient become too tough to implement.
+All you need to know is this is just a UI representation.
+If you see the numbering, it goes sequentially.
+So after five if user get two so it goes five, six, seven.
+So in sequence only they always go nothing but a plain matrix itself.
+So I have pushed this code onto the grid.
+Check it out.
+Practice with your hand and if there is any doubt let me know.
+We can discuss into the further section by.

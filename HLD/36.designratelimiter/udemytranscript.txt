@@ -1,0 +1,308 @@
+# Retry Pattern : Fault Tolerance in Distributed Microservices
+
+Before I start, I just want to say that that retry, if in not properly implemented, it has more disadvantages
+than advantages.
+We will get to know why.
+So in distributed system, call to downstream service might fail because of transient issues.
+Transient issues means that short temporary issue like network issue, timeout, etc. and retry of same
+request after a short delay can get succeed.
+Okay, so one question might comes to you that hey still why we should do retry?
+Why can't user or client can invoke our API again.
+So let's say that this is our client.
+This is our component order.
+And we have an API.
+And we are invoking another API of let's say product component.
+And there is some transient issue while invoking it.
+So what we are saying is so transient issues.
+If we retry it, it can get succeed.
+So we can do a retry for this invocation.
+So the question is that hey why we need to retry.
+Why can't client again invoke the API.
+So that automatically it will invoke the product API again.
+Why we have to retry ourself.
+So see the answer is for each call lot of heavy processing is done and it's not free of cost, memory,
+time, resources, etc. everything like it's there is some cost incurred.
+So say you have invoked client at first invoke an API.
+90% of the API implementation is completed.
+Task is completed.
+Only 10% is left.
+And then it invoke this product API and the transient issue happen.
+Let's say, uh, network timeout happen.
+So is it a good idea to dispose of this 90% of the task which is done?
+No.
+Right.
+We if we can just simply retry this, and if it gets succeeded, then only 10% tasks have to be done.
+Otherwise, if we ask client to retry again, our API hit again, our API again we will do the same
+90% task again.
+So redundant of the work is there, duplicate of the work is there and it will increase our cost and
+it's not free of cost to be honest, right?
+So with above understanding we know that retry is important, right?
+I think I hope this point will tell you that why retry is important?
+Because we don't want to do the same 90% task again.
+Okay.
+And I'm just saying this is just one client.
+If there are hundred clients For this API and they are all invoking and there are thousands of calls.
+So you are saying that you are doing a lot of wasting your, uh, capacity on just duplicate tasks which
+you have already completed.
+So we know that retry is important, but the question is when to retry.
+How to retry.
+Very, very important question.
+When to retry.
+First of all is do not retry on permanent failures.
+Permanent failures is like no matter how many times you will retry, it will always fail.
+Like for errors.
+So for errors generally are in the category of validation error.
+Validation error.
+Validation error means the input request input request which client has passed has is not correct.
+Until unless client will not change, the input validation error will not remove.
+So if you retry with the same request previously, again you will see a validation error.
+So generally these are known as permanent failure for xx.
+Do not retry if operation is non patent.
+What does it mean.
+So hydro patency makes sure that if request is retried multiple times duplicate processing will not
+happen.
+So say you have a service A which invokes the create API of service B okay.
+So it has invoked it.
+And while service B writes into its DB but it takes certain time okay.
+And here it says that timeout happen and timeout happens.
+So for service A the request has been timeout.
+But service B internally inserted the row into the DB.
+Now since this is a timeout and user has retried.
+So this is a retried again.
+Now here service B be?
+Insert the row again.
+Id2.
+Earlier it was already inserted.
+Id1.
+Now it is Id2.
+So here.
+This is not my intention.
+My intention was not to create a duplicate row for the same request.
+Okay, so we can say that this this API, the API of the service be this create API is not idempotent.
+Okay.
+So that's why we say that do not retry if operation is not idempotent.
+Otherwise you will end up in creating duplicate resources.
+So if you do not know how to design idempotent APIs, I have already covered it into the high level
+design playlist.
+Uh, in depth.
+Like what are the challenges, how we can come up with the API design?
+So have a look in case you have a doubt.
+Okay, so but here one thing is we don't have to retry if operation is not repeated.
+The third is that rule of thumb says that retry only on five x error.
+What five x error says that it is system error.
+Your input request.
+Input request is good.
+Okay.
+All validation passed.
+But there is some limitation in system or some issue happen in the system because of that error has
+happened.
+So generally these are considered as retry error.
+Okay.
+So it is safe to retry on this because this is first of all system error.
+And also it says that it request is not successful means the previous request five X means request is
+not successful.
+Okay.
+So that is also one.
+Give us a you can say that uh relief that yeah previous request is not successful.
+And we can retry as many times.
+So there is no harm okay.
+And five X has already know that input request is correct.
+No validation errors, but there is some issue with the system.
+So with retry it is possible that it might get resolved.
+So that is one.
+And another thing is retry network uh network error and timeout error.
+We have to retry, but only make sure that whatever the API it should support auto patency.
+So this is a retry decision table.
+Like based on HTTP code you can decide whether you have to retry or not.
+So these are not complete lists.
+Just an idea.
+Let's say 200 request is already success.
+You don't have to retry like 400.
+Bad request unauthorized forbidden 404 not found.
+So these are you can say that validation error.
+No matter how many times you will retry, you will always get retry failure uh, failure itself.
+Right.
+So you don't have to retry on this.
+So 4 to 9 you can say that one of the exception, like 4 to 9, means too many requests.
+So it generally happens when the rate limiting.
+So for that we can do retry with some delay.
+Then we have 500 internal server error 502 bad gateway 503 service unavailable.
+These are like uh you can say that retry issue like uh service unavailable.
+Maybe it was down.
+And if you retry, it might be up and it request can get succeeded.
+So for all this we can do retry.
+And if there is a network error timeouts you can always retry.
+Yes.
+But make sure that it should be independent.
+Okay.
+So this is just a quick glance that based on HTTP status code, you decide whether the retry can be
+done or not.
+Now how to retry.
+So see this is very important part.
+So let's see.
+First types of retry and when.
+And then we will see how to implement it also.
+So first is fixed interval retry.
+So what does fixed interval retry says that retry after a constant delay.
+So within each retry the delay is constant.
+So say that the attempt total attempt is four.
+So when we say total attempt means original one call plus three retries.
+So total four.
+Okay.
+So after original call there has to be a fixed delay.
+Like let's say my fixed delay is two second.
+So it would be like after two second first retry will happen.
+Then it will wait for two second then second retry will happen.
+Then it will wait for two second then third retry will happen.
+So there is a fixed interval of delay within the retries.
+So let's say this is the original call which happened at two.
+So first retry happen at four, then second retry will six.
+Third retry at eight.
+So each one has two two seconds gaps here.
+So advantage of this is it is very very simple easy to configure and debug also.
+But this is main disadvantage is that higher chance of retry storm which is also known as thundering
+herd problem.
+Thundering herd problem means many clients retry at the same time, causing a surge of retry traffic
+and system spend resources on retries instead of handling new requests.
+So understand with this is that.
+Say that you have a load balancer and you have, let's say component service a service a multiple instances
+instance one, instance two, instance three, and load balancer distribute the traffic between the
+instances of service.
+A there are so many clients client one, client N and the traffic is also huge.
+Now let's say that a buggy code has been introduced into the service a and it is.
+Start throwing some exception.
+And if client start doing retry also since already it's a heavy traffic and for that they are all started
+doing retry at a fixed delay.
+So all are retrying.
+So original request.
+Let's say there are 1000 request original.
+Now after two second delay.
+Retry one will happen.
+Okay.
+So everyone will do retry 1000 requests again after two second delay.
+Retry two.
+They again do a retry okay.
+So these are just retry traffic whatever the normal traffic new request is coming.
+That is different.
+So means your system is now get bombarded with the retry traffic.
+And it is possible that while you are only servicing retry traffic, you somehow decline the new request
+which is coming.
+That is also possible.
+Okay, so if you remember like in the playlist, I have already covered Thundering Herd problem like
+it is one of the frequently asked interview question.
+So if you want to know more about Thundering Herd problem, you can check it out.
+But yeah, this is one of the disadvantage is that if all the clients retry at the same interval, it
+is possible that the retry traffic become huge and it can cause thundering herd problem.
+So fixed interval is clear.
+Then we have exponential backoff.
+So what does exponential backoff says.
+That delay Increases exponentially.
+So currently earlier you are delaying at this time.
+Then this time, then this time, not at fixed rate, not after two seconds.
+This is two second not at fixed.
+So it increases with the time.
+And this is the formula for it.
+So the formula says that you pick some base delay that.
+Yeah minimum base delay is my 100 millisecond into two raised to power.
+This is the factor.
+You can say that this is also configurable factor raised to power number of failed retry attempt okay.
+So consider that total attempt is four means one original call and three retries.
+And my base is 100.
+So the formula says that the first retrieval.
+So let's say original call happen at uh zero zero milliseconds.
+Say so first retry will happen at 100 which is our base delay into And the factor which I have given
+is, let's say this factor I have given is two for now, two raised to power.
+Previous number of failed retry attempt.
+Currently this is the first retry itself.
+So zero retry attempt has failed.
+So currently it is zero.
+So this is first retry happen at.
+So original call happened at zero millisecond.
+First retry will happen at 100 millisecond.
+Second retry will happen at 100 base into whatever the factor you have told.
+Let's say I have told two raised to power number of failed retry attempt.
+So till now only one retry attempt failed.
+So it's one.
+So retry will happen at 200 millisecond third retry will happen at 100 into two.
+Raised to power.
+Number of failed retry attempt two.
+Till now two retry has been done.
+So two ratio of two 400 millisecond.
+So now here if you see the delay time is exponentially increases 100 200 400.
+Next you will see 800.
+Like this.
+So advantage is that it reduces the load on downstream service during outage.
+Let's say that this service become.
+This service become down.
+If we increase the delay they also get some breathing time to recover it.
+Unnecessary.
+If you put the load of the retry also plus the original request.
+Also the it might take some more time to recover for the component.
+And it also helps to avoid thundering herd problem to some extent.
+Right?
+Since they are not retrying at a constant time its delays.
+So thundering herd problem.
+You can say that uh, to some extent it reduces, but does it reduce fully?
+No.
+There is still a risk of thundering herd because see, this is the formula.
+What if your base is my base?
+All the clients select the same base and same factor, then they will retry at the same time itself.
+So there is because there is no randomness, right?
+So there is still a chance of thundering herd problem.
+And also if outage period is short, user might wait some longer time.
+So let's say that this shortage is resolved at 500 millisecond.
+After 500 millisecond this outage was resolved, but after 400 millisecond the delay was 800.
+Only after that it will retry.
+So there is.
+Even though the issue was resolved, it still added some latency, right?
+The outage period is short.
+User might wait longer than needed.
+So this is one of the disadvantage.
+So there is one.
+Another version of it is like exponential backoff plus jitter.
+Jitter means some randomness similar to exponential backoff, but add jitter or randomness to delay
+or to.
+You can say that to avoid retry stomps.
+Now see exponential backoff already.
+Uh, increases the delay time exponentially, right?
+But only thing which missing is randomness.
+So this jitter helps to retry reduce the retry stomps.
+So this is its formula.
+We have to choose a random number.
+Between random between.
+Zero comma.
+Minimum of maximum delay.
+What.
+What is the maximum delay we can have.
+Let's say no exponential backoff.
+So it's not like let's say you have for example I'm just saying you have 100 retry.
+So it's not like it continuously increases your time and all.
+No there should always be limit right after a limit.
+This is the maximum wait time.
+Let's say uh, five second is the maximum delay time.
+More than that, you can't go increase if you more than increase if you're with the formula, if it
+gives you the value of more than five second, always use five seconds.
+So this is the max limit.
+So here is the same random.
+You have to choose a random between zero comma minimum of the maximum delay or.
+This is our exponential backoff formula okay.
+So now we have bring some randomness.
+So again random between zero comma minimum of maximum delay which we can wait comma your exponential
+backoff formula one.
+So between this it now pick some delay value.
+And now since this is random You can say that, uh, it spread the retries over time, reduce peak load
+and thundering herd issue is prob happening of this issue become very less because of this randomness.
+The disadvantage is it's not easy to debug and it's little complex.
+And the last type of retry is custom interval.
+Like you define your own retry logic.
+Hey I want retry to be like 11235 like this okay.
+So first retry should wait for one one millisecond, then another one millisecond, then two millisecond,
+then three millisecond, then five, then eight.
+Like this.
+So you can define your own custom logic, how you want to do a retry.
+That is also possible.
+So we have full control and flexibility.
+But disadvantages you have to maintain you have to maintain it.
+So you have to write the logic.
+You have to maintain it.
+The framework will not help you in this.

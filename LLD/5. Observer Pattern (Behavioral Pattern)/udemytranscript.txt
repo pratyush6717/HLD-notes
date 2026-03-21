@@ -1,0 +1,278 @@
+# Observer Pattern (Behavioral Pattern)
+
+Side.
+Welcome back to the channel.
+And today we will see Observer Pattern.
+So let's start without wasting any time.
+So it's a behavioral design pattern where an object which is also known as observable.
+Or you can say that publisher maintains a list of dependent say observers.
+Okay.
+We will get more clear about this term uh, soon.
+And the main purpose of it is to automatically notify the dependents observer whenever there is a change
+in its state.
+In which state in.
+Whenever there is a change in the publisher state, it automatically notify all the dependents or observers.
+Okay.
+So see this diagram.
+So here we have an observable.
+Some someone call it publisher.
+So it has certain state whenever there is a change in state let's say currently it's holding value one.
+So you can see that it's a Update in its state, and whenever a state is changed, all the subscribers
+or all the dependents who are observing it.
+Okay, so it will notify them, hey, there is a change in my state.
+This is just a heads up.
+Do whatever now you want to do.
+Okay, so real life example is weather application where multiple devices receive update from a weather
+station.
+So here weather station is your publisher.
+And multiple devices let's say are the television radio where they are getting the information from
+the weather station.
+These are subscribers okay.
+Or in we can say that this is observable and this is observer's social media feed where we follow someone
+on Instagram, Facebook, Twitter.
+We become observer of their profile.
+When they post new content, we are automatically notified.
+So in this case we are observer.
+Okay.
+And the profile which we are observing is known as observable okay.
+So there are different example like subscription service stock market trackers and etc..
+So generally there are two models and many engineers get confused like hey why we are using like this.
+And because many way in most of the videos only one way is discussed.
+Okay?
+So many people have different understanding.
+Some knows about push, some knows about pull, but both are correct.
+We will see that both so push in the push observable.
+Or you can say that publisher pushes the data it warned observer to see.
+So in this case the publisher is pushing the data to observer okay.
+Whatever the data it want observer to see in the pull observer holds observable object reference, so
+observer is nothing but a subscriber.
+The subscriber holds the publisher object reference, and when it got to know that something updated,
+it pulls the data automatically whatever it wants.
+So maybe your observable or publisher holds a lot of data.
+Okay, so now once the observer or subscriber get to know that something is changed, it already has
+the reference of it and it fetch whatever information it required.
+So UML for push model.
+So in the push model is what publisher or observable pushes the data it want observer to receive.
+Okay.
+So here let's say I have.
+So this is a UML.
+I have an observable interface.
+Okay.
+It exposes different method like add.
+You can add observer.
+You can remove observer Notify where we will notify each observer and the state, like each publisher
+or each observable maintenance state.
+So there is some method to update that state also.
+Right.
+So this is just a abstract method.
+So there should be some concrete observable which implement this.
+So these are the implementation for that.
+Similarly we have observer and there could be many observers okay.
+So it has update method.
+Now notice one thing that in the push model in the update method we are having certain parameter like
+these parameters are the observable data.
+Data means in the sense whatever the publisher wanted to send, whatever the publisher wanted to see
+the subscribers.
+Okay, that data, we need to set it here.
+So here in this case I have just created observable data class.
+Okay, in that I have, let's say certain data one data two multiple data okay.
+If you don't want this object, you can have like okay int data one int data two string data three okay.
+But it's more feasible than if we have one class and send the object okay.
+Send the reference of that so that we don't have to write individually each fields.
+But the crux here is in the push model, my publisher observable is deciding what data I want observer
+or subscriber to see.
+So that's why in the update we have the observable data.
+So understand with this example.
+So here I have weather observable which expose certain method like add observer remove observer notify
+observer and set weather readings.
+Okay, now weather station is implementing this weather observable.
+It maintain a list of observers.
+So these are weather observers.
+Or you can say that subscribers.
+And since we are currently doing push model so it in the update method I have provided the data weather
+data.
+So this is the weather data class I have created like what all data publisher wanted to send.
+And these are all subscriber let's say current condition.
+Any system which is showing the current.
+What is the current weather.
+Any system which is using the current information and showing the forecast display.
+So generally different different uh system which are currently observing this weather observable okay.
+And each one is implementing their update like okay, once they got the update, okay.
+And they have the data.
+They have their custom logic how they want to use it.
+Okay.
+So now we have a weather observable which is implemented by weather station.
+Weather station maintain a list of observers and also have this observable data.
+So this is your observable data.
+So now in the constructor I created a empty list of observers.
+Currently there are no subscriber or no observers which are observing this observable or publisher.
+So first is method is add observer.
+So it is adding an implementation of it.
+So whenever a add observer is called, whatever the observer is we are adding it into the list.
+Remove observer.
+Whatever the observer is coming into the parameter we are removing it from the list.
+Okay.
+Then we have notify observer.
+So here we are iterating over the list of this, iterating over the list of this observer.
+And for each one we are calling the update method.
+And also notice that we are passing the data this observable data because publisher is now deciding
+what it wanted to see here, it might have more data.
+Also, this is just an example here.
+It might have let's say weather data and so many more data.
+But let's say it wants subscribers or observer to see only weather data.
+So that's why publisher is deciding what subscriber need to see.
+Okay.
+And we have something called set weather reading.
+Like whatever the value it's coming.
+Okay.
+So this is something you can say that it is used to change the state of an observable.
+So I have temperature and humidity.
+So whenever any change happen.
+So I am creating a new weather data object.
+Setting the temperature and humidity.
+It's just like updating this field.
+Okay, so it's just an example.
+You.
+Whether you have to create this class or not or you can simply have directly here.
+Temperature and humidity here.
+And in the update you pass direct temperature and humidity.
+Okay.
+So this is just an example whether you have to create this class or not.
+So I'm creating a class.
+And then instead of passing individual parameters I am passing a class object temperature humidity.
+So I have the weather data set now.
+And now the it's a new temperature and new humidity right.
+So that's why I call notify observer.
+So now notify observer what it will do.
+It will iterate over the list of observer and call the update method.
+So each observer what whoever has.
+Observing or whichever observer got added into this list, they will get notified.
+Their update method will get notified.
+Okay, so that is.
+Push model and very very straightforward.
+Okay.
+And see this is the client how they are using it.
+So we have a main method.
+So now I created an object of weather station okay.
+So I created an object of weather station.
+And here I am creating the observer.
+So this is my publisher.
+This is my subscribers.
+So I created two subscribers two observer.
+Currently they are not observing it.
+So now I am adding subscriber to a list of this publisher which is maintaining.
+So weather station.
+It is maintaining a list right.
+Add observer current display weather station add observer forecast display.
+So now this list got updated.
+Now it holds two observers.
+Now I am changing the state of a weather station like set weather reading.
+I am passing the temperature and humidity.
+And when I pass it, it will set the temperature and humidity to the weather data.
+Okay.
+And it caused the notify observer.
+And when the notify observer called, it calls the update method of all the observer which are added
+into the list.
+So currently it will call for current display and forecast display.
+Similarly we can remove it also weather station remove observer.
+We can remove any observer we want.
+So this is one way of implementing the observer design pattern which is push model okay.
+Now another model which some other follows right.
+Both are correct.
+So in the pull model this observer holds a reference of this observable.
+So it's like they also has a relationship with it.
+So it knows about the observable.
+So in this case when we are and here if you see the update we don't have any parameter now here because
+it don't need it.
+Only need that okay.
+Something has updated.
+So it will call the update.
+That's all.
+It will not pass any parameter.
+Why it will not pass because observer don't need it.
+It has the reference of the observable itself.
+So whatever the data it required it will fetch it.
+So it's a pull model generally.
+So consider this example okay.
+The same thing whether observable.
+And here if you see the same thing no change add remove notify set whether reading no change into that
+and into the weather station which implements this one.
+So here it maintain a list of observer.
+And this is my observable data.
+I already told you that creation of a class is not mandatory either.
+You can have the observable data maintained here or you can have a class.
+So currently I have only two, so I'm maintaining it here itself.
+So now I am creating a constructor.
+So in the constructor I am initializing this list.
+So currently this list is empty.
+There is no subscribers okay.
+And then we have add observer method exactly like previously.
+Remove same notify iterating over the list of observer and calling the update.
+So now one change is that here we are not passing any observable data.
+We are not passing, we are just calling the update method.
+Okay.
+We are not passing any observable data.
+Then we have set weather, reading, temperature, humidity.
+So whatever the new value comes, we will update our observable data and we will notify it like same
+as before.
+And the notify will iterate over the list of observer and call the update method.
+And now here in this case, observer has the update method.
+But yes, again there is no parameter.
+It accept it has two observer current display and forecast display.
+Now only this is that it maintain a list or reference it.
+Maintain a reference of the observable.
+It maintain a reference of the observable.
+So what I am doing is.
+So whenever we are creating an object of this observer or subscriber, we will pass a reference of this
+observable also.
+Okay.
+And what I am doing is so this reference got updated.
+And also using this reference I will add the observer.
+So whatever this observer is I am adding it into this list.
+Also this list okay so see this example.
+It will get clear.
+So I am creating a publisher here.
+So my publisher is created.
+Okay, so currently it has empty observer.
+Now here I am creating two subscribers.
+This is subscriber or you can known as observers.
+And this is observable.
+Okay.
+So I am creating first new current condition display.
+So this is one observer and I am passing the weather station like because now each observer hold the
+reference of the observable.
+So I'm passing the weather station.
+So once it got passed it update this reference.
+So it update this reference here.
+And also using this observable object it add it calls the add observer method and add itself.
+Now this observer get added into this list.
+Similarly the forecast display holds the reference of this weather station, and it will automatically
+use this weather station object and calls the Addobserver method and add itself into the list.
+Okay, so now we have created the subscriber, and also the subscriber have added themselves into the
+list which is maintained by publisher.
+Now here we are updating the weather state.
+So set weather state.
+So let's say new temperature or some new humidity temperature is coming.
+So when it comes it updates its weather data and call the notify observer.
+The notify observer iterate over list of observers and call the update method.
+And when the update method is called.
+Now they have this reference weather observable reference.
+So from this weather station they can access whatever the data they are interested in.
+So this is mostly you can say that pull method.
+So here.
+Only difference is that the observer also the observer also has a reference of the observable.
+That's the only difference.
+Okay.
+Both are correct based on the requirement of the question.
+Okay.
+We can decide what we wanted.
+Okay.
+So when we want observer to have a control to fetch the data, whatever it wants, we can go for this
+pull model.
+When the publisher or observable need to control that hey I subscriber need to see only these three
+fields.
+Then we can follow the push model where it will pass the observable data, whatever it want to send
+into the update.
+Okay it's clear.
+But still, if you have any doubt, let me know.
+We can discuss further by.

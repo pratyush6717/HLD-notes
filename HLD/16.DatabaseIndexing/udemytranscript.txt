@@ -1,0 +1,480 @@
+# Proxy vs Reverse Proxy
+
+Hey guys.
+Welcome to Concept and Coding.
+And today we are going to cover the another topic of system design which is proxy servers.
+Right.
+So I'm making it tick.
+And let's continue.
+So here are the proxy server which I am going to tell you today.
+Like what is proxy server.
+What are its different types of proxy servers.
+Then after learning this this three questions should come to your mind.
+Otherwise it will uh, get confused when in the interview they asked.
+Right?
+So mostly if this three differences are not clear, it will create a lot of confusion.
+So that's what I'm trying to say that once you learn this, this thing should automatically comes to
+your mind, hey, what is the difference between VPN and proxy?
+They looks very similar.
+What is the difference between load and load balancer and proxy firewall versus proxy because they are
+very, uh, sometimes become very similar.
+Right.
+So we have to understand the difference properly okay.
+So let's understand first what is proxy server.
+Okay.
+So let's take an example to understand that.
+Let's say I'm taking an example.
+Let's say a small child right.
+And this small child wanted something uh let's say a chocolate.
+So this is a shop which sells chocolate.
+So a small child want this chocolate.
+So what it will do is it will ask its parents.
+Right?
+Let's say it's ask his mom.
+Hey, I want a chocolate.
+Mom goes to a shop, takes the chocolate and give it to a child.
+Right?
+So now you see here the child.
+Ah, child is not talking directly to a shopkeeper, right?
+Child is talking to his mom, which it trusts.
+And in that case, the mom goes outside.
+Take out what is the required data here.
+In this case, it's chocolate and then give it to its child.
+So here in this case, the mom acts as a proxy.
+Okay, so now I think you understand what is proxy.
+Proxy is like working, taking a request on someone's behalf.
+So now here the mom is taking a request on behalf of her child.
+So mom is acting as a proxy for this shopkeeper.
+So it is taking a request on behalf of it.
+Of his child.
+Okay.
+So here in this case, child is what?
+Your client.
+The shopkeeper is what?
+Nothing but your server.
+And here, in this case, your mom is nothing but a proxy server which sits between the client and the
+server.
+So all the request of a client or a group of clients.
+Client one.
+Client two.
+So let's say a mom has two childs, one daughter, one son.
+So both will ask their mom only.
+So.
+Right.
+So proxy.
+Can take request from more than one clients also, right?
+And for all the clients, proxy takes the request and goes to a server.
+Ask for the required data server, returns it and proxy, get it and give it right.
+So at least now you should know what is the difference.
+What is the definition of proxy servers right?
+So proxy server sits between a client and server and act as a intermediate between these two.
+All the requests pass through the proxy.
+Right.
+No client and server can talk directly to each other okay.
+So now we know that okay what is proxy server.
+Now let's check its different types right.
+So if you understand this right different types forward and reverse.
+See from the name itself it's very very clear that forward and reverse it give you a hint that they
+only differs in the direction.
+Right.
+So mostly there differs in direction of communication.
+Forward.
+Reverse.
+Right.
+So now let's first understand forward.
+What is forward proxy.
+So forward proxy is like which is also sometimes known as simple proxy.
+When we say that hey proxy it sometime we are telling the definition of forward proxy only.
+So what it is that let's say you have a closed network.
+You your personal computer or group of personal computer or let's say intranet.
+Right.
+A group of closed network.
+So this is client one.
+Client two.
+Client three.
+You can say that it's an intranet or a group of personal network.
+Your computer network.
+And all right.
+So a group of networks or clients talks to proxy.
+This is your forward proxy sits here.
+Forward proxy now goes to the internet outside world.
+And here it reached out to a particular server.
+The server responds back and the proxy returns back.
+Right.
+So here if you see that whatever we have discussed as a definition, it's very much similar to a forward
+proxy.
+So that's why I always say that when we tell only what is proxy, we are indirectly talking about forward
+proxy.
+So now what does forward proxy do.
+So forward proxy what it does it it hides.
+It hides the client network.
+It hides the client network means server outside world.
+Or they don't know about the internal network.
+Internal clients How how they don't know is.
+So let's say a client one makes a request.
+So its IP address is I'm just taking for example, 172 .1.0.1.
+This is 172 .2.0.1172.3.0.1.
+Just an example.
+Let's say these are the IP address, right?
+So when any of this makes a request.
+So let's say now request is coming from C one right.
+172 .1.0.1 A.
+This is making a request.
+So what proxy will send its proxy will send its own IP address to the outer world.
+Like this is making a request now on behalf of C one.
+So server when it gets a request hey let's say let's say this is an API google.com google.com.
+Right.
+So this even the C one has made this request one.
+But what it goes outside is google.com and its it's IP address.
+So let's say its IP address is 192.3.0.1.
+So it goes like 192.3.0.1.
+So server knows that okay.
+The request is coming from this.
+It is asking me google.com something right.
+But actually if you see that who makes the request see one.
+Which IP address is this.
+So what does forward proxies do?
+This forward proxy hides the client from the outside world, right?
+No server can talk.
+No server can talk directly to the client.
+Server can only talk or only know about the proxy only.
+So indirectly, what advantage forward proxy can do is first advantage.
+Now you know that it gives anonymity.
+It gives anonymous anonymity to the internal networks.
+So its IP address its It's location.
+It's got hidden to the outside wall.
+No server can know that request comes from where?
+Right.
+Because it passed through proxy.
+Proxy send its IP address and server knows only about the proxy, so it breaks anonymity.
+Second grouping.
+Of request.
+Now, I told you that a proxy can take care of multiple client requests.
+So let's say this client is also making google.com request.
+This client is also making google.com request.
+So what it can do is it can club.
+It can group the request and send one request.
+Hey send the google.com outside so it can club the request and send into a one.
+Right.
+So that's capability also it provide right.
+So what it does is I think you got it like it groups.
+It helps in grouping the similar requests and then go outside and makes only one request.
+Right.
+So this grouping functionality is also provided by the proxy third access restricted data or content.
+So let's say your country has uh, blocked certain kind of contents that it is not allowed to visit.
+Let's say, uh, in India, a particular, uh, websites are banned or you cannot visit those.
+Right.
+So with the help of proxy, you can bypass those because you can, uh, this might be your let's say
+it will, uh, proxy as like this request is coming from, uh, let's say some UK us.
+Right.
+So even though this is a, this user is in India and it is trying to access certain restrictive content.
+So when it goes directly, definitely, uh, the because of the country, uh, location wise restriction,
+those content cannot be accessed.
+But when it passes through a proxy, it can act like it is coming from some other location.
+So it can help to access certain restrictive content.
+This proxy fourth, it brings security, right?
+So you need to understand that when so when the control is in the forward proxy.
+Also when you have multiple clients, let's say 100 clients, all their requests are going through from
+the forward proxy itself.
+So you can add certain kind of, uh, security that okay, what all they are allowed to access.
+So that also you can put into the forward proxy that okay, only these kind of content or certain rules
+based checking you can add it Added.
+Okay.
+So let's say maybe let's say you have a disabled, uh, reply from facebook.com.
+Let.
+Okay.
+No social media.
+Uh, you you client should not access it.
+So when they try to access facebook.com, it, uh, goes there.
+When the response comes, it says that.
+Okay, I will not send the response.
+Throw some error or it will stop at itself.
+So we can also bring certain control security that okay.
+What all you can access.
+What all clients cannot access that also we can build out in a forward proxy okay.
+So here if you see that this is the advantage.
+And one more advantage is caching.
+Very big advantage.
+So what happened here in the uh forward proxy is just you can also do a caching.
+So let's say there are certain static content right.
+So now let's say I told you there could be 100 clients.
+There could be 100 clients.
+So let's say first time, uh, this, uh, access, let's say, uh, website, a website a so let's
+say a proxy check.
+What it will do is first proxy go and check its cash cache.
+Hey, does website A is present or its content present within me?
+No.
+Then it goes outside, then it goes outside.
+And once it got the response back, it stored into a cache.
+Right.
+And then respond back when any other client asks for the same content, then proxy server first check
+its cache and then respond from the cache itself.
+It don't go out also.
+Okay, so this is another feature or advantage which forward proxy adds it.
+Right.
+So these are the five advantages anonymity grouping of the request.
+And then as a group it send uh cumulative uh like out of it groups ten requests and send only one access
+restricted data you it is you can use it to access certain restrictive data security.
+Uh.
+It can also be used.
+Like what?
+All data can be accessed.
+Cannot be accessed.
+Right.
+So we can define certain rules and caching.
+Right.
+I told you but what is the disadvantage.
+We also need to understand that disadvantage is it works on the application level.
+Application level.
+So there are multiple levels right.
+Uh I think uh data layer, network layer, transport layer, physical layer.
+And then there is something called application layer.
+So this is an application uh, layer.
+Uh, this thing uh, proxy works at application level means for if you have ten applications for each
+application, you have to set up a proxy.
+So let's say you have multiple application.
+So for each application you have to set up a proxy For each application, you have to set up a proxy,
+so it has to be set up at each application level.
+That's what it is.
+So here, if you see that there are certain protocols which I will tell you which works on this packet
+level.
+Right.
+But this works on application level.
+So that's why for each application you have to set up a proxy.
+Okay.
+So I think you understand the forward proxy right.
+Now let's see what is reverse proxy.
+I told you that there mostly differs in the direction differs in the direction.
+So forward proxy it's work toward client.
+So it saves client that it brings anonymity to them.
+No server can dock.
+No server can talk directly to the client.
+Now here reverse proxy.
+It's used to know more from the internet.
+Whatever the requests are coming, there might be server one.
+Server two.
+Their company might have many servers server N, so no request which is coming from the internet can
+talk directly to the server.
+So reverse proxy sits here.
+Reverse proxy.
+Then it will send a request to an appropriate server okay.
+Just see this.
+It's very similar.
+So here I will repeat again proxy server works on behalf of client.
+No server can talk directly to a client.
+Server can only know about proxy and proxy then talks to a client here in the reverse proxy opposite
+happen when whatever requests coming from an internet it is not allowed directly to the server.
+It goes to a reverse proxy and reverse proxy takes a responsibility to talk to a server.
+Okay.
+So that's why it just differs in the direction.
+Okay.
+So now what is the advantage it brings.
+Right.
+So now let's say you have a company and you have a server right.
+So in the reverse proxy when you have bring in.
+So first thing is definitely it brings some security that to the outside world.
+They are not aware of the server's IP address server IP address, that which server they are talking
+to and all all they are aware of the reverse proxy IP address.
+So in case of DDoS attack, in case of DDoS attack, attacker can only attack the reverse proxy.
+One particular reverse proxy it cannot attack on the server right.
+And there are many resources.
+So here you can have a vast resource and technology to tackle that.
+Right.
+So, you know, that one kind of reverse proxy is what you might have heard of.
+CN.
+CN is nothing but a reverse proxy, right?
+So here let's say this is Paris.
+This is you.
+Let's say us.
+This is India and this your server, original server.
+Your server is sitting in, let's say Singapore.
+Right?
+So, uh, one client is sitting Paris, one client is sitting in us, one client is sitting in India,
+but your server is in Singapore.
+So if they are making a request, you can set up one CN at Paris, one CN at us, one CN at India.
+So they're local clients, local users.
+When their request forms it goes to their local CN right.
+And from here if it also maintain a cache.
+If data is not there, then only it goes to a original server.
+So here.
+Why this?
+You get to know that if any attacker attacks, it can only attack on the CD.
+Or you can say that reverse proxy.
+It cannot attack on a original server, right?
+So it brings an advantage that it can handle a DDoS attack.
+Second, I told you caching that when it first the Paris user make a request.
+This CDN or this reverse proxy will first check its own cache.
+Hey, data is present, then it will return it from here.
+If no then it go and check the original server.
+Here we this user need this data.
+Give it to me and then it will store into the cache and then give it right.
+Third latency I told you that the reverse proxy can be set at like location nearest to the user location.
+So when you do a caching it can bring some help in reducing the latency.
+And the most and major advantage is load balancer.
+Capability.
+Right.
+So reverse proxy sit here and there are multiple servers.
+So when a request comes in let's say it's a heavy traffic taking servers like.
+So when a request comes in it can do load balancing task.
+Also that okay few requests and it to server one few requests and it to server two few requests and
+it to server three like this.
+So it can also help in the load balancing also okay.
+So now you know what is reverse proxy right.
+One popular reverse proxy.
+You know that CDN right?
+CDN technology is nothing but act as a reverse proxy.
+So by learning this thing you should think come into the mind, hey what is proxy and VPN then what
+is proxy and load balancer.
+Because this seems very similar.
+What is proxy versus firewall.
+Now I tell you the difference.
+First let's say proxy versus VPN.
+So proxy act as a bypass.
+So this is proxy.
+Now this is server.
+This is client.
+This is server.
+So it proxy certain media tree.
+What it generally helps it to bring the anonymity.
+Anonymity.
+It can do caching as you know right.
+It can also do logging.
+Also we can add log right.
+So anonymity like it hides the IP address.
+It hides the IP address.
+Right.
+So whatever the client IP addresses server might not know it.
+And in the reverse proxy the server IP address, uh, the internet uh doesn't know this.
+Like what is the server IP address.
+So it bring a anonymity at the IP address.
+It can do caching, it can do logging.
+But what is VPN.
+So VPN is much more than proxy like.
+So here you this is a client.
+Let's say it's taken a VPN.
+So there would be one VPN client.
+There would be one VPN server over the internet.
+Right.
+So what it does is VPN creates a tunnel.
+It creates a VIP and tunnel.
+So when a client makes a request, when a client makes a this is internet.
+When a client makes a request, first it has to connect to a VPN client.
+So all its request goes through a VPN client VPN client.
+What it will do is it can do encryption also encryption of your data.
+So all the requests will go here as an encrypted data in the VPN tunnel.
+Right.
+So from outside, if any attacker tried to access the data it will not be able to know.
+And in VPN server it will do decryption and then send to the original server.
+Okay.
+But here if you see that the proxy only do anonymity at the IP address masking, but it cannot encrypt
+the data.
+Encryption decryption is not possible and VPN does encryption decryption right and it create a safe
+tunnel which is known as VPN tunnel from where the data flows, right?
+So let's say this is your home computer which you connected through your IP, uh uh, internet.
+And then you have to, uh, download one VPN client.
+Maybe there are so many VPN providers.
+So you have to pay and then use.
+So there would be a client.
+They will also have a server.
+So a VPN tunnel got created.
+So the major difference you have to understand is VPN does the encryption of data decryption of data
+and create a safe tunnel to transfer the data.
+Which proxy doesn't do it?
+Okay.
+Now let's understand between proxy versus load balancer.
+And in more specifically I would say that reverse proxy reverse proxy versus load balancer because I
+told you that reverse proxy can also act as a load balancer.
+So now here, if you see that the major difference is your reverse proxy can act as a load balancer.
+But load balancer cannot be.
+A proxy because now you know that what all proxy can do proxy can do bring anonymity.
+IP anonymity caching.
+Logging.
+So it has all these capabilities.
+Also does load balancer have all this capability.
+No.
+So proxy has one more capability that it can also do load balancing.
+So reverse proxy can act as a load balancer.
+But load balancer cannot act as a proxy.
+One more difference I would say is that let's say there is only one server.
+For example only one server.
+Do you need load balancer?
+No, you don't need load balancer.
+Load balancer is only needed when there are more than one server.
+But reverse proxy can.
+Also, if you have only one server, reverse proxy might be required because of caching.
+Because of anonymity.
+You want it because of logging.
+Right.
+So load balancer is just one capability which reverse proxy has.
+But it can do much more than that.
+Okay so got it.
+Now let's see one last differences proxy versus firewall.
+So first you need to understand what firewall is.
+So let's say this is a firewall.
+So the firewall we put certain holes right.
+And for each hole we can define a the rules.
+Okay.
+From this, what all data can pass to the outside world internet.
+So we can define rules that what all data can pass out of this small holes which we have created.
+Right.
+And it can do a packet scanning.
+Packet scanning.
+Right.
+I told you that, uh, application layer, transport layer, network layer, physical layer.
+So this all works on packets.
+So when I say that packet, what it means is it will check the header.
+It will check the port number IP address of source and destination, right of source and destination.
+And based upon that it will check the rules whether okay this is the source IP address, source port
+number, destination address, destination port number and all whether I should allow it or not.
+Right.
+So one thing is it works on the packet scanning.
+And I told you that proxy proxy works at an application layer.
+So what does proxy works on?
+Proxy works on application level.
+Right.
+So apart from.
+So apart from port and these things are application level you also have access to data also.
+So you can add a certain kind of rules based upon the data also.
+And here the thing is for each application you have to set up right.
+So but here it is not required.
+Right.
+So one thing is it is a packet scanning right which works on a packet port numbers and proxy works on
+a application level not on packets okay.
+So also one more thing is proxy.
+There are certain kind of things like generally when the proxy wars are brought in.
+So proxy proxy wars basically usually work as an anonymity like it just does provide an anonymous like
+a request comes in from this IP address one one let's say 0.1, but because of proxy it will go as a
+200 dot something something something.
+So IP address anonymity right.
+But now there are so many proxies available like which can also block.
+So like firewall do the blocking right.
+It will block certain requests based upon the rules.
+We can also develop the we have a proxy which can also do a blocking right based upon the rules also.
+So proxy firewall we can have right.
+So it will have certain capabilities of firewall also.
+So proxy can act as a firewall also.
+But the way they work it is known as traditional firewall which works on packet.
+Right.
+And there are if you see the concept of proxy firewall.
+So these are you can say that latest.
+They can also block data but they work at application layer.
+Right.
+That's the major difference.
+So here I think you should be clear with proxy versus VPN, proxy versus load balancer, proxy versus
+firewall.
+And just have this difference like forward proxy, reverse proxy.
+They mostly differ in the direction what they protect.
+Forward proxy protects clients.
+Reverse proxy protects servers.
+Right.
+I think guys it is clear the proxy servers and always remember CDN the famous we talk we gonna when
+we do a lot of questions right.
+Design this design YouTube design Facebook design this.
+You will see a lot of CDNs and all.
+Always remember that CDN is nothing but a reverse proxy.
+Okay guys okay, so that's it for today and I hope you like the content.
+And please share your valuable feedback and please share it with your friends guys it would be really
+helpful.
+Thank you guys.
+Have a good day.
+Bye.

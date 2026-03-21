@@ -1,0 +1,804 @@
+# Distributed Messaging Queue | Design Messaging Queue like Kafka, RabbitMQ
+
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And today I am going to cover a very important topic distributed messaging queue like Kafka and RabbitMQ
+which these two are the most popular messaging queues.
+So the topics which I am going to cover are too much in depth.
+I would say that from the interview perspective.
+Right.
+So first thing is very basic.
+What is messaging queue, why it is needed and its advantages.
+Now you should be able to understand because the interviewer can come up with so many follow up questions
+like what is the difference between pub sub and point to point messaging queue?
+Right?
+And I will tell you the working of the messaging queue, definitely.
+And both Kafka and RabbitMQ.
+But the follow up question which should be ready is like what if queue size limit reach?
+What if queue goes down?
+What what, what will happen to the message which are inside a particular queue?
+What if the consumer goes down?
+What if consumer not able to process the message?
+How the retry will work well and One how the distributed messaging queue works.
+Because you know that in the world of microservices there are so many machines and also how distributed
+messaging works, which is very important, right?
+So if you have doubt in any of the points, I would highly recommend to go through this video because
+interviewer can catch you in any one of the point, right?
+And with this point, with this topic in high level design roadmap, I am making this topic as right.
+Right.
+So we will cover this today.
+Okay.
+So let's move ahead with our first point.
+What is messaging queue.
+Why it is needed.
+So what is messaging queue.
+Messaging queue is very simple as we all know.
+We have producer which produces a message.
+This message goes inside a particular queue and from that queue consumer reads it and process it and
+process the message.
+So everybody knows this message queue how this is like we have a producer, we have a consumer and we
+have a queue which stores the message, right?
+But now the question is why it is needed and what the advantage does it bring?
+So let's say first use case, which is also you can say that an advantage is a synchronous nature,
+asynchronous nature.
+So for example I am taking a producer as.
+So let's say my producer is certain e-commerce application where user is buying a particular product
+or buying a particular product after as soon as you buy it, we need to send a notification.
+We need to send a notification.
+But user don't have to actually wait for that notification.
+It can be done asynchronously.
+So what it will do is it can send send a message in a queue that okay send notification.
+This is the message send notification to this user.
+Now we have one consumer.
+Let's say our consumer is.
+Send notification application.
+So this is our consumer.
+It will consume this and it will send a message send a mail or message anything to the user.
+So this can be done in asynchronous.
+So one thing is our latency got reduced.
+So just understand that if e-commerce application directly talks to send notification application hey
+can you send it right.
+So there are couple of disadvantages of that.
+First thing is okay if it goes in a synchronous manner okay.
+Then definitely the latency will increase because send notification mail.
+And this are very heavy tasks.
+So definitely latency will increase.
+But now you can say that hey why I need a queue.
+Why can't e-commerce application send a synchronous here itself?
+Why we need a queue.
+So another advantage which queue brings is retry capability.
+Retry capability.
+Let's say if this message sending got failed let's say the server is down.
+This is down right because of some issue.
+This send notification application is down so it will not be able to process anything.
+So what we can do is we can retry in the queue.
+We can put it back.
+So retry capability is added okay.
+Okay.
+So you got it.
+Asynchronous nature with retry capabilities one use case.
+Second.
+Second point is the pace matching.
+Now the same example I will use.
+Let's say this is my e-commerce application right.
+There is another application I would say that uh inventory management Ment application.
+There could be another.
+There could be another application application X, y, z.
+They all want to send a message.
+All want to send a notification.
+Let's say mail.
+And I have one application let's say send notification application.
+Now they all will call to this one.
+Now when they all will call to this one right now all they will call to send notification.
+But see if they are sending ten messages per second, if they're sending 20 messages per second, if
+they're sending 30 messages per second, and it can only process 15 messages per second.
+So definitely if you see these producers are producing a message at a very faster pace, which consumer
+can consume, right.
+So this is another issue.
+Which message queue help us to tackle how you all three put a message into a message queue.
+Put your messages into the message queue.
+Write and subscribe.
+The consumer will consume it from in its own pace.
+Right.
+So this is what I tell is pace matching through queue in the mid.
+You can do a pace matching right.
+And let me tell you one more use case.
+Uh like this will also help you understand why the message queue is very much popular.
+So here if you see that there is a cap right.
+So in your city you have, let's say a cap service provider.
+Those who have so many caps right.
+They all have GPS installed GPS installed.
+So now let's say everybody is sending, uh, their location every ten second, ten second.
+They're sending a location.
+Hey, this is my car ID, and this is my current location.
+My current location.
+Right.
+They are sending this message.
+All the cards.
+So now you can assume that the amount of data message is coming every 10s each car in a city is sending.
+What is the car ID and what is the current location?
+Right.
+And let's say we have a consumer application.
+Consumer application which uses this which need this data to create a dashboard like okay this is like
+this are the car's location right.
+So this consumer application cannot consume this much data so frequently.
+And that's why it need a queue.
+So this is the same thing.
+The pace matching.
+But I told you about from a different use case right.
+Okay.
+So now you know that why it is needed and its advantage.
+Because these are all its advantage also.
+Now let's move to the second point.
+What is point to point and pub sub messaging type, right?
+So now let's say that what is point to point and pub sub.
+What is the difference.
+So here I told you we have a publisher.
+Publisher.
+What does it do?
+Publisher publishes a message in a queue.
+So this is my message.
+And from a queue there can be multiple consumers.
+Consumer one.
+Consumer two.
+So in a point to point.
+Right.
+The whenever the message comes in that this is message A, this message can only be consumed by one
+consumer.
+Right.
+So let's say if consumer one is processing this it will not be available for consumer two.
+Right.
+If consumer two is processing it it will not be available to consumer one.
+So my point is whenever a particular message is put in a message queue, right in a point to point messaging
+service only, it will be consumed or processed only once.
+It can be processed by either consumer, but only once.
+But in pub sub what will happen is so pub sub architecture is kind of like this.
+You have a publisher, right?
+And you have let's say this is Q1, this is Q2, right?
+And you have one consumer is consuming to this queue.
+Another consumer is consuming to this queue.
+So here in the pub sub, what happens is whenever a message comes in right.
+Based upon the logic, it put a message.
+It broadcast the message to all the queues right based upon the message.
+I will tell you like what are the logic.
+So generally here it is called as exchange based upon the exchange logic, it broadcasts the message
+to all the queues.
+So what happened in the pubsub is, let's say a message comes message A, so it broadcasts the message
+to all the queues.
+Hey, message A is there message A is there?
+Now this is also consuming message A this is also consuming message A so in Pubsub architecture a same
+message can be processed by multiple consumers.
+And in point to point, the design should be such that a single message should only be consumed by a
+single consumer, right?
+So depending upon your business need, you have to pick one like okay, how you want it to design point
+to point or pubsub.
+Okay.
+Got it.
+So I think this should be clear.
+Now let's go to the major part how messaging queue works.
+Let me tell you first Kafka and then I will tell you the RabbitMQ right.
+They are very very similar right.
+Few or Few difference, I'll tell you.
+So let's say that how messaging queue works.
+So let's first understand the very popular Kafka and very, very important from the interview perspective
+before jumping into Kafka.
+I will tell you what are the components involved as we know producer.
+Second is consumer.
+Third is consumer group.
+Fourth is topic, fifth is partition, sixth is offset, seventh is broker.
+Then we have cluster.
+Then we have zookeeper.
+Okay, so Kafka has so many components.
+Now you will say that, hey, why?
+What we have till now covered is publisher, consumer and Q why Kafka has so many thing.
+Don't worry.
+It's very simple, I'll tell you.
+Let's first see its architecture, how it looks like, and then you will see.
+So here we have a.
+Producer or publisher.
+Just say anything right.
+So we have a producer or publisher right now.
+Then we have a broker.
+So publisher.
+Talks with broker.
+Now what is broker?
+Broker is nothing but a Kafka server.
+You can also say that it's a Kafka server.
+Whenever you start Kafka Server it is known as broker.
+Okay.
+Now what this broker has.
+So you know that broker is nothing but a server.
+Kafka server.
+Now, once you started, Kafka Broker is created.
+Now this broker what does it has.
+Broker has.
+Topic broker has.
+That's a topic.
+It has topic let's say give it a name.
+Every topic also has a name.
+Let's say it's a topic a write.
+A broker can have many such topics.
+So it can have many such topics.
+Topic x, y, z.
+Let's now concentrate on a particular topic right now.
+What does insider topic will have right?
+So inside a particular topic we have partition.
+It can have many partition.
+So let's say every partition has a name.
+So it has partition let's say zero Partition one.
+Partition two.
+Partition any partition it can have based upon the business need.
+Let's say it has partition one.
+I have created only two partition, but partition can be many.
+Right.
+So inside a topic we have partition.
+Inside a partition we have offsets, which is nothing like a queue.
+Right?
+Different partition can have like a different length.
+Right.
+And offset start with zero like a queue 01234567.
+Right.
+Similarly 01234567.
+It can be different also.
+Right.
+So partition has offset.
+Now what happen is consumer read from the partition.
+So you have one consumer because the ultimate data is stored inside a partition only right partition
+only.
+So consumer reads from the partition.
+Right now, each consumer is part of one consumer group.
+Each consumer is part of one.
+Consumer group.
+Right.
+So consumer group can have many consumers.
+So let's say a consumer one.
+There can be a consumer two.
+Right.
+Similarly there can be many consumers.
+So there can be a multiple groups.
+Consumer group, consumer group two.
+Similarly it will have consumer one, consumer two okay.
+Now the consumer inside a particular group.
+Right.
+They have uh, certain uh, you can say that uh logic that they do not uh, the same partition.
+They do not uh, you can say that, uh, share.
+So let's say if a topic A has two partition partition zero.
+Partition one.
+Right.
+So inside this consumer group one this is consumer group two.
+So consumer group one we have two consumer.
+So let's say consumer one is using partition zero.
+So consumer two will take partition one right.
+But this is not possible.
+Partition zero is also taken by consumer two.
+That is not possible within a particular consumer group within a particular consumer group.
+Different partitions are read by different consumer right.
+But this is possible.
+But this is possible that different consumer group two the consumer one can read this.
+Right.
+And this one is read by this.
+So this is possible because now it's a different group.
+So it's a different group.
+So means this consumer can still go for topic a partition zero and this consumer two can go for topic
+A partition one right.
+But within the same consumer group they always read different partition of a particular topic.
+But I will go in more detail.
+But first I wanted to tell you how these different components interact with each other.
+Right.
+So now you understand this.
+Now two things left cluster and zookeeper.
+Now you know that.
+So now what I told you is that we have a producer.
+Producer talks to broker.
+Broker has topic.
+Topic has partition.
+Partition.
+Zero.
+Partition one.
+Or they can have another topic.
+Topic two.
+Another partition.
+Right.
+So in a cluster there can be.
+So this is broker one.
+There can be many broker like this.
+So this is broker two.
+Broker three.
+Broker four.
+Right.
+So this is different.
+Broker means different.
+Kafka server running in different machine.
+So let's say this is in node one or machine one.
+This is running in node two.
+Machine two this is running in node three.
+Some other machine node four some other machine.
+So a group of this is called a cluster a group of this is called cluster right.
+You got it.
+What is mean by cluster.
+And then we'll call zookeeper.
+What is mean by zookeeper is so different brokers how they will interact with each other.
+Then we have something called zookeeper.
+Zookeeper helps them to interact with each other.
+All the brokers talk with zookeeper and everybody knows that okay, this partition, this topic is inside
+which broker?
+Everybody knows it through what through?
+Zookeeper.
+Zookeeper helps our internal communication that okay okay.
+This topic one this partition inside which broker.
+Got it.
+I'll tell you the zookeeper need also like so now at least now you know high level architecture of Kafka.
+Now little bit goes one step deeper.
+Let's say how a flow comes in.
+One message comes in.
+How it works and how it will take care of all these things.
+Message sizes limit, message goes down and consumer goes down.
+All those things.
+Let's go in depth and how this message works.
+So now let's go design a messaging queue producer producer publisher.
+One message message has certain things.
+So this is the message format.
+So message has key value Partition topic.
+Right.
+So it has these four things.
+Value is nothing but the actual message.
+This is your actual message, right?
+Key is something you can say that it can be string or ID or anything.
+I told you an example of the car, right?
+Uh, the each car is sending their location so you can say that car ID, car ID is nothing but a key,
+right?
+So this is this is you can say that it's a mandatory topic is mandatory, like in which topic you want
+to publish the message.
+So topic name.
+So here you will put a topic name right.
+So these two things are these two things are not mandatory.
+And I will tell you why how this will work.
+So now any certain message comes.
+Now let's understand this with that particular topic.
+So let's say in a particular topic.
+Topic A you have I'm taking an example of three partition for say partition zero.
+Partition one.
+Partition three.
+So let's say a topic A has three partition.
+And this message message.
+Let's say first use case message has passed certain ID.
+So message has let's say key is my 1234567.
+Certain key it can be string also.
+So it compute a hash of it.
+It compute a hash of it.
+Right.
+And I told you that it knows that okay which topic name it has to put.
+So topic is topic A right.
+So now after this key it will take out okay.
+After computing the hash okay.
+It see that okay which partition it points to based upon the key hashing, it will push the data into
+a particular partition.
+But I told you that key is not mandatory.
+What if this key is empty?
+Then it goes and looks for the partition.
+Have you defined a specific partition itself?
+Okay.
+Let's look.
+Say if key is empty then it goes and look for okay.
+Have you defined a particular partition itself.
+Then it will check okay.
+Partition is defined as let's say p one.
+Then it will directly put into this topic p one itself.
+So it will put a message here.
+But I told you that this is also not a mandatory right.
+So what happen if this is also empty priority partition is also empty.
+Then how it will decide in which partition message will go.
+Then if this is empty, this is also empty.
+Then it will follow the round robin whenever the message comes.
+So message one goes here.
+Message two goes here.
+matches three goes here, then message four goes here.
+Message five goes here.
+Message six goes here.
+So in a round robin fashion it will choose the partition.
+Understood.
+So I think this one is clear, right.
+Right now I'll tell you very very important part of this is offset.
+This offset is very much important in Kafka.
+And you have to understand it better.
+Now I told you that consumers are reading it from this is consumers are reading it from partition.
+Consumers are reading it from partition.
+This is consumer group right.
+So this is consumer group one and this is consumer one.
+Let's say I have only one consumer.
+For example this is reading from partition zero okay.
+Now and I told you that we have a zookeeper also.
+Now what does this offset tell?
+Offset?
+Tell that till where?
+The consumer has read the message.
+Right.
+So zookeeper keeps this like okay this is the consumer one.
+Consumer one.
+And consumer group is a let's say this is consumer group A inside this consumer group a consumer one
+is the one.
+It is reading.
+It is reading a topic.
+Topic is a partition is uh 0P0.
+Partition is p zero till where it read.
+So there is something called committed.
+Committed offset variable.
+Let's say committed offset variable is three.
+So means till index three.
+Till index three.
+This is successfully read only index for and more if there are more.
+These are unread.
+So you got it.
+What does committed offset means three means till three.
+It is properly read only from four.
+There are unread messages are present.
+Right?
+So zookeeper keeps this data for all the consumers, all the consumer group consumers.
+Okay.
+This is the consumer group.
+This is the consumer.
+It is uh, reading for this topic, this partition.
+What is the committed offset.
+Okay.
+And I will tell you why this is required okay.
+So now you got it committed offset and why this offset is important.
+Now understand this first part.
+What uh, let's say it has two two consumers.
+Let me have two consumer.
+This is consumer two consumer two.
+Now understand that use case this Is this consumer goes down.
+It got filled.
+What will happen?
+Because it is taking the responsibility of reading the partition zero now goes down.
+So what will happen is what Kafka will do.
+Kafka will pick from this consumer group, from this group, from this group A it will pick the second
+consumer.
+Right.
+Because this consumer group has multiple consumers.
+So if one goes down, it picks another consumer, which is free.
+You can say that.
+And what it will do is it will check okay.
+The consumer which is goes down.
+What is its last committed offset.
+It says three okay.
+Till three.
+It has properly successfully read.
+So now it will change it from here.
+So from this linking it will create a it will be processed.
+Partition zero will now process via consumer two and it will start reading it from four only because
+till three it is properly read.
+So now you know why committed offset is used and why consumer groups are used.
+Because inside a particular consumer group, if there are more consumer and if one goes down, another
+consumer can come up, which is free, and it will start consuming the data from where the previous
+one left off, right.
+So that is why consumer group is required.
+So I think I hope you got this why consumer group is required.
+You I think you know why consumer group is used.
+You know like why producers.
+What is the role of producer.
+Right.
+You know that okay topic topic is nothing but a you can say that placeholder for the partition.
+Right.
+So topic is nothing but a placeholder for partition.
+It can have many partition.
+So I think, you know topic now you know partition very well now.
+Okay.
+Partition is the place where actual message reside.
+Right?
+So it is nothing but actual data store where the data stores.
+Now you understand what is the use of offset okay.
+Offset is used to keep track of okay what all messages are read what are are yet to be read right using
+committed offset variable now broker you understand right.
+So broker is nothing but a server.
+Now there is one more thing I will tell you broker.
+And with the help of cluster understand this part.
+This is very very important which help you answering so many questions.
+I told you that this is a cluster.
+This is a cluster, you know.
+Right.
+What is cluster?
+Cluster is a cluster is a tell me cluster is a group of broker.
+Let's say it's a broker one.
+It's a broker one lets me take an example that we have three brokers.
+Broker two.
+Then we have broker three.
+Let's say this cluster have three.
+Broker right.
+And let's take another example.
+Let's take is we have one topic.
+Topic one.
+And this topic has let's say two partition partition.
+Zero partition one.
+So how the data is stored in a brokers.
+Let's see this.
+So let's say broker one has.
+Topic one and it has its partition Zero.
+Broker two has.
+Topic one.
+But what?
+Partition.
+Partition one.
+So one thing.
+You now know that even a particular topic inside a particular topic, even the partitions can reside
+into different Kafka servers, right?
+So see topic one, topic one.
+But in different Kafka servers.
+Kafka server one, broker one is hosting partition zero.
+Broker two is hosting partition one, right.
+But now you can ask hey, like how it will?
+What if this partition goes down?
+Partition zero goes down.
+What will happen to the message which inside it.
+Right.
+So that's where we have a replica inside that.
+So we have replica.
+So now you can say that this is a replica.
+Topic one partition zero.
+This is the replica.
+Similarly, for this topic, one replica let's say it is hosting its replica is here.
+Topic one.
+Partition one.
+This is its replica.
+This is its replica, right?
+This is its replica.
+Okay, so those who are not replica, they are called as leader.
+They are called as leader.
+So here inside broker one, this partition zero for topic one here is leader and its replica.
+It is also known as followers followers.
+Similarly, in the broker two topic one partition, one is leader and its replica is stored in broker
+three, which is known as followers.
+So all read and write Happens in through leader, right?
+And whenever the leader goes down, whenever the leader goes down, then the replica takes over and
+become a leader.
+So now you got it.
+The first priority is always a leader.
+Whenever somebody is reading from partition particular partition, let's say message comes right.
+Hey, I want partition zero.
+So it will goes to the topic one.
+Partition zero always goes to the broker one because this is leader right.
+It will not goes to the broker to this replica.
+Follower one.
+Once the leader is down then only the follower will take over, right?
+And follower.
+So let's say this is my leader.
+This is partition zero leader and this is partition zero replica which is also known as follower.
+So follower always follow leader.
+Any new message comes in, it takes it and also add in its queue also.
+So that's how it keep on syncing itself from the leader.
+Any new message comes in it.
+Keep on reading this leader and keep adding a message.
+So it's a following the leader.
+Okay guys.
+So now you got it right.
+So now I think you can answer this thing.
+Okay.
+So you understand how this Kafka works.
+Now you know that what happened the size queue size limit is reached.
+So what we will do, we will have different brokers.
+Right.
+Because a particular machine has limited size, let's say even the partition maximum, what you can
+have in a particular machine.
+Let's say you have one machine.
+What is the maximum limit is it's whatever the limit of this machine.
+So how we will increase it.
+So we will have a multiple broker.
+Broker one.
+Broker two.
+So we will increase it, right?
+Second is what happens to message when Q goes down.
+When a Q goes down nothing will happen to the message.
+So when whatever the leader goes down, the follower becomes the new leader and it is syncing with the
+leader.
+So it has all the messages, right?
+What happens when consumer goes down?
+This is very interesting.
+Right?
+So I have already told you that when consumer goes down, when consumer goes down, another consumer
+take over, another consumer takes over from the consumer group.
+So that and it can start from that particular offset itself.
+Right.
+So this is also done.
+Now another part is can you answer this.
+What happened when consumer not able to process message.
+Now let's discuss this.
+Not able to process message.
+How what will happen?
+So let's say this is a cue.
+This is a cue.
+Or let's say we are talking in terms of partition right.
+So let's say this is a partition.
+Partition is read by consumer.
+Consumer one inside a particular consumer group okay.
+Inside a particular consumer group.
+Consumer.
+So let's say the message one is a buggy.
+This is a buggy message.
+Something is not wrong with the message.
+Right.
+Let's take this example.
+So now consumer one picks this message message one.
+And let's try to process it right.
+Currently let's say it has its committed offset is let's say this is index.
+This is index let's say six.
+This is 43210.
+So let's say committed offset is currently six.
+Till here it is properly done now seven.
+Currently processing offset is seven.
+It is processing the seventh offset message.
+But it got failed.
+It got failed.
+This because this is a buggy message.
+It cannot be processed.
+Now what will happen is let's say we can set okay every message we need to do three times.
+Retry.
+We can add this capability into the partition or topic.
+Right.
+Every message I need three times.
+Retry four times.
+Retry five times retry.
+So what it will do is it will not increase its commit offset.
+Right.
+So again when it will pull the data it will okay.
+Six till six is done.
+It will again send a seventh and it will increase its retry Count.
+Second time retry.
+Third time.
+Retry.
+So when a particular retry limit is crossed, what it will do is it will put into another queue.
+It will put into another queue which is known as failure or.
+Or dead letter queue.
+Okay.
+So let's say retry is also finished right.
+So committed offset is not increased.
+Retry is also finished.
+What it will do is it will put the message one into failure one or dead letter queue.
+Right.
+And it move forward okay.
+Committed offset seven I am done like till seven I'm done.
+Now give me some new messages right later on somebody can go through this queue and read it properly.
+Okay.
+What happened to the message.
+Improve it and again put it back to a particular working partition okay.
+So this is how retry happens.
+And if a particular retry fails and this is how it is put into a dead queue or failure queue.
+Now very very important thing right.
+I will tell you about RabbitMQ also quickly if you are interested.
+Right.
+But I'll tell you that.
+Kafka is pull based approach.
+Pull based approach RabbitMQ is push based approach.
+Pull based approach means here consumer is polling.
+Hey, do you have any new data?
+Do you have any new message?
+Do you have any new message.
+Right.
+So Kafka is pull based approach RabbitMQ is push based approach here the partition.
+Or you can say that in RabbitMQ we call it Q.
+So Q pushes the message as soon as the data message comes in.
+Right.
+So remember this RabbitMQ is push based approach.
+Kafka is pull based approach.
+Okay.
+So I hope you are properly clear with at least Kafka why the producer is used.
+Why consumer is used, what is the use of consumer group and how it helps.
+Right.
+What is the use of topic.
+Partition.
+Offset.
+Broker.
+Cluster.
+Zookeeper.
+And also I hope you would be able to answer properly how retry works.
+Different ways to retry, right?
+I have told you Kafka one.
+I will also tell you about the how the RabbitMQ works distributed.
+You got it right.
+Different brokers called cluster and all.
+Now let's go to the RabbitMQ one.
+I am pretty much sure you have to watch it at least two times.
+Uh, to link all these things.
+It's a big topic and it's a favorite topic of the interview.
+Rabbit MQ is exactly same as Kafka, but minor difference, I'll tell you.
+Here we have producer.
+Producer talks with an exchange.
+So let's say this is something called exchange.
+I'll tell you what exchange does.
+So exchange is binded with.
+Here we have a binding of binding of routing key.
+Right.
+So exchange is binded with the q.
+Q let's say q one.
+Similarly it binded with another q this topic.
+Q two this exchange is binded let's say with routing key one.
+Whenever the routing key once comes in, it move to Q one.
+Whenever the routing key two comes in, it will move to Q two, right?
+Similarly, there can be multiple exchange.
+Exchange one.
+We can have exchange two.
+Right.
+Similarly it will have binding also.
+Let's say routing key two comes in.
+It will put to the Q two.
+Routing key three comes in.
+It will put to the Q three right.
+So we can have this one.
+And here we have consumers.
+Consumer one.
+Let's say consumer two.
+Consumer three.
+It might be consuming this also right.
+So we can have many consumers.
+So this is generally the architecture of RabbitMQ.
+So here you need to understand about this is the exchange.
+Different type of exchange are available.
+So there are fun thing is fan out fan out exchange.
+So fan out exchange means let's say a message is coming here.
+Message.
+A message is coming here.
+So in the fan out approach.
+Fan out exchange.
+What it will do is it will push the message to all the queues which are associated with this exchange.
+It will push message A here and also to this queue message A here.
+So fan out is simply broadcasting to all the queues which are related with this particular exchange.
+Then second comes is direct direct exchange.
+Direct exchange means let's say if a direct exchange means routing key is exactly matching.
+So this is a message this has let's say key is one.
+So now this exchange or direct exchange will say that okay routing key is one put into the queue one.
+So it should be exactly matching.
+Which one.
+A message key and the routing key.
+That's okay.
+If it is a message key is one.
+And the routing key is one.
+It has to be pushed to Q one.
+That is called direct exchange.
+Another one is called topic exchange.
+In topic exchange you can use wildcard right.
+You can put that okay.
+Uh, if star 123 something comes here.
+So means even if it is, comes as like a India underscore 123 means again it will put to this Q so you
+we can put a binding in this way.
+Right.
+If anything matches in the wildcard using a wildcard it bring a wildcard capability.
+And based on that it pushed the message to a particular queue.
+We can define a binding key like this.
+Star one two, three.
+And if it has come let's say India underscore 123.
+Right.
+So if it is a topic exchange, what it will do is it will consider this as a wildcard.
+Right.
+If it's a direct this is not even allowed.
+Wildcard is not even allowed.
+Okay.
+You got it.
+RabbitMQ.
+So now let's say the last before even going let's say if any message consumer is not able to process
+here.
+Here we don't have any offset concept.
+Here we don't have any offset concept right.
+What happen is let's say consumer one is reading a message one and it's not able to process it.
+Right.
+What it will do is it will recue it to the back of the queue.
+It will put message one recue again there in the Kafka.
+We handle it through offset here.
+What will happen is we have the capability to recue it back.
+Right.
+It can try multiple rescue.
+Retry one, retry two, retry three.
+If not, it can put into a queue if retry finishes off.
+Okay, but there is no concept of offset.
+And I told you that Kafka is work on push approach, not pull approach.
+So whenever the data is present it will push to the consumer.
+Okay, so this is the RabbitMQ and Kafka.
+And I told you the different ways uh questions can come into the interview.
+So you should be very much aware of it.
+And I hope we are good with this messaging queue.
+Any doubt please ping me on comment section or follow or ping me on the LinkedIn.
+I will definitely get back to you.
+So with this we are on track, right?
+So we still have so many things to cover and we have covered a lot.
+Yeah okay cool.
+Thank you guys.
+See you soon.
+Bye.

@@ -1,0 +1,407 @@
+# Load Balancer and Different Algorithms
+
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+So today we are going to cover this topic Load balancer.
+So I am making this topic okay.
+So now if you see not much topics are left in the theory part of the playlist.
+We have covered so many topics and we are going to soon start the questions right.
+So let's start with the load balancers and our different algorithm.
+So first thing first what is load balancer.
+Right.
+So you know that we have a client server.
+So our this is our client.
+There can be many clients right.
+There can be many clients.
+And we have a server.
+There can also be a many server.
+Server one server two server N.
+Right.
+So when a request comes from the client, when a request comes from the client so that all the requests
+should not goes to one server.
+So one server should not get overloaded.
+So what we do is we put load balancer.
+The main purpose.
+So now nowadays if you see the load balancer can do lot of things.
+It can do logging, it can do so many other stuff.
+But the main purpose of load balancer is to distribute this traffic appropriately to all the servers
+so that no, no one single server get overburdened.
+Now, if you see that the categories of load balancer there are two types.
+L4 balancer, which is nothing but a network load balancer type L7 balancer which is nothing but a application
+load balancer.
+So you know that there are seven layers of OSI model.
+So the seventh layer is your application.
+And I think the fourth layer is your transport layer right.
+So application layer is known as L7 balancer.
+Network load balancer is known as your L4 balancer, which works at the transport layer.
+Now what is the difference.
+So here the major difference between the application layer load balancer and transport or network layer
+load balancer is it can read your header session even data right.
+It can also read your response also.
+Right.
+So what it can do is it can take decision to distribute this traffic based upon information from header
+session cookies data.
+Right.
+And it can also have the capability to do the caching.
+So it can also do caching also.
+Why.
+Because it can read the response right.
+So you can say that it is much more advanced.
+So this is much more Advanced right and in the other layer.
+Network load balancer or L4 load balancer.
+It can have your TCP port UDP port IP address.
+IP address of source and destination.
+So based on this only it can take a decision whether to route this traffic to which server.
+Right.
+So this is much more advanced but this is much more faster.
+Now one more thing I just want to say before we start, there are a lot of algorithms you find over
+the internet, right.
+Like this, this, this.
+They do not categorize it, whether it's a network or application, but based on my understanding of
+the network and application load balancer, all these algorithms which are mentioned everywhere, everywhere,
+like these are the load balancer algorithm.
+This based on my understanding this comes under the network load balancer type.
+So now let's first start with our algorithms which is first static algorithms.
+Static load balancing.
+The first static load balancing is your round robin.
+So see everybody knows about the round robin right.
+So this is your client right.
+This is your client which is giving a request 1234.
+It goes to the load balancer.
+Now load balancer knows about this server okay.
+So there are two servers.
+Server one server two.
+What it will do is in a round robin fashion.
+So it goes first.
+Now the second goes here.
+Third goes here fourth goes here.
+Now if there is more request comes fifth goes here, six goes here, seven eight.
+And likewise.
+So you know right round robin first server one.
+Second.
+Server two, third again server one, server to server one.
+Server one two.
+So this is a very simple round robin algorithm.
+But there are certain advantage and disadvantage of it which is very very important to know about it.
+Without this it would be incomplete.
+So advantage of round robin is very very easy to implement right.
+There is nothing very simple algorithm equal load distribution to all the servers.
+So if let's say if you got ten requests you definitely know that five will goes to is five will goes
+to is because it's a round robin one given to server one, another given to server two, and likewise
+so equally distribute the load to the server.
+But what is the disadvantage?
+Can you think about it?
+The disadvantage is a one server with high capacity and another with low.
+Both will be treated as same.
+So let's say this server has very high capacity.
+Let's say this is ten times Faster or ten times more resources.
+Ten times more resources than this.
+It is only one time, let's say.
+But still this got the five request.
+This is still got the five request.
+Right.
+So round robin you can't do like based upon the capacity.
+You can define like okay which server get the more requests okay.
+So chance that low capacity server will go down because of the overload of requests.
+Right.
+For this server it is only one times.
+And this has ten times more resources.
+So it can easily process the five requests.
+But maybe for this five request is very much right.
+So it's chance that this will go down.
+So this is your round robin.
+The second is weighted round robin.
+So whatever the problem we disadvantage the previous one has that okay.
+It treat both high capacity and low capacity same.
+So it tried to do this.
+Solve this how?
+By giving the weight.
+That's why the name weighted round robin.
+Okay.
+So how it can give a weight.
+So let's say I told you right.
+Let's say this server is one time and this server is three times of this capacity.
+Right.
+Three times of the capacity.
+So now when a request is coming.
+So again first thing you notice it's a round robin.
+So first all the requests given to server one then server two then server one then server two.
+Likewise only.
+So let's say first three requests.
+So it's a three times of server two right.
+Capacity.
+So now weight represent capacity of server.
+Here the weight represents the capacity of the server.
+So now the server one is three times more has more capacity than server two.
+So when the request comes so first request goes to server one.
+Second request also goes to server one.
+Third request also goes to server one because it is three times more powerful than server two.
+Three times more powerful.
+So it.
+So let's say if it get one request, it will get three requests.
+Likewise okay, so when three requests first three requests comes.
+It goes one here to the server, one second goes to the server, one third goes to the server one.
+Now fourth request comes in.
+It goes to server two.
+Now fifth request comes in.
+It goes to here.
+Sixth request comes in.
+It goes here.
+Seventh request comes in.
+It goes here now eighth request will goes here.
+Let's check its advantage and disadvantage.
+Advantage low capacity server will get saved from receiving the large number of requests.
+So now here what we are doing is we are saving the server to that okay.
+Hey server server one has more capacity than you so it is getting more requests.
+Hey, you have less capacity, so you are getting less requests.
+So that is considered so low capacity server will get say from receiving the large number of requests.
+Easy to implement as weights are static.
+No dynamic computation.
+So this weight right.
+These are static in nature.
+So when any new server is started added right.
+Load balancer knows.
+So we will give a weight to this server and load balancer know okay this is the weight.
+So it can just use that weight to determine where the request has to be sent.
+It is a load balancer.
+Do not do any dynamic computation.
+So that's why it is under static algorithm.
+But what is the disadvantage can you think one disadvantage here.
+So see the biggest disadvantage here is the request which comes right.
+It some requests are like it can be completed very fast.
+Some requests which takes time.
+Right.
+So that's why which I mentioned here.
+If requests have different processing time, then it's possible that low capacity server get high processing
+requests and get overburdened.
+For example this server one got 123 server two, which is uh, wait is only one.
+It got one.
+Okay.
+But this four is let's say it's taking 10s.
+And here the server one, uh, in this one, two, three is got completed and millisecond let's say
+50 millisecond.
+It completed in 30 millisecond.
+It's completed in four milliseconds.
+Very small request.
+But the request which server two is getting.
+It's very high ten second.
+So now after that five it goes right.
+1234.
+Let's say five, six seven.
+It goes eight.
+Now eight is also more.
+Eight is also let's say 20s.
+So this is still running now.
+this is also pending.
+It is also going to be has to be processed.
+But these are very quick one.
+It is taking ten milliseconds 70 milliseconds eight milliseconds.
+So here if you see that what I'm trying to say, even the load is distributed based upon the weight.
+But what if the high processing request comes to the server too?
+So while it is still processing the previous one, another comes while it is still processing this one.
+Another comes right.
+So this is a chance that when the low capacity server gets the high processing request, it is possible
+that it will get overburdened soon.
+Now let's go to the IP hash.
+So now why this is also a static because see now here every client has a IP address source IP address.
+Now here the load balancer use this source IP address to do, compute the hash number.
+So using the hash function you will get some value.
+And based upon that value you will assign the request to the server.
+Right.
+So let's say you compute for this source IP address you compute the hash and you got that okay.
+This has to be goes to the server one server.
+Server two uh like client two when you get this IP address you compute the hash.
+And with this hash you get that okay.
+Server two will we have to put.
+So looks simple but there is an advantage is good for use case where same client need to connect to
+the same server.
+So see now client one.
+So client one has this IP address right.
+So no matter how many times you do a hash you will also always this request goes to server one.
+So any use case where you have that hey same client should go to the same server, then this algorithm
+is good.
+There are so many disadvantages of this.
+One of the biggest disadvantage is I.
+If you have read the previous video like I created on the proxy, you will understand that if the client
+request is coming through a proxy, then all the clients will have the same source IP address.
+So you know that, right?
+If this is a client, this is a client.
+Client one.
+Client two.
+In the previous video, what I told you that if they are, all the request goes through a proxy in the
+proxy.
+And what proxy is this forward proxy.
+So in the previous video I told you that and when it reached to a server server knows about the IP address
+of this proxy.
+So this IP address is let's say 192 something something something 182 something something something.
+It is 172 something something something.
+So server will know only about the IP address of the proxy 172.
+And that's all.
+So server doesn't know about these IP addresses, right?
+So if the client request is coming through a proxy, then all the clients will have the same source
+IP address.
+Which one.
+Because server will now know only know about the IP address of proxy.
+And when you do a hashing of that proxy IP address, you know that it will always goes to the server
+one server only.
+So let's say here you have a proxy sitting in proxy.
+So proxy here.
+Here it is 1921822172152.
+Let's say it is 162 .1.0.1.
+So now all the requests which are coming through this, it will go through proxy load balancer knows
+only about this IP address.
+IP address is hash of 162 only.
+Right.
+And all the requests will goes to let's say one of the server only.
+So all the requests 1234 all request goes to one of the server.
+so it is chance that one of the server get bombarded because of this issue.
+And also in the hash you cannot guarantee equal distribution.
+So it's a hash, right?
+What if this even if, let's say proxy is not there, even if proxy is not there, you just compute
+the hash of this source IP address.
+There is no guarantee that it will equally distribute.
+It's possible that 143 come here, two goes here.
+So there is no guarantee that equal distribution.
+So that's why these are static algorithms.
+And I think you got the advantage disadvantage of all the static load balancing.
+Now let's come to dynamic algorithms right.
+As the name says itself dynamic so means something is dynamically computed to determine the load balancing.
+One thing is least connection.
+So now let's say the requests are coming from the clients.
+And you have a load balancer.
+And there we have a server.
+So now let's say server one already have two active connection.
+Active connection from client one and client three.
+Server two has only currently one active connection right.
+So what load balancer do is it will check which server has less active connection.
+So let's say any new request which are coming right.
+What load balancer do this.
+Hey which server has the less active connection.
+It will say that okay server two you have only one active connection.
+Server one you have two active connection.
+So it will transfer the request to server two because it has only one active connection right.
+Advantage dynamic as it considers the load on each server dynamically.
+It's not static that no server two will always load capacity.
+Always end to this no dynamically check which has less connection.
+And based on that it's sent So the chance of overburden of the server is less when each server has equal
+capacity.
+Now let's say these both are equal server.
+So now it just check like which server has less active connection.
+It's sent to those.
+So it will guarantee that okay no one will get overburden.
+They get equal requests.
+But what is the disadvantage.
+So the first disadvantage which I can think of is like see in the TCP connection TCP connection can
+be active.
+So this is client this server you made a TCP connection.
+So TCP connection can be active but possible have no traffic no traffic.
+So the this purpose will fail right.
+So even though let's say it is making an active connection with client two right.
+Uh, or let's say this one, it is making a active connection with client one and client three.
+Right.
+But there is no traffic.
+But even though server two is making a connection with client to.
+There is lot of traffic from this, lot of traffic from this.
+Let's say it is sending request 1234567.
+Lot of traffic is coming from client to but client one and client three even though connection is there
+but there is no traffic or let's say very very less traffic.
+Let's say only one request request.
+One request, let's say three only.
+So that's why I say that it's do not differentiate between low capacity and high capacity chance that
+the low capacity server will get overburdened because maybe it has only less connection.
+But the number of requests which are getting from that connection, uh, it might be high.
+Got it.
+So that's why the second things which comes in weighted least connection.
+Right.
+The what the similar thing which we see in the weighted round robin.
+Right.
+Similarly weighted least connection.
+So what we have done here is we have assigned a weight also weight also.
+So this server has let's say one, but this server is ten times of server one, right?
+Ten times of server one.
+And also it has the connection information that how many active connections are present at server one.
+How many active connections are present at server two.
+Now when any request comes in, when any new request comes in, right.
+What load balancer do is it will calculate the ratio of what it will calculate the ratio of number of
+active connections to its weight, number of active connections okay.
+So this server has two active connections.
+And but it has ten times of more capacity than it will compute the ratio of it.
+Right.
+Let's say it's two by ten two active connection and the weight is ten.
+It has one active connection.
+Weight is one.
+And so result is one.
+here is 0.2.
+So means and it will forward the request with the minimum ratio.
+So it is minimum 0.2.
+So it will forward it to that.
+There is something called least response time.
+Hey this is very interesting right.
+So first thing is you need to understand something is before I said this Tfb.
+So what is Tfb is Tfb is time to first byte.
+So the time interval between sending a request and receiving the response from the server, the first
+byte or first byte.
+Or you can say that the first packet from the server in the response.
+So the time interval between sending the request and receiving the response from the server.
+It is known as Tfb.
+Time to first byte.
+So as from the name, you might be seeing that least response less response one.
+Right.
+So how does it do.
+So this is very, very important.
+Uh, just see this how this will take care of this one.
+So let each server has two things.
+What are the active connection.
+And it also has tfb like what is the response time.
+Let's say its response time is for example three active for this server two active connection is for
+response time is one server is three.
+Let's say three active connection is zero, response time is two.
+So see this response time load balancer.
+Compute dynamically like it.
+Send a request packet and track the response okay.
+How much response I am getting it.
+It picked the server which has less.
+This is the.
+What it will do is multiply the active connection into least tfb.
+Right?
+So let's say currently it is request.
+Let's say four is coming, four is coming.
+So now to whom request will send what.
+It will compute active connection into least gtfb.
+So server1 what it would be three into two this three into two six server two is one into four, server
+three is zero into or two into zero which is zero.
+So the request will goes to the least one which is server three.
+So it goes to the server three.
+Now it become active connection one.
+Now let's say another request comes is three right.
+Uh so now what it will do is it will compute again okay.
+Six four.
+Now here it would be two again which is less again.
+Server three is less.
+So request three will also goes here.
+Now the active connection become two.
+Now it will compute again.
+So now let's say request to another.
+One more request is coming.
+So it is still unchanged.
+Six, four.
+Now here it's four.
+This is also four.
+Now here.
+If you see that now or request two is sent to which one, request two is sent to which one.
+Either server two because it has four, even server three which is also now four.
+So now here it follows the round robin okay.
+Server two is first give it to server two.
+Its connection become high five.
+So you got it right.
+Now any time any new request comes in, it will compute this calculation and find out which server it
+has to go.
+And if 2 or 2 or more server has the same value of active connection into least tab, it follows the
+round robin.
+Simple okay.
+So these are the everything about load balancer.
+And yes see you soon guys.
+I hope you, uh, got lot of information out of this.
+Thank you.
+Bye.

@@ -1,0 +1,550 @@
+# Microservices Patterns: SAGA Pattern, Strangler Pattern (English Dubbed)
+
+Hello.
+Hey guys.
+Welcome to Concept Coding.
+Today we are looking at Microservices Design pattern part two.
+If you haven't seen part one I would suggest you watch it first.
+Where we learned about the decomposition pattern and how it works.
+After that, if you watch this, it will help you better understand how microservices evolve.
+First, we divide them into smaller parts, which is explained by the decomposition pattern.
+Today I will discuss three patterns with you and two of them are very important.
+All right.
+So what are these three patterns?
+The first pattern is the strangler pattern.
+Strangler pattern.
+The second pattern is the saga pattern.
+And the third pattern is seekers.
+All right.
+So I will discuss these three patterns with you.
+The two patterns Strangler pattern and saga pattern are very, very important.
+I will also tell you about an interview question related to saga, which is crucial to know if you are
+working with microservices.
+All right.
+So let's start with the Strangler pattern.
+When do we use the strangler pattern.
+It is used when we are refactoring.
+To microservices.
+You already have a monolithic service.
+And now I need to transition it to microservices.
+I learned from the decomposition pattern how to divide it into parts.
+So the journey from monolithic to microservices involves refactoring this.
+Is what I need to refactor this code into smaller parts.
+How do I do this?
+The Strangler pattern guides me.
+The strangler pattern suggests that we have a kind of controller here.
+There is a controller.
+So what can you do with this controller?
+You can manage the percentage of traffic.
+Let me explain it to you this way by placing the controller here.
+This is the controller.
+And this is my incoming traffic.
+This is my API traffic.
+All right, this is my API traffic.
+So here, what I'll do is let's assume the controller has just a few services.
+empty like some services.
+I haven't built out all the components yet because there can be many flows in a monolithic.
+But I have just started converting the monolithic to microservices and have enabled only one particular
+flow.
+Okay, so what I'll do is that particular flow.
+Or traffic wise I can take 10% traffic into microservices.
+Okay.
+So what this controller will do is decide where to send the API traffic, whether to send it to microservices
+or to the monolithic.
+If let's assume I send it to the micro.
+Services but the microservices fail, then I can suddenly bring it down to 0% on microservices and send
+everything to the monolithic, indicating there's some breakage or a bug.
+Once I solve that bug, I'll test it again.
+Okay.
+Start with 10% traffic.
+So out of 110, APIs will go here.
+90 will go there slowly.
+As I gain confidence, I'll increase it to 20, then 50, and ultimately 100%.
+Then what will happen is it will go to zero.
+So do you understand the meaning of straggler?
+In a way it means to throttle something, right?
+So here we are, slowly throttling the monolithic, gradually increasing it.
+As we write more flows.
+It's never possible to convert the entire monolithic to microservices at once and then take the traffic.
+You will never see that anywhere.
+What we do is we build out small parts from the monolithic to microservices, and they keep taking the
+traffic.
+So what will happen is slowly if earlier it was handling 1000 transactions, 1000 APIs were coming.
+We are slowly building out the flows in microservices.
+As we keep sending its traffic here, it will gradually decrease from 1000 to 900.
+Then as we add more features to it, it will slowly become 500, 500, then gradually 200, then it
+will become 100 and slowly this will happen, this will become 100.
+And then ultimately we will delete the monolithic.
+If any issue arises here, I can control it by saying, hey, don't take traffic here.
+There's an issue here.
+So again, move traffic to the monolithic.
+This pattern is called the strangler pattern.
+This is how we refactor a monolithic into microservices.
+Got it guys.
+It's a very important pattern for how you will take one monolithic to microservices.
+So that's what is told by the Strangler pattern.
+I hope you understood it.
+Well.
+Now let's move on to the most important thing.
+But before explaining saga, I call this data.
+Management.
+In microservices.
+There are two types of.
+Databases.
+For each.
+Individual service.
+And here what we have is a shared database.
+So far what have we seen.
+Decomposition has happened.
+We've made smaller parts.
+Refactoring has been done in such a way that we bring the big into the small, but now we need a DB.
+So there are two ways for the DB as well.
+Okay, so here see what the first one says.
+It says database for each individual service.
+Now assume that I divided the monolithic into three services.
+Service one.
+Service two.
+Service three.
+These are my three microservices.
+So what this says is that here each service has its own DB.
+In a shared database, what happens is that there are three services S1, S2, S3.
+I have only one DB and all three are using it.
+So first let me tell you this is very important.
+This is very important.
+And where saga and KCRW's are used, I will tell you why we had to use saga and why KCRW's.
+But first let me tell you why the shared database is not so successful and why do we always use this
+database for each individual service?
+So why isn't a shared database so successful?
+All right, let's assume that I have three services here.
+All three have one database.
+Now, here's the first case.
+That the data from service two is coming in large amounts.
+Let's assume this is an online order and online e-commerce kind of application.
+So service one is nothing but the order.
+Service S2 is something called inventory.
+And S3.
+Let's assume is something related to payments.
+Now let's assume that I'm not adding inventory as quickly as I am receiving orders.
+All right.
+Even if I have two inventories, two products, but I am receiving orders in millions, then I have
+to scale my database for this order.
+But if I have a common database now, I have to scale the entire thing.
+All right.
+Let's assume its capacity is two GB, C or whatever in memory capacity is called.
+then I have to increase the whole thing.
+All right.
+For the entire DB, it will increase for this as well.
+And for this two if I need an individual component, I can't scale it.
+Correct.
+You got the foresight.
+All right.
+Let's assume that if one team has this common database.
+All right.
+It has ten tables.
+Table one two.
+Table ten.
+All right.
+Let's assume S3 needs to make some modifications in table ten.
+All right.
+Let's assume a column needs to be deleted.
+So can it delete it.
+No because this database and these tables are shared between services and service.
+So all right it has to check all dependencies.
+If I delete it will there be any other impact apart from my service.
+That's another issue that you can't quickly do what you need according to your work.
+You can't do it, so it's not scalable.
+All right.
+If you have a small service.
+All right.
+And then you can use a small number of components, you know it won't scale that quickly.
+Then you can use it.
+But otherwise it's not that scalable.
+And you found out the reason.
+Two big reasons.
+But what's easy here is that I have ten tables.
+I need to join the query.
+I can easily join them, right?
+Secondly, maintaining the transactional property.
+I need to handle the transactional property.
+Transactional property means such a property that I can easily manage because there's one database with
+ten tables.
+So transactional property means if I need to insert into ten tables from table one to table ten, I
+can do it with this property.
+Suppose if there's a failure while updating table eight, then all of them will be updated, meaning
+either all succeed or none succeed.
+This is such a property.
+So this easiness is there.
+And this easiness for this part is complicated.
+If I have three databases, suppose.
+Suppose I have three databases.
+So what are the challenges?
+Here I can do a local transaction.
+This has a local transaction.
+Right.
+So here I can maintain such a property.
+Here I can maintain such a property here I can maintain such a property of the database.
+But if I receive an order that touches all three databases, suppose it touches this one, this one
+and this one, the database of service one, the database of service two and the database of service
+three.
+But can I have one common property.
+Right.
+Because such a property works on a particular database, right?
+I can apply such a property to all the tables there.
+But now my transaction is spanning over distributed databases.
+Right.
+So this is a challenge.
+And who solves this challenge?
+The saga pattern did.
+Right.
+The second thing is query join.
+Here I have ten tables together.
+Now suppose here table nine to table five here.
+Table six to table eight here.
+Table nine to table ten.
+Now I need to join table six and table ten.
+But these are in different domains.
+How will I join them.
+So I faced a bit of difficulty in joining.
+And who solved it CRS did.
+All right.
+So I will tell you two things.
+And this saga is very important.
+Understand it well I will explain with examples and spend some time on it.
+Okay, so now I am switching to the database for each individual service and I will tell you why it
+is necessary from the interview perspective, even for the database.
+For service.
+So now here we have a little understanding that each service has its own database.
+Okay.
+And there is an agreement that no service can query another's database here.
+Service two cannot query Service Three's database.
+No, this is wrong if it needs any data from here.
+If it needs any data from DB three, then it will tell S3 to invoke an API and tell me the related data.
+Then it will return it and then.
+It will use it, but no service can touch the database of any other service.
+That would be wrong.
+All right.
+Here.
+Now, what is the benefit?
+Suppose this is using a relational database.
+This is using no square.
+MongoDB.
+And these are using something else okay.
+This means suppose this is using SQL.
+This is using Postgres.
+So everyone can use their database according to their needs.
+And whenever it needs to make any modifications to its database, all it has to worry about is itself
+that there is no impact on it from S2 or S3, and there is no need to ask anyone because it is its own
+database, only it accesses it.
+Okay, so the second thing is that maintenance has become a bit easier.
+Okay, I can maintain my database well myself.
+Okay.
+The third benefit suppose a lot of data is coming into this DB, then I can scale this DB alone.
+If there is not much traffic here, there is no entry in the database, then I don't need to scale it
+that much.
+So I can scale the DB of a particular service alone so that it can handle more transactions.
+It can handle it can store more data.
+Okay.
+So you will see here that scaling has become easy.
+But there are disadvantages to and I told you about two disadvantages that here the advantages were
+to join the share query and how the transactional property will be.
+So now we know that to maintain the transactional property to vary the saga of course, let's first
+go to the saga.
+Now I am telling you about the saga which is important.
+Please understand it carefully.
+Okay, so now why was there a need for the saga?
+Because I have three boxes.
+Assume that in this there is.
+Table one.
+Table two.
+Table three.
+Table four.
+Table five.
+Table six.
+Okay.
+I did not have a transaction to place an order.
+Place an order.
+So assume this is the order.
+This is the order DB.
+This is the inventory db.
+This is some payment db.
+So whenever an order is placed and I receive its payment you will see here.
+So I will have to update this DB.
+This DB will also need to update the inventory.
+The order will also need to be updated.
+The payment will also need to be updated because the payment has also arrived.
+But assume if it happened that I updated this here I got one order.
+Inserted the order row.
+Order row.
+Successfully created inventory.
+Also successfully created in inventory.
+I updated the inventory but it failed while recording the payment.
+Now here.
+What does this property say?
+That if all succeed, all success or none?
+Either successfully placed in all tables or not at all, it should roll back.
+So now where will I roll back from?
+This is it's local acid.
+Local transaction is also maintaining its local transaction.
+Okay.
+If here it fails in T4, assume it needs to update in t3 T4.
+If it fails in T4 then it would roll back T3 as well.
+But now here we are talking about multiple DBS.
+If this fails then how will it roll back this roll?
+How will it roll back?
+That's where comes the saga.
+Here comes the saga.
+All right, so now what does saga mean?
+Sequence of local transactions.
+What does it mean?
+Sequence of local.
+Transactions.
+Okay, so now what it says here is that here?
+All right.
+Service one.
+Service two.
+Service three.
+Okay.
+Each has its own DB.
+Assume now what happens here in saga.
+They publish an event.
+Anything happens.
+Assume I have one order placement transaction.
+So here it was in the order service.
+So it updated its DB and published an event here.
+An event was published here.
+It published an event let's say order event.
+So now what was here one inventory service.
+What it will do is listen to this event that yes it has succeeded.
+Now I need to update my DB so it will update its DB here and publish an event here one.
+That the inventory has been updated.
+Okay, so now as it heard the event and did its work.
+Assume it failed while making the payment.
+While recording the payment, it failed.
+Okay, so now what it will do?
+It will send a compensation event.
+So now it will send one event a failure event.
+Now it is listening to this failure event inventory said okay payment has failed.
+Meaning I need to reverse everything now.
+So the transaction it stored, it will reverse it.
+Then it will also do a compensation event.
+Or you can say a failure event.
+The order service will listen to it and the transaction it recorded it will roll it back.
+Okay.
+Understood.
+It's a sequence of event sequence of local transactions.
+So this was one local transaction.
+Local transaction, local transaction.
+But I converted it into a sequence okay.
+So saga is of two types choreography and orchestration.
+What happens in orchestration and choreography?
+These are.
+Service one.
+Service two.
+Service three.
+Here I have an event block.
+Event.
+Message event.
+So now what is here?
+If any traffic came to me, service one processed it, did it here and send the event.
+Here I have the event.
+So what is S2 doing?
+It is listening to that event and will work on it.
+And then what will it do?
+If S2 completes its work?
+It will publish the event.
+What is S3 doing?
+It is listening to those events right and will do its work based on that event.
+If anything fails, it will also publish the event.
+Assuming why is there a Q2?
+Why is this a success?
+Q why is this a failure?
+So it will put it in the failure queue.
+So if S2 is listening, okay, S3 has failed, then it will roll back itself and then it will also publish
+that it has failed.
+S1 will listen to it and will also roll back itself in a courier.
+Everyone is listening to the event and doing their work, whereas in an orchestrator there is an orchestrator.
+Sitting here there is a new component S1, s2, S3.
+Here there is a drawback.
+Here there is a drawback that there is a circular.
+You can call it circular or you can call it a cycle dependency circular.
+You can call it a cycle dependency can form.
+That S1 sent an event to S2, S2 sent it to s1.
+Then S1 gave an event to s2, s2 to s1.
+So in this way a cycle can form.
+So in an orchestrator this cycle dependency is removed.
+Now here what is there is that orchestration is the one who will call S1, right?
+And based on this, the reply from S1 that it was successful here.
+Based on that it will call S2, right.
+The update from S2 will call S3.
+If S3 fails, then the orchestrator will make sure that it will roll back S2.
+If S2 fails, it will make sure that it will call S1 to do the rollback here.
+Understand what we were doing, that everyone was maintaining their state with each other through events.
+Here an orchestrator has come, so here the orchestrator is managing S1 update H2h3.
+If it fails it will tell s2 t2.
+Now roll back.
+Okay, so here comes the orchestrator.
+We implement cigar in two ways choreography and orchestrator.
+Now I'll tell you an interview question as an example that can be asked okay.
+So you need to be prepared.
+Assume I have one user, for example person A.
+Person A needs to make a payment to person B.
+So here a payment needs to be made.
+Meaning if person A has to pay person B, I assume it's ₹10.
+Okay, so you use Paytm different UPI not UPI you use ATM, use phone P, use GP or something like that
+in that you have a balance.
+You can keep your balance correct.
+All right.
+So now what happens here?
+₹10 will be deducted from your balance and will be received by person B.
+Now if I need to store this how will I store it in microservices?
+Here I can create two components.
+One will be your balance.
+Which stores your balance, showing how much balance you have so far.
+How much balance amount is there so far in rupees and assume you have ₹100 overall in this and here
+I can create one service payment.
+So what does this do?
+The job of payment is to record the payment.
+Person A has made a payment to person B, so it will record that person A paid person B ₹10.
+This date, meaning it will store a type of transaction in its database that this payment was made.
+This person paid this much on this date.
+So now what is the challenge here?
+The microservices challenge.
+So it will be.
+Okay.
+Now I initiated the payment here.
+Initiated the payment here okay.
+So first assume where it will go.
+This is payment.
+This is balance Here.
+I have ₹100.
+I received a request.
+That person A makes payments to person B of ₹10.
+So first it will check if it has ₹10 in balance.
+So the request will first go to the balance.
+So what will it do here?
+It has ₹10 and it will deduct it from here.
+-₹10.
+How much does it have now?
+₹90.
+It updated its database.
+This database got updated?
+Yes.
+Okay.
+From ₹100.
+Now it will have ₹90.
+Now it's done.
+Now it went that the balance got deleted here.
+And record the payment now while recording the payment, it failed.
+It failed.
+Meaning there is no history of whether you made the payment or not.
+So now what will you do?
+The balance got deducted.
+Now what will you do?
+How will you resolve this issue?
+So pick any architecture of microservices in high level design.
+This scenario will come up and they can ask you.
+Hear you.
+What will you do?
+I will make use of saga.
+Here.
+The payment failed.
+Payment will publish an event.
+Something like a failure event.
+The balance might be listening.
+So this event?
+Write choreography.
+What will it do?
+Okay.
+The event failed for a particular transaction.
+Let's assume this was a transaction.
+Right?
+So it's a transaction.
+One failed something of ₹10.
+Complete detail.
+So now what did it do?
+Okay.
+What did the balance component see.
+Oh it failed.
+I had deducted it.
+Now what will it do?
+It will do a compensation transaction.
+It will reverse it.
+So it will add ₹10 back.
+It will make it ₹100 again to the balance.
+Okay, well, saga is used and they can ask you this.
+All right.
+Understood, guys.
+Saga is very important.
+And the last microservices pattern I am covering is.
+See?
+KCRW's.
+Okay, now what does it say?
+It says command.
+Query.
+Request.
+Segregation.
+What is there in the command?
+Create.
+Update.
+Delete here in the query.
+What is there?
+Select.
+It divides this.
+Now why is this needed?
+Why do we need it.
+What was the other disadvantage on the microservices database per service?
+If I have to join in the middle of a query, how will I do it here?
+If I have two databases, one for service one and one for service two, I have table one here and table
+two there.
+Can I join them?
+No, because s one can never directly query.
+So what will I do here?
+Here I will create a separate view a separate view that I am calling a separate view.
+So all the create.
+Update and delete operations will be done in their respective databases.
+Create.
+Update.
+Delete.
+But all the read operations will be in a new database, which we call the new DB view.
+Let's assume this is orders.
+This is inventory.
+So let's say this is a common or history common view.
+So now what happens is that a query will be here.
+And it will have data from table one and table two.
+Right.
+So you can join here.
+So in the course this is common query request segregation command means this is a command.
+Query means this is a query.
+We separated them by creating a second database that is only for read.
+And that has all the data from table one and table two from different databases.
+But now there's a challenge of how it will keep itself updated if something is created here.
+It should also be updated, right?
+So here there can be an event.
+Whenever something is created, updated or deleted here, it will publish an event.
+And this one will listen to the event and perform the same operation on itself.
+Similarly, in T2, in the T2 database, whenever something is created, updated or deleted, it will
+also publish an event and this will listen to the event and similar changes will come here in the common
+history table, which is made for reading.
+So here we can use events.
+What else can we use?
+DB triggers, DB triggers.
+Or you can write a procedure that whenever create, update or delete happens a procedure will run that
+will make similar changes here.
+So did you understand the meaning of ACF?
+So what I wanted to tell you from this common design pattern is that the straggler is very, very,
+very important in microservices.
+And you should know about Cqrs.
+Yes.
+If you need to join multiple things.
+And when we do questions, there will be scenarios where we will need queries and we will look at it
+in more detail then.
+Okay, so I'm telling you there are many patterns in microservices design patterns.
+I've only told you the important ones.
+And as we keep solving questions, you will keep learning more patterns and solve them accordingly.
+Please understand saga and straggler.
+Well, if you have any doubts, do ask me again but make sure the concept is clear.
+Okay guys, I hope you liked this.
+Please share and subscribe.
+I really need your support.
+Have a nice day.
+Bye guys.

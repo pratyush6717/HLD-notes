@@ -1,0 +1,272 @@
+# Adapter Pattern (Structural Design Pattern)
+
+Hey guys.
+Welcome to Concept and Coding.
+And today we are going to do one more design pattern which is known as adapter design pattern.
+This is very very popular design pattern because we use this design pattern in our day to day life.
+And I will tell you with so many examples, where do we use it, how do we use it?
+And so many interview questions come on top of this.
+And I will also tell you what type of interview questions.
+Right.
+So let's jump into this awesome design pattern.
+And I will also tell you the coding part also.
+So stay tuned and let's without wasting time let's jump into it.
+So here in the adapter design pattern what.
+First let's go with the definition what it is right.
+So adapter design pattern is a bridge.
+So it's a bridge between what between two things.
+One is.
+Existing interface.
+And another is.
+Expected interface.
+So it bridged the gap between the existing interface and expected interface.
+Now what does that mean.
+Right.
+So let's slowly go with the go into this.
+But first let me create its UML diagram.
+And then I will tell you with different different examples.
+And don't worry about this UML diagram.
+You will get it thoroughly.
+I can definitely bet you right.
+So here we have a client.
+Then we have here.
+Adapter interface.
+Right.
+So here let's say we have request.
+So adapter interface is implemented by.
+Concrete adapter class.
+It implements this request.
+Right.
+This is you can say is a relationship.
+And then we have here you have let's say.
+You are adapting right.
+Or you can say that existing.
+Interface.
+Or we can call say adapting.
+This Has.
+Right.
+So don't worry about this UML.
+As of now, I will tell you exactly what is happening, right?
+But if you see here why this design pattern is also important because here we are using is a and has
+a both the relationship in this one in the same design pattern itself.
+So first before jumping into this, let's see a various examples where we can use an adapter design
+pattern with a real world examples which we see.
+Okay, let's go with the first one.
+So there are a couple of examples which I can think of right.
+The first one which I can think of is let's say your.
+Power adapter.
+And socket.
+So let's say You have a socket with a square.
+And you have a power adapter with oval.
+Right.
+So you have this oval.
+So now you cannot use this.
+This is your power adapter and this is your socket.
+You cannot use it here right.
+So we need a adapter here.
+So let's say I'll use an adapter.
+So it has a square here.
+And it has.
+Round here right.
+So in this case what is adapter here or existing interface.
+This is existing interface.
+This is my existing existing interface or adapting.
+t right.
+This is my client.
+Client?
+Want to use adaptive.
+Client want to use existing interface.
+But they are incompatible.
+So you cannot use power adapter directly to this socket because they are not compatible to each other.
+So here client is wanting to use this socket and existing interface.
+But since they are incompatible that's where we need an adapter.
+So adapter implements this interface.
+What client wanted and adapter know how to talk with the existing interface also.
+So adapters know that how to talk with this guy.
+So it become a bridge between this.
+So you got it.
+So this is one example.
+Let's take another example.
+What example can you think of is so let's say XML to JSON parser.
+So let's say you have one server.
+It returns XML.
+And you have a client which want JSON response.
+So since it is returning XML but it want JSON response, it cannot.
+They are not compatible.
+So that's where we need adapter here which converts XML to JSON.
+And returns back to it.
+Right.
+So all the conversion logic also.
+So when I say that conversion logic.
+So you can also assume that.
+So your company is talking to some external party or external component.
+Right.
+So what we can have is we can have one layer.
+So this is our company instead of directly calling to an external component.
+Right.
+So we have our company let's say and this is now our external component right.
+So instead of talking directly because let's say today they are sending us the data in what we wanted.
+So we wanted in uh let's say one, they are also returning in one.
+But what happen in tomorrow?
+They change it to one hash.
+It will break.
+Right.
+So at all the places where we are consuming this, it will break, right or not.
+So let's say in this company I have ten components and ten components are consuming this.
+And suddenly the external component, change it from 1 to 1 hash.
+So all these changes will go into this ten components.
+But let's say if you bring into an adapter right.
+And even if they change it to one hash, my company is just reading from this adapter.
+So this one is returning only one only.
+So it is doing a massaging massaging of this one hash and converting in what company wanted.
+So company wanted in this form let's say in the this form one.
+Even though one hash is coming, adapter is changing it and then returning it.
+Right.
+So all those cases.
+So this is a very important interview question.
+Also how you will take care of the use cases where you are getting a request or response, which is
+different from what you wanted.
+We will use the adapter design pattern.
+right?
+So let's say another question.
+And also I will tell you an uh, coding for this one is so let's say weight machine.
+Right.
+So let's say you have built a whole functionality for weight machine.
+And this weight machine returns the weight in pounds.
+So this is let's say £100 okay.
+So this is good for you.
+Now let's say you are going to some other place you are wanted to sell to somebody who wanted to see
+the weight in kilograms.
+I don't want to see in pound.
+I want to see in kilograms.
+Right.
+So it's just a conversion.
+You can't.
+But everything is.
+Product is ready.
+So what you can do is you can bring an adapter here right.
+So you can bring an adapter here.
+So this is my existing interface.
+Or you can say that Adaptee.
+So adapter will talk to this weight.
+It will convert pounds to kilograms and then show to the client.
+So this is the link I will put into the description.
+You can check it out.
+And here I have put all the codes which I'm going to tell you.
+So in the adaptee what I have is weight machine.
+So it returns the weight in pound.
+Okay.
+Get weight in pound.
+So let's say we can have a different type of weight machine.
+And one of the weight machine is weight machine for babies, for babies, for infants the weight machine
+is different right.
+As they cannot stand.
+So they have a different type of weight machines.
+Right.
+And let's say their weight machine is returning a weight in a pound.
+So let's say it is returning £28.
+Right.
+So it's a very simple thing.
+So it is our existing interface that this is my interface.
+You call this method right.
+And it will compute the weight and it will return the weight in pound.
+Right.
+Just an example.
+Now my client want the weight in kilograms.
+But it cannot use this machine directly because it will return in pound.
+And my client doesn't understand the pound.
+It won't.
+It can only understand the kilograms how it can use this weight machine.
+So here I have written one adapter.
+So I have bring this one adapter.
+This part.
+So this part you understand right.
+Weight machine.
+Simple.
+It's an existing interface.
+Let's say I have already have an existing product right now.
+My client cannot use it.
+They don't understand that.
+So now my client don't understand pound.
+They can only understand kilograms.
+KG.
+So that's where I bring in the adapter.
+So I have put a weight machine adapter.
+Right.
+So this is my weight machine adapter.
+So in the weight machine adapter what method I have put in get weight in the KGS.
+Right.
+This is what my client expected.
+Client expected the weight in kilograms.
+So in this adapter interface I wrote the method which my client wanted.
+Right.
+So client wanted weight in kilograms.
+Right.
+And I have implemented the concrete adapter.
+So this is my weight machine adapter impl implementation.
+This is the concrete adapter class.
+So here if you see what I have done is get weight in kg, I have implemented right.
+So this has a weight machine.
+This has a.
+Which one weight machine.
+The adaptive.
+So this is so our adapter adapts the adaptive.
+What is our adaptive.
+Adaptive was weight machine.
+Right now when this get weight in kilogram will be called.
+So now our adapter knows how to talk with an existing interface.
+So here my adapter knows how to talk with an existing interface.
+So it is talking with the existing product.
+Get me the weight in pound right.
+It get the weight in pound then it does the conversion logic.
+So here the adapter do something right for the client in so that the client can understand it better.
+So it converts the pound to kilogram and then return the kilogram.
+kg, right.
+So now let's see the client.
+So you understood this, right?
+Right.
+So adapter interface expose all the method which client understands.
+And then in the concrete adapter it talks with the existing interface.
+It knows because it keeps the object of this.
+So it know how to talk with it.
+So it calls it method whatever it got it do some massaging or conversion or anything else.
+Whatever the business logic which is client wanted and returns what the client format is.
+And here if you see the client, what is the client is client knows the adapter.
+Right now it is talking with the adapter.
+Adapter dot get weight in kilograms.
+When it calls the get weight in kilograms, it goes to the adapter impl and in impl.
+We have said that okay we want to talk with this product and it knows the how to talk with it, so it
+will call its method.
+Get in the pound, convert it and return it.
+Easy.
+More simple.
+A nice, simple.
+Only thing is just think from the perceptive key.
+In a real world, everywhere you see, you can find an adapter example, right?
+So even if you see right your mobile phone.
+Right.
+And your socket.
+Your mobile phone need to be get charge.
+So it has C type.
+So your mobile phone need to be charged.
+You cannot charge it directly with the socket.
+So you need an adapter.
+Your adapter is like your your cable.
+So your cable has C type and it knows how to connect with this.
+So this is here.
+In this case it is adapter.
+This is adaptive right or existing interface.
+And this is my client.
+So it falls into which category of design pattern.
+So you know right.
+We have three patterns.
+We have creational structural and behavioral.
+So this design pattern falls into which category can it fall into the structural design pattern.
+Because structural design pattern says that clubbing together two or more objects to create a bigger,
+bigger structure to solve bigger problems.
+So here we are clubbing different interfaces, right, to solve one bigger problem.
+So that's why it fall into a structural design pattern.
+Right?
+Okay guys thank you very much.
+Good night.
+And I hope this would be a useful session for you okay bye.

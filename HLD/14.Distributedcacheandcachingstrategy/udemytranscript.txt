@@ -1,0 +1,406 @@
+# Design High Availability System || Active Passive & Active Active Architecture
+
+Hey guys on this side and welcome to Concept and Coding.
+And we have one more very very important interview questions of high level design.
+And it's more of you can say that a theoretical but based upon this theoretical question a lot of implementation
+questions can be asked.
+Right.
+But let's discuss today about this topic which is design high availability architecture.
+Right.
+So this question can be asked in many different forms or many different ways.
+Right.
+So one thing I said is design high availability architecture.
+Similarly interviewer can say that hey Shreyansh, can you design data resilience architecture?
+You know, right.
+What resiliency means.
+Resiliency means something which has the capability to comes out of failure.
+Right.
+So design data resiliency architecture okay.
+Another way of asking is design architecture to achieve 99.999 percentile availability.
+So you might already know that every company try to achieve five nines, right?
+So that actually the five nines is 99.999% of availability.
+That much availability is very, very important.
+So how to design that architecture?
+Another way of asking is hey, can you design an architecture to avoid single point of failure?
+Right.
+And another is, hey, can you, uh, tell me the active passive versus active active architecture?
+What's the difference?
+So there are different, different names of asking this question, right?
+But if you understand it properly in any other names interviewer will ask, you will have no problem
+at all right.
+So ultimately agenda is we have to design a high availability architecture, which is available 99.999%,
+which has the capability to even after it is failure, it comes out of it.
+There is no single point of failure.
+So we have to design such architecture.
+Okay, so this is the today's agenda.
+Very very important question guys.
+Again.
+And lot of questions can be built on top of it.
+And as you know that questions we will see later.
+So today let's understand this topic okay.
+So now let's say first uh is the basic single node.
+Right.
+Then I will tell you what issue it has and why all these things are not achieved through single node
+and how we can do it.
+So first understand with single node is let's say you have a client here.
+So this is my client right.
+Let's say mobile is the right laptop is the right desktop.
+Let's say.
+So let's say it comes to a load balancer.
+So I have a load balancer layer.
+So load balancer does so many things.
+So let's say load balancer is there.
+Then it comes to our application.
+Right.
+So let's say it's a microservices.
+So it's microservices layer.
+So here I would say that application X application y application Z let's say just assume that it's microservices.
+And there are many applications.
+Right.
+And there might be multiple nodes of each application.
+Right.
+And this application is connected to.
+A DB layer.
+Which is our primary DB.
+Okay.
+So it's a very simple.
+It's a single node.
+We have a client.
+Client request comes through a load balancer.
+Load balancer does a lot of uh things into it.
+And it will pass the request to one of the, uh, let's say our application applications, uh, try
+to connect with the DB, and DB will store the data right now.
+Understand that.
+What is the problem with this architecture now here what if this DB goes down.
+What if this DB goes down.
+There is a failure happen here.
+Failure right.
+So what will happen now.
+So your whole application is now down.
+It's down because any request will come in okay.
+Till here.
+Request is coming in.
+Right till here.
+Request comes in.
+So let's say one of the request goes to the application also properly when applications try to reach
+to a DB.
+But DB is down so this will be a failure.
+So neither read will fail.
+And write request will also fail.
+Okay.
+So does it bring us a 99.999% availability?
+No.
+Does it has a single point of failure?
+Yes.
+It has a single point of failure.
+Right.
+So we have to avoid it.
+Right.
+So does it has a data resiliency architecture.
+No.
+Once it is failure it doesn't have capability to come out of it until and unless it has to be resolved
+it might take hours or sometime it might take days.
+Also we don't know.
+Right.
+So these are all the issues with the single node.
+Now here we comes to the multi node.
+And this multi node Has two types.
+One is, as you know, active, passive, and another is, as you already know, what is that?
+Active.
+Right.
+So now let's first understand what is active passive and how it, uh, resolve all the issues with the
+single node.
+Right.
+And try to achieve this and we'll see that how active active is done and in what all case we can use
+this.
+Okay.
+So now let's first go ahead with active passive.
+Architecture.
+Okay.
+So now here every company has at least two data center.
+So let's say it is data center one.
+And this is data center two right.
+So let's say two data center.
+Right.
+So data center, let's say one is in Mumbai.
+And this is in Pune.
+Right.
+Just assume that one.
+Okay.
+So now let's understand this architecture first.
+So let's say you have a client.
+You have a client.
+So client can be your mobile.
+It can be it can come from anything.
+Right.
+So you have a client.
+So then there is a load balancer.
+Load balancer.
+Now load balancer will pass request to either our data center one or here data center two.
+So here data center two.
+And this is our data center one.
+So now here I have.
+Multiple applications let's say app X app, Y app.
+Right.
+It's a microservices layer, right?
+So similar configuration of application is also present here.
+App X app y app Z right.
+So there are different.
+Machines of application.
+There are multiple applications of X right.
+Multiple applications of Y.
+So it's a microservices layer right.
+So it's the same configuration in data center one.
+Data center two.
+And here it is now connected with its DB.
+Right.
+And here Ah, we also have a DB, but now understand here in the active passive model, right out of
+this two data centers or many more than two.
+Also only one can be primary, one can be primary or there could be other names like only one could
+be live DB right?
+Or only one could be read write DB.
+So these are all the different names.
+Either you call it a primary or live DB or read write DB right and the other ones will be treated as
+replicas right up.
+The only one can be either a primary DB or live or read right, but others will be treated as replicas.
+Right?
+and the other one will be known as D, which is known as disaster recovery.
+Disaster recovery Data center.
+Right.
+So out of that, say for let's say, uh, I am building one application.
+I have two data center, one in Mumbai, one in Pune and the Mumbai one I have make it a primary.
+Right.
+So other one, the Pune one will be now treated as a disaster recovery data center and its DB would
+be considered as a replicas.
+So now let's say what will happen now.
+So now let's say request is coming.
+Request is coming right.
+So let's say request first goes to data center.
+One load balancer has moved to the data center one right.
+So data center one Let's say it's the first time taking.
+It's a, uh, right request right or post request right?
+Right request.
+So it will goes to the primary one because this is the data center.
+One request is coming and it will be written properly here.
+Okay.
+Now let's say second read request is coming.
+So again let's say read request again comes from client to load balancer.
+Load balancer again move it to the data center one and the read request again for the data center one
+will be taken care properly by the primary.
+Now let's see what will happen when the request will traverse from Data Center two.
+Now let's say a request come from client to load balancer.
+And from load balancer it went to Data Center two.
+From Data Center two.
+Application.
+Now what it will do is request will move to primary.
+That's the difference.
+So active passive model.
+You have to understand that only one is primary right.
+And whenever a request comes to the disaster recovery data center right then that application that layer
+application layer connects to the primary DB, right.
+Connects to the primary DB.
+And primary DB will take care of storing the data right, whether it's a right or whether it's a read.
+So now you know that any request which is coming to Data Center two, which is the Disaster Recovery
+Data center, its application will move the traffic to the primary or live DB.
+And from here Are.
+There will be a.
+Sync up.
+Sync up will happen from primary derby to replicas.
+Okay, so this is one way.
+Now you can easily see that this is not very much.
+Are you utilizing its resources very well because as you can see that.
+Hey, uh, this DB is, uh, free.
+Why?
+We can't use it.
+Right.
+So there are one reason is one reason is Oracle MySQL Postgres.
+And not multi master.
+What does it mean by multi master means.
+So Oracle MySQL Postgres can only right into one primary DB or live DB.
+So you have to select which one is the live DB or which one is the read write db or primary DB.
+Any.
+You can call it by any name, right?
+So whenever any write request comes, write or post whenever any write request comes in.
+Oracle MySQL Postgres can only write it to the live DB, right?
+So request has to transfer it to the live DB.
+But now you can say that okay, right?
+Right DB I can understand that Oracle doesn't support Multi-master.
+It can only write to a live DB.
+But what about read write can't it read from here?
+Yes, it can read it from here.
+And this model can be little bit improvised.
+Like okay we can change the modification that okay.
+Any read request comes in.
+You can read it from here.
+Any read request comes in.
+You can read it from here.
+Replica read only.
+That's why replica DB also known as read only DB write.
+But when any write request comes in, right?
+So it goes to here.
+When any write request comes in, it goes to the live DB.
+Because I told you that Oracle MySQL Postgres are not multimaster, right?
+They the write can only happen into one db which is marked as live or primary.
+So any write request comes to the data center which is our disaster recovery data center.
+Then any write request comes in we can move it to the primary one, but any read request comes in,
+we can move it to here in the read only DB here.
+Right.
+And for the data center one all the read and write.
+Both can be performed by the live DB itself.
+Okay.
+Till now, all clear.
+Now you can ask me hey how it is a data resilience.
+How it is, uh, avoiding the single point of failure.
+Now let's see what will happen.
+Primary DB goes down.
+Now from this applications, what we can do is we can easily switch the traffic from here to now, from
+here to here.
+From here to here.
+Disaster recovery data center.
+And now make this now make this primary.
+Now make this primary.
+Now these are not more replica.
+Now this is our primary read write.
+And this will start taking the traffic.
+So now you see that even our one DB is down.
+We are still able to take a traffic because we have a disaster recovery data center, and as soon as
+our main DB is down, what we will do is we will route the traffic of that data center to the one,
+the disaster recovery data center, right, and change it to primary and read right, right or live
+DB right.
+And once this is up, we can make it either replica or read only DB right.
+So you understood now the how it is providing the single point of failure, how it is avoiding single
+point of failure and data resilience architecture for this one.
+Now there are certain disadvantage, right?
+There are certain disadvantage of this one.
+You can ask me the disadvantage is that make it clearly so I have a client.
+It goes to load balancer.
+Let's say first it goes to Data Center one, which is my primary one.
+Right.
+So it goes to my application and application.
+It's from my DB right.
+Let's say it takes one second to process the request.
+Now the second time when I make a request it now goes to Data Center two, which is my disaster recovery
+data center.
+Right.
+It takes to an app.
+Let's say I'm trying to write something even though it has a DB.
+I told you that, uh, the write will happen to this one primary primary one.
+So now here it says that it is in Pune and this data center is Mumbai.
+So there would be certain latency add on.
+So for this request it will not be one second.
+It would be let's say two second.
+Right.
+So there is the difference in the latency.
+So it's an latency add on happens if any request goes to the disaster recovery data center.
+Second disadvantage is when any DB failure happens.
+Let's say this failure happens.
+Then application has to route the traffic to this replica one right.
+And make it primary.
+So there is a gap.
+So let's say maybe 15 minutes ten minutes.
+There is a delay.
+So till then all our right will fail or any traffic which come to this, it will fail till this connection
+is not made and this is not made primary.
+Right.
+So there would be certain time for which you will see a failure when this DB goes down.
+Okay.
+So these are the disadvantage of active passive architecture.
+And now let's move on to.
+Active.
+Architecture.
+I hope it's clear till now.
+Active.
+Passive is fully clear, right?
+You will not forget, right?
+How it's done.
+Now.
+Active.
+Active architecture.
+Now, see, I told you that Oracle, MySQL and Postgres does not support multi-master means.
+But there are certain DB's like Cassandra and mostly NoSQL DB's.
+They do support Multi-master, right?
+Means more than one live DB can be present and it can write to them simultaneously.
+So in here active active architecture, what is happen is you have a client.
+There is a load balancer here.
+Right.
+And this is let's say data Center one which is in Mumbai.
+This is my data center two, which is in Pune, right?
+I have my application here.
+So this is my application microservices here also I have the same.
+You already know it now.
+This is our microservices.
+These are micro services.
+Now it is connected to its DB which is primary or live.
+Similarly it is also connected to its own DB which is also primary and live right.
+And there would be a bidirectional sync up would happen in active passive only one directional sync
+happen from primary to replicas.
+Right now here, bidirectional will happen, right?
+So now what will happen?
+And any request comes in.
+Let's say first time a request comes in from client to load balancer and it goes to data Center one.
+Right.
+Whether it's a read or write anything, let's say it's a read or write anything.
+It can be anything from data center only from this DB.
+It will take care, right?
+Similarly, any request which comes from to load balancer to data center.
+Two any read or write, any read or write any the same DB gonna take care of it, right?
+Because this is also a primary now, right?
+So now we are utilizing the DB fully okay.
+So now here if you see that the major problem which comes in here is in this sync up part, this sync
+up.
+So here, if you see that this sync up looks easy.
+But this is not this is actually the most complexity happens.
+So use cases like let's say uh this is uh data center one data center one DB and data center two DB.
+So any update happens here, it should goes to data Center two.
+Any update happens here.
+It should goes to data center one DB.
+And it is also possible that a change can happen at the same time.
+Right?
+And same row same row same time.
+And they both are trying to now replicate to each other.
+And there would be a conflict, right?
+And also, there is a possibility that there is a right happen here, right in data Center one.
+But read is happening here in Data Center two simultaneously before even the sync up happen.
+So sync sync up hasn't happened yet, but right happened here.
+But read read is happening from here.
+So there are certain complexity in maintaining the synchronization.
+Right.
+And there is a conflict resolution.
+And there is a whole lot of things goes in synchronization part itself.
+So maybe in the next video I will cover those or maybe in the future videos.
+But to the crux here, the best advantage of active to active architecture is that we are totally utilizing
+Using our resources very well in all the data centers.
+Right.
+So now any request can goes to anywhere so we can take more traffic.
+We can handle more traffic for sure.
+Right.
+Because both can take care of read.
+Both can take care of right.
+In the active passive one, all the write operation is taken care by our primary right.
+And all the read operation we can little bit uh improve it and read can also be taken care by replica.
+That's why we call it read only DB.
+So for read it's okay.
+But if it's the right uh, let's say my application.
+There are too many writes.
+Too many, then definitely the all the load will come to one one primary DB.
+So that is one more disadvantage of active passive one.
+If, if your application is, uh, too much right gonna happen then active passive will not scale much.
+Right.
+So that's pretty much about active active and this active passive architecture.
+And I hope you got a sense of it.
+How we can design the architecture for this right to achieve a high availability.
+So I have covered this now.
+So in the high level design roadmap till at the potency handling we have already covered, I have covered
+active passive and active clustering, active active clustering, concurrency heading I think I will
+cover the next one.
+This is another important big topic.
+But before that I wanted to cover this one.
+And then we will slowly will go this and then we will do lot of questions okay guys.
+So that's pretty much from my side.
+And thank you very much.
+If you like it please share it with your connections.
+It would be really mean to me.
+And also please subscribe the channel.
+Thank you guys.
+Bye.
+Good night.

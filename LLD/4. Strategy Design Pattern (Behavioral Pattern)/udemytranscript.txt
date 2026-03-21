@@ -1,0 +1,112 @@
+# Strategy Design Pattern (Behavioral Pattern)
+
+Back to the channel.
+And today we will see strategy design pattern.
+So it's a behavioral design pattern.
+And we know that behavioral is like more interested in how objects interact or communicate with each
+other okay.
+And it defines multiple algorithms, encapsulates their logic in dedicated class and enable changing
+an algorithms behavior at runtime.
+What does that mean?
+So understand with this problem and solution.
+And when we will read this definition again it will get more clear.
+So see this problem.
+First I have a class vehicle and it has a default drive capability.
+Let's say normal drive capability.
+Then I have multiple child class like sports vehicle off road vehicle passenger vehicles.
+Or you can have further like goods vehicle.
+So many child classes.
+Now each child class can have their own drive functionality.
+Either they can have the same default or they can change the drive capability what they want.
+let's say sport, we can have sport drive capability.
+Off road vehicle also has sport drive functionality.
+Passenger is reusing the parent one normal drive functionality.
+Okay, so one thing, one problem we can easily identify is that that there are so many child classes,
+it is possible that there is a code duplication.
+So in this case sports vehicle also need sports drive functionality.
+Off road also needs sports drive functionality.
+Okay.
+So this is one problem.
+Code duplication is there.
+So that is one problem.
+Code duplication.
+Same sport drive functionality present into many sub classes.
+And this is just one example.
+So consider that you have 1015 sub classes.
+So there is high chance that there is a code duplication.
+And the second is tight coupling.
+If in future we need to change the drive functionality to say off road vehicle, it is not possible
+without updating the class.
+Now let's say that today you have a sports functionality for this a sport vehicle.
+In future, if you have to change this capability, would you be able to change it?
+No.
+You have already defined this sports capability here.
+Similarly here for passenger vehicle, is it possible for you to change the behavior like once you define
+it?
+No.
+You have to change the code.
+So we have tight coupling here also.
+So using a strategy pattern we can solve both.
+So this is the UML diagram for it okay.
+So here if you see the UML diagram we create a strategy.
+And then we have a multiple concrete implementation.
+So this strategy class or interface is nothing but like the algorithm here in the above problem.
+What is the algorithm here.
+Like this one.
+This drive capability.
+So some has normal drive capability.
+Some has the sports drive capability like.
+So I have created this strategy drive strategy as a separate interface.
+and it has one abstract method drive.
+Now we have multiple normal drive.
+Its post drive.
+And even in future if we support more, we can have that also.
+And in the normal drive, yes, we have a complete functionality or algorithm for the normal drive capability
+in the drive.
+In this drive method we have the complete code for the sports drive functionality.
+So this part is done.
+Okay now we have a context.
+So here in this context is our vehicle.
+So now in this vehicle if you see that we are accepting the drive strategy dynamically.
+So first of all how many different child classes of the vehicle has let's say I have a good vehicle.
+I have an off road road vehicle, I have a sports vehicle.
+Or let's say we can have more, let's say passenger vehicle.
+So we have different child classes of this vehicle.
+Now if you see one very important thing is that this child class Is telling what drive strategy they
+need.
+So when you are creating an object of goods vehicle, you can pass that whatever the drive strategy
+you need, whether you want normal drive strategy or sports drive strategy or what.
+Okay.
+So it's dynamic now.
+Okay.
+So let's say today goods vehicle has normal drive strategy.
+And in future you can change it.
+You can when creating an object you can pass a sports drive.
+That is also possible.
+Similarly for off road, whenever you create an object of off road vehicle we can provide what's the
+drive strategy we want whether we want sports drive, normal drive or some something else.
+Okay.
+And in future we can change it whatever we want and whatever the drive strategy you have, you just
+call the drive method and that functionality will work.
+So here, if you see the code, I created a new sports vehicle.
+I am creating a sports vehicle and while creating an object I pass.
+What is the strategy I wanted?
+I want sports drive feature, I want this.
+Okay, so now I created an object.
+And once you have created the object when you call the drive okay.
+So this is the default method when you call the drive, whatever the strategy you have chosen that drive
+functionality would be invoked.
+So here if you see that what we have done is we have separate out the algorithms okay.
+And now because of that, it is possible that we can extend the new capability into the drive strategy
+okay.
+So independently it can scale.
+And similarly independently we can scale the vehicles.
+Also we can add more vehicles.
+And also dynamically we can manage the strategy.
+So we have removed the tight coupling.
+And also we have removed the code duplication also.
+Okay.
+So very simple.
+And you can say that very important design pattern.
+If you have any doubt let me know.
+We can discuss further by.

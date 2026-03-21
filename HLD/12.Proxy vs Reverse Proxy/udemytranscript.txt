@@ -1,0 +1,588 @@
+# Design Rate Limiter
+
+Hello.
+Hey guys.
+Welcome to Concept and Coding.
+And today we are going to do a very very important question designed rate limiter.
+But before going further, first you tell me in the comment that in which company you have faced this
+question.
+Right.
+So with that being said, let's move and uh, let's see what how to design a rate limiter.
+So first let's understand the problem.
+Why we have why we need rate limiter.
+So everybody I think knows of this right DDoS attack.
+Right.
+So here in DDoS attack what happen is attacker sends unwanted request to a server.
+And each server has a limited resources Ram and disk space.
+So everything is limited.
+So now what happens is attacker send lot of thousands and even lakhs of requests in seconds that all
+of these resources are consumed and the server becomes down.
+And when the server becomes down, what happened to the genuine user?
+So when genuine user do a request, their request will get declined.
+So that's what is known as DDoS attack.
+And to prevent this we bring the rate limiter.
+And that's what it makes it.
+The most important interview question that because as a backend software engineer you have to work on
+APIs.
+So you should be aware of how to, uh, limit a rate on APIs.
+Okay.
+So let's jump into the rate limiter part.
+But before that before we do designing of this rate limiter.
+Right.
+There are certain algorithms which you should be aware of it.
+Right.
+Uh, without those it is very difficult to uh, come up with the design itself.
+So let's there are five algorithms which you should know, right?
+I will try to explain in a very simple and quick manner.
+So first is token bucket, second is leaking bucket.
+Third is fixed window.
+Fourth is sliding window.
+And fifth is.
+Sliding window counter.
+And this counter words come from fixed window counter, sliding window lock and sliding window counter.
+So these are the five algorithm token bucket leaking bucket fixed window counter sliding window lock
+and sliding window counter.
+Right.
+So let's start with first algorithm.
+Token bucket right.
+What does token bucket is.
+So here understand with simple diagram.
+So bucket as the name suggests there is a bucket.
+So this bucket has certain property like capacity.
+What is the capacity of this bucket to hold.
+Capacity of what to hold token.
+Let's say I say four.
+So it can hold.
+Let's say four.
+Token.
+Maximum.
+Right.
+If you try to add more token, it will.
+It will overflow.
+If you try to add more token okay.
+And there is also something called refiller.
+This is known as refiller.
+So Refiller has a property that uh, that in 1 minute or 2 minute or three minute, how many token it
+will add?
+Let's say two token.
+So this is all driven by configuration.
+This is driven by config.
+This is driven by config file.
+Like we can change it when I say config file means these are dynamic values.
+You can change it.
+So token bucket has bucket which has capacity.
+What it can hold tokens.
+How much.
+Let's say for example in this case four right.
+And there is something called refill or refill.
+Our work is to keep add tokens after a particular time.
+In this case I'm taking that after one minute two tokens will be added.
+If tokens are accesses means already four are there and one minute done.
+So Refiller will add two tokens so there is no space in the capacity.
+So those two tokens will get into overflow means they are removed.
+So now how this token bucket is used.
+So if you see that whenever a request are coming.
+So whenever my particular request are coming, what it will do is it will first check.
+So there will be first condition.
+Right.
+And the condition will be on the bucket.
+Right.
+What?
+It will check.
+Is there a token present?
+Right.
+If there is a token present, yes.
+Then this request will consume one token.
+This request will consume one token.
+Let's say it has three token currently at present for example.
+So when this request comes in, it consume one token and the count will reduce to two.
+If there is no token, if the token is zero, then if there is a token has token no then it will request
+will be denied.
+Right?
+So this is generally a small uh you can say that flow diagram how the token bucket works in.
+So now you got this flow.
+So now we can configure this token bucket like per user, per API wise.
+Each user.
+This is my rule for each user.
+Three counter or three token.
+You can say that three token right?
+And for per minute, in per minute or in one minute right for post API.
+Tweet post API let's say.
+So this is one rule.
+This is one rule.
+So rule can be right for each user.
+For each user right.
+How many token available three per minute to tweet post.
+So how we can do is like for each user it can be store some counter.
+What is the counter or token that say currently it is present three and when a request come post to
+it post to it.
+So it will see that counter is present three.
+yes for each user.
+So counter is three.
+So it will reduce the counter to two and it will put some timestamp let's say time.
+When the request comes let's say 1001.
+Right.
+So now let's say there is another post to it request.
+Come.
+Right.
+So what does rule says that in one minute three tokens are present.
+So again user one.
+So I am maintaining each user wise right.
+So counter is still two.
+So counter will get reduced.
+Counter will become one.
+And let's say time is still inside a one minute right.
+So let's say 1001 something 25 let's say another post request come post with same user counter will
+become zero.
+Right?
+And the time it came is again within a time limit let's say.
+or 35 seconds.
+Not one minute is completed.
+Let's say another post.
+Tweet.
+Come again.
+User one now counter is zero.
+Now if you say counter is zero, now there is.
+Till now Refiller has not yet run right Refiller let's say I am here saying that Refiller is Refiller
+fill in one minute it will fill two token.
+Let's say for example.
+Right?
+So till now, one minute completed.
+No, one minute is not yet completed.
+So this request will get counter is zero.
+This request will not be entertained.
+This is remove denied.
+Now let's say one request.
+Another coming is post at 1003 for example.
+So now in 1003 what would be the counter refiller had added?
+So 1001 means 1001 to 1002 N02 one minute 1001 to 1002 and 1002 to 1003, so it might have refilled
+the counter, right?
+So let's say the capacity was three, capacity was three and it was become zero.
+So here at after one minute it will refill have added two token.
+So out of three.
+So counter become two.
+Then another request and after another minute refill have run and it will add it two token.
+So two token it will try to add but the capacity is only three.
+So it will add one.
+And one token will get overflow.
+So this is become my counter and one request is coming.
+Then it will say that counter is again three.
+And the request will be processed.
+So counter it will reduce one counter because of one request.
+So it will become two and it will put timestamp.
+I hope the what I wanted to show you that this token bucket can be easily implemented through counter.
+Right.
+So this is very easy.
+And if you see that right.
+One more thing.
+I just wanted to tell you that whenever any request is declined, HTTP code which is return is 429 means
+access request in a time limit, right?
+I hope you got it.
+The token bucket right.
+Now let's go to the leaking bucket.
+Leaking bucket is very simple.
+Leaking bucket is very simple and very similar to token also.
+So here in the bucket what happened is again it's a bucket right.
+Leaking bucket as the name clarify.
+So there is one.
+There is one tab.
+You can say that from where requests are coming right.
+Irregular flow or sometimes more sometimes less.
+And this bucket has a capacity.
+Fixed capacity.
+Right.
+So it has a fixed capacity.
+Right.
+And out of this request which are coming in.
+So these are requests out of this request coming in there is a leak.
+So leak means at a fixed rate at a constant rate at a constant rate this request are processed.
+So if the incoming request has more and uh or in the more rate than what we are processing, then there
+will be overflow and that requests are denied.
+Right.
+So here the leaking bucket is implemented through queue.
+It is implemented through queue.
+So here this here what happen is so let's say when the request are coming.
+So request will come and then it will do a check or it will do a check.
+Right.
+So is Q full.
+So there is a Q present here which has fixed capacity.
+So if Q is not filled no then request is added here in the Fifo form first in first out.
+And from here it will be processed in a constant rate process.
+In a constant rate.
+So this is request one.
+Similarly request two like this.
+It will be added if the queue is full.
+Yes the request will be denied.
+And HTTP which code will be sent for to nine.
+Right.
+So you got it.
+So here if you see that the only disadvantage of this algorithm is this is simple but disadvantage of
+this algorithm is that there are certain are there are certain.
+You can say that application in which the constant burst can come.
+For example, take an Amazon Prime, right.
+So maybe during day time the traffic is not much as compared to evening or night.
+Right.
+So this is a valid kind of scenarios.
+In that case this leaking bucket rate limiting will not work because when the new.
+So this is the new request and this is the old request is still holding in the queue.
+Because these here it is going slow.
+So this is a specific requirement.
+So ask from the interviewer like what the application they are developing.
+And do they require a constant rate.
+Right.
+So depending upon an algorithm.
+Similarly if it is kind of an Amazon Prime this algorithm is not efficient okay.
+So you got it.
+The leaking bucket algorithm.
+The third one is fixed window counter.
+This is again very very simple.
+Fixed window counter is a time frame.
+Let's say we have 24 hour time frame right.
+It divides into let's say particular time limit.
+Let's say for example uh two 2 or 5 five minutes time frame, let's say 8:00 80580 ten right.
+Similarly, you got it right.
+So let's say this is my fixed window.
+This is my fixed window, let's say what is that fixed window is five minute right.
+And counter what is means each window has a counter.
+Each window has a counter.
+So fixed window is this.
+And counter is let's say uh three means each fixed window will get a three counter.
+Or you can also define this right.
+So we have like you can change it from 3 to 4 4 to 5 right.
+These are config derived.
+So from five minutes you can change it to two minutes time frame right.
+So I'm just taking this as a example.
+So now when the request are coming request one.
+Okay.
+So three it will reduce to two.
+Another request come within a time frame within a particular fixed window.
+So it will reduce to one.
+Another request comes.
+It will reduce to zero.
+Now another request.
+Try to come.
+Now here if you say counter is zero you can't add it more.
+So this will be denied.
+You got it.
+So.
+And again.
+Again in the new window it will again counter is set and again it will be processed.
+But it has one disadvantage right.
+So this is a very big disadvantage.
+Disadvantage is like let's consider this.
+80580 1008 ten.
+Let me make it clear.
+810 815.
+So this is counter three.
+This also has counter three, right?
+So now let's say at this point before this time frame finished, at this point there are three requests
+come in.
+So request one.
+Request two.
+Request three.
+Right.
+So it is still within a still within a time frame.
+It is possible.
+Right.
+Counter is three.
+And also let's say that within the second time frame request comes here.
+Request one.
+Request two request three.
+It is possible right.
+Three counter.
+And it's a new time frame.
+But if you see as a overall from the higher perspective within a 1 minute or 5 minutes.
+Five minutes.
+In five minutes it should be three.
+But here, if you see in five minutes how many happened?
+Six.
+So in the edge scenarios, when the request comes on the edge, the disadvantage is the number of the
+tokens, right.
+Or the request can be double right.
+So for which our system might not be ready.
+So this is what the fixed window counter and its disadvantage.
+Right.
+And this problem is get solved by sliding window log.
+Sliding window log has solved this problem.
+Very simple sliding window log.
+So sliding window log is very simple right.
+So I think in DSA we have no sliding approach right.
+Design one design sliding window.
+Right.
+So similarly in this case.
+So here earlier we were divided into fixed time frame Minute to minute fixed time frame and a counter
+right.
+But now here the sliding window is.
+First of all it is not counter, it is log.
+Just remember this but I will come to this.
+So what sliding window is now time?
+Uh, the window slides.
+There is no fixed time frame first.
+And how we use a log for this sliding is I'll tell you.
+So let's say first request comes in, let's say I let's say I will take uh for example three requests
+per minute.
+Right.
+Three requests per minute is my allowed, uh, configuration.
+Right.
+So now what will happen I am using sliding window log.
+So in the log what does we log.
+We log timestamp right.
+So now let's see how.
+So now let's say a request comes per minute.
+Just remember I am doing a per minute.
+So let's say one request is coming.
+Request one.
+Let's say it come at ten.
+10 or 10.
+Right.
+So I'll put a timestamp.
+So it is logging a timestamp.
+Now its size is become 110.
+This is one I'll log it.
+So I log the timestamp right.
+So now let's say another request.
+Coming request two at what let's say within.
+So currently a window is there.
+Right.
+So this timestamp consider timestamp as a sliding window.
+So so ten oh ten now window started let's say.
+So what is that per minute three request.
+So per minute done know from the last one.
+And it is in a sorted form.
+So now let's say this is come at 20 right.
+So it is within a time frame.
+Yes.
+So it's my ten o 20.
+It's within a window of one minute.
+Right.
+So three requests to size become two.
+It's still a valid again requests come.
+Third request come.
+Ten oh oh.
+Let's say 40 again.
+This is the window till uh, this is my starting window.
+Does one minute finish.
+No.
+One minute is not finished.
+Right.
+So.
+And the request is three and the size is two.
+So it is still a valid.
+So I will log it 40 size will become three.
+Right now let's say one more request is coming.
+Ten oh oh 45 so it will log.
+Ten oh oh 45 right now it will check does limit crossed from this is the starting right.
+All this in sorted form, right?
+This is still the starting point.
+So does one minute cross.
+No, one minute is still not crossed.
+Right.
+But can I, uh, entertain this request?
+No.
+Size is three and three requests are only allowed, so this will be declined.
+So this will be declined.
+But it will lock this one.
+It will lock this one right now, let's say another request are coming.
+Another request are coming at uh, let's say 1001 something at 20.
+This is another request coming at 1001.
+Right.
+So now first of all, it is now if you see that it has crossed the limit now window is crossed zero
+one window is crossed right.
+Zero zero.
+Now zero one new window started.
+Right.
+One minute is done.
+So means window.
+Window has to slide.
+How it will slide from the top sorted it will remove, it will remove till it comes into a window.
+It will remove this disadvantage of this disadvantage of this is like I told you, right?
+Even the request is denied.
+We are storing its log.
+It takes lot of space because even the request is denied.
+We are storing it.
+Timestamp I hope you got it right.
+So now we have one more thing is last is then after that we will do a complete design.
+Sliding window counter.
+Sliding window counter is.
+So here now we have is sliding window.
+Counter.
+So sliding window counter adds two functionality.
+One is fixed window counter plus Sliding window lock.
+Window counter solves make use of this two approach, and we know that it takes an advantage of the
+both.
+So the in the fixed window counter.
+The usage of the counter is very intuitive and very easy to implement.
+And the sliding window lock.
+The advantage is it solves the disadvantage of the previous one.
+Right.
+And during the edge it is possible that double the request can comes in.
+So sliding window lock solves that right.
+So sliding window counter is very easy to implement.
+Let me tell you that how it can be done.
+So let's say there is a time frame of let's say uh one minute rule is what is the rule in one minute,
+not more than five requests can come, for example.
+Right.
+So let's say 801802803 and let's say all have a counter like in fixed window counter.
+Counter is ten.
+Right.
+So there are request present here.
+Request can be present here.
+Request request request some request.
+So some request could be here.
+So now let's say a particular window.
+So this is what used to happen in fixed window counter.
+We have a time frame.
+We have a counter right.
+And now we are using the sliding window also.
+So now let's say currently the time frame which is running is this.
+Right.
+This is the time frame currently which is running right.
+So here consider this as the previous time frame.
+And consider this as a current time frame.
+Current time frame right.
+So ultimate goal here.
+The ultimate goal of the sliding window counter is to find the number of requests present in this window.
+In this window, particular one minute window.
+So we are calculating one minute, right.
+So in this one minute how many requests are present.
+Right.
+So it is very very simple.
+It's a normal math formula.
+Right.
+So here if I divide this into this current time frame.
+So in current time frame we already know that two requests have already come two plus right.
+Two requests has already come.
+So now here we just need to find out how much how much request will here.
+So it's a very simple formula right.
+So you know that let's say this is 6060 interval one minute 60 interval.
+And let's say this is present.
+This sliding window, this part in the previous time frame is span around ten second ten interval.
+So it is very easy to find out the number of requests.
+So let's say 1234566 request.
+Or we can say that in 60 interval six request 123456.
+In 60 interval six requests.
+Then in ten interval how many requests we know right six divided by 60 into ten.
+That's what it is six divided by 60 into ten.
+So this is what generally it try to find out the percentage here.
+Try to find out the how many request will come here in this one.
+How many requests are there out of total.
+Right.
+Once we know how many requests are there plus the current time frame request, then it will compute
+that uh, does it less than five request or not?
+Right now we have all done.
+All done the algorithms.
+Now let's come up with the diagram of this one.
+So what all components we have seen what all components we have seen what all components we have seen.
+Right.
+So you know that in bucket we need counter.
+Right.
+So this is something we need to update fetch and delete counter.
+Right.
+So definitely we cannot use disk because disk are very slow.
+So definitely we need something kind of in memory.
+So Redis is the one we have to use to maintain a counter let's say right.
+And token bucket we use counter in leaking.
+We are using a queue right.
+So we might need use a reddis.
+And I also told you that we are using a config file in many place where we store the config.
+All these are nothing but a config.
+How many fixed window counter like in per minute?
+Three requests per minute.
+These are nothing but a config.
+So we definitely need config also, right?
+So now let's design the.
+This one.
+Let's say we have a client.
+We have a server.
+Right.
+And we need to put a rate limiter.
+Right.
+So rate limiter.
+So this algorithm should be hosted by someone.
+Right.
+So there are two ways.
+If we host some rate algorithm rate limiter here.
+Right.
+And it will have the appropriate algorithm or or let's say we can have a proper rate limiter here.
+In mid between a client and server.
+So that depend upon the meeting or discussion with the interviewer that what he suggests, right, based
+upon the company requirement.
+So if, let's say, if client send a request and there is no gateway in mid, there is no gateway in
+mid.
+So can we we can ask that we can host the rate limiter algorithm here.
+Right.
+And let's say there is already certain concept like API gateway which do authentication and all.
+So we can put a rate limiter algorithm there so that any request comes in.
+It goes through our API gateway which is hosting our rate limiter.
+And then it goes to the server.
+Right.
+So I am assuming that we are going with this.
+So how we will do there is let's say we have a client.
+Then client send a request to our rate limiter or API gateway.
+You can say that rate limiter right.
+And rate limiter will send a request to our server.
+This is We know basics.
+Now, I told you that we need a reddis to maintain a counter queue and all these things.
+So definitely rate limiter also should have.
+Reddis which will maintain like okay, this is the counter updation and all.
+It has supported various features like fetch, update of counter queue and various things.
+Similarly there will be some config files like config files.
+So generally config files are stored somewhere on disk and.
+But we cannot read config files directly from the disk.
+So we have to maintain some cache in mid right because config files are changed very less frequently.
+So it's okay.
+Whenever the our application starts we will load the config file into cache and our rate limited.
+Read that config file from the cache right.
+So.
+And based upon that algorithm, it will either send 4 to 9 or send okay or success.
+Right.
+So this is generally the very high level design of uh rate limiter.
+But most important are algorithms in this realm right.
+So you got it right.
+What are things which we can do.
+So here read this is like it is uh, so let's say one more follow up question can come is let's say
+this is distributed.
+There could be multiple rate limiter.
+So this is rate limiter one.
+Rate limiter two.
+Rate limiter three.
+There could be distributed rate limiter.
+Right.
+And client might have come here.
+Client can come go there.
+Client can go there.
+So to answer this is always say that red is we will use red is because red is is what is like Centralized
+data store.
+It is centralized data store, so everyone has access to this one.
+Now the follower follow up question can come is like Redis does not maintain atomicity.
+Atomicity.
+What and why we needed let's say for the bucket token bucket we are maintaining counter.
+So let's say this is also read the count.
+So let's say the client send a parallel request to rate limiter one, rate limiter two and both read
+the counter.
+Let's say currently here is two.
+Both read counter two.
+Right.
+So that could cause an issue.
+Right.
+So then client uh interviewer say that if you use a redis which is a centralized data store, how you
+will maintain a atomicity.
+So one one of the answer could be like there are certain already solution present to bring.
+So means we can add atomicity.
+We can bring atomicity to the reddis, but the overhead would be little.
+Bit latency.
+Right.
+But there are already solutions present which we can use it and bring the atomicity to this one.
+We don't have to develop from our own.
+Right.
+Um, but the only thing is latency.
+But if you say that.
+Yes, yes, we can use this and we can bear the latency, then definitely we can use this.
+Otherwise this is you can say that one of the limitation of having this and there are some little bit
+loopholes.
+I think it is pretty much clear to you and all this five algorithms and the high level design of it.
+And guys, please do share it with your connections if you like it.
+And I really need your feedback where I can improve and all.
+So waiting for your comments guys and wish you luck for your interview.
+Good luck.
+Bye.

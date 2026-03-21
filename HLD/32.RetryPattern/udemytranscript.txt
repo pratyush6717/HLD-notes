@@ -1,0 +1,634 @@
+# Dual Write Problem | Event Driven Microservices Patterns
+
+Hey guys on this side, welcome to Concept Encoding.
+And today we are going to see a very very important topic and interview question okay so dual right
+problem.
+Before I start this one I want to tell you that interviewer will never directly ask you like okay,
+do you know what is dual right problem.
+No.
+What interviewer will do is they will start with first saga okay.
+And from saga they will.
+Once you explained it, then this would be a follow up question.
+Dual right problem okay.
+So I will tell you how interviewer will bring you to this problem okay.
+Also, if you are looking for creating a personal project then this solving a dual right problem is
+a very, very good personal project.
+You can say that you can write in your resume and it will give a very, very good impact if you say
+that you have implemented the project which has solved this dual problem.
+Okay, now let's start it.
+So now let's say that in an interview we are sitting and okay now interview asked like, hey, do you
+know what is saga pattern?
+Yes, we know that in Saga pattern we know that we have multiple services, right?
+I have already explained Saga pattern previously in this, uh, playlist, but just for a very, very
+quick update in Saga pattern, what we have is we have different services service A, service B service
+C okay.
+And what happened is service A publish the like in its DB, its do some transaction in the DB, then
+it publish an event.
+Okay.
+That event is consumed by service B and service B do some work in its DB, and after that it might publish
+an event even.
+And you can say that it's a chain of events, right?
+So the same event might be listened by some other service.
+And based on that, it might do certain operation in its DB.
+And it is possible that it might publish an event to.
+Okay.
+So you can learn saga pattern.
+In this playlist there is a video so you can learn more about it.
+But very high level.
+Let's say that I started by explaining this.
+Now interviewer will say that okay, let's take a step back in service.
+A you said that okay, I will publish I will do some transaction in my DB, let's say invoice or let's
+say uh, invoice created.
+Let's say something.
+This is I have created one row.
+Invoice row.
+Now I have to publish an event.
+How you will make sure that both DB and the publishing of an event are inconsistent state.
+What does it mean that what if DB right is success and publishing an event got failed?
+Then your service V service B might not even know whether.
+Okay invoice credit then I have to do something.
+I have to let's say send notification.
+Then it won't be able to do that.
+So now you see that interviewer has bring us to this nothing but a dual right problem from the saga
+pattern.
+Okay, so if you are preparing for if you are learning saga pattern then don't miss this problem.
+Do.
+All right problem.
+So now let's start the dual right problem occurs when a component needs to persist a change in two different
+system.
+Let's say db and message broker.
+Like Kafka we need to make sure that both are inconsistent state.
+There should not be any case when DB is success, but even publishing got failed or vice versa.
+So understand from this diagram I have a service.
+Now let's say that I have published the message first and it got success.
+But while persisting the data into DB got failed.
+This is also not consistent.
+Now you have already published an event.
+If any service listening to this event they might start working it.
+But your DB it got failed.
+So ultimately the whole request is failed.
+Okay, so this is also not a consistent state.
+Also this let's say you are first writing into DB and it got success.
+But while publishing an event it got failed.
+Then maybe you have written successfully in your DB, but what about other services which are waiting
+for which are listening to a particular topic?
+But they never received an event, so they will again, the whole system is not inconsistent state.
+So now question is how we can make sure that might dbe writing to DBE and writing to message broker
+is is inconsistent manner.
+Both are inconsistent.
+Now as an interviewee.
+As an interviewee, the first thing which comes to our mind is hey, why not to use two PC two phase
+commit in two phase commit, you know.
+Right.
+We have let's say service A, we have service B and there is some coordinator.
+So coordinator first and prepare okay.
+And then they respond yes we are prepared okay.
+And after that it send commit commit okay.
+And then it's wait for this all properly committed.
+So we can say that.
+Yeah.
+Why can't we use two PC by services.
+My DB and service B is my message broker.
+But there is a problem in that.
+What?
+Okay, so I told you already.
+What?
+Two pieces.
+I have already covered two pieces also in the same playlist, so you can check it out.
+Okay, so now two pieces is not a viable solution for dual problem.
+Why?
+Because in the dual right scenario involves heterogeneous system like db and message queue.
+And you know that many message queues do not even support two phase commit.
+Okay, maybe if you are following a DB right or same DB and same application they might have support
+this but message queue.
+Many message brokers do not support two phase commit itself.
+Then how what you will do okay.
+Also in distributed system two phase commit is slow.
+It will give you high latency.
+You know right.
+Let's say you have three system or four system.
+Now you have a coordinator you have sent.
+Prepare, prepare prepare, prepare.
+Now you are waiting for them all.
+Then you prepare, commit, commit, commit, commit.
+And then you wait for their response.
+So definitely this is, uh, slow.
+That's where the saga pattern comes into the picture service.
+A just do its work, send the response back, but publish an event now in the back end, they will continuously
+do their work.
+Okay, so two phase commit is slow as it provides a strong consistency but waiting for all the participant
+to commit.
+Definitely it makes it slow.
+What if two phase commit coordinator crashes?
+What if this coordinator crash itself?
+It brings the participant into an inconsistent state.
+They will wait for coordinator to recover.
+That might again makes two phase commit slow.
+I have already explained all are two phase commit in depth in the previous videos.
+In this playlist you can check it out.
+But the major part, which I wanted to tell you that two phase commit is not a viable solution for dual
+write problem because of this.
+Because it's slow.
+Because message broker sometimes do not even support two phase commit.
+So what we will do.
+So now once you told two phase commit interviewer will say no it's not a viable solution.
+Now what to do.
+What is the solution.
+How to solve the dual write problem?
+Now there comes the event driven architecture patterns.
+Okay, so I'll tell you three patterns which can help you to overcome this problem.
+And if you are building a personal project, you can pick any one of the pattern and solve this problem
+with that one.
+Okay.
+So this would become a very, very good project.
+Also let's start with transactional outbox pattern okay, so transactional outbox pattern in this pattern,
+instead of writing in both DB and publishing an event to message broker.
+What it will do it first write the event into a separate table called outbox outbox table.
+Generally, a new table is created which is known as some let's say outbox outbox table in that one
+event is first write into that.
+Okay, so now since we are writing into a DB table itself, whatever you are the original main right,
+you have to write into DB plus this event.
+Both can be in the same transaction.
+Okay.
+So say this one I have a user service let's say and user service want to create user okay.
+So I begin the transaction I insert a user.
+And now the event which I have to publish it that also I am inserting into the table outbox table,
+user event outbox table let's say.
+So I created one event table.
+Okay so let me call it a user event table where I am publishing only user events okay.
+There could be a two scenarios where you have a common outbox table where no matter user order invoice,
+all events goes into this only or you have different different table for like user events order events.
+So you publish into that only.
+So depend upon your business uh choice.
+You can go with any of that.
+But for here now let's say user service.
+First it created its main task.
+It's inserted a user into the DB into the user table, and then it inserted the user event into this
+one outbox table okay.
+And then commit the transaction.
+So now you see that this is one transaction.
+One transaction means if any failure happens, the complete rollback will happen.
+Now this is one transaction.
+So at least now we are sure that the main user insertion is happened.
+Plus its event is also there in the DB.
+If it is a success, if transaction failure both will not have the record.
+Okay.
+Now once it is done there we have to write a new poller service.
+Or you can also say that a publisher a new poller service which keep on pulling this outbox table.
+Okay.
+And it's keep on fetching the events which are getting published and not yet published.
+Okay.
+So the poller services do is it keeps on polling.
+Right.
+What does it fetch.
+The messages which are not yet published and it will do is it will publish to the message broker Publish
+the event to the message broker.
+Okay, so we have a separate process or poller.
+Or you can say that publisher which reads the outbox table and publish the event to message broker in
+async manner.
+So this way dual write problem is resolved because now we have the data into both the tables and the
+event table.
+And from that event table publisher can continuously read the unpublished data and it can publish to
+the message broker.
+And in the publisher we can bring retry logic.
+And so that we need to make sure that all the messages which are present into the table is getting published
+to.
+Okay.
+Outbox table is regularly cleaned up as when messages are successfully published.
+So now let's say again if you explain this to an interviewer now, interviewer will ask with these challenges
+because see, no solution is perfect.
+There are challenges on all the solution.
+Now first challenges.
+Yes.
+Extra effort is there to write the polar service.
+We have to write this publisher or Polar Service, which continuously have to pull this outbox table,
+fetch the unpublished event and has to publish it.
+So extra effort is required.
+Yes.
+Delay between writing an event and publishing it.
+So now let's say that when this transaction is completed, then it was first written.
+But now you are not sure when this poller or publisher will fetch the event which is written.
+Now let's say at 12 p.m. it was written, but are we sure that okay, it will return instantly or it
+will return at 12 or 2 p.m., or when we do not know, right.
+It's an async process.
+So delay between writing an event and the publishing it to the broker might take time.
+Yes, this is also its challenge.
+The third, a poller, may publish the event multiple times to broker.
+What if you have a poller?
+Polar one.
+And this is your message broker okay.
+And it is publishing this message one to the message broker.
+And again it sends the message one to the message broker.
+Possible.
+Right.
+Okay.
+What if two times it sends the message how to resolve that.
+So we need to bring the idempotent logic to the poller okay.
+How it is done.
+If you I have already covered in the Kafka.
+But if you know that in Kafka, what generally happen is when you have a publisher and when you have
+a message broker.
+In the publisher, you bring something lot.
+unable.id.
+Equals to true you do that unable dot I dot equals to true.
+You need to set this one.
+Now once you set this what happen is publisher first take it's publisher ID publisher id.
+Now every time this publisher sends a message, this message contains publisher ID and the message sequence
+number.
+Message sequence number.
+So for this message one, the publisher ID is let's say p one.
+And message sequence number is let's say message S1 message sequence number one.
+So when it's recent or retry.
+And let's say that again it is sending message one.
+What it will do is it will append it's.
+ID publisher ID, let's say P1, and since the message has a sequence number, so it again sends message
+sequence one only because the same for each unique message the publisher generates one sequence number
+okay for different.
+For message two it would be message sequence two some different number okay.
+So Kafka Broker depend on this publisher ID and message sequence.
+And it knows that this is a duplicate request.
+I already have it into my topic so it will ignore one.
+Okay, so this problem can be resolved.
+If interviewer asks this problem, how do you how do you resolve the duplicate?
+Yeah.
+The first thing is this.
+Now another thing again, see this is a very big topic.
+Like interviewer can uh, stuck you in multiple.
+So now we were talking about one publisher.
+What about if you have two publisher or two polar, let's say polar one.
+Polar two.
+Okay.
+You have two polar and you have message broker.
+Now polar one is publishing one message M1.
+This is also publishing one message M1.
+Now how do you resolve the latency will enable dot idu potency will help.
+Will this help?
+No.
+Because this message has publisher ID let's say one.
+This has publisher ID let's say two.
+Okay.
+So now message broker don't know whether these are unique or not.
+And you know that in Kafka we have something called topic.
+Topic has partition p0 p1 okay.
+So Now you don't know whether these two duplicate is.
+So both goes let's say here M1 which is from process ID one.
+And here again M1 got which is got process ID two.
+Now how you would resolve that.
+Now let's say there is a consumer.
+Now consumer reads it.
+It's read M1, M1.
+Now what will it process.
+Duplicate messages.
+How do we resolve that.
+So we have to bring consumer side hydro patency okay.
+So in this scenario consumer should also have an added patency logic.
+So with each message has some unique ID.
+Let's say we have put some uh let's say if it is a user let's say user ID something unique, user ID
+is there with the message.
+So this consumer can put an ID like okay, this user id I have already processed Okay.
+If it is not a user ID, just say that certain unique event ID okay.
+So from this outbox table, when this record is fetched, this message is fetched.
+Let's say this has some unique event ID something okay.
+So with that message that unique ID goes and then this consumer puts checking on that unique ID itself.
+So this message one also has the unique ID.
+This message one also has the unique ID.
+So now consumer knows that okay now I already have one.
+So other I have to mark it as ID pattern okay.
+So this one also we can answer again this one is something very very important.
+Events might be published out of order if different poller picking event parallel.
+So consider this one this ordering issue.
+Now, since we are writing into the DB and publishing an event to message Broker.
+Okay, we are publishing an event to Message Broker.
+We need to make sure and let's say the sequence of operation is let's say creation.
+Uh, then let's say that updation and deletion.
+This is the sequence of operation.
+And the three events got published.
+Okay.
+So first creation, then updation and then deletion.
+Okay.
+So three events got published.
+But the ordering how we make sure that the message broker maintains the order.
+What if there is something called notification service.
+What if this notification service got deletion message first and it will say that hey deleted and then
+after it get created event and then it say that hey, send a notification.
+Now it created the consumer will get say hey what?
+First it got deleted, then it got I got a created message.
+That is something very, very important ordering of an event okay.
+How to do that before.
+To understand that right you need to understand let's say take an example of Kafka.
+In Kafka you have partitions, you have topic.
+Let's say A you have partition P0.
+P1 okay, so I have already explained in Kafka video that whenever you are publishing a message, there
+are three ways.
+One is you put a key to a message.
+You put a key to a message, okay, based on that key it will goes to either P0 zero or p one.
+Okay.
+So a hash would be converted.
+A hash would be created out of it like mod number of partition something.
+So that it will try to put this message into one particular partition.
+Another is that you assign that what is the exact partition you wanted to put.
+Let's say I wanted to put into partition zero.
+So it will always put the message into the same partition.
+And another way is that you don't provide anything.
+You don't provide key.
+You don't provide partition.
+Then it will place.
+You can say that randomly inside either partition zero or partition one, wherever there is a space
+okay.
+Or in a round robin fashion.
+So there are three ways.
+And Kafka says that if there are one publisher and one partition Order is maintained.
+Order is maintained.
+What does it mean?
+You have one publisher.
+Okay.
+And you have one partition.
+Let's say partition zero.
+Then it says that if the producer is publishing 01234, like kind of this messages, then in the partition
+it will go like zero, one, two, three, four.
+Like this only.
+Okay.
+So this Kafka guarantees ordering in a particular partition.
+But if there are more producers okay.
+And you have, let's say only one partition.
+And this publisher zero.
+Publisher.
+Publisher zero is publishing, let's say 012 and publisher one is publishing, let's say three, four,
+five.
+But and they both are putting into the same partition.
+Now what if producer one goes first?
+So three four, five and then it will goes to 012.
+The order maintained.
+No, the order is not maintained.
+So it should be like 012345.
+But now here if you say it is out of order, events are out of order.
+So Kafka guarantees order only when there is one producer and one partition, all the data from that
+producer goes into same partition.
+Okay, then order is maintained.
+But if in case there are multiple producer or multiple or multiple producer producing into the same
+partition, or multiple producer producing into the different partition.
+Now let's say this one put zero, one two.
+Here it put three, four, five okay.
+Now the consumer is consuming it from this topic.
+What is it?
+Consume this first three, four, five and then zero, one, two.
+So now the responsibility comes at consumer side to buffer then to sorting.
+Then it knows.
+So but Kafka do not guarantees the order.
+It only guarantees the order.
+One producer is only publishing into one partition.
+Otherwise order is not guaranteed.
+So in case you want a strict ordering right, then you have to use something Kafka streams.
+Or there might be different approach, but Kafka Stream is something which I can explain later.
+It's a very big topic.
+So what Kafka Stream does is even though there are multiple producers, multiple producer, multiple
+partitions, no matter what, even if there are multiple producers, multiple partitions, also Kafka
+stream what it does is it do repartition It do.
+Or you can say that reordering.
+So it it tried to do a proper ordering like 012345.
+It reads the data from all the partition.
+Right.
+This particular let's say that message, uh, let's say that it is order events.
+This topic is order events, let's say.
+So for this topic it will read out all the partition and then it will try to bring it in order proper
+orders.
+Okay.
+So Kafka Stream again is a big topic.
+Uh, maybe I'll explain it to the next part, but through this we can bring everything into an order
+and then consumer can read in an order fashion manner.
+Okay, but this is not a simple solution out of order issue, okay?
+Because there can be multiple pollers.
+We can't rely on one poll.
+We can't rely on one partition.
+We have to have a different partition.
+So out of order is something which is serious problem which has to be resolved.
+And that's where Kafka Stream comes into the picture.
+What else problem is there?
+What if poller not able to publish the event to a message broker itself?
+So you have a poller.
+This is your outbox table.
+This is your poller and this has to publish an event to a message broker.
+What?
+It's not able to publish it.
+Okay.
+How to resolve it.
+Like retry.
+We have to bring a retry mechanism.
+Exponential backoff and jitter I've already explained what it is.
+And after retry, if all retry failed, you can put the message into the failed event table and depend
+upon how your outbox table is used.
+Let's say that you have a row in that one.
+You have this event which has status something.
+Okay.
+Then let's say currently it's in progress, but not yet published.
+Successful.
+So if all retry failed, right, then you can change it back to, uh, you can change it back to like,
+uh, pending, like it is not in progress.
+It has yet to be picked up.
+Or if there is, if you're not maintaining any status, okay, then you have all the retry finished.
+Then you can put this event or message into a another table, let's say failed events okay.
+And from there we can check why it failed.
+So depends upon how you are building the logic.
+We can discuss on that one with the interviewer that okay, we can build a retry logic for sure.
+This poller or publisher can do a retry logic and if all retry failed, depending upon how our outbox
+table look, we can either keep the event into there itself so that, uh, next time it will get picked
+because it is not yet published or it we can move it to the failed event table.
+Okay.
+So that is also can be handled and outbox table can grow.
+We should to we should clean up regularly because you have an outbox table.
+Lot of events comes into this one.
+If you don't clean it up it will like uh make the query difficult as the size increases.
+So it the good strategy is the two one after every message or event published successfully.
+Clean that message or there should be a batch job like if, let's say after one hour, whatever the
+events got published, I will delete all those in a single shot.
+So depending upon the business requirement, we can just pick any one of the solution and resolve it.
+Okay, so mostly everything has a solution for the challenges.
+But interviewer might put you these challenges which we have to explain that we can overcome with this.
+Okay.
+Understood.
+The transactional outbox pattern.
+Then we have listen to yourself pattern.
+This is very very similar to outbox only.
+So I would say that just a variation of transactional outbox pattern.
+Because here what happen is you have again user service.
+Now let's say it has uh it has to do let's say create user and it has to write a user event something.
+So in that what it will do is it will first write only user event.
+It don't write create user.
+Now it only publish.
+It only creates an event into an outbox table into an outbox table.
+So first it only create user event.
+That's all.
+Let's say user creates an event insert user event into the outbox table and commit transaction.
+Okay.
+This is not created yet.
+Now again, same like our transaction outbox pattern.
+There is a poller service.
+This poller service will read an event.
+Okay.
+Then it will publish to a broker.
+From that broker it will.
+Consumer will listen.
+Okay so one of the consumer is this service also user service.
+Generally the daemon there is generally the same component daemon application.
+So that will also listen to insert user event.
+And then it will write into the DB.
+Then it will write into the DB.
+That's why the name listen to yourself.
+Okay.
+So it first created just a insert user event.
+But it didn't write actually into this.
+It first write into the event.
+The same same flow poller service.
+Query the outbox table.
+Publish to message broker from message broker.
+Multiple consumers let's say notification consumer.
+Other consumer.
+Listen.
+Similarly, one of the consumer is this service daemon application itself.
+It listens this event and now writes to DB.
+So it has all the challenges which transactional outbox pattern has.
+But additionally it has one more challenge which is that what if get calls comes before event is published
+and consumed.
+Now let's say that I have.
+So here if you see that user service it write into the outbox table.
+Insert user okay.
+But here in the user user table currently it's not written.
+Now from this outbox table, poller has to read it and it has to pass to message broker from there some
+user service daemon application will listen.
+And it has to right here.
+But let's say currently it's not yet happened.
+It's not yet happened.
+And what if get call comes get now?
+Currently data is not even there in the user table.
+How you will fulfill the Get request.
+Because first time when you did insert okay you send to the like response success.
+But internally in the async manner it is not yet put into your table user table.
+Now if get call comes how you will fulfill that request.
+Data is not there into the DB yet.
+So that's where what we'll do is we will do go for write through cache technique.
+Okay.
+So here what it will do is user service put into the DB begins the transaction.
+Then it put a event into the outbox table here.
+Commit the transaction.
+Okay.
+Till in user table.
+It is not written.
+Now it will also write the data into the cache like Redis okay.
+Now in the meantime poller service will get the event from this outbox table.
+Publish the event to message broker.
+But let's say before daemon application, listen to this uh, insert user event.
+A get call comes a get call comes.
+So what it will do is it will get called.
+First try to read from reddis or cache.
+Now it has the data.
+So response will go from there itself.
+It will not try to look into the user table.
+Got it.
+And after let's say two three minutes daemon application got the event it right into the DB.
+Even if cache got expired, Like let's say data is not there.
+Any get request come data is not there.
+It will now goes to the user table.
+Now the data is present it will fulfill it.
+So this is right through caches.
+One of the solution uh for listen to yourself in case get calls comes instantly after just post operation.
+And currently the events or the data is not written into the main table.
+So got this point.
+And it has all other challenges which is same as transactional outbox pattern also.
+Then there comes last transaction log tailing pattern.
+So in the above two solution, one thing is uh that we required a outbox table.
+But in the log tailing pattern we don't need to create an outbox table.
+There is something feature called change data capture.
+Change data capture.
+So there are tools already created like Debezium.
+Okay.
+So this read the database table locks database logs to detect changes.
+So now let's say you have a MySQL or Postgres.
+Whenever you do insert or update or delete anything a log is a log file is created.
+Okay.
+Similarly for Postgres a log file is created.
+So there is a tool called like debezium which read this log file.
+So insert there is one event for update.
+There is one event for delete.
+There is one event in the sense I mean log.
+There is one log file log data for insert, update, delete.
+Likewise.
+So Debezium is a tool which is known as.
+You can see the change data capture.
+So it is continuously looking at this log file to determine if there is any change happen into this
+table.
+Right.
+For each table you can say that there is a like ah, any change happens to that table goes into the
+log file for that particular database.
+Now here if you see that you have a service you begin the transaction.
+You let's say try to do insert into a DB okay.
+You commit it.
+When you commit it there would be a transaction log would be created.
+A transaction log would be created.
+Whether you have done an insert log or update log something, it is done.
+Now there is something tool like CDC tool.
+Or you can say that uh, which is like a debezium.
+External tool or some DB like Cockroachdb internally has a built in CDC tool, right?
+You don't need external software.
+External tool.
+So what uh, this tool we can configure that read from this logs file and any changes anytime you change
+a event in this log either insert update delete, whatever you are interested in.
+Publish an event to a message broker.
+We can configure that.
+Okay.
+Now here if you see we don't need any outbox table.
+We are relying on a log file.
+Okay.
+And there are uh change data capture tools which read this log file and we can configure that okay.
+We are only interested in insert.
+We are only interested in update okay.
+Whenever insert happening on this table, whenever update is happening on this table read it and publish
+an event.
+But again, it's not.
+There is like this is not a perfect solution.
+There are again challenges to it.
+Duplicate challenges there.
+What if CDC tools send to same event twice?
+Possible.
+Right.
+So again you need to be handling mostly consumer side handling is required at this point of time.
+Consumers are handling is required.
+Ordering issue is also present.
+Same thing.
+You can have multiple instances of CDC tool which are reading this transaction logs.
+Okay.
+Then multiple instances kind of they are they are now act as a producer.
+Now they are going to put into partition either one partition or multiple partition.
+So definitely ordering issue will come because Kafka do not guarantees it.
+Then we have to use either Kafka Stream or some other way to maintain an order.
+Okay, but it's possible.
+Okay.
+High latency.
+Why high latency?
+As CDC tool, read the database logs.
+So our latency now depends on how fast DB writes the logs.
+Now let's say that you commit the transaction but the logs is written instantly.
+Are you sure?
+Because in some DB they follow a batch batch wise logic like okay, once I get 100 updates or 100 insert
+then I will 1 in 1 shot.
+I will put it into a log file.
+So now your latency depend like how fast your database are changes put into the logs.
+Some unnecessary events get published too.
+Let's say that in this log file comes everything you try to insert.
+You try to update, you try to delete, but you are only interested in insert if you don't do a filtering
+properly, you might get insert even plus also let's say update event.
+So unnecessary events get published too.
+You have to have a proper filtering logic in your CDC tool that only insertion logs.
+You only read it no other.
+Okay, so that is extra thing.
+You have to make sure.
+Okay.
+So these are the few things which is required to solve the dual write problem.
+And I told you how interviewer takes you from saga pattern to this.
+And for each if no matter which solution which pattern, you will say there are challenges, which interviewer
+will jump into it and we have to discuss on those challenges.
+Well.
+Okay guys.
+So anything any question, please feel free to comment.
+We can discuss more but that's for today.
+Thank you.
+Bye.

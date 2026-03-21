@@ -1,0 +1,1312 @@
+# Database Indexing: B+ Tree, Data Page, Clustered and Non-Clustered Indexing
+
+Welcome back on this side.
+And today we are going to do database indexing mostly database.
+When I say it's a relational database management system which we are going to discuss.
+So this question has been very very frequently asked database indexing.
+So I will share you my understanding of how database indexing works.
+Okay.
+So before we start even discussing the indexing right, we have to first understand this three things
+right.
+How actual the table data is stored.
+First thing that should be cleared, how table data rows are actually stored.
+What type of indexing present, understanding the data structure used for indexing and how it works.
+Right?
+So once we have this three better clarity, then only we can understand how DBMs make use of all these
+three things and able to perform the indexing Okay, so one thing was I would tell you that, uh, so
+whenever the tables which you have, let's say you have a table, this is row.
+This is column, right.
+And you have a data one, two three, 4ABCD.
+Right.
+So generally what question or what whenever the indexing come generally what engineer might be saying
+that okay we will create an index on this particular.
+Let's say we are doing an indexing on this particular column.
+So we will create an index 12345.
+Right.
+And it will point to this rows right.
+And any query will happen.
+It will happen on top of it.
+It will able to fetch faster okay.
+You want for.
+So on this index it will able to find the faster.
+And it will goes to point to the particular row.
+Okay.
+So what I'm trying to say is that this is very high level.
+But today we are going to step down into one level deeper because that's where the interview follow
+up questions asked.
+Okay, so now let's go into a little bit deeper.
+And I'm not going to shut down or cut down this video shorter because if even if it is go a little bit
+longer I will continue to it.
+I will not do any trimming for sure.
+Okay.
+So let's first discuss how data is actually stored.
+Very very important.
+So now let's say this is your table.
+You have a row one two, three four rows and three columns.
+And let's say these are the three columns employee ID name and address.
+So this is generally a very very you can say that typical table let's say employee table.
+So this is just a logical representation.
+This is just a logical representation.
+This is now this is not how actual the data is stored in the DB, right?
+This is just a logical representation, not a physical representation.
+Remember that.
+Okay, so when we say that hey this is logical representation, then how the actual data is stored okay.
+So now let's say in our table we have this data for rows three columns.
+So what DBMs will do.
+What DBMs will do.
+Database management system what it will do.
+It will create data pages right.
+And one data page generally it's generally of eight kb in size.
+Depends upon what DB you are using okay.
+But generally the size of one data page is eight kb okay.
+Each data page can store multiple table rows in it.
+Okay, so now we know that this is just a logical representation.
+These rows are actually stored in data pages which DBMs creates, right?
+How so?
+This is how a typical database looks like.
+So when I say that it's an eight KB.
+So in eight KB how many bytes are there 8192 bytes okay.
+Now 96 bytes are reserved for the header in a header.
+What generally information it has.
+It has page number how much free space this page has checksum and etc. okay.
+So header information I would say that uh it has very basic information like page number, free space
+checksum etc. which is 96 byte.
+After that 806 bytes, 8060 bytes are reserved for data records.
+When I say that data records, it is actually the rows.
+So here the actual the rows will be stored.
+So actual data is stored in here.
+And last 36 byte is known as offset array actually.
+So what does offset contains is it contain an array.
+And each index of an array holds a pointer to the corresponding data in the data records.
+Right.
+So in this data page this is an header.
+Let's say it has the pages.
+Row one data.
+Row two data.
+Row three data.
+Let's say only three rows are there.
+In this offset there is an array.
+0123.
+So zero will point to let's say row one.
+One will point to let's say row two.
+So what I mean to say is that this offset array contains a array of.
+You can say that a pointer and this what it point to it point to the actual rows.
+Now you can ask me, hey why we need this offset array.
+We will see that how it helps DBMs.
+But don't worry.
+First of all what I want you to understand is how database looks like.
+So one thing, very basic thing you should know is DBMs creates data page and inside a data page actual
+the rows are stored.
+Okay, so that only you should understand at this point of time.
+And don't worry about the offset array.
+We will see with an example and how DBMs make use of it.
+Okay, so offset is just an array of you can say that pointer pointer to what pointer to the particular
+row inside a data records space Okay, so total eight KB data pages, and out of this eight KB 8060
+byte is actually there for the rows or actual data, and rest is for header and offset array.
+Okay, so now it's clear that these rows which we are creating, it looks like it is creating.
+It's stored like a table.
+But actually it is going here in the data page.
+So now let's see this.
+So if one table row is let's say 64 bytes.
+So now let's say this row one is of 64 bytes.
+So this is let's say I'm just saying hypothetically let's say it is 16 bytes right.
+This is also 16 bytes right.
+This is 32 bytes.
+I'm just saying.
+And it all combined to 64 bytes.
+So one row.
+One row is your 64 bytes.
+Right.
+And we know that for storing the rows how many bytes it is available in a data page.
+8060 bytes.
+So 8060 divided by 64.
+So almost around 125.
+It comes so means in one data page.
+If it is a size of eight KB, then we can store 125 DB rose in it, right?
+If one row is of 64 bytes and one data page is of eight kb, then we can have 125 DB rows in it, right?
+And how data page is generally look like.
+So we have header.
+So I have just kept for simplicity only page ID or page number like one.
+Right.
+And then the second part is your data record.
+Data record which actually holds the data, the the way the row is inserted into a table or by a user.
+In the same way, generally the rows are inserted.
+So user has inserted row one.
+So it has inside this input.
+Row one.
+Row two.
+Row three.
+Row four.
+Row two.
+Row three.
+Row four.
+And if let's say it has added five row five okay.
+Like this.
+It will add how many it can store 125 DB rows.
+It can hold.
+Then what is the third step.
+Third step I told you it's an offset array.
+So here I have created an offset array.
+Okay so this offset array has index like an array 012345.
+Right 01234.
+So zero it is pointing to.
+Let's say row two.
+This one is pointing to row four.
+Two is pointing to row five.
+Three is point three is pointing to row three.
+And fourth index is pointing to R1.
+Okay.
+So what does offset array hold is now it's clear it's an array.
+And this array actually contains a pointer.
+Pointer to what the actual data which is present inside the this data page.
+Now you can ask me like hey what is this ordering at zeroth index R2 is stored right.
+And at fourth index R1 is stored.
+So doesn't make sense right?
+It is not ordered.
+Not increasing order.
+Not decreasing order.
+What is this order.
+right?
+So don't worry about that part, because when I will come to that, then it will make sense.
+Better how DBMs is make use of offset array.
+But now you should be clear with this that how your data is actually stored by a DBMs.
+So this table is actually visible to you.
+But for DBMs the way it is stored is like a data page.
+So for each page it gives a number and it stores the data in a page like in this data records area.
+Right.
+And for each this rows there is an offset.
+It also maintains the offset also where it put a pointer.
+And the ordering DBMs will decide when we discuss about indexing.
+Okay.
+Till now it is clear right?
+All these numbers which I am saying eight KB, eight KB 64 bytes.
+That depends.
+Right?
+That depends upon db to db.
+So, but for this one this is the most common.
+Generally you will see data pages eight by eight KB.
+Cool.
+So till now we know that okay this table how it is represented in one page.
+So DBMs remember that DBMs creates and manage this data page.
+So this this page whichever we have talked who manages DBMs.
+So total control over the DBMs.
+So for storing one table data it can create many data pages.
+So now let's say this table grows and it contains let's say row 10,000 like row 10,000.
+So definitely 10,000 rows cannot come into page one right.
+So it's upon DBMs only to create multiple pages.
+It will create page two, page three, page four, or page 100 and keep on storing the rows in it.
+Okay, so DBMs creates and manages this data pages.
+And for storing one data table data it can create many data pages.
+Okay I know that the very big questions coming to your mind here.
+If there are hundreds of pages, how DBMs is gonna manage it right.
+We will come to that one.
+But for now, for simplicity, a table data is generally stored in a data page and one data page is
+full.
+DBMs can create more data pages and keep on storing the table data.
+Till now, very basics.
+We know now where these data pages ultimately get stored.
+These data pages ultimately get stored in the data block.
+Now, this data block is actually a physical memory.
+This is actually a physical memory, right?
+Like disk on a disk.
+There is a so you know, right disk.
+And then there would be a some sector track.
+So there would be one data block.
+You can say that data block.
+So what does data block means.
+First understand what is data block means.
+So data block is the minimum amount of data which can be read and write by one input output operation.
+So you can say that this is the minimum amount of data.
+Which 1IO operation can read or write right.
+So this is the minimum amount of data which you can fetch in a single shot.
+Or which data blocks can have 1IO operation.
+Okay.
+And who manages this data block.
+It is managed by the underlying storage system.
+Let's say like disk or HDD.
+Let's say if it has data block.
+So it is managed by storage system.
+Underlying storage system.
+So remember that data block is not managed by DBMs.
+It is not managed by DBMs.
+It is managed by storage underlying storage system like this.
+Data manage DBMs.
+Manage only data page.
+Right.
+So whatever the data you have, you have to put into somewhere into the memory or disk.
+Right.
+And inside a disk what ultimately we have is data block.
+So these data pages which DBMs creates, who creates it, which DBMs creates ultimately get stored where
+inside a disk or inside a memory.
+Right inside a disk.
+So it stored actually in the data blocks, and DBMs has no control over this data blocks.
+It can be scattered.
+So now let's say if this disk has thousands or millions of data blocks, let's say DBMs has no control
+that okay, my page one goes here in this data block.
+My page two for example.
+It can go into this data block.
+Data block let's say 100 data block.
+Let's say one.
+So what I'm trying to say is that DBMs only has control till data pages.
+It can decide what data I can store into this, what rows I can store into a particular database.
+Right.
+But when it is writing to the actual disk memory, right, then it ultimately gets stored into a data
+block and it has no control over it.
+Okay, so now you know what is data block?
+It is the minimum amount of data which can be read and write by an input output operation.
+So data block size can range from four KB to 32 kb.
+And most common size is eight kb.
+So now let's say your data page which dbms's manage it is of eight KB.
+Data block which actually stores the data in the like a physical location.
+It range from.
+Four KB to 32 KB.
+But most commonly you will find is also same like an eight KB.
+So if it is eight KB means one data block, one data block stores one data page only.
+But if it is, let's say 32 KB then it can store multiple data pages.
+Data page one, data page two, data page three.
+Right.
+So one data block itself can store multiple data pages okay.
+So based on the data data block size it can hold one or many data page okay.
+Now there is one more thing is DBMs maintains the mapping of the data page and data block.
+Because I told you that DBMs has no control over the data block.
+Where this particular page where my page, where the data page is stored, it has no control over it.
+So that's why it maintain a mapping.
+Ping.
+That's why DBMs maintains a mapping that hay data.
+Page one goes into this address.
+Data block one.
+Data page two ultimately goes to this address data block one itself.
+So it is possible that one data block.
+This is let's say data block one.
+One data block can hold multiple pages.
+Data page one.
+Data page two.
+It's stored in the same data block.
+Because data block size can be higher than the data page right.
+So DBMs maintains this mapping that okay this my my my this page because DBMs maintain this page.
+Right okay.
+This page one is stored in this block.
+This page two is stored in this block.
+This page three is stored in this block, right.
+Like this.
+So remember DBMs controls the data page.
+Like what rows goes inside, in which page or sequence of the page, etc., but has no control on the
+data block.
+Data block can be scattered over the disk.
+Okay, so I think you should be clear with till now.
+The first part how the table data actually stored in the DB.
+So this is not this is just a logical representation.
+The ultimately stored in a data page for one table.
+There can be so many data pages right.
+And each data page is stored in ultimately the physical memory of data block.
+And one data block can hold many data pages.
+Right.
+And DBMs maintains the mapping.
+Also which page goes into which data block.
+Okay.
+Till now we are clear.
+Now let's see the second part.
+What type of indexing present in RDBMS?
+Now here, if you see that the things become little.
+You can say that.
+Interesting.
+So this name you might have heard a lot.
+Clustered indexing and non-clustered indexing.
+I know the things which will be going in your mind.
+Primary index.
+As soon as you heard a name indexing it you will be like primary index.
+Secondary index.
+And what is that composite index like?
+There would be so many indexing.
+So all this things should have come in your mind.
+But from the indexing DBMs perspective they are categorized into two types clustered indexing.
+Non clustered indexing.
+So forget about like before we understand clustered index and non-clustered indexing, first we have
+to understand what is indexing.
+When we are saying indexing, indexing indexing.
+But what does indexing means right.
+What data structure is used for doing that?
+Indexing how it works.
+Then we can come to that okay clustered and non clustered.
+But first we have to better understand what indexing is how it is done.
+So in a simple term if I say that what indexing is, it is used to increase the performance of the database
+query so that data can be fetched faster.
+Okay.
+So indexing is just nothing but doing to increase the performance of the query, so that it helps us
+to find the data much faster.
+Without indexing, DBMs has to iterate each and every table row to find the requested data.
+so you know that it maintain the data pages.
+Data page one.
+Let's say there are.
+Thousand data pages inside this thousand data pages there are, let's say one lakh rows data.
+Right now, if you have to find something that, hey, give me data with employee ID 35.
+Now DBMs doesn't know that which this employee 35 record goes into which data page it doesn't know.
+All DBMs has till now is indexing okay.
+This data page is goes into this block.
+So what it can do is that in a worst case it will iterate over this mapping.
+Okay.
+My page one it will goes to this physical memory row.
+Load the data.
+Load this block into the main memory.
+Take out the rose.
+Read this page and see it.
+Read this page and see that hey, does employee ID 35 present know if it is?
+No, it goes to the second one.
+Okay.
+My page two is store is in this block again.
+So it is already in memory.
+So it will load that page page two.
+Right.
+And then it will again its page two.
+It will check all its rows.
+Hey have I found this employee ID 35 or not.
+Let's say for example, worst case this employee is present in the last data page, the last mapping
+which is present here.
+Then it has to iterate over all the data pages and inside all the data pages it has to iterate over
+all the rows.
+So what is the worst time complexity?
+Big O of n.
+So without indexing it has to check each and every row.
+Right.
+And if there are let's say millions of rows present.
+Query can take some time to fetch the data, right?
+Because it has to goes to that particular data block from the mapping.
+Fetch the data, load into the memory, read the data page, take out its rows, and then read it and
+see.
+So we know that indexing is used to make the query run faster.
+Without it it would be big O of N, but with it, what would be the best time complexity we can give?
+So there is a data structure which is used which is known as B+ tree.
+It provides big O of log n time complexity for insertion, searching and deletion.
+So this is very very frequently used B+ tree while for doing the indexing right.
+So without indexing big O of N is the time complexity to search any data inside a table With indexing.
+Our purpose is to make our searching faster and which data structure it use.
+It uses B+ tree, right?
+So B here is stand for balanced actually.
+So now till now we are slowly understanding okay what indexing is and why for making the indexing works
+what data structure is used B+ tree it provide a big O of log n time complexity.
+So before I go further into the cluster non-clustered index, let's first see how B-tree works.
+It will clear your mind actually how this data indexing works.
+So I'll talk about B-tree.
+So B-tree and B+ tree is very, very similar right.
+So if you understand B-tree B plus tree is somewhere near to exactly same okay.
+So now I am saying B-tree and at last I will said that it is a B plus three.
+How it adds certain additional feature, but both are exactly same.
+So I'm just telling you how B3 works so it maintains the sorted data.
+Okay, all leaves are at the same level.
+M order B3 means each node can have at most m children.
+For example, two order B tree means each node can have at most two children.
+Three order B tree means each node can have at most three children.
+Right?
+You can have any number of this m m order.
+So you can have, let's say five order B tree means you can have at most five children.
+Okay.
+And m minus one keys per node.
+So now here, if you see that when I say that let's say three order B tree.
+So let's say this is the three order B tree.
+So it can have three children.
+So in one node.
+So in the three order B tree a one node can have three minus one m minus one keys.
+Right.
+So three minus one two.
+So it will have one key here one key here right.
+And it will have pointers here.
+So this is a pointer.
+This is a pointer.
+So this pointer will point to this child node.
+Let's say this is key one.
+This pointer will point to this pointer child node two.
+And let's say this is key two.
+And this pointer will point to this one.
+So in one node if in three order B-tree you can maximum have m minus one.
+So three minus one two keys here and three pointers.
+And each three pointers can point to a child.
+So now you can say that hey what this three pointers generally signifies.
+So let's see that we'll come to that part.
+So now let's say that I'll totally show an example how it will become totally clear.
+Let's store the below data in a three order B-tree.
+So three order B-tree means it will have how many keys?
+M minus one three minus one, two keys.
+So I have here.
+Key one.
+Ki one and Ki two and it will have three pointers.
+Pointer one.
+Pointer two.
+Pointer three.
+So now here if you see that this pointer one left one so left one is like always point to the child
+node which is less than this ki less than this ki.
+And the right one is like greater than equals to this one.
+So this pointer one will be whatever the child it will point to.
+All its data would be less than this ki.
+And whatever this pointer to which is on the right side of this ki, whatever the child it will point
+to, ultimately all its data could be greater than equals to this ki, right?
+So similarly for this ki two, this pointer two is it's at left side.
+So whatever the child it will point to it will have a data less than ki two only.
+And this pointer will have a whatever the child it will point to.
+It will have data greater than equals to right.
+So that's why here we have two keys three pointers.
+So that's how one node can have three childs.
+That's why three order maximum three child you can have right now let's see an example.
+Let's understand with an example.
+It would be super clear.
+So don't worry about till now what we have uh understand about this uh DB right.
+Pages and all.
+So we will come back to again and everything will start making the dots clear.
+But keep that till in your back of your mind that whatever we have is known till now.
+Okay.
+So now let's say we want to store this data into a B-tree.
+Okay.
+So I am using a three order B-tree okay.
+So how many so understand this.
+This line is a pointer.
+Let's say this is one pointer two pointer and third three pointer and two nodes m minus one nodes.
+So two nodes.
+So this is the nodes slots I have.
+So first I want to store nine.
+So I have a key.
+So this is the key one.
+So I have a space.
+So I have stored a nine here okay.
+Now I want to store the data 33.
+So it always maintain the sorted data I have a space in this node itself right.
+So I have stored in the sorted order 33.
+So both my keys are now full.
+So it also has the data.
+This also has the data.
+Currently these pointers are pointing to nothing.
+This is pointing to nothing.
+Now I want to store 75.
+So where I would store now because in my node because I'm creating a three order tree.
+So in the three order I can only hold two nodes.
+Two keys.
+Now where I would store 75.
+So now what it will do is that in the sequencing order it is like nine 3375.
+So what it will do is so what it will do is it take the middle one and take it to the parent.
+Right.
+So now what I have done is I have created a new node from the middle one, from the middle one of this
+three and make it to the parent of this.
+So now 33 now 33 left pointer points to this 33 right pointer will point to this.
+So left pointer means less than 33.
+Right pointer could have like greater than equals to 33 data.
+It will hold Okay, so till now it's all clear.
+And this is how the data will look now.
+Now we want to store 41.
+So 41 where we will store.
+So it will first check at the 33.
+41 is greater than 33.
+Yes.
+It goes to the right side.
+Now here if you see that here 75.
+So 41.
+So it will sort this.
+So it will do 4175 and it will see that yes, there is a sufficient space.
+Right.
+So it will store it.
+So this is how it will get stored after 41.
+Right.
+Because 41 is greater than 33.
+It goes to a right side from the pointer.
+And then it is stored in a sorted manner.
+And it has two nodes we can keep.
+So it's okay.
+Now we want to insert 98.
+So 98 is greater than 33.
+It goes to the right hand side.
+Now it wants to store over here.
+So now again, 41, 75, 98, in a sorted form.
+But again, we can't store three keys because it's a three level, three order B-tree.
+We can only store two.
+So what it will do is we will take the mid one and take it to the parent.
+So its parent is 33.
+There is a space.
+So it will store there and 75 left will point to 41 and its right will point to 98.
+So this one is like less than data 75.
+This one is greater than equals to 75.
+It will point two.
+Now we want to insert 214.
+Now I think you got the point right.
+What we are doing.
+So 214 it will check uh where it will go.
+It will say that okay it is greater than 75.
+So it will goes here greater than equals to 75.
+It will go here.
+There is already a slot empty, so it will put it here in the sorted manner.
+214.
+Now let's say we want to insert 126 126 is greater than 75.
+It goes to its right.
+Right.
+And uh 98 217.
+So this is the sorted how it would look like.
+But it breaks the B-tree because we can't store three nodes, only two nodes, two keys we can store.
+So this has to be mid one.
+After sorting it has to take out.
+So now it has to takes to the parent.
+So 3375 126 126 left will point to this 98.
+Its right will point to 214.
+But here if you see that this parent itself will get break now because we can't store.
+Three 3375 126 we can't hold it.
+So this further has to be taken out a mid 175.
+Now it should have goes to its parent.
+So there is no parent.
+We created a new node.
+7575 left will point to 3375.
+Right pointer will point to 126.
+33 left is already pointing to nine.
+It's 33, right already pointing to 41.
+So it is like this.
+So you got it right.
+How B-tree is stores the data in a sorted manner.
+And plus it can we can construct array or m order of b-trees.
+Right.
+So let's say now I'm storing 55.
+55 is 55 is less than here.
+It is greater than this.
+It will go here.
+There is a free slot 41 free slot was there.
+So it will store the 55 here.
+Similarly for 72, I think you can do now yourself that it will come here, but it will break, it will
+divide 55, it will take it to the parent and how it will look like.
+So this is how B-tree works, right?
+So now you know that balance tree.
+This works.
+I might have explained faster because you can learn this data structures more in depth or you can implement
+it.
+But without understanding this indexing understanding the indexing would be incomplete.
+So b b plus tree is exactly the same as B-tree, with additional feature that child nodes are also linked
+to each other.
+So in the B plus three it has additional feature that this all child nodes are linked to each other.
+So that's okay if you understand the B-tree B plus tree is also exactly the same.
+So now let's come back again to our DBMs.
+DBMs is using the B+ plus three to manage its data page.
+Because I told you that for one table, if it is, let's say one lakh rows, it can have so many data.
+Page data.
+Page one.
+Data.
+Page two.
+Data.
+Page 100, let's say.
+And inside each data page there will be hundreds of rows.
+So there might be some kind of ordering right.
+How to order those.
+Right.
+So that's where we that's where B plus tree comes into the picture.
+DBMs uses B plus three to manage its data page and rows within that pages.
+How?
+Okay, so just have this like it is using the B-tree.
+Exactly the same, only with slight differences.
+References.
+The root node or intermediary node holds the value, which is used for faster searching the data possible
+that value might be deleted from the DB, but it can be used for sorting the tree right?
+Leaf node actually holds the indexed column value.
+Don't worry, I'll tell you what I mean to say that how what Dbms's do.
+We will see that.
+So what I mean to say is that here is.
+So here when we are maintaining the B+ tree, the ultimately the leaf node, this leaf nodes actually
+holds the index values.
+So let's say this is the column in this column I am.
+This is I want to put an index.
+So this is the index column.
+So what is the index value.
+1925 3017 615.
+So these leaf node are actually the one which holds this index values.
+The root node and the intermediate node.
+This root node and intermediate node might store some data, let's say 32, which might even not even
+there.
+Earlier it was there, but it might have deleted.
+It's not even there now.
+So it is possible that it might be present here into the root node or intermediate node, because they
+just help us to do a faster searching, go left, go right and all.
+But this leaf node actually holds this current values of the column which is index.
+Right.
+That's what I meant to say.
+Okay.
+So now let's see how DBMs is actually using B+ tree to maintain the data pages and indexing.
+Now let's say this is the table Very basic table.
+Right.
+How many rows?
+123.
+Four.
+Five.
+Six.
+Seven.
+Seven rows are let's say row one.
+Row two to row seven.
+Right.
+And we have two.
+Column.
+Column one.
+Column two.
+Very basic table.
+Now I have put an index on employee ID I have put an index on this employee ID.
+So we know that whenever we are putting an index now DBMs will apply B plus three on it.
+Apply what B plus three on it to to manage this data.
+How.
+Right.
+So exactly the same way which we it has done exactly the same way.
+It will do this.
+So now this is the column where I have put the index.
+Now it will read this 19 2530.
+So now it will start creating a B-tree out of it.
+Right.
+So what?
+Before even so don't look at this pointer now.
+Right.
+I will explain you.
+But now see this first is 19.
+So you know that I am still using the three order.
+So in three order means how many one node how many keys you can store M minus one which is two right.
+So and there how many pointers would be there.
+Three pointers would be there.
+And two keys I can store.
+So 19.
+So in the key one I have stored 19 okay.
+Don't forget about this pointer.
+Now this pointing to the data page and all.
+Forget about this.
+Let's first focus on this construction of a B-tree.
+The second is 25.
+So now the second row is coming 25.
+So the key to was empty.
+So I have put 25 into this part.
+Third one is 30.
+So now if I put 30 here it will break because it's a three order tree.
+In one node you can have only two keys.
+You can't put 30.
+So you have after sorting whatever the mid one is you have to take it to its parent.
+So it will look like this.
+So there were no parents.
+So I created a new node.
+I put 25 there.
+25 now left pointer will point to 19.
+And its right pointer will point to this node which holds 2530.
+So now this is the first difference.
+You should notice I told you right in the DBMs when it used B+ tree leaf node actually holds a index
+column value.
+These are the index column values right.
+So leaf node Stores it.
+The left pointer holds less than 25.
+Right pointer stores greater than equals to 25.
+So here if you see I have put the 25 here also I have put the 25 here also because in the leaf node
+itself we hold this value.
+In future it is possible that 25 row is deleted.
+So I might delete this but this could still be there.
+This is an intermediate node.
+This is just for faster searching.
+Anything comes here goes to right this right you will find values greater than equals to 25.
+But this does not signify that this is the index column value in the DB which is stored.
+No okay.
+Got it.
+So.
+This 25.
+Right.
+We have to put greater than equals to 25.
+So we are restoring the 25 right.
+So 25 would be stored here.
+And 30.
+So in a sorted manner then what we have to store 17.
+So in this 17 where it will go it is lesser than 25.
+It goes to the left side of it, 17 is lesser.
+So it will go to this.
+There is already one space present, so it will store in a sorted manner.
+So 17 first 19.
+Later after that six where the six will go.
+So six is lesser than 25.
+It will goes there.
+Now there is no child.
+So generally six would be in the first of six, 17, 19 sorted manner.
+But again three keys we can't store over here.
+We have to now divide, take a bit one.
+Take it to the parent who is the parent 25.
+So it will in a sorted manner 1725.
+2517 left will point to.
+16.
+17.
+Right.
+Because this is a still have the index value.
+Right.
+So it will point to 17 and 19 greater than equals to 1717 and 19 and 25.
+Right will point to it's 2530.
+So you see that three child it has currently each node.
+Then we want to store one.
+So one is uh less than 17.
+It goes to left.
+So there is one space.
+So it is stored in a sorted manner one six.
+Similarly the five so the five lesser than this it goes here.
+So generally the five should be here in between of one and six.
+But it will break.
+So three keys we can't have it.
+So it should goes to the parent right.
+If five goes to the parent, the five left would become one five right.
+Greater than equals to five.
+When it's a key also.
+So five should also be there five and six.
+But at the parent level you can't have three nodes right.
+So again the mid one five 1725.
+Again it has to go to the top.
+So it's hold five.
+It's right.
+Hold 25.
+Now here if you see that I am not putting 1725.
+Right.
+Because this is just an intermediate node.
+Intermediate node I told you that it is not index column index values.
+Column index values are only the leaf right.
+So I am only changing the intermediate node.
+It's going top.
+So that's why I don't have to put 17 here because it's not index column index value.
+So 17 right will point to 25.
+And this thing Interesting.
+So it will be.
+So this B tree is constructed.
+So now here if you see that at the bottom this bottom part this bottom part this is now sorted.
+So here we have a mixed data.
+But bottom what we have now of this B tree is
+156 1719 2530 C sorted.
+Right.
+Now we understand that okay.
+How whenever we make any column index, whenever we make any column index DBMs do B plus three on it,
+but shreyansh how the data pages are created.
+Now how it gonna link because Cause you told that one table can have 100 of data.
+Page data.
+Page one.
+Data page 100.
+How those gonna manage.
+Right.
+So because these are actually has the row.
+So what till now I have understood is okay DBMs has so many data pages data page one.
+Data page two.
+Like this.
+Each data page is stored in a data block.
+And one data block can have many pages like page one.
+Page two.
+Data block can have certain, let's say page five, page six something DBMs maintains the mapping of
+page.
+Page one, block one, page two.
+Let's say again block one.
+Like this it mapping it does.
+I know that whenever any column is indexed right, it maintains a bee tree.
+You now understand how bee tree is constructed, so that the data of this column is now in the sorted
+manner, in a sorted manner.
+But now we need to connect the dots.
+So now bee tree exists.
+I understand this, I know data pages, I know data block.
+But what is the dots connecting to all of this.
+Now let's understand this.
+Okay.
+Now let's understand this.
+Our table has empty and we are doing inserting the row from the start.
+Right.
+So now let's say we have make this column indexed.
+And now only first row is inserted 1981 this is the row I told you now that first what DBMs will do.
+It will create a B+ tree right for this data also, so it will put 910.
+Now remember in DBMs with this key it will also hold one more pointer value.
+Or you can say that the pointer with this key is which ultimately points that this belongs to which
+data page this 19 is stored in which database.
+So now let's say I told you that this is the first time we are creating a table.
+This is the first row.
+So data page is currently empty.
+So I created a data page one and stored one row 19 E one and stored put a pointer here that okay this
+19 is pointing to this data page one.
+And let's say this data page can only hold three rows can only hold three rows okay.
+So when I put 19 So DBMs ultimately actually this is just our representation.
+DBMs what ultimately has done is it created a data page one stores in this 19 E one row.
+It created a B-tree on this index column.
+It also maintaining the index put a 19 with this 19.
+It also maintains one more pointer that this 19 row belongs to this data page.
+And also this data page ultimately has to be stored in some memory or data block.
+Let's say it is stored in one.
+So it is also now storing this data page one data block stored in one.
+So this is the data page one in the disk.
+Okay.
+So now second row is inserted.
+So when second row is inserted it is inserted where in the data page first.
+So data page second row is inserted because data page can hold three rows.
+It is only the second row it is inserted properly.
+Now it will update its indexing because new row is inserted right?
+It has to update it indexing.
+So it will check that okay one node is free, one key is free.
+So it will put 25 here and also manage one more pointer with it.
+And this pointer that 25 is stored in where data page one only it put this pointer in which data page
+this 25 holds.
+This record holds right till now database is in data block one only now 30.
+So when 30 is stored.
+So first it will stored in the data page one only right.
+So because it has the space right.
+So you can or you can say that first what it will do is it will try to see that which data page it has
+to pick.
+Right.
+So one more question.
+It has to comes to your mind that, hey, if there are so many databases already exist, and when you
+inserting a new row, let's say we are inserting 30.
+This is data page one, data page two, data page 100.
+Which data page to pick and insert.
+Which data page right?
+This is a very interesting question that whenever you insert a row which data page you will insert it
+how DBMs knows it.
+So this is how it knows it through B-tree only.
+So when inserting a 30.
+So first it will goes that tries to insert a 30 into the.
+Tree B-tree.
+So it will see that okay it will try to construct a tree.
+You already know that how we did it.
+So ultimately it gonna be look like 19 and here 2530.
+So what it will see is that, hey, my nearest index is stored in which data?
+Page 25 was stored in data page one.
+So what it will do is DBMs will try to load check the data page one.
+Right.
+So from its data page one memory it will check out its mapping database one.
+It is there in the data block one it will load it right.
+And what it will put is this row and put it back into the data block.
+Right.
+And one more pointer it will store with 30 is that it is stored in data page one.
+Got it.
+We will see one more example.
+Now let's say 17 I want to store now which data page.
+So let's say if you have so many databases which data page it has to pick how it will determine.
+First it will go into this B-tree.
+It will try to find out the correct logical sequence of this 17.
+So 17 is less than 25.
+It goes here there is a space available.
+So it will be stored here.
+Now it will check its neighbor index that which database it is stored and it pick one of the very uh
+you can say that one of the data page.
+So 19 is stored there.
+So 19 is stored in data page one.
+Right.
+So it will see that okay let me pick also data page one.
+So what it will do is DBMs will pick the data page one.
+So data page one it knows that it is stored in data block one.
+It will hit the goes to the memory loaded from the data block one.
+It loads the data page one.
+Now in the data page one we already know that it is full three data it already has.
+It cannot insert 17 now what to do now?
+What it will do is.
+DBMs will do page splitting.
+Page splitting.
+So now in the page splitting it will split or create one more page.
+So it will create new page.
+Page two.
+Right.
+And it will split the data.
+So earlier page one has 19 2530 now 17.
+It has to store.
+And now it will just split the data.
+So now let's say in page one it puts 1719 rows data.
+And in the page two it put rest of the data whatever the page one.
+So page one has this three data right 19 2530.
+So whenever it pick a particular page so it picked page one.
+Page one has no space.
+So now the page splitting happen.
+So in the page splitting a new page is constructed.
+And it divide the data of the page one plus this new data.
+Right.
+So 1719 I have put into page one and 2530 I have put here in the page two.
+Right.
+It can be anything depending upon the DBMs and it will update the pointer.
+So now 17 will point to that.
+It is in page 119.
+It will update its pointer that it is also in page one.
+Now it will update the pointer 25 is present into page 230.
+It updated that it now at present into page two.
+Earlier 30 was present into page one.
+So it has to update the pointer.
+So it will update the pointer that this index value 30.
+It's all corresponding data is present into page two.
+And also it will maintain a mapping that hey this page two is stored in let's say data block one itself.
+Okay.
+Now what data we have to stored after 17, let's say six.
+So it will try to insert a six.
+Six will go here.
+Okay.
+So first it will try to identify its correct logical location.
+Okay.
+So it will find out its that okay 17 has to be go up it it find out its correct location.
+Now it will check its nearest neighbors nearest index in which database it has.
+So nearest its all are linked in B plus three I told you right.
+So it will check that okay this 17.
+This 17 is stored in page one.
+So it what it will try.
+It will try to insert the six into page one.
+So DBMs will load the page one.
+So from the physical memory it goes to a data block one loads the page one.
+Page one has.
+Now these two records it will insert.
+The page one already has 17 E4 19, E1.
+It will store the six also because three we can store, so it will store six and six.
+Data is e5 e5 right.
+And it will update the pointer of this to that.
+It is stored in page one.
+Similarly for one also.
+So ultimately once goes here.
+Now here can you tell me one when it goes to the one one will see its to its neighbor.
+Hey which database you are stored in six will say that hey, I am stored in data page one, so DBMs
+will try to insert the one into also into the data page one.
+So it will load the data page one.
+It can easily load it that it has the data.
+Page one is stored in block one.
+So now it will restore page one.
+Page one already has three rows.
+It is totally full now 17, 19, six, 17, 19, six and its data e4, e1, e5, e4, e1, e5.
+Some data is already there.
+Now it try to insert one, but you can't insert one, right?
+It's already full.
+So what will happen now?
+Page is splitting so it will create a new page.
+So page two was already there.
+So it will create let's say page three.
+It will now split the data.
+So let's say it's 1719.
+It will keep here and it will put let's say one and six here.
+One and six here.
+Right.
+And it will update the pointer.
+So one is now pointing to page three.
+Six is also now pointing to page three.
+It has to update the pointer.
+Earlier six was pointing to page one.
+Now it has two.
+After splitting six has to points to page three.
+Right.
+And also it will add a new mapping also that.
+Page one is there in block one.
+Page two was there in block two.
+Block one.
+Now it will have the let's say page three goes into let's say block two somewhere while storing into
+the memory.
+It knows that in which block it goes.
+So it does the mapping now does everything making sense to you that how everything is linked.
+Right.
+One thing I still haven't told you about this offset array.
+How this offset array is used.
+I will tell you when I tell you about clustered non-clustered, but till now tell me that in the comment
+section.
+Is it clear to you I'm going very slow?
+You know right how the table data is actually stored in a page.
+There can be this page ultimately gets stored into data blocks.
+So DBMs has to maintain the mapping page versus block right.
+Then for indexing B plus three I think it should be clear to you.
+We have seen with an example.
+So whenever we insert a row it first put its logical ordering into the B-tree, determine the best page.
+It has to be stored because there can be so many pages.
+Determine the best page where this data has to be stored, right?
+So we have seen an example that where the logical ordering is it.
+Check its neighbor and try to load that page and see if I can, if that can be accommodated in that
+page.
+If not, page splitting happen whenever.
+Page splitting happen, a new page is created and it just split the data.
+Right?
+And it has to update the pointers also.
+It might be possible that earlier this.
+A neighbor node 25.
+Let's say it was storing into page one.
+But after splitting 25 goes into page two.
+So this pointer has to be updated.
+And whenever any new page is stored, when whatever the data block is ultimately inserted, DBMs has
+to maintain the mapping.
+Clear.
+Till now.
+Cool.
+Now let's come back to the indexing part.
+Hey, what is the two type of indexing?
+Clustered and non-clustered.
+Now I know that.
+What is how indexing how DBMs actually does the indexing.
+But what are these two type of indexing.
+So see first let's understand the indexing.
+Cluster indexing says that order of rows inside the data page match with the order of the index.
+Order of rows inside the data page match with the order of the index.
+Let's see with an example what I'm trying to say.
+So what?
+What?
+So let's say this is the table
+1452ACBD.
+And this is the address.
+Okay.
+So I told you at first that in the data page, whatever the sequence in which the rows are inserted
+into a table, generally in that order, only the rows are inserted into a page only.
+Right.
+So if you are creating a employee ID one.
+So here in the data page the this row will come first after four, then five, then two.
+Now let's say I have put an index over here.
+Now you know that when you put an index DBMs will do B-tree on this index and it will have the sorted
+one, two, four, five.
+Now you know that right now one, two, four, five this at the base it would be sorted only.
+And one will also hold a pointer to this.
+So when we say that right one will hold a pointer to this one row.
+How ultimately actually this one will hold point to pointer to this page in which this row is present
+right now.
+Here the sequence indexing sequences that one, two, four, five and in the page order is one, four,
+five, two.
+The way it is inserted, rows are inserted one, four, five, two.
+But here you are saying that the order of rows inside the data page match with the order of the index.
+That's what clustered indexing says how we maintain the order.
+Because you are saying that the order of the rows which are inserted in a data page is depend upon how
+we inserted actually.
+Right.
+So we inserted 1452.
+So it is stored like this 1452.
+But indexing on this column indexing is in sorted order.
+So it should be 1245.
+So the order of the rows should be one two, four, five.
+How?
+That's where the offset comes into the picture.
+I told you that in offset it maintain an array.
+Right.
+And it has an array like zero, one, two, three.
+So whatever the index, whatever the indexing or ordering is.
+So indexing ordering is 1245 sequential.
+So at index zero it would be it would point to employee ID one data.
+So it will point to employee ID one data.
+And then after that two.
+So index one it will point to employee two data.
+Two data.
+So third would be four.
+So in the next in the sequence of the array would be four.
+So now you see that even though the data pages the rows inside the data pages are jumbled or depend
+upon how the user might have inserted mixed mode after indexing whatever the sequence comes out.
+The order is generally given by the offset.
+So whenever the you will traverse this pages, you will traverse in this sequence of this offset.
+So employ.
+So at zeroth slot it is employ one then two, then four, then 51245.
+Like sequencing.
+Understood that the use of this offset it holds a pointer.
+And that's where cluster indexing is that the order of rows inside the databases match with the order
+of the indexing.
+So it doesn't mean that this rows are sequencing is changed.
+This offset is changed.
+This offset array holds the data in this manner so that it maintain the indexing sequencing.
+Okay.
+So there can be only one clustered index per table.
+Why?
+Because you can create an order of rows based on one index only.
+Right.
+So now let's say this is employee.
+This is employee ID let's say name.
+Can a clustered index can be made on two employee ID and name a c d b.
+Let's say index is let's say for this a b c d right.
+But in the clustered index the order has to be maintained.
+So order can be maintained either through this or through this.
+So that's why they're in a DB.
+In a one table there can be only one clustered index.
+So what column can be a clustered index.
+So the it give a prime first priority to the primary key.
+So in this table let's say if I have created a employee ID as a is a primary key.
+DBMs used is as a clustered key, and whenever it use it as a clustered key, it will sort the data
+pages based on that one, whatever the index comes.
+So based on this clustered key, it creates a B-tree B+ tree and whatever the B+ tree.
+Ultimately the index sequence comes.
+The data pages also it will insert in the same manner like not this offset the offset it will maintain
+in the same manner.
+Right.
+So first priority it will go to the primary key.
+If manually.
+You have not specified any clustered key, then DBMs look for primary key which is unique and not null
+and it is used as clustered key.
+But let's say your table doesn't have primary key.
+Then what?
+What will happen?
+How DBMs will create a B+ tree out of it.
+When you don't have the primary key internally which is not visible to you.
+DBMs create a new column and it is generally sequential incremental 1234567.
+Right?
+With every row you insert.
+So it created as a clustered key and stored the data pages based on this.
+So any any new row you will insert it will add.
+So this is Autoincrement column.
+It insert which is not visible to you.
+It is used as a cluster key.
+So it use that value in a B+ tree to determine which database to pick, where to put, what would be
+the offset sequence for that page and all.
+Now you can ask that, hey, what if, let's say I have a big table, I have, let's say uh, 1 million
+rows.
+But I haven't defined the primary key.
+There is no primary key.
+So what happened would be DBMs internally creates a new Autoincrement column and does the B-tree out
+of it and maintains everything it maintains.
+Page one, page two, page 1000, data block one, data block two.
+Anything.
+Whatever the mapping it has been doing, it is doing even the rows ordering.
+Also it is doing.
+But now you can ask that hey, what if after now I added a primary key and make one column as a primary
+key?
+So now as soon as you make a primary key, I told you this will get priority.
+So now DBMs has to do lot of work.
+It has to do regenerate this B+ tree.
+It has to update all the pointers now based on this new index column.
+It has to update the pointers.
+It might have to load so many data pages out of the block.
+Reshuffle the rows right.
+So lot of work DBMs has to do, but everything has to be changed now based on this column indexing.
+Okay, so that's what I did.
+If a table there is no primary key then internally it creates a hidden column which is used as a cluster
+index.
+This column just increases sequentially and guaranteed unique and not null.
+So cluster index you already got it right.
+It actually.
+Based upon this column, which is you can say that the primary key column, the primary key column,
+which is always generally considered as a cluster key.
+It orders your rows and pages based on that, then you can say that.
+Hey, what is non-clustered key?
+Okay.
+Cluster key.
+Take care of primary key.
+But you remember we have so many other keys also.
+Secondary key.
+Composite key.
+What about those.
+So let's say that I have a scenario where this name can be used a lot to query.
+So it is better to put the indexing on it also.
+So non-clustered is like I can put indexing or you can say that non-clustered indexing I can put on
+this name secondary index.
+So on the name also I can put an index.
+Let's say I'm putting an index on name also.
+But now this name would not be considered as a primary key.
+Or it's a secondary key let's say.
+So whenever you are creating a secondary key composite key right.
+Ultimately it is doing non-clustered indexing.
+So what does it means that.
+So now let's say I'm doing name.
+So based on that B plus three on the name, let's say it is able to maintain certain sequence that this
+is A.
+This is B.
+Let's say this is D.
+This is D okay.
+This a.
+Now.
+What.
+So now two things.
+So it will again this a data is stored in where let's say in page one.
+So it will point to the.
+Page one.
+This B is stored in somewhere.
+So.
+But here if you see that the ordering of this offsets are not based on this.
+First correct the ordering of this I would say that the ordering of the rows does not depend upon the
+secondary index.
+Second, there can be.
+Many secondary index or composite index.
+So I can have address also as an index.
+So it will create one more B-tree and stores the data and just maintain the pointer to the database.
+Right.
+So we have only one clustered index.
+This clustered index actually drives this ordering of this row.
+And we can have many secondary index or the non-clustered index as your name says that clustered you
+are not clustering the rows and pages right.
+So we can have many non-clustered index or secondary index.
+Right.
+And that's one of the reason when somebody asks like you should always create index, you can say that
+we should not like I have ten columns, let's say column one, column two, column three, column four.
+You might be asking that, hey, Shreyansh.
+Why can't.
+So this is primary key.
+Why can't I put this?
+This I will also make secondary index.
+This is also I will make secondary index.
+This is also I will make secondary index over.
+Like whatever the query will come it would be faster.
+Now you understand at least grasp that there is a overhead.
+So for each secondary index you have to maintain a B+ tree for it.
+Now if there are 1 million rows in this table, let's say 1 million rows means in a B+ tree.
+You are creating so many keys here, right?
+You can just consider the amount of memory it also required.
+Right?
+Let's say if you have three secondary index.
+So means you are creating three B+ tree like a non-clustered index one for this secondary index for
+this column two.
+You might be creating another B+ tree for non-clustered index or indexing.
+You might be doing for column three.
+For again 1 million record.
+Like this.
+Now assume that any row.
+Particular row is deleted.
+You have to update the pointers.
+Also of this.
+You have to delete that row.
+Or because this is the leaf node has the index value.
+You have to delete that node also.
+And when you delete it you might have it might be possible that you have to update the pointer also.
+So that's why it is always say that create an indexing carefully.
+Fully.
+It is not easy because there is a lot of overhead comes in.
+What are the overhead?
+First thing is this B plus tree also needs memory.
+So you have to worry about the memory also because this is also ultimately going to store in the disk
+only right.
+And IT DBMs.
+Also whatever the data it stored, it also stored into a pages which is known as index pages.
+And this index pages are stored in disk only.
+So there is a overhead that it maintain the index pages.
+So because I told you that 1 million notes it created definitely 1 million note cannot comes into one
+page.
+It it might have to create so many index pages.
+Also index pages also comes into so many uh, let's say block Block five.
+Block six, block seven.
+So now you see the overhead which DBMs has.
+It has to maintain the index pages.
+Also index pages mapping.
+Also it has to maintain the data page where the data is actually stored.
+And it's mapping also blocks.
+So just creating a secondary index composite index and indexing will just create an additional overhead.
+And any addition any.
+Because any time you add a new element you have to update your clustered index, the primary key one,
+then all the secondary.
+You also have to update and the update.
+I already told you page split can happen.
+When the page split happen it might divide right.
+So index has to be updated.
+So I think it's pretty much clear right.
+So now you know that what all things has to be done.
+So whenever, whenever you have to.
+It looks simple, right?
+So whenever you have to insert one row new row what all things it does.
+Right.
+It first find an index page.
+Right.
+What would be the first step?
+It first.
+Find the.
+Index page right.
+So in from the index mapping index page one.
+Index page two.
+Let's say block one block two.
+So it will first load the indexes pages into the memory.
+Right.
+Because index is pages has your B-tree data combination indexing right.
+So second what it will do is uh or you can say that.
+So let's say or I would say that instead of inserting, let's say you want to search because we are
+talking about search query.
+So let's say you want to search a data with 35.
+Let's say I'm saying ID.
+So first it has to load the index page.
+Index page is loaded from this data blocks.
+Now from this index pages it will run the B+ tree.
+It will traverse this B+ tree to find which data page this 35 has.
+So maybe you have a data page.
+This index has the data.
+So now let's say this 35 ultimately points to a particular data page.
+Data page five let's say.
+So now from our second step is using the B plus three and find the data page.
+Third step use that data page.
+Find the.
+Data.
+Block it.
+Maintain a mapping.
+Write data page.
+Which data block?
+That's it.
+Two.
+So now it can directly goes to that data block.
+Load that data block in memory.
+Write fifth read the data.
+Right.
+So now even if there are hundred thousands of data block, it doesn't have to worry.
+It can directly goes to that particular data block.
+Okay.
+So this is check it out one more time.
+It would be little bit clear.
+But this is so many things happens right in the background.
+And we can discuss more if you have doubt in the comment section.
+And even if you want it I can have one live session where we can discuss more.
+Okay guys.
+Thank you.
+Bye.

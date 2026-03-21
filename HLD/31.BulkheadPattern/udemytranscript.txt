@@ -1,0 +1,372 @@
+# Attacks with Demo | CSRF, XSS, CORS and SQL Injection
+
+Hey guys, and welcome to Concept and Coding.
+And you already know that in Spring Boot I'm going to start Spring Security.
+And to understand it better it's very much essential to understand the common attacks also.
+Then only we would be able to understand the importance of spring security.
+Okay, so in today's video I will cover very, very important topics with demo like how these attacks
+happen and how we can protect them.
+Like we can see that also in in detail spring security, how to protect these attacks.
+But today let's understand what are these attacks, how it happened with a demo.
+The first very important.
+And sometimes it's asked in an interview also CSRF cross-site request forgery.
+What does it do.
+Just see this point.
+First user is already authenticated to a site.
+Okay let's say that you have one side something.
+Let's say Dot com.
+You are already authenticated.
+Okay, the CSRF attack tricks a browser into making unwanted requests to a site where user is already
+authenticated.
+So what does it line says that.
+So this means that this attack, what it does is that your browser.
+So now let's say that for a minute.
+This is a session based.
+You can say that authentication your browser okay.
+Your browser in your cookie has a session stored has a session ID is stored.
+Now let's say that when you get some link click here.
+And this is link is hosted by some attacker.
+Like it's not from a genuine and you somehow attacker tricked you that hey click you click here, then
+your doubts will get resolved or something.
+And now you clicked here.
+Now what happened is, with the help of this CSRF attack, what this attacker will do is it will make
+an unwanted request to this site where your already authenticated and your browser will automatically
+add the session ID while sending this request.
+Okay.
+So it will also send this cookie and this session ID browsers generally automatically adds it.
+Okay.
+This session.
+So now when gmail.com request will come let's say it's for accessing some mail.
+It will say that yes cookie this session this session is already valid and it will grant the access.
+So you are totally unaware of this that hey only you click on this link.
+This click is intend to do something else but in the background it initiated one request on your behalf
+using and your browser There is adding your session.
+So that's what it says, that CSRF attack tricks a browser into making unwanted requests to a site where
+user is already authenticated.
+Mostly applicable where state and session is managed.
+So it's a like a stateful right or session is managed only in that.
+So you know right.
+There are two types stateless and stateful.
+So generally this attack is mostly you can say that happen where state is maintained.
+Your cookie in this your state session is maintained right.
+So let me show you a demo of this one.
+Just for demo purpose.
+I'm using a spring boot only.
+Don't worry about this.
+We will discuss in depth when we will learn Spring Boot security.
+But here you just need to concentrate on this.
+Your server.
+Let's say that your whatever the server you are running either Gmail or either anything bank anything
+You have specifically mentioned that.
+Hey, what?
+No matter whatever the request is, you have to authenticate it.
+Without authentication, no request should come to me.
+Yes.
+Good.
+Right.
+We have done that.
+And you have an end point like where we have to do transfer money transfer, slash transfer.
+And if this request get initiated, it will transfer the amount to whatever to whom you have mentioned.
+Just a testing purpose.
+So now what your expectation from this is like anyone who is calling this API is already authenticated
+because I have put into that like any request, no matter any request should be authenticated, should
+be authenticated.
+Okay.
+So now let's see this one.
+Step one.
+We will also see this in parallel.
+What is the step one?
+I am making a user authenticated on a server.
+Now let's see that.
+Now let's first try to get authenticated on a particular server.
+So in this case I am running a server on my localhost.
+Just assume that it could be anything Gmail Facebook Instagram where you are authenticated.
+And we are for now assuming that it's a session based authentication means in cookies some session ID
+would be stored.
+So let me also open inspect element user and let me put a password.
+Don't worry about this how I got this password.
+We will cover this into spring security in depth.
+So now let's say I am authenticating myself.
+Sign in.
+So what does happen is here.
+If you see that when I try to do a login I got one session.
+One session is attached or returned in the cookie and the same session is getting maintained by the
+server also Now what is the second step?
+Okay.
+This see this on red in cookies.
+In the response one session got added.
+Now let's say that some malicious link to this user is received through email or through any other way,
+or let's say just browsing some websites.
+And he said said okay, got this link.
+So what would happen?
+So I have just created one basic HTML where what happen is whenever you click a link here internally,
+it will call this transfer API which we have created right to transfer the amount okay.
+But here if you see that I am not attaching any cookie or session that your browser will automatically
+do okay, browser will add whenever any request is sent.
+Send browser adds the session.
+Okay so this is the HTML.
+Now also let me open the inspect element.
+Now just assume that you got some link through WhatsApp, through Gmail or through while browsing.
+And somehow you click any malicious link see transferred to attacker.
+And here if you see in the request, the session has been added, what is the session ME1N?
+It should be the same as this 1MME1N.
+So your browser adds the session whenever any request is made from like from your browser.
+Okay, so that is where you can say that it's a CSR attack where attacker tricks your browser into making
+unwanted requests where user is already authenticated.
+I hope that clarifies.
+Don't worry about this.
+Uh, how this, uh, this one happening.
+What I have written, we will see that into spring security.
+But for now, you need to understand.
+What is this attack?
+Okay.
+We have seen that in the attack.
+Wherever the browser automatically adds the session, which is generally the same as what you got when
+you were authenticated, because browser stores it in the cookie.
+So how to get protected from the CSRF attack by using CSRF token.
+So generally apart from the cookie, if you want to get protected from the CSF attack, there is something
+called CSRF token also.
+Okay.
+So browser you can say that server returns the token in response also.
+And this token is, you can say that known only to an authenticated legitimate source.
+So as authenticate forms of website only append the CSRF token in the request.
+Okay.
+So if I am making if I am an attacker I am using this HTML.
+I don't know what is the CSRF token, what value I need to put.
+I don't know only those who are legitimate source.
+They know what is the token and they will only append it so that your server knows that okay, this
+request is coming from a legitimate source or not.
+The second attack is XSS cross-site scripting.
+Very very important.
+Okay.
+Understand it from a use case where you have a web page where considered as a.
+Comments okay.
+User one it's comments.
+User two it's comments.
+Now there is something called post.
+You have to post something.
+Okay.
+And once you post it, it will also be shown here like I have posted.
+Let's say my comment it will come.
+So for now what exercise does is it allow attacker to put a malicious script into a web page viewed
+by other user?
+So now let's say that this is the web page.
+If you come you also see the comments from different users and you can also post your comments also.
+So what if you inside a post instead of writing, you put a script some and then a script would be stored.
+Now any other user comes to this web page.
+Comments would be shown by user one, user two, and also your comment where you have put a script.
+So that script will run.
+So commonly used for stealing the session or deform the website.
+Okay, I will tell you how we will see a demo.
+So for demo purpose I am creating two endpoints.
+One is a Get call of this slash exists where it will.
+What it will do is it will just load all the comments which are present.
+Just return it.
+Nothing else okay.
+And also you will see that I am using controller not rest controller okay.
+Why?
+Because I want to render the page.
+I want to render the page.
+I will see you.
+I will show you with an example.
+What does it mean?
+The second API is post slash comment.
+What here?
+What it will do is this you are allowed to post anything and that will store it in somewhere in the
+DB or somewhere in memory.
+And during get call that whole complete list would be shown.
+Very simple.
+And this is the code I have written.
+very basic, so I have used at the rate controller.
+And if you are following the Spring boot playlist, you know that.
+What is the difference between controller and Rest controller?
+Okay, since I am using controller, I am returning access as it will try to load HTML.
+It will try to render it.
+Okay, so there I have created one dot HTML.
+Okay, so now here if you see this get endpoint is like just.
+Whenever this is called it will just simply return all the comments.
+All the comments.
+Right.
+Whatever we have and in the post I am just adding a comment.
+Whatever the comment, I am coming.
+See whatever the comments I am getting in a string directly, whatever the user is putting some script
+or something I directly added into my list.
+Okay, since in Spring Boot everything is a singleton, only one object is created.
+So that's why even if you hit multiple times, it will get stored into this objects only.
+Okay, so don't get confused.
+Why?
+Why not creating every time new object.
+So anytime you add a new comment, it will keep on appending to this list.
+Okay.
+And during get it will simply return all the list.
+Okay.
+So now let's see.
+Step one.
+I am hitting slash access okay so here it will render this page.
+Here I am rendering this page.
+Leave a comment.
+And simply you are able to see whatever the script you want to put or comment you want to put.
+You can see submit okay.
+And all the comments will be shown here.
+So let's see okay so here if you see that leave a comment.
+Now let's see I am an attacker and I have put script alert XSS attack some any just basic script.
+Now once I call this and click on submit, what would happen.
+See, let's say attack happen.
+There is a pop up comes.
+Why?
+Because your browser initiated the script itself.
+Your browser initiated the script itself.
+So when you click on submit, you first click the post API.
+This is the post endpoint.
+So means this comment got stored.
+This comment got stored.
+Now let's say any other any other user is coming and to this web page.
+So definitely there is a get call happen slash access okay.
+And it will load all the comments.
+And as soon as this scripted comment get loaded your browser will execute it.
+And this pop up comes.
+Now you will say that hey what's the problem in this?
+So it's not like harmful, right?
+It's just a pop up.
+Just assume that from this simple script.
+What if I change to this one?
+I am taking you to some attacker site and just say that this is the attacker link Uri.
+You don't even know.
+And in the request I just put document.cookie.
+You know that now whatever the cookie is present in your browser will get to the attacker.
+Now, attacker knows your cookie and this cookie only has your session ID.
+Now, wherever you are authenticated where this session ID is applicable, attacker can access it freely.
+Totally.
+So it is not just like one pop up attack.
+You can replace this inside instance.
+Instead of simple alert you can change it to like this.
+But for stealing your cookie.
+Now attacker has your cookie your session.
+You will lose the data or the security compromise.
+So what shall we do to protect it?
+So generally we have to do proper escaping the user input.
+So wherever we are accepting the user input we don't know what user is entering.
+So we have to take this special characters and we have to properly escape it.
+Like this has to be changed to this okay.
+So that browser don't treat it as any script which it has to run.
+So it will be shown as it is like a string.
+So you don't have to worry about that.
+Your any script will run okay.
+And you have to do proper validations.
+What what values are allowed?
+What values are not allowed in the like user can use.
+So access is clear, right?
+There is something called Cors also very important cross-origin resource sharing.
+So first of all it's not an attack but more of a security feature which you can enable it or disable
+it.
+Okay, that it's a security feature that restrict web pages from making requests to different origin
+unless allowed by the server.
+So here, if you see that, first of all, what do you mean by different origin?
+Different origin is like protocol plus domain plus port.
+So let's say that for example this your client is sending this.
+So this is your server okay.
+And request can come from anywhere.
+Some let's say that valid clients and some attacker also now server should tell that hey only these
+are allowed.
+If I get a request from these URLs then only allowed it.
+Otherwise I will not entertain it okay.
+So that's where like protocol, domain and port, all three should be defined.
+So that server knows that.
+Yes.
+Only if there is a matching request coming from this, then only I will entertain.
+For example, client is like https some local 8080 and your server is running on HTTP.
+Again it is considered as a different origin, not the same origin.
+If it is the same origin, it will no issues.
+It will like from the same authenticated user.
+Valid client only.
+But the problem comes when the like different origin like.
+So consider this as.
+Use case has a different origin because protocol is different.
+Client is running on Https.
+Server is running on HTTP.
+Again it is considered as different origin.
+So means here server has to allow the request from http localhost 8080.
+Similarly, let's say port numbers are different.
+Then.
+Also it is considered a different origin.
+Similarly, client is running on sub dot localhost, server is running on localhost.
+Then again it is considered as different origin.
+So in all these scenarios server has to specifically whitelist this.
+So that request can be entertained from here.
+And how you can do that by setting access control allow origin.
+There is whenever you hit a request you will see this.
+In this one we have to set.
+So here just don't worry about this.
+We will see into spring security.
+But here if you see that I am allowing this one course configuration allowed origin list what all is
+allowed.
+I am putting here so allowed https localhost 9090.
+I am allowing only this url for get post put delete purpose.
+Okay, and this is the allowed header, so I will allow any request coming from this, but not from
+this, but not from this.
+So this way you can manage or you can say that it's a security feature.
+Like you can say that consider this request like the first CSRF attack.
+Okay.
+So you can say that course can become the first security gate.
+Maybe you CSRF token is required.
+That is must.
+Okay.
+But you can say that this course can become a first line of defense, that if you are clicking on some
+of the link and that server, the attacker server is running on some other, uh, different origin.
+This is course become the first line of defense that it will not even entertain.
+Okay.
+Because server has only allowed requests from this itself.
+And the last one is SQL injection.
+In this one, attacker manipulates SQL query by inserting malicious input into the user field.
+So I am creating a very, very simple here.
+Let's say that search field.
+Now whatever you put search let's say that uh cold drinks.
+What if you are using this input and putting into query select asterisk from products where uh type
+equals to and this whatever it is coming search value you are directly using whatever user is putting
+into your DB query.
+So here I can put some malicious, uh, you can say that query which can even like give me the data
+which for which I am not even authenticated or even I can delete your DB also or get your DB table name
+complete.
+Right, so with SQL injection like your DB is not safe even I can get.
+What is the table?
+What are the column names?
+I can delete it or I can access the unauthorized data also from the DB.
+So in this example I'm showing this only very simple find API and I am using this.
+Whatever the name is given by the user, I am directly putting into the query.
+Okay, so now here if you see in my DB currently there are two users.
+Okay.
+And my query says that whatever the username comes only that would be written if a a a comes only,
+that should be written.
+But now let's say that what if I put hit the query like this slash find here.
+If you see slash find now instead of name I am giving like this slash or one equals to one.
+Now directly it will replace here.
+So what it will be like user underscore name equals to.
+So first this will finish this.
+Then it will append this or one equals to one.
+And then you have this one which will complete this.
+Now your query become this select asterisk from user details where username equals to this.
+So it is empty or one equals to one become true.
+So it will return all the values in the DB.
+You you got it.
+Like what happened here I put certain values which is not properly uh, you can say that validated and
+used directly into the query.
+And I manipulated it such that it returns me the complete data or unauthorized data.
+We can also use it to fetch the DB name, table name, and you can also drop the DB also tables also.
+So it's very, very important, uh, to get protected from SQL injection and how to protect it.
+But we have already seen that in SQL when we covered Jpql right.
+By parameterized query we can protect it.
+So whatever the name is coming.
+Don't use it as it is.
+You have to use like this.
+Parameterize it.
+Okay.
+So set parameters so that it would be like not as a considered as a query.
+It will be considered as a value string okay.
+And then you will get no data.
+So because with this name slash or one equals to one nothing matched.
+So.
+It's safe now.
+Okay guys any doubt let me know.
+Uh, we'll discuss more.
+Thank you.
+Bye.

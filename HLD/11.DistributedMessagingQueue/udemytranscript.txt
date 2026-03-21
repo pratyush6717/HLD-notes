@@ -1,0 +1,846 @@
+# Whatsapp System Design
+
+High level design of chat application like design WhatsApp WhatsApp.
+Discord.
+Telegram.
+Slack FB messenger.
+Right.
+All this comes under this category only.
+So this is a very, very important interview question from the from the perspective of system design
+interview.
+And guys this is Shreyansh.
+And welcome to concept and Coding.
+And I want your half an hour totally dedicated to this.
+And I will make sure that I will do proper justice to it.
+Right.
+So without wasting time let's jump to our this important question.
+So here we go.
+So now, as you already having might be using any one of this service.
+Right.
+So let's first come out with the first step of high level design which is requirement gathering.
+Requirement gathering.
+Right.
+So requirement would be of two types functional and non-functional.
+So let's say functional and another will be non-functional.
+Right.
+So you can consider like functional is like kind of a important which like you can say that MVP product
+or minimal value product this should be there.
+Non-functional is like okay this is not solving the problem right.
+So I am not making but it should be good to have this right.
+That's why we call non-functional right is second priority.
+So first functional what should we have.
+So in the each chat to chat each application WhatsApp discord.
+So one thing is we have is 1 to one.
+Send and receive message capability.
+Right.
+We should have this one.
+So currently message can be of different type like you can send files.
+You can send images videos text.
+So for the simplicity purpose I will just consider this for now.
+Let's say we are talking about text images.
+Files can be easily extended.
+It is very simple right?
+So first understand with text.
+Once we get the context we can enhance the scope for the image right.
+So first functional requirement is 1 to 1 send and receive message.
+Second is group message support.
+We should be able to create a group.
+We should be able to send a message in a group.
+So and I think you already aware of the how the groups work.
+Right.
+So you can add a persons into the group and send a message.
+Right.
+So group message should be supported.
+Right.
+Another thing is like, uh, last scene.
+Right.
+Uh, here in the case of WhatsApp, you can see what, uh, when the user, particular user is last
+online, last scene or last online and or mostly you can say that online or offline is user is online
+or offline.
+How do you know it.
+Right.
+So and uh, another is like user login authentication kind of this.
+Things are generally my functional requirement.
+This should if if you are talking about chat application chat should have this feature.
+Then only it is considered as as chat application non-functional is it is second priority now.
+Second priority is like once we have built out a core.
+What is my core product now?
+Non-functional is which is also important like scalability.
+Scalability means it should be taken care of.
+Off huge traffic and it should be capable of handling large amount of message.
+So if you know that, uh, Facebook on FB messenger, discord they handle, I think maybe millions or
+billions of messages per day.
+So that is one thing that our whatever now product we are building chat.
+So it should be scalable right.
+So that is one thing.
+Second thing which we want is you can say that, uh, low latency like reading and writing.
+And while you are sending it should be low latency.
+It should be very fast, kind of a real time.
+Like if you have send a message, others should have been received.
+Right.
+So low latency.
+And another I would say that availability.
+Yeah chat application should be available right.
+It should not like uh you're trying to set that and you get a message.
+Services are not available.
+Right.
+So these are some non-functional requirement which should be present, and these are the functional
+requirement for a particular chat application.
+Till now we are good.
+What is functional?
+What is non-functional.
+This is our first requirement gathering right.
+So generally second step is back of the envelope.
+Back of the envelope.
+Right.
+So I will not spend much time on this because if you are if you are following my playlist I have totally
+covered a topic on this how to compute back of the envelope.
+So I will spend only one minute here, but actually in the interview also, I have also told in that
+video also in interview mostly 80% of the time this is not asked.
+Can also feel free to skip this one minute right?
+So I will quickly go through this like uh, regarding this back of the envelope part.
+So let's say I am taking an assumption that total users is let's say 2 billion.
+Right.
+So what is the da da?
+You mean daily active user?
+We can take assumptions so we can say, let's say that 50 million is my daily active user.
+Right.
+And now we can also take assumption that out of this 50 million.
+So one user can send ten message, right.
+Two four people in one day.
+Right.
+So how many messages per day, how many message per day.
+It would be 50 million.
+Into 40 messages.
+Right.
+And how many messages per day.
+So 50 into 20.
+Million.
+Million is your 60789.
+So it's around 2 billion.
+messages per day.
+The message send 2 billion messages per day.
+And let's say one message I allow 100 character and 100 character.
+So what it is, let's say 100 bytes.
+So one message is 100 byte and 2 billion messages per day.
+So 2 billion into 100 bytes.
+So almost 2 billion into 100 bytes like 200 GB per day, 200 GB per day.
+Right.
+And if I want to maintain a chat history now, if you see that even WhatsApp doesn't maintain a chat
+chat history WhatsApp store the data in your phone.
+But discord, telegram, slack, FB messenger they all store your in the chat server itself history.
+They do maintain the history, right?
+So now in this case if I want to maintain a chat history for ten years, then you can compute it, right?
+So for one day it is 200 GB.
+Then you can compute it for how many it is needed like R you can compute it from this thing right.
+200 GB per day.
+So into 365 into ten.
+So this much memory you needed right.
+It might be in terabytes.
+Petabytes.
+You can compute it.
+So but I wanted to give you in one minute how you can compute a back of the envelope estimation if interviewer
+asks.
+So now let's understand the core concept of chat application now.
+So let's say this is my one user user A.
+User B so let's say it has IP address something called let's say 192 something something something.
+And it has an IP address.
+So I'm just taking randomly let's say 182 something something.
+If you know it's IP address you can directly talk with each other right.
+Peer to peer this is known as peer to peer connection.
+If you know it's IP address user IP address you can send him a message.
+And user knows the user IP address.
+You can send him a message or a message.
+Right.
+But does it scalable?
+No, it is not scalable.
+Now if you see that we are talking about daily active user of 50 million, right.
+So like might be user A might be talking with each other.
+We also need to maintain a chat history.
+So how this will be possible into peer to peer right.
+So now one thing we know that there would be something called chat server inmate.
+So user A and user B will not be talking directly for sure.
+So this is now my user A this is now my.
+Use of B.
+So they are talking now via chat server right.
+So they are not talking directly.
+So it's a client server architecture right.
+So one thing is clear.
+Why now this chat server will be uh responsible for scalability.
+Grouping.
+Chat history.
+Availability.
+All the things.
+Right.
+So we need to now work on this one okay.
+So one thing is here.
+It is not a peer to peer okay.
+Now let's dig more deeper.
+So now let's say one step more deeper.
+User A is sending a message to chat server now right I want to send a message.
+Send message.
+Right.
+So what would be the protocol I want to use?
+If so, I can use send message HTTP right.
+So what is HTTP?
+HTTP is a protocol network protocol where client it work on a request response base request response.
+What I mean by request response is client send a request then server response for that request right.
+So now here user A is saying that send a message.
+Now it's a request to the chat server.
+Now in response to it chat server has to send a message to user B.
+But now if you see that HTTP work fine here because it's a request client is initiating, client is
+initiating the request, but once it got it so send works fine.
+But for the receive will HTTP will work.
+Know why?
+Because as I told you, HTTP works on request response basis.
+So client send a request and then server send a response.
+Now in the receive message.
+Now client has server.
+Server has to initiate a request to a client which is not possible in HTTP right.
+It should always be initiated by client.
+So what shall we do.
+So there are different ways right.
+So I'll tell you three polling.
+Long polling or sometime it is also known as pushing.
+And WebSocket.
+Right.
+So polling and non polling are the types of HTTP we can enhance HTTP.
+We can enhance HTTP.
+So currently we know that HTTP normal HTTP will not work.
+Receive in the receive way right.
+So one way is like we can enhance HTTP via polling or long polling.
+Or we can use WebSocket.
+So before jumping into WebSocket let me explain you what is polling and non polling.
+Okay.
+Now what is polling.
+So inside a polling what will happen is.
+So you have a client.
+And there is a server.
+So client will ask is there a message.
+Is there a message for me.
+Server will say no.
+And then connection closed right.
+So you know right HTTP maintain a TCP connection.
+So every time client asking something from server it first do a handshake.
+shake, uh, do a TCP connection and then ask.
+So every time after every response, the connection closed in the polling again.
+After some time again message client will ask is message is present for me?
+Client will say no, still no messages.
+And then again connection break.
+So now here if you see in the polling client is again and again asking the question to server.
+And most of the time answer is no only.
+But maybe sometime let's say yes, you have a message and it will send.
+But if you see there is a lot of wastage of resources, connection again how many connection you will
+maintain, right?
+And so many times you have to create a connection, then close the connection.
+So this is unnecessary kind of a load on a server.
+So polling is not generally scalable right.
+So that's why we don't go for polling.
+Now there is a little bit enhancement over polling and what is known as long polling.
+So let's understand about long polling or what is also known as pushing.
+So here again we have a client.
+We have a server.
+So again client maintain a HTTP connection.
+And it asks is there a message.
+Now server will not response it.
+Server will wait for particular threshold.
+Let's say threshold is one minute.
+So thread.
+So server will wait for one minute and it will see.
+Is there any message available for client.
+If there is a message it will reply.
+If not after one minute it will say no and then connection will close right after one minute after threshold
+is crossed and once the and once again it will start messages there.
+Now server will again wait for one minute threshold and if there is no message then it will say so.
+Now what advantage we have like is, let's say in one minute here in the polling, it has called 100
+times.
+The message is there.
+Message is not there.
+Message is there, message is not there.
+But now in the long polling, let's say in the one minute we are only calling one one time, right.
+So this is little bit enhancement.
+But still it is not scalable because you unnecessarily have to invoke a server and ask.
+And for most of the time it is no right.
+So this blocking.
+So you're blocking a request right at a server side.
+So that is also not scalable.
+Like say now we are talking about billions of messages per day and so many millions of users.
+Is it a feasible to hold the thread right and wait for this one.
+So this is also not scalable.
+So now here comes WebSocket scalable.
+Now let's say WebSocket.
+So can let's discuss about WebSocket.
+How what is WebSocket and how does it solve the problem?
+Right.
+So again we have a client.
+We have a server.
+So first of all WebSocket is.
+Bidirectional.
+Persistent connection.
+What does it mean.
+So it will first maintain a connection.
+Let's say handshake.
+It will do handshake.
+Server will acknowledge it.
+Yes.
+Let's do.
+Then what it will do is it will create a bidirectional setup of this.
+So it will be bidirectional.
+Bidirectional means client can send a request also.
+And server can also send a message.
+So both now can talk to each other.
+Bidirectional talk can happen.
+And when I say persistent what does persistent means this connection will remain open.
+So connection will not close, right?
+Connection will remain open and it will only get close when one of them shut down the connection or
+there is a breakage in the internet connectivity otherwise.
+So HTTP what is happening in HTTP client?
+Send a request server response and then connection break again.
+WebSocket WebSocket is a persistent network.
+Persistent network means connection maintain connection is maintained.
+Right.
+So connection.
+So even if they are talking let's say ten message client and the ten message server but still same connection
+on the same connection they can send.
+So that's why it is called persistent connection right.
+So here what we know that we can for the receive instead of using HTTP we can use WebSocket.
+And since WebSocket is working for receiving then there is also no point of using for HTTP.
+We can also use WebSocket for sending also.
+So you got it.
+Now one thing we cleared right for the chat server.
+For the chat server, the clients.
+Or you can say that the user user one.
+User two is connected through which what WebSocket not HTTP.
+Okay, I think till now it is clear.
+Okay.
+1 to 1 message.
+1 to 1 message is what 1 to 1 messages.
+User one needs to send a message to user two.
+Now let's design this.
+So I have a user.
+Or client.
+Right.
+So there can be multiple clients.
+So now I have a.
+Chat server so there can be many chat server right?
+Chat server one.
+Chat server two.
+And similarly there can be many chat server n and we already know that how the clients are connected
+with the chat server client server one client n or user n.
+Right.
+So they are connected through WebSocket.
+Okay.
+Till now we have done this point.
+By the way I am teaching you more stuff right?
+So till now you have understood this.
+Now consider this point right?
+Let's say right.
+So now let's say this user one is connected with.
+Chat server.
+Let's say I'm saying uh 100.
+Let's say some chat server.
+User two is connected with chat server 500 right.
+Right.
+So they have a connection maintain they have a open connection maintained with them.
+Right.
+Now user one want to send a message.
+Send message to user two.
+Hello.
+Now chat server got okay I need to send a message.
+Hello.
+To whom?
+User two.
+Now how does it know that if there are thousands of chat server let's say 5498 there are thousands of
+chat server.
+How does chat server 100 knows that?
+Which set?
+Which chat server?
+I need to pass information so that it will goes to the user to user two is connected with this chat
+server.
+So there is one more service.
+There is one more service.
+Called user mapping.
+Service.
+Right.
+Or you can say that it's a sign kind of a user detector.
+Or let's say I will say that user detector service.
+Right.
+So it has.
+User mapping.
+Multiple servers.
+It can also have user mapping.
+Multiple servers.
+One, two.
+So now what it will store.
+So what information they store is user mapping service.
+Store it.
+Maintain an information.
+That which user.
+Let's say user one is connected with which chat server.
+Chat server 100.
+User two is connected with which chat server chat server 500.
+Right.
+So you got it.
+So this is the user management user mapping service right.
+Mapping it.
+Maintain that which user is connected with which chat server.
+Right.
+And how it will be useful.
+So here chat server talks to user mapping service.
+So this is uh this mapping service is nothing, but it's a you can say that it's a zookeeper.
+Right.
+So this is you can say that a zookeeper.
+If you have seen my previous video, I have explained about zookeeper in zero 2 million zero to million
+how to Scale from zero to million video I have explained about zookeeper.
+Zookeeper is a coordinator.
+It provide a coordinate in a distributed environment between multiple multiple applications.
+Right.
+So now this zookeeper providing a coordinate between chat servers, multiple chat, multiple application,
+multiple chat servers by maintaining a information key, which user is connected via which chat server.
+Right.
+So now how so this will store information like.
+First how the zookeeper will fill this table let's say internally.
+So now for I told you that user is connected with chat server with WebSocket right.
+But for other services.
+It can connect connect via HTTP.
+Other services like user can do a login or let's say during connection.
+Whenever the connection is established.
+Whenever the client is maintaining a connection established.
+So let's say you you are offline as soon as you are coming online.
+As soon as you are coming online means connection is established.
+As soon as the connection is established, you need to.
+We need to provide a one server to you.
+Which chat server?
+It depends upon your geography.
+Let's say I am from India, so maybe chat server which is nearest to my location will be assigned to
+me, right?
+So who take this responsibility?
+It is user detector.
+Or you can say that user mapping service take the responsibility of assigning a particular chat server
+to a user.
+Right?
+So let's say that this user one is currently offline.
+User one is currently offline.
+So currently in this table only entry is present for user uh, let's say user two.
+Let's say for example user two it is connected with uh chat server 101 let's say.
+But for there is no entry for user one because it is offline.
+Now user one is making a connection.
+User one is making a connection.
+And what it will do is it will assign one server user one server.
+So let's say chat server 100.
+So now it will create connection with this chat server 100 let's say right.
+So now it will connect over WebSocket.
+And Zookeeper will maintain a record okay.
+So till here we are clear.
+What is the use of user mapping service.
+And now it user one is sending a message.
+Let's say send message, right?
+So my send message will be like send message to let's say it is from two.
+What is the message.
+Right.
+Let's say or we can also have provider type uh or let's say type we can have is like whether it's a
+group or 1 to 1, 1 to 1.
+Right.
+I will tell you what is the use of this type.
+So let's say this is the send message request.
+So now it will know that okay I need to send two let's say here.
+In this case user one is from user two is we need to send.
+So first it will goes to this chat server WebSocket which 100.
+So web server 100 will know that okay I need to send a message to user two.
+Who will who which chat server is connected with.
+So now it will call user mapping service.
+Right.
+And it will read that.
+Okay.
+Tell me like which chat server I need to talk to.
+Who will send a message to user two?
+There is a message for it.
+Now this will provide okay.
+User two is connected with chat server.
+This 1101.
+So now what it will do is it will pass that information to that particular chat server internally.
+And that chat server will take care of sending a connection message.
+Right.
+So this is one thing.
+And now so this is I am talking about happy flow when the both the users are online.
+Right.
+So you got the usage of this user mapping service right.
+Okay.
+Now we want to maintain.
+So one of our another service is functionality is we want to maintain a chat history.
+Right.
+So each service maintain a chat history except, uh, WhatsApp.
+So now in this case, I am now maintaining a chat history.
+So when we are maintaining a chat history, uh, chat history, we want a DB.
+So whenever the send message is coming the request will goes to also.
+DB.
+So this is my DB layer.
+Right now.
+This is another important thing.
+What DB you will choose what db SQL or NoSQL.
+If you have seen my previous video with that you can easily identify which DB we have to use.
+So first we have to identify let's say what are the read and write operation.
+A user one has to read user particular user.
+So let's say I am a user.
+So I will open a user two chat and I will uh like what are the conversation I have with him or her?
+So I will see the message, right?
+So a particular user chat history I can see a particular group chat history I can read.
+Group members.
+Details I can see like profile picture and all.
+And the member list, my user profile I can read.
+So these are generally all the read operation are possible into the chat application.
+And similarly what are the write up or write operation send message.
+Right.
+Uh update profile picture like this.
+So now here if you see are you seeing any flexible query or flexible means complex joints or something
+right.
+Are there complex joints present?
+Are complex.
+Query or join.
+You see in this read operation no right.
+It's not.
+Second thing.
+So this is one hint no complex join.
+Second.
+Now we are talking about billions of messages per day right?
+And let's say I have a long chat history with thousands of my connections.
+Like I have thousands of members in my.
+Chat history I daily do with over the time.
+I have so many chat histories and let's say I want to search.
+Let's say you want to search particular, uh, something called concept word.
+So now the search capability is like in all the chat history, it has to particular find that, uh,
+conversation where it has happened.
+So means you need a low latency and low latency search capability.
+In a very huge number of data, like it's kind of millions of data could be present for big who has
+done a lot of chatting over the years and finding a particular word, all the chat conversation.
+It is like low latency search capability is needed.
+So based on the two hint, and we know that low latency search capability is the key point for NoSQL,
+this is the key advantage low latency search capability, NoSQL provide that and it is highly scalable
+and highly available.
+Highly available.
+So all these things and these are our non-functional requirement also.
+So all these things hint into this mind.
+We can know that we will go for NoSQL because we don't see much relation in our data.
+So now let's go into the NoSQL right.
+So now also one more thing If you see discord, right, discord and uh, some, uh, Facebook, they
+also use NoSQL only Cassandra.
+They use Cassandra DB NoSQL.
+Right.
+If you know that I have, uh, tell you in the previous video, there are four type of NoSQL key value,
+uh, graph column wise, right, column wise and document.
+So Cassandra is your column wise, right.
+So it's kind of a, uh, maintain a column wise data.
+So now first for 1 to 1, now we were doing 1 to 1 flow.
+Right.
+So for 1 to 1 how the table will be stored.
+Let's say it's a message table.
+So we will have.
+Message ID we will have from we will have two we will have timestamp right.
+So now let's say we have this.
+So now in the NoSQL let's say we we can store the data into multiple servers.
+Multiple servers.
+Right.
+So this is node one.
+Node two.
+Node three.
+Node four naught five naught six.
+If you have seen my previous video of consistent hashing and DynamoDB which is a NoSQL DB.
+So it the data is stored horizontal scale horizontally sharded.
+Right.
+So data is sharded horizontally.
+So means it is scale horizontally across the nodes.
+So how do we partition the data.
+So here our partition key is from n two.
+This is my partition key right.
+Based upon the from and to let's say my name is let's say from is SJ two is something let's say uh Hardik.
+So this is can make a one key and and know that any combination of this from and two will go into this
+node let's say any chat history.
+So this is my partition key right.
+And what is the use of message ID.
+So message ID can be used for the sequencing.
+So inside a particular partition.
+Inside a particular partition.
+Right.
+So this is the partition key.
+Based on this I can decide which node this record should go with.
+Chat history should go now on a particular chat history now a particular chat I need to maintain a sequence
+because ordering is maintained during chat.
+Right.
+So this message ID we can use.
+Right.
+And we know that SQL support auto increment.
+But in NoSQL there is nothing like a no auto increment is not there.
+Right.
+So we can use something like let's say we can use timestamp to generate this message ID right?
+So in a particular partition in a particular partition we can use ordering via message ID.
+Right.
+So ordering can be maintained via message ID.
+So message ID is you can say that it's a ID generator.
+But we don't need global.
+Why.
+We don't need global because maybe in another partition.
+So let's say this partition is for this one.
+This partition is for this one.
+The message ID can be same.
+Here it is 100.
+Here it here it can also have 100 for example because sequencing is different here.
+Right.
+So ID generator can be used as a local ID generator.
+Or we can use timestamp to generate a message ID unique message ID.
+So you got it.
+How the data is stored in NoSQL.
+Because and in NoSQL has one feature that it is horizontally scalable means some data is present in
+node, some data is present in another node.
+So we have to partition the data.
+So partition can be done on this.
+So we can done on from and to.
+And we need to maintain an order of a message.
+So order can be maintained based on message ID we can use timestamp or local ID generator.
+We don't need global ID generator like snowflake right.
+So now you know that here what we were uh our diagram.
+Yeah.
+So here we use a NoSQL type.
+Till now we are all good.
+So now I have already told you about the happy flow.
+Now happy flow is like.
+Both the users are online.
+Now let's talk about the offline use case.
+So now what will happen in the offline use case.
+So let's say now here in this example let's say this is user one.
+This is user two.
+Right.
+So here user one has a record and zookeeper.
+User one is connected with chat server one.
+User two is connected with chat server two for example this is my let's say.
+Chat server one.
+And this is my chat server two.
+Let's say chat server two is down.
+It is possible that right chat server two become down.
+Let's say this become down.
+So this entry will be removed because now connection is broken between chat server two and user two.
+So there is no uh, currently let's say record And also let's say that this connection is also broken.
+Internet connectivity issue happened between user two.
+User two now don't have any internet connectivity right.
+So means this connectivity is broken.
+Means there is no chat server is available for user two as of now.
+Now user one want to send a message.
+User one do send message to user two.
+Hello.
+So it will goes to.
+Because they are connected via WebSocket.
+It will goes to particular chat server one.
+Now chat server one will goes to this one user mapping and it will ask that there is a message for user
+two.
+Can you tell me which chat server it is connected to?
+So it will check it zookeeper entry that okay chat.
+It will not find any entry for user two because user two entry was removed.
+So it will say that user two is not even online.
+There is no entry.
+So currently what will happen is it will not able to send a message.
+So it will put a data into the DB.
+It will just put a data into the DB.
+Right.
+So currently no message has been sent to user two.
+Now let's say user two is coming online.
+So when user two is coming online through login so what will user two will do.
+User two will first do login.
+Right.
+So now we have to build a login system.
+So login system can again be used as a HTTP protocol.
+So we can build this thing.
+So let's say this is our client.
+We can also have this like.
+Our.
+Login system right.
+So login system also talk with user mapping.
+So now here user two is trying to do a login.
+So this is a HTTP request.
+User two is trying to do a login.
+And when the it is doing a login it will goes to user mapping service.
+User mapping service and user mapping will service will find one's chat server for this user two.
+So it will put one entry.
+It will put one entry for the chat server to that.
+Okay now you are online.
+So let me provide you some chat server based upon your geographic location.
+Let's say I provided CS three some different chat server right.
+So let's say connection is again.
+Now maintain.
+Connection is again now maintained let's say but with chat server three WebSocket.
+Right.
+So now as soon as the user two comes online this chat server three will check its DB, right?
+This check is NoSQL db and it's checked that for a particular user.
+Are there any message available?
+If yes, if there are any unread messages available, it will send them to this user.
+So this is how generally the offline use case handle.
+Right.
+So now let's move to the group part.
+Now in the group part, as I told you that NoSQL is maintaining a DB.
+So there will be one.
+Let's say group table or something.
+So it will have group ID.
+User.
+Which user is sending a message.
+User sending message.
+Your message timestamp and all.
+Now here what is the partition key.
+Group ID is the partition key based on this group ID.
+It will also have a message ID.
+Based on this group ID.
+We can partition the data between multiple nodes.
+Right.
+And message ID has the same usage that it will help to maintain a sequence between a particular partition.
+Okay, so till now what we have done is this part.
+So client uh, so client can maintain a HTTP request with user login service.
+User login service can maintain its own DB like uh based uh, depending upon its data, user onboarded
+time and also some relation it can maintain like user address or something, anything which is required
+phone number and all these things.
+Right.
+And then user mapping service I already explained you they can maintain its table.
+I told you right.
+Zookeeper is maintaining a table.
+So let's say they are maintaining some in-memory reddis or something, right?
+And I told you that.
+So this is HTTP.
+So it is a load balancer in between.
+It will pass the request appropriate service.
+Then there is a client.
+Client is connected to a chat server via WebSocket not through HTTP WebSocket.
+And they are also connected with this one user mapping service.
+Right now for the group there will be group management service also.
+So load balancer will also have let's say something called I will also maintain one.
+So this will also have let's say.
+Group service.
+This can also be a HTTP request.
+What group service can happen is they will have their own DB.
+Let's say they will maintain like uh When the group is created, some basic information group created
+group members or it can even be NoSQL also.
+Right?
+So there is no hard dependency like group service.
+You can create a group, you can delete a group, you can join particular group, you can add members.
+So right these all group management can be one service which take care of the management of the group.
+So this is responsible for managing the group deletion creation right.
+Updation of groups.
+So or it can be managed by this one.
+Right.
+So now but message in a group is happen through WebSocket.
+Now what will happen here is now let's say this is one group.
+Right.
+This is one group.
+This group has user one.
+User two.
+User three user four For for user.
+Now user one is sending a message.
+Hello to group to this.
+Group one to this group one.
+Now what will happen?
+So first client is connected with a WebSocket particular WebSocket right.
+So it can also chat service can also ask particular.
+Group service that.
+Can you tell me like for this group what are all the members.
+So let's say the group service will send right.
+So let's say it will ask.
+Group service application.
+Can you tell me that for this group one how what all the members.
+So let's say it will return.
+User one.
+User two.
+User three.
+User four are the members of this group now chat see that okay.
+User one is sending a message.
+so I need to send a message to user to user three.
+User four.
+So now chat server will goes to the zookeeper.
+It will ask that can you tell me like user two, user three, user four are connected to which chat
+server?
+They can be same or different and based upon the information, it will pass the request to respective
+chat server and send the message and their respective chat server will send the message to a particular
+client.
+You got it.
+So now we have done with, uh, group server 1 to 1 send or receive.
+So through NoSQL we have done scalability, low latency in searching and availability right now user
+authentication, logging.
+You got it now.
+Last left last seen and online offline capability.
+This is also very simple actually.
+So to maintain a large uh this thing there is a system called Present system.
+This is one more system.
+So what present system work is like.
+So you have a client.
+You have a present system.
+So client send a heartbeat after let's say every couple of seconds.
+So let's say after every three seconds present system get a heartbeat from the client.
+So it says that heartbeat.
+So it will record okay.
+User one heartbeat received time.
+So it will store the time.
+Similarly for user two it will store the time and it will keep on updating as soon as it will get a
+heartbeat.
+Let's say for a particular threshold time, let's say for one minute it don't get any heartbeat.
+So what it will know is okay.
+No heartbeat received for one minute.
+This is offline.
+It will change its status to offline.
+Last heartbeat.
+Time.
+Right.
+So since after one minute there is no heartbeat happen, it will change it to offline, right?
+And why this is necessary?
+Now you can ask a question that.
+Hey, in zookeeper I am maintaining a list that which user is connected via with chat server.
+Right?
+Why?
+I can't use zookeeper to know that.
+Is there any chat server is allotted to a particular user or not?
+So if it is allotted means it is connection is active and if it is not allotted means connection is
+not active, means it is offline.
+Now let's say about this use case.
+Let's say consider a tunnel.
+You are going in a train and there is a tunnel is coming.
+So let's say a user one is going.
+So user one is online.
+As soon as it goes inside the tunnel, user one become offline.
+As soon as it hear it, become online, hear it become offline it become online, it become offline.
+It become online.
+Uh.
+Here.
+Offline.
+Online.
+So here, if you see.
+And if you check that for a particular user, it will not say like online, then offline, then online
+then offline.
+So this will be a very bad user experience like every 1 or 2 seconds.
+Watching.
+Offline.
+Online.
+So that's why one system has a threshold value.
+Like if one minute I don't give any heartbeat, then I will only consider as an offline.
+So here let's say it has standard heartbeat.
+Then it become offline.
+Offline.
+Offline is again a show.
+It will show you as an online only right.
+So that's why the system is used and that's where it can be have like presence system.
+And it is also connected via WebSocket.
+Client can send a request right.
+So you got it.
+Present system.
+Uh so present system can maintain its own radius or something, or DB, or it can put this online offline
+data here and the applications can use the chat server can use this to know the present system.
+Right.
+I hope you got it.
+Guys.
+Like uh what?
+All the system we have, we have chat server, we have user mapping service, also known as you can
+say that uh zookeeper present system to maintain uh online offline.
+Last seen capability.
+Right.
+And we use NoSQL how we maintain uh distributed partition key.
+So this is generally a high level design of chat application.
+I hope you guys like it.
+You find it useful, right?
+If anything I missed, please feel free to ping me.
+Like what, uh, part I missed or anything important.
+You think?
+But from my side, I try to cover everything.
+Guys, I hope you like it and wish you luck for the interview, preparation and have a nice day, guys.
+Bye.

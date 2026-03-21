@@ -1,0 +1,603 @@
+# Design Idempotent POST API || Handle Duplicate Request by Idempotency Handler
+
+Hello.
+Hey guys.
+Welcome to Concept Encoding.
+And today we are going to design a handler.
+Very very important question.
+And if you see our high level design roadmap.
+So all this green tick one which we have completed.
+And currently today we are looking into the handling part.
+So I am not making it right for now because concurrency handling another important topic is left.
+So I will cover it into the next video upcoming videos.
+But let me cover the handling part today.
+So this is very, very important question and has been recently asked in Singapore based company top
+product based company.
+Right.
+So let's focus on this question now.
+First of all, before even jumping into handling, I want to differentiate between the order potency.
+Versus concurrency.
+So that no one should get confused between these two.
+And then we will focus on this one at potency today.
+So see what do you mean by concurrency.
+So concurrency is like you have one resource.
+You have one resource and there are multiple.
+You can say that users trying to access that resource, for example in a book might show book might
+show movie ticket app.
+You are trying to book a seat, and many people are trying to book that seat in a movie theater.
+So that is concurrency problem, right?
+But what is it then?
+It helps us to take care.
+Of duplicate request.
+Duplicate request.
+Now what does it mean?
+Now let's go deeper into Idempotency.
+But I think you should not mix it with concurrency.
+Concurrency is different.
+Now let's jump into the dependency.
+So what is dependency?
+Say it enables client to safely retry.
+A client can retry many times safely without worrying about the side effect of an operation.
+Let's say there are many operation.
+For example operation like let's say adding an item into the cart.
+Let's say you are trying to add an item into a cart.
+So this is one operation.
+It enables client to safely retry an operation.
+So let's say you are trying to do this post request add an item into cart.
+You can retry any time.
+You can retry any time without worrying about the side effect.
+So generally, what is the effect of this operation?
+It will create a row that yes, I want to add an item into this cart, but if I retry again this is
+duplicate request I am retrying.
+Again, it should not create another row.
+It should not create another row because it's a duplicate request.
+Right.
+So that's what its definition says.
+It enables client to safely retry an operation.
+You can retry as much as you want, but in DB there will be only one row.
+And but you can safely retry as much as you want.
+So that's what is it is that's what capability Hydra handler providers understood the definition properly.
+Now let's jump into the little bit problems and how we require to solve okay.
+So first thing by default.
+By default, get put.
+Delete.
+These are already impotent in nature, right?
+These are idempotent in nature.
+Whereas Post request is not idempotent.
+And we have to make it ten.
+Okay.
+So what does it mean by get put delete.
+So let's say you make a get request right.
+You are client.
+You are making a Get call to server.
+Now any time you call get request get Get.
+Even though it is a duplicate, will it make any side effect on the DB?
+Right?
+No, it will not create any side effect on the DB.
+It will just retain whatever the data it has.
+It will just return it.
+Right.
+So it is not causing any side effect.
+What about put.
+So again you have a client.
+You have a server you called a put request.
+Okay.
+Update uh name from let's say SJ to let's say I'm trying to update my name from SJ to Shreyansh.
+So first time let's say it changed.
+It changed right.
+It changed the DB from SJ to Shreyansh.
+Now if I call put request multiple times put put put many times duplicate comes and everything.
+Say update name from SJ to SJ to What will it do?
+Anything.
+Any side effect on the DB?
+No name is already changed to Shreyansh, right?
+So there would not be any cause you will do your DB.
+Whatever the status, it will not change, right?
+So it is idempotent no matter how many times you retry it, your status or db operation will not cause
+any side effect, right?
+Let's understand now.
+Post.
+As I give you an example, when I mentioned right post is not adopted by nature.
+What what I think you already know by by now is how why post is not adopted by nature.
+So you make one request, let's say payment Shreyansh is making a payment to, let's say Hardik, let's
+say ₹10.
+So it is a first time.
+So let's say first time payment happen right.
+So Shreyansh got debited like ₹10 and Hardik received plus ₹10.
+But let's say because many duplicate requests comes in as two.
+Hardik ₹10 again.
+So two Hardik ₹10 again as J two Hardik ₹10 again.
+So what will happen because of this post request?
+Because post tendency of nature is to create a new row.
+Create a new resource.
+So it will create another time.
+S j -₹10.
+Hardik plus ₹10 for this one.
+Again s j -₹10.
+Hardik plus ₹10.
+Like this.
+So now if you know that for a for a payment system, this is a side effect.
+So even if you retry multiple time, your DB should only have one record for this because these are
+duplicate requests, it should not create multiple rows after multiple payments.
+Similarly, the example previously I gave you of a add to cart.
+You should only have only one item in a cart.
+So these are the problems.
+And that's what I told you by default.
+Get put.
+Deletes are already added.
+You don't have to do anything in that, only for post APIs.
+We have to bring the order potency nature to the post.
+Okay, so there are two type of side effects.
+One is sequential.
+Another is parallel.
+Okay, so let's understand this how the problem can come.
+How duplicate can come.
+Or I would say that how duplicate can come to duplicate.
+For example this is client.
+This is server.
+Okay.
+The first let's say trying client is making a post call.
+I told you only with post we have an API.
+Okay.
+It make a post call.
+Let's say add cart add item to cart.
+Okay.
+So now server started processing.
+Server started processing.
+But timeout happen.
+It's happened.
+Timeout.
+But for client it's a timeout happened.
+But server hasn't stopped processing.
+So server is still processing.
+Still processing.
+And now it is processed.
+Now it is processed okay.
+So even though it is timeout server has processed the request.
+It has processed the request properly.
+but for client it's a timeout.
+So it will retry.
+It will do another post.
+So now it's a duplicate request.
+So it's a duplicate request.
+Or you can say that retry because client got the timeout.
+But now here if you see that server has already processed it right.
+So now it's a duplicate request.
+So we have to handle this.
+So we have to take care of this scenario.
+What is another scenario parallel one.
+So again client.
+Server.
+So let's say client made post request.
+And at the same time another request comes in here you see the sequential how the sequential happens
+right after a timeout.
+But the process has happened and then another come after it, but here.
+What if two post requests come at the same time?
+Both.
+So this is the original.
+And this is the you can say that the duplicate one.
+Right.
+But it coming at the same time.
+It is possible maybe because of different browser.
+Right.
+And it may be going to different server.
+There are multiple servers.
+Maybe it's going to different machine itself.
+Right.
+So how to handle it.
+How to handle only one request should be processed should be processed not two.
+Okay.
+So till now I think you are very much clear what is right.
+What is its definition like out of this HTTP request get put delete post.
+What are our already adopted in nature?
+Why we need in post we have to handle the potency.
+What are the various ways or use cases in which it is required?
+Sequential, like this use case, and also in the parallel like this use case.
+Right.
+So now let's go to our.
+Approach.
+For.
+Idempotency handling.
+Now let's see this is very interesting part.
+Okay.
+So how do we handle idempotency in post request.
+Answer is using.
+Idempotent key.
+Hey then you can ask hey what is idempotent key.
+Don't worry about it.
+I will tell you everything just for now.
+Assume.
+Assume that key is something unique.
+It's a unique.
+Or you can say that it's a Uuid.
+Universal unique ID means at a universal level, this ID would be unique.
+Duplicate ID is not possible.
+So let's say it's any Uuid universal unique ID, any unique ID.
+So we with that and we can treat it as a key.
+And with id potency key we can handle it both these scenarios.
+How.
+Now before jumping into the how, let me tell you the few agreement.
+There are two agreements which we have with the client agreement with client.
+The first agreement with that client is client should generate the ID key.
+Generate the key key.
+The client should generate it.
+Second for each operation For each operation.
+New hydro potency key should be generated for each different operation.
+You can say that for each different operation, new hydro potency key should be generated.
+So these are the two agreement between clients and servers.
+And the solution is depend upon this.
+So now let's come with the flow how hydro potency key solves this problem right.
+Then I will tell you how it can be enhanced to solve the parallel.
+Okay.
+Now understand this one first.
+Let's say this is client.
+So as part of first what it will do agreement is client should generate the Idempotency key.
+So let's say a user is hitting a client.
+Let's say some Post request, any Post request, let's say add item to cart, add item to cart.
+It's using the client application.
+Now the client what it first will do it will generate.
+Either key.
+Idempotency key.
+Because this is a new operation which is user is trying to do.
+And first step what client will do is it will generate an idempotent key.
+Once the key is generated what would be the second step?
+The client will do right.
+The client will set this auto key.
+In the request header.
+and it calls server.
+So now it calls to the server.
+So first client go and generated the key.
+Key can be generated by universal unique ID.
+There are many libraries available which you can generate universal IDs.
+Plus you can also append operation here.
+What is the operation.
+So that also you can make uniqueness.
+Plus sometime also you can add timestamp also.
+So it depend upon client to client.
+So that's why I'm not going deep into it because it depend upon client to client.
+But the generic solution which we can say is universal unique ID because it's always a unique.
+So now first client will generate an ID key.
+Second it will set this ID key in the request header and calls the server.
+Now server got the request server got this post API.
+Add item to cart.
+Okay, that's what customer wanted.
+And in the header it got the arrow key.
+In the header it got certain arrow key.
+Let's say arrow key is something one.
+It could be anything number.
+Right ABC12567 thing okay.
+What will server will do after this.
+So server will first do validation.
+It will do validation.
+What validation it will do.
+Server will validate if.
+Key is present.
+Is present or not.
+If either key is not present not present in header then what else.
+What error code will return HTTP 400, which means validation error, which means validation error.
+400 means validation error.
+So first thing which server will do is it will validate those dependency.
+Key is set into the header of this request.
+If it is not it will throw error.
+If it is present yes okay.
+Okay.
+If it is present.
+So currently forget about this duplicate sequential and all just considered one simple flow.
+We are incorporating the key right?
+Then I will tell you how it solves the sequential and how we can expand it to do the parallel.
+Till now.
+All clear a request come client generate a dependency key and passed it into calls the API for the server
+and in the header it set the dependency key.
+Now the server first does.
+The validation does in the header key is present or not.
+If it is not present, send the HTTP 400 request if it is present.
+Write what it will do.
+Fourth step server.
+Will read this dependency.
+Read this order potency key from DB.
+So server will try to see a is order potency key is already present into a DB or not right.
+So let's say this is the first time this is the original request.
+So currently I'm saying this is an original request.
+First time it is happening.
+No duplicate no retry first time.
+So this is a definitely a fresh order potency key right.
+And definitely server will try to read this in order potency key from DB that okay.
+Does this potency key is present into the DB or not.
+If it is not present.
+So here.
+So.
+If either.
+Key.
+Present in DB.
+No, it is not present.
+Then what it will do.
+What it will do is fifth step.
+It will.
+Put an entry into the DB.
+It will put an entry in DB.
+Just consider that it is a DB one DB right where it has a key.
+So here I will put what is the key here.
+Now IK1.
+So let's say key one it is generated.
+So key it will put IK1 right.
+And it will also have a status of this one.
+So for now it will try to read the potency.
+So it will put a status created something right.
+So each key has a life cycle ID potency key has a life cycle right.
+So first is like let's say created.
+Or you can give me any name or acquired.
+Right.
+And after that it has changed to consumed.
+Consumed.
+Or we can also say that claimed and after once it is consumed or claimed it cannot be reused, right.
+It cannot be reused.
+So this is we have to identify we have to just remember.
+So if it is not present into the DB it will put an entry into the DB that okay Idempotency key is one
+and it is created currently created Okay.
+What if a key is already present?
+Yes.
+This is also in step five.
+Right.
+So only two things are possible.
+A key is already present.
+Or if it is not present.
+But first time I am telling you that it is an original request.
+So definitely it will goes to the no path, right.
+Because it is not there and it created it created an entry.
+Okay.
+So now what will happen after this one?
+Let's say it put ten entry.
+Now after this what it will do sixth.
+If call or if operation.
+Whatever operation.
+What is operation?
+Operation was to add an item in I add an item into the cart.
+If operation is success means item is added to the cart, right?
+So what it will do?
+It will.
+Consume or claim the key, right?
+So now it will consume or claim the key and it will change.
+The status of this is to what would be the status change of this would be.
+To let's say anything.
+Whether you want to consume or claim, let's say it's a consume.
+It will change the status to consume and what output it will return.
+HTTP 201 so C201 is means resource is created, operation is success and resource is created.
+Resource is created here resource is created means item is added to the cart.
+Item is added to the cart okay.
+So that's what 201 is.
+Operation is success.
+Plus resource is also created.
+Okay.
+So this is the original request.
+Now let's say a duplicate is coming.
+Uh, let's say now duplicate request is coming.
+Okay.
+So now it's a duplicate request.
+So now let's say this is this is the flow.
+Original post is happened.
+So let's say this is happened.
+Right now assume that timeout happen.
+But internally server has done all these things.
+Internally server has done all the validation and it was not exist.
+So it created a resource.
+But what will happen is what timeout already happened.
+So it couldn't send 201 to the client because client is already gone.
+Timeout.
+And now client has done the retry.
+Now let's understand this use case.
+Now client is sending a duplicate request.
+Right.
+So here it will get generated from here itself.
+So here user is not involved in the duplicate.
+The retry will happen from here.
+So from here itself.
+So now client is making a duplicate request retry or client is retrying.
+So now it is retrying with the same key.
+What was the dependency key IK one right.
+The previously we choose IK one.
+So now client is retrying with the same key.
+Okay.
+Server.
+Got it.
+Now server will validate is IK is present into the header.
+Yes, it is present.
+So it goes to the step four.
+Now server will read the key from DB.
+So it will goes to the DB and check.
+Hey key one exists or not.
+So from DB it will check.
+Yes exist.
+So now it will come to this path.
+Exit?
+Yes.
+So now it will check.
+Our key status.
+Right.
+So there can be only two type of status created or consumed.
+Right.
+So here.
+It will check the status.
+What is the status.
+So one is created state and one is consumed state.
+So if it is consumed means the previous request which has created this row is already completed.
+Because consume can only be done when it complete the all the flow or the operation is success and resource
+is created.
+It consumed and sent to zero one so consumed it will happen when the previous operation original has
+completed its task.
+Right?
+So here we send HTTP 200.
+What does 200 means.
+Previous request already completed and no resource created.
+So as 201 says that resource is created two zero is that the request is successful.
+Previous request is one request already completed but no resource created.
+Okay.
+So in this case we need to send HTTP 200 but status is created.
+What does created means?
+There is already one request which has created this row, but it is still in processing.
+Still in processing.
+So otherwise if process is complete it could change to consume.
+But it hasn't done means still it is processing.
+So it's kind of a HTTP 409.
+It means Conflict it conflict with the request means it is already.
+Some request is already processing.
+It is not yet completed.
+That's why state is created.
+So it's at 409.
+Hey, it's a conflict.
+Some request.
+Previous request.
+Duplicate request.
+Original request.
+Already working, not completed.
+So please wait.
+You can retry later.
+So.
+Understood.
+This is the flow for idempotent key.
+So this one will be properly handled with it.
+Right.
+Because duplicate comes.
+And whether it will get yes or no.
+If it is a previous one is already completed then it will return HTTP 200.
+Otherwise, if previous one is already working, let's say it is still working.
+While the second request comes in, it will send 409 conflict.
+Now the follow up question will come what about parallel?
+What about parallel request?
+What about parallel requests?
+Now what about this use case?
+What about this use case?
+So now let's see here two requests coming in parallel right.
+So now two requests are coming in parallel here.
+But with the same idempotency key.
+So somehow.
+Somehow from client to server two request comes in with post add item and Hydro one.
+Hydro one.
+Similarly, post add item two request comes in by the client.
+Maybe different browser or something.
+Now what will happen?
+Client received two requests.
+Validation for both the requests.
+It will go for the.
+Let's say it's going parallelly.
+So validation they both will pass because it is present into their header.
+So it will goes to this fourth step.
+Now let's say both Parallely will read the key from DB.
+So now let's say it's an original request.
+Currently DB is empty.
+Currently DB is let's say empty.
+So now what will happen.
+So what will happen?
+Server will read the key from DB.
+Both the requests.
+Let's say it is request one.
+Request two.
+So both request request one and request two.
+Both will try to read the account from DB.
+And they say that okay for both key is present.
+No.
+So both requests will come here.
+Request one.
+Request two.
+Okay.
+Come to this place.
+And what will do is since it was not there in the DB, both will try to read and both will create it.
+I created write and ultimately the call is success and it will consume it.
+So now here, if you see that because of this parallel part, both will pass out this flow and two resource
+will be ultimately created.
+Add card.
+Add card two add card will get success 201201.
+And but this is an issue.
+We told that it should be able to handle this parallel also.
+Then what we can do solution is very simple and we already know it.
+How to solve this part.
+The answer is mutual exclusion the locking part.
+So we bring a lock.
+So we have to identify our critical section.
+So our critical section is which one.
+This one.
+So this is our critical section.
+This part.
+So this part is.
+Our critical section.
+So only one thread can go.
+One request can go request one or request two.
+Now two requests cannot comes into this.
+Only one request can come in and you know right.
+Critical section.
+There are multiple ways to achieve a critical section is uh, you know right.
+Mutex semaphore.
+Right.
+You can put a lock on an ID right.
+And then first what you will do is it has step acquire the lock and then release the lock.
+And I think it similarly has like low lock unlock something like that.
+So this is nothing but a mutual exclusion.
+So only one request can goes into this.
+So we can bring some mutual exclusion here, right?
+We can use any algorithm.
+Right.
+There are multiple mutual exclusion algorithms already present.
+So but the concept is we will use this is our critical section.
+Now we will put mutual exclusion here.
+Let's say mutex for example or semaphore or some certain let's say synchronize anything.
+Only one request can go in right.
+Or synchronize anything.
+This is our critical section now.
+Now it will only one request will go in and it will check server will read the account from DB.
+It's not there.
+It will write one Idempotency one request one return it.
+Status is created.
+Then what it will do is it will do the success operation and it will change it to consume and it will
+return.
+Now once it return, then request two comes into the picture and it will check.
+Server will read the key from DB.
+It is present.
+Yes, it is present.
+And either it will return 200 error code.
+Consume write and it will ask customer that this is already success, right?
+And it will say that it's a duplicate request.
+So by putting a mutex or synchronize we can take care of the parallel request.
+So before we are almost done I think it is clear to you right how we can handle the sequential and parallel.
+So there is one follow up question happen on this.
+So let's say there are multiple servers which are in different maybe GEOs or cluster.
+And let's say this is client.
+What if this request goes into duplicate different server.
+Server one.
+Server two different machine.
+Post request post request at key one.
+At key one but in different.
+Right.
+And let us say this is the DB.
+They have their own different geos.
+DB let's say for example, this is and internally they do uh copy.
+Right.
+What if this is kind of a structure how you will do this.
+Because by the time they synchronize DB synchronize then this uh, reading the id from DB and all,
+how it will work, how it will work because they are pointing to different DB.
+They are totally different clusters, right?
+How it will work.
+So the answer is using cache.
+So I will use a cache.
+And you know right.
+The cache synchronization is much much faster than DB.
+It's in milliseconds.
+And db could be in minutes.
+The synchronization.
+But cache synchronization is very much faster.
+So we can put a lock all this thing into cache.
+Right.
+So always remember this follow up question.
+If the interviewer might ask what will happen in your DB.
+How you will different cluster different DB.
+How you will maintain this synchronization that I read because you are storing the DB, then how you
+will take care then answer is cache using a cache cache synchronization is much more faster kind of
+a near real time, right?
+So with that it will solve it.
+And with that we are done with our idle handling.
+I think it would be super clear to you.
+And I'm telling you, this is very, very important from the concept building.
+Right.
+And your day to day operation itself and from the interview perspective.
+So okay guys, see you.
+And maybe with I will meet you guys soon with the next video.
+And till then good luck.
+Bye and good night.

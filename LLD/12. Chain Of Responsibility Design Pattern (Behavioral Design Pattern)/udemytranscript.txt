@@ -1,0 +1,213 @@
+# Chain Of Responsibility Design Pattern (Behavioral Design Pattern)
+
+This site.
+Welcome back to the channel.
+And today we are going to do the chain of responsibility pattern which is a behavioral design.
+Pattern means focus on how to objects communicate with each other okay.
+So in this a request is passed through along a chain of handlers okay.
+Each handler decide either to process the request or pass it to the next handler in the chain.
+Understand this with this real life example, like you might be working in a company.
+Okay, so where we have multiple you can say that locks level.
+We have debug log level.
+We have info log level, we have error log level.
+And similarly we in future we can increase the chain.
+We have a fatal log level.
+Right.
+And whenever a request let's say we want to log, we just say that we start from the first chain.
+Understand this line that with this we pass the request to a chain of handler.
+We just pass it to this chain.
+Hey, then this will check.
+Hey, can I handle this request or can I handle this log request?
+If yes, then it will handle it and return it from here.
+If no, then it will pass to the next handler in the chain.
+Okay, then it will check.
+Hey, can I handle this log request?
+If yes, then no further processing will happen.
+It will just process it and return it from here.
+Otherwise it will pass the request to the next handler in the chain.
+That's where it says that.
+So it's a pattern that passes request along a chain of handler.
+Each handler decides either to process or pass it to the next handler in the chain.
+Okay.
+And yeah, one real life example is you can say that atm.
+So in this let's say understand the ATM example, real world would be let's say user need to withdraw,
+let's say ₹50 okay.
+And you have different handler, let's say ₹20 handler, ₹50 handler.
+And then you have, let's say ₹100 handler.
+Okay.
+So now let's say that a request goes here.
+Let's say user need to withdraw ₹50.
+Can you handle it if, let's say if there is no sufficient ₹20 present, it will pass the request to
+50.
+Hey, can you handle it?
+Okay, likewise.
+So we will see that ATM example later.
+Okay.
+But this is just one example.
+Like in what all scenarios.
+Uh, you can take a hint that.
+Yes chain of responsibility pattern we need to apply okay.
+So let's try to implement this how we can implement this.
+But here is the UML diagram if you see that.
+So all this handlers okay we design it like so here we have an abstract handler okay.
+And we have multiple Implementation for it like multiple child classes.
+So we can have, let's say debug info.
+Error fatal.
+If you have in more handler you can add it.
+So like let's say the individual handler debug info error and more.
+Okay.
+So after a debug also there is so this is debug is a log processor info is a log processor.
+So these are is a relationship okay.
+Also one important thing is that let's say the debug handler is not able to handle the request.
+It need to forward the request to the next one.
+So it will need to forward to the next handler.
+So that's why it also has object of itself.
+Has a relationship okay.
+So see this with example.
+It would be fully clear.
+So I have an abstract class log processor okay.
+Now here if you see that I also have one object to itself.
+So it has has a relationship with itself.
+Log processor.
+Next log processor okay.
+And then I have one method implemented here log message.
+And here I have a level and the message which it comes okay.
+So I have provided different levels.
+So each one each logger will I will provide one level.
+Let's say I will give it debug level which is one.
+Then info as two error is three level.
+And for some number I have given.
+Okay.
+Now here if you see whenever a log request comes.
+So here whenever a log request comes hey log the request or this one whenever a request comes okay I
+will check if level is matching or not because we need to know that.
+Hey, can I handle this request or not?
+You can have any logic, but for the very simplification Understanding.
+This is how I am determining that I can handle the request or not if level matching.
+So let's say that in this case user is passing log dot message and it is passing let's say level dot
+debug.
+Let's say okay.
+Then it goes to this handler and it checks hey okay.
+The message which user wants to log is of level debug.
+Yes I can handle it.
+And once I can handle it I will call the right method okay.
+Now let's say user passes uh log dot message and passes the level info okay.
+Now the request goes to because the request always goes from start of the chain itself.
+It's not like directly jumping here.
+It goes from the start of the chain.
+So debug can I handle this, uh, level info.
+No.
+Then it forward it to next handler.
+Hey, can I handle this level info?
+Yes.
+Then it will process the right.
+Okay.
+so now let's say that if it is fatal, if it is fatal info, what info will do?
+It will can it handle this fatal level?
+No.
+It will forward the request to the next one.
+So that's what I am doing.
+If it is not able to handle this message then it will pass it to the next processor.
+If next processor is not null, if next processor is not null, it will call its log message.
+Hey, now your check.
+Okay so here if you see I have this log processor I have multiple log processor debug info error log
+fatal okay.
+If in future you have more you can have more log processors.
+Okay.
+Now here if you see I have a constructor.
+So whenever I will create a debug log processor I am creating a debug log processor.
+I need to tell is there any next processor or not?
+So whenever I create an object I will give two things level and the next log processor.
+So now let's say the level which I give is let's say one okay.
+And the next processor while creating an object I provide the object of the next one let's say info
+one.
+It's object I will provide okay.
+And this level and next processor is present here.
+So that will get set.
+And the right method which is here abstracted.
+It's like whatever like okay once you know that you can handle this request then how you want to write,
+you can write it.
+I'm just simply writing that debug message.
+Similarly info log processor.
+Info log processor also has this constructor level and log processor so level.
+While creating a constructor we will decide what level we want to give.
+Let's say level two okay.
+And the next processor.
+So if we want to assign it the next processor we can have it in the chain okay.
+Similarly, let's say next one is error.
+Next one.
+Let's say that if you don't want to pass, we will pass null here ultimately.
+So the next one would be null.
+So we can create a chain like this.
+So this is how I am doing that.
+So first if you see I am going from the back, first I create a fatal lock processor object.
+So this is fatal lock processor object.
+And the fatal lock processor object it constructor take two thing level and the next processor.
+So level I give is log processor dot fatal this one log processor dot fatal four okay.
+So I give four and I pass null.
+So means after that there is no more.
+Next processor.
+This is the end of the chain.
+You can say that after this it's the end of the chain.
+Now I have created error log processor.
+Error log processor.
+It's level I provided the error one which is three log processor, dot error is three and the next the
+next processor.
+I provided an object of this battle one, so I provided an object of this one.
+Similarly for info, the level I've given two and in its next I provided the error one.
+This one and similar for the debug.
+The level I provided is one and it's the next processor.
+I provided this info.
+So here if you see it's a chain.
+And always when we submit a request it's always from the front of the chain.
+Okay.
+Now let's say I am forwarding the request logger dot log message here logger dot log message.
+So this logger is this front one which is nothing but a debug log processor.
+So I'm calling its method log message.
+And I'm passing this whatever the level user want to store this message let's say debug this is a debug
+message.
+So it will goes here first.
+okay.
+It will check a level equals to equals to level for debug.
+What's the level one.
+Okay.
+And here I have also passes debug one only.
+So yes it can handle it.
+So it will properly call the right method which is this one.
+So it will print this next time.
+Let's say you are passing logger dot log message info.
+This is info message.
+So it will goes to the debug one.
+It will check if level one equals to one what you pass.
+So logger.info is two.
+Will it be able to handle.
+No.
+So what it will do.
+It will call the next log processor okay.
+If it is not null it will call its log message.
+So it will call info.
+Next is here in the debugger is info object.
+So it will call its log processor message.
+And then again it will check level equals to equals to level.
+Yes its level is two.
+And what we passed also to yes it can handle.
+So it will call the.
+Right message.
+And here it will print or handle whatever it like to print.
+Okay.
+So very very simple.
+All you have to get the context from the interviewer that if you are not able to clear from the question,
+clarify and see is the interviewer what he is trying to put?
+Is it somewhere we have something like chain and where request always goes from a start and check one
+by one by one at at any level.
+If any handler able to handle it, then we are stopping here and returning to the user.
+If that's the case, then chain of responsibility is the best pattern for it.
+Okay, I hope this example is clear.
+You can try it out.
+Very very simple example.
+And it's just like this UML diagram.
+Very simple okay.
+If you have any doubt let me know.
+We can discuss in further comment section.
+Thank you.
+Bye.

@@ -1,0 +1,182 @@
+# Liskov Substitution Principle (LSP) Solution
+
+Hello.
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And from the previous video of Solid principles.
+Right.
+I got lot many comments that hey for the Liskov substitution principle we know what is the problem but
+how to avoid it.
+What is the solution.
+So in this quick video I will tell you about the risk of the problem plus its solution.
+Also how to resolve it.
+Okay, so I will use the same example also.
+And so let's start with this.
+So in the Liskov substitution you already know that if you have a parent class and you have a child
+class.
+So what does Liskov substitution principle says that you should be able to swap the object substitute
+the objects without breaking the code.
+Let's say currently I have let's say my parent object equals to new C1.
+And I have certain code.
+It is working fine.
+Now I substitute with this new C1 with, let's say another object, another child object, new C2,
+then this program should not break.
+It still should be working.
+If I change with new C3, it should still be working.
+So what does Liskov substitution principle say?
+That if you swap or substitute the child or parent objects, the program should not break.
+Okay, now let's first understand and then I will tell you a solution.
+So let's say I have created a vehicle class.
+So vehicle has two things.
+Get number of wheels.
+So by default I am returning two.
+Uh has engine.
+By default it is returning.
+True.
+Yes, it has engine.
+So now I have created two child class.
+One is motorcycle.
+Right.
+So motorcycle get number of wheels.
+Two.
+So that's why it didn't override it and has engine.
+Yes.
+It is also true.
+So that's why it didn't override this method.
+So motorcycle is one child class another is car.
+So car also extends vehicle.
+So it's another child of vehicle.
+And it has four vehicles instead of two.
+So it is overriding this method.
+Get number of fields for very simple parent child relationship.
+And let's say this is the client code.
+And in the client code I created a list.
+And in the list I have added a motorcycle and a car okay.
+So list of vehicle, list of vehicle.
+And in the list of vehicle I added one, I added one motorcycle and then I added one car.
+Okay.
+Now what I am doing is I'm iterating one by one and just printing.
+Does vehicle has engine dot two string.
+Let's say this is my business code okay.
+Vehicle dot has engine dot two string.
+So first vehicle is motorcycle.
+So motorcycle dot has engine.
+So it will call this.
+It will return true.
+Then it will.
+The next object is new car.
+So new car dot has engine.
+So car has engine method.
+Okay.
+It hasn't override it.
+So it will call this method.
+So it will return true dot two string.
+So this will work so very simple that I created two object.
+But now when the problem will occur problem will occur that I add one child which is now down south
+downsizing its capability like it is removing certain capabilities.
+Okay.
+So that is the problem.
+So here if you see that now motorcycle is same, car is same I am adding bicycle.
+And in the bicycle.
+Bicycle doesn't have engine.
+So what I have done is I overriding this has engine method and return start returning null right.
+Because this is a boolean object.
+So I start returning null now in the client code, if I start adding this object apart from motorcycle
+car, and if I added this bicycle, This will throw a null pointer exception y vehicle when the bicycle
+come.
+Bicycle dot has engine.
+Yes it is overrided what it will return null.
+You will do null dot two string which is a null pointer exception.
+So that's what Liskov principle says, that all the child, all the child classes should be able to
+substitute each other without breaking the code.
+But now here you have added such child class inside a vehicle, right?
+And if you add it, it will your break your code.
+Now.
+Okay.
+What?
+Why?
+Because see vehicle has engine.
+Now bicycle has removed that capability from you.
+So it has instead of increasing the capability it has reduced that capability.
+And now there is a chance that our client code will break.
+Now assume that if there are certain this code like at 100 places.
+is right.
+So all the places you have to now change put a if else condition.
+Okay.
+If it is an instance of bicycle, don't call has engine.
+If it is an instance of bicycle don't call this okay.
+So that is an issue with the Liskov substitution principle.
+And that's what it tries to solve how it tries to solve it.
+So now I have a vehicle class.
+So in the parent class put only very generic method which are common for all.
+So in the vehicle what is the generic number of wheels.
+Right.
+So by default I am returning two.
+But I have taken out the very specific let's say has engine or not.
+So now has engine.
+So I created one more class engine wheels vehicle engine vehicles.
+Right.
+Which is taking out from vehicle.
+Now it has certain methods which are specific to this.
+So it has engine and from engine vehicle.
+I have created a one car.
+One motorcycle.
+Okay.
+And bicycle I have taken from this vehicle.
+Right.
+So it doesn't has engine.
+So if you see that it is don't worry about that.
+Also because it is from the parent class only get number of wheels.
+Is there all the generic methods a specific one.
+You create another child class and put that one and only create child class out of those which required
+those.
+So you got it.
+Vehicle I have created an engine vehicle and from engine vehicle I have created car and motorcycle.
+Those who have engine but bicycle doesn't have engine.
+So it just taking from the vehicle.
+Now let's see different client codes.
+Let's say first.
+Now here if you see that I am creating a list of vehicle parent object, this one.
+If you are creating this one you can add motorcycle also cycle also bicycle also and you can only call
+the method which is available or visible at vehicle.
+So you can only call get number of wheels.
+So there is no chance that this code will break because bicycle also has this number of wheels, so
+this will work.
+Now let's say another client code.
+Now I am again creating a vehicle added motorcycle car, bicycle.
+Now I am trying to access the engine.
+Will you be able to access it?
+No, you won't be able to access it because vehicle is not aware about has engine method only engine.
+Vehicle has aware of this has engine method.
+So even if you added bicycle and you are trying to add, you will be only able to access the methods
+which all aware of vehicle.
+Which vehicle aware of, right?
+So you won't be able to access this one so you are safe from this.
+So this is a compile time error.
+Now let's say another example.
+Now I have taken engine.
+Vehicle.
+List of engine.
+Vehicle.
+So engine vehicle you can add car.
+Because this is an engine vehicle child you can add motorcycle.
+This is an engine vehicle.
+But can you add bicycle.
+No.
+Bicycle is the child of vehicle.
+So in the engine vehicle object you can add motorcycle.
+You can add car.
+But see it's a compile time error if you add a bicycle.
+So there is even if you call has engine you won't be able to add bicycle itself.
+So your code it's a compile time error itself.
+Your code will not break when you will run.
+So you got it.
+How to avoid it now write.
+Very simple right?
+It's just like using a inheritance properly.
+So this is how we avoid Liskov substitution principle.
+Okay guys, I hope this should be clear.
+Now if you have any question, any doubt let me know.
+Thank you guys.
+Bye.

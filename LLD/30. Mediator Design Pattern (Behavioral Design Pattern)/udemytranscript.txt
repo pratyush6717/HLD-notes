@@ -1,0 +1,328 @@
+# Mediator Design Pattern (Behavioral Design Pattern)
+
+Hey guys, welcome to the new LED video where we are going to design an online auction system using
+mediator design pattern.
+So with that today I will also make this mediator pattern tick Mark.
+Right.
+So and also one more thing.
+While I will tell you about the mediator pattern and the online auction system.
+So you can say that this airline management system this can also you can say that is an example of mediator
+design pattern.
+So have that in mind also.
+Right.
+So we will go with that okay.
+So let's start designing the online auction system.
+But before let's understand what is mediator design pattern.
+Right.
+And using that we will design the online auction system.
+The mediator pattern is a behavioral design pattern okay.
+So it's a behavioral pattern.
+It encourages loose coupling by keeping objects from referring to each other explicitly, and allow
+them to communicate through a mediator object.
+Now, what does it mean that whenever two object has to talk with each other, right?
+Instead of directly talking to each other, they will talk with some mediator, right?
+That's the name.
+So they will send a message to mediator.
+And mediator will pass the message to the receiver.
+And similarly, if any message comes from receiver it goes to the mediator and mediator pass to it.
+So they don't know about each other.
+This object one and object two doesn't know about each other.
+And whenever they have to pass the information to any other object, they will pass it to the mediator.
+That's what it says, that it brings a loose coupling by keeping objects from referring to each other
+explicitly.
+So no two objects Explicitly call each other right.
+So and allow them to communicate through a mediator object.
+So they both are communicating through mediator object.
+So that's what its definition is.
+And this is what its UML is.
+So I will come to the UML later.
+Now lets see its online auction system example.
+And we will construct this UML itself using the example.
+And then we'll come to see it would be very very easy for you to grasp.
+So you know that what happens in the online auction system is in the online auction system.
+There are so many bidders, right?
+So they are bidders and they bid, they bid, they place bid.
+Let's say this person has placed a bid for ₹1,000.
+Now, whenever a person place a bid, other person knows that, okay, there is a bid which has been
+placed for ₹1,000.
+Now they have an option whether to increase it or whether to place a bet with a higher amount or not.
+Right.
+So now they can other person can place a bet with higher amount, right?
+And whoever keep the higher amount bid that wins.
+So that's generally an auction system.
+And now let's see that in this auction system this person's let's consider them as consider them as
+an object.
+They don't have to directly communicate with each other.
+Right.
+Even though they are placing a bid, there is you can say that a mediator like they send their bid to
+this and this will tell that, okay, this is the bid amount.
+Anybody want to raise the bid or not?
+So they are not directly talking to each other.
+They are talking through a mediator.
+Right.
+So that's why I told you that online auction system is one of the example of mediator design pattern.
+And similarly airline management system I also find that this airline management system is also very
+good example of mediator design pattern where multiple flights right where multiple flights interact
+with airline management system.
+So let's say uh, multiple flights are like want to land and all.
+So they send a message that, hey, I want to land, can I land or not?
+So airline management system checks with any other airline or not airplane or not.
+Right.
+Based on that, they take a decision.
+But these two planes never talk to each other.
+So airline management system chat application will, uh, build in low level design.
+Whenever we are talking about low level design of chat application, airline management system, mediator
+design pattern seems to be that it's a very accurately depict what they actually wanted to to perform.
+Objects never interact with each other, and they interact through some mediator here in this airline
+management system here.
+This is with the chat application.
+Any two person will interact not directly.
+Okay.
+So you got it right.
+How this mediator design pattern comes into the picture of this online auction system.
+And how come it is very well, uh, fitting this example of this bidding and all.
+So now let's see its example.
+Let's build out so as so here we have an interface.
+So this is an interface which is known as colleague.
+Right.
+So here this colleague you can consider it as like your actual work where you can have multiple objects
+right here in the online auction system.
+This bidders are your colleagues which are working actually right.
+Which are taking participate.
+So this colleague is an interface.
+What they can do They can place bid right.
+They can receive notification.
+What is a bid notification some other person has placed and what is their name.
+Right.
+So this is an interface colleague.
+So I have created one child class concrete class bidder which implements this colleague.
+So you can say that this is a relationship.
+So bidder is a colleague.
+And it has two things name and auction mediator.
+So we will come to this auction mediator in soon.
+Just consider that it has a name.
+Right.
+So we have set the name whenever we will create a bidder object through constructor.
+We will set its name right.
+And whenever they have.
+So they have a method through which they can place a bid.
+We will come to this implementation, but understand that there is one method through which this bidder
+can place a bid, and this is one method through which they will get a notification if any other bidder
+has placed the bid, right.
+And if you want to know the name of this bidder, you can get it.
+So this is very simple.
+Let's say we have created first bidder with a name.
+And they have two functionality that they can place a bid and they can receive the bid information like
+what other person has placed any other bid.
+Okay.
+So in a system there can be so many bidders, right?
+There can be so many bidders.
+So let's say whenever I will create an object, right, I can create one bidder.
+Two I can create so many bidders.
+Right.
+So that's why I give them a name.
+Colleague.
+Right.
+There can be so many bidders and no two bidder interact with each other.
+So how they gonna interact with each other is through mediator.
+So now we have created one auction mediator.
+This is also an interface, right?
+This auction oxygen.
+Mediator.
+I have created one concrete class.
+Oxygen.
+So this is you can say that is a relationship.
+So oxygen you can say that is a uh it.
+Implement this auction mediator interface.
+And what is the two functionality.
+This interface has ad bidder place bid okay.
+So now in the ad bidder.
+If we have five bidder, ten bidder, ten bidders.
+Right.
+They all have to interact with each other, right?
+They all have to interact with each other.
+So there is some mediator.
+So they all have to talk.
+So they all have to add them to a mediator.
+Right.
+So that's why what I have done is I have created a list of colleagues, list of colleagues here, right
+list of colleagues.
+And in this colleagues here in the ad bidder, In this list, I will add the bidder.
+So that's where it is.
+So inside now you will see the bidder class right.
+I have put this auction mediator as an object.
+So this has actually so this has so there is a has a relationship.
+So bidder has auction mediator.
+Right.
+And while creating a bidder object we can also pass the auction mediator like because there can be so
+many auctions going on.
+Right.
+There can be 4 or 5 auctions going on.
+So this bidder belongs to which auction we have to send.
+Right.
+So we will pass an object of the auction mediator.
+And during auction mediator we can setting the name.
+We can set this auction mediator and calling this auction mediator dot add bidder.
+So here now I have added the bidder Bitter.
+Right now I've added the bitter.
+So now this bitter has been added.
+Okay, so add bitter clarified.
+Right.
+So here we can add all the colleagues which are participating in this auction.
+Now the second method which is place bid right.
+So now in this place bid right.
+If you now goes to the bidder class again there is one method right place bid.
+So I told you that whenever they have to place a bid, they have to tell to the mediator that hey,
+place a bid of, let's say ₹1,000.
+Place a bid of ₹2,000.
+Nobody talked directly to each other, right?
+So what it does is whatever the mediator, auction, mediator is present object.
+We will call the place bid.
+Right?
+This is the bidder which is placing the bid.
+And this is the bid amount.
+We will pass whatever the method has.
+So this we are placing a bit.
+So now here if you see that place bit so it now knows which bidder has invoked this method and what
+is the bid amount.
+So now what it has to do is what here I'm doing is I'm iterating over this list and I'm just seeing
+that call the receive bid notification to all the bidders like different bidders.
+So I'm just checking the name that whoever has called this place bid, right.
+I don't need to send his method receive bid notification for all other bidders.
+I have to send this notification.
+So what I am doing is mediator is iterating over all this bidder list and it says that hey, just call
+the notification to all the bidders which are different than who has placed the bid.
+So it calls this bidder this bidder, this bidder better that.
+Hey, there is a bid for this amount by this person.
+This is just a printing I'm doing.
+But actually they got to know about the bid amount that yes, this is the bid amount which has been
+done.
+Now all the bidder now knows about that.
+Yes.
+This is the bid amount which happened.
+Now they can take an action upon it.
+Okay.
+So now if you see that the UML of mediator this is very similar.
+Right.
+So that's what.
+So we have a colleague interface right.
+In the colleague interface we can have so many colleagues.
+These two colleagues never talk with each other.
+They talk with mediator.
+Right.
+And that's why mediator maintain a list of colleagues.
+So here just for example we have two colleagues right.
+Colleague one colleague two.
+See this mediator has both the colleagues.
+Right now in the set mediator.
+Whenever the set mediator, we can put the mediator like, uh, which mediator they belong to.
+So as in our example auction, there can be so many actions so we can set the auctions right.
+So instead of set mediator method how we have set it here through constructor itself.
+So we have constructor itself.
+We have set this mediator.
+So in the UML of mediator you will set that there is a set mediator.
+And there is a send message.
+Now whenever they have to send a message they have to call this whatever the mediator we have said they
+have to call this mediator send message method.
+Now this send message method, what it will do is it will iterate over all the colleagues and call their
+receive message method.
+Receive message method.
+Right.
+We can add certain logic that whatever the received message, whoever has called the send message,
+we should not call its received message.
+We should call other colleagues.
+Receive message.
+Right.
+So here, if you see that this online auction system we can easily build using mediator design pattern.
+So this this is clear or not we can expand this functionality of auctions to more.
+But if you see that the base right can be easily built with mediator pattern.
+And I would say that this is the base, there could be a lot more logic or functionality in the auction.
+Now we can add up more into this.
+We can add more methods, more functionality if required.
+Right.
+But just to summarize, we can have multiple colleagues like here I have a bidder.
+We can have ten of bidders.
+So now here if you see this an example.
+I have created one auction manager.
+Auction manager object.
+Right?
+I have created one auction.
+Now I am creating two.
+Beta one.
+Beta two.
+I have given the name creating the bidder object here constructor and passing the name and the auction
+which they are participating.
+So they both are now participating in the same auction.
+So as they are part of the same auction mediator.
+Okay.
+Now bidder one is placed a bid of ₹2,000.
+So bidder one place a bid.
+So in the auction it will place a bid.
+Okay.
+So it will call this method right?
+It will call this method.
+Place a bid.
+This one.
+Now what it will do is it will iterate over the list.
+Now in this list, both this bidder are present already right?
+In the constructor itself, we have added them in the mediator.
+We have added them into the list.
+So now it will iterate over both the bidder and see that hey bidder won.
+Bidder A has called the place bid.
+So I, I have to call other bidders.
+So that's why I'm checking if only on other bidders I have to call the receive notification right now.
+Similarly let's say bidder two plays a bid.
+Now again same thing the same.
+A different bidder is calling the mediator place bid.
+And now the bidder A will get the receive notification.
+Right.
+So like this we can do I hope this is clarify you.
+If you practice once you will get to know easily that with this mediator we can perform lot of uh questions
+like airline management system, chat application, online auction system.
+And this is very, very simple design pattern.
+So one thing I think can questions comes to your mind.
+It looks equivalent to observer pattern and proxy.
+So in proxy also in observer also what we have is we have one observable and multiple observers.
+Right.
+And any change happened to this observable it notify to all like how our mediator is doing.
+Right.
+Any message it received from any object it calls other it notify all other similarly in observable it
+notify to all whenever any changes happen to any particular object.
+So here if you see that intent is very different and the functionality or you can say that the problem
+they are solve is totally different.
+Here mediator is solving the two objects should not interact with each other.
+Right.
+But observable is that if any state is changed for one object, all the other objects which are interested
+in it should get notified, right?
+So intent is totally different.
+And here in this proxy also we have, you can say that a kind of a mediator proxy.
+Right.
+And whatever whenever you are trying whenever somebody is trying to access this object it will goes
+through this proxy.
+And from proxy it will goes to here.
+And from this it will goes to the real other object.
+So let's say this is object one.
+Object two.
+So here also it acts as a mediator.
+But again intent is totally different.
+So here what proxy is trying to do is that it makes sure that it do.
+Lazy loading.
+Lazy loading means is that whenever the request comes it will have lot of condition or checking whether
+are you authorized to invoke this object or not.
+Right.
+Or or any other check.
+And then based on that it will load it will call it.
+Right.
+So lazy loading logging.
+Right.
+So lot of things which proxy does its intent is totally different okay.
+But again you if you see as a high level at a top level, you will see them as a again they are working
+as a some mediator.
+Okay.
+So that's pretty much today for the mediator design pattern.
+And I think you can if online auction system comes into the interview you can use this pattern.
+And if more functionality is required we can build up based on this UML itself.
+We can add more functionality to this UML.
+Okay okay guys.
+Thank you.
+Bye.

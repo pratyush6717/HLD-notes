@@ -1,0 +1,270 @@
+# What is LLD and Pattern Categories? Difference between Is-a & Has-a relationship
+
+Side.
+Welcome back to the channel.
+So today's video is gonna be short, but it's important because I still feel many engineers has doubt
+with like what are the categories of low level design or what is even low level design and what are
+some of its relationship?
+Okay, so yes, let's start without wasting any time.
+Uh, so low level design is majorly focused on classes and objects within a system.
+Okay.
+So somewhere if I have to place it, I will place it between the high level design and the actual code.
+So high level design is somewhat you can say that the architecture of a complete system.
+So let's say here you have component one, component two, component three how they are interacting
+with each other okay.
+So it's a overall architecture of a system.
+Actual code is your actual implementation okay.
+So low level design is between it.
+So low level design it says that for component one, we are double clicking it.
+And if we see, we are seeing what all classes and objects present into that, how they are interacting
+with each other and that ultimately get converted into a actual code.
+Okay, so that's why it somewhere placed between the high level design and the actual code.
+So the purpose of low level design is to write clean code.
+Okay.
+So that's why it is very important I always says that hey writing a code is not difficult.
+High level design and low level design coming up with the design.
+Proper design is more important because with that design we can easily write the code.
+Okay, nowadays even the AI can write the code, but this design is very important.
+Okay, so the main purpose of low level design is to write a clean code.
+Code should be flexible and maintainable, and code should be easy to test.
+Okay, so there could be many, but according to me, these three are very important are features which
+should be present into a good low level design.
+Okay, so if we see our categories of low level design it is generally divided into three.
+That is creational structural and behavioral.
+So creational is like which controls the object creation.
+So here the categories of a pattern right.
+So there are so many patterns already present okay.
+So all this pattern is solving one specific problem.
+You can say that so that we don't have to reinvent the wheel okay.
+So there is certain problem okay.
+And there is certain pattern already solving it okay.
+So we have to understand those patterns which already exists, and those pattern falls into one of these
+category.
+Okay.
+So we have sometime what happened is like I'll just tell you understanding of the pattern is not mandatory
+okay.
+So for example you are given a question that okay you have to design parking lot, let's say.
+And it is not mandatory that you should know the pattern.
+Maybe you encounter some problem that okay I need this kind of scenario, I need this and you are automatically
+or yourself finding out the solution.
+So you are coming up with the classes are and how they are interacting.
+Okay.
+So you might be doing the same thing.
+Which pattern there is already a pattern exist for it.
+Okay, so what I'm trying to say is that knowing the pattern is not mandatory, but it's you can say
+that helpful when we encounter a problem.
+And that problem is already solved through a particular pattern, so that we don't have to reinvent
+the same thing.
+Okay, this is a problem now how to solve it.
+And now we are trying to come up with okay, this should be the classes.
+This should be the relationship.
+And now it is solving.
+We already have a pattern for that okay.
+So there are uh like so many patterns uh, we will cover.
+Right.
+We have already covered and I will share it here.
+So here the first category is Creational.
+So it controls the object creation okay.
+So we have different objects okay.
+How this object gonna be created.
+So the creational patterns controls it like singleton pattern.
+Singleton pattern means no matter how many times the caller are invoking hey, give me an object.
+Give me an object.
+Only one object is created and that would be shared to all.
+So only one copy of an object exists.
+Okay.
+So it falls into the category of creational.
+I am controlling how the object need to be created.
+Similarly, we have builder factory abstract factory.
+Object pool prototype.
+These are different patterns which falls into Creational and these all controls how object need to be
+created.
+For example builder it controls that.
+Okay.
+The complete object need to be created in step by step.
+Small small small.
+Small steps.
+Just keep on creating the objects into different steps.
+Okay.
+In further video you will learn about these.
+Okay.
+So but this is a very high level that what this category is.
+The second category is structural.
+Structural says that how different classes and objects are arranged together so that the larger problem
+can be solved in most flexible way.
+For example, The larger problem is you have to develop a car, just for example, and now say that
+you have different different classes or objects.
+Let's say one object is wheel, another object is engine, another object is let's say, uh, certain
+uh, headlights.
+Okay.
+And another object is steering.
+There have so many objects.
+Okay.
+Now how these objects are arranged so that the bigger problem is solved.
+That's what structural category says.
+So there are so many patterns like decorator, proxy, composite adapter, bridge, facade and flyweight.
+These all falls into the category of structural pattern.
+Okay, because there are more concerned about how the objects are arranged together.
+So consider it as a skeleton.
+So we have created a skeleton okay.
+So these are all the classes and objects.
+And this is how all are arranged.
+So consider this as we have created a skeleton okay.
+So they are arranged in such a way that the larger problem is resolved.
+Then the third category is behavioral.
+It focuses on how different objects communicate or interact with each other.
+So if in other word I would I would have to say I would say that the structural pattern will create
+the skeleton of the system.
+You have different classes, you have different objects and how they are arranged, but how that skeleton
+behaves, the coordination among them, the responsibility, the interaction is all guided by behavioral
+pattern.
+Understand with this simple example that you have only three classes okay.
+Class one, class two, class three.
+So now class two has to interact with class three.
+So what?
+So whether it has to call directly to class three or let's say that it need to be like here, class
+one, class two, class three.
+So class two goes to it's another class.
+Hey pass it to class three and then it goes to the class three okay.
+So here it has an orchestrator.
+So there are different ways of coordination or communication.
+Or you can say that interaction.
+So that is guided by behavioral.
+What should be the behavior of the skeleton which you have developed okay.
+So there are so many patterns which belongs to this category okay.
+So that is clear.
+So this is something very important in the sense uh but there is nothing like we have to spend so much
+time understanding this because you will ultimately get to learn more about it when you go through each
+and every, uh, design pattern individually.
+Okay.
+Now another thing where most confusion comes is has a and is a relationship.
+Okay.
+And also I will tell you my way of remembering it.
+Uh, so but first let's see is a relationship is nothing but an inheritance okay.
+So here let's say you have a vehicle and there are two child classes two Wheeler and four Wheeler.
+So it is generally represented as two Wheeler is a vehicle four Wheeler is a vehicle okay.
+So this is a child class.
+This is also a child class.
+This is a parent class.
+So it is an inheritance.
+So two Wheeler is a vehicle four Wheeler is a vehicle.
+Similarly let's say you have employee and then you have CEO.
+CEO is a employee.
+You have a manager.
+Manager is a employee okay.
+So it represents inheritance.
+Now let's come to Hazar.
+a has a means.
+There is a link between two objects.
+Okay.
+And you can say that generally normal has a means association.
+Association means link between two objects like house has rooms.
+Library has books.
+School has a students.
+So there is a link between two objects okay.
+So this is known as association.
+And it is generally represented like this.
+Okay one more thing.
+This association has two parts.
+Aggregation and composition.
+So here you can say that this association has two parts.
+One is aggregation which is weak relationship.
+Another is composition which is strong relationship okay.
+So association is generally represented as like this which is nothing but a has a relationship okay.
+And if we go more specific.
+Hey, what kind of association is this?
+Is it a week?
+Is it a strong.
+Then we have to focus more on aggregation and composition.
+Let's focus on aggregation.
+Weak relationship.
+Existence of one object is not depend on another.
+For example, library has books.
+Okay, so here, if you see that we have one object library another, we have books.
+So in general library has books.
+So it has a relationship library has books.
+But if you want to go one level more deeper is it a strong relationship or weak relationship.
+So just see that hey can a book object exist even if the library object is destroyed or if library destroyed,
+can book exists?
+Yes, both can exist independently.
+Their existence is not dependent on each other.
+So that's where it is known as weak relationship.
+Existence of one object is not dependent on another.
+Okay.
+And this is represented as like this a hollow diamond and then a line okay.
+So library has books now.
+Also one more thing is that generally it is like this.
+So you have a class library and you have a list of books.
+But here it do not manage books.
+It do not add books or it do not delete books or it do not.
+You can say that update something, it do not manage it, it only knows about it.
+Library has books, but it don't manage it because it's a weak relationship.
+Even if library is broken or object is gone, books still will exist.
+Okay, books can still be added, newly books can still be deleted.
+Okay, so it's independent of library.
+So library is not responsible for adding a book, deleting a book and all.
+It just knows about it.
+In contrast, like we have a composition, the composition like existence of one object is depend on
+another.
+House has rooms.
+If house gone, room is gone.
+Two room cannot exist independently.
+It depend on house and that's why it is shown like this.
+So you have a filled total filled diamond and then a line.
+So house has rooms.
+But this is a strong relationship.
+That's why it is shown like this a filled diamond and the line and if you have to go a code like this,
+you will see a class house.
+And it has a list of rooms.
+It knows about rooms.
+But here the difference is that this house class is also responsible for, let's say, creating room
+objects.
+Also, because rooms existence depends on the house, so house should managing it.
+Okay, so that is clear right now.
+I'll tell you my way of uh doing this UML and also in the further videos when you are go through it
+in, you will see that.
+Notice that see in my view UML is for us okay.
+So generally LD round we have machine coding.
+And then we have like 145 or 2 40 minutes round 40 to 45 minutes round.
+So machine coding is generally uh like 1 to 2 hour mostly I think mostly two hours.
+Okay.
+So here you need complete code, full code.
+And in 40 to 45 minutes round generally mostly they also expecting the code sometime not fully.
+See, I am all telling you based on my experience I might be wrong.
+Okay, so I am telling you from my experience, based on the so many rounds I have given, I have taken
+on that experience.
+I am saying code is required in this round 40 45 minutes interview also, but sometime it is not expect
+like you fully functional and also many companies will not provide you a code where you can create a
+UML like this.
+Okay, but the thing is, you can't code until you don't know what all classes you need to create.
+What's the relationship between them?
+What are is the child classes?
+What are the parent classes okay.
+Which has a relationship.
+Is the relationship like all okay.
+So you need to know the UML.
+But the thing is let's say if 40 45 minutes round, if the interviewer is expecting a code, definitely
+we should not spend much time like only ten 15 minutes.
+We should be only spending on UML because we have to code.
+Also because if we don't code, then there is a high chance that interviewer will not select us.
+Okay, this is again based on my experience.
+I'm telling you.
+So instead of like remembering, okay, connection should be like this or it should be full diamond
+like this always go with.
+I always go with.
+Like arrow has a relationship.
+Arrow is a relationship.
+So it's always clear like it is because mostly for me okay.
+And I have a clear understanding has a relationship means these objects have a relation is a relationship.
+Means is a parent child relationship okay.
+So you have to save some time for the coding.
+I would say that yes you need to understand the relationship properly okay.
+And it's up to you how you want to create a UML, how much time you are getting in the interview.
+Okay.
+And uh, yeah, I think that's mostly I want to discuss today.
+Okay.
+So yeah, go with the UML proper UML if you want.
+You have time or go with like either shortcut.
+I said you like go with an arrow and but put here above is a and has a relationship okay okay guys.
+Thank you.
+Bye.

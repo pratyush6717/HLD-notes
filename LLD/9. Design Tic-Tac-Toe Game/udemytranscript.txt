@@ -1,0 +1,436 @@
+# Design Tic-Tac-Toe Game
+
+They said welcome back.
+And today we are going to do low level design of tic tac toe.
+If you are experienced or fresher, this is the most simplest level which we can get in an interview.
+Okay, so let's start without wasting any time.
+So let's understand about the game and its rules.
+So tic tac toe we all we have played a lot right.
+So it's a generally a three by three.
+We have a matrix and it's a two player game.
+And one player.
+We assign a symbol let's say cross and another we have assign let's say circle.
+So in this one the we each player takes a turn one by one and places their symbol onto this grid three
+by three grid.
+And the winner is whichever player got their symbol either on a full row or column or diagonal.
+Okay, so that's what I have written here.
+It's a simple two player paper and pencil game.
+We have all played it.
+Each player select a piece before the game player takes turn, placing it on the three by three grid.
+A player wins by placing three of its pieces in a row, column, or diagonals.
+Okay, and the game ends when a player wins or when all the grid cells are filled.
+So when all the grid cells are filled, it is generally a tie or draw.
+Okay, so very simple game.
+I think we are all in line like how we generally play this game.
+Okay, so what are the objects involved by understanding this flow.
+What about the game which we have understood.
+So the first object we can think of is a playing piece right.
+So we have this right x o.
+Let's say in future we can give more option that you can play with this symbol or this symbol Or more.
+Okay.
+And we can discuss with the interviewer that whether each symbol can have their own behavior or not.
+Like different colors.
+Right.
+Different behavior.
+Okay.
+Rendering logic.
+Different rendering logic.
+So depending on that, we can either have a playing piece as an object.
+Or we can also have an enum.
+Okay.
+Let's say interviewer say that yes.
+Make it extensible so that we should be able to support more different types different piece type.
+Let's say dollar triangle more different piece type.
+Also they can have different behavior also like color.
+In that case this could be one object.
+Another object we can see is this board.
+Okay.
+And we should be make it extensible that today we can play it with three by three let's say.
+if interviewers say that, yes, we can also extend it, let's say 4x4.
+So that's why our board should be extensible.
+So we have one more object called board.
+And the third object which we can see from this flow is our player.
+Okay.
+So we have the third object player.
+So with this flow we can easily identify these three objects which are involved in this game.
+Let's go one by one in the construction of the UML diagram.
+And in parallelly we will also see the code of it so that it becomes super clear.
+The first is the playing piece.
+I already told you that if interviewer says that no, let's keep it very simple.
+Only, uh, there is no future requirement of different color, different, uh, rendering logic, anything.
+Then we can simply have an enum.
+We don't need this playing piece object itself, But we making it extensible.
+I am creating a playing piece object here and I have multiple child classes like one is X, another
+is O.
+In future we can have, let's say one for dollar.
+This only makes sense when each one of it can have different behavior.
+Okay, so I have a playing piece let's say abstract class.
+And here I have a piece type.
+So piece X will fill it up with this x piece type is x.
+Playing piece O will fill it.
+This piece type with O.
+Similarly dollar will fill it with dollar.
+And if interviewer says that yes, in future they can have different behavior like color, then this
+structure makes sense.
+Parent child.
+Okay, so that each one can have their own behavior like different color, different rendering logic.
+What?
+Interviewer says again, no, let it just symbol okay then even the enum is sufficient.
+So you got it when we just want only enum.
+And when this parent child relationship is important.
+When each piece can have their own behavior then this hierarchy parent child hierarchy is very important.
+Okay.
+So here if you see I have a playing piece class and here I have a piece type okay.
+And from this constructor this piece type I am just assigning.
+So there are currently two child classes.
+One is x and another is O.
+So in the x one whenever we will create an object of it.
+So it will just assign its piece type what is its x.
+Similarly the circle one or oh one.
+Whenever we will create an object of this playing piece.
+Oh, it will assign its symbol, which is this one.
+Oh, okay.
+So this is clear.
+So we have created the first object.
+Now let's create a board okay.
+So what is board is.
+So here in this board we have a n by n matrix okay.
+So first we needed size.
+So board needs size so that we can specify the board whether you want three by 3 or 4 by four etc..
+Okay.
+So that's why I have a board class where I have first defined size.
+Which board the board size which you want.
+Okay.
+Now once we have defined the size which we want.
+Now see this board is nothing but a 2D matrix.
+Right.
+And what are the value of this 2D matrix is nothing but a playing piece here.
+We will gonna have this playing piece Peace cross.
+Oh okay.
+So this is an 2D matrix of what playing piece.
+Okay.
+So that's why I have a playing piece 2D matrix.
+So that's why the board has a relationship with playing piece.
+Also if you see that we can have multiple methods which we can add, one important method is add piece.
+So whenever a board support board understand this matrix okay.
+Nobody else understand this matrix.
+So whenever any player need to put any piece, let's say I want to put a piece x at one comma one.
+So it will pass this to this method at piece and board will add it here Okay.
+So both understand this matrix.
+And whichever want to add a piece onto this matrix they will invoke this method.
+Add piece method.
+Okay.
+So this one is important.
+So this is very very simplistic board we have.
+So we have uh size.
+And we whatever the size IT user will provide us, we will create a matrix for that one.
+And that matrix can hold playing piece object.
+Okay.
+Let's see that.
+So board here.
+So size and the playing piece.
+So whenever the board we will create in the constructor we will give the size okay.
+And with that size whatever it is given we will create a board with that one new playing piece.
+And for that size 2D matrix size we will create initialize this board.
+Okay.
+And this add piece.
+Okay.
+So in the add piece method this is very simple method like I am getting row column and the playing piece
+which I want to the piece which I want to store it at the row and column.
+So I am simply checking if on a board, if row and column is not equals to null means there is.
+Let's say you have a playing piece.
+Oh, and you want to store it at one comma one and already piece x is already there.
+So currently it's not null means some piece is already present.
+You can't, uh, save this.
+You can't put another piece on top of it.
+So that's why I'm returning.
+False.
+But if there is a space, I am initializing it.
+Let's say you have given zero comma one.
+So means at zero comma one.
+No, no other pieces there.
+So at this row and column of a board, we are restoring this piece.
+Okay.
+And returning the true.
+Yes.
+I am able to add the piece properly.
+If not, you are returning false.
+You are not able to add the piece.
+Okay.
+Very simple method.
+So our board is also done.
+Now the third object which we have think of as player.
+So player is have two properties.
+Generally a name.
+What is the name of the player.
+That's all we wanted.
+And also when we create a player we want it to choose one symbol.
+So that's why we it the player also has playing piece whether it is playing with either X or O or we
+can have different.
+Right.
+So whatever the piece which player is choosing we are assigning.
+We are attaching this with the player.
+So player also has playing piece.
+Okay, so here I am creating a player.
+Player has only two things.
+Name.
+So whenever we create a player we will give it a name of a player and also the piece which it is playing
+with.
+Okay.
+So player is also done.
+So here this is also done.
+Now we all the objects which we have think of is done.
+Now all we want is orchestrator.
+So that is our tic tac toe game class okay so here if you see that.
+We can multiple player play with this game.
+Right.
+So two players can play with this game.
+So that's where I am using currently DK okay.
+So with this DK let's say either you can also have let's just say this game is very specific for two
+players right.
+You can have player A and player B two variables.
+Or generally I feel comfortable with this DK.
+Let's say player one, player two.
+And whenever player one takes its turn, I will remove it from the start and put it at the back.
+So with the DK, you can easily remove from the front and put it at the back once its turn is over so
+that, uh, they can keep on alternatively playing the game.
+Okay.
+And it's a collection so we can add two players into it.
+Okay.
+So we can have a list of player.
+And also for the game we also have a board.
+So tic tac toe game has list of player.
+So it has a relationship with the player.
+Also it has a board.
+So that's all you wanted.
+Okay.
+And with this two we can start the game and tic tac toe game I am adding these two methods initialize
+game and start game.
+So here, if you see in the tic tac toe game, I have a DK of a player.
+So where in which I will put two players and I.
+All I need is board.
+If these two things I can initialize and start the game.
+So let's first see.
+Now let me start the game.
+Then I will show you the complete flow.
+Okay, so let me run the code first.
+So I'm running it.
+So this is the tic tac toe game.
+So player one please enter row comma column.
+So let's say player one is putting into one.
+Here one comma one.
+So at one comma one player one symbol is entered.
+Player two please enter row and column.
+Let's say it put zero comma zero.
+Okay.
+Again player one let's say it put uh row Rogue column.
+Right?
+So it put row one.
+Zero column.
+So it also came player two.
+Let's say it want to run at it.
+Want to run at two comma zero.
+Okay.
+Now player one can easily win by putting it the symbol at here.
+So it won.
+It is keeping it at row one.
+Second game winner is player one okay.
+So this is a very simple game.
+Again there could be a lot of validation we want to add.
+We can easily add the validation okay.
+That is a business logic.
+There might be many validation is missing into this code.
+We can add it but the main focus is on the design okay.
+So with this we can easily create the game.
+Now here if you see the first thing I am creating a game from the main class.
+Let's say I'm creating a game.
+Tic tac toe game equals to new tic tac toe game.
+So I am creating an object of this.
+Okay, once I got an object of this, what I am doing is first initializing the game.
+So I am invoking this initialize game method.
+Now in the initialize, what I am doing is I am first creating piece x and piece o.
+So I created two piece.
+I created one piece x and one piece o.
+So this two is created first.
+Then I created a new player player one and assign it the cross piece.
+So this one I assigned it to player one and I created a new player.
+Give it a name player two and assign it a circle piece.
+Okay, so two players I have created and added it to the list.
+And you know that linked list is an implementation of dequeue.
+So I can remove it from the front and also put it at the end.
+So these are my two players.
+And these two players are into my P1 and P2.
+First I put player one and then player two.
+And also I created a game new board three.
+So what it will do is it will create a playing piece three by three.
+So it created a board of three by three.
+So this initialization is happened.
+Okay.
+After that from main what I am calling is game dot start game.
+So whatever the tic tac toe object I had right from that.
+Now I am working start game.
+Now when I am starting the game.
+So see what is happening.
+I am iterating till I don't see any winner.
+So you can say that this is mostly an orchestrator class.
+Okay.
+And start game is also kind of orchestrating the complete game.
+So I am iterating.
+I am continuing this game till I don't see any winner.
+So currently no winner is true means there is no winner.
+So let's play the game.
+Okay.
+So first thing first, remove the player whose turn is and also put the player in the list back.
+So first thing I'm doing is from the list I remove the first player.
+So this I'm removing the first player.
+Hey P1 your turn.
+So I'm removing you from the front okay.
+Get the free space from the board.
+So here see this is just my logic.
+You can have a different logic to determine whether are there any free space or not okay, so for now
+currently I am I added one method into the board here.
+Free space check there I'm just checking.
+Is there any space left to put the piece or not?
+If no means this is already a tie means there is no space.
+This player cannot put a piece anywhere because all filled up.
+So that's what.
+So I'm checking get free cell.
+So here I'm just checking iterating all cell one by one.
+I'm checking if there any cell left in the board okay.
+So this is just to determine if yes if there is any empty then I will proceed it.
+If there is no empty space I am saying no winner equals to false.
+I'm just terminating this while condition and ultimately return tie.
+But now let's say that free space is there.
+Yeah.
+So let's free spaces there.
+This is currently we have just started the game.
+So yeah there is a free space.
+So it will go here.
+Now it will read the user input here.
+Player one.
+So what is the current player?
+This is our current player right?
+This is our current player.
+We have removed it right.
+This one please enter row and column.
+So it put let's say one comma one.
+So.
+So we have read it.
+We have put input row and input column what the user current player has entered.
+Now we are calling the add piece.
+We are calling this method here at this row.
+And at this column add the piece.
+So let's say it has given one comma one.
+So I already showed you this method.
+If there is already a piece on that row and column which current user has selected, it will return
+false.
+Otherwise it will add it and return true.
+So currently there is no piece, so it will add the playing piece into it.
+Okay.
+It's a valid move.
+Yes, it's a valid move.
+We have all added that piece and returned.
+True.
+But if there is already a piece so it will return false.
+And it will.
+We will ask.
+Hey!
+Incorrect position chosen.
+Try again and we again put the player into the first.
+Let's say there is already X on it.
+And now this player one choose.
+Hey again, put on one comma one.
+So would you be able to put it.
+No.
+There is already a piece present here.
+So at peace will return false.
+And we will ask that incorrect position.
+And we again add the player one back into the front.
+So we removed it right.
+We again added so that in the next while loop run it.
+We will ask again.
+Player one.
+Pick the next row and column.
+Okay.
+Now let's say that yes, currently we have started first.
+So yeah there was a valid move.
+So we have added a proper playing piece into one comma one.
+And since it's a valid move, we add the player at last.
+So now player one we have added at last.
+Okay, now after that I am checking for winner.
+So in checking for winner, what I am doing is I am just checking the row, checking the column, checking
+diagonally and nt diagonally.
+Okay, so whatever the row and column user has chosen.
+So I am checking this row checking this column.
+Checking this diagonals okay.
+If let's say row this row this row has all x symbol x symbol x or not, then this column has all symbol
+x or x or not.
+Okay.
+So that's what I am just checking I'm checking the row one by one I one, I am checking each row that
+it is matching with the piece type current user piece type x or not.
+Okay, if it is not, I am returning row match equals to false.
+Okay means currently it's not a winner okay, but any either row, column, diagonal or antidiagonal.
+If any of them is all true, then we can return true itself.
+Yes, it's a winner, any one of them.
+That's why I'm using or any one of them has all the symbols of this player.
+Then we will return true.
+Okay, so currently it's a winner.
+No, currently it's only put at here, so it's not a winner.
+So what would happen is.
+The while loop continues.
+So currently there is no winner.
+Now player dot remove first.
+So now who is at the first player two.
+So it will remove it.
+So this will become our current player.
+So we are just printing the board.
+And after that we are getting a free cell if there is any free cell available.
+Yes we are continuing the game.
+Otherwise we will stop the game.
+Yes there are free cell available.
+So we are asking hey player two, enter row and column.
+Let's say player two says that zero comma one.
+So it will put what it will do.
+It will read it okay.
+And then it will try to add the piece calling the board.
+So from this game we are calling the board at piece okay.
+At zero comma one there is no piece already added.
+So it will add it and return true.
+And yes it's a valid move it.
+Since it's a valid move, we will accept that move and put the player at end.
+So player two now come at end also.
+Now I'm checking Is it now a winner?
+So after he has put a valid move, can it become a winner?
+So I will check its row, its column and if diagonally required.
+Okay.
+So if it is not a winner again continue.
+And this game goes on okay.
+Now I think you got it right.
+So this is very simple.
+Like that's all this class act as an orchestrator.
+This class act as an orchestrator okay.
+And this start game has all the logic like how this game should behave and how this objects need to
+be used together.
+Okay.
+Very simple game.
+Uh, I have already pushed to the grid.
+You can check it out for the code.
+Yes, there could be some validations.
+We can add more that hey, what if the user has selected five comma five, but our matrix is three comma
+three?
+We can add certain business logic that hey invalid move.
+Okay.
+So again I'm saying there could be a validation missing.
+But that's not our core intention to have a proper business logic here.
+Our core intention is to come up with all the classes, objects, their relationship, so that we can
+have a working extensible this game.
+Okay, I hope it is clear.
+Try to practice it with your hand and you will get it like it.
+Become your intuition.
+Like what?
+All objects I have to create.
+What is the relationship, right?
+So practice more with your hand and slowly the intuition will get built up.
+Okay, if there is any doubt, let me know in the comment section we can discuss further.
+Okay guys.
+Bye.

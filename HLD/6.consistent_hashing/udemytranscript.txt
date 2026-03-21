@@ -1,0 +1,582 @@
+# Consistent Hashing (English Dubbed) | Better with 1.25x playback speed
+
+Hello guys.
+Welcome to Concept and Coding.
+So today's topic is consistent hashing.
+If you've watched the previous video scale zero to million users, we discussed a topic there called
+Horizontal sharding.
+Today we'll understand how consistent hashing helps in sharding and where it is used.
+Right.
+So let's go ahead without wasting any time.
+So what does consistent hashing do first of all.
+We'll see what hashing is.
+All right.
+In a minute.
+We'll first see what hashing is.
+What is the.
+Use of consistent hashing.
+Why did we need consistent hashing.
+And then we will see how it works.
+After that, we'll see how it solves the problem and how it works.
+First of all, what is hashing?
+Why did we need hashing?
+Right.
+So we all know what hashing is.
+We use hash tables right.
+They have hash function.
+So how does it work here we have a key.
+For example the key is my name like Shreyansh.
+All right.
+So this is one of our hash functions.
+There will be a hash function.
+Right.
+So what will that hash function do.
+It takes this key as input.
+So what did it do here.
+Shreyansh.
+So this hash function gives me what is called an arbitrary length.
+Value meaning it can be of any length, small or large.
+This hash function gives an arbitrary length value and a fixed length input.
+So let's assume the hash function gives me one, 4321.
+For example, this number could be 6070 anything.
+So I'm just taking some random example.
+If I apply a hash function to my name internally, it generates a value for me.
+Let it be 14321.
+Or for simplicity, let's say it gives me just a small number, let's say 20.
+This is the hash number generated for me.
+And here we use a technique called.
+Hashing.
+What is mod hashing.
+We have a hash table with a fixed size right.
+It has a fixed size let's say 0 to 5.
+So what is its size?
+Six.
+All right.
+So what do we say here.
+We take mod n six so that whatever data we insert, it goes into a specific index because that's the
+size I have.
+This is called mod hashing.
+So you understand what hashing is, right?
+In hashing there is a hash function that converts an arbitrary length value into a fixed length value.
+Then there is a technique called mod hashing.
+What happens in it is that whatever size is in our hash table, so that whatever value is there, I
+have to store it in this table.
+So I mod it.
+By its size.
+The size of the hash table.
+Right.
+So now assume whatever I got its index came as two.
+So this value will be stored at index two.
+So this is how hashing works.
+Clear.
+Now next let's see what is the problem if what is the problem.
+With this hashing.
+What is the issue and why did we need consistent hashing?
+Right.
+If this thing my size, if it is fixed.
+If my size is fixed modulo six.
+If this is fixed.
+Then hashing is perfectly fine.
+No issues with it, but the problem arises when the size is not fixed, for example.
+All right.
+For example, how is it used?
+One is our load balancing.
+For application servers.
+And the other is horizontal sharding.
+All right.
+What happens.
+And this is load balancing for application servers where I have a load balancer and application servers.
+App server one.
+App server two.
+Like this.
+And assume I currently have three servers, right?
+So if the load balancer is using a hashing technique, for example it is using.
+Mod hashing right.
+So what is this?
+This is the load balancer.
+If it is using some hashing technique here like.
+Mode.
+And currently how many servers do I have 123.
+So it is using mod three.
+And here I am getting a request and I need to send this request to which server.
+Right.
+Because what is the job of a load balancer?
+The job of a load balancer is to equally divide the traffic to my app servers, so that no single app
+server gets overloaded, right?
+If I'm getting ten requests, it should divide them into three, 3 or 4 so that the load remains equal.
+That is the work of load balancing.
+All right.
+So whenever I get a request currently I have three servers.
+So it will use mod hashing.
+Whatever request I have it will take the key get its hash function and mod three, then send it to one
+of them.
+In sharding.
+What happens in horizontal sharding is we create multiple DB servers.
+All right.
+For example, there is a huge DB with 100 rows.
+So we can divide it into two DB's with 50 rows each.
+So now which value will go into which db that is decided by for example a to p.
+Will go here in db one Q to j will go in DB two.
+So this is horizontal sharding.
+But here the same issue arises as in load balancing.
+Here assume if all names come like this more, then this db will fill up quickly and this one will remain
+empty.
+So the load is not equally divided, right?
+So here too we need consistent hashing so that whatever data we have that should be equally divided
+among all the databases, right?
+If more is coming, then it should decide in such a way that it gets equally divided among.
+All right.
+So here we have the same problem in load balancing and horizontal sharding.
+Then the traffic whatever traffic is coming the servers we have here application servers in horizontal
+sharding DB servers, how to divide it equally so that the load on our servers remains constant meaning
+equal.
+Right.
+All right.
+So now, for example, what I was explaining to you, assume my name came Shreyansh.
+I applied a hash function and the hash was mod three because currently I have three servers.
+Right.
+This could be app servers here.
+This could be DB servers here, right.
+For example, let's talk from the horizontal sharding perspective.
+This data of mine is stored in node one.
+Shreyansh is stored in DB.
+All right.
+Now assume the next name came for example Rahul.
+All right same applied mode three on Rahul for example it will come as node one.
+And this came as node two.
+So Rahul is stored here.
+For example another came Shivam.
+Applied mode three on Shivam.
+And this came as node three.
+So here Shivam is stored.
+Alright, everything is fine so far.
+But what I told you was that the hashing technique is only.
+Valid.
+And you can see it more applicable when the size is fixed.
+The server size is fixed.
+But here is it fixed.
+Node one.
+Node two.
+Node three are not fixed, right?
+Because these are servers and according to our need this server can increase or this server can decrease.
+Right.
+So the first use cases if these increase.
+Alright.
+If they increase then what will happen is now these become.
+Not one not two not three.
+And now I have one more node for this is newly added.
+Newly added node.
+All right.
+So now what will happen to my load balancers function?
+Whatever key I have, whatever key is coming.
+Mode four will now be mode four right here.
+It will be mode four, not mode three.
+So now the modulus has changed.
+So definitely for example, if the name Shreyansh comes again right.
+My expectation was that when Shreyansh comes I will run this method mod three.
+So I will know which db my data is stored in, right.
+But now an extra node has been added.
+So if shreyansh comes now F of Shreyansh mode four, is it still guaranteed that node one will not give
+it?
+Okay, first it was mode three and now it's mode four.
+So definitely the chances are that the value now is.
+For example I have n2.
+So it will request to Shreyansh to search for shreyansh data.
+But where was my data.
+though it was in node one.
+Here it was in node one, so now it won't get the data.
+So what do I have to do?
+Rebalancing.
+This is called rebalancing.
+So what I have to do is bring all the data from here to there after rebalancing okay.
+The data has to be brought from here to there.
+Similarly, it might happen that Rahul's chain, which was earlier on node two, now moves to node three.
+Here Rahul moves now.
+So even now I have to rebalance.
+Why?
+Because earlier Rahul was on node two.
+Now where has he come?
+Node three.
+So I have to rebalance Rahul's data from node two to node three.
+This is called rebalancing.
+Okay, so here for example here you took three simple examples in DB.
+How much value is there.
+Maybe millions of transactions right.
+Millions of DB entries.
+Okay, so assume that in this rebalancing, if any node comes or gets deleted, then the mod I have
+will change.
+And because of this I will have to rebalance for the millions of DB entries.
+Okay, the entries that were earlier in node one okay, their whatever entries used to come.
+Let's say for example id, I have an id in the db.
+The user requested something with that ID and we know that we give everything an ID, so I know whenever
+this ID comes I will apply a hash function on it.
+So it used to go to node one earlier when it was three.
+But now I have added a new node.
+So now on the same id I will apply mode four.
+So it is going to node one, going to node two.
+But the data is in node one.
+So here I have to rebalance all the IDs.
+In this way all the IDs could be thousands could be millions.
+I have to rebalance them.
+Bring them to the new node in node two.
+So this makes hashing not applicable.
+And you can see it's not a good approach where our nodes are dynamic in load balancing where we have
+to send traffic.
+The app is dynamic.
+The app can go down, the app can crash, or a new app can come in horizontal sharding.
+We can do another DB.
+Okay, in this we can say from A to F, then from G to P, and then here from Q to Z okay.
+And we can further divide also okay.
+And here we can also remove.
+So these are dynamic.
+So when it's dynamic we can't apply normal hashing.
+Why can't we apply it.
+I have told you because the modular changes.
+So what is the solution.
+The solution is consistent hashing.
+What does consistent hashing solve?
+Consistent hashing solves that whenever a new node.
+Node one, node two, node three I had these okay.
+So it has keys from key one to key ten.
+It has some keys.
+It has some keys okay.
+They are storing some data.
+So what is the motto of consistent hashing that either no node comes.
+Or one is removed.
+In both these cases this rebalancing.
+Is to minimize it.
+How much to minimize it?
+One.
+Raise to the power n percentage of total number of keys.
+Total number of keys only.
+This much rebalancing should happen.
+That's a formula.
+And this number of nodes.
+Okay.
+However many active number of nodes there are.
+So one raise to the power n percentage of total number of keys.
+Okay.
+This much percent of keys should be rebalanced.
+That's it.
+So that's what consistent hashing can achieve okay.
+If you have to rebalance only this many keys here, you would have to rebalance millions of DB entries.
+Right.
+In normal hashing okay.
+That is not good.
+Consistent hashing says that you can achieve this good.
+This much rebalancing is good 1%, whatever percent it is.
+If you have to rebalance that much of the total number of keys.
+Okay.
+So the purpose of consistent hashing is that if a node is removed, okay.
+In that case, or if a new node comes.
+In that case, the thing that had to be rebalanced, that should be minimized.
+Okay.
+That is the only motto.
+And how much to minimize one raise to the power n percent.
+This much of total key is on average.
+If you are rebalancing this many keys, that is good, but not more than this.
+Now you understand what is the use of consistent hashing?
+What is the problem with hashing?
+What is the use of consistent hashing?
+Now let's see how does consistent hashing work?
+Okay, so how does consistent hashing work in consistent hashing?
+First of all, it takes a virtual.
+Ring okay.
+This ring is you can consider a circular queue.
+Okay so there is a virtual ring.
+So now I have taken a virtual link here for which size.
+For the total size Okay.
+It starts from zero, ends at 11, and then back to zero.
+Okay.
+So now first of all, what does it do?
+It removes the dependency.
+Now here what I have done is the servers.
+The DB servers or application servers, whatever servers you take okay.
+What does it do to them on this ring?
+Sets them randomly okay.
+So for example I am taking the same mod hashing for the server.
+So in this I have 12 as the size.
+So first let's assume I have three servers.
+Server one, server two, server three okay.
+I have assumed server one is hashed hash of server one mode.
+So let's assume it came to this position for example.
+It came to my server one.
+Okay.
+This is.
+Server one.
+Okay, second I hashed server two.
+For example, my server two came here.
+I'm just taking randomly.
+We place it here.
+Okay.
+Here I placed server two.
+Okay.
+Then I took out the hash of server three.
+Hash of server three.
+Mod 12.
+Let's assume it comes somewhere at 11.
+Okay so here I take.
+For example.
+It became my server three.
+So here I took three servers extracted their values in such a way in the ring which.
+Value my servers came on okay.
+This is just random.
+Okay.
+And for this example I took them at equally distant places.
+But I will tell you the problem with this approach, the problem with this approach.
+But for example, let's say they are at equally distant places, the hash function I used in this way.
+So now assume I have keys coming.
+Now I have keys coming.
+Key one.
+Key two.
+Key three.
+Key four.
+Key five six.
+Now I have also taken out the hash in this hash of key one mod 12.
+So assume key one came here.
+Now for key one let me take a different color.
+Let's say key one came here.
+Okay.
+Key two came here.
+Key three came here.
+Key four came here.
+Key five came here.
+Key six came here.
+Key seven came here.
+For example, randomly this hash I am using only the mod hashing technique, but on a virtual ring I
+have extracted the values of all.
+Okay, so now which server will fulfill which key or handle the request?
+Now what I have to do is move clockwise.
+Okay.
+What I have to do is move clockwise.
+I will move clockwise from here okay.
+So from key to key to who will handle key one here.
+Move clockwise.
+Which server did it meet first.
+Server one.
+So who will handle key one.
+Server one from key two I am moving clockwise.
+Who did I meet?
+Server one.
+So what is server one?
+Handling server one is handling my key.
+One handling key.
+Similarly who will handle key seven?
+It will move clockwise.
+This key seven or call it value.
+It will go to S2 to server two.
+Where will key five go to S2 clockwise.
+So S2 is storing key five.
+Key seven.
+Okay.
+Similarly, where will T6 go to S3?
+Where will T3 go to S3?
+Where will Qi four go to S3?
+Okay, so S3 will fulfill three Ki six, Ki three, Ki four.
+Okay, understood.
+Which servers will fulfill the keys?
+In this way?
+It is decided by going clockwise.
+All right.
+Now let's assume I'm adding here.
+Okay.
+Now how is this solution being solved.
+So you will have to observe here.
+Now assume addition.
+Addition of server.
+If I add a server what happens.
+So now assume within this example.
+All right.
+Within this example currently I had three servers.
+Now here what I am doing is adding one more server.
+Okay, I'm adding one more server.
+And that would be my.
+Let's see.
+I'm adding a server on a pipe.
+I added a new server.
+All right.
+This is my.
+Four.
+Okay.
+S1 s2 s3 s4.
+So now see here which rebalancing needs to be done right now.
+See if any change happened to K1k2.
+No change happened.
+All right.
+Here is still pointing clockwise to the same K six.
+K3 K4.
+Still no change happened.
+All right.
+What was coming in S3 was k six k3 k4 k.
+K3 k4.
+No change happened on s1, k1, k2 no change happened.
+All right.
+Here on S2, k5 K7 was coming, but now only K5 is coming.
+Who will handle K7?
+It will move clockwise to S4.
+G7 will come to S4.
+All right, so here I didn't have to rebalance everything.
+Just a limited number of keys had to be rebalanced.
+So it reduces the number of keys I have to rebalance.
+This reduces that number.
+Right.
+And similarly if I do deletion deletion of server.
+If I delete for example in this case okay I delete seven.
+Assuming the server with seven is removed.
+So in this case what will happen.
+Now the K5 was okay.
+This will move clockwise.
+Now which server will it go to.
+This will also be received by the next server S3.
+So K fire was handled by S2.
+Now who is handling k S3.
+I.
+All right.
+So you understood how consistent hashing works.
+Now I'll tell you its disadvantage.
+What is the disadvantage of content hashing here.
+So a big disadvantage of consistent hashing is and I'll tell you in the film how to solve it.
+So here we had the diagram of consistent hashing.
+Let's take it one more time.
+Okay.
+Here we take the diagram of consistent hashing.
+Now see here in consistent hashing earlier.
+What did you decide?
+I told you that for now we took these servers at equally distant points.
+But what is hashing more hashing.
+What if this happens?
+That this is my server, right?
+My server two comes here.
+And my server three comes here.
+Okay, so this is my.
+Server one.
+This is my server two.
+This is my server three.
+And now the key is coming in.
+Assume these are key one.
+Key two.
+Q3.
+Q4 Q5 Q6 so who will handle all these?
+It will go clockwise to S1.
+All right.
+They will move clockwise right.
+So we have to move clockwise.
+So it will move clockwise to S1.
+So.
+S1 all will go to S1.
+And all SNL also full front base one.
+Here two no server was found in a clockwise manner S1 so here it failed, meaning the consistent hashing
+was supposed to divide our load equally, but now it didn't divide equally, so all the pressure came
+on S1.
+So here it says to create.
+Virtual objects.
+Now I'll tell you about virtual objects.
+There's nothing in virtual objects.
+What it says is to replicate.
+The server at different points.
+Okay.
+So what does it mean to replicate.
+Let me erase this once.
+Here what it says is.
+To replicate and create virtual objects that these servers should place themselves at different points,
+like the server was at one two.
+So place it randomly at other points too.
+For example, I placed it at eight.
+And here I placed it at 11 okay.
+Similarly I'll place server two at different points.
+For example, I place server two here at six.
+Placed it at ten.
+All right.
+And similarly I randomly placed server three at one.
+And placed it at nine okay.
+So that's creating virtual objects meaning giving them virtual points that were originally derived from
+the hash function and then placing them virtually at other points too.
+Like s one came at two after hashing.
+So I'll say besides two, I'll randomly take out two more positions.
+2 or 3 depends, and I'll do it there too.
+I took out one at eight, one at 11.
+So in a way I virtually replicated it.
+If at two, eight, 811 I'll say my server one is there.
+Okay.
+And at these points, server three is there at three, six and ten.
+Server two is there.
+So now when my keys come assume key one, key two.
+Key three.
+Key four.
+Key five okay.
+Key six.
+Key seven.
+So now see here this will go this server one will take care of it at the same point.
+Key one.
+This server one.
+So not server one.
+Server three is that color.
+So on server three which ones are there.
+Key one.
+Key two.
+All right then which key do I have.
+Key six.
+It will move clockwise.
+It got this color server s2.
+S2 got key six.
+Then key seven is on the same.
+So key seven.
+Now see is getting equally divided right by virtualizing.
+Key five will go.
+It got this yellow one.
+What was it.
+Server one.
+So server one got key T5.
+T4 is on the same all right.
+And T3 is on yellow.
+This yellow is server one.
+So now see here how it got equally divided when I increase the distribution of servers.
+Okay.
+That is nothing but replicating the server at different points.
+Whatever points initially came from the servers replicate them at different points that yes, these
+points also have the same server.
+All right.
+They're all virtual.
+Okay.
+And you understood.
+And how many replicas do we need to make?
+You might ask, how many replicas should I make of the server?
+Okay.
+We need to make as many replicas as needed to achieve the balancing of one raise power.
+And percent is of total.
+How much do I need to rebalance when I achieve this percentage?
+So it means I have done the distribution.
+I hope this is clear.
+Okay.
+And where is it used?
+I told you that this is our virtual where we have different nodes.
+All right.
+Whether it's an application node or a DB node.
+And we have to divide the traffic to divide the traffic equally.
+Okay.
+And this is dynamic.
+Then our normal hashing is not used.
+Then our consistent hashing is used.
+Alright.
+So here this mode keeps changing.
+Then we have to use consistent hashing, whether it's horizontal sharding, load balancing or any other
+use case where we have to divide the traffic equally among servers and these servers are dynamic.
+If it's static, then consistent hashing is not needed.
+That will work if it's always node three, but if it becomes 4 or 2 then it's a problem, then hashing
+will not work okay, because we'll have to rebalance the nodes.
+Alright.
+It might be that all the data is here.
+If next time, after rebalancing the value of the server that was deleted changes or I'll have to put
+all the data in it first.
+I hope you got it guys and you liked it.
+If you liked it guys, please share it with your connections and comment.
+If you have any doubts, feel free to ask me.
+Feel free to ping me on LinkedIn or ping me anywhere.
+And I've already shared the telegram link in our about section, okay.
+And I'll also give it in the description, so feel free to join there also and you can message there
+too.
+I am replying as soon as possible guys to that is a very important topic and I hope it was understood
+very well if somebody asked in the interview just.
+Okay guys.
+Okay, have a nice day.
+Good night.

@@ -1,0 +1,1000 @@
+# Design a Key-Value Store || Dynamo DB
+
+Hey guys.
+Welcome to Concept and Coding.
+And today we are going to do the very very important question design key value database.
+So guys this is a very big topic.
+But I have divided into smaller steps.
+And I tried to explain the each steps in a very simple manner.
+Right.
+So I hope you will love this video and you will get a lot lot lot of information at the end of this
+video.
+So stay tuned.
+And without wasting much time, let's jump to our question.
+So here we are.
+So the question which we have is design key value database.
+Right.
+So it has let me so design key value database.
+So first of all where we use it right where we use it right.
+So one example I can tell you is.
+Amazon add to cart feature.
+Right.
+So you know about DynamoDB, right?
+So you might have heard of DynamoDB.
+So Amazon has developed this DynamoDB and they used it internally.
+And one of the feature they used it in add to the cart feature.
+Right.
+So let's learn about this more, how they use it, how the key value DB is designed and how we can use
+it for further applications.
+Right.
+So now let's come into our goals part first.
+So what are the goals right.
+So.
+So what are the goals first.
+So there are three goals.
+First is.
+Scalability.
+Second is decentralization.
+And third is.
+Eventual consistency.
+Right.
+So I will explain each by a different steps.
+Right.
+So I will not go and explain each goals now.
+Otherwise it may confuse you.
+So I will tell you about this three.
+Right.
+So just note it down this three and one by one we will explain it.
+So the steps I am going to tell and explain is first is partition.
+Second is replication.
+Third which I am going to tell you about get and put operation.
+Then fourth is which I'm going to tell you about data.
+Versioning.
+Right.
+And fifth I am going to tell you about gossip protocol.
+And sixth, I am going to tell you about Merkle tree.
+Right.
+So see so many new things you are going to learn.
+And with all these steps I will tell you how these three goals are achieved.
+Right.
+So just note it down and just one on one.
+We will cut it off as soon as we will do.
+Let's start.
+First is partition.
+So now when you get a question like this in an interview design key value DB.
+What first thing strikes you?
+You are right.
+Hash table right.
+In hash table we have in memory Let's say we are keeping in memory data and we have a key.
+We have a value, right.
+So at whatever the hash key or whatever the key we are getting, let's say one, two, three, we are
+putting some value against that.
+Right.
+And we keep it in memory.
+So but just think about from an Amazon perspective Amazon add to cart feature.
+Right.
+So we have millions and even say you can say that also possible billions of users right.
+Distributed across the region.
+Right.
+So is it possible that with only one hash table or in a one system, we should be able to scale?
+No, right.
+We will not be able to scale.
+So how do we achieve this scalability then?
+The answer is partition.
+And for the partition it uses the concept of consistent hashing.
+I have already made a separate video about this consistent hashing I have given at top the link.
+Right, so in the high level design playlist style you can go and learn about consistent hashing.
+But still I will give a brief about it so that we will be in sync.
+Okay, so how does partition happen.
+So let's understand this.
+Consistent hashing is so there is a virtual ring.
+Right.
+Let me create a circle.
+Again.
+There is a virtual ring.
+And inside a virtual ring it places the servers.
+So let's say I am placing four server server one, server two server three server four.
+Right.
+So as a part of partition, we need to divide the data between each server so that our the load of the
+balance load of the traffic remains equal.
+Right.
+So what happened here is we assign a range to each servers.
+So let's say I have assigned the range to is 1 to 50.
+So all the keys which lies in this 1 to 50.
+123456789 ten.
+Similarly this 50.
+So all the keys which lies between 1 to 50 is gonna be taken care by s one, right?
+Similarly, we have assigned this server to as a range 51 to let's say 100.
+This one we have defined to let's say 101 to 150, and this one 151 to 200.
+Right.
+So any data comes in, let's say I have I am getting one data I need to put into this let's say car
+right.
+So first what we will do is we will generate a key.
+Generate a key.
+You might be using some algorithm for generating a key.
+Let's say the key value which comes is let's say it's 445, right?
+So we know that which server is going to take care of that?
+Well that key 45 key, it's S1 because S1 has the range 1 to 50.
+So any key which falls under this range it's going to take care by S1.
+Right.
+You got it.
+So here the car is going to be taken care by car is going to be stored here in the S1.
+This this is the value.
+This is the key right.
+So I'm just saying key one this is key one is stored has the value car and it is stored at S1.
+Why.
+Because 45 is fall under the range of this server.
+Right.
+So any key which will come here into 1 to 50 it will be taken care by S1.
+Right.
+Similarly, if there is any other data which comes, let's say, uh, India and uh, the key value comes
+is let's say you it comes in at 175.
+Where does it fall?
+175 is within which range?
+151 to 200.
+It will be taken care by S4.
+So key two.
+So let's say this is key two.
+So it will store in its locally S4 data is stored here right.
+So now consistent hashing I told you in the consistent hashing video that it has one problem that what
+if there is a certain hot keys, let's say s1, s2, S3, s4 and let's say there is a certain hot keys
+which always fall into this range only one 250 range only.
+Right?
+Let's say 12345 4045.
+45.
+Let's say it's this fall under this range only.
+So then they are free and this will get bombarded, right?
+This will get bombarded with all the traffic, right.
+To avoid this consistent hashing, call the concept of virtual nodes in the virtual nodes.
+What happen is so S1 server each servers is placed at two different location.
+So let's say I have kept one server here S4 here also S4 here also some S4 here also similarly S3 I
+will place it, let's say here S3 is here also here also here also here also similarly S1 let's say
+s1.
+I have placed here also some randomly more positions, right?
+So now if you see that the traffic which was coming earlier.
+Right.
+So the traffic which was coming earlier and it was going inside all S1 earlier.
+All the traffic which was coming here is fulfilling by S1, but now it is not the case.
+So now it has been divided.
+This is S1, this is taken care by S3.
+This is taken care by S4 and then again S1.
+So now if you see the traffic has been distributed between multiple servers.
+So that's how virtual node has been used.
+So I hope consistent hashing is clear.
+Little bit.
+But if you want in detail please check out the video.
+Right.
+I have shared in the description link and you can also check out the playlist and take out the link
+right?
+So now you know we have done this scalability.
+So scalability is done.
+You have achieved one goal and one step is completed partition.
+Now the second goal is decentralization.
+So now the second steps we will use this to do a decentralization.
+So now what does decentralization means?
+So decentralization means if any failure happens right in one particular node, our system should not
+get down right.
+So what was the problem in this partition.
+Let's say I have the data stored in S1 car.
+What if S1 goes down.
+So now S1 has the data car.
+If somebody asks for this key one hey get me the key one.
+But the S1 is down.
+It will not be able to serve the request right?
+So that's why it says that it should be decentralization, right?
+So we need some backup, right?
+Even though there are failures, we should be able to fulfill the request.
+And how we do that replication is the answer.
+So we take an example of car.
+So this key which comes out as let's say 45.
+So we know that S1 gonna hold it right.
+Car is gonna store here.
+Key one.
+Right.
+Till now, we are here because 45 is in the range of S1, right?
+All this will be taken care by this.
+So now replication says that by default value is.
+So there is a n n is say that.
+What is the replication number.
+So by default is three but it is configurable.
+You can change it to 456 anything.
+So by default is three.
+So let's go with that number only.
+So what does it says that once the so S1 is here it is called coordinator.
+So just remember these two names.
+So the key falls within which whichever range.
+So whatever servers take care of it.
+It is called coordinator.
+Right now it has to do replication.
+So what it will do is it will go a clockwise direction right.
+And find n minus one servers.
+So how many n we have defined three.
+So one is already added in a coordinator itself.
+The key which lies within it.
+Now n minus one servers it will put a copy.
+So here's two.
+It will put car key one.
+And here one copy here.
+So n minus one three minus one is two.
+So in the two servers.
+So here one and another is this 1K1 key car.
+Got it.
+So here as soon as it will do a copy it will also maintain one preference list.
+So another is preference list.
+This is very important.
+Preference list is very important.
+Just remember this.
+So in the preference list.
+So preference list is for each key range right.
+So S1 knows that.
+What is preference list.
+So it first is the coordinator.
+So S1.
+So for this range 1 to 50 keys.
+So 1 to 50 key range.
+This is the preference list.
+So first one is always the coordinator.
+And the another one is list is the replicas where the replicas we stored for this range.
+So for 1 to 50 range the replicas are stored into S2 and S3.
+So S2 and S3 right.
+So this is the preference list.
+And preference list is very very important.
+It's gonna really help you in the get and put operation to understand better.
+So just note it down this part right.
+So you understand what is coordinator.
+So whenever the key comes like car value.
+So we find out it's key.
+So if the key is 45 so it falls into one of the range of a server.
+So whichever range of a server it falls into that known as coordinator.
+Right.
+So that in the first top of the preference list.
+Right.
+And then we have to put a copy.
+So how many copies we have to put whatever the default or configuration you have defined the value of
+n right.
+Replicas number n minus one.
+We have to put right because in coordinator we have already put it.
+So n minus one s2 and s3 goes into the clockwise direction and put the copies.
+And we will put here in the preference list.
+Also just a bottom of coordinator right.
+So here if you see that the copy can you have a different it's not always a sequential.
+When you move into a clockwise direction it cannot always be sequenced.
+S1 and S2 for S3 it will not always be in sequence.
+Why?
+Because copy we can have different algorithms like I want to choose the server which are in different
+data center.
+Let's say S1 and S2 are in same data center, so it will skip.
+It will choose another server which is in different data center.
+So it moves to the clockwise direction.
+But it choose only those servers which we wanted which we have configured.
+So what could be that like different server in different data center.
+That could be one preference.
+Right.
+Because let's say in one data center one data center there is server one, server two, server three.
+What if there is a fire in this data center all gone.
+Right.
+So that's why we it's always better to choose servers into different data centers.
+So one copy is here.
+So let's say this is the coordinator.
+Then the copy it might choose is S4 and maybe S5 possibly.
+Or it could be S6 in different data centers.
+Right.
+Another thing is we as I told you there is a concept called virtual nodes.
+So it is possible that S1 comes again, S1 comes right.
+So it should not be counted this one.
+So it should skip virtual nodes.
+So that's why I said that we move in a clockwise direction.
+But the servers it might pick it not be a sequential S1.
+So one copy could be here.
+Another copy could be here right.
+So we might skip this.
+So you got it right.
+So you understood now the partition uh the replication.
+Right.
+So in replication, two important things you have understood.
+So partition was, uh, consistent hashing.
+And replication.
+You understood about the coordinator.
+Who is the coordinator.
+Right.
+And how we maintain a preference list where replicas are stored.
+In which servers, in which server replicas is stored.
+Right.
+Just always thinks about the range.
+Right.
+Range.
+Right.
+So the.
+Third part get and put operation.
+So.
+Let's do with the third get and put operation.
+What are the important right of.
+The ring s1 s2 s3 s4.
+Right.
+But it can be millions also.
+Right.
+Servers or thousands?
+Ten thousands.
+Right.
+There can be millions of keys, thousands of servers.
+It possible.
+So it's a big but for easy purpose.
+Let's understand with the for itself.
+And now you are aware of the range also that each server is taking care of a particular range.
+Right.
+I have given the range to.
+All right.
+Now first understand the put operation.
+Let's understand the put operation first.
+Before that.
+Let's say you got a put car right.
+Put car request comes in.
+How this will work.
+Now can you tell me you it will first find the key.
+We get a key number where it will range.
+Right.
+Let's say it comes again 45.
+Right.
+So 45 is taken care by S1 right.
+S1 so we create first S1 will restore car.
+Key one.
+Right.
+And it is also maintains a preference list here.
+Preference list.
+So it will maintain S one.
+So till now the put request is completed.
+No it is not yet completed.
+Right.
+So find key.
+It has got the key and it.
+Right into.
+The server.
+So who picked it.
+So 45 lies into the S1.
+So S1 picked it S1 right.
+It locally.
+But is the job completed.
+Have we responded back.
+No, because we have also need to put into the replicas.
+Now what S1 will do S1 will do in a synchronous manner.
+It will.
+It knows that, right?
+I told you that each Knows about what all servers it need to put the replicas right.
+Each servers knows and also each servers knows everybody about preference list.
+I will tell you how.
+So there is something called I told you about gossip protocol.
+Right?
+Gossip protocol.
+I will come to it later, but for now assume that in a DynamoDB in here.
+In this case, each server knows about each and everyone preference list.
+And what does preference list is?
+Who is the coordinator means where this request should actually come, right?
+Other xo xo xo 51 200 101 to 150.
+So S3 so S3 should be at the top right or the replicas replicas.
+So preference list contained at the first value is the coordinator and the bottom It contains the replicas
+in which server contains a copy of that value.
+Right.
+So now when the put request comes in, we have, let's say n defined as two.
+And you know right.
+What is n.
+It is a replica number.
+So I told you it by default is three but it is configurable I use two.
+And what does two means.
+After the value is stored in S1 it has to write into n minus one replica n minus one servers.
+Right.
+So n minus one is one more server.
+So in async manner or let's say we take three.
+So n minus one is two servers.
+So two servers it has to write.
+So in async manner it will send request to S2.
+And it will also send request to S3.
+Right.
+Let's say it's preference list is S2 and S3.
+So this is the coordinator for this range.
+Always learn about this range.
+So one extra concern.
+Who is the range of this keys 1 to 50.
+This range keys is S1 is a coordinator and S2 and S3.
+We will put the copy replicas right.
+So as soon as the request comes we put it.
+And now S1 will check its preference list.
+And in the preference list it will see that okay, now I have to put the replica in S2 and S3 and in
+the async manner it will send the request to S2 and S3 async manner.
+Remember this right?
+And when we send a success response back to the client.
+So this is the client he sent the put request when we will send the success.
+So there is a formula called r plus w greater than n.
+What is n is here in this case three.
+It is nothing but a replica n like how many replicas we want to keep into different server.
+So let's first talk about W.
+So here we say that okay we have to put the copy into two servers right.
+But do I have to wait for two servers to get.
+Okay.
+Even though I have initiated the async request to each two servers, S2 and S3.
+But do I have to wait for both to successfully completed?
+And then only I can send the success response that is derived by w.
+Let's say w is one, so it will wait only for any one of them.
+So S1 has sent async request to S2 and async request to S3 that update yourself with this replica key
+one, right as soon as it will get one response or whatever we have defined in W.
+So let's say we have defined in W is one.
+As soon as we get one response, we will send the success.
+Got it?
+What is this w means?
+So we will put the put request success.
+We will hold the put request till we don't get this many success response from the replicas.
+Understood the put how the put works.
+Let's now understand how the get works.
+So now let's say the same thing.
+Key I have asked for the key.
+What is the key?
+Let's say k one.
+Now.
+I think you can now guess by now what is happening here.
+So we have range.
+Okay.
+So this is has the car during put K one.
+This is also has k one car.
+All keep the replica and S one has the preference list maintained Maintain for 1 to 50 key range for
+this key range.
+My preference list is S1.
+This is top one is now you know is coordinator and then replicas are present into S2 and S3 right.
+So now get request comes in.
+So now understand with this this is very very important.
+Now I will tell one more thing that what I missed to tell you in the put request there is a load balancer
+in mid.
+Here is a load balancer when the request comes in.
+And this is our consistent hashing right.
+What we have drawn here.
+So when the request comes in so load balancer can be of two.
+Type one is generic load balancer.
+Another is partition aware load balancer.
+So if it is a generic load balancer then the get or put request can comes to any node.
+Comes to any node.
+Let's say for key one.
+Key one which was 45 where it should go.
+Generally it is the range 1 to 4050.
+So S1 it should go right.
+But if we are using generic load balancer it can comes to any node in the consistent in the ring it
+might reach to S4 also.
+But now S4 will see.
+And I told you each and every node in the ring is aware of the partition or the preference list right
+of a key range.
+So for this range 45 it knows that this is the preference list.
+And at the top it will see who is the coordinator.
+S1 is the coordinator.
+So S4 will see.
+Am I the coordinator.
+No.
+Right.
+So what it will do is it will take a hop and it will send the request to the S1.
+Hey S1, you take care of it.
+This key right.
+You are the coordinator right?
+If S1 is down.
+Right S1 is down.
+Then from the code then the S4 will take the next server from the preference list.
+So you know the importance.
+You are seeing the importance of preference list here, right?
+So here we have hopping.
+So request can goes to anybody.
+But everyone will check from the preference list of that range.
+Am I the coordinator know if I am not the coordinator it will pass to the from the preference list for
+that range.
+It will pass it to the coordinator.
+If coordinator is down, it will pick the another server which has the copy of the data from the preference
+list.
+Similarly, in the Get request, get request can be achieved through anywhere, right?
+So if let's say S4 get the request again the same process.
+If it is not the coordinator, it will pass to the coordinator.
+If coordinator is down, it will pick any server from the which keep the data replicate data.
+So you see right how we are bringing the decentralization.
+And so here we have hopping with high latency.
+But it is simple to implement generic load balancer.
+But here we have to put it is low latency.
+Because load balancer is aware of the partition.
+So when the load balancer get that okay you want to access this key either put or get 45.
+So it will directly pass request to the S1 because it is aware of it.
+Right.
+It don't have to take an additional hop.
+It will directly send to the S1.
+Right.
+But it has to.
+We have to put some logic here in the partition aware load balancer.
+Right.
+So now you aware of this how the load balancer comes into the picture.
+So now let's jump into the get request more.
+Now let's say.
+a consistent hashing a server one gets the get key, one key one has like 45.
+And this has the range of 1 to 50.
+Right.
+So now server one will get the request.
+Whichever algorithm will you pick for load balancer either by hopping or directly control will come
+to the coordinator.
+So in the preference list.
+It is S1.
+Then it will have S2 and then it will has three.
+So it is the control will come to the top one if it is available.
+So now what does get will do get will say that I told you one formula right R plus w greater than n
+where n is the number of replica n is three.
+In this case, because there are three replicas in the coordinator and two in the this one.
+So you know that.
+What is w now?
+What is r?
+R says that.
+So when the Get request come from client right it goes to our db.
+Key value db.
+So now when S one receive it's one will wait.
+Ask all the replicas.
+So S one will ask hey S2, do you have the copy of this key?
+Key one hey S3, do you have the copy of this key?
+Give me.
+It will ask the copies.
+Replicas from the different servers.
+Whoever keep the replicas right.
+So R says that.
+Wait for whatever the value you are defining.
+Let's say you have defined R equals to two.
+So S1 will wait.
+Consider the read successful till it don't get two responses right.
+So you have defined r equals to two means.
+So there could be many replicas.
+Let's say X6X ten right.
+So it is send the request that send me the replica.
+Send me the replica.
+Right.
+But it doesn't have to wait for all the force.
+But it has to wait only for how much we have configured.
+So it has to wait.
+Only two success response from any of the server.
+So let's say S2 respond.
+Hey, this is what I have S3 response hey, okay, for this key, this is what I have.
+So once S1 get all the replicas it will return back to the client.
+You got it.
+What is the role of R plus w?
+So here R is the number of response it has to wait during read operation, the number of responses it
+should get right from the replicas before considering the request as a success.
+Right?
+There could be ten replicas, but.
+And S1 has sent to all the ten replicas that give me the data which you are holding, right?
+What are the data you are holding for this key?
+But even if we get from this value r equals to two or r equals to three, whatever you will define,
+if you get the response from 2 or 3, we considered it as a read as a success.
+And why we do that.
+So now the question comes to your mind that why for the get operation we are reading from different
+replicas, right?
+S1 is available S1 can directly response right?
+Why is the need to go to each replica and finding out the data?
+Right now I'm going to come to the.
+Fourth point data versioning.
+So now you are understand this get input operation right.
+I hope it would be very much clear.
+Right.
+So now I am going to the data versioning.
+This is again again very important.
+If you are with me till here.
+Good job guys.
+And it's going to get very much interesting now, right?
+If you have doubt, feel free to go through again.
+I am pretty much sure it will get cleared right.
+So now data versioning.
+I told you that during Get request, let's say server one is the coordinator.
+It will goes to each replica, let's say S4, S10, S11 and it will ask return me what data you have
+for this key one right?
+Why?
+What is the need?
+Why S1 cannot itself directly return from here?
+Now I will tell you why.
+Because no system is perfect.
+There are failure happens.
+And when failure happens, different servers.
+So let's say s1, s2, S3, s1, S4, S10, S1, S4, S10, s11 11, which is holding a key value.
+Let's say key one was car.
+It was holding key one as let's say car.
+But this one is holding key one as cart.
+So different data like you understand right.
+The for the same key it's cart e right.
+So if you if you see because of failure into the network all are connected through network only right.
+All are connected through network only.
+So.
+But if you see each server holds a different version of the key, different version of the key means
+it has car, it has car.
+Okay, this is same, but this has different operation cart.
+How?
+Because I told you that in the put operation, the first one is.
+Okay.
+Let me tell you now this one how this different version can happen into a system.
+Let's understand this.
+So I am taking one preference list.
+For example my key Ki is 45, let's say.
+And for 1 to 50 range the preference list is.
+Preference list is let's say S1.
+And so this is my coordinator.
+And S2 and S3 are my replica here.
+My replicas stored here.
+Also my replica stored for this key.
+Okay.
+So now how in this system different version can happen because of failure.
+So now I told you whenever the put request comes in put let's say for this key.
+Key one put a value car right.
+And the key value is let's say 45.
+So where it will go to the coordinator right now you know.
+So let's say S1 get like what it get car key one right.
+And I will tell you how this data versioning is solving that thing right.
+Till now let's say I am using it now.
+What will happen?
+Let's say it want to put put again key one.
+Now it want to update.
+So whether it's an update or create it's a put in DynamoDB.
+Whether it's an update or create request, it will be converted into put only.
+So now you want to put into change the car to cart.
+Now let's say S1 goes down, now S1 goes down.
+So when S1 goes down or maybe let me change it to the preference.
+Now S1 is down, now S1 is down.
+So who will pick the request.
+So you know right.
+It will goes to the preference list.
+If x1 is down, it will go to the next one.
+So let's say now S2 is the one which handles the request.
+And it will say that okay.
+Now key one which I have is earlier I it was having car because it was replicated also.
+Right.
+So S2 and S3 before S3 also have k one car.
+It was having also car right.
+Because once the S1 has the data it will replicate itself.
+Right.
+So now after S1 is.
+Got a failure.
+Right.
+And now S2 will be one which is accepting the right request.
+Now it has to change the key one to cart.
+So key one to cart.
+So it will change it to cart.
+Right.
+And let's say there is a network failure here also.
+So S2 was has to s after the S2 got it, it has to send the update to the S1 and S3, but S1 is already
+down and let's say there is a network failure between here.
+Also, S2 cannot talk to S3.
+Now what will happen is S3 is not aware that CART has a car has become cart.
+Now let's say another request comes in in parallel of this one port key one and change it to let's say
+car M, right.
+So now if you see here right.
+S3 will say that.
+So now from the preference list coordinator S2 was already working.
+And in parallel one more request comes.
+So it says that okay S3 you can you handle it S3 will take care it S3 will change it to CRM.
+Now nobody take now nobody talks to each one.
+Now if you see in a system in a consistent hashing, if you see each server is holding a different version
+of a data.
+So server one is holding car server two is holding cart, server three is holding CRM car right now.
+If Get request comes now a get request come which one it will return.
+Now let's say S1 is up back.
+So when S1 is back, S1 is back, x one is ask okay S2 what data you have, S3 what data you have.
+So S1 say I have car.
+Let's say I have cart and it say I have car.
+So S1 will say now man, what to do now all are different version.
+What to do, how to resolve this.
+So that's where we have something called vector clock right.
+So this is very important.
+And just learn this one like data versioning uses vector clock.
+How vector clock work is.
+Let's use the same example.
+And I will tell you how this works.
+All right.
+It's very easy.
+Nothing much.
+Right.
+So I'm taking the same example.
+Hold on with me, guys.
+I am pretty much sure that you might be getting it right.
+There is a lot of information.
+Just read it one more time.
+You will get it.
+I can tell you like there is a lot of things you will get covered from this itself.
+So now let's understand about vector clock how vector clock helps in this failure use case.
+How this different version example.
+So what I told you that what was the preference list for 1 to 50 range was uh preference list is s1,
+s2, S3 let's say.
+So let's say first put request comes in put key one put car.
+So vector lock is vector clock is the list of server comma Counter for each object or data.
+You can say that particular key for each key.
+So now let's say in this case put this key car one.
+So key is it will goes to this range.
+So let's say k one is 45.
+It will go to this range.
+Who is the coordinator S1.
+So S1 got it.
+S1 says that okay man I will take this put request and it will put one vector clock.
+Vector clock is for the key one.
+Or we can say that for a car or let's say for the key of car.
+I am having it's this counter server comma counter.
+And for each key right.
+So key is currently has the value car.
+And it will propagate this to in the async manner to.
+It's replicated in the from the preference list s2 and S3.
+So S2 will now also know about that okay.
+This car is currently has this counter.
+So this is S3 or this is S2.
+Now let's say another put request comes.
+So after say another put request comes let's say k2 again let's say c a r.
+Now let's say S1 is still up.
+It's not down.
+So what will happen again S1 only will catch it now S1 what earlier s1 has earlier S1 has S1 comma one
+right.
+So it will override it.
+So it will write a new version.
+Right.
+And it will discard the old because it knows that.
+It's taking care of.
+So there is no other.
+So it knows that it can resolve this conflict that okay, this is the latest 1S1 comma two.
+It increment the version.
+So it changed to cart.
+Right.
+And it will send this in the async manner to it, replica S2 and S3 that.
+Now this is the update yourself.
+So S1 comma version two cart s1 s1 comma version two right.
+And S1 comma one has been discarded because it can s one server, one can easily reconcile itself that
+okay, this one is the old one counter one.
+And now I have counter two.
+Now at this point of time let's say that server goes server one goes down right.
+Server one is down now.
+Server S1 is down.
+Now another put request comes in.
+Put k one.
+Now I am I'm changing card to c a r m.
+Now it will goes to the preference list.
+Preference list is server one is down.
+Who will accept it.
+Server two.
+So server two what it will see.
+Server two says that okay I have carte s one comma two right now each one maintain.
+So what is vector clock is list of server comma counter.
+So what it will hold it will have CRM.
+So it will update itself CRM and it will give that okay s one comma two.
+And it will put its counter s two comma one.
+Right.
+And let's say one more put request is coming in parallel with this k one.
+And it is putting let's say CARR2R.
+And let's say server one is down.
+Server two is busy.
+So let's say server three request goes to server three right.
+Server three can take care of this, right?
+Any server in the preference list can take care of the request.
+So it will put car car and what earlier it has.
+It has s one comma two.
+Now it will create its own version S three comma one server one.
+What it has was cart and s one comma two it was has this right.
+And it was down.
+Right.
+And let's say that S2 and S3 also there is no network.
+There is a partition.
+So whatever the data is present in S2, S2.
+So once the data reached s2, S2 also wanted to replicate to the S1 and S3 in a nursing manner.
+But let's say there is a partition.
+S1 is already down, so it cannot update it.
+S3 there is a partition, so S2 cannot update to S3.
+S3 cannot update to S2.
+It is not possible.
+So now if you see that in a system we have three versioning.
+But now in this case from the previous what you see.
+But here we have a vector clock.
+Now how vector clock is used is now let's say get request is coming.
+Get k one right.
+Get k one.
+Now let's say server one is up.
+Now server one is up.
+So server one is up.
+So server one will take this request okay.
+You want k one okay.
+So I told you how the get works right.
+So get will ask its replicas S2 and S3.
+Send me your data.
+Right.
+So S1 will have carte S1 comma two.
+And what it will get from S2 is.
+So this is from S1.
+so from S2 it will get.
+I have CRM and this is my version S2 comma one and S3 will say I have c a RR and this is my version.
+So now if you see that.
+So first before returning to the client.
+So it has to do the reconciliation.
+So it will see that okay s1 two s1 two S1 two means everyone has this base information, but S2 and
+S3 has some additional information.
+So definitely this is not the latest one either.
+This is latest one.
+So there is something now conflict which S1 cannot resolve.
+So what get to is get return both the data both the version to the clients.
+So now let's say who is the client.
+Now you say who is the client.
+In this case let's say my add card Service.
+So this is one component which makes a Get request.
+Now get request.
+See that this okay.
+These are the two version which I cannot resolve.
+So it will return this two version to the client.
+Right now client has certain algo.
+So one certain algorithm is last right.
+Win.
+Like whichever the last right happen it will just collapse it based on the last right.
+Right.
+So there are different algorithm.
+We will not go much deeper into this.
+Also one algorithm is last right win algorithm.
+So add card service or client should have this algorithm.
+It should resolve the conflict right.
+And send a new request to put to resolve the conflict.
+So here once it get the put let's say now client has resolved the conflict and it will send the version
+s one comma.
+Let's say three.
+It was earlier s one comma two.
+So now let's say s one is getting s As one itself is getting this put request.
+So S1 will increment this counter to 2 to 3, and it has also merged the conflict from s2 comma one
+and s3 comma one.
+So means it has the combined data of all and again it will replicate it to S2 and S3.
+Got it guys.
+So complicated vector clock.
+But I think I try to explain in the most easiest manner with example.
+Just go through it once, you will get it.
+Definitely conflict get will send both the versions right and the client possess the algorithm to resolve
+this and pass the latest data.
+And whichever the component, whichever the coordinator or replica get this request, it will store
+it and pass it to the other component, other servers.
+Okay, so now you know about decentralization and eventual consistency.
+And that's what called eventual consistency.
+So eventual consistency means one time you put a Get request you got some stale data.
+So here if you see that the first time ad service made a Get request, it got stale data.
+Let's say it got version one to version.
+But over the time, if you made further get request after reconciliation and all, you will get latest
+data.
+So it's not guarantee that you will always get latest data.
+You might get stale data, but if you repeat you might get the latest data.
+So now if you see that what it has done is from the Cap algorithm or the Cap concept, it has sacrificed
+the See consistency for the higher availability.
+So DynamoDB and the key value store uses AP and sacrifice consistency.
+So eventual consistency is done and data versioning is done.
+Now these are very two simple concepts.
+I will not take much of your time.
+So I will explain this gossip protocol.
+Okay.
+So what I told you in early that in a ring.
+In a ring each server.
+Each server is aware of everybody.
+Right.
+Each server aware of everybody range.
+Right.
+So just a sac.
+Uh, so each server is aware of everybody range.
+So how do they know it.
+And also what if any server is down.
+How does everybody knows it.
+That is through gossip protocol.
+Gossip protocol.
+So each server maintain a members list.
+So S4 has okay.
+What is s1, s2 s3 s4 status.
+S4 status.
+So each server maintain a membership kind of list.
+And at a periodic range, let's say after one second they send their heartbeat to random nodes that
+yes, I am up, I am up.
+And apart from heartbeat, they also send certain other information like what range they are taking
+care of.
+Let's say I am taking care of 151 to 200 so it will send its heartbeat plus also some additional information,
+right?
+So with this heartbeat only they all knows that when I have seen in last up.
+Right.
+So now let's say for example S2 is down S2 is down Rest two is down.
+So now when this S2 will get removed from the system, when more than one server says that, identify
+that S2 is down.
+So now everybody is maintaining the heartbeat.
+Let's say S2 is not sending the heartbeat.
+So everyone is maintain the counter.
+Let's say it's counter last counter it has let's say at 12 p.m..
+This one was let's say 10 a.m..
+Everybody is let's say 11:30 p.m..
+So now if you see an also counter, let's say 30 or 1020.
+So everybody maintain.
+So now everybody identify that S2 has not updated its counter for a long time.
+Is it down.
+Right.
+So if one server says that it is not guaranteed.
+But if more than one server identify that yes.
+For S2, I haven't heard anything, then S2 is marked as down right?
+So that's why it is known as gossip protocol that every second or every predefined time is server send
+certain information like heartbeat like range information.
+They are taking care of two random servers, which further accumulated information sent to the further
+random servers such that all servers know about each other, right?
+And if any server is not updating, heartbeat is not updated or latest information, it will be taken
+out of the system.
+So this is known as gossip protocol.
+Now one another is.
+Merkle tree.
+Now why it is needed right.
+So this is a simple concept but very important right.
+So I currently I am taking an example of only four nodes.
+And.
+All right so it looks very easy.
+But in reality there are millions of keys right.
+So let's say server one, server two, server three.
+So server take care of let's say 1 to 1000.
+It will take care of 1001 to 2000.
+Now server one.
+This range preference list is who holds the replica let's say S2 right.
+So now let's say for this particular key range.
+Let's say from 500 to 700.
+The replica is not updated right.
+Replica is not updated.
+How do you know one thing is first is take all the thousand keys and update check he has to.
+Do you have the latest replica or not?
+So in reality it's not 1000, it's million.
+So either you have to check millions or to check that.
+What is the range?
+Or you can say that the Merkle tree is used to identify.
+Does the replica holds the latest data of its key or not and how it has happened.
+So this is server one.
+This is server two.
+This is let's say coordinator.
+And this is hold where the replica.
+So it has let's say I'm just saying for example four keys right.
+Only four keys S1 s2.
+It has only four keys.
+So what it will do is in the Merkle tree.
+So this has one snapshot of Merkle tree.
+This is also have one snapshot of Merkle tree right.
+So four key it will have.
+This key would be here Ki one ki two ki three ki four at the leaf node.
+So it will take a hash of here hash of child.
+It will take a hash of child.
+And then it will a hash of this.
+So similarly kind of it will have here key one.
+Key two.
+Key three.
+Key four.
+So similarly the hashing concept would be here.
+Right.
+So now in the Merkle tree what it will do is it will start from top and it will compare from the coordinator
+to its replica.
+That okay I have hash value 121 here.
+Do you have 121 here?
+If yes, all the data are correct.
+No need to go further.
+Even if it is 1 million.
+Nothing to check, but let's say it is.
+Say 127 means something is off.
+Something is not correct.
+Something is out of range.
+Then it has to go to the left and also check it to the right.
+Right.
+So left, left is let's say 107.
+It's also left is 107.
+It is correct.
+Then it will go to its right.
+Let's say this is 100 and this is 80.
+So now it is say that okay, something is different here.
+So now if you see that we are kind of using binary tree and we have simplify the complexity instead
+of now searching all four keys okay.
+Key one uh, in server two do you have the latest key one.
+Key two now we have just know that okay.
+Key one.
+Key two is the latest because their hash is same but it could be millions.
+So we have saved lot of time.
+So now you know that why Merkle tree is known.
+So it helps us to identify whether all the keys within a range of a particular coordinator or server.
+Does replica also have the same updated version or the latest data?
+If not, what is the range of keys which is not up to date, so only that it will focus on and it will
+update those.
+So with that lot of information.
+We I am done with design key value db and DynamoDB is using this into the add to cart feature of Amazon.
+And I think with this you will get a lot of other information like gossip, protocol, Merkle tree,
+how the get and put operation works into a key value DB right.
+Replication consistent hashing vector clock.
+Right.
+So it is a very very important from understanding the system design perspective guys.
+And if you have any doubt let me know.
+I will conduct one live session for this where you can ask the doubts.
+And I will just use this session and do the question more.
+I hope guys please do do share with your LinkedIn connections who might require the help this content
+to them in their interview preparation.
+And please comment your thoughts how you like this video guys.
+Have a good day.
+Good night.
+Bye.

@@ -1,0 +1,564 @@
+# Design URL Shortening Service like TinyURL
+
+Hello.
+Hey guys.
+Welcome to Concept and Coding.
+And today the topic which we are going to discuss is Hld topic design URL shortener.
+And as I got a lot of requests that I should start, uh, teaching in English.
+So this is my first video teaching video in English.
+If you guys like it, please, uh, comment down that my future videos should also be in English or
+if you want it to be in Hindi.
+Okay, so with that being said, let's, uh, start the today's topic and today's topic is designed
+URL shortener.
+This is a very, very important question from system design perspective.
+And if you are new to the system design, then you can expect this question to be asked in many, uh,
+top product based companies or any companies.
+Right.
+So this is the very famous question.
+So first understand what is URL shortener.
+So here if you see that I have pasted my.
+Playlist URL right?
+So this is my playlist URL and this is the shortest version shortened version when I.
+So uh, LinkedIn has created it.
+So whenever you create a post on LinkedIn, right, and you provide any URL in your post, LinkedIn
+will automatically shorten it, right?
+So if you see if I click on it, right.
+So I click on it.
+So it will open my playlist.
+And if I also click on this shortened version also this also opens the same thing.
+So we need to design this how we can generate this URL.
+Right.
+So it looks very straightforward right.
+But there are lot of follow up questions which can come in which we have to answer.
+Right.
+So first we need to see how this works.
+So So this is on there and you might have heard of tiny URL, right?
+So apart from LinkedIn so tiny URL is also famous one.
+So it provide an API post API which you can give a URL long URL in.
+In this case this is the long URL tiny URL will convert internally, uh, the short URL and store it
+in its db table.
+So this is this DB table.
+It will store uh, something like this that this is the short URL.
+This is the short URL and respective long URL.
+Right.
+So whatever the long URL you have given and whatever the short URL it has computed, it will return
+it.
+So let's say it will store the short URL.
+And whatever the long URL you have here is like uh, https YouTube.
+Some playlist like this.
+Right.
+So this is the post request and another would be a Get request.
+So whenever a Get will come with short URL now so tiny URL will look into its database and see okay,
+this is the short URL come in and this is the long URL it will return.
+So we have to build this tiny URL kind of service like LinkedIn is doing.
+And we have to generate this URL.
+Right.
+So understood the question what we have to design okay.
+Now let's go to the first phase of the design.
+So first phase is requirement analysis.
+Requirement.
+Analysis.
+So whenever this question has been come in the interview your first question should be what should be
+the length of this.
+Right.
+This is just a domain like LinkedIn.com or Tinyurl.com.
+But the major thing is this part.
+Spot.
+So we need to know like how short URL you want.
+So.
+Right.
+So first question is in this case how short.
+Our URL should be.
+Right.
+How short our URL should be.
+So let's say in this case interviewer will say as much as you can write as much short as we can.
+Okay.
+So still we are not much clear because here if you see how much character LinkedIn uses 1234, five,
+six, seven eight characters, it uses it.
+But interviewer said that as much short as we can, so can we use only two also three also we don't
+know, right?
+We have to identify.
+So how to identify it.
+So second step is let's understand the traffic.
+With that we can try to find it out.
+So let's say understand the traffic, what should be the traffic per day.
+So let's say interviewer says that 10 million URL traffic you will get per day.
+Okay so about 10 million URL traffic per day.
+What does convert it to an ear.
+So 365 days right.
+So 365 days into ten URL per year.
+Right.
+And let's say I want 3 million.
+And let's say I want this my service to be supported for 100 years.
+So it's 100 years I should not face any issue.
+So okay, so how many URLs I should be supported?
+365 3650 into 100 million URL okay, so how many this is million has six zeros and this is three.
+So total nine zeros.
+So it converts to 365 billion.
+URL.
+Earl.
+So I should be able to generate 365 billion URLs in 100 years.
+Okay, now let's see what all the characters we can use.
+So here LinkedIn has uses all small A to Z capital A to Z.
+So what all characters we can use.
+So mostly interviewer will say that you can use 0 to 9 A to Z and capital A to Z.
+So how many?
+This is 1026 characters, 26 characters total, 62 characters we can use.
+Okay, so so in 62 characters, how many URL we can build?
+Let's say if we have only one character, right?
+So what are the different ways 62 ways.
+Right.
+So if you have two fields right.
+So how many combination 62 raised to power two.
+If we have three fields like three characters we can use, how many different combination we can have
+62 raised to power three, right?
+So we need to reach till that characters.
+How many characters we can use.
+Once we cross this.
+Right.
+So I have already done the pre computation.
+So 62 raised to power 662 raised to power six is around 56 billion.
+It's something 56 something and 62 raised to power.
+Seven comes 3.5 trillion.
+Sum around this right.
+So definitely we.
+So how many URLs we need to support?
+365 billions.
+So definitely we can't use six because it is only 56,000,000,062 raised to power seven.
+We can and definitely you can use calculator to multiply and come up with this value.
+It's allowed right.
+So definitely we have to use seven characters right.
+So now we get to know like 12345677 characters we can use here okay.
+So now we have clarify one requirement that how many characters we needed.
+Now the question is next question how to generate this hash value.
+So this is nothing but a generally a hash value right.
+So how to generate this hash value.
+So we have two methods.
+Use a hash function.
+Or use base 62 encoding.
+Right.
+Let's see both how we can use it.
+So what are the hash function we have.
+Right.
+So we have two hash function is one is MD5 and another is She won.
+Right.
+So this will generate some number AX9FB something like this.
+And this will also generate the same thing.
+So can we use this.
+Right.
+So before understanding can we use this first see that how big length it will generate.
+Right.
+So let's say you have given a long URL.
+So I have given a long URL.
+And now you wanted to generate a hash function.
+And what md5.
+So MD5 is 128 bit hash function 128 bit math means 16 bytes right.
+And you know right in hexadecimal we have 16 bases.
+16.
+So means we need four bits 1248.
+Right.
+1111.
+It's 16 right.
+So it's a nibble.
+We call it nibble.
+So in 8 in 1 byte equals to eight bit.
+We can have two hex digits, right?
+Because a hexa digit is base 16 and base 16 can be comes into only 41248.
+Four bits only.
+Right.
+So in 16 byte how many will come is 32 hex digits.
+So MD5 will generate a character length of 32 characters.
+It will generate.
+But what is our requirement?
+Only seven.
+This is the minimum we wanted, right?
+Our question is as short as possible.
+As short as possible.
+We find out okay we need seven length and MD5 will generate 32.
+And similarly Sha1 is I think 160 bit.
+Right.
+And it with the same thing.
+It will generate a 40 character length 40 character length.
+Right.
+So it would be 20 byte and it will a 40 hexa digits.
+So now you see that this MD5 and Sha one the length the hash function will generate more than seven
+characters.
+Definitely.
+Right.
+MD5 will generate 32 character and Sha one which is 20 bytes.
+It will generate 40 hexa characters.
+Right?
+So what we have to do is we have to trim two seven.
+Let's say it generated a as a, B, c, D943FF something something something till.
+But we want only seven characters, so we'll pick 1234567.
+So.
+So we picked only seven and discarded everything.
+So now this will create a problem because it might be a duplicate right.
+So let's say for certain URL uh it differs at the later side.
+But starting seven digit is same right?
+So then there will be lot of lot of collision.
+So with this hash function MD5 and Sha one there will be lot of collision.
+That's why we cannot use hash function.
+Now you totally clear why we don't use hash function.
+Because the length of the characters they will generate is more than seven in our case.
+So we have to trim it to the first seven characters.
+And if we trim it to the first seven characters, it will create a problem of collision.
+Let's understand our now next base 62.
+How does it work?
+Right.
+So there are some issues with the base 62 itself.
+I will tell you why.
+And but before that let's in a couple of minutes let's understand how base 62 works first.
+Right.
+So you know right.
+Any decimal number can be converted to any base.
+Right.
+So in this case we are converting it to base Is 62 y 62 because we are allowed to use 62 characters
+like 0 to 9, small A to Z, capital A to Z.
+So starting from 0 to 61, so 0 to 9 is nine.
+And then this is ten C like this 1112 like similarly till 61.
+Right.
+So totally 62 characters we can use.
+So how you can convert decimal to base.
+We know right.
+We need some number.
+And we can use a like this divide.
+So 62 into 16 is 992 which is eight remainder.
+And then the remainder is 16.
+And we go from bottom to up.
+16 is what now 16 is uh in this case base 62.
+So C is 12 L, c, d e f, g 13, 1415, 16.
+So g.
+So this is G.
+So it would be g8 right.
+So this is the representation of 1000 in base 62.
+So now what we get to know from this okay we can generate a number.
+But first we need some ID right.
+Which we can convert and get a unique ID right.
+So what is the problem now.
+What is the problem.
+First is we need an ID generator.
+I will tell you the issue with this.
+Second problem is now as we have seen for 1000 it only generates two length character.
+But what is our issue.
+What we wanted seven digit.
+Right.
+So length.
+Could be different.
+And how to solve it I will tell you both.
+So let's first with ID generator.
+So this is very important.
+This is very simple actually I will tell you later.
+But ID generator is the main part.
+So let's say I will use.
+A normal db.
+ID column.
+It's an autoincrement right 123456.
+Like this.
+So we can say that we can use this ID right.
+We can use this ID so definitely we can use.
+But what is the problem with using this.
+So first problem is we are going to hit 10 million URLs per day right.
+So this much big data are you going to put in a one DB table.
+One DB server.
+No.
+Right.
+So definitely we need more servers right.
+In a distributed computing think about from the distributed computing.
+So if some request going over here some request going over here.
+So synchronization is one problem that they both should not generate a same ID, right?
+And also one server is not possible because if you use only one server it has two issue, right?
+First of all, your DB capacity should be huge.
+Plus it's a single point of failure.
+If this is gone, how you will generate the unique identifier your system will gone.
+So definitely we have to be a distributed DB servers.
+And then we have a synchronization problem.
+Like we should not generate a similar ID.
+So there are different approaches to solve this right.
+So what are that first approach.
+First approach is we have ticket server.
+So ticket server is already available.
+So what it has is it has the same issue actually.
+So ticket server is uses one DB.
+It's a centralized.
+Eyes.
+You can say that auto increment, uh, service.
+So let's say you have a different application in a distributed server like so they will all hit this
+ticket server.
+You have app one.
+You this is your another app two.
+App three.
+So all are distributed across over the network.
+Just think from that.
+So now we are saying that everyone is not relying on their DB.
+We are not saying that everyone is relying on their DB.
+Right.
+Because we know what is the issue.
+So we are saying that we use a ticket server which is a centralized auto increment server.
+It will also do the same thing.
+It will increment it one by one by one.
+But it's a centralized for all.
+So again the same issue.
+Think what if this fails.
+If this fails everybody will which are relying on this will get impacted.
+So this is not much used.
+Second is snowflake.
+Right.
+This is based on timestamp.
+Right.
+So it has certain format.
+So it has one bit saved.
+So it has certain format like this is for timestamp.
+And then it has machine ID and then it has sequence number right.
+So this can be used.
+But to be honest I generally prefer the zookeeper part.
+So definitely so we have two options.
+Now I will tell you this option how we can use it.
+But snowflake is also very easy to implement right.
+Because it doesn't depend upon the server.
+It depends upon the timestamp.
+Right.
+So one bit it just reserve it.
+So in the 41 bit it put the timestamp right.
+Then you have machine ID okay.
+What is the unique machine ID.
+Every system has a machine ID, right?
+Then you can put a machine ID and then a sequence number.
+Right.
+So I think it has certain bits reserved for the sequence number.
+I so do check that snowflake.
+What is the bits allocated for each one.
+So most probably let's say if it is four bits for sequence number.
+So after the sequence number across the full limit has been reached it will again start from 0123.
+Like this.
+Right.
+But what makes sure that unique is timestamp right.
+So let's say if two requests come at a same timestamp then it has taken care of like machine ID would
+be different right?
+So definitely at same uh same machine.
+If it is coming it will take care of the like which one it is generating first.
+So you got it right.
+What is time?
+Uh, snowflake, this is Twitter.
+Uh, Twitter uses the snowflake, and it is mostly based on the timestamp.
+So zookeeper is the one which is most preferred in this use case, our shortened URL.
+So zookeeper is definition of zookeeper is.
+It is a distributed.
+So distributed application.
+Can.
+Coordinate with each other.
+Reliably.
+This is Apache.
+Uh, this is Apache's, uh, product zookeeper.
+So its definition say it says that it's a distributed application.
+So we have a distributed application.
+They can coordinate with each other reliably, right.
+And perform certain tasks.
+So now how we can use Zookeeper here is so we have different services application in a distributed environment.
+Definitely we have different services.
+Let's say this is tiny URL server one tiny URL server.
+Two.
+So we have different N3N app server.
+Uh three.
+App server four.
+So now we are using zookeeper.
+So in this we know right.
+How many.
+So let's say here what is the number we got.
+Like how many different combinations we have is 3.5 trillion.
+3.5 trillion combinations.
+We have let's say 0 to 0 12345 till 3.5 trillion.
+We can go.
+Correct.
+So out of seven bits.
+So we have seven characters right.
+1234567.
+Right.
+And each character we have 62 bits.
+So 62 raised to power 73. 5 trillion.
+That's how we come up with that right.
+So we can have this many combinations we can go for.
+So what zookeeper do?
+Is it create a range.
+So this is range one.
+This is range two.
+Similarly it divides and range n and it keeps that okay zero to let's say zero to 0 to 1 million range
+one.
+It will keep 1 million to 2 million.
+Range two will keep on.
+Similarly let's say uh certain.
+So it would be like this.
+And let's say 11 million to 12 million certain range X will keep.
+Right.
+So you got it.
+So here in the zookeeper it will divide into a range wise.
+And for each range we have an ID stored right.
+This let's say one 1 million we can divide.
+So similarly we can also divide five 5,000,010 10 million that depend upon the zookeeper logic.
+Now.
+Whenever the request come in for a particular worker thread, it will always goes to its particular
+range.
+So let's say this is a worker thread one.
+This is a worker thread one this is worker thread two.
+So worker thread one is allotted range one.
+Worker thread two allotted range two.
+Similarly a worker this one allotted some rain.
+So each thread's allotted some different range and they will use the number between.
+It's only.
+So if this gets filled up let's say it reaches this thread has this worker has used all its combination.
+Then it what it will do is zookeeper will pick the next 1 million which is unused.
+So let's say till now we have used till 12 million let's say.
+So after that it will pick another million, 13 million to 14 million for this one.
+Right.
+So we have 3.4 trillion combinations, right?
+So even if, let's say 1 million, 2 million is not used, let's say nobody no traffic is coming over
+here.
+It's not used.
+Doesn't matter.
+1 million is nothing for us.
+We have a 3.5 trillion, and we have only need to support €3.65 billion, right?
+So this is certain advantage in the zookeeper or disadvantage.
+But we have since we have a long, uh, combinations possible, we can take this trade off that even
+if 1 or 2 million will go away, we it's unused.
+It would be okay.
+Right?
+It will always pick the new range and a lot fill it with that.
+So every worker thread which will come it will use its range only.
+So this way we are guaranteed that we are going to generate a unique ID in distributed environment.
+Unique ID in distributed environment.
+This itself is a very good question.
+How you can generate a unique ID in distributed environment, right.
+So we have to come up with from simple.
+First we have one DB.
+What is the issue?
+We cannot scale much.
+If we have multiple DB servers.
+Then there is a problem of synchronization so that we don't generate a same ID right.
+And it would be slow also.
+Then second is ticket server here in the different data stores different data centers.
+We have a centralized autoincrement service.
+But that is also not scalable.
+It has a single point of failure.
+Then we have a snowflake.
+This is a good solution which is depend upon the timestamp right timestamp machine code and the sequence
+number right.
+Then there is something called zookeeper, which is a kind of very popular.
+And the how we going to use is we going to use it like whatever the range we have, we divide into smaller
+ranges and each range has been allotted to a particular server.
+Right.
+And we have a range defined on it.
+Right.
+If any range got filled up it will pick a new range.
+Understood.
+This is how we define a unique ID.
+Generate a unique ID.
+Okay now we have solved one issue like okay unique ID we are able to generate.
+So we know right.
+Another issue.
+So one thing is resolved.
+This is resolved right.
+Now the second was length could be different.
+Okay.
+So here in this case now we see right 16 let's say ID generated is 16 right.
+So we can generate an ID from 0 to 3.5 trillion.
+Right.
+So let's say it is 16 base 62.
+What it will become 16 only which is nothing but a G, right.
+So now in this case this is not a seven character, but we need a at least minimum seven character length.
+So we do a padding.
+We do a padding.
+So let's say you might have seen, uh, padding like double equals to at uh k y.
+After that you have seen double equals to.
+This is nothing but padding.
+You can pad it to make it a seven character unique.
+Right.
+So question is can it is possible that this base 62 will go more than seven characters right.
+No.
+Because till 3.5 trillion.
+Uh, so what is the maximum value we can generate?
+1234567.
+Maximum value we can generate is z right.
+0 to 9 A to z capital A to z.
+So this is the maximum value 62 right 62 6262 possible combinations.
+Right.
+Or you can say that z z z z z z z.
+If you convert it to decimal you will get 3.5 trillion only right some value you will get 3556 something
+something something 3.5 trillion.
+So you can use till this one if if you let's say it is last is eight some value.
+If you use it greater than this let's say nine, it will generate an eight length.
+So we have a range so zero to here.
+So we are making sure that we are using between this range we are picking number between this range.
+So it will always give me a base 62 of less than seven less than equals to seven.
+Right.
+And if it is seven we are good.
+If it is less than we good we do a padding okay.
+So.
+Understood guys.
+So how this base 62 gonna work.
+And now let's comes to its design.
+Design is simple.
+I hope you have seen my previous video of scale zero to million users.
+So this design is very very simple.
+So this is just a you can say you have a user right.
+So now in this case what will happen is a user is going to.
+Go to a load balancer.
+Write in load balancer.
+We have a different tiny URLs servers.
+Tiny URL server 123.
+This is let's say data center one.
+Similarly we can have different data centers.
+So load balancer is the one which takes care of data centers.
+And for each data center we gonna have a cache.
+And the DB.
+So here we will have a relational DB.
+Because we don't have much combination.
+It's a very one table we can have is like id.
+Short URL.
+Long URL.
+Right.
+So short URL we will give.
+We will put long URL and with the help of zookeeper we will generate a this thing.
+So application will talk to our zookeeper.
+So zookeeper will generate a unique ID and that they're gonna use it stored in the DB.
+Right.
+So this is a very basic, uh, this thing we don't need CN here and much thing.
+So this is very simple.
+So this is not uh interviewer might not be interested.
+This is very simple.
+Interviewer might be interested till this point how you can generate a short URL.
+So I hope this clarifies a lot why we don't go with hash, why we go with the base 62 and with base
+62.
+What is, uh, the biggest problem is generating a unique number.
+and what are the different ways to generate a unique number?
+Right.
+And once the unique number is generated, how do we make sure that if the base 62 is generated is small,
+then we do a padding and can it goes more than seven character.
+Not possible because uh, out of seven characters, the possible combination we can have is 3.5 trillion.
+Some number right 62 into 62 into 62, seven times 62 raised to power seven.
+So whatever the number will give is we use that range only.
+Right.
+So it always, uh, base 62 will be less than equals to seven with this within this range.
+Right.
+And for the lesser one we will do a padding.
+And now you know how to use zookeeper.
+So zookeeper is not a unique ID generator right.
+Remember it is not a unique ID generator.
+We it's a uh, you can say an application which helps, uh, application over the distributed network
+to coordinate with each other.
+So here different applications are coordinating with each other.
+And we have just we can put different logic inside zookeeper that okay it taking care of different range
+and allotting a different range to different servers.
+Right.
+So this is all about this design based design URL shortener.
+Right.
+And I hope you understood now how this get generated.
+Right.
+And what are the issues with it, how to deal with it.
+And if you like this, uh, content guys, and if you like this video in English, please let me know
+in the comment so that I would be aware that I need to continue in English, or from the next video.
+I have to make it in Hindi only.
+So please share your thoughts and I hope you enjoyed it.
+It would be useful and have a good day guys!
+And if this got getting asked in the interview.
+So okay, have a nice day guys.
+Bye.

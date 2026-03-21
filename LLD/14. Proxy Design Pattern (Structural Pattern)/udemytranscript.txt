@@ -1,0 +1,142 @@
+# Proxy Design Pattern (Structural Pattern)
+
+Hey guys.
+Welcome back to the channel.
+And today we will do proxy design pattern.
+So it's a part of a structural category okay.
+So it provides a representative or placeholder for another object to control access to it.
+So understand this with a simple diagram.
+So here we have a client which is trying to access this real object.
+So proxy as the name it is placing in mid between this client and real object.
+And it controls the access okay.
+So client is never directly talking with the real objects.
+So it all the communication is happen through proxy okay.
+So use cases of proxy design patterns are like if you are working with the spring boot or if your day
+to day like everywhere, you can find that yes, there is a proxy involved in that.
+So first very useful use cases.
+Access control.
+So it restricts access to sensitive sensitive operations based on user permission.
+So let's say a client is trying to perform a delete operation.
+Okay.
+So instead of directly calling the delete we can have a proxy where it will check the permission.
+Okay.
+If user has permission then only let the user invoke the delete method.
+Otherwise block the request itself.
+Okay.
+So this is one use case of proxy.
+Another important use case of proxy is pre and post processing.
+So if you are from spring boot background or normal even if not spring boot background normal.
+If you are working at a back end project, you know that when we are trying to update the DB internally,
+we have to create a transaction.
+We have to start the transaction and then perform a DB operation, and then we have to end or roll back
+the transaction based upon its success.
+Okay.
+So generally in spring boot example I am giving when we use at the rate transaction annotation, we
+just perform db operation.
+Hey this is the DB operation which I want to do and you just annotate it with at the annotation.
+Internally it make use of proxy design pattern.
+So it does some pre-processing and post-processing.
+So it intercept.
+So instead of directly calling the DB operations there is a proxy class got invoked first which start
+the transaction which is nothing but a pre-processing.
+So it does some additional work before the actual task.
+So to start the transaction then whatever the DB operation you wanted to perform, it does that.
+After that the post-processing if the operation is success and the transaction else or and the commit
+the transaction else rollback the transaction.
+So this is a very very good example for you can say that pre and post processing use case of a proxy
+design pattern.
+Okay.
+So this definition is clear.
+And the use cases are clear.
+Like what exactly proxy design pattern is.
+So it's very very easy to understand with the class diagram.
+And then we will see an example.
+So it would be proper clear.
+So we have an interface say subject.
+And we have a real implementation of it.
+So this is a concrete class okay.
+So consider this is a real object.
+And client is interested in accessing the real object.
+But here in the proxy design pattern we also create one more child class of this subject which is a
+proxy proxy subject okay.
+It is also a concrete class.
+Now the very important part is that this proxy has a reference of this real subject.
+Now why it has?
+Because now the client will never talk directly with the real subject.
+It talk with the proxy, and the proxy need a reference so that it can further invoke the real subject.
+So understand with this example.
+So here I have created an employee Dao.
+So this employee employee Dao has two method get employee info and create employee.
+So two method get and create.
+And this is the real the actual object which performs the thing.
+So it is a child of this employee Dao get it is fetching the data from the DB.
+This is create creation of an employee in the DB.
+Okay, now here if you see I have created one proxy employee Dao proxy.
+And here I have this reference.
+So whenever the employee Dow proxy object is going to get constructed.
+So this is a constructor.
+So I am creating a reference of this one actual object.
+So it has the reference of this employee Dow impl.
+The real object.
+Okay.
+So this got.
+Created instance is filled up whenever this constructor is invoked.
+Okay.
+And it has certain fields which this proxy is required to do its validation.
+So let's say currently I'm just using client role.
+So based on that client role it will decide certain rules.
+Let's say that now these two methods it will provide an implementation.
+Get employee info and create employee.
+So get employee info.
+So now here first it is checking that if client role whatever the client role we have is equals to admin
+or client role is user, then it will allow to access the request.
+So whatever the object.
+Now I have for the actual object, it will use it and call the method.
+So now this will get invoked properly.
+Else it will throw an exception.
+Access denied.
+So this is I'm showcasing the use case one.
+Whatever we have discussed this one.
+Access control.
+Okay.
+Similarly the other method implementation is.
+So here if you understand that what proxy is doing is proxy is just controlling the access here.
+Hey, should I provided access or not?
+Implementation is still there into the actual method okay.
+It just do certain validation and then forward the request to the actual object okay.
+Similarly for create employee it just check whatever the client role we have.
+Is it admin.
+Then only let the create employee method request pass through.
+Otherwise Access denied.
+Okay, so here I am creating a proxy object.
+So now this is my client.
+So here the client is trying to access object, but not through real subject.
+Through proxy.
+So this is my client.
+Now first client is creating an object of employed proxy and passes the role user.
+So here in this constructor it passes the client role as user.
+So currently the role is assigned as user.
+And in the constructor new object of this employee Dao impl would be created.
+So this is done at this one.
+So now this proxy object I am calling first employee info.
+So it will say that okay whatever the role is admin or user.
+Yes it is user.
+So it will allow.
+Now I am with the same object I am trying to call create employee.
+So create employee has admin but minus user.
+Okay I created this object with the user role.
+It won't be able to access it.
+So it would say access denied.
+Very very simple okay.
+But highly used.
+It might not be like in your day to day work.
+You might not see it, but it is very heavily used when you will start working with Spring Boot framework.
+You realize that, or even not with just Spring Boot, even with JUnit, even with Spring Boot, and
+within Java itself, like we have annotation reflection internally proxy is involved.
+Okay, so before our real object got invoked, this proxy, some layer catches it, perform some additional
+work, and then ultimately pass the object pass to the real object.
+Okay.
+Let me know if there is any doubt we can discuss further into the comment section.
+Okay guys.
+Thank you.
+Bye.

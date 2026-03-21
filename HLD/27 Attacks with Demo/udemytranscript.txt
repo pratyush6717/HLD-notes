@@ -1,0 +1,326 @@
+# API GATEWAY and Microservices Architecture
+
+Hey guys, and welcome to Concept Encoding.
+And today in System Design Playlist I am going to cover a new topic which is very, very important,
+which is API gateway.
+There are so many questions which build on top of it.
+And I'm going to tell you the complete, uh, overall design where this API gateway fit and these two
+are the most frequently interview questions get asked.
+If API gateway is a single entry point, how does it handle millions of requests per second or sometimes?
+Also like how API gateway is different from load Balancer?
+Does it come before or after the load balancer?
+And trust me, so many engineers has doubt on this one.
+What is API gateway?
+In simple terms, it accepts the client API request and route them to correct backend service based
+on API endpoint.
+Read this line again, because this is what makes it different from a load balancer.
+So let's say that this is a client and API gateway is in mid, so it accepts your request.
+Now API gateway will decide hey if it is this API slash API slash invoice it has to route to this microservice
+invoice microservice.
+If API structure is like this it has to route to order microservice.
+If API structure is like this, it has to route to sales microservice.
+Okay.
+So it routes the API to correct backend service.
+Isn't this what load balancer also do?
+No.
+Generally load balancer simply distribute the traffic to multiple instance of a microservices.
+So for example once the request is coming load balancer task is to just equally distribute the traffic
+between multiple instances of a same microservice.
+So invoice microservice one, invoice microservice two, invoice microservice three, and many more.
+But it do not have the capability to understand an API.
+Okay.
+And then take a decision where to route.
+So load balancer doesn't have capability to understand this API okay.
+It is slash invoice.
+I have to move it to invoice.
+Otherwise I have to move it to order.
+No.
+And that's the major difference between API gateway and load balancer.
+So apart from routing what API gateway is doing right.
+Based on the end point, it decide where to route which microservice to route.
+It has so many other capabilities, right?
+API gateway is very intelligent compared to load balancer.
+So first thing is API composition.
+So here if you see I will tell you the problem with the API composition.
+So now let's say that you are opening a e-commerce website and you are going to like view my order,
+view my order, click on button.
+Now you have to see your past purchase history.
+Now let's say if you are clicking that option from Mobile device.
+So mobile device has very less bandwidth.
+You can say that.
+So we show less details.
+So we show let's say only these two details product details and invoice details.
+So mobile device Client is using an API.
+Just take it as an example one from the product microservice and one from the invoice microservice.
+And fetching the detail of product and fetching the detail of invoice and showing the details.
+But now let's say if you are using computer or a personal computer there, it has more space and bandwidth.
+So you might show more details.
+So maybe the same page for the PC device client.
+Apart from product and invoice, it is also showing ratings and reviews.
+It is might be also showing recommendations.
+So even though the same page but based on the device also you see the functionality differs.
+Okay, now on the PC device line you need to query more APIs.
+Or maybe it is possible that different microservices also to fetch those details.
+Now here if you see this is an additional headache on the client.
+So with the help of API composition feature of API gateway this can be simplified.
+So now here if you see that in the API gateway we can configure the endpoint.
+Let's say slash API slash my order.
+If the client calls this now API gateway has a Intelligent that okay, if it is a mobile device, I
+will call this two API.
+Those two microservices and fetch that product detail and invoice detail API gateway has an intelligent
+okay.
+If it is a personal computer device then I have to call additional APIs.
+Okay.
+Gather the result and return the single response.
+So now here, if you see that the client work is and the complexity is reduced a lot.
+So this is this feature is known as API composition.
+And it is very very important.
+And it is very frequently used in Netflix.
+So Netflix the API gateway which uses it is highly used this API composition.
+Okay.
+Then we have another feature of API gateways authentication.
+So what happen is so let's say you have a client they are calling an API gateway.
+Okay, now API gateway also has capability to authenticate the client.
+So now let's say that if it is using OAuth 2.0 flow.
+So in the first step the client get an access token from the authorization server.
+If you are if you don't know about the OAuth 2.0 flow, check out this playlist I have covered in depth
+of this OAuth two point flow.
+So it would become clear to you.
+So in the first step, the client gets an access token from the authorization server.
+Now any subsequent request the client pass this token to the API gateway.
+API gateway integrates with authorization server and validate this token.
+Hey the client.
+It is trying to access an API and it gives me this token.
+Is it a valid token or not?
+Now authorization server validated yes, yes or no?
+If it is yes valid, then only API gateway allow it to pass to a microservices instead of.
+You are putting an authentication logic here.
+Here, here you are duplicating the things.
+So we are putting the authentication at the front itself.
+Only after authenticated it will go further.
+The third important feature of API gateway is rate limiting.
+So we can set various rules like managing the burst ram burst limit.
+So burst limit is something like it's handling.
+The peak means maximum number of concurrent requests that API gateway can handle before it return 4
+to 9 too many requests.
+So if you are using AWS Azure API gateway, you will have a option to set a burst limit.
+You can put the value okay 500 something like this.
+So what burst limit says that at a peak.
+What is the maximum concurrent request API gateway can handle?
+Then we have API throttling.
+API throttling.
+I would say that it's a more granular level, like we can limit a particular individual or an application,
+right by blocking them once they cross an allowed request rate.
+For example, I say that okay, this API slash API slash invoice, this API should not get invoked more
+than ten times in a minute okay.
+So with API throttling we can do that.
+So ten times in a minute.
+As soon as the 11th call comes in a minute it will fail it.
+This will block it even you can go more granular that okay.
+But ten times in a minute by a particular user, by a particular user also.
+Okay.
+So this all rules comes under API throttling.
+You can also set rules to IP based blocking that a particular IP will get blocked, and also API queues,
+which is uh, you can say that a part of rate limiting hold request to an API which cannot be processed
+immediately.
+It helps to handle the thundering herd issue.
+So as soon as subsequent traffic comes.
+Now let's say that 1000 requests comes in the burst limit.
+I have only set 500, so 500 requests are will not be able to process.
+So we can put into API queue.
+They will wait in the waiting area till your API gateway get the bandwidth to process them.
+So this rate limiting is also very important feature.
+Another very important feature is service discovery.
+Very important.
+So now understand that you have multiple components.
+Let's say you have microservices.
+You have load balancer right.
+There are multiple instances of everyone.
+And today in the distributed world some go scale up scale down.
+So their IP address and port number keep on changing.
+So you need somebody to keep track of their location.
+Who does that service discovery.
+A microservices can scale up and scale down.
+It's necessary to know the location, IP address and port.
+Service discovery keep track of those.
+So there are two different approaches.
+Approach one.
+Whenever each microservices scale up or scale down, it has to register or reregister themselves.
+So they have to register to the service discovery.
+And then only service discovery would be able to know about their location.
+Another approach is that service discovery.
+Keep the health check of all the registered microservice and keep only active microservices location.
+So earlier it has multiple microservices which is registered in the service discovery.
+So service discovery keep frequently health checkup.
+Now let's say if it is not able to see the heartbeat of this one, it will remove this one from its
+location.
+And only whatever the somebody asks that, hey, this is a invoice.
+Microservice one.
+Invoice microservice instance two.
+Invoice, microservice instance three.
+Anybody asked for, hey, give me a location for invoice.
+Microservice service discovery will provide one of them.
+Okay.
+So here you have a client.
+It is calling an API.
+It goes to an API gateway.
+Now API gateway has the logic that okay it's slash order means it has to invoke order microservice.
+Now it has to know the location before invoking that, right?
+So how API gateway will know it will call service discovery?
+There are various software like Zul and Eureka.
+So they provide they serve as a service discovery.
+Uh, software.
+So API gateway, check with them.
+Hey, I need a location for order microservice.
+Service discovery will give it a location and it will pass it to the proper microservice.
+Okay.
+So sometimes there is a separate service for service discovery.
+And sometimes this the complete functionality itself is inbuilt there in the API gateway.
+So these four are the major capabilities of API gateway.
+But there are other capabilities like request response transformation, the request which is coming.
+And the response which goes out.
+You can transform this according to your company needs.
+You can even cache the response which is going out.
+You can cache it so that the next time same request comes, you don't have to invoke an API itself.
+You can directly response from here itself and even you can put logging.
+Now, if API gateway is a single entry point, how does it handle millions of requests per second?
+So before I go to this diagram, let me do some rough here and then I will tell you.
+So till now what we have seen is we have microservices let's say invoice microservice.
+And it has multiple instances okay.
+Then you have order microservice and it will have its own multiple instances.
+Now you know that.
+Who will take care of distributing the traffic to a single microservices to a multiple instance?
+It's load balancer.
+So you have one load balancer which takes care of distributing the traffic between multiple instances
+of this invoice.
+Microservices.
+This is invoice microservices.
+Similarly, you will have one load balancer which takes care of responsibility to distribute the traffic
+to a multiple instances of order microservices.
+Now who will route the traffic to a load balancer?
+You have API gateway.
+So whenever the request comes to an API gateway API gateway, check with service discovery.
+Hey this is API slash API slash invoice.
+Let's say now with service discovery, it will give me an address of this load balancer here.
+You have to interact with this in this scenario.
+And if it is slash API slash order then API gateway will check with service discovery.
+Service discovery will give an address of this load balancer.
+And this load balancer will take care of distributing whatever the traffic it is coming among multiple
+instances of that that.
+So now I am just extended this to a next level.
+Now here if you see I bring couple of new points region and availability zone.
+So you need to first understand what is region and what is availability zone.
+Now let's say when we have to answer that how it handle millions of requests per second.
+And when it say that it's a single entry point, does it really a single entry point.
+Right.
+Then what things comes into mind is we have to understand first region and A-Z.
+Consider this region as I'm saying.
+Let's say, uh, Mumbai.
+Mumbai is one region and A-Z is particular area.
+Area one, let's say area two, uh, let's say Bandra and uh, now XYZ area inside this region.
+So now in this each A-Z, there they have a dedicated data center, dedicated data center.
+Notice that this A-Z.
+So this is let's say A-Z one.
+This is A-Z two in this region.
+This region Mumbai has two A-Z availability zone.
+Right.
+Uh, maybe Bandra and some other area.
+And each area has a dedicated data center and they do not share any resource if any one goes down.
+It's not like the complete region is down this region.
+Its traffic will now move to this one.
+When this also both goes down, then only we say that hey, region is down, region one is down.
+Then companies do have different region also.
+Region two let's say maybe Chennai in Chennai multiple AZ one AZ two okay, so let's say one AZ area
+is Sholinghur, another is some other area.
+So even though one AZ got down doesn't matter.
+This region has another easy.
+If all the AZS availability zone get down then then also there will not be any single point of failure
+because this region is also we have multiple regions.
+So the same thing here.
+So you already know that I have already showed you microservices.
+Now slowly understand this.
+Now I am going to extend it further.
+You have microservices one.
+It has multiple instances.
+Who control the traffic to a multiple instance of a single microservice is your load balancer.
+Similarly you have multiple different microservices.
+So let's say this is order microservice two.
+It also has its own instances.
+Load balancer will take care of distributing the traffic to this multiple instances.
+So this would be all under one availability zone.
+This is your one availability zone.
+Similarly you have a same structure in AZ two different availability zone okay.
+Same microservices one.
+It's multiple instances.
+Microservices two it multiple instances and load balancer.
+Now API gateway is one region level.
+Let's say that any request which comes to an API gateway.
+API gateway check with service discovery.
+Service discovery has many criteria and rules.
+It, uh, checks.
+Let's say that user belongs to area one and the nearest availability zone is this.
+So the location with service discovery will give to an API gateway.
+So API gateway will route the traffic to this availability zone.
+Now based on the API uh, either this load balancer get invoked or this load balancer.
+Right.
+If it let's say an invoice API, this load balancer which has an invoice microservice.
+If this is an API, this load balancer get invoked, which is an order microservice, let's say.
+Similarly, uh, if the user is nearest to this availability zone API gateway, get the location from
+Service Discovery for this AZ and then based on the API, uh, appropriate load balancer will get invoked.
+Now here, if you see that this is region one.
+Similarly you can have multiple regions like this.
+Region two.
+There could be possible region three.
+And inside each region you have the same thing.
+So one thing is very clear that it's not a single point of failure.
+If both the load balancer will fail mean this AZ got down, this AZ two will take care of it.
+Now if this also got failed, this also got fail means your complete region is failed.
+Then region two comes into the picture.
+Let's say region two will take care of it okay.
+So it's not a single point of failure first thing.
+Now the question which might be coming that hey how.
+we thought that API gateway is a single entry point, but now we have a different regions, different
+API gateway, how the request is divided between different regions.
+Also who who like here load balancing is distributing the traffic between single uh microservice instance.
+Right?
+Similarly, API gateway is kind of a another, uh, microservice, you can say or a software, and it
+has its multiple instances here in different different regions.
+Now who is going to distribute the traffic.
+Is it load balancer is going to distribute the traffic.
+You can say kind of.
+So here if you see that the DNS comes into the picture.
+So if you are using AWS there is something called AWS 53 route.
+You can say that it is considered as a DNS based load balancer.
+Similarly if you are using Azure there is something called Azure Traffic Manager.
+It's again a DNS based load balancer.
+So whenever the client makes a call.
+Okay.
+So a specific DNS based load balancer distribute the traffic between an appropriate API gateway.
+And again it has the same uh intelligence like a service discovery okay.
+Which traffic should goes to which region depending upon the latency compliance.
+Maybe there are certain countries, let's say XYZ country.
+Its traffic should not go to this region.
+It can only be goes to this region.
+So no matter, even though it's far the because of compliance, the traffic has to be moved to this
+region.
+So it's a very intelligent, uh, DNS based load balancer, and it can help to route the traffic between
+multiple regions and appropriate API gateway.
+Get the request from this.
+Now, if you are curious, another question might come to you that, hey, isn't that DNS is a single
+point of failure?
+Then what if this DNS goes down?
+Who will take care of moving the traffic to the API gateways?
+No, this is again a very big topic.
+But DNS is not a single point of failure.
+It's not a single point of failure.
+So whenever you type, let's say that hey uh example x y z.com.
+So this has to be converted to an IP address.
+Who helps it DNS helps it.
+But there is no single instance of this.
+There are multiple like DNS there is a hierarchy local DNS, root DNS, top level DNS.
+Then it goes to authoritative DNS.
+But maybe in future video of system design I will explain the DNS in depth.
+If you have any doubt and question, we can discuss further and DNS I will cover in the second part.
+All right.
+Thank you.
+Bye.

@@ -1,0 +1,735 @@
+# LLD of ATM
+
+Hello.
+Hey guys.
+Welcome back and welcome to concept and coding or video that is design atm right.
+So guys uh, I have asked one question that in the design atm, which two design pattern I am gonna
+use.
+Right.
+So most of the answer which I have got is correct state design pattern.
+And another is chain of responsibility design pattern.
+At which place we are going to use it I will tell you, but the prerequisite is if you don't know about
+state design pattern.
+So this is my playlist.
+So here if you see design a vending machine it is nothing.
+But I explain the state design pattern with an example.
+So it has state design pattern is completely described here.
+If you don't know and chain of responsibilities design login system.
+This is just an example I use to explain the chain of responsibility design pattern.
+right?
+I'm going to use two design patterns.
+One is state.
+Design pattern.
+And another is.
+Chain of responsibility.
+Design pattern.
+So this and this depends upon the scope of the LD.
+Right.
+What should be the scope when when these two will come into the picture.
+When only this come into the picture.
+When we have to make use of only this and when we have to use both.
+So.
+You can use right or scope of use.
+So it depends.
+So we have to clarify with the interviewer with the scope.
+So I'll tell you this thing.
+But before going to that, I will first in five minutes I will explain what is state design pattern
+and what is chain of responsibility.
+Right.
+So state design pattern.
+So here if you remember what I told was any object, any real time object which has operations, let's
+say I have operation one.
+Operation two, operation three, operation N I have different operations, but different operation
+can be performed on a particular state of an object.
+Right.
+Let's say operation one and operation two can only be done in state one.
+Operation three and operation four can be done in state two.
+Right.
+Then this kind of scenario can be resolved using state design pattern.
+So this concrete state, let's say here I define all the operation op operation one.
+Operation two operation N.
+So if concrete state one has to perform only operation one.
+Operation two, it can override this operation one operation two rest it will not overwrite.
+It will use the default.
+If state two only need operation three and operation four, it can use that right.
+So likewise.
+So this is state design pattern.
+And we also going to use the state design pattern in our ATM.
+So you can get more familiar with it right.
+So this is the high level.
+But if you want a detailed video you can check out the design vending machine video.
+Second one was Chain of Responsibility which we are going to use.
+What is chain of responsibility is chain of responsibility is any request which comes in.
+It goes into a chain.
+Right.
+It goes different processor.
+So this is what generally we call it processor.
+Processor one.
+If processor cannot do it this request cannot fulfill it.
+It sent to another processor.
+If so this is the chain.
+So likewise it's a chain.
+So let's say there are n processor processor n.
+So let's say processor two also cannot do it.
+So let's say but processor three is able to do it.
+So it will return from here.
+Right.
+It will not go ahead of the chain processor.
+One is not able to process the task.
+Then it tell inside this it has an object of itself processor only that check with processor two.
+So then it will call processor two and then check.
+So this is a kind of chain.
+I will also explain this with an ATM example, you will get to know better.
+But just to recap you so that you will get okay what was chain of responsibility?
+But if you need more in-depth, uh, specifically, uh, Chain of responsibility video, you can, uh,
+just check out the design, uh, I think design logger system.
+Right.
+So now I have given you the recap of this two design pattern.
+Now let's come to our design ATM question where we are going to use this flow.
+Right.
+This is how we always do.
+Right.
+Come up with the flow.
+So what is the flow.
+Let's say user come with its card right.
+He goes to an ATM so he goes to an ATM.
+So this is card.
+This is user right.
+He used the ATM and then he select different operation.
+He insert the card.
+So let's say this was user user insert card.
+In the ATM right.
+So in the ATM it insert card.
+Once the card is inserted into the ATM, ATM will what it will do it will authenticate Pin.
+It will authenticate the pin.
+Once the Pin is authenticated what ATM will do is it will give certain operation operations option.
+Like do you want to withdraw cash.
+Do you want to deposit cash.
+Do you want to check balance like any other thing?
+Like what could be possible?
+Do you want to change pin anything so different type of operation options.
+It will give user perform one operation at a time.
+Right.
+Let's say it perform operation.
+Perform operation.
+Once the operation is performed completed.
+Right.
+It can either so we can have different implementation of ATM.
+Once Operation one is completed, it will again go to this.
+It can retry right till exit is not done.
+Or for the simplification we can have one operation done.
+Then you have to start the process again.
+So once the perform operation is done user again goes to at this point.
+So here ATM is idle.
+So right.
+So here I would say that.
+Idle.
+ATM atm is idle.
+So ATM is like in um you can say that uh card acceptor.
+So card is accepted.
+So like kind of has card state right.
+So this is the flow.
+So this is a flow and a dry user is user.
+Insert the card into an idle ATM.
+So once the card is inserted ATM now has the card.
+Now it will validate the Pin.
+Once the pin is validated it will show the different operation.
+Uh user will pick one of the operation, perform the operation.
+Right.
+And currently the flow which we are deciding with the interviewer that once the operation is performed,
+operation could be.
+What?
+Cash deposit.
+Cash withdrawal.
+Uh, pin change.
+Check balance.
+These are all the different type of operations it can do.
+Right.
+So there would be implementation for each one.
+So once any operation is done then user will reach to an idol again.
+Again, if he has to perform any other operation, he will insert the card and perform the second operation.
+So this is the ATM flow.
+Understood?
+Totally understood.
+Now let's come to this.
+Where this state design pattern and chain of chain of responsibility design pattern come into the picture.
+So now using this flow you get to know that ATM has set of operations.
+Now what are the set of operation.
+Insert card is one operation right.
+Here you can say that authenticate pin.
+Authenticate pin is one operation.
+What are the different operation?
+It has select one of the operation.
+Out of this different operation option it has to select one coin deposit withdraw pin change check balance.
+So it has to select operation.
+This is one method.
+Then after that it has to implement the.
+It has to perform the operation.
+Perform the particular operation.
+And that's all.
+So now see there could be more also.
+So now we have a different set of operations.
+And can each operation be done in a single state.
+No.
+When ATM is idle.
+So now in the idle state.
+Idle state which operation can be done.
+An idle state you can do insert card only.
+Can you authenticate pin nine?
+Can you do select operation nine.
+Can you do perform operation particular operation no.
+In idle state you can do only insert card.
+Once the card is inserted, state will change.
+Now the state will become hash card let's say ATM status change hash card.
+Now in hash card, what you can do, you can authenticate the pin.
+If Pin is correct.
+If Pin is correct, you will move to the next state.
+But anything else you can do?
+No.
+Now during hash card state you will do authenticate pin.
+So after one pin is authenticated you move to a next state let's say selection state.
+So you got it right.
+Now we have a state.
+Operation is divided into different states.
+That's where we got to know that okay.
+This seems to be a state design pattern.
+Fall under state design pattern use case.
+Right.
+This operation state wise some operations could segregate is state operation is state operation so state
+wise operation defined.
+So that is the very best use case for state design pattern.
+So you got it.
+Where does the state design pattern comes into the picture to build an ATM.
+Now where does the chain of responsibility comes into the picture.
+Now I told you about different operation different type of operation cash deposit cash withdraw pin
+change check balance.
+Let's little bit deep dive into the cash withdrawal.
+Cash withdrawal.
+So you know that right.
+Cash withdrawal always happen from descending order.
+So let's say we have three type of cash uh three type of nodes two keynote ₹500 note and ₹100 note.
+So you know right.
+If you want to withdraw ₹3,000, if you have, let's say sufficient notes for this one, how what you
+will get, you will get 2K1 note and ₹500 two note.
+It's always in decreasing mode generally, right.
+So that's where we gonna use the chain of responsibility design pattern.
+So a chain of.
+So we got a request.
+Request either amount.
+Withdraw amount.
+Withdraw amount is our request.
+Let's say it come 3000.
+So now you have one processor is ₹2.
+Processor let's say then two K is linked with 500.
+After that ₹500 processor.
+And after that ₹100 processor.
+Right.
+So it will go.
+Can you fulfill me ₹3,000?
+Two K will say I can only fulfill ₹2,000.
+I have only one node, right?
+So I will fulfill 2000.
+Can you check for ₹1,000 from next processor?
+500 will say that.
+Okay.
+I have only one node.
+I can fulfill 500 out of your 1000, right?
+I can fulfill ₹500.
+Right?
+So the remaining 500.
+Can you check from here?
+So let's say 100 has ten nodes.
+So it says yes, I can fulfill remaining ₹500.
+Right?
+So they will update themselves, right?
+Okay.
+Now after he serve, he become zero.
+After this, it will become zero.
+And he took out the five node.
+So this will become five, right?
+So this is the chain of responsibility that if they cannot fulfill the request, they will forward the
+request to the next processor with the remaining what is left?
+What is left?
+Right.
+If this is not completed fully means it's an issue, right?
+But otherwise, you got it right where?
+The chain of responsibility.
+Going to come into the picture.
+So here in this case cash withdrawal is the use case where.
+Chain of responsibility comes into the picture.
+So now when I told you the scope of LD.
+Right.
+You have to clarify with the interviewer.
+Do you have to implement both.
+Can we just make an assumption that when we do cash withdrawal method implementation, we can just simply
+reduce the amount.
+So let's say total ATM balances three k and withdraw request is two k.
+We can just simply get three k minus two k, one k is left and we have withdrawal two k.
+So this is let's say I'm defining my scope.
+If that interviewer says that yes yes that is okay.
+Then you don't need chain of responsibility.
+But interviewer say that he is very much interested.
+No, no I want to understand this.
+How you gonna withdraw the amount?
+Then you have to build this.
+Then you need a chain of responsibility design pattern also.
+Okay.
+So this two comes into the picture depending upon the scope the scope dependent or.
+The cash withdraw.
+So banana padega otherwise.
+Yes.
+Just assume take an assumption that uh just reduce the amount cash withdraw just reduce the ATM balance
+to withdraw.
+So to reduce or assumption to withdraw, then we are good.
+With that being said, let's jump to the UML diagram as we already have the objects.
+Right.
+So we have a user, we have a card, we have an ATM.
+Right.
+And in the ATM we have a different states.
+So let's move on to a UML diagram.
+And here I have the code implemented.
+I have also pushed to the GitLab.
+I will give the link in my description.
+You can check it out.
+So shall I start or is it important to manage ATM has states.
+So we have a abstract class.
+ATM state.
+I have created it an abstract class right of ATM state here.
+So this is my abstract class ATM state method insert card authenticate pin select operation cash withdrawal
+display balance return card exit all valid operations of an ATM state or it can be more.
+But for a MVP minimum value product.
+I have defined this right.
+So it has list of operations, let's say insert card kind of let's say like this.
+Now I have defined the state.
+What does uh state pattern say that now you have to define the.
+Different states of an object states or state.
+I have kept it idle atm.
+Idle state.
+So this is nothing but a idle state.
+In idle state.
+What method?
+I have implemented only insert card.
+Insert card in idle state you can only insert card, nothing else, right?
+So I will implement this only second method.
+Second state which I have kept is has card.
+Once the card is inserted it will change its state to hash card state in hash card state.
+What I have done I have implemented the authenticate pin method.
+Authenticate pin.
+And here also you can also do an exit.
+Exit and return the card also.
+So this I have implemented what is the other state.
+Other state which I have done is select operation.
+The third state is I have kept this.
+Select operation.
+Right.
+So let's say after the card authentication has been done.
+After the authentication we have to select the operations like what are the different cash withdrawal
+balance check So for this example I have just implemented two cash withdrawals and balance.
+So if I have implemented a select operation method right.
+Also exit and return card also because you can also exit from here also and return card also.
+What are the other state which I have kept.
+So now you have selected the operation.
+So now it will run into perform operation state.
+So in perform Operation state I have kept different different state.
+Let's say for two I have kept kept cash withdrawal state.
+Cash withdrawal state in which I have implemented cash withdrawal method.
+Cash withdrawal method.
+Also you can also exit and return card from here also exit and return card also.
+One more method.
+One more operation which I have operated is check balance.
+So here I just have display balance method plus uh exit and remove card or return card.
+Right.
+So similarly in future any other new uh operation we have to add it, support it.
+We can just simply add it.
+Right.
+So these are the different type of states which I have come up for an ATM in idle state only you can
+insert card.
+Once you inserted the card it will change the status to cash card, hash card and hash card state.
+You will authenticate the Pin.
+Once the Pin is authenticated, you will move to the selection operation.
+Once the selection operation, you will select what type of operation it will do any one of the operation,
+and once the operation is done, it will change it back to the idle state.
+Right.
+So you got it.
+Like all this thing.
+I will tell you the what how I implemented it as implement here.
+I will tell you that is very interesting part.
+So now we have an object.
+So object state design pattern object ATM is our object or ATM.
+What will have is we have ATM state object.
+So it ATM has.
+Right.
+So here atm is my object.
+So ATM has state right.
+So this concrete method will change this ATM state current.
+What is the current state of the ATM?
+After each operation I will tell you how it is working.
+But just first understand the UML okay.
+What all object we have.
+We have user right.
+So we have.
+User.
+Correct.
+And what else we have card.
+What else.
+We have bank account.
+Right.
+So now here you see in user what I have defined user has card.
+User has bank account.
+So what user has user has card and user also has a bank account.
+And what does card has.
+So user has card and user has bank account.
+And what does card has card has CVV number etcetera etcetera expiry date and all this thing.
+Apart from that, God also has linked with the bank account.
+So you can perform.
+You can update the bank account with the card also.
+So it has bank account to bank account.
+And what does bank account has.
+Bank account has balance.
+Balance.
+What is the balance.
+And also update balance method.
+Update balance.
+So whenever any withdraw cash deposit anything happen the balance will get updated.
+Right.
+And how ATM and user are linked.
+So let's say there is an ATM room ATM room.
+So in ATM room we have an ATM.
+So ATM room has ATM and ATM room also has a user.
+When they both come together then we can perform an operation.
+So this is the UML.
+And here if you see I have used the state state design pattern at this point.
+So this is.
+State design pattern.
+Okay.
+Now let's move to the.
+Chain of responsibility design pattern.
+So cash withdrawal right.
+So now a chain of responsibility design pattern.
+Now here I have defined the processors I have defined one.
+Cash withdrawal processor.
+Right now cash withdrawal processor has different concrete methods.
+So I have taken three examples.
+Those are all sour notes.
+So I have, uh, 2000, 2000.
+Uh, what I have taken is 2000 withdrawal processor.
+2000 withdrawal processor.
+₹500, uh, withdrawal processor.
+And hundred rupees withdrawal processor.
+And also it has an object of itself, cash withdrawal processor.
+And something like next.
+So it is linked to itself.
+So here, if you see, I have a cash withdrawal processor.
+This one cash withdrawal processor.
+Cash withdrawal processor has object of itself.
+So means there is a kind of like this The reference, so it has a reference of itself.
+Then it has a child to 2000 withdrawal processor.
+So 2000 withdrawal processor is the child of this and it has withdraw method.
+Then we have 500 withdrawal processor.
+It has the same withdrawal method doing operation right.
+And similarly hundred withdrawal processor is one more child and it has again has a withdrawal method.
+Right.
+And two K is linked with 500.
+500 is linked with 100 that we will define it in the cash withdrawal here.
+So it has.
+So this will be the driver.
+So in the cash withdrawal state we have I have divided this link.
+So here so 200 withdrawal processor has 500.
+So 200 constructor may pass 500, right?
+So 200.
+In the 200 withdrawal processor I, I set the next processor of 500.
+If 200 cannot process the required process the request it will use the next to initiate the next one.
+For the 501 which one I have used inside 500 I have put 100, so inside 500 I have put.
+The next is of 100 and inside 100 there is anything null, it's null.
+Right.
+So this is the complete design UML here for the ATM.
+Now I will tell you the code wise but UML guys.
+So state state design pattern.
+State design pattern Or a chain of responsibility.
+This is chain of responsibility design pattern for the withdrawal logic.
+Okay so UML so let's go ahead with the code.
+So ATM room okay.
+Initiate ATM room initiate connect flow right.
+So initialization I initialization a ATM or ATM I had kind of a statement atm idle statement atm.
+Idle state.
+Currently it is an idle state.
+ATM is in idle state or initialize current ATM.
+ATM amount 3500 atm.
+Idle state or balance.
+Balance 3500 or ATM.
+Under.
+Many do not.
+So inside this I have put 2001 node, 502 nodes, ₹500, two nodes and 105 nodes.
+Right.
+So these are the currencies I have in my ATM.
+And currently it is in idle and balance is 3500.
+So this is so I have all this field in my ATM current state ATM balance and the number of nodes currencies.
+Okay.
+So my name is go initialize the state parameter.
+Now I have also created the user.
+Once I created the user, I have created the card and its bank account.
+Right?
+So now what?
+Uh, I have created a card.
+I have created a bank account and user has a bank account, let's say 3000.
+So here I have created user bank card and the bank account has ₹3,000.
+For now let's say now I have initialized.
+Everything means I have a user.
+User has a card.
+User also has a bank account and his bank account.
+He has ₹3,000.
+We have an ATM.
+ATM is currently in idle state ATM has 3500 balance and it has this kind of currency.
+So I have just done the initialization process.
+Once the initialization is done, let's see how I am driving it.
+So I am printing the current ATM status.
+It will print this balance and all these currencies which is present.
+Now first step what is user is doing?
+User is inserting the card.
+So inside the ATM it inserted the card.
+So here I go inside the insert card.
+So by default is oops something went wrong.
+But what is my current state idle.
+So where it will go it will go into the idle state.
+So insert card is implemented.
+So it will print card is inserted and what it will do.
+It will change the ATM state to hash card state.
+So now it has changed the state to.
+Has card state.
+Now I am at this state.
+So this is my state which is currently holding now here.
+Right.
+So now what?
+Operation.
+Next I am doing authenticating the pin.
+Right.
+So now what user has entered the pin.
+So I'm just hard coding it.
+112211.
+But for the card what Pin I have defined is.
+So currently I am hard coding.
+It is.
+It should be 112211.
+Inside the card I have the correct pin I have is 112211.
+So that's why I am passing in.
+The flow is 112211.
+So now user is trying to authenticate its card at this point right.
+It is authenticating authenticating the pin.
+The pin number I have hard coded into the card.
+So that's why I am passing this one.
+If you pass any other thing it will exit from here itself.
+If you pass wrong it will come here if entered wrong.
+But if, let's say it entered right.
+Authenticate pin.
+So currently ATM is in which state has card state.
+So it will go into hash card state and authenticate pin.
+I am checking the Pin whatever the user has entered and whatever the card pin is.
+So here I have hardcoded it.
+I am just comparing it.
+If it is correct, I am moving the ATM to a next state, what is called select operation state.
+Select operation state.
+But if it is wrong, I am exiting the system and when I am doing the existing, I return the card and
+put the state back ATM status back to idle.
+So means I will return the card and put the status back to idle.
+Now what is the status change to select operation State.
+Now here it comes.
+V so now this is status updated.
+So in this uh what is the next authentication pin is done.
+Now I am selecting the options.
+Now different options comes in and I am picking the cash withdrawal I need to withdraw cash I pick this
+operation.
+So when I'm picking this operation so currently I am which state select operation.
+So it will goes to select operation state.
+So now I have picked what is the transaction type.
+I have picked cash withdrawal.
+So I am changing the status to cash withdrawal state.
+So different status.
+Cash withdrawal state.
+Right from here I can go to different state check balance state uh deposit cash deposit state depending
+upon the number of operations we have.
+right?
+So currently, whatever the operations has been chosen, I went to the card cash withdrawal state.
+If we choose any random number, let's say he pressed some other button.
+By default I am doing exit, and doing an exit means return the ATM back to the idle state.
+If you perform any other random work, it can goes to idle state if.
+Option if selected option is not correct.
+If selected.
+Option is incorrect or I can say that.
+Incorrect options.
+Incorrect option.
+You got it right.
+So what does it mean when incorrect option selected.
+I will go to the idle, but if it is selected a proper operation, I will go to that operation state
+now in the.
+What is happening?
+Let's go to the eight atm.
+So now I have clicked on the cash withdrawal.
+Now I am doing a cash withdrawal.
+How much?
+2700.
+So when I go to the cash withdrawal.
+So currently I'm with state cash withdrawal state.
+So I will go to this particular cash withdrawal state.
+So now I am doing a cash withdrawal of 2700.
+So ₹2,700 I need to withdraw.
+My ATM has 3500 and user has a bank account.
+And we have put.
+He has ₹3,000 in it.
+Right?
+In the initialize itself.
+Now I need to withdraw ₹2,700.
+So first validation I am doing is ATM has sufficient balance.
+Yes, ATM has sufficient balance.
+ATM has ₹3,500.
+You want to withdraw less than it?
+Okay.
+But if it is not insufficient fund in the ATM and exit.
+Second is does user have sufficient balance?
+Yes, user has sufficient balance.
+User has ₹3,000 and he's tried to withdraw 2700.
+That's okay.
+If not, then I will say that insufficient fund in the user balance bank account and then exit.
+If both are good, then I am good to withdraw.
+So depending upon the scope, I have to implement the cash withdrawal also.
+Right.
+So how I am doing a cash withdrawal.
+Now if you see if I withdraw able to withdraw the cash properly, I will go to the idle state Bank.
+Now I will tell you how I will doing a withdrawal logic.
+But once the withdrawal is done properly, I am exiting the operation.
+So right exit from operation.
+Once successfully done, I am exit from operation.
+So now we are looking at the implementation of cash withdrawal state.
+So in the cash withdrawal state I have defined the chain of responsibility.
+First is 2000 processor.
+Inside 2000 processor is linked with 5000 5000 linked with 100 100 as null.
+Right.
+I told you like how it is linked, right?
+Like this.
+So now here I am calling a withdrawal processor.
+Now I am calling a withdrawal processor.
+Withdrawal method.
+So which one will get invoked?
+2001 will get invoked because first object is the 2001.
+So it will invoke 2000 withdrawal processor.
+Okay.
+So how much I need to withdraw I need to withdraw ₹2,700.
+Right.
+₹2,700.
+I need to withdraw.
+And 2000 notes.
+How many?
+We have one.
+So it will just.
+I'm just putting a logic right so you can check this logic.
+I am how I am doing it.
+So what I'm trying to do is like, uh, 2000 and 12K processor.
+It has one node.
+It is just try to see how much it can fulfill.
+So it can fulfill.
+It can fulfill ₹2,000 one node.
+It can give remaining is 700.
+Correct.
+So remaining goes 700.
+So it will says that if balance not equals to zero.
+Yes.
+Balance is not equals to zero because 700 is still this is the balance.
+So what it will call is I will call super withdraw.
+Now I have called super withdraw.
+In the super withdraw I have checked if next is not null is next is null.
+No, next is not null because we have seen right Inside two 2000.
+Withdraw processor.
+I have put 5000 so it's next is not null.
+So if next is not null it will call withdraw.
+Now it will call withdraw of 500.
+With what amount.
+With the remaining amount.
+The balance amount.
+Right.
+That's what 2000 processor has called.
+Super.
+With the balance amount now the same thing will do 500 has how many nodes.
+Five has 200 nodes.
+Right.
+So how many how many it can fulfill.
+It can fulfill only ₹500.
+Otherwise it will become larger.
+So with one node it can fulfill this ring.
+But it has balance.
+Yes.
+How much balance left?
+200.
+So 500 will also do the same thing.
+It will call it super.
+So here in the 500 processor it will call it super withdraw.
+And we see that 500 is linked with 100 100 has five nodes.
+And it will use.
+Yes 200 will 200 will be used.
+Balance will become zero and two nodes and they will all update.
+This will become zero.
+This will become one.
+And out of this five this will become three.
+Right.
+And they will update the balance also that okay 2700 has been withdraw and how much left.
+So it will be the updated amount it will have.
+Right.
+So it will have ₹800.
+Left.
+And it's a bank account is a cash withdrawal.
+Right.
+So only 300 left.
+Right.
+So I am updating its balance also in the cash withdrawal states.
+Right.
+So I have updated its bank balance.
+I have updated the ATM balance, everything I am updating.
+And yes and this two processor withdraw processor are taking care of reducing the nodes.
+This one.
+So here let me run one flow.
+This.
+Let me run one flow.
+Okay.
+So here now you see what is that.
+First is 3500.
+Those are the node one 500 205 card is inserted.
+Enter your card.
+Pin it.
+Enter the 112211.
+Now it goes to the operation.
+I have supported this two operation.
+Out of this two operation, I selected cash withdrawal.
+It goes into the withdrawal state.
+Enter the withdrawal amount.
+I have entered 2700 and withdrawal happen and exit.
+So now what is the balance?
+800 here, 800 here.
+And two K note is zero.
+This is zero.
+500 is one and 100 is three, right?
+We can also, if you want more granular level, how many two k notes used and all.
+We can also do that.
+But I wanted to give you a high level how it is working.
+Guys.
+It's very big.
+It depending upon the scope which you are building, but a simple state design pattern or a chain of
+responsibility design pattern.
+So this question is nothing, right?
+It's a very, very simple question.
+Most asked question and very simple question.
+But it's clubbed together, right?
+So the code I have pushed this code to my GitLab.
+You can check it out right video and just go through the whole code.
+You will try to link everything right.
+Just go through the video again if you have doubts, write or the code.
+You will be able to link it properly.
+Right?
+And I hope this video you will find it useful and I am able to explain it in thoroughly how the ATM
+will work, both detailed manner with the chain of responsibility, how cash withdrawal will work and
+the overall pattern of ATM itself, user card, bank account and all those things.
+Okay guys, if you like this video, please subscribe, share with your LinkedIn connection, right?
+And also comment down like if you want to improve something, right.
+Uh, and also guys, I have a joint membership.
+I think you can uh, if you want to appreciate the work, you can definitely join it.
+And that would be really supportive guys okay guys.
+Thank you.
+Have a good day and good night.
+Bye.

@@ -1,0 +1,660 @@
+# LLD of Cricbuzz
+
+Hello.
+Hey guys.
+Welcome to Concept and Coding.
+This is Shreyansh.
+And today we are doing the low level design of Cricbuzz.
+So I am putting this as tick mark into our low level design roadmap.
+And slowly we are covering all the topics.
+And I will also show you the coding of it and the implementation, how we are printing innings, why
+inning all the player information and the winner and all.
+And also you don't have to worry about the code.
+I have pushed this code here in the GitLab link given in the description section.
+So total focus on learning the concepts and you can check out the code later.
+So if you already aware of how we generally follow the questions of low level design, what is the first
+step?
+The first step is.
+Requirement.
+Gathering.
+Right.
+So as part of Cricbuzz.
+So Cricbuzz is an app which is specifically for cricket match, right?
+So here you can see multiple matches which are going on match one, match two, match.
+And and if you click on a particular match you can see its scorecard.
+And this scorecard will get update ball by ball right by each ball.
+This scorecard will get updated.
+So you will always get the latest information.
+So we have to build this right.
+And how the.
+Let me show you how the scorecard looks like of a cricket match if somebody doesn't know.
+So it's shows like this.
+So team a innings how many runs and wickets have been gone.
+How many total overs.
+Right.
+What is the batting player's detail.
+So let's say team A player one bowled by team B, let's say player number seven.
+And we also stored the detail of each player.
+Let's say it has run 11 runs in, let's say seven balls, 1406.
+Strike rate is, let's say 110.
+Just an example.
+Right.
+So similarly we also record all these details against a batsman.
+Similarly against a bowler we stores like okay how many overs let's say five overs.
+How many maidens, how many runs they have given 25 runs.
+How many wickets.
+This this bowler has taken two wickets.
+Zero no ball, one white ball.
+What is the economy rate going on and what is the similarly.
+So this is team innings because as you know in a cricket match two teams participate team A and team
+B right.
+So in the innings one one of the team is batting and another team is bowling.
+And when the innings got changed the batting and bowling team also gets switched, right?
+So in the innings one the batting team is team A.
+Now, in the innings B or second inning, the batting team would be team B right.
+So I think we have all of this cricket match fundamentals right.
+So it's we all love cricket.
+So we all know this.
+Like how this, uh, batting bowling switch happen runs for six.
+So I'm not going much detail into this of this how this scorecard goes into I think it's self descriptive.
+Right.
+Because we already know this game.
+Very much.
+So now let's jump into like what all the flow we see okay.
+So let's construct a flow okay.
+So now in the case when we do a requirement gathering and flow rough flow right.
+So we know that okay two teams comes two teams comes right.
+And then will what will happen is match starts right.
+So in the match start we can see that okay.
+Inning one started right.
+Then after that inning two started right inside an inning.
+Let's say if it is a game of 50 overs.
+So it would be for 50 overs.
+Uh, let's say team A will do bat.
+Team B will do ball right.
+And after in the inning two again 50 overs.
+But now here team A will do the bowling and team B team B will do bat right.
+So for each player.
+So here for each team we have a player information right.
+So for each player we have to maintain the score details.
+So this is the normal flow which we can think of as a cricket match.
+Now as a second step we have to come.
+What are the objects we can list from here?
+Okay, so what are the objects?
+First is match, right?
+Then we have team.
+Okay, then inside team, there would be players.
+Right.
+So once we have a player, then match will have innings.
+So we have innings.
+What does innings has innings.
+Has overs.
+How many overs.
+Right.
+So it has overs.
+What does over has over has ball right.
+So we have to store each ball information right.
+And what else we have.
+We have to maintain the scorecard okay cool.
+So now let's go.
+And third step Let's try to make a relationship.
+And UML class diagram.
+So now let's go to the class diagram.
+And I will while we were doing the class diagram I will also show you the code perspective also.
+Right.
+So let's say first is match.
+Okay.
+So what does match will have.
+So match will have two teams.
+Team A.
+Team B what all match can have.
+Match can have let's say um date when this match is happening.
+Let's say some, uh venue.
+Okay.
+Then it will have, uh, like, uh, innings.
+It have innings.
+Right.
+And I it will have one more thing.
+Match type.
+I'll tell you what is this match type.
+Right.
+And also the team which won the toss.
+Toss winner.
+Right.
+So this would be the things and the method which will have is start match.
+Okay.
+So a match can have two teams a venue inning match type.
+And who is the who.
+Which team won the toss.
+Right.
+So okay, after that we go know that okay match has team.
+Match has team.
+So we are going top down.
+Match has team.
+So now we are making team.
+Let's see what all can team have.
+Okay so team had say team name.
+Let's say India Pakistan Bangladesh Sri Lanka.
+So we have certain team name right.
+Also we have a list of players right.
+So here I am taking a cue.
+Because you know that we give a numbering or who will play one.
+Who will play two.
+Who will play 11.
+Right.
+So we have a proper ordering.
+So that's why I'm using a cue.
+Right.
+So here I am taking a player.
+Right.
+Player details of player.
+And this is my P 11 playing 11 team.
+Right.
+So they are there also are members.
+Which are in branch.
+Or you can say that extra right.
+And there are two additional things which I am keeping here I'll tell you about this.
+One is.
+Player.
+Batting controller.
+Batting controller and player.
+Bowling controller.
+Okay, so I'll tell you about this one.
+Why we need this.
+So I am putting a question mark here first so that I will.
+I can explain you why we are using it.
+Okay.
+Now let's go more for the player.
+So now let's construct player.
+So team has.
+Player.
+Team has player.
+So what does player has?
+So player is a person.
+Nothing but right.
+So I'm taking as a person object.
+Person like a player name age address some personal details.
+Right.
+So that's why I'm taking it as a person.
+Right.
+And then the player type.
+Player type.
+Okay.
+So I'll tell you about this.
+Uh, slowly we will construct all these things player type.
+Right.
+And I will also complete another thing.
+So let's go first player person.
+Let's complete all those things.
+Players.
+So person.
+So what is person.
+So person will have let's say what is name.
+What is personal details.
+Right.
+Age Certain address.
+So all its personal detail.
+Right.
+So this player has certain personal details which I am keeping it into the person.
+Then it has an enum.
+So this is I am taking as an enum.
+So this is then enum.
+What is that enum.
+Player type.
+So player can be a baller.
+Player can be a batsman.
+It can be wicket keeper.
+All rounder.
+Captain.
+Right.
+Depend.
+So this is an email that this player is what role it is playing.
+What is the player type.
+Right.
+And I told you here right at the above if you see the scorecard for each player.
+We are maintaining the scorecard.
+This player has how many runs, how many balls?
+Four.
+Six.
+Right.
+What is the strike rate going on.
+Right.
+So each player can have two kind of a scorecard right.
+So one it can have a your.
+Batting.
+Scorecard.
+Right.
+Your bat scorecard.
+And one it can have is your bowling scorecard.
+Bowling scorecard.
+So now let's make that right.
+So now here we have batting scorecard and bowling scorecard.
+Let's first make a.
+Batting scorecard.
+It's a bad thing.
+Scorecard.
+So from the scorecard of this, we can know that okay.
+What all details we have to put.
+So in the batting scorecard we have to put like okay total runs.
+So total run this player this player has made right.
+Then what we can have is.
+Total balls played.
+Total force.
+Total six.
+Right.
+And also we can have certain information like strike rate.
+So we can increase this batting scorecard if you require more details, but I am telling you that these
+are all the details which I am keeping in the batting, and this is associated with each person.
+So each player can play a role of either a batsman and bowler.
+So that's why we need two scorecard, the batting scorecard when he is batting and another scorecard
+is required, which we need to update when this player is doing a bowling.
+So as a bowler what all things I told you that this five six things we have to store that what is the.
+Total.
+Overs delivered.
+Right then we will have right are.
+Runs given.
+Wickets.
+It's taken.
+Okay, then we will have a.
+No ball count.
+White ball count and more.
+Let's say we also want economy rate.
+Okay.
+So for each player now you can say that it has a batting scorecard.
+Bowling scorecard.
+Right.
+So this because a player can be a batsman a player can be a bowler.
+So my player is now complete I have a person I have a player type enum I have a batting scorecard.
+Bowling scorecard.
+Okay.
+Now let's jump to the team.
+So team name player is done.
+Branch is done.
+Right now I told you to remember this.
+The player batting controller and player bowling controller.
+Hey, why this is required now?
+Okay, So why this is added?
+Because whenever a player got out.
+Whenever.
+So let's say consider from a batting perspective who going to bat next or let's say from our perspective
+who is going to ball next.
+Which player is on striker?
+Which player is on non striker.
+Right.
+Which one is a current bowler.
+So all this information I can handle through controller I'll tell you how.
+And this makes our life very very easy as.
+Team has what.
+Player writing controller.
+And what does player batting controller has is so see now if out of this 11 players.
+Now which one?
+How many is already out?
+How many yet to play?
+Right.
+Which player is on currently on strike?
+Which player is currently on strike?
+Because if you remember the player which is currently on strike, we we show star that we get to know
+that this is on strike.
+Other one is on the non strike right.
+So we we need to maintain this information somewhere right.
+So I am maintaining this information through batting controller.
+Or you can say that I am maintaining a certain queue of a player yet to play yet to play.
+So every time any batsman got out and there are requests come, hey, assign a new player so it will
+goes to the batting controller and from the queue it will take the top one because we are maintaining
+a sequence.
+Right.
+And if we remove it, the yet to play size will become less right.
+So you get to play only contains that those still waiting for batting, right?
+Then I have player which is currently on strike.
+Striker and player.
+Non striker.
+Right.
+So this class manage controls all this information.
+Which player is on striker.
+Which player is on non striker and which players are yet to play.
+Right.
+So it has all this information out of this 11 players.
+What is the how many players are yet to play.
+How many are currently who is on striker and which player is on non striker.
+Similarly I am maintaining a bowling information.
+So player.
+Bowling controller right.
+So see based upon the match format.
+Based upon the match type T20 or one day, a bowler has certain restriction that you can bowl only five
+five overs or ten overs, right?
+So and it's always between like, okay, once the bowler one has done, then next would be some other.
+It cannot be repetitive, right.
+So that's why I am using here two data structure.
+Where is one is I am using here DQ.
+DQ of player which is has all the bowlers list.
+Right.
+So let's say why DQ because let's say the Q has three bowlers p1, p2, p3.
+Now P1 is on the top.
+So now let's say P1 is doing.
+So.
+Now let's say P1 is chosen as the next bowler.
+So I will take it out from the front.
+And if he has again more ball overs left I will put it at the back.
+Right.
+So DQ will help me.
+And another thing is I'm also keeping a map of player comma count.
+Uh, so it's a bowler versus over count.
+So which player has thrown how much overs?
+Because as soon as I need to also make sure that the overs which that bowler has thrown it should not
+reach out a particular limit.
+Right.
+Because this is depend upon the match type how much over a player can deliver, right?
+So I'll tell you how I'm doing that.
+So that.
+But currently the bowling controller I am using two data structures.
+And who is the current bowler?
+My current bowler.
+So player bowling controller taking care of all these things whenever a new, uh, assign new bowler
+request comes in.
+So it will take care that which one to assign based upon certain logic that, okay, who's bowler is
+left and all these things.
+So till now all looks good.
+So if you see our team is also looks good.
+Now our team name player we have built out a player batting controller player bowling controller also
+built out.
+Now let's go to match team.
+Okay.
+Done.
+Date.
+String.
+Venue.
+Innings right before innings.
+Let's come to match type.
+Let me tell you about a match type.
+So here match has.
+So now this is an interface.
+This is an interface.
+Match type right.
+So what this will have.
+So match type will have two information like number of overs.
+Give me the number of overs and maximum over.
+Bowler allowed.
+Right.
+And I have taken so we can have a different child.
+Classes of.
+One day match type.
+T20 match type.
+And we can even increase more.
+Right.
+So match type could be one day T20 test match and all.
+So here one day will return number of overs let's say 50 overs.
+Bowlers allowed ten T20 will return number of overs 20 maximum overs bowlers allowed let's say five.
+Right.
+So I am controlling this using a match type okay.
+So match type is also clear.
+Now let's go to innings.
+So now let's go to innings.
+Innings.
+Okay, so now what is there in the inning?
+So inning has team batting team.
+Which one is the batting team?
+It also has information about the bowling team.
+Which one is the bowling team?
+I told you right.
+In each inning, either one team could be batting, another could be a bowling.
+Right.
+So we have to store that information.
+Right.
+And also what it will have is list of over list of overs.
+So the how many overs we have to throw will come from the match type one day T20.
+So match will send to the inning that okay you have to run for 50 overs or 20 overs right.
+So that information will come from the match type here.
+This will pass to the inning.
+So inning has list of overs right.
+So now and it will have certain method like start inning.
+Start inning.
+So whatever the over size would be the match will start.
+So now let's complete the inning.
+So team is we have already built out the team right.
+So here what is left is over.
+So now let's make over.
+So innings has over details.
+Over.
+So what will have over is what is the over number.
+Right.
+And it will also have list of balls.
+So each over has six balls but there can be no ball white balls.
+So there could be more balls right.
+So we have a list of balls right.
+So it has certain information.
+And we can say that method would be let's say Start over.
+Now let's complete over.
+So over has balls.
+List of balls.
+So now let's create.
+Over has.
+Balls.
+So now let's put balls.
+Details.
+So what ball detail we have is ball number right 123.
+Like what would be the ball number.
+It ball type.
+So we have a ball type.
+So here this is an enum.
+Ball type.
+So ball can be either say normal.
+No ball.
+White ball.
+Or it can be anything.
+So ball type could be anything right out of this.
+Then we have run type.
+So in a cricket match again this is an enum.
+Enum run type.
+So there are different type of run.
+Here we can have one two.
+We can have four.
+We can have six.
+Or we can also have let's say white run right.
+So different type of runs which are all possible.
+So I am adding certain few like what are the different runtimes.
+It is possible in a game.
+Right then also uh we also need a information about the player is played by.
+Which player played by.
+Then also I am storing an information.
+Which player bowled by which player is doing the balling and which player is playing this are balling.
+Right.
+So I have certain this information and the method would be, uh, start ball delivery something.
+Now understand one thing.
+So now everything looks good.
+Till now I think our cricket match is done.
+But there is one important thing is missing in this.
+One important thing is I told you in the start that Cricbuzz is a ball by ball information updater.
+So how it is updating the information.
+You know that, right?
+We have a scorecard.
+Batting a scorecard.
+Bowling scorecard.
+So now this scorecard should be updated after every each and every ball.
+Right.
+So if you remember the observer design pattern.
+So that very much fit into here right.
+So I have written one updater.
+I have written one updater.
+Score.
+Updater.
+Observer.
+So this is my another class.
+Or you can say that this is an interface.
+This is an interface.
+Right.
+So there are two observers is a so there are two observers.
+One is batting scorecard updater.
+Another is.
+Bowling scorecard updater.
+So we have a update method here right.
+We have update method here.
+And we pass the ball information here.
+Ball information here.
+Right.
+So both will get a ball information.
+And after every ball we will have one more method called notify.
+So what this will do is after every method notify will call.
+This observer.
+Right.
+So means ball will also have list of.
+Score.
+Updater.
+Observer list.
+So I will put into this list.
+This two batting and bowling score updater.
+And after every ball that will call the notify method, and it will call both the batting and bowling,
+and it will call the update method and pass the ball information.
+Now with the ball information.
+Now, if you know that ball information has what who played by.
+So I have a player information who played.
+So I can take out the player who has played.
+And I can take its batting scoreboard and update total run total ball plates plus one.
+Right.
+If it's a ball type is a run.
+Type is four.
+I will increase it.
+Similarly, the ball also has information about bowled by who delivered that over who delivered that
+ball.
+So I will take that player and update its bowling scorecard.
+You got it.
+So this is what where I am using observer design pattern.
+Observer design pattern.
+And with this our cricket boss is totally done.
+Now I'll show you the code part.
+But this is understood.
+So now, with this part, let me show you the code.
+Let's first go to the match.
+Let me first complete this match.
+Show you the match.
+This is the match.
+So match has team A, team B, venue, innings, match type and toss winner.
+So here I have team A, team B venue.
+Which team is the winner?
+Innings and match type.
+Right.
+So this information will come from the main method like whenever the game has started.
+Right.
+So in the main method I have initiated the players and all these things.
+And I have then passed that okay I want a match type is T20 match.
+So whenever a match will start it will get all this information team A information, team B information
+when you.
+What is the mesh type T20 or one day and we have to create two innings.
+Now I just call start match information.
+Okay.
+In start match, what is the first thing?
+Do the toss.
+So I just written a very basic toss functionality.
+And guys this is just for understanding purpose.
+There might be bugs in the code as a implementation.
+So kindly ignore those.
+But understand the logic right.
+Low level design.
+So the toss has been done.
+We got a winner right?
+So now the two innings will be started.
+So that's why I'm iterating two times right.
+So when the first innings is there, I assume that whoever is the toss winner will bat first.
+So this is one assumption I did.
+So first I make a batting team.
+Which one is the toss winner and the bowling team is the another team.
+So I have started the inning.
+So my inning has been started.
+So mining has been started now.
+But before this one.
+Yeah.
+Let's see now when the inning is started, what I am doing is I am setting a batsman because when the
+because I need to start the overs.
+Right.
+So first I need to set who is the striker.
+Non striker.
+So that's why I told you which one will help me here in this.
+In the teams there would be batting controller.
+So batting controller will help me to set this detail.
+So here now if see whichever the batting team is I will call it choose next batsman.
+Right.
+And it will goes to the batting controller and it will pick the next batsman from yet to play.
+From yet to play, it will take out and put the striker and it will take out and fill up the non striker.
+Right.
+So that's how I am filling up the details in the batsman and from the match type, I will take out the
+over whether it's a 20 or 50.
+So it's a dynamic, right?
+So now my overs are running.
+So from an innings now my overs started.
+So now I am here right.
+I am now I am here at this part.
+My overs are started now when the over started first I have to choose the bowler.
+So again when choosing a bowler which one will help me?
+So I have a team which is doing a bowling and this player bowling controller will help me to choose
+a bowler.
+So choose next bowler.
+So let's see how we are choosing it.
+So I am taking from the DK.
+I am taking the bowler which is from the head if bowler maximum count which is allowed by a game right.
+Maximum allowed if we are get equals.
+I am not putting it back into the cube because it is already done.
+After that it cannot bowl.
+Otherwise I will again put it back into the list at but in the last and also increase the count that
+this many overs he has bowled.
+Okay, so I'll get the next bowler.
+And I started the over.
+I started the over.
+So now my over is started and now when over is started, till when it has to run till six normal deliveries.
+So whenever the ball type is normal then only I am increasing the ball count.
+Till then it over has to be continue till it is not normal.
+Right?
+And whenever the ball little is happening, I am starting the ball delivery.
+So for each ball it is going to ball.
+Now here if you see that what I am doing is I have made certain assumptions that okay are take out what
+is the ball?
+I have always assumption that okay, it is a normal ball, but it would be come from input or let's
+say some random method.
+But for now I have taken an assumption that this ball type is a normal type only.
+Right.
+And I have written one random method that wicket or not wicket.
+Right?
+So some random method you know, right?
+It will return from 0 to 1 if it is between less than zero to.
+I say that yes, you got out right.
+So just to build the functionality.
+So if wicket is taken then I have added okay runtime is zero.
+I added the wicket detail.
+If wicket is not there means get the runtime.
+So I again I use the random function that okay, whether it's a one run, two run, 4 or 6.
+So just for the functionality, what is the runtime?
+So here I have certain functionality that whenever the runtime is one or runtime is three, I have to
+swap the striker and Non-striker.
+Right.
+So these are certain business logic which doesn't comes with to the low level design.
+But just to show you the demo, right.
+So I have shown that okay, Striker and Non-striker has to be done.
+But once all this logic is done after that, what I told you that the ball also have list of score updater.
+So here if you see that whenever during the ball constructor I have currently two Updaters.
+These are my observers.
+Batting score.
+Updater.
+Bowling score.
+Updater.
+Observer.
+So after every ball I am updating Notify Updater and notify updater.
+Iterate over the score.
+Like all this batting bowling.
+And it's called their update method.
+So let's say first it's called batting.
+So it will update from the ball.
+It will take out who played this ball and let's update it.
+Bowling scorecard so it will increase if it is a four.
+If it is a six, how much total?
+Run it updated.
+Similarly for the bowling based upon the ball detail who bowled it so ball detail dot bowled by who
+bowled it?
+Take out his bowling scorecard and update it.
+So now they are taking a responsibility to updating my score cards every ball by ball.
+So this is we have cricket balls information.
+I hope this would be informational guys.
+Any doubt anything.
+Please reach out to me on LinkedIn or anywhere in the comment section also.
+And this code is already here.
+So just check out and practice it.
+It is a very very important question.
+Okay guys thank you and see you soon.
+Bye.

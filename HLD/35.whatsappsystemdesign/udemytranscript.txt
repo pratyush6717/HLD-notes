@@ -1,0 +1,155 @@
+# Bulkhead Pattern Introduction
+
+Very quick rate limiter.
+It protects our application from clients.
+This is why I am telling you again about rate rate limiter in just one minute is because clear distinction
+need to be present between rate limiter and bulkhead, because many times a confusion happens like which
+one is bulkhead?
+Which one is rate limiter.
+So focus here is that rate limiter protects our application.
+Let's say our application is order.
+It protects our application.
+From whom?
+From clients.
+So let's say this is my client.
+And client is sending me too many requests.
+So it limited limit them.
+Hey how many requests we can accept within a specific window right.
+And also one more thing is rate limit and never talks about concurrency.
+So just rate limiter.
+Rate limiter says that hey I can accept ten requests in one minute.
+Either you can send me ten requests in one shot or one by one.
+It never talks about concurrency.
+It just says that.
+What is the limit?
+Okay, but it protects us from our clients.
+Now let's go to the bulkhead that it helps to control how many concurrent requests can go to downstream
+service.
+Now let's say this is our service order.
+Now I am more concerned about the request which I am sending to my downstream.
+Now, I am not concerned about the request which I am getting from my clients.
+Okay, so that is one of the major difference.
+And bulkhead majorly talks about the concurrent request.
+We will see that.
+And if you understand this two use cases right.
+So there are two possible use cases.
+If you understand those two use cases, no matter when an interviewer or in your implementation like
+a scenario is put, you would be able to clearly understand that whether rate limiter or bulkhead need
+to be applied.
+So understand that one is very very simple use case.
+Let's say you have order.
+This is your component and this is your downstream product.
+So order invokes product API.
+Let's say product is a small and lightweight service and can only handle three concurrent requests okay.
+And product itself is like very lightweight.
+It doesn't have put rate limiter on itself okay.
+But with the bulkhead you can control that okay.
+So you know that product can handle only three concurrent requests at a time okay.
+So it accepts three requests all at the same time.
+But when the fourth comes no there is no thread left.
+So when any one of them get free then the another request would get fulfilled.
+Okay.
+So this is very very simple use case.
+Very simple use case.
+And this use case is resolved through schema for bulkhead.
+So there are two types of bulkhead one is schema for bulkhead.
+We have seen another one I am going to tell.
+But for this use case whenever interviewer put this use case schema for bulkhead is our answer.
+Okay we will see it how IT functionality.
+But I think this is clear right.
+Whenever there is a condition that, uh, you have a downstream which can only accept this many concurrent
+requests, how you can handle it through schema for bulkhead.
+Okay.
+Another use case.
+Very, very important use case.
+And also remember that before I go to this use case remember one very, very important system design
+problem which is like a noisy neighbor.
+Problem.
+If you can recall this problem, what it says that let's say this is your application.
+And your application have multiple tenants.
+Tenant one, tenant two, ten and three.
+So let's say that you have one of the tenant which is very very noisy.
+Like the traffic from this tenant is so high that it consume all resources, all resources.
+And even the tenants which are not like are sending that much traffic, or let's say they are just hitting
+one call, but their request is denied because all of your resources are used by one tenant.
+That is known as noisy neighbor problem, that you have one neighbor which is very noisy, a very,
+very similar.
+But you can say that the context is very, narrow in this use case.
+Noisy neighbor context is big like it includes thread.
+Infrastructure.
+Resources DB like everything.
+If your tenant is using the resources like consider everything DB resource, infrastructures, threads,
+everything.
+But here we are mostly talking about thread in this use case.
+Now consider this use case.
+You will find very very similarity to noisy neighbor.
+But the context is again I'm telling it's very narrow noisy neighbor problem.
+Context is very broader.
+So let's say that API one makes a downstream call to product service.
+So I have.
+So this is our component order is our component.
+And we have API one which when it gets invoked it make a call to product service.
+Product service is very fast, right?
+Product service returns the response in less than 100 milliseconds only.
+So it's a very fast service.
+Okay, now we have API two.
+And when this API got invoked it actually invokes internally payment service.
+Now this payment service is slow.
+It might take five seconds to process a request.
+Let's say it has to further go to third party endpoint.
+But this is slow.
+This is slow service.
+And for API one the product is fast service.
+This is our setup.
+Now let's say what if there is a sudden spike in API two traffic?
+What if there is a sudden spike in API two traffic and it internally invoke the payment component,
+which is slow?
+Now your thread got blocked for five seconds.
+Thread one got blocked for five, second thread two got blocked for five seconds.
+Similarly, your N threads got blocked for five seconds.
+Okay, so when a sudden spike comes in API, two more and more calls are made to payment service, which
+is slow and it is possible that they might not be a concurrent.
+But since this is a slow service, it blocks your thread longer for five seconds and more, and it is
+possible that your all threads of order service are now blocked.
+So let's say it has a thread pool of ten threads and there is a sudden spike comes in API to all ten
+threads are now blocked here.
+Okay, so there is no thread here.
+Just assume that.
+Now if any request comes to API one okay.
+And this API one, will it be able to fulfill it?
+No, there is no thread left in the thread pool.
+So either it has to wait or it will get rejected.
+So even though.
+It invokes a very fast service.
+There is not much traffic to API one, but still it gets suffer because of API two.
+So you can say that.
+We can.
+So you remember there is a ship concept.
+So in a ship there are different compartments.
+So if water fills up into one of the compartment they block it so that water do not spill over into
+the rest of the compartment.
+So very very similar concept is used in the use case two.
+If you are so they will put a limit.
+They will put a limit.
+Or you can say that thread pool.
+So they limit the threads.
+Hey API two they I know that you are invoking an endpoint which is very slow.
+So I give you only max five threads.
+Let's say you can't use more threads than that.
+Okay.
+So even though I have total ten threads in my order.
+Thread pool.
+We I have only allocated five threads to API two, not more than that.
+Okay, so I have.
+And if let's say suddenly more requests coming in the API to more than five.
+Either they have to wait it or get rejected because the max I can allocate is fifth.
+So you can say that similar to this one, I have provided a limit.
+Okay.
+So that only resource I can provide you man.
+Okay.
+So that my other endpoint do not suffer.
+So you understand this use case whenever we have multiple endpoint and one of the endpoint, we have
+to make sure that it do not consume all the resources.
+Then bulkhead can be used and it has a thread pool bulkhead type.
+So this is the second type of bulkhead thread pool bulkhead through which we can limit the resource
+to a particular endpoint.

@@ -1,0 +1,1032 @@
+# Concurrency Control in Distributed System | Optimistic & Pessimistic Concurrency
+
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And today I am going to cover a very very important interview question which is concurrency control.
+So no matter if you are giving a low level design interview or high level design interview, this question
+asked in both the interviews, right?
+In generally high level design direct question comes explain the distributed concurrency control in
+low level design.
+Generally you would be solving a question like Bookmyshow parking lot.
+And then the follow up question comes how you will handle the concurrency.
+Okay, so let's go in depth without wasting any time.
+And I hope that this session would be very, very useful for you in your interviews.
+Okay.
+So let's take I am taking one very simple scenario that many concurrent requests tries to book the same
+movie theater seat.
+Just assume that this is one seat which three users are trying to book at the same time.
+So this is the current state of the seat, which is currently free.
+Okay.
+And this is let's say the critical section.
+So what is critical section a critical section is nothing but a piece of logic right?
+In your code base where you are trying to access a shared resource.
+Right.
+So you are having something, a resource which is common for multiple users.
+Right.
+So that that piece of logic where you are trying to access that shared resource is generally known as
+critical section.
+So now let's say this is my critical section.
+Now all three requests coming here at the same time.
+So what will happen.
+So all three will read read seat row with ID ten.
+So they will read at the same time.
+Let they get free.
+So free free free.
+So currently this seat is free.
+All what they will do is if free.
+So all they will go into this part.
+They will change it to let's say booked and update the DB.
+So what will happen is the seat is straight to booked and all three will get success.
+So.
+Success.
+So what does the problem happen?
+Is the same seat has been allocated to all three.
+Right.
+So this is a very, very basic scenario.
+There can be so many other problems which can happen.
+But I just wanted to give you a glimpse that what is the problem can come when multiple requests trying
+to access one common resource or shared resource.
+Right.
+So that's where we wanted to handle the concurrency okay.
+So generally in your low level design interview what the first thing we say that hey, we will use the
+synchronized block.
+So on the critical section we will put the synchronize.
+So like this is my critical section I will put a synchronize.
+You know that synchronized put internally the locking.
+So now let's say if three requests are coming.
+User one.
+User two.
+User three.
+Try to book right and they reach to this critical section.
+So because of this synchronized keyword only one will go.
+So let's say first user one will go.
+User one will read yes it is free.
+So it will change the to booked and write.
+And it goes out of this critical section.
+Then user two will come.
+And when user two will come it say that is a the seat is free.
+No, its seat is not free.
+It don't.
+It won't do anything.
+Similarly, after that, user three will come.
+It's the same thing.
+It won't do anything because it's already booked.
+So this will work.
+But will this work for the distributed system?
+So now assume that when the synchronized logic will work, when it will not work.
+So let's say you have a process.
+So you know right.
+What is the difference between process and thread process and thread.
+Right?
+So I will not go into depth of the process and thread, but I will just give you a have.
+That one process can have multiple threads.
+Okay.
+So if that is the case synchronize can work.
+So if in one process if there are multiple threads right synchronize one can easily take care of.
+But what if this in our you know that in distributed system this is uh my service microservice is running
+here also machine one.
+And in machine two my service is also running.
+Right.
+So let's say this is my load balancer.
+And user one.
+User two.
+User three is there.
+So let's say user one is coming here.
+User two request is coming there.
+And let's say my services and user three request is coming there.
+This is my machine three right.
+and all are going in parallel.
+All reached to our code critical section together.
+Will that synchronized keyword would be able to help us know because this is separate process.
+This is separate process.
+This is separate process right.
+So synchronize cannot help us when in case of distributed system.
+Right.
+So that is a problem then how it will work.
+Then there is something called distributed concurrency control.
+We have to use okay.
+So start with synchronize.
+But remember that this will not solve the problem.
+Ultimately we have we want something called distributed concurrency control.
+So many times we are using optimistic locking.
+Pessimistic locking.
+That is wrong right?
+I would say that use that as an optimistic concurrency.
+Not wrong.
+You can say that.
+It's just a way of saying that these are optimistic generally as a concurrency control, pessimistic
+as a concurrency control.
+Right.
+So but generally when a usual term, an interview, when we say we just say optimistic locking, pessimistic
+locking as also in the day to day work, we also say this.
+So it's okay.
+But the correct term is optimistic concurrency control and pessimistic concurrency control.
+But before we learn this, what is optimistic?
+What is pessimistic concurrency control.
+Right.
+We must know below important things first.
+So forget about this now forget about this.
+There are.
+If you don't know these three things, then we won't be able to understand it properly.
+Okay.
+So first focus on these three things.
+Then we will come back again, and then we will understand what is optimistic and what is pessimistic.
+So what is the first we have to understand what is the usage of the transaction.
+Very very simple transaction helps to achieve integrity means it helps us to avoid inconsistency in
+our database.
+How?
+Let's take an example.
+We have to debit the money from A and credit the money to B.
+Okay.
+So we have to debit from A credit to B.
+Okay.
+Let's say this is our DB A has let's say ₹100 B has let's say ₹50.
+Okay.
+So let's say this is our transaction okay.
+So now let's say we wanted to debit the money from a let's say I want to debit ₹20.
+So what this will do is debit the money.
+So let's say debited the money at ₹20.
+And now our DB has ₹80 for a.
+Now what we want to do is credit the money to B, which is ₹20.
+I need to credit the money to B, but let's say there is some failure happen, some failure happen.
+So when any failure happen, what we will do, we will do rollback.
+Right?
+So now this rollback help us to revert the changes which has happened to the DB as part of this transaction.
+Okay.
+So now here if you see that this this statement got failed because of certain failure, I couldn't able
+credit the money to B.
+But this statement, this DB statement got success.
+So because of this rollback it will rollback all the success DB statements also.
+Right.
+And it bring back to its original state what was there at the start of the transaction.
+So it will also change it back to 100.
+Okay.
+So that our DB is in consistent state.
+So let's say if you are not using the transaction, if you are not using the transaction and this logic
+is not there, you just doing the debit the money from A and credit the money to B, what will happen.
+So let's say A has ₹100, B has ₹50.
+Debit the money from A.
+Okay, I am able to debit the ₹20 from A and now A has ₹80.
+Credit the money to B and now let's say certain failure happen and when certain any failure happens,
+it won't be able to credit the money to B.
+So what is the current amount present at B 50 only.
+But now a amount has been debited.
+Now this DB is in inconsistent state.
+What generally should be the consistent state if both are success?
+If both are success, it should be 80 and here 20 should get added 70.
+Either this should be the consistent state if all gets success or otherwise.
+If it if one of them is failing, it should revert all the changes it has done as a part of this transaction.
+So other state consistent state is the like say if any failure happen, it should roll back to the original.
+So original was 150.
+So these are only the consistent state.
+If all success then this should be the state.
+If any failure happen what was the original.
+Put it back like this.
+But if you are not using the transaction, you know that now A has 80 and B has 50 only.
+Even though B got failed, A didn't changes, didn't get rolled back.
+So now you know that transaction helps to achieve integrity.
+If any one transactions get failed in a transaction, it will roll back all the success statements also
+so that our DB is now in a consistent state.
+Okay.
+You understand what is the usage of the transaction.
+It helps to achieve integrity.
+Second is what is DB locking then?
+DB locking helps to make sure that no other transaction update the locked rows.
+Okay.
+So now let's say you have a DB and you have a one row which is ID and let's say status is free.
+If you put a lock here then it makes sure that nobody no, no other transaction or query should be able
+to change this.
+Right.
+So that's what DB locking is.
+so popularly.
+There are two types of lox shared locks and exclusive LOX.
+So exclusive LOX is denoted by X and shared LOX is denoted by S only.
+Okay, so what does shared LOX is so shared lock is generally known as read lock.
+Let's say assume that this is a row okay.
+In a DB this is a row and current status is free.
+Something something.
+Now if I have taken a shared lock, now I have taken a shared lock.
+So what will happen is so transaction one okay.
+Let's say transaction one has taken a shared lock.
+So now what will happen is if another transaction try to update it, it won't be able to update this
+row.
+Okay.
+But with the help of shared this transaction can also put a shared lock and can read it.
+So only in the shared lock only read can happen.
+Right.
+But you cannot this shared lock restrict any other transaction that you should not update it, right?
+But it allows that okay.
+You can take the shared locks also and read it.
+Okay.
+And let's understand what is exclusive lock.
+So let's say the same exclusive lock is.
+So that is this is one row.
+Let's say transaction one has taken an exclusive lock.
+So exclusive lock means if any other transaction now cannot even take now, cannot even read it, cannot
+even write it right now.
+Any transaction apart from T1 cannot even read it cannot even write.
+It means cannot even take shared lock for reading or cannot take any exclusive blog for writing.
+Okay, so now here, if you see this, these are the two log types.
+So let's say shared logs exclusive talk.
+Let's say a transaction have shared log.
+Then can another shared log can be put.
+Yes right.
+There can be multiple transaction can put shared logs.
+They can all read.
+But if you have a shared log can any other transaction put exclusive log for writing?
+No.
+If you have a if any row has shared logged on it, exclusive log cannot be granted write first, shared
+log has to be removed and then only exclusive log can be granted.
+So if a transaction has shared log, no other transaction can get ah can take an exclusive log on it.
+Let's say transaction have exclusive log.
+Can any other transaction put a shared log on it.
+No, on exclusive log.
+We know that nobody can.
+No other transaction can read it.
+No other transaction can even write it.
+Right.
+So for reading they require they want a shared log.
+So that is also not allowed for writing.
+Other transaction need exclusive log.
+That is also not allowed.
+Right.
+So you got it.
+So DB locking has two things.
+Shared lock generally for reading purpose, exclusive lock generally for writing purpose, and shared
+lock can be put on a row by multiple transactions and they can read it in parallelly, right?
+Exclusive lock.
+Only one transaction can put no.
+And once you put an exclusive lock, no other transaction can request for shared lock and no other transaction
+can request for exclusive lock also.
+Right?
+It can't be granted okay.
+So you got it right.
+Two type of locking generally we have now.
+Very very important we have to understand this isolation level.
+So you know that in the asset property of a DB right.
+There is something I called isolation right in the video just before this one.
+Right.
+I have already explained the asset one.
+But for the concurrency we have to focus more on isolation because this isolation tells us if how much
+level of concurrency is allowed in your application.
+Let's understand this.
+So what is isolation first?
+So in asset property the isolation tells that even if you have multiple transactions running in parallel.
+Transaction one.
+Transaction two.
+Transaction three.
+Right.
+Each transaction feels like they are working like isolation.
+What does isolation means?
+Like you are totally isolated alone, right?
+So each transaction feels like they are working alone.
+Like.
+But in general.
+Or you can say that in backwards multiple transaction are running in parallel, but each transaction
+feels like they are working alone.
+They are nobody else.
+Right?
+So that's what isolation is.
+Okay.
+So this I property of the asset tells how much concurrency your system can handle.
+And it is very, very important to understand and clearly for the distributed concurrency control and
+optimistic and pessimistic.
+First let's give a very quick glance to this table.
+But don't worry but give a very quick glance.
+So there are four type of isolation level one.
+Read.
+Uncommitted.
+Second.
+Read.
+Committed.
+Third.
+Repeatable.
+Read fourth.
+Serializable.
+So there are four types of isolation level which solves multiple problems.
+So these are the problems.
+Write dirty read Non-repeatable read and pantham read.
+Okay so let's say that so each isolation problem, uh, each isolation level solves a couple of problems
+or solve all the problems.
+But before even understanding the isolation level, let's first understand what are the problems we
+have and how this isolation level solves each one of them, and only what else it can solve.
+So first dirty read.
+What is dirty read problem?
+So dirty read problem is so you know that transaction one right.
+And let's say transaction two.
+So both transactions are running in parallel.
+And let's say this is the DB state ID and let's say status is ID one.
+Status is free okay.
+So now let's say what dirty read means.
+Dirty read means if transaction A if transaction A is reading the data, which is writing by transaction
+B and not yet even committed.
+So let's say this transaction B, so transaction B has let's say updated updated ID one with status
+as booked.
+Okay.
+Booked But it is not yet committed.
+Not committed yet so committed is not yet done.
+Okay.
+It is reached till here only.
+It has updated the DB with book.
+But it is not committed.
+But before that itself at this time transaction A reads with ID one.
+Right?
+And what status?
+It will read status as booked.
+So now if you see that transaction A is reading the data which is writing by transaction B, transaction
+B, right.
+Let's say booked change from free to book.
+So transaction is reading the data which is written by transaction B which is not yet committed.
+Right.
+So that is the problem of a dirty read.
+Because what happen if transaction B there is certain failure happen after this.
+After A has read it, get booked now there is certain failure happen in transaction B and it has to
+instead of commit, it has to do rollback.
+Now it has to rollback.
+Now you know that as a part of transaction it will all the success statement.
+Also it will revert back.
+So it will revert back and change it again to free.
+But transaction has read the book.
+This is a dirty read now.
+So that is how dirty read problem.
+So if transaction is reading the data which is writing by transaction B and not yet even committed,
+if transaction B does the rollback, then whatever data read by transaction is known as dirty read.
+Okay, just the whatever I have explained here, just see this.
+With this it might help you uh, more better.
+So this is let's say timeline transaction A, transaction B, let's say this is the DB status begin.
+Transaction has happened both in parallel.
+Transaction A is updating the DB okay.
+So it changed the status to booked.
+So not committed by transaction A yet not committed by transaction A because transaction is updated
+but not yet committed commitment not yet committed.
+Right.
+So now at time three three transaction B reads read row Id1 right and what it will read the current
+DB status is status booked, but this book is currently not committed by transaction A yet.
+But whatever the data it read, it gets as a booked.
+Now let's say that at time t for some issue faced here by transaction A and it has to do rollback right.
+And when it do rollback it removed its changes.
+Whatever it did it changed the status booked right from free to book.
+So that is reverted.
+Now DB is in this state.
+But now you see that the transaction B Has already read this dirty read, which is now not even applicable
+because this is rollback.
+Right.
+And did certain computation over top of it.
+So now this dirty read causes the problem.
+So this is known as dirty read problem.
+What is the other problem you understood right.
+What is dirty read.
+What is the other problem?
+Non-repeatable read.
+If.
+Suppose transaction A reads the same row several times, same row several times, and there is a chance
+that it read different value, then it is known as Non-repeatable read.
+For example, this is a time series, right?
+So at time T one transaction A has started the transaction, begin the transaction.
+And this is a DB state right.
+And at t two it reads the first time read happening.
+So for this ID what it read.
+Let's say status as free.
+This value as free at time T3.
+Certain other transaction change and committed the changes also committed.
+It's not uncommitted.
+It's committed.
+Other transaction has successfully committed.
+So means DB has changed and properly data is committed also.
+So status is free to book now.
+Now in T4 it is reading the row again.
+Now it says that it hitting the same query again.
+So it get this ID now earlier it was getting for the same row.
+It was getting free now in the same transaction.
+In the same transaction when the same for the same row, when it read now it's getting booked right
+because it is able to read the committed transaction, right?
+So in the non-repeatable read any transaction so it is allowed to read the committed data.
+You are allowed to read the committed data.
+So if data is committed means other transactions can now read it.
+So at T3 some other transaction has committed the changes and changed it from free to board.
+Now when it is reading again it is getting the book.
+So reads the same row several times and there is a chance that it read different value.
+So reading the row here, reading the row second times here.
+But here it is getting free.
+Here it is getting book.
+So that is known as Non-repeatable read program.
+In the same transaction, if you read the same row multiple times, there is a chance that you get a
+different value.
+Okay.
+What is the third problem?
+Pantham reads.
+Let's understand that.
+What is this problem?
+First Pantham reads.
+If.
+Suppose transaction A executes the same query several times.
+Same query several times, and there is a chance that the row returns are different, then it's known
+as Pantham.
+Let's take an example.
+So let's say this is the DB currently with Id1 and ID3 status is free.
+Status is booked.
+So two rows.
+So at time T1I have started the transaction a at time t two.
+The first time I am executing the query read row where id greater than zero and id less than five.
+So how many rows it will return two rows greater than zero and less than five.
+So it will return this two rows.
+So I got two rows at T3.
+Some other transaction has inserted the row with id two.
+This is new.
+Now this is new row inserted right?
+Now let's say in the same transaction.
+If the second time same query is running here, read row with id greater than zero and id less than
+five.
+How many rows I am getting now three rows I am getting id1, Id2 and ID3.
+So what does Phantom read says that if a transaction executes same query several times.
+If execute the same query several times and there is a chance that the rows returns are different.
+So here they get two rows.
+Here they are getting three rows.
+That is known as phantom reads.
+Phantom reads okay.
+So now let's come back to this table again.
+Now at least you know that.
+What is this Is read.
+What is this non-repeatable read problem?
+And what is this phantom read problem?
+Now let's see this isolation level that how they resolve this.
+Which one.
+So first isolation level.
+So this is zero.
+This is one this is two.
+This is three.
+Generally isolation level zero is read committed isolation level one is read read uncommitted read committed
+and two is repeatable read and three is serializable.
+Okay.
+So let's first understand read uncommitted.
+In the read uncommitted what is the locking strategy?
+I have already told you the DB locking.
+So there are two type of locking.
+There are two type of locking.
+Shared lock exclusive lock right.
+So for this read uncommitted isolation level.
+What is locking strategy?
+Read no lock is acquired, right?
+No lock is acquired.
+Right.
+No lock is acquired at all.
+So what will happen?
+What will happen if the no lock is required at all?
+So the problem which happen is here is dirty read is also possible.
+Non-repeatable read is also possible.
+And phantom read is also possible, right?
+So let me tell you this one read uncommitted.
+So no lock is required.
+So let's say transaction one.
+Transaction two is coming okay.
+So dirty read when.
+Let's say this is my DB row A okay.
+So this is let's say value certain ten.
+Okay.
+So now let's say it is updating.
+Let's say ten.
+It changes to 11.
+so it updated the 11.
+Now no lock is required.
+No lock is acquired.
+Now it is reading a so what value it will get.
+11 okay so this is dirty read right.
+So dirty read is possible.
+Non repetitive read is possible.
+Yes it is also possible.
+Non repetitive means is if it read again let's say read a.
+It is possible that some T3 also changed its value from 11 or to 12 let's say.
+Then it read again.
+It will get some different value earlier it get 11, now it get 12.
+So there is no locking, there is no control who is changing what value.
+So every time you read you might get different value.
+So that is also non repeatable read possible.
+Yes it is possible.
+Phantom read possible.
+Yes it is possible.
+If you are running a query with let's say A has value ten and B has value 15.
+If you are reading which has value greater than ten or greater than equals to ten and value less than
+equals to 15.
+So currently you are getting two rows.
+But it is possible that another transaction insert a new row within this 11.
+And when you read the same query, you will get a new row.
+So with read uncommitted all three are possible.
+But consistency is very very high.
+Consistency is very very high.
+But this is very risky.
+Generally, read committed is only used in cases where the scenario is only reading.
+Only reading.
+So use it only read uncommitted only.
+Only when you require only read.
+No writing.
+Otherwise, if writing is allowed dirty read Non-repeatable read.
+You can't even proceed further.
+You have all three problems in it.
+But if you have only read scenarios, then read uncommitted is the one.
+Second, isolation level is read committed.
+It is better than this, but its concurrency is little bit lower than read uncommitted.
+But what it is locking strategy.
+Its locking strategy is read shared lock acquired and release as soon as read is done.
+So while it is reading the data, it put a shared lock, but as soon as read the data it releases it
+also write.
+And for write, it put a exclusive lock and exclusive lock acquired and keep till the end of the transaction.
+Right.
+So read and write.
+So for read it put a shared lock and then release as soon as possible.
+And for write it put an exclusive lock.
+But don't release it only after doing committing like by reaching to the end.
+Then only it.
+Release it.
+Okay.
+So read committed solves dirty read problem.
+How?
+The same.
+Let's say transaction one.
+Transaction two.
+Write.
+And that's it.
+This is the DB a which has value ten.
+Right.
+Let's say this is the id a and value ten.
+Certain certain row okay.
+So now dirty read.
+Dirty read means something which is let's say T2 has written.
+So T2 want to write transaction to want to write update.
+So for update is comes into the category of write.
+So what it will do is it put a exclusive lock it, put an exclusive lock here by T2 okay.
+And it will acquire the lock and keep it till the end of the transaction.
+Till transaction is not completed, it will not release it.
+And let's say it update from 10 to 11 okay.
+Now let's say transaction one tries to read it read after this, after this it try to read it read a
+can it for read a it won't share lock.
+So if I told you if exclusive lock is present not even shared lock will be granted.
+So it has to wait.
+It has to wait.
+And if it takes it holds a lock for a long time, it might even get timeout and it has to roll back.
+Okay, so you know that now dirty read is not possible.
+Why?
+Because if it transaction a particular transaction has updated it, it put an exclusive lock and it
+will only leave after the transaction and the transaction.
+If it is committed, then okay you will read only committed transaction.
+That's good.
+It's not a dirty read, but if it is aborted or failed, the transaction will get rollback.
+So it will read the previous state.
+Ten so dirty read is not possible here, but repeatable read problem is there right?
+So now because in the read committed means, after that any data which is committed, you can read it
+right.
+So now let us say the same a 11 transaction one has first read what it got, read a what the value it
+got 11 now.
+At this period.
+This was t one.
+Let's say this is the time period.
+Time.
+Time sequence one.
+Time sequence two.
+Some other transaction updated because it's see it read a when it read a it put a shared lock.
+And I told you that when it put a shared lock and release as soon as read is done.
+So it read properly.
+So it's also remove the shared lock also.
+So now update will do update try to take an exclusive lock.
+So if Rho doesn't have any lock even shared it is allowed to take an exclusive lock right?
+So it take an exclusive lock and let's say update it to 12 and do commit.
+Commit is done and it releases the lock.
+Now.
+Now it will do read again.
+Read a at time three three time sequence T three.
+So what value it will read because this has committed Updated to 12.
+Some other transaction.
+Let's say transaction T2 has done this.
+But now what value it will give transaction one.
+When it is reading twice it will get 12.
+So repetitive read problem is not solved.
+Okay.
+And similarly Pantham read problem is also not solved because if you have a range then the pantham read
+is also possible.
+Okay.
+But this one is little bit slighter.
+Less concurrency than read uncommitted.
+The third one is repetitive.
+Read repetitive read solves dirty read problem repetitive problem also.
+But pantham read problem is still exist, but concurrency is also lower than the read committed.
+So how it solves so repetitive read when it is reading the transaction what it do it shared Lock acquired
+and release only at the end of the transaction.
+Right.
+Exclusive lock acquired and release only at the end of the transaction.
+So in read.
+Committed.
+Shared.
+Lock acquired and release as soon as possible.
+As soon as read is done, but in repeatable read.
+Shared lock acquired and released only at the end of the transaction.
+And because of this, it is able to solve the repeatable read issue.
+How?
+Again, same example A has value ten.
+This is its id.
+This is value this transaction one.
+Let's say this is transaction two.
+Let's say at time sequence one it reads a right.
+So it put a shared lock while reading it put a shared lock.
+So it put a shared lock by t one.
+Okay, so it read what value it get ten let's say at time t2.
+Time sequence T2 transactions two tries to update it.
+Update A for updating it won't exclusive lock, but in the repeatable read shared log.
+Acquired and released only at the end of the transaction so it has shared lock by T1 will.
+Transaction to able to get an exclusive lock here.
+No exclusive lock can only be granted when no lock is present on a row.
+So it can't get a exclusive row so it update can is not possible.
+So if you can't update this nobody can update this.
+So even if do read A again at time T3, it will get only ten.
+Only because shared lock is there.
+Transaction to transaction two can only read it.
+It can also put a read a.
+It can also put a shared lock by T2.
+But operation is not possible because for operation you need an exclusive lock, and for exclusive lock
+you should not have any kind of lock present already.
+So that's how it solves the repeatable non repeatable issue.
+But Bentham read is possible.
+And last one is serializable isolation level.
+Serializable isolation level is same as repeatable read.
+Locking strategy means read put a shared lock and release only at the end of the transaction, right?
+Put an exclusive lock and release only at the end of the transaction.
+Plus, what it will do is apply a range lock and lock is released at the end of the transaction.
+So now one thing is range lock.
+So how let's say that you have two rows here.
+Let's say a b and let's say it is, uh, this is ID and this is value, let's say now ID one and let's
+say three.
+So let's say t one.
+So now let's say t one says that it read it read the data where ID is greater than equals to one and
+ID is less than equals to three.
+Let's say this is the query.
+So how many rows it got.
+Two.
+But if it is using serializable isolation level it will put a range lock.
+Range lock means it will put a lock on all the rows which satisfy this condition.
+So ID greater than equals to one.
+Yes.
+So it will put a shared lock here.
+It will put a shared lock here.
+Plus it will also range lock means it will also put the lock on the IDs which are nearby it.
+Let's say if it has four, it will also lock this also nearby.
+So let's say two two is not there.
+So it will lock that also like kind of lock in the sense it will not allow it put a range lock.
+So 1234 something between this nothing can be added.
+Between this nothing can be added.
+So range lock is like now 1 to 4 has been locked in DB.
+If you are trying to insert something in mid this range is locked.
+This range is locked.
+Between this range nothing can be done.
+So what it will do is so in the range lock whatever the rows which is satisfying the query, it will
+lock that.
+Plus it will lock the nearby ranges also.
+So it will nearby ranges of one is let's say two zero.
+Let's say for example and four is three five.
+So it will lock all all all on this.
+Now, if anybody try to insert on this IDs and all that is not allowed, that range log is there at
+the DB level.
+So that is what range is.
+So that it try to avoid the pantham reads something in mid cannot be inserted.
+Okay.
+So you already know this transaction.
+Begin transaction and transaction I told you so.
+For each transaction before you start the transaction you can set the isolation level like this.
+Set transaction isolation level.
+Let's say I want to put a repeatable read like this.
+If you don't put this right then if you are using a spring and all you use at the rate transaction rate
+internally, if you see they will use the default one based upon what DB you are using, right?
+Sometimes if you know that I think in MySQL, InnoDB is there, I know db, I think default is this.
+Maybe, but depends upon db to db.
+What is the default?
+But the thing is, if you based upon the question that has been asked to you understand what type of
+locking you need, like your question comes in what category if required.
+High high consistency and only read is allowed, then no locking is required.
+If dirty read is possible, write then read.
+Uncommitted is okay.
+If dirty read is not allowed, then you have three options.
+If non-repeatable read is allowed then this is good or read is allowed.
+This is good.
+So similarly you have.
+Based upon your question, you have to first decide the isolation level.
+Your problems comes into this which isolation level.
+And for every transaction you can set the isolation level.
+If you don't set it automatically, the default will default.
+One will be picked based upon the DB.
+Okay.
+Till now.
+Now you have at least these three things better understanding what is the usage of transaction?
+What is DB locking?
+What are the isolation levels.
+Now let's come to the main.
+The main answer how to handle the concurrency which is distributed concurrency control.
+Optimistic and pessimistic concurrency control.
+So optimistic has allows you to have a more concurrency.
+And it allows you to use an isolation level below or above repetitive read.
+Pessimistic is either repetitive read or serialization, so pessimistic concurrency control is either
+repetitive or serializable.
+Optimistic control is mostly read committed read.
+Uncommitted is mostly just for read applications for writing dirty.
+Read is never, never allowed.
+So I am saying that for optimistic concurrency, read committed is you can use it or whatever the logic.
+I will tell you how the optimistic concurrency control work, but you can use the isolation level read
+committed for optimistic concurrency.
+For pessimistic concurrency control, we have to use either repeatable read or serializable.
+Now let's see.
+Now you know that right?
+What isolation level this uses.
+Now let's see that now you would be able to make more sense that how this work optimistic.
+Don't ignore this.
+Now I will tell you this after I tell you what the definition is.
+Let's say optimistic concurrency control.
+Optimistic concurrency control is generally it uses isolation level.
+What?
+Read.
+Committed.
+Okay.
+So read committed is if something is committed, you are able to read it, right.
+And it put a shared lock.
+And as soon as it releases it and it will put a exclusive lock, it will keep it till the end.
+Now let's see what is optimistic concurrency control.
+So now here what it does it it solves a concurrency using version.
+So let's see this example.
+And uh let's see this with this example I will tell you this.
+So there are two transaction transaction a transaction B.
+And let's say this is the current DB state.
+So ID is status.
+And for the optimistic we use version.
+So let's say DB like MySQL they already each row each row has version row version inbuilt.
+And whenever you do any update that row version increases.
+increase, but DB like Oracle they don't have version.
+So you can add a column.
+And whenever you do any update operation you have to just increment by one.
+So now let's start that this is the current DB structure at the first start at time T1 both transaction
+started at time t2.
+Transaction A reads the id one, so when it reads it put a shared log by transaction A, but it's a
+read.
+Committed let's say optimistic can use read committed.
+It will release the log as soon as it read, so it will release it.
+Also after reading it will release it okay.
+So what is the row version.
+It got one and it reads the data.
+Row version was one.
+When it's read similarly this also at the same T2 itself it reads again, so it will again put a shared
+log, read it and remove it also.
+Right.
+And let's say both are putting a shared log.
+You know that two shared log can be placed.
+So they both are able to read it.
+And what is the version they read one one.
+Now let's say at T3 transaction A is putting a lock select for update right.
+So what it does is it will do version validation.
+Right now it's trying to update it.
+When it's trying to update it it will first check.
+So it will first an exclusive lock because now it want to update it.
+So it will put a exclusive lock select for update.
+Now first it will do is version validation happens.
+What is it will check okay.
+When I read the data version was one.
+Now I want to update it.
+Now.
+Let's say it has changed something from free to book.
+Okay.
+Certain logic here it want to update from free to book.
+Now it want to update it.
+So but before updating it is first checking.
+Okay the version in DB after it put an exclusive lock, you know that nobody can either read it, nobody
+can even update it.
+Okay, so now it will check the version.
+Hey, whatever the logic, whatever the update I have done, I have done on version one in DB, also
+version is one, is there?
+Yes, row version is one.
+So validation is success.
+It reached to T4 and T4.
+It will update and increment the version and change the status to book.
+So for this ID status is changed to book.
+Version has been incremented by one because it is updating right?
+It will increment the version by one.
+Exclusive lock is still hold because I told you that exclusive lock will only be released in read committed.
+And once it is done, the commit, either commit or either abort, right?
+So now once it is updated, now it doing commit one is committed.
+Exclusive log is removed.
+Exclusive log is removed now.
+But what is the version now?
+Two status is changed to book now transaction B which has read it at T2.
+What version was one?
+Now let's say it has certain logic here to also change it to booked it wanted to do a book, but now
+it wanted to update.
+So now it what it will do is first at T6, it will do select for update.
+So now it will put an exclusive lock.
+Transaction B has put an exclusive lock now.
+Now it will do version validation happen okay.
+What is the version in DB version two.
+What is the version which I have done?
+Version one.
+Now it will know that hey, something some other transaction has done the update on this.
+Whatever I have read.
+So whatever the version I have read of the DB of the row, which was version one.
+But now in DB version two means some some other transaction has updated it.
+So what it will happen is its validation got failed and it will do rollback right.
+So it will try again.
+So it will have to try again right.
+So it's when it's rollback also it's exclusive log is removed now.
+So you see that how optimistic concurrency control works it control through this versioning right.
+And before updating they first do validation right.
+So this is the flow.
+So transaction is created.
+You read the row right.
+No Locking is.
+As soon as you read it, unlocking is required.
+So multiple transaction can read at the possible at the same time.
+Computation on the fetch row may be whatever the columns you wanted to update.
+You make the changes and all, but now you want to update it.
+So now first you do a validation.
+If row is modified, version is same.
+If row is modified, no version is same.
+So when I read it version was one and now also it is one.
+So it will update the DB and do the commit okay so row modified.
+So here it will take an exclusive lock.
+Okay.
+But if row is modified here version one it read but the row version was two.
+So row modified.
+Yes.
+So what it will do is it will do rollback and it will start again.
+Okay.
+So you got it.
+Optimistic concurrency control what isolation level it uses, read committed and how it works is through
+version and comparison.
+Mostly you will see that in companies where you know that are there on a single resource, like it's
+a very less chance that concurrency sudden comes, then this is generally the best part, right?
+It provide a high level of concurrency.
+Now another is pessimistic.
+Pessimistic.
+You know that what isolation level it uses either repeatable or serializable.
+Repeatable or serializable.
+Okay.
+So here it is simple.
+It will don't release a lock itself.
+Okay.
+So now here if take this example transaction one.
+Transaction two.
+Right.
+Okay.
+So now let's say it reads read a.
+Okay so here we have a DB which has let's say ID status.
+Okay.
+And ID is let's say a for example status is free.
+So it read a.
+So what it will put is shared log.
+Same I told you right.
+The same example.
+So pessimistic locking is similar.
+Now if you have put a shared lock it will not even release it.
+So this is begin transaction.
+Now other transaction can read it.
+Read a possible so shared lock by T1 and shared log is also by T2.
+It's possible right.
+Now what will happen is uh.
+So shared lock is done.
+Right.
+So this is possible.
+Now let's say if it tries to update B certain row is there in B.
+It will put an exclusive law.
+An exclusive lock is kept till the end.
+Either commit or abort.
+Right.
+So on a it can read it and only at the end it will be released.
+Right.
+And if it wants to update happening on B also it can't do it.
+Exclusive lock is present right.
+So now you see that pessimistic is something kind of brings little bit kind of serialization.
+Serialization means okay first t one girl get able to complete.
+Then T two will get able to complete right.
+Doesn't matter.
+Like who start first and all.
+It's just like either T2 or T1 or t1 or T2.
+So generally what I mean to say is that you will see certain sequence, right?
+Because of this locking for the whole period because when it read a, it put a shared lock.
+Now no other transaction can update it.
+If they want to update it, they have to wait for the T1 to complete.
+So that transaction can only start after it, right?
+Similarly, if it has updated or put a lock on any resource for updating it, again, it put an exclusive
+lock.
+Now nobody can even read it.
+Also, they all have to wait it.
+Because of this, there is one big problem in pessimistic case of deadlock.
+Let's say this use case transaction one wants to read A, and so read A, write B and similarly it want
+to read B.
+Write a.
+Let's say this is the use case.
+Okay, so what is the deadlock use case in pessimistic how this will work.
+Let's say this is my A.
+This is my b row db row.
+So T1 at time sequence one both started parallelly.
+Read a.
+So read a.
+What it will do is put a shared lock by T1.
+Okay transaction started begin transaction.
+Similarly transaction started and it will do read B at time sequence one.
+It read B so it put a shared lock by T2 okay.
+Now transaction is not yet finished.
+So these locks are not released.
+Now it want to write B at time sequence, let's say two and it want to write.
+It want to write a at this time sequence.
+Now will it be able to write B now.
+No because shared lock is already there.
+So it has to wait.
+Waiting for transaction two to release.
+Shared lock on B.
+Similarly, transaction two wants to put a write lock exclusive lock on A and A has been a already has
+a shared lock by T1.
+So this will waiting for T1 to release shared lock on a.
+now they both are waiting.
+So they both they both won't be able to complete its transaction.
+So now they both are waiting on each other.
+So that's what deadlock happens.
+Now what will happen in this use case is whatever the transactions which are stucked in deadlock, they
+both will get aborted and they might have to start again.
+They have to release all their logs and the transaction will be aborted after a particular time.
+Right.
+So they will wait for all.
+And if they are, keep on waiting and they identify that deadlock, transaction or release all the locks
+and abort it.
+So pessimistic locking, pessimistic concurrency control has the deadlock issue.
+But there is no deadlock problem in optimistic how?
+Just see the same example again.
+But with an optimistic locking you will see the difference and it would be much better.
+Uh.
+This thing.
+Read a, write b, read B, write a.
+So let's say transaction one.
+Transaction two, uh, let's say this is DB.
+It has A and B.
+So in optimistic it use read committed.
+So it will read A.
+So it will read a happens transaction started at uh time sequence one.
+It will put a shared lock and also release it as soon as read happen.
+So no lock is present.
+And also in parallelly it will read B.
+So again it put a shared lock and read it.
+So no lock is also present because after reading it releases the shared lock at time sequence two.
+It wants to write B, so write B it wants an exclusive lock.
+B doesn't have any exclusive lock, so it will put exclusive lock by T one T1 and it will put right.
+A so A doesn't have any lock so it will put exclusive lock by T2 both able to complete it.
+Commit commit.
+So they will release their transaction.
+So if you see that with optimistic there is no problem of deadlock.
+With with pessimistic there is a problem for deadlock.
+So now let's come to this.
+There are certain properties like isolation level used for.
+Below is repeatable read below.
+Repeatable read means.
+What is the below one.
+Read committed.
+Read uncommitted is only used for read application.
+For write application read uncommitted is not feasible at all.
+So for optimistic concurrency control what is the isolation level is below repeatable read so means
+it has much higher concurrency than pessimistic.
+There is no chance of deadlock, right?
+And in case of Solve conflict.
+Let's say I told you that versioning part right.
+This is the conflict part in optimistic.
+I told you that that the transition to it got that a version validation failed.
+So it has to roll back and try again.
+So that is one of the overhead in pessimistic control.
+Isolation level is repeatable read and serializable.
+So it has less concurrency compared to optimistic.
+Deadlock is possible right.
+And the transaction which are stuck in deadlock are forced to roll back.
+And sometimes what happens is if it is a long running transaction transaction, you know that in repeatable
+read and serializable, if even read lock is taken, it is kept till long.
+And even if so, if it's a long running transaction, you are putting a shared lock for the long time.
+And sometime it is happened that for this long, uh, log duration timeout can also happen.
+And rollback can also happen because of those.
+Right.
+So just depend upon the configuration.
+But this is one of the other use case.
+So this is what optimistic and pessimistic concurrency control.
+And so I think today's I think video I haven't seen the time.
+It might be I think oh crossed 40 minutes also.
+But the the very popular pessimistic control one protocol is two PL two phase locking.
+Okay.
+So I can explain you maybe in the next session.
+But two phase locking is something which is again very popular.
+But this is a pessimistic concurrency control.
+Right.
+So see now in your questions whenever somebody says that always use optimistic.
+No it depends.
+So see optimistic concurrency control is very popular in pessimistic Control.
+Concurrency control two phase locking is also popularly used also.
+It is a two phase locking is nothing but a approach for pessimistic concurrency control.
+I will explain you two phase locking in the next session in depth.
+Uh, but what I want to tell you that never have a opinion that optimistic is always a best.
+So now, based upon the problem which you are solving, first check what isolation level you might have
+to use based upon the isolation level.
+Your half of the problem will resolve whether you have to use optimistic or pessimistic, right?
+And if it is optimistic, you know how to solve it.
+If it is a pessimistic, you know how to solve it.
+And one of the approach for implementing pessimistic is two phase locking, which I will tell you in
+the next session.
+Okay, guys, uh, sorry for this long session, but I hope you will, uh, learned a lot about the
+distributed concurrency control and see you in the next sessions.
+Uh, and any doubt, please feel free to ping me in the comment section.
+Thank you.
+Bye.

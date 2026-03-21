@@ -1,0 +1,175 @@
+# Thundering Herd Problem | Why Ticket Booking App goes down during peak traffic?
+
+Hey guys, on this side.
+And today I will be discussing in ten minutes the recent issue, which might happen with the ticket
+booking application when they have opened the sale of a concert at 12 p.m..
+Okay, the system goes down.
+They haven't shared any RCA or any block.
+But see, let's say that what issue could have happened and how it can be resolved.
+So generally, if you see any application, we already have load balancer.
+And let's say that we have multiple instances of our component or of our microservices.
+In this case we have ticket service.
+Let's say it's instance one, ticket service instance two, ticket service instance three.
+Now any request which comes to the load balancer, it will divert the request either to one of the instance.
+And each of this instance is Instances also safeguarding itself through a queue.
+You know that thread pool executor.
+Each application which we build builds upon its capacity.
+We also configure the thread pool executor and the queue how much actually it can handle it.
+So this is already we have right.
+Okay.
+So now what happened is there is a term called Thundering herd.
+So in this problem what generally happen is at any particular instant right.
+Let's say at this moment the bulk.
+Or you can say that the bulk of request comes suddenly.
+There is a huge spike in the traffic.
+Okay.
+That's where the term thundering herd.
+Okay.
+So what happened in this case is that might be at 12 p.m..
+M when the sale has been started, the multiple requests came.
+Okay, and it goes.
+Load balancer work is to just distribute between this instances and each instances is now totally filled
+each instance.
+Q is totally filled and they are continuously working on to their full capacity.
+Okay, now any more request is coming.
+Definitely Q is full, all threads are busy, all threads are busy for all this thing and Q is also
+full.
+Definitely first.
+There will be not entertaining any new request.
+Right?
+So what happening is.
+New request got denied.
+Okay.
+Second problem which might have happened is retry.
+Now all this request which got denied.
+They are also getting retried.
+Okay, so new request.
+Plus retried one.
+Now it is.
+Keep on coming.
+Okay so always remember also one more point.
+Let's say that this request is there in the queue.
+Okay.
+Now when your system is working on a full capacity latency cannot be the same okay.
+Latency increases when you have more threads.
+Let's say that your thread is ten maximum thread is 100.
+Now when the system is running on full capacity means all 100 threads are working, right?
+Queue is totally full.
+So this all things required memory.
+Okay.
+So means when your system is running on full capacity.
+Latency also impacts and when the latency also impact.
+This is also brings a cascading impact.
+How?
+Now let's say that the existing request is taking more time.
+Earlier they used to get finished in 10s.
+Now because of this, uh, resource limitation.
+Right.
+And huge request pile up and processing in parallel.
+This ten second has been increased to 22nd.
+And in this discussion I am saying that let's say that even the ten second got increased per request.
+This can also result in a timeout of the existing requests which are processing.
+Maybe the request which are waiting in the queue.
+That might also get request timeout right.
+Client haven't heard it back.
+It is.
+Just keep on waiting into the queue.
+They also get retried.
+So this retried request right?
+This is one I think is a major issue which need to be handled properly.
+Okay.
+So this is one very important part.
+So one question might be coming to our mind that hey if there are more requests definitely there should
+be some auto scaling has happened.
+Okay.
+Yes auto scaling might have happened.
+But here if you see when the auto scaling also has happened, will it be able to process any new request?
+I doubt it.
+Right.
+This retry is something which is has the capability to spam everything.
+Okay.
+So now this retry request also comes to this load balancer.
+And it also is assigning to this auto scale.
+This will also get filled up right.
+All the requests.
+Now it is possible that the request which are here in this one it could also be here.
+It could also be here, and it could also be here.
+The retry request keeps on piling up.
+So what?
+What could be the scenario?
+What can we do for this retry.
+Okay.
+So one is that.
+Back off.
+Or you can say that exponential back off.
+So generally which is the formula is base into two raised to power n where n is the number of failures.
+Where n is the number of failures.
+So now let's say that request one comes.
+Okay.
+Uh so it is processed at let's say your base is -100.
+So at the first, uh, first failure, the when the first failure happened, base is 100.
+So this is retry one.
+So two raised to power one one failure.
+rate.
+So it is happening at after weight of 200 millisecond.
+Let's say the retry two means second failure 100 into two raised to power two 400 millisecond.
+So like this.
+So like this exponential back off is one strategy for the retry.
+But again exponential backoff is not the foolproof solution.
+There is also a situation when all the retry requests is retrying on the same time.
+Generally, this is a common formula for the exponential backoff.
+If all the retry requests are also using the same formula means they are keep on retrying at the same
+time, which do not resolve anything, and again, they are keep on piling it up.
+So another solution is like.
+Exponential.
+Back off.
+Plus jitter.
+Jitter.
+When I say jitter, jitter generally means bringing some randomness, right?
+So earlier formula was base into two raised to power n right.
+So what jitter will do is that it it's its formula.
+Is that minimum of.
+Your let's say maximum time which you can wait maximum wait time.
+Comma.
+Some random from zero to let's say base into two raised to power n okay.
+So now what it will do is whatever the exponential back off you are doing, do it.
+But pick a random of zero to.
+Let's say between this you are picking some random number okay.
+And because of this exponential backoff, it will keep on growing.
+So we have to keep a limit that they choose a minimum either the maximum wait time or this.
+So this jitter is nothing but a bringing some randomness.
+So it will bring randomness on this retry so that all should not retry at the same time okay.
+This generally currently in this scenario these queues are working as a first line of defense which
+I'm thinking can further help is our rate limiter.
+So now let's say that here we have our application gateway.
+And here I have a rate limiter.
+Now this this would be our first line of defense right here.
+Not this queues now.
+So this rate of limiter let's say that I am using here token bucket algorithm.
+Token bucket algorithm.
+So this token bucket algorithm, you know.
+Right.
+Uh, let's say that in one minute, 1 million requests comes.
+Let's say that or let's say that.
+Not in one minute, let's say instantly now, now itself, 1 million requests comes with token bucket.
+I have the capability that, hey, whatever the capacity of my system is, I will do some computation
+and I will only make this much token available.
+So it has token.
+Only that much token would be available.
+Only that much request will go to the next level, okay.
+And others will wait in the queue over here or it will get rejected from here itself.
+So here we are making sure that our systems are working fine existing.
+They should not reach to their maximum capacity, where even the latency gets increased and even the
+existing request is getting timed out.
+We should not reach to that level, actually.
+Okay.
+And bring the, uh, some jitter in the retries.
+And also here we can, uh, token bucket algorithm or through rate limiter, we can make sure that even
+the instant burst come, can we spread it across like in a particular interval, let's say 0 to 1 minute.
+Even the instant traffic come.
+Can this instant traffic be distributed across a minute?
+Okay, so rate limiter I'm thinking of plus for the retry.
+I already told you that, uh, backoff plus jitter and definitely auto scaling should be there, but
+yeah, will definitely look forward to the blocks and the actual root cause.
+But please feel free to share your thoughts on this one.
+What's your take on this recent issue?
