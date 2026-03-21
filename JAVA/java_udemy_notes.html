@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java Basics to Advanced — Complete Notes</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #FAFAF8; --bg2: #F3F2EE; --border: #E2E0D8; --border2: #D0CEC4;
+    --text: #1A1916; --text2: #5A5750; --text3: #9A9790;
+    --blue: #1A5FA8; --blue-bg: #E8F0FA; --blue-dark: #0C3D7A;
+    --green: #0D6E50; --green-bg: #E4F5EE; --green-dark: #084035;
+    --amber: #854F0B; --amber-bg: #FAF0E0; --amber-dark: #5C3507;
+    --purple: #3C2F89; --purple-bg: #EEEAFA; --purple-dark: #231C5A;
+    --red: #8A2020; --red-bg: #FAEAEA;
+    --teal: #0A5C52; --teal-bg: #E4F4F0;
+    --mono: 'SF Mono', 'Fira Code', monospace;
+    --sans: -apple-system, 'Segoe UI', sans-serif;
+  }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* SIDEBAR */
+  .layout { display: flex; min-height: 100vh; }
+  .sidebar { width: 280px; background: var(--bg2); border-right: 1px solid var(--border); overflow-y: auto; position: fixed; top: 0; left: 0; height: 100vh; z-index: 10; }
+  .sidebar-header { padding: 16px 14px 12px; border-bottom: 1px solid var(--border); }
+  .sidebar-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .sidebar-sub { font-size: 11px; color: var(--text3); }
+  .sidebar-search { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .sidebar-search input { width: 100%; padding: 6px 10px; border: 1px solid var(--border2); border-radius: 6px; font-size: 12px; background: var(--bg); font-family: var(--sans); outline: none; color: var(--text); }
+  .cat-group { margin-bottom: 2px; }
+  .cat-label { padding: 8px 14px 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); }
+  .topic-btn { width: 100%; text-align: left; padding: 6px 14px; border: none; background: none; font-size: 12px; color: var(--text2); cursor: pointer; transition: all .12s; font-family: var(--sans); border-radius: 0; line-height: 1.4; }
+  .topic-btn:hover { background: var(--border); color: var(--text); }
+  .topic-btn.active { background: var(--blue); color: white; font-weight: 500; }
+
+  /* MAIN */
+  .main { margin-left: 280px; padding: 0 32px 60px; max-width: 960px; }
+  .page-header { padding: 24px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+  .page-title { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .page-meta { font-size: 12px; color: var(--text3); }
+
+  /* NOTES CONTENT */
+  .topic-panel { display: none; }
+  .topic-panel.active { display: block; }
+  .topic-header { margin-bottom: 20px; }
+  .topic-title { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .topic-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+  .tag-blue { background: var(--blue-bg); color: var(--blue); }
+  .tag-green { background: var(--green-bg); color: var(--green); }
+  .tag-amber { background: var(--amber-bg); color: var(--amber); }
+  .tag-purple { background: var(--purple-bg); color: var(--purple); }
+  .tag-red { background: var(--red-bg); color: var(--red); }
+  .tag-teal { background: var(--teal-bg); color: var(--teal); }
+
+  /* CARDS */
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+  .card-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--text3); margin-bottom: 8px; }
+  .card p, .card li { font-size: 13px; color: var(--text2); line-height: 1.65; }
+  .card ul { padding-left: 18px; }
+  .card ul li { margin-bottom: 3px; }
+  strong.k { color: var(--text); font-weight: 500; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .highlight { background: var(--blue-bg); border: 1px solid #BDD0F0; border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .highlight strong { color: var(--blue-dark); }
+  .warn { background: var(--amber-bg); border: 1px solid #DEB87A; border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; font-size: 13px; color: var(--text2); }
+  .warn strong { color: var(--amber-dark); }
+  .good { border-left: 3px solid var(--green); }
+  .bad { border-left: 3px solid var(--red); }
+  code, .mono { font-family: var(--mono); font-size: 11.5px; }
+  .codeblock { background: #1A1916; color: #D4D0C8; border-radius: 8px; padding: 12px 14px; font-family: var(--mono); font-size: 12px; line-height: 1.8; margin-bottom: 10px; overflow-x: auto; white-space: pre; }
+  .codeblock .kw { color: #82AAFF; }
+  .codeblock .cls { color: #FFCB6B; }
+  .codeblock .cm { color: #546E7A; font-style: italic; }
+  .codeblock .str { color: #C3E88D; }
+  .codeblock .num { color: #F78C6C; }
+  .table-wrap { overflow-x: auto; margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { text-align: left; padding: 7px 10px; background: var(--bg2); border-bottom: 1px solid var(--border2); font-weight: 600; color: var(--text2); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+  td { padding: 7px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .insight { border: 2px solid var(--border2); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; font-size: 13px; color: var(--text2); line-height: 1.6; background: var(--bg); }
+  .insight strong { color: var(--text); }
+  h3 { font-size: 14px; font-weight: 600; margin: 16px 0 8px; color: var(--text); }
+  .pill { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; margin: 2px; }
+  .sep { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-100%); }
+    .main { margin-left: 0; padding: 16px; }
+    .grid2, .grid3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title">☕ Java Basics to Advanced</div>
+    <div class="sidebar-sub">51 topics · Complete notes</div>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="search" placeholder="Search topics..." oninput="filterTopics(this.value)">
+  </div>
+  <div id="sidebar-nav"></div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="page-header">
+    <div class="page-title">Java Basics to Advanced — Complete Notes</div>
+    <div class="page-meta">51 topics from OOP fundamentals to Java 21 modern features</div>
+  </div>
+  <div id="topics-container"></div>
+</div>
+</div>
+
+<script>
+const TOPICS = [
+  // ─── OOP ──────────────────────────────────────────────────
+  {
+    id: 'oop1', cat: 'OOP Fundamentals', title: 'OOPs Concept Part 1 — 4 Pillars',
+    tags: ['blue:OOP', 'green:Fundamentals'],
+    content: `
+<div class="insight"><strong>One line:</strong> OOP = Object-Oriented Programming — model everything as objects with properties (state) and behavior (methods).</div>
+
+<h3>What is an Object?</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">Properties (State)</div><ul><li>What the object HAS</li><li>Described by observing it</li><li>Example (Dog): color, age, breed</li><li>Example (Car): brand, type, color</li></ul></div>
+  <div class="card"><div class="card-title">Behavior (Methods)</div><ul><li>What the object DOES</li><li>Actions it can perform</li><li>Example (Dog): bark(), eat(), sleep()</li><li>Example (Car): drive(), brake(), accelerate()</li></ul></div>
+</div>
+
+<h3>Class vs Object</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">Class — the Blueprint</div><p>Template from which objects are created. Defines structure: properties + behavior.</p></div>
+  <div class="card"><div class="card-title">Object — the Instance</div><p>Actual instance created using <code>new</code>. Has real data. Multiple objects from one class.</p></div>
+</div>
+
+<h3>OOP vs Procedural</h3>
+<div class="table-wrap"><table>
+  <tr><th>Feature</th><th>Procedural</th><th>OOP</th></tr>
+  <tr><td>Focus</td><td>Functions</td><td>Objects (data + behavior together)</td></tr>
+  <tr><td>Data</td><td>Freely moves between functions</td><td>Controlled — bound to class</td></tr>
+  <tr><td>Coupling</td><td>Tight</td><td>Loose</td></tr>
+  <tr><td>Data hiding</td><td>No proper way</td><td>Encapsulation</td></tr>
+  <tr><td>Code reuse</td><td>Limited</td><td>Inheritance</td></tr>
+</table></div>
+
+<h3>4 Pillars of OOP</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title" style="color:#1A5FA8">1. Abstraction</div><p>Hide HOW it works, show WHAT it does. Car brake → user sees "slow down", not hydraulics.</p></div>
+  <div class="card"><div class="card-title" style="color:#0D6E50">2. Encapsulation</div><p>Bundle data + methods. Control access via private fields + public getters/setters.</p></div>
+  <div class="card"><div class="card-title" style="color:#854F0B">3. Inheritance</div><p>Child acquires parent features + adds own. Enables code reuse without duplication.</p></div>
+  <div class="card"><div class="card-title" style="color:#3C2F89">4. Polymorphism</div><p>Same method name, different behavior based on context. Compile-time and runtime.</p></div>
+</div>`
+  },
+  {
+    id: 'oop2', cat: 'OOP Fundamentals', title: 'OOPs Concept Part 2 — Inheritance & Polymorphism',
+    tags: ['blue:Inheritance', 'purple:Polymorphism'],
+    content: `
+<h3>Inheritance</h3>
+<div class="highlight"><strong>Rule:</strong> Child can access parent members. Parent CANNOT access child members.</div>
+<div class="codeblock"><span class="kw">class</span> <span class="cls">Vehicle</span> {
+    boolean hasEngine;
+    boolean getEngine() { <span class="kw">return</span> hasEngine; }
+}
+<span class="kw">class</span> <span class="cls">Car</span> <span class="kw">extends</span> <span class="cls">Vehicle</span> {
+    String type;
+    String getCarType() { <span class="kw">return</span> type; }
+}
+<span class="cls">Car</span> c = <span class="kw">new</span> <span class="cls">Car</span>();
+c.getEngine();   <span class="cm">// ✔ from parent</span>
+c.getCarType();  <span class="cm">// ✔ from child</span>
+<span class="cls">Vehicle</span> v = <span class="kw">new</span> <span class="cls">Vehicle</span>();
+v.getCarType();  <span class="cm">// ✗ NOT allowed</span></div>
+
+<h3>Types of Inheritance in Java</h3>
+<div class="grid2">
+  <div class="card good"><div class="card-title">Allowed</div><ul><li>Single: A → B</li><li>Multilevel: A → B → C</li><li>Hierarchical: A → B, C</li><li>Multiple via INTERFACES ✔</li></ul></div>
+  <div class="card bad"><div class="card-title">NOT Allowed</div><ul><li>Multiple class inheritance ✗</li><li>A, B → C using extends</li><li>Diamond problem → ambiguity</li></ul></div>
+</div>
+
+<div class="warn"><strong>Diamond Problem:</strong> If C extends A and B, and both A and B have <code>getEngine()</code>, Java doesn't know which to call → compilation error. Fix: use interfaces (no implementation = no conflict).</div>
+
+<h3>Polymorphism</h3>
+<div class="table-wrap"><table>
+  <tr><th>Feature</th><th>Overloading (Compile-time)</th><th>Overriding (Runtime)</th></tr>
+  <tr><td>Method name</td><td>Same</td><td>Same</td></tr>
+  <tr><td>Parameters</td><td>Must differ</td><td>Must be same</td></tr>
+  <tr><td>Return type</td><td>Can differ</td><td>Must be same</td></tr>
+  <tr><td>Class</td><td>Same class</td><td>Parent + Child</td></tr>
+  <tr><td>Binding</td><td>Compile time</td><td>Runtime (by object type)</td></tr>
+</table></div>
+
+<div class="warn"><strong>Overloading trick:</strong> Only return type different is NOT valid. <code>int sum(int,int)</code> and <code>String sum(int,int)</code> → compile error. Compiler uses method signature (name + params), not return type.</div>
+
+<h3>IS-A vs HAS-A</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">IS-A (Inheritance)</div><p>Dog IS an Animal → <code>class Dog extends Animal</code><br>Use when child is genuinely a type of parent.</p></div>
+  <div class="card"><div class="card-title">HAS-A (Composition/Aggregation)</div><p>Car HAS an Engine → <code>Engine engine;</code><br><strong style="color:#8A2020">Bad:</strong> Car extends Engine ✗<br><strong style="color:#0D6E50">Good:</strong> Car has Engine ✔</p></div>
+</div>`
+  },
+  {
+    id: 'jvm', cat: 'Java Architecture', title: 'JVM, JRE & JDK — How Java Works',
+    tags: ['amber:Architecture'],
+    content: `
+<div class="insight"><strong>WORA:</strong> Write Once, Run Anywhere. Java is platform-independent because of the JVM.</div>
+
+<h3>The 3 Components</h3>
+<div class="grid3">
+  <div class="card"><div class="card-title" style="color:#854F0B">JDK</div><p>Java Development Kit. Everything needed to develop: compiler (javac), debugger, JRE included. For developers.</p></div>
+  <div class="card"><div class="card-title" style="color:#0D6E50">JRE</div><p>Java Runtime Environment. Libraries + JVM. Needed to RUN Java programs. For end users.</p></div>
+  <div class="card"><div class="card-title" style="color:#1A5FA8">JVM</div><p>Java Virtual Machine. Executes bytecode. Platform-specific but bytecode is universal.</p></div>
+</div>
+
+<h3>How it Works</h3>
+<div class="codeblock">Source (.java) → <span class="kw">javac</span> → Bytecode (.class) → JVM → Machine Code → Execution</div>
+
+<h3>Why 1 Public Class Per File?</h3>
+<div class="highlight"><strong>Rule:</strong> Public class name must match filename. JVM finds main via filename. If multiple public classes existed, JVM wouldn't know which file to look in.</div>
+
+<h3>JVM Architecture</h3>
+<div class="table-wrap"><table>
+  <tr><th>Component</th><th>Role</th></tr>
+  <tr><td>Class Loader</td><td>Loads .class files into memory</td></tr>
+  <tr><td>Bytecode Verifier</td><td>Security — checks bytecode validity</td></tr>
+  <tr><td>Interpreter</td><td>Executes bytecode line by line</td></tr>
+  <tr><td>JIT Compiler</td><td>Hot path compilation for performance</td></tr>
+  <tr><td>Garbage Collector</td><td>Automatic memory management</td></tr>
+</table></div>`
+  },
+  {
+    id: 'variables1', cat: 'Variables & Data Types', title: 'Variables & Primitive Data Types',
+    tags: ['green:Variables', 'blue:Primitives'],
+    content: `
+<div class="insight"><strong>Java is statically + strongly typed:</strong> Every variable must declare its type. Assigned value must match the type.</div>
+
+<h3>Primitive Data Types</h3>
+<div class="table-wrap"><table>
+  <tr><th>Type</th><th>Size</th><th>Range</th><th>Default</th></tr>
+  <tr><td><code>byte</code></td><td>1 byte / 8 bit</td><td>-128 to 127</td><td>0</td></tr>
+  <tr><td><code>short</code></td><td>2 bytes / 16 bit</td><td>-32,768 to 32,767</td><td>0</td></tr>
+  <tr><td><code>int</code></td><td>4 bytes / 32 bit</td><td>~-2.1B to 2.1B</td><td>0</td></tr>
+  <tr><td><code>long</code></td><td>8 bytes / 64 bit</td><td>Very large (L suffix)</td><td>0L</td></tr>
+  <tr><td><code>float</code></td><td>4 bytes / 32 bit</td><td>~6-7 decimal digits (F suffix)</td><td>0.0f</td></tr>
+  <tr><td><code>double</code></td><td>8 bytes / 64 bit</td><td>~15-16 decimal digits</td><td>0.0d</td></tr>
+  <tr><td><code>char</code></td><td>2 bytes / 16 bit</td><td>0 to 65,535 (Unicode)</td><td>'\u0000'</td></tr>
+  <tr><td><code>boolean</code></td><td>1 bit</td><td>true / false</td><td>false</td></tr>
+</table></div>
+
+<div class="warn"><strong>float precision issue:</strong> <code>0.7f</code> prints as <code>0.6999998</code>. Floats use IEEE 754 binary representation — some decimals can't be exactly represented in binary. Use <code>double</code> or <code>BigDecimal</code> for financial calculations.</div>
+
+<h3>Variable Types</h3>
+<div class="grid3">
+  <div class="card"><div class="card-title">Local</div><p>Inside method/block. No default value. Must initialize before use.</p></div>
+  <div class="card"><div class="card-title">Instance</div><p>Non-static field in class. Each object has its own copy. Has default value.</p></div>
+  <div class="card"><div class="card-title">Static (Class)</div><p>Shared across all instances. One copy per class. Accessed via ClassName.</p></div>
+</div>
+
+<h3>IEEE 754 Float Storage</h3>
+<div class="highlight"><strong>32-bit float:</strong> 1 bit sign + 8 bits exponent + 23 bits mantissa. Some decimals have infinite binary expansions → approximation. That's why 0.7f ≠ 0.7 exactly.</div>`
+  },
+  {
+    id: 'variables2', cat: 'Variables & Data Types', title: 'Reference/Non-Primitive Data Types',
+    tags: ['green:Reference Types', 'blue:Wrapper Classes'],
+    content: `
+<h3>Reference vs Primitive</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">Primitive</div><ul><li>Stores value directly</li><li>Stored in Stack</li><li>8 types: byte, short, int, long, float, double, char, boolean</li></ul></div>
+  <div class="card"><div class="card-title">Reference (Non-Primitive)</div><ul><li>Stores memory address (reference)</li><li>Object stored in Heap, reference in Stack</li><li>Types: Class, String, Interface, Array</li></ul></div>
+</div>
+
+<h3>How References Work</h3>
+<div class="codeblock"><span class="cls">Employee</span> emp = <span class="kw">new</span> <span class="cls">Employee</span>();
+<span class="cm">// Stack: emp (holds address e.g. 0x1234)</span>
+<span class="cm">// Heap: actual Employee object at 0x1234</span>
+
+<span class="cls">Employee</span> emp2 = emp; <span class="cm">// both point to same object!</span>
+emp2.setId(<span class="num">99</span>);      <span class="cm">// changes reflected in emp too</span></div>
+
+<h3>Wrapper Classes</h3>
+<div class="table-wrap"><table>
+  <tr><th>Primitive</th><th>Wrapper</th></tr>
+  <tr><td>int</td><td>Integer</td></tr>
+  <tr><td>long</td><td>Long</td></tr>
+  <tr><td>double</td><td>Double</td></tr>
+  <tr><td>char</td><td>Character</td></tr>
+  <tr><td>boolean</td><td>Boolean</td></tr>
+</table></div>
+
+<h3>Autoboxing & Unboxing</h3>
+<div class="codeblock"><span class="cm">// Autoboxing — primitive → wrapper (automatic)</span>
+<span class="cls">Integer</span> x = <span class="num">5</span>;  <span class="cm">// int → Integer</span>
+
+<span class="cm">// Unboxing — wrapper → primitive (automatic)</span>
+<span class="kw">int</span> y = x;     <span class="cm">// Integer → int</span></div>
+
+<div class="warn"><strong>Interview:</strong> Integer caches -128 to 127. <code>Integer a = 127; Integer b = 127; a == b</code> is <code>true</code> (same cache). But <code>Integer a = 128; a == b</code> is <code>false</code> (different objects). Always use <code>.equals()</code>.</div>
+
+<h3>String Immutability</h3>
+<div class="highlight"><strong>String is immutable</strong> — once created, cannot change. Every modification creates a new object. Use <code>StringBuilder</code> for concatenation in loops (mutable, not thread-safe) or <code>StringBuffer</code> (thread-safe).</div>`
+  },
+  {
+    id: 'methods1', cat: 'Methods & Constructors', title: 'Java Methods Part 1',
+    tags: ['blue:Methods'],
+    content: `
+<div class="insight"><strong>Method:</strong> Collection of instructions that perform a specific task. Enables code readability and reusability.</div>
+
+<h3>Method Structure</h3>
+<div class="codeblock"><span class="cm">// accessModifier returnType methodName(params) throws</span>
+<span class="kw">public</span> <span class="kw">int</span> sum(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">return</span> a + b;
+}</div>
+
+<h3>Types of Methods</h3>
+<div class="table-wrap"><table>
+  <tr><th>Type</th><th>Description</th></tr>
+  <tr><td>System-defined</td><td>Built-in: println(), Math.sqrt(), etc.</td></tr>
+  <tr><td>User-defined</td><td>Written by developer</td></tr>
+  <tr><td>Instance method</td><td>Requires object. Has access to instance vars.</td></tr>
+  <tr><td>Static method</td><td>Belongs to class. No object needed. Call via ClassName.</td></tr>
+  <tr><td>Abstract method</td><td>No body. Must be in abstract class or interface.</td></tr>
+  <tr><td>Final method</td><td>Cannot be overridden by child class.</td></tr>
+</table></div>
+
+<h3>Access Modifiers</h3>
+<div class="table-wrap"><table>
+  <tr><th>Modifier</th><th>Same Class</th><th>Package</th><th>Subclass</th><th>World</th></tr>
+  <tr><td>private</td><td>✔</td><td>✗</td><td>✗</td><td>✗</td></tr>
+  <tr><td>default</td><td>✔</td><td>✔</td><td>✗</td><td>✗</td></tr>
+  <tr><td>protected</td><td>✔</td><td>✔</td><td>✔</td><td>✗</td></tr>
+  <tr><td>public</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
+</table></div>`
+  },
+  {
+    id: 'methods2', cat: 'Methods & Constructors', title: 'Java Methods Part 2 — Static, Final, Varargs',
+    tags: ['blue:Static', 'amber:Varargs'],
+    content: `
+<h3>Static Methods</h3>
+<div class="highlight"><strong>Static = belongs to CLASS, not object.</strong> One copy shared by all objects. Call via ClassName. Cannot access instance (non-static) variables directly.</div>
+<div class="codeblock"><span class="kw">class</span> <span class="cls">MathUtils</span> {
+    <span class="kw">static int</span> add(<span class="kw">int</span> a, <span class="kw">int</span> b) { <span class="kw">return</span> a + b; }
+}
+<span class="cls">MathUtils</span>.add(<span class="num">3</span>, <span class="num">4</span>); <span class="cm">// no object needed</span></div>
+
+<h3>Static vs Instance</h3>
+<div class="table-wrap"><table>
+  <tr><th>Feature</th><th>Static</th><th>Instance</th></tr>
+  <tr><td>Access via</td><td>ClassName.method()</td><td>object.method()</td></tr>
+  <tr><td>Can access static vars</td><td>✔</td><td>✔</td></tr>
+  <tr><td>Can access instance vars</td><td>✗ (no 'this')</td><td>✔</td></tr>
+  <tr><td>Memory</td><td>Class-level (one copy)</td><td>Object-level (per instance)</td></tr>
+</table></div>
+
+<h3>Varargs (Variable Arguments)</h3>
+<div class="codeblock"><span class="kw">void</span> printAll(<span class="cls">String</span>... items) { <span class="cm">// 0 to N strings</span>
+    <span class="kw">for</span> (<span class="cls">String</span> s : items) <span class="cls">System</span>.out.println(s);
+}
+printAll(<span class="str">"a"</span>, <span class="str">"b"</span>, <span class="str">"c"</span>); <span class="cm">// works!</span></div>
+<div class="warn">Varargs must be last parameter. Only one varargs per method.</div>`
+  },
+  {
+    id: 'constructor', cat: 'Methods & Constructors', title: 'Java Constructors',
+    tags: ['blue:Constructor'],
+    content: `
+<div class="insight"><strong>Constructor:</strong> Creates + initializes an instance. Name = class name. No return type. Cannot be static, final, or abstract.</div>
+
+<h3>new keyword vs Constructor</h3>
+<div class="highlight"><strong>new</strong> tells JVM at runtime: "call the constructor, not a regular method." It allocates memory in heap, then constructor runs to initialize.</div>
+
+<h3>Types of Constructors</h3>
+<div class="grid3">
+  <div class="card"><div class="card-title">Default</div><p>Auto-generated by compiler if no constructor defined. No params. Sets defaults.</p></div>
+  <div class="card"><div class="card-title">No-arg</div><p>Explicitly written with no params. If you write ANY constructor, compiler no longer adds default.</p></div>
+  <div class="card"><div class="card-title">Parameterized</div><p>Takes params. Initializes fields with provided values.</p></div>
+</div>
+
+<h3>Constructor Chaining</h3>
+<div class="codeblock"><span class="kw">class</span> <span class="cls">Employee</span> {
+    <span class="cls">Employee</span>() { <span class="kw">this</span>(<span class="num">0</span>, <span class="str">"Unknown"</span>); } <span class="cm">// calls parameterized</span>
+    <span class="cls">Employee</span>(<span class="kw">int</span> id, <span class="cls">String</span> name) { <span class="kw">this</span>.id = id; ... }
+}
+<span class="cm">// super() for parent constructor chain</span></div>
+
+<div class="table-wrap"><table>
+  <tr><th>Question</th><th>Answer</th></tr>
+  <tr><td>Can constructor return a value?</td><td>No — no return type, not even void</td></tr>
+  <tr><td>Can constructor be overloaded?</td><td>Yes — different parameter lists</td></tr>
+  <tr><td>Can constructor be inherited?</td><td>No — but super() calls parent's</td></tr>
+  <tr><td>What if no constructor written?</td><td>Compiler adds default no-arg</td></tr>
+</table></div>`
+  },
+  {
+    id: 'memory', cat: 'Memory & GC', title: 'Java Memory Management & Garbage Collection',
+    tags: ['amber:Memory', 'green:GC'],
+    content: `
+<div class="insight"><strong>JVM divides RAM into Stack and Heap.</strong> JVM manages both automatically.</div>
+
+<h3>Stack vs Heap</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">Stack</div><ul><li>Temporary variables (local vars)</li><li>One frame per method call</li><li>LIFO — frame removed when method returns</li><li>Stores: primitives + references</li><li>Fast access</li><li>Multiple stacks (one per thread)</li></ul></div>
+  <div class="card"><div class="card-title">Heap</div><ul><li>Objects and their instance vars</li><li>One shared heap per JVM</li><li>Objects live until GC collects</li><li>String pool lives here</li><li>Slower than stack</li><li>Managed by Garbage Collector</li></ul></div>
+</div>
+
+<h3>Memory Flow Example</h3>
+<div class="codeblock"><span class="kw">void</span> calculate() {
+    <span class="kw">int</span> x = <span class="num">10</span>;           <span class="cm">// Stack: x=10</span>
+    <span class="cls">Employee</span> e = <span class="kw">new</span> <span class="cls">Employee</span>(); <span class="cm">// Stack: ref e → Heap: Employee obj</span>
+}
+<span class="cm">// After return: frame popped from Stack</span>
+<span class="cm">// Employee object now unreachable → eligible for GC</span></div>
+
+<h3>Garbage Collection</h3>
+<div class="highlight"><strong>GC automatically</strong> reclaims heap memory of unreachable objects. You don't call it directly. <code>System.gc()</code> is a suggestion, not a command.</div>
+
+<div class="table-wrap"><table>
+  <tr><th>GC Algorithm</th><th>Description</th></tr>
+  <tr><td>Mark and Sweep</td><td>Mark reachable objects, sweep unreachable</td></tr>
+  <tr><td>Generational GC</td><td>Young Gen (Eden, S0, S1) → Old Gen → Metaspace</td></tr>
+  <tr><td>G1 GC</td><td>Default in Java 9+. Low pause times.</td></tr>
+  <tr><td>ZGC / Shenandoah</td><td>Ultra-low pause, for large heaps</td></tr>
+</table></div>
+
+<h3>String Pool</h3>
+<div class="codeblock"><span class="cls">String</span> a = <span class="str">"hello"</span>;        <span class="cm">// String pool in Heap</span>
+<span class="cls">String</span> b = <span class="str">"hello"</span>;        <span class="cm">// same object from pool</span>
+<span class="cls">String</span> c = <span class="kw">new</span> <span class="cls">String</span>(<span class="str">"hello"</span>); <span class="cm">// new heap object</span>
+a == b    <span class="cm">// true (same pool ref)</span>
+a == c    <span class="cm">// false (different object)</span>
+a.equals(c) <span class="cm">// true (same content)</span></div>`
+  },
+  {
+    id: 'classes1', cat: 'Classes', title: 'Java Classes Part 1 — Nested, Abstract, Object',
+    tags: ['blue:Classes', 'purple:Abstract'],
+    content: `
+<h3>Types of Classes</h3>
+<div class="table-wrap"><table>
+  <tr><th>Class Type</th><th>Description</th></tr>
+  <tr><td>Concrete</td><td>Normal class. All methods implemented. Can instantiate with new.</td></tr>
+  <tr><td>Abstract</td><td>Has abstract methods (no body). Cannot instantiate. Child must implement.</td></tr>
+  <tr><td>Final</td><td>Cannot be extended (subclassed). String is final.</td></tr>
+  <tr><td>Nested (Inner)</td><td>Defined inside another class. 4 types: static nested, inner, local, anonymous.</td></tr>
+  <tr><td>Super / Sub</td><td>Parent and child in inheritance hierarchy.</td></tr>
+</table></div>
+
+<h3>Abstract Class</h3>
+<div class="codeblock"><span class="kw">abstract class</span> <span class="cls">Shape</span> {
+    <span class="kw">abstract double</span> area(); <span class="cm">// must implement in child</span>
+    <span class="kw">void</span> describe() {       <span class="cm">// can have concrete methods too</span>
+        <span class="cls">System</span>.out.println(<span class="str">"I am a shape"</span>);
+    }
+}
+<span class="kw">class</span> <span class="cls">Circle</span> <span class="kw">extends</span> <span class="cls">Shape</span> {
+    <span class="kw">double</span> radius;
+    <span class="kw">double</span> area() { <span class="kw">return</span> Math.PI * radius * radius; }
+}</div>
+
+<h3>Nested Classes</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">Static Nested</div><p>Belongs to outer class. Can be created without outer instance. Like a helper class.</p></div>
+  <div class="card"><div class="card-title">Inner Class</div><p>Belongs to object of outer class. Needs outer instance. Has access to all outer members.</p></div>
+  <div class="card"><div class="card-title">Local Class</div><p>Defined inside a method. Scope limited to that method.</p></div>
+  <div class="card"><div class="card-title">Anonymous Class</div><p>Inline class with no name. Used for one-time interface implementation.</p></div>
+</div>
+
+<h3>Object Class</h3>
+<div class="highlight"><strong>Every class in Java extends Object implicitly.</strong> Key methods: <code>equals()</code>, <code>hashCode()</code>, <code>toString()</code>, <code>clone()</code>, <code>getClass()</code>, <code>wait()</code>, <code>notify()</code>.</div>`
+  },
+  {
+    id: 'classes2', cat: 'Classes', title: 'Generic Classes',
+    tags: ['blue:Generics'],
+    content: `
+<div class="insight"><strong>Generics:</strong> Write code that works with any type, while maintaining type safety at compile time.</div>
+
+<h3>Why Generics?</h3>
+<div class="grid2">
+  <div class="card bad"><div class="card-title">Without Generics</div>
+  <div class="codeblock" style="margin:6px 0;font-size:11px"><span class="cls">List</span> list = <span class="kw">new</span> <span class="cls">ArrayList</span>();
+list.add(<span class="str">"hello"</span>);
+<span class="cls">String</span> s = (<span class="cls">String</span>) list.get(<span class="num">0</span>); <span class="cm">// cast needed!</span>
+<span class="cm">// ClassCastException at runtime if wrong type</span></div></div>
+  <div class="card good"><div class="card-title">With Generics</div>
+  <div class="codeblock" style="margin:6px 0;font-size:11px"><span class="cls">List</span>&lt;<span class="cls">String</span>&gt; list = <span class="kw">new</span> <span class="cls">ArrayList</span>&lt;&gt;();
+list.add(<span class="str">"hello"</span>);
+<span class="cls">String</span> s = list.get(<span class="num">0</span>); <span class="cm">// no cast, type-safe!</span>
+<span class="cm">// Compile error if you add wrong type</span></div></div>
+</div>
+
+<h3>Generic Class</h3>
+<div class="codeblock"><span class="kw">class</span> <span class="cls">Box</span>&lt;T&gt; {
+    <span class="kw">private</span> T value;
+    <span class="cls">Box</span>(T value) { <span class="kw">this</span>.value = value; }
+    T getValue() { <span class="kw">return</span> value; }
+}
+<span class="cls">Box</span>&lt;<span class="cls">String</span>&gt; strBox = <span class="kw">new</span> <span class="cls">Box</span>&lt;&gt;(<span class="str">"hello"</span>);
+<span class="cls">Box</span>&lt;<span class="cls">Integer</span>&gt; intBox = <span class="kw">new</span> <span class="cls">Box</span>&lt;&gt;(<span class="num">42</span>);</div>
+
+<h3>Bounded Type Parameters</h3>
+<div class="codeblock"><span class="cm">// Upper bound — T must be Number or subclass</span>
+<span class="kw">class</span> <span class="cls">NumericBox</span>&lt;T <span class="kw">extends</span> <span class="cls">Number</span>&gt; { ... }
+
+<span class="cm">// Wildcard — unknown type</span>
+<span class="kw">void</span> print(<span class="cls">List</span>&lt;?&gt; list) { ... }           <span class="cm">// any</span>
+<span class="kw">void</span> sum(<span class="cls">List</span>&lt;? <span class="kw">extends</span> <span class="cls">Number</span>&gt; list) { ... } <span class="cm">// upper</span>
+<span class="kw">void</span> add(<span class="cls">List</span>&lt;? <span class="kw">super</span> <span class="cls">Integer</span>&gt; list) { ... } <span class="cm">// lower</span></div>
+
+<div class="warn"><strong>Type Erasure:</strong> Generics are compile-time only. At runtime, type info is erased. <code>List&lt;String&gt;</code> becomes <code>List</code> at runtime. Cannot do <code>new T()</code> or <code>instanceof List&lt;String&gt;</code>.</div>`
+  },
+  {
+    id: 'classes3', cat: 'Classes', title: 'Enum, POJO & Final Classes',
+    tags: ['green:Enum', 'blue:POJO'],
+    content: `
+<h3>Enum</h3>
+<div class="highlight"><strong>Enum:</strong> Fixed set of named constants. Type-safe. Can have fields, methods, constructors.</div>
+<div class="codeblock"><span class="kw">enum</span> <span class="cls">Day</span> { MON, TUE, WED, THU, FRI, SAT, SUN }
+
+<span class="kw">enum</span> <span class="cls">Status</span> {
+    ACTIVE(<span class="num">1</span>), INACTIVE(<span class="num">0</span>);
+    <span class="kw">int</span> code;
+    <span class="cls">Status</span>(<span class="kw">int</span> code) { <span class="kw">this</span>.code = code; }
+    <span class="kw">int</span> getCode() { <span class="kw">return</span> code; }
+}</div>
+
+<h3>POJO (Plain Old Java Object)</h3>
+<div class="highlight"><strong>POJO:</strong> Simple class with private fields, public getters/setters, no-arg constructor. No framework dependencies. Used as data holders.</div>
+<div class="codeblock"><span class="kw">class</span> <span class="cls">Person</span> {       <span class="cm">// POJO</span>
+    <span class="kw">private</span> <span class="cls">String</span> name;
+    <span class="kw">private int</span> age;
+    <span class="cm">// getters, setters, no-arg constructor</span>
+}</div>
+
+<h3>Final Class</h3>
+<div class="highlight"><strong>Final class</strong> cannot be extended. Used for security and immutability. Examples: String, Integer, all wrapper classes.</div>
+
+<h3>JavaBean vs POJO</h3>
+<div class="table-wrap"><table>
+  <tr><th>Feature</th><th>POJO</th><th>JavaBean</th></tr>
+  <tr><td>No-arg constructor</td><td>Optional</td><td>Mandatory</td></tr>
+  <tr><td>Serializable</td><td>Optional</td><td>Should implement</td></tr>
+  <tr><td>Getter/Setter</td><td>Optional</td><td>Mandatory</td></tr>
+</table></div>`
+  },
+  {
+    id: 'classes4', cat: 'Classes', title: 'Singleton & Immutable Classes',
+    tags: ['amber:Singleton', 'blue:Immutable'],
+    content: `
+<h3>Singleton Class</h3>
+<div class="highlight"><strong>Singleton:</strong> Exactly ONE instance globally. Private constructor. Static getInstance() method.</div>
+<div class="codeblock"><span class="kw">class</span> <span class="cls">Singleton</span> {
+    <span class="kw">private static</span> <span class="cls">Singleton</span> instance;
+    <span class="kw">private</span> <span class="cls">Singleton</span>() {}  <span class="cm">// private!</span>
+
+    <span class="kw">public static synchronized</span> <span class="cls">Singleton</span> getInstance() {
+        <span class="kw">if</span> (instance == <span class="kw">null</span>) instance = <span class="kw">new</span> <span class="cls">Singleton</span>();
+        <span class="kw">return</span> instance;
+    }
+}</div>
+
+<h3>Double-Checked Locking (Thread-Safe)</h3>
+<div class="codeblock"><span class="kw">private static volatile</span> <span class="cls">Singleton</span> instance;
+
+<span class="kw">public static</span> <span class="cls">Singleton</span> getInstance() {
+    <span class="kw">if</span> (instance == <span class="kw">null</span>) {
+        <span class="kw">synchronized</span>(<span class="cls">Singleton</span>.<span class="kw">class</span>) {
+            <span class="kw">if</span> (instance == <span class="kw">null</span>) instance = <span class="kw">new</span> <span class="cls">Singleton</span>();
+        }
+    }
+    <span class="kw">return</span> instance;
+}</div>
+
+<h3>Immutable Class</h3>
+<div class="highlight"><strong>Immutable:</strong> State cannot change after creation. Thread-safe by nature. All fields final. No setters. Return new object on any change.</div>
+<div class="codeblock"><span class="kw">final class</span> <span class="cls">ImmutablePoint</span> {
+    <span class="kw">private final int</span> x, y;
+    <span class="cls">ImmutablePoint</span>(<span class="kw">int</span> x, <span class="kw">int</span> y) { <span class="kw">this</span>.x = x; <span class="kw">this</span>.y = y; }
+    <span class="kw">int</span> getX() { <span class="kw">return</span> x; }
+    <span class="cm">// no setX() — immutable!</span>
+}</div>
+
+<div class="table-wrap"><table>
+  <tr><th>Rules for Immutable</th></tr>
+  <tr><td>Class must be final</td></tr>
+  <tr><td>All fields must be final and private</td></tr>
+  <tr><td>No setter methods</td></tr>
+  <tr><td>Deep copy for mutable fields in constructor</td></tr>
+  <tr><td>Return deep copy from getters for mutable fields</td></tr>
+</table></div>`
+  },
+  {
+    id: 'interface1', cat: 'Interfaces', title: 'Java Interface Part 1',
+    tags: ['purple:Interface'],
+    content: `
+<div class="insight"><strong>Interface:</strong> Contract. Pure abstraction. All methods abstract (by default). Cannot instantiate. A class can implement multiple interfaces.</div>
+
+<h3>Interface vs Abstract Class</h3>
+<div class="table-wrap"><table>
+  <tr><th>Feature</th><th>Interface</th><th>Abstract Class</th></tr>
+  <tr><td>Multiple inheritance</td><td>✔ (implement many)</td><td>✗ (extend one)</td></tr>
+  <tr><td>Constructor</td><td>✗</td><td>✔</td></tr>
+  <tr><td>Instance vars</td><td>Only public static final</td><td>Any type</td></tr>
+  <tr><td>Methods</td><td>abstract (+ default/static from Java 8)</td><td>Both abstract and concrete</td></tr>
+  <tr><td>Use when</td><td>Define contract/capability</td><td>Partial implementation + hierarchy</td></tr>
+</table></div>
+
+<div class="codeblock"><span class="kw">interface</span> <span class="cls">Flyable</span> {
+    <span class="kw">void</span> fly();                         <span class="cm">// abstract by default</span>
+    <span class="kw">int</span> MAX_HEIGHT = <span class="num">10000</span>;             <span class="cm">// public static final</span>
+}
+<span class="kw">interface</span> <span class="cls">Swimmable</span> {
+    <span class="kw">void</span> swim();
+}
+<span class="kw">class</span> <span class="cls">Duck</span> <span class="kw">implements</span> <span class="cls">Flyable</span>, <span class="cls">Swimmable</span> {
+    <span class="kw">public void</span> fly()  { ... }
+    <span class="kw">public void</span> swim() { ... }
+}</div>
+
+<h3>Marker Interface</h3>
+<div class="highlight"><strong>Marker interface:</strong> Empty interface — no methods. Just marks a class. Examples: Serializable, Cloneable, RandomAccess. JVM/frameworks use <code>instanceof</code> check.</div>`
+  },
+  {
+    id: 'interface2', cat: 'Interfaces', title: 'Interface Part 2 — Default, Static & Private Methods',
+    tags: ['purple:Interface', 'blue:Java8+'],
+    content: `
+<h3>Java 8+ Interface Methods</h3>
+<div class="table-wrap"><table>
+  <tr><th>Type</th><th>Access</th><th>Purpose</th><th>Override?</th></tr>
+  <tr><td>Abstract</td><td>public</td><td>Contract — must implement</td><td>Must</td></tr>
+  <tr><td>Default</td><td>public</td><td>Backward compatibility — has body</td><td>Optional</td></tr>
+  <tr><td>Static</td><td>public</td><td>Utility methods in interface</td><td>No</td></tr>
+  <tr><td>Private (Java 9)</td><td>private</td><td>Helper for default/static methods</td><td>No</td></tr>
+</table></div>
+
+<div class="codeblock"><span class="kw">interface</span> <span class="cls">Vehicle</span> {
+    <span class="kw">void</span> start();                             <span class="cm">// abstract</span>
+
+    <span class="kw">default void</span> honk() {                     <span class="cm">// default</span>
+        <span class="cls">System</span>.out.println(<span class="str">"Beep!"</span>);
+    }
+
+    <span class="kw">static</span> <span class="cls">Vehicle</span> create() { <span class="kw">return</span> <span class="kw">new</span> <span class="cls">Car</span>(); } <span class="cm">// static</span>
+
+    <span class="kw">private void</span> log(<span class="cls">String</span> msg) { ... }      <span class="cm">// private (Java 9)</span>
+}</div>
+
+<div class="warn"><strong>Diamond problem with default methods:</strong> If two interfaces have same default method and a class implements both → compile error. Class must override to resolve.</div>`
+  },
+  {
+    id: 'interface3', cat: 'Interfaces', title: 'Functional Interface & Lambda Expressions',
+    tags: ['purple:Functional', 'blue:Java8', 'green:Lambda'],
+    content: `
+<div class="insight"><strong>Functional Interface:</strong> Exactly 1 abstract method. Can have default/static methods. Annotate with @FunctionalInterface.</div>
+
+<h3>Built-in Functional Interfaces</h3>
+<div class="table-wrap"><table>
+  <tr><th>Interface</th><th>Method</th><th>Use</th></tr>
+  <tr><td>Runnable</td><td>void run()</td><td>No input, no output</td></tr>
+  <tr><td>Supplier&lt;T&gt;</td><td>T get()</td><td>No input, returns T</td></tr>
+  <tr><td>Consumer&lt;T&gt;</td><td>void accept(T)</td><td>Takes T, no return</td></tr>
+  <tr><td>Function&lt;T,R&gt;</td><td>R apply(T)</td><td>Takes T, returns R</td></tr>
+  <tr><td>Predicate&lt;T&gt;</td><td>boolean test(T)</td><td>Takes T, returns boolean</td></tr>
+  <tr><td>BiFunction&lt;T,U,R&gt;</td><td>R apply(T,U)</td><td>Takes T,U returns R</td></tr>
+</table></div>
+
+<h3>Lambda Syntax</h3>
+<div class="codeblock"><span class="cm">// Old (Anonymous class)</span>
+<span class="cls">Runnable</span> r = <span class="kw">new</span> <span class="cls">Runnable</span>() {
+    <span class="kw">public void</span> run() { <span class="cls">System</span>.out.println(<span class="str">"Hello"</span>); }
+};
+
+<span class="cm">// Lambda (same thing, shorter)</span>
+<span class="cls">Runnable</span> r = () -> <span class="cls">System</span>.out.println(<span class="str">"Hello"</span>);
+
+<span class="cm">// Function&lt;T,R&gt;</span>
+<span class="cls">Function</span>&lt;<span class="cls">Integer</span>, <span class="cls">Integer</span>&gt; square = x -> x * x;
+<span class="cls">Function</span>&lt;<span class="cls">Integer</span>, <span class="cls">Integer</span>&gt; cube = x -> x * x * x;
+
+<span class="cm">// Method reference</span>
+<span class="cls">Function</span>&lt;<span class="cls">String</span>, <span class="cls">Integer</span>&gt; len = <span class="cls">String</span>::length;</div>`
+  },
+  {
+    id: 'reflection', cat: 'Advanced Java', title: 'Java Reflection',
+    tags: ['amber:Reflection'],
+    content: `
+<div class="insight"><strong>Reflection:</strong> Inspect and manipulate classes, methods, fields at RUNTIME, even private ones. Foundation of Spring, Hibernate, JUnit.</div>
+
+<h3>What Reflection Can Do</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">Inspect</div><ul><li>Get class name, superclass, interfaces</li><li>List all methods, fields, constructors</li><li>Check modifiers (public/private/static)</li><li>Read annotations</li></ul></div>
+  <div class="card"><div class="card-title">Manipulate</div><ul><li>Invoke methods by name</li><li>Access/set private fields</li><li>Create objects without new keyword</li><li>Instantiate at runtime</li></ul></div>
+</div>
+
+<div class="codeblock"><span class="cls">Class</span>&lt;?&gt; clazz = <span class="cls">Employee</span>.<span class="kw">class</span>;
+<span class="cls">Method</span>[] methods = clazz.getDeclaredMethods();
+<span class="cls">Field</span> field = clazz.getDeclaredField(<span class="str">"name"</span>);
+field.setAccessible(<span class="kw">true</span>);          <span class="cm">// bypass private</span>
+field.set(empObj, <span class="str">"PK"</span>);            <span class="cm">// set private field!</span></div>
+
+<div class="warn"><strong>Performance cost:</strong> Reflection is slower than direct calls. <strong>Security risk:</strong> Can bypass access control. Use sparingly — for frameworks, not application logic.</div>
+
+<h3>Real-World Uses</h3>
+<div class="grid3">
+  <div class="card"><div class="card-title">Spring</div><p>@Autowired — reflection finds fields and injects dependencies</p></div>
+  <div class="card"><div class="card-title">JUnit</div><p>Finds @Test methods and runs them via reflection</p></div>
+  <div class="card"><div class="card-title">Jackson/Gson</div><p>JSON mapping uses reflection to read/write object fields</p></div>
+</div>`
+  },
+  {
+    id: 'annotations1', cat: 'Advanced Java', title: 'Java Annotations Part 1',
+    tags: ['amber:Annotations'],
+    content: `
+<div class="insight"><strong>Annotation:</strong> Metadata added to Java code. Does nothing by itself. Used at compile time, class loading, or runtime via reflection.</div>
+
+<h3>Built-in Annotations</h3>
+<div class="table-wrap"><table>
+  <tr><th>Annotation</th><th>Purpose</th><th>Used On</th></tr>
+  <tr><td>@Override</td><td>Verify method is actually overriding parent</td><td>Methods only</td></tr>
+  <tr><td>@Deprecated</td><td>Mark as outdated. Compiler warning on use.</td><td>Methods, classes, fields</td></tr>
+  <tr><td>@SuppressWarnings</td><td>Suppress specific compiler warnings</td><td>Most elements</td></tr>
+  <tr><td>@FunctionalInterface</td><td>Verify interface has exactly 1 abstract method</td><td>Interface</td></tr>
+  <tr><td>@SafeVarargs</td><td>Suppress unchecked varargs warnings</td><td>Methods, constructors</td></tr>
+</table></div>
+
+<h3>Custom Annotation</h3>
+<div class="codeblock"><span class="kw">@interface</span> <span class="cls">MyAnnotation</span> {
+    <span class="cls">String</span> author() <span class="kw">default</span> <span class="str">"PK"</span>;
+    <span class="kw">int</span> version() <span class="kw">default</span> <span class="num">1</span>;
+}
+
+<span class="cls">@MyAnnotation</span>(author = <span class="str">"PK"</span>, version = <span class="num">2</span>)
+<span class="kw">class</span> <span class="cls">MyService</span> { ... }
+
+<span class="cm">// Read via reflection:</span>
+<span class="cls">MyAnnotation</span> ann = <span class="cls">MyService</span>.<span class="kw">class</span>.getAnnotation(<span class="cls">MyAnnotation</span>.<span class="kw">class</span>);</div>`
+  },
+  {
+    id: 'annotations2', cat: 'Advanced Java', title: 'Meta-Annotations — @Target, @Retention, etc.',
+    tags: ['amber:Meta-Annotations'],
+    content: `
+<div class="insight"><strong>Meta-annotations:</strong> Annotations on annotations. They configure where and when an annotation applies.</div>
+
+<div class="table-wrap"><table>
+  <tr><th>Meta-Annotation</th><th>Purpose</th></tr>
+  <tr><td>@Target</td><td>Where can this annotation be applied (METHOD, FIELD, CLASS, etc.)</td></tr>
+  <tr><td>@Retention</td><td>How long annotation lives: SOURCE, CLASS, RUNTIME</td></tr>
+  <tr><td>@Documented</td><td>Include in Javadoc</td></tr>
+  <tr><td>@Inherited</td><td>Child classes inherit parent's annotation</td></tr>
+  <tr><td>@Repeatable</td><td>Same annotation can be applied multiple times</td></tr>
+</table></div>
+
+<h3>Retention Policies</h3>
+<div class="grid3">
+  <div class="card"><div class="card-title">SOURCE</div><p>Discarded after compile. Only for IDE/compiler hints. Example: @Override</p></div>
+  <div class="card"><div class="card-title">CLASS (default)</div><p>Kept in .class file. Not available at runtime.</p></div>
+  <div class="card"><div class="card-title">RUNTIME</div><p>Available via reflection at runtime. Spring annotations use this.</p></div>
+</div>
+
+<div class="codeblock"><span class="cls">@Target</span>(<span class="cls">ElementType</span>.METHOD)      <span class="cm">// only on methods</span>
+<span class="cls">@Retention</span>(<span class="cls">RetentionPolicy</span>.RUNTIME)  <span class="cm">// accessible via reflection</span>
+<span class="cls">@Documented</span>
+<span class="kw">@interface</span> <span class="cls">Log</span> {
+    <span class="cls">String</span> level() <span class="kw">default</span> <span class="str">"INFO"</span>;
+}</div>`
+  },
+  {
+    id: 'exceptions', cat: 'Exception Handling', title: 'Exception Handling in Java',
+    tags: ['red:Exceptions'],
+    content: `
+<div class="insight"><strong>Exception:</strong> Event during execution that disrupts normal program flow. JVM creates an exception object with type, message, and stack trace.</div>
+
+<h3>Exception Hierarchy</h3>
+<div class="codeblock">Throwable
+├── Error           (JVM errors — don't catch: OutOfMemoryError, StackOverflowError)
+└── Exception
+    ├── RuntimeException  (Unchecked — don't need try-catch)
+    │   ├── NullPointerException
+    │   ├── ArrayIndexOutOfBoundsException
+    │   ├── ClassCastException
+    │   └── ArithmeticException
+    └── Checked (must handle: IOException, SQLException, ...)</div>
+
+<h3>Checked vs Unchecked</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">Checked</div><ul><li>Must handle with try-catch or declare with throws</li><li>Compile error if not handled</li><li>Examples: IOException, SQLException, ClassNotFoundException</li></ul></div>
+  <div class="card"><div class="card-title">Unchecked (RuntimeException)</div><ul><li>Optional to handle</li><li>Programming errors</li><li>Examples: NPE, ArrayIOOBE, ClassCastException</li></ul></div>
+</div>
+
+<h3>try-catch-finally</h3>
+<div class="codeblock"><span class="kw">try</span> {
+    <span class="cm">// risky code</span>
+} <span class="kw">catch</span> (<span class="cls">IOException</span> e) {
+    <span class="cm">// handle IOException</span>
+} <span class="kw">catch</span> (<span class="cls">SQLException</span> | <span class="cls">ParseException</span> e) {
+    <span class="cm">// multi-catch (Java 7+)</span>
+} <span class="kw">finally</span> {
+    <span class="cm">// ALWAYS runs — cleanup (close resources)</span>
+}
+
+<span class="cm">// Try-with-resources (Java 7+) — auto-close</span>
+<span class="kw">try</span> (<span class="cls">Connection</span> c = <span class="cls">DriverManager</span>.getConnection(url)) {
+    <span class="cm">// c auto-closed even if exception</span>
+}</div>
+
+<h3>Custom Exception</h3>
+<div class="codeblock"><span class="kw">class</span> <span class="cls">InsufficientFundsException</span> <span class="kw">extends</span> <span class="cls">RuntimeException</span> {
+    <span class="cls">InsufficientFundsException</span>(<span class="cls">String</span> msg) { <span class="kw">super</span>(msg); }
+}
+<span class="kw">throw new</span> <span class="cls">InsufficientFundsException</span>(<span class="str">"Balance too low"</span>);</div>
+
+<div class="table-wrap"><table>
+  <tr><th>Keyword</th><th>Purpose</th></tr>
+  <tr><td>try</td><td>Block of risky code</td></tr>
+  <tr><td>catch</td><td>Handle specific exception types</td></tr>
+  <tr><td>finally</td><td>Always executes — cleanup</td></tr>
+  <tr><td>throw</td><td>Manually throw an exception</td></tr>
+  <tr><td>throws</td><td>Declare checked exceptions a method might throw</td></tr>
+</table></div>`
+  },
+  {
+    id: 'operators1', cat: 'Operators', title: 'Operators Part 1 — Arithmetic, Relational, Logical',
+    tags: ['blue:Operators'],
+    content: `
+<h3>Operator Types Overview</h3>
+<div class="table-wrap"><table>
+  <tr><th>Type</th><th>Operators</th><th>Example</th></tr>
+  <tr><td>Arithmetic</td><td>+ - * / % ++ --</td><td>a + b, a++</td></tr>
+  <tr><td>Relational</td><td>== != > < >= <=</td><td>a > b (returns boolean)</td></tr>
+  <tr><td>Logical</td><td>&amp;&amp; || !</td><td>a > 0 &amp;&amp; b > 0</td></tr>
+  <tr><td>Assignment</td><td>= += -= *= /= %=</td><td>a += 5 (a = a + 5)</td></tr>
+  <tr><td>Unary</td><td>+ - ++ -- ~</td><td>++a (pre), a++ (post)</td></tr>
+</table></div>
+
+<h3>Pre vs Post Increment</h3>
+<div class="codeblock"><span class="kw">int</span> a = <span class="num">5</span>;
+<span class="kw">int</span> b = ++a; <span class="cm">// pre: a becomes 6 first, then b = 6</span>
+<span class="kw">int</span> c = a++; <span class="cm">// post: c = 6 first, then a becomes 7</span></div>
+
+<h3>Short-Circuit Evaluation</h3>
+<div class="highlight"><strong>&amp;&amp; (AND):</strong> If left is false, right is NOT evaluated. <strong>|| (OR):</strong> If left is true, right is NOT evaluated. This prevents NullPointerException: <code>obj != null &amp;&amp; obj.method()</code></div>
+
+<h3>instanceof Operator</h3>
+<div class="codeblock"><span class="cls">Object</span> o = <span class="str">"hello"</span>;
+<span class="kw">if</span> (o <span class="kw">instanceof</span> <span class="cls">String</span> s) {  <span class="cm">// Pattern matching (Java 16+)</span>
+    <span class="cls">System</span>.out.println(s.length()); <span class="cm">// s is String, no cast needed</span>
+}</div>`
+  },
+  {
+    id: 'operators2', cat: 'Operators', title: 'Operators Part 2 — Bitwise & Shift Operators',
+    tags: ['blue:Bitwise'],
+    content: `
+<h3>Bitwise Operators</h3>
+<div class="table-wrap"><table>
+  <tr><th>Operator</th><th>Name</th><th>Rule</th><th>Example (a=5:0101, b=3:0011)</th></tr>
+  <tr><td>&amp;</td><td>Bitwise AND</td><td>1 only when both 1</td><td>5&3 = 0001 = 1</td></tr>
+  <tr><td>|</td><td>Bitwise OR</td><td>1 when any is 1</td><td>5|3 = 0111 = 7</td></tr>
+  <tr><td>^</td><td>XOR</td><td>1 when different</td><td>5^3 = 0110 = 6</td></tr>
+  <tr><td>~</td><td>Bitwise NOT</td><td>Flip all bits</td><td>~5 = -(5+1) = -6</td></tr>
+</table></div>
+
+<h3>Bit Shift Operators</h3>
+<div class="table-wrap"><table>
+  <tr><th>Operator</th><th>Name</th><th>Effect</th><th>Example</th></tr>
+  <tr><td>&lt;&lt;</td><td>Left shift</td><td>Multiply by 2^n</td><td>5&lt;&lt;1 = 10</td></tr>
+  <tr><td>&gt;&gt;</td><td>Signed right shift</td><td>Divide by 2^n, preserve sign</td><td>-8&gt;&gt;1 = -4</td></tr>
+  <tr><td>&gt;&gt;&gt;</td><td>Unsigned right shift</td><td>Divide by 2^n, fill 0</td><td>-8&gt;&gt;&gt;1 = large positive</td></tr>
+</table></div>
+
+<div class="highlight"><strong>DSA trick:</strong> <code>n &amp; 1</code> checks if odd. <code>n &lt;&lt; 1</code> doubles. <code>n &gt;&gt; 1</code> halves. Bit manipulation is faster than arithmetic.</div>
+
+<h3>Ternary Operator</h3>
+<div class="codeblock"><span class="kw">int</span> max = (a > b) ? a : b;  <span class="cm">// condition ? if_true : if_false</span></div>`
+  },
+  {
+    id: 'control', cat: 'Control Flow', title: 'Control Flow — if, loops, switch, break, continue',
+    tags: ['green:Control Flow'],
+    content: `
+<h3>Decision Making</h3>
+<div class="codeblock"><span class="cm">// if-else</span>
+<span class="kw">if</span> (x > 0) { ... } <span class="kw">else if</span> (x < 0) { ... } <span class="kw">else</span> { ... }
+
+<span class="cm">// Switch statement (classic)</span>
+<span class="kw">switch</span> (day) {
+    <span class="kw">case</span> <span class="str">"MON"</span>: ...; <span class="kw">break</span>;
+    <span class="kw">default</span>: ...;
+}
+
+<span class="cm">// Switch expression (Java 14+)</span>
+<span class="kw">int</span> numLetters = <span class="kw">switch</span> (day) {
+    <span class="kw">case</span> <span class="str">"MON"</span>, <span class="str">"FRI"</span> -> <span class="num">6</span>;
+    <span class="kw">case</span> <span class="str">"SAT"</span>, <span class="str">"SUN"</span> -> <span class="num">8</span>;
+    <span class="kw">default</span> -> <span class="kw">throw new</span> <span class="cls">IllegalArgumentException</span>();
+};</div>
+
+<h3>Loops</h3>
+<div class="table-wrap"><table>
+  <tr><th>Loop</th><th>When to use</th><th>Syntax</th></tr>
+  <tr><td>for</td><td>Known iterations</td><td>for(init; cond; update)</td></tr>
+  <tr><td>while</td><td>Unknown iterations, check first</td><td>while(cond)</td></tr>
+  <tr><td>do-while</td><td>Run at least once</td><td>do{...}while(cond)</td></tr>
+  <tr><td>for-each</td><td>Iterate collection/array</td><td>for(T x : items)</td></tr>
+</table></div>
+
+<h3>Branching</h3>
+<div class="codeblock"><span class="cm">// break — exit loop</span>
+<span class="kw">for</span>(<span class="kw">int</span> i=0; i<10; i++) { <span class="kw">if</span>(i==5) <span class="kw">break</span>; }
+
+<span class="cm">// continue — skip iteration</span>
+<span class="kw">for</span>(<span class="kw">int</span> i=0; i<10; i++) { <span class="kw">if</span>(i%2==0) <span class="kw">continue</span>; ... }
+
+<span class="cm">// labeled break — exit outer loop</span>
+outer: <span class="kw">for</span>(...) { <span class="kw">for</span>(...) { <span class="kw">if</span>(...) <span class="kw">break</span> outer; } }</div>`
+  },
+  {
+    id: 'collections1', cat: 'Collections', title: 'Collections Hierarchy & Iterable',
+    tags: ['green:Collections'],
+    content: `
+<div class="insight"><strong>Java Collection Framework (JCF):</strong> Architecture + classes + interfaces to manage groups of objects. Added in Java 1.2. In java.util package.</div>
+
+<h3>Collection Hierarchy</h3>
+<div class="codeblock">Iterable&lt;T&gt;
+└── Collection&lt;T&gt;
+    ├── List&lt;T&gt;              (ordered, duplicates ok)
+    │   ├── ArrayList
+    │   ├── LinkedList
+    │   ├── Vector
+    │   └── Stack
+    ├── Queue&lt;T&gt;             (FIFO generally)
+    │   ├── PriorityQueue
+    │   └── Deque → ArrayDeque, LinkedList
+    └── Set&lt;T&gt;              (no duplicates)
+        ├── HashSet
+        ├── LinkedHashSet
+        └── TreeSet
+
+Map&lt;K,V&gt;                   (NOT under Collection!)
+├── HashMap
+├── LinkedHashMap
+├── TreeMap
+└── Hashtable</div>
+
+<h3>Collection vs Collections</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">Collection (interface)</div><p>Root of the hierarchy. Parent interface for List, Set, Queue. Has add(), remove(), contains(), size(), iterator().</p></div>
+  <div class="card"><div class="card-title">Collections (utility class)</div><p>Static utility methods: sort(), shuffle(), reverse(), min(), max(), synchronizedList(), unmodifiableList().</p></div>
+</div>`
+  },
+  {
+    id: 'collections2', cat: 'Collections', title: 'Queue, Comparator vs Comparable, PriorityQueue',
+    tags: ['green:Queue', 'blue:Comparator'],
+    content: `
+<h3>Queue Interface</h3>
+<div class="table-wrap"><table>
+  <tr><th>Method</th><th>Success</th><th>Failure</th></tr>
+  <tr><td>add(e)</td><td>true</td><td>throws Exception</td></tr>
+  <tr><td>offer(e)</td><td>true</td><td>false</td></tr>
+  <tr><td>remove()</td><td>head element</td><td>throws Exception</td></tr>
+  <tr><td>poll()</td><td>head element</td><td>null</td></tr>
+  <tr><td>element()</td><td>peeks head</td><td>throws Exception</td></tr>
+  <tr><td>peek()</td><td>peeks head</td><td>null</td></tr>
+</table></div>
+
+<h3>Comparable vs Comparator</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">Comparable (java.lang)</div>
+  <p>Object defines its own ordering. <code>compareTo()</code> on the class itself. Natural ordering.</p>
+  <div class="codeblock" style="font-size:11px"><span class="kw">class</span> <span class="cls">Employee</span> <span class="kw">implements</span> <span class="cls">Comparable</span>&lt;<span class="cls">Employee</span>&gt; {
+    <span class="kw">public int</span> compareTo(<span class="cls">Employee</span> e) {
+        <span class="kw">return</span> <span class="kw">this</span>.id - e.id; <span class="cm">// sort by id</span>
+    }
+}</div></div>
+  <div class="card"><div class="card-title">Comparator (java.util)</div>
+  <p>External sorting logic. <code>compare(o1, o2)</code>. Custom/multiple orderings.</p>
+  <div class="codeblock" style="font-size:11px"><span class="cls">Comparator</span>&lt;<span class="cls">Employee</span>&gt; byName =
+    (<span class="cls">Comparator</span>.comparing(<span class="cls">Employee</span>::getName));
+list.sort(byName);</div></div>
+</div>
+
+<h3>PriorityQueue</h3>
+<div class="highlight"><strong>PriorityQueue:</strong> Not FIFO. Elements ordered by priority (natural order or Comparator). peek() and poll() return smallest element.</div>
+<div class="codeblock"><span class="cls">PriorityQueue</span>&lt;<span class="cls">Integer</span>&gt; minPQ = <span class="kw">new</span> <span class="cls">PriorityQueue</span>&lt;&gt;();
+<span class="cm">// Max heap using Comparator</span>
+<span class="cls">PriorityQueue</span>&lt;<span class="cls">Integer</span>&gt; maxPQ = <span class="kw">new</span> <span class="cls">PriorityQueue</span>&lt;&gt;(<span class="cls">Collections</span>.reverseOrder());</div>`
+  },
+  {
+    id: 'collections3', cat: 'Collections', title: 'Deque & List in Depth',
+    tags: ['green:List', 'blue:Deque'],
+    content: `
+<h3>List Implementations</h3>
+<div class="table-wrap"><table>
+  <tr><th>Feature</th><th>ArrayList</th><th>LinkedList</th><th>Vector</th></tr>
+  <tr><td>Data structure</td><td>Dynamic array</td><td>Doubly linked list</td><td>Dynamic array</td></tr>
+  <tr><td>Get by index</td><td>O(1) ✔</td><td>O(n) ✗</td><td>O(1) ✔</td></tr>
+  <tr><td>Insert/delete middle</td><td>O(n) — shift</td><td>O(1) — relink</td><td>O(n)</td></tr>
+  <tr><td>Thread-safe</td><td>✗</td><td>✗</td><td>✔ (synchronized)</td></tr>
+  <tr><td>Use when</td><td>Read-heavy</td><td>Insert/delete-heavy</td><td>Legacy</td></tr>
+</table></div>
+
+<h3>Deque (Double-Ended Queue)</h3>
+<div class="highlight"><strong>Deque:</strong> Add/remove from BOTH ends. Acts as Queue (FIFO) and Stack (LIFO). ArrayDeque is the preferred implementation.</div>
+<div class="table-wrap"><table>
+  <tr><th>Operation</th><th>Front</th><th>Back</th></tr>
+  <tr><td>Add</td><td>addFirst() / offerFirst()</td><td>addLast() / offerLast()</td></tr>
+  <tr><td>Remove</td><td>removeFirst() / pollFirst()</td><td>removeLast() / pollLast()</td></tr>
+  <tr><td>Peek</td><td>peekFirst()</td><td>peekLast()</td></tr>
+</table></div>
+
+<div class="warn"><strong>ArrayDeque vs LinkedList as stack:</strong> ArrayDeque is faster (no node allocation). Prefer ArrayDeque over Stack class (legacy, synchronized).</div>`
+  },
+  {
+    id: 'collections4', cat: 'Collections', title: 'HashMap Internal Working',
+    tags: ['green:HashMap', 'amber:Internals'],
+    content: `
+<div class="insight"><strong>HashMap:</strong> Key-value pairs. Average O(1) get/put. Not thread-safe. Allows 1 null key. Why not under Collection? — Collection deals with single values; Map needs different API for key-value pairs.</div>
+
+<h3>Internal Structure</h3>
+<div class="codeblock">HashMap internals:
+Array of "buckets" (default 16)
+Each bucket = LinkedList (→ TreeNode if > 8 entries, Java 8+)
+
+Steps for put(key, value):
+1. hash(key) → hashCode → compress to array index
+2. If bucket empty → insert node
+3. If bucket has entries → compare keys with equals()
+4. If key matches → update value
+5. If no match → add to chain (linked list / tree)</div>
+
+<h3>Key Questions</h3>
+<div class="table-wrap"><table>
+  <tr><th>Question</th><th>Answer</th></tr>
+  <tr><td>Default capacity</td><td>16</td></tr>
+  <tr><td>Load factor</td><td>0.75 (resize when 75% full)</td></tr>
+  <tr><td>Resize</td><td>Double capacity, rehash all entries</td></tr>
+  <tr><td>Key requirements</td><td>Must implement equals() and hashCode() correctly</td></tr>
+  <tr><td>null key</td><td>Allowed — stored at index 0</td></tr>
+  <tr><td>LinkedList → Tree threshold</td><td>8 entries per bucket (Java 8+)</td></tr>
+</table></div>
+
+<div class="warn"><strong>hashCode contract:</strong> If a.equals(b) then a.hashCode() must equal b.hashCode(). If you override equals(), always override hashCode()!</div>
+
+<h3>LinkedHashMap vs TreeMap vs HashMap</h3>
+<div class="table-wrap"><table>
+  <tr><th>Feature</th><th>HashMap</th><th>LinkedHashMap</th><th>TreeMap</th></tr>
+  <tr><td>Order</td><td>None</td><td>Insertion/Access order</td><td>Sorted by key</td></tr>
+  <tr><td>Time complexity</td><td>O(1) avg</td><td>O(1) avg</td><td>O(log n)</td></tr>
+  <tr><td>null keys</td><td>1 allowed</td><td>1 allowed</td><td>Not allowed</td></tr>
+</table></div>`
+  },
+  {
+    id: 'collections5', cat: 'Collections', title: 'LinkedHashMap, TreeMap, SET',
+    tags: ['green:TreeMap', 'blue:Set'],
+    content: `
+<h3>LinkedHashMap</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">Insertion Order</div><p>Default. Items retrieved in same order inserted. Useful for predictable iteration.</p></div>
+  <div class="card"><div class="card-title">Access Order</div><p><code>new LinkedHashMap&lt;&gt;(16, 0.75f, true)</code>. Most recently accessed moved to end. Basis for LRU cache.</p></div>
+</div>
+
+<h3>SET Types</h3>
+<div class="table-wrap"><table>
+  <tr><th>Feature</th><th>HashSet</th><th>LinkedHashSet</th><th>TreeSet</th></tr>
+  <tr><td>Duplicates</td><td>None</td><td>None</td><td>None</td></tr>
+  <tr><td>Order</td><td>None</td><td>Insertion order</td><td>Sorted (natural/Comparator)</td></tr>
+  <tr><td>null</td><td>1 allowed</td><td>1 allowed</td><td>Not allowed</td></tr>
+  <tr><td>Backed by</td><td>HashMap</td><td>LinkedHashMap</td><td>TreeMap</td></tr>
+  <tr><td>Time O</td><td>O(1)</td><td>O(1)</td><td>O(log n)</td></tr>
+</table></div>
+
+<div class="highlight"><strong>Why no duplicates in Set?</strong> Internally backed by Map where Set elements are the Map's keys. Map keys are unique → Set elements are unique.</div>`
+  },
+  {
+    id: 'streams', cat: 'Collections', title: 'Streams in Java 8',
+    tags: ['green:Streams', 'blue:Java8', 'purple:Functional'],
+    content: `
+<div class="insight"><strong>Stream:</strong> Pipeline for data processing. Not a data structure. Creates no storage. Supports lazy evaluation and parallel processing.</div>
+
+<h3>3-Step Stream Pipeline</h3>
+<div class="codeblock"><span class="cm">// 1. Source (create stream)</span>
+list.stream()             <span class="cm">// from Collection</span>
+<span class="cls">Arrays</span>.stream(array)     <span class="cm">// from array</span>
+<span class="cls">Stream</span>.of(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>)         <span class="cm">// from values</span>
+
+<span class="cm">// 2. Intermediate operations (lazy — return Stream)</span>
+.filter(x -> x > 0)      <span class="cm">// filter elements</span>
+.map(x -> x * 2)         <span class="cm">// transform elements</span>
+.sorted()                 <span class="cm">// sort</span>
+.distinct()               <span class="cm">// remove duplicates</span>
+.limit(10)                <span class="cm">// take first N</span>
+.flatMap(...)             <span class="cm">// flatten nested streams</span>
+
+<span class="cm">// 3. Terminal operation (triggers execution)</span>
+.collect(<span class="cls">Collectors</span>.toList())
+.forEach(x -> ...)
+.count()
+.reduce(0, Integer::sum)
+.anyMatch(x -> x > 5)
+.findFirst()</div>
+
+<h3>Intermediate vs Terminal</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">Intermediate (lazy)</div><ul><li>Returns Stream — chains</li><li>NOT executed until terminal called</li><li>filter, map, sorted, limit, skip, flatMap</li></ul></div>
+  <div class="card"><div class="card-title">Terminal (eager)</div><ul><li>Triggers execution</li><li>Returns result (not Stream)</li><li>collect, forEach, count, reduce, findFirst, anyMatch</li></ul></div>
+</div>
+
+<h3>Parallel Streams</h3>
+<div class="codeblock">list.parallelStream()  <span class="cm">// uses ForkJoinPool internally</span>
+.filter(...)
+.collect(...);</div>
+<div class="warn">Parallel streams benefit bulk data (1M+ elements). For small collections, sequential is faster (overhead of splitting/merging).</div>`
+  },
+  {
+    id: 'thread1', cat: 'Multithreading', title: 'Threads vs Process — Memory Model',
+    tags: ['red:Multithreading'],
+    content: `
+<div class="insight"><strong>Process:</strong> Instance of a program being executed. Has own memory space. <strong>Thread:</strong> Lightweight unit within a process. Shares memory with other threads in same process.</div>
+
+<h3>Process vs Thread</h3>
+<div class="table-wrap"><table>
+  <tr><th>Feature</th><th>Process</th><th>Thread</th></tr>
+  <tr><td>Memory</td><td>Separate address space</td><td>Shared within process</td></tr>
+  <tr><td>Creation cost</td><td>Expensive</td><td>Lightweight</td></tr>
+  <tr><td>Communication</td><td>IPC (sockets, pipes) — complex</td><td>Shared memory — easy</td></tr>
+  <tr><td>Crash impact</td><td>Other processes unaffected</td><td>Can crash the whole process</td></tr>
+  <tr><td>Context switch</td><td>Slow</td><td>Fast</td></tr>
+</table></div>
+
+<h3>Thread Memory Model</h3>
+<div class="codeblock">Process Memory:
+├── Code (instructions) — shared by all threads
+├── Static/global vars — shared by all threads
+├── Heap (objects) — shared by all threads ← race conditions here!
+└── Stack (per thread) — each thread has its own stack frame</div>
+
+<h3>Why Multithreading?</h3>
+<div class="grid3">
+  <div class="card"><div class="card-title">Concurrency</div><p>Multiple tasks progress simultaneously (may not be literally parallel).</p></div>
+  <div class="card"><div class="card-title">Performance</div><p>CPU cores can execute threads truly in parallel on multi-core machines.</p></div>
+  <div class="card"><div class="card-title">Responsiveness</div><p>UI thread stays responsive while background thread does heavy work.</p></div>
+</div>`
+  },
+  {
+    id: 'thread2', cat: 'Multithreading', title: 'Thread Creation, Lifecycle & Inter-Thread Communication',
+    tags: ['red:Multithreading'],
+    content: `
+<h3>Creating Threads</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">1. Implement Runnable (Preferred)</div>
+  <div class="codeblock" style="font-size:11px"><span class="kw">class</span> <span class="cls">MyTask</span> <span class="kw">implements</span> <span class="cls">Runnable</span> {
+    <span class="kw">public void</span> run() { ... }
+}
+<span class="cls">Thread</span> t = <span class="kw">new</span> <span class="cls">Thread</span>(<span class="kw">new</span> <span class="cls">MyTask</span>());
+t.start();</div>
+  <p>Preferred because class can still extend another class.</p></div>
+  <div class="card"><div class="card-title">2. Extend Thread</div>
+  <div class="codeblock" style="font-size:11px"><span class="kw">class</span> <span class="cls">MyThread</span> <span class="kw">extends</span> <span class="cls">Thread</span> {
+    <span class="kw">public void</span> run() { ... }
+}
+<span class="kw">new</span> <span class="cls">MyThread</span>().start();</div>
+  <p>Cannot extend another class. Tightly couples task to thread.</p></div>
+</div>
+
+<h3>Thread Lifecycle</h3>
+<div class="codeblock">NEW → (start()) → RUNNABLE → (CPU time) → RUNNING
+RUNNING → (sleep/wait/IO) → WAITING/BLOCKED → RUNNABLE
+RUNNING → (run() completes) → TERMINATED</div>
+
+<h3>Synchronization</h3>
+<div class="codeblock"><span class="kw">synchronized void</span> increment() { count++; }  <span class="cm">// method-level lock</span>
+
+<span class="kw">synchronized</span>(<span class="kw">this</span>) { count++; }              <span class="cm">// block-level lock</span></div>
+
+<h3>Inter-Thread Communication</h3>
+<div class="highlight"><strong>wait()/notify()/notifyAll()</strong> — must be called inside synchronized block on the same object (monitor). wait() releases lock. notify() wakes one waiting thread. notifyAll() wakes all.</div>
+
+<div class="warn"><strong>Race condition:</strong> Two threads access shared data simultaneously and outcome depends on timing. Fix: synchronization.</div>`
+  },
+  {
+    id: 'thread3', cat: 'Multithreading', title: 'Thread Join, Daemon Thread, Thread Priority',
+    tags: ['red:Multithreading'],
+    content: `
+<h3>Thread Join</h3>
+<div class="codeblock"><span class="cls">Thread</span> t = <span class="kw">new</span> <span class="cls">Thread</span>(task);
+t.start();
+t.join();  <span class="cm">// main thread waits until t completes</span>
+t.join(<span class="num">5000</span>); <span class="cm">// wait max 5 seconds</span></div>
+
+<h3>Daemon vs User Thread</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">User Thread</div><p>Normal threads. JVM waits for all user threads to finish before exiting. Default type.</p></div>
+  <div class="card"><div class="card-title">Daemon Thread</div><p>Background service threads. JVM exits when only daemon threads remain. Examples: GC, JIT compiler threads.</p></div>
+</div>
+<div class="codeblock">t.setDaemon(<span class="kw">true</span>);  <span class="cm">// must call before start()</span>
+t.start();</div>
+
+<h3>Thread Priority</h3>
+<div class="codeblock">t.setPriority(Thread.MIN_PRIORITY);   <span class="cm">// 1</span>
+t.setPriority(Thread.NORM_PRIORITY);  <span class="cm">// 5 (default)</span>
+t.setPriority(Thread.MAX_PRIORITY);   <span class="cm">// 10</span></div>
+<div class="warn">Priority is a hint to the OS scheduler, not a guarantee. OS may ignore it.</div>
+
+<h3>Why stop/resume/suspend Deprecated?</h3>
+<div class="highlight">These methods can leave shared state corrupted or cause deadlocks. Use interrupt() + checking isInterrupted() flag for safe thread termination.</div>`
+  },
+  {
+    id: 'locks', cat: 'Multithreading', title: 'Lock & Condition — Reentrant, ReadWrite, Stamped',
+    tags: ['red:Locks'],
+    content: `
+<div class="insight"><strong>java.util.concurrent.locks:</strong> More flexible than synchronized. Can try lock, specify timeout, support multiple conditions.</div>
+
+<h3>ReentrantLock vs synchronized</h3>
+<div class="table-wrap"><table>
+  <tr><th>Feature</th><th>synchronized</th><th>ReentrantLock</th></tr>
+  <tr><td>Fairness</td><td>No</td><td>Optional — fair mode</td></tr>
+  <tr><td>Try lock</td><td>No</td><td>tryLock() — non-blocking attempt</td></tr>
+  <tr><td>Timeout</td><td>No</td><td>tryLock(time, unit)</td></tr>
+  <tr><td>Multiple conditions</td><td>No (one per monitor)</td><td>newCondition() — multiple</td></tr>
+  <tr><td>Interruptible</td><td>No</td><td>lockInterruptibly()</td></tr>
+  <tr><td>Must unlock</td><td>Auto</td><td>Manual — use finally!</td></tr>
+</table></div>
+
+<h3>ReentrantReadWriteLock</h3>
+<div class="highlight"><strong>ReadWriteLock:</strong> Multiple readers OR one writer at a time. Improves performance for read-heavy workloads.</div>
+<div class="codeblock"><span class="cls">ReadWriteLock</span> lock = <span class="kw">new</span> <span class="cls">ReentrantReadWriteLock</span>();
+lock.readLock().lock();    <span class="cm">// multiple readers OK</span>
+lock.readLock().unlock();
+lock.writeLock().lock();   <span class="cm">// exclusive write access</span>
+lock.writeLock().unlock();</div>
+
+<h3>StampedLock (Java 8+)</h3>
+<div class="highlight"><strong>StampedLock:</strong> Most performant for read-heavy. Supports optimistic read — no blocking, just validate stamp. If data changed during read, retry with full read lock.</div>`
+  },
+  {
+    id: 'atomic', cat: 'Multithreading', title: 'Lock-Free Concurrency — CAS, Atomic, Volatile',
+    tags: ['red:Atomic', 'amber:volatile'],
+    content: `
+<h3>volatile Keyword</h3>
+<div class="highlight"><strong>volatile:</strong> Variable always read/written from main memory (not thread cache). Ensures visibility. Does NOT ensure atomicity.</div>
+<div class="codeblock"><span class="kw">private volatile boolean</span> running = <span class="kw">true</span>;
+<span class="cm">// Thread A: running = false;</span>
+<span class="cm">// Thread B: while(running) — sees updated value</span></div>
+
+<h3>Atomic Classes</h3>
+<div class="table-wrap"><table>
+  <tr><th>Class</th><th>Use</th></tr>
+  <tr><td>AtomicInteger</td><td>Thread-safe int operations</td></tr>
+  <tr><td>AtomicLong</td><td>Thread-safe long</td></tr>
+  <tr><td>AtomicBoolean</td><td>Thread-safe boolean</td></tr>
+  <tr><td>AtomicReference&lt;T&gt;</td><td>Thread-safe object reference</td></tr>
+</table></div>
+
+<h3>Compare-and-Swap (CAS)</h3>
+<div class="highlight"><strong>CAS:</strong> Atomic hardware instruction. "Update value only if current value = expected value." No locks needed. Retry loop if CAS fails.</div>
+<div class="codeblock"><span class="cls">AtomicInteger</span> counter = <span class="kw">new</span> <span class="cls">AtomicInteger</span>(<span class="num">0</span>);
+counter.incrementAndGet();     <span class="cm">// thread-safe ++</span>
+counter.compareAndSet(<span class="num">5</span>, <span class="num">10</span>); <span class="cm">// if value==5, set to 10</span></div>
+
+<div class="warn"><strong>ABA problem:</strong> Value changes A→B→A. CAS sees A and thinks nothing changed. Fix: use AtomicStampedReference (adds version stamp).</div>`
+  },
+  {
+    id: 'threadpool', cat: 'Multithreading', title: 'Thread Pools & ThreadPoolExecutor',
+    tags: ['red:Thread Pool'],
+    content: `
+<div class="insight"><strong>Thread Pool:</strong> Pre-create N threads. Reuse them for tasks. Avoids overhead of thread creation/destruction per task.</div>
+
+<h3>ThreadPoolExecutor Parameters</h3>
+<div class="codeblock"><span class="kw">new</span> <span class="cls">ThreadPoolExecutor</span>(
+    corePoolSize,      <span class="cm">// min threads always alive</span>
+    maximumPoolSize,   <span class="cm">// max threads ever created</span>
+    keepAliveTime,     <span class="cm">// idle time before extra threads die</span>
+    timeUnit,
+    workQueue,         <span class="cm">// queue for pending tasks</span>
+    threadFactory,     <span class="cm">// how to create threads</span>
+    rejectionHandler   <span class="cm">// what to do when queue full</span>
+);</div>
+
+<h3>Task Submission Flow</h3>
+<div class="codeblock">1. Task arrives
+2. Core threads available? → use core thread
+3. Core full? → add to queue
+4. Queue full? → create non-core thread (up to max)
+5. Max threads AND queue full? → rejection policy!</div>
+
+<h3>Pre-built Thread Pools (Executors factory)</h3>
+<div class="table-wrap"><table>
+  <tr><th>Method</th><th>Description</th><th>Use when</th></tr>
+  <tr><td>newFixedThreadPool(n)</td><td>N threads, unbounded queue</td><td>Known workload</td></tr>
+  <tr><td>newCachedThreadPool()</td><td>0 to ∞ threads, 60s idle timeout</td><td>Many short-lived tasks</td></tr>
+  <tr><td>newSingleThreadExecutor()</td><td>1 thread, serial execution</td><td>Task ordering</td></tr>
+  <tr><td>newScheduledThreadPool(n)</td><td>Scheduled/periodic tasks</td><td>Cron-like tasks</td></tr>
+  <tr><td>newWorkStealingPool()</td><td>ForkJoinPool, work stealing</td><td>Parallel recursive tasks</td></tr>
+</table></div>
+
+<h3>Rejection Policies</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">AbortPolicy (default)</div><p>Throws RejectedExecutionException</p></div>
+  <div class="card"><div class="card-title">CallerRunsPolicy</div><p>Caller thread executes the task (back-pressure)</p></div>
+  <div class="card"><div class="card-title">DiscardPolicy</div><p>Silently drops task</p></div>
+  <div class="card"><div class="card-title">DiscardOldestPolicy</div><p>Drops oldest queued task, retries</p></div>
+</div>`
+  },
+  {
+    id: 'future', cat: 'Multithreading', title: 'CompletableFuture & Future/Callable',
+    tags: ['red:CompletableFuture'],
+    content: `
+<h3>Callable vs Runnable</h3>
+<div class="grid2">
+  <div class="card"><div class="card-title">Runnable</div><p>No return value. No checked exception. void run()</p></div>
+  <div class="card"><div class="card-title">Callable&lt;T&gt;</div><p>Returns T. Can throw checked exception. T call() throws Exception</p></div>
+</div>
+
+<h3>Future</h3>
+<div class="codeblock"><span class="cls">ExecutorService</span> executor = <span class="cls">Executors</span>.newFixedThreadPool(<span class="num">2</span>);
+<span class="cls">Future</span>&lt;<span class="cls">Integer</span>&gt; future = executor.submit(() -> heavyCalc());
+<span class="cm">// ... do other work ...</span>
+<span class="cls">Integer</span> result = future.get(); <span class="cm">// blocks until ready</span>
+future.cancel(<span class="kw">true</span>);          <span class="cm">// cancel if not needed</span></div>
+
+<h3>CompletableFuture (Java 8+)</h3>
+<div class="highlight"><strong>CompletableFuture:</strong> Non-blocking async programming. Chain operations. Combine multiple futures. Better than Future.</div>
+<div class="codeblock"><span class="cls">CompletableFuture</span>&lt;<span class="cls">String</span>&gt; cf =
+    <span class="cls">CompletableFuture</span>.supplyAsync(() -> fetchData())
+    .thenApply(data -> processData(data))
+    .thenApply(result -> format(result))
+    .exceptionally(ex -> <span class="str">"Error: "</span> + ex.getMessage());
+
+<span class="cm">// Combine two futures</span>
+<span class="cls">CompletableFuture</span>.allOf(cf1, cf2, cf3).join();  <span class="cm">// wait for all</span>
+<span class="cls">CompletableFuture</span>.anyOf(cf1, cf2, cf3).join();  <span class="cm">// wait for first</span></div>`
+  },
+  {
+    id: 'forkjoin', cat: 'Multithreading', title: 'ForkJoinPool & Thread Pool Types',
+    tags: ['red:ForkJoin'],
+    content: `
+<h3>ForkJoinPool</h3>
+<div class="highlight"><strong>ForkJoinPool:</strong> Designed for divide-and-conquer. Tasks fork (split) into smaller subtasks, then join (merge) results. Uses work-stealing — idle threads steal tasks from busy threads.</div>
+<div class="codeblock"><span class="kw">class</span> <span class="cls">SumTask</span> <span class="kw">extends</span> <span class="cls">RecursiveTask</span>&lt;<span class="cls">Long</span>&gt; {
+    <span class="kw">protected</span> <span class="cls">Long</span> compute() {
+        <span class="kw">if</span> (size &lt; THRESHOLD) <span class="kw">return</span> directSum();
+        <span class="cls">SumTask</span> left = <span class="kw">new</span> <span class="cls">SumTask</span>(leftHalf);
+        left.fork();           <span class="cm">// async</span>
+        <span class="cls">SumTask</span> right = <span class="kw">new</span> <span class="cls">SumTask</span>(rightHalf);
+        <span class="kw">return</span> right.compute() + left.join(); <span class="cm">// sync</span>
+    }
+}</div>
+
+<h3>Thread Pool Comparison</h3>
+<div class="table-wrap"><table>
+  <tr><th>Pool Type</th><th>Threads</th><th>Queue</th><th>Best for</th></tr>
+  <tr><td>FixedThreadPool</td><td>Fixed N</td><td>Unbounded LinkedBlockingQueue</td><td>Stable load, CPU-bound</td></tr>
+  <tr><td>CachedThreadPool</td><td>0 to ∞</td><td>SynchronousQueue</td><td>Short tasks, variable load</td></tr>
+  <tr><td>SingleThreadPool</td><td>1</td><td>Unbounded</td><td>Serial task ordering</td></tr>
+  <tr><td>WorkStealingPool</td><td>CPU cores</td><td>Deque per thread</td><td>Recursive, unequal subtasks</td></tr>
+  <tr><td>ScheduledPool</td><td>Fixed N</td><td>DelayQueue</td><td>Cron/periodic tasks</td></tr>
+</table></div>`
+  },
+  {
+    id: 'scheduled', cat: 'Multithreading', title: 'ScheduledThreadPoolExecutor & Virtual Threads',
+    tags: ['red:Scheduled', 'blue:Virtual Threads'],
+    content: `
+<h3>ScheduledThreadPoolExecutor</h3>
+<div class="codeblock"><span class="cls">ScheduledExecutorService</span> s = <span class="cls">Executors</span>.newScheduledThreadPool(<span class="num">2</span>);
+
+s.schedule(task, <span class="num">5</span>, <span class="cls">TimeUnit</span>.SECONDS);          <span class="cm">// run once after 5s</span>
+s.scheduleAtFixedRate(task, <span class="num">0</span>, <span class="num">5</span>, <span class="cls">SECONDS</span>);   <span class="cm">// every 5s (from start)</span>
+s.scheduleWithFixedDelay(task, <span class="num">0</span>, <span class="num">5</span>, <span class="cls">SECONDS</span>); <span class="cm">// 5s after each finish</span>
+
+s.shutdown();           <span class="cm">// no new tasks, wait for running</span>
+s.awaitTermination(30, <span class="cls">SECONDS</span>); <span class="cm">// wait up to 30s</span>
+s.shutdownNow();        <span class="cm">// interrupt running tasks too</span></div>
+
+<h3>Virtual Threads (Java 21)</h3>
+<div class="highlight"><strong>Virtual threads:</strong> Lightweight user-mode threads. JVM manages scheduling (not OS). Millions can exist. Blocks don't block OS threads — JVM parks and switches.</div>
+<div class="codeblock"><span class="cls">Thread</span> vt = <span class="cls">Thread</span>.ofVirtual().start(() -> task());
+<span class="cls">ExecutorService</span> ex = <span class="cls">Executors</span>.newVirtualThreadPerTaskExecutor();</div>
+<div class="table-wrap"><table>
+  <tr><th>Feature</th><th>Platform Thread</th><th>Virtual Thread</th></tr>
+  <tr><td>Backed by</td><td>OS thread</td><td>JVM scheduler</td></tr>
+  <tr><td>Count limit</td><td>Thousands</td><td>Millions</td></tr>
+  <tr><td>Stack size</td><td>1MB (default)</td><td>Tiny (grows dynamically)</td></tr>
+  <tr><td>Best for</td><td>CPU-bound</td><td>I/O-bound, many concurrent tasks</td></tr>
+</table></div>`
+  },
+  {
+    id: 'lombok', cat: 'Modern Java', title: 'Project Lombok',
+    tags: ['green:Lombok'],
+    content: `
+<div class="insight"><strong>Lombok:</strong> Compile-time code generation. Eliminates boilerplate. Annotation-based.</div>
+
+<h3>Top Lombok Annotations</h3>
+<div class="table-wrap"><table>
+  <tr><th>Annotation</th><th>Generates</th></tr>
+  <tr><td>@Getter / @Setter</td><td>getters and setters for all fields</td></tr>
+  <tr><td>@ToString</td><td>toString() method</td></tr>
+  <tr><td>@EqualsAndHashCode</td><td>equals() and hashCode()</td></tr>
+  <tr><td>@NoArgsConstructor</td><td>No-arg constructor</td></tr>
+  <tr><td>@AllArgsConstructor</td><td>Constructor with all fields</td></tr>
+  <tr><td>@RequiredArgsConstructor</td><td>Constructor for final/NonNull fields</td></tr>
+  <tr><td>@Data</td><td>@Getter + @Setter + @ToString + @EqualsAndHashCode + @RequiredArgsConstructor</td></tr>
+  <tr><td>@Builder</td><td>Builder pattern implementation</td></tr>
+  <tr><td>@Value</td><td>Immutable class (@Data but final)</td></tr>
+  <tr><td>@Slf4j / @Log4j2</td><td>Logger field: private static final Logger log</td></tr>
+</table></div>
+
+<div class="codeblock"><span class="cls">@Data</span>
+<span class="cls">@Builder</span>
+<span class="cls">@NoArgsConstructor</span>
+<span class="cls">@AllArgsConstructor</span>
+<span class="kw">class</span> <span class="cls">Employee</span> {
+    <span class="kw">private int</span> id;
+    <span class="kw">private</span> <span class="cls">String</span> name;
+    <span class="kw">private</span> <span class="cls">String</span> email;
+}
+<span class="cm">// Usage with builder:</span>
+<span class="cls">Employee</span> e = <span class="cls">Employee</span>.builder().id(<span class="num">1</span>).name(<span class="str">"PK"</span>).build();</div>`
+  },
+  {
+    id: 'java21collections', cat: 'Modern Java', title: 'Java 21 — SequencedCollection, SequencedSet, SequencedMap',
+    tags: ['blue:Java21'],
+    content: `
+<div class="insight"><strong>Java 21</strong> adds SequencedCollection, SequencedSet, SequencedMap — interfaces that guarantee defined encounter order with access to first and last elements.</div>
+
+<h3>New Interfaces</h3>
+<div class="table-wrap"><table>
+  <tr><th>Interface</th><th>Extends</th><th>Purpose</th></tr>
+  <tr><td>SequencedCollection&lt;E&gt;</td><td>Collection</td><td>Ordered collection with first/last access</td></tr>
+  <tr><td>SequencedSet&lt;E&gt;</td><td>SequencedCollection, Set</td><td>Ordered Set with first/last</td></tr>
+  <tr><td>SequencedMap&lt;K,V&gt;</td><td>Map</td><td>Map with defined ordering, first/last entry</td></tr>
+</table></div>
+
+<h3>New Methods</h3>
+<div class="codeblock"><span class="cm">// SequencedCollection</span>
+list.getFirst();     list.getLast();
+list.addFirst(e);    list.addLast(e);
+list.removeFirst();  list.removeLast();
+list.reversed();     <span class="cm">// returns reversed view</span>
+
+<span class="cm">// SequencedMap</span>
+map.firstEntry();    map.lastEntry();
+map.putFirst(k,v);   map.putLast(k,v);</div>
+
+<div class="highlight"><strong>Who implements these:</strong> ArrayList, LinkedList, ArrayDeque → SequencedCollection. LinkedHashSet → SequencedSet. LinkedHashMap, TreeMap → SequencedMap.</div>`
+  },
+  {
+    id: 'sealed', cat: 'Modern Java', title: 'Java 17 — Sealed Classes & Interfaces',
+    tags: ['purple:Java17', 'blue:Sealed'],
+    content: `
+<div class="insight"><strong>Sealed classes (Java 17):</strong> Restrict which classes can extend or implement. Enables exhaustive pattern matching.</div>
+
+<div class="codeblock"><span class="kw">sealed interface</span> <span class="cls">Shape</span> <span class="kw">permits</span> <span class="cls">Circle</span>, <span class="cls">Rectangle</span>, <span class="cls">Triangle</span> {}
+
+<span class="kw">final class</span> <span class="cls">Circle</span> <span class="kw">implements</span> <span class="cls">Shape</span> { <span class="kw">double</span> radius; }
+<span class="kw">non-sealed class</span> <span class="cls">Rectangle</span> <span class="kw">implements</span> <span class="cls">Shape</span> { ... } <span class="cm">// can be extended further</span>
+<span class="kw">sealed class</span> <span class="cls">Triangle</span> <span class="kw">implements</span> <span class="cls">Shape</span> <span class="kw">permits</span> <span class="cls">Equilateral</span> { ... }</div>
+
+<h3>Subclass Options</h3>
+<div class="grid3">
+  <div class="card"><div class="card-title">final</div><p>No further extension. Leaf class.</p></div>
+  <div class="card"><div class="card-title">sealed</div><p>Extended, but only by specified classes.</p></div>
+  <div class="card"><div class="card-title">non-sealed</div><p>Open to extension — reopens hierarchy.</p></div>
+</div>
+
+<div class="highlight"><strong>With switch pattern matching:</strong> Compiler knows all permitted subtypes → can enforce exhaustiveness without default case.</div>`
+  },
+  {
+    id: 'switch', cat: 'Modern Java', title: 'Java 14 — Switch Expressions',
+    tags: ['blue:Java14', 'green:Switch'],
+    content: `
+<h3>Old Switch (Statement)</h3>
+<div class="codeblock"><span class="cm">// Falls through without break — bug prone</span>
+<span class="kw">switch</span> (day) {
+    <span class="kw">case</span> MON: result = <span class="str">"Weekday"</span>; <span class="kw">break</span>;
+    <span class="kw">case</span> SAT: result = <span class="str">"Weekend"</span>; <span class="kw">break</span>;
+    <span class="kw">default</span>: result = <span class="str">"Unknown"</span>;
+}</div>
+
+<h3>New Switch Expression (Java 14+)</h3>
+<div class="codeblock"><span class="cm">// Arrow form — no fallthrough, returns value</span>
+<span class="cls">String</span> result = <span class="kw">switch</span> (day) {
+    <span class="kw">case</span> MON, TUE, WED, THU, FRI -> <span class="str">"Weekday"</span>;
+    <span class="kw">case</span> SAT, SUN -> <span class="str">"Weekend"</span>;
+};  <span class="cm">// compiler checks exhaustiveness — no default needed if all covered</span>
+
+<span class="cm">// yield keyword for multi-line blocks</span>
+<span class="kw">int</span> numLetters = <span class="kw">switch</span> (day) {
+    <span class="kw">case</span> MON, FRI, SUN -> <span class="num">6</span>;
+    <span class="kw">case</span> TUE -> {
+        <span class="cls">System</span>.out.println(<span class="str">"processing"</span>);
+        <span class="kw">yield</span> <span class="num">7</span>;  <span class="cm">// return value from block</span>
+    }
+    <span class="kw">default</span> -> <span class="kw">throw new</span> <span class="cls">IllegalArgumentException</span>();
+};</div>`
+  },
+  {
+    id: 'instanceof', cat: 'Modern Java', title: 'Java 16 — Pattern Matching for instanceof',
+    tags: ['blue:Java16'],
+    content: `
+<h3>Old Way</h3>
+<div class="codeblock"><span class="kw">if</span> (obj <span class="kw">instanceof</span> <span class="cls">String</span>) {
+    <span class="cls">String</span> s = (<span class="cls">String</span>) obj;  <span class="cm">// redundant cast</span>
+    <span class="cls">System</span>.out.println(s.length());
+}</div>
+
+<h3>Pattern Matching (Java 16+)</h3>
+<div class="codeblock"><span class="kw">if</span> (obj <span class="kw">instanceof</span> <span class="cls">String</span> s) {  <span class="cm">// binding variable s</span>
+    <span class="cls">System</span>.out.println(s.length()); <span class="cm">// s is already String, no cast!</span>
+}
+
+<span class="cm">// Can add condition in same expression</span>
+<span class="kw">if</span> (obj <span class="kw">instanceof</span> <span class="cls">String</span> s && s.length() > 5) {
+    <span class="cls">System</span>.out.println(s.toUpperCase());
+}</div>
+
+<div class="highlight"><strong>Benefits:</strong> Eliminates redundant cast. Pattern variable scoped to the true branch. More readable code. Works with generics: <code>obj instanceof List&lt;String&gt; list</code></div>`
+  },
+  {
+    id: 'switchpattern', cat: 'Modern Java', title: 'Java 21 — Pattern Matching for Switch',
+    tags: ['blue:Java21'],
+    content: `
+<div class="insight"><strong>Pattern matching for switch (Java 21):</strong> Match switch expressions against type patterns, guarded patterns, and null. Works great with sealed classes.</div>
+
+<div class="codeblock"><span class="kw">sealed interface</span> <span class="cls">Shape</span> <span class="kw">permits</span> <span class="cls">Circle</span>, <span class="cls">Rectangle</span> {}
+
+<span class="cls">String</span> describe(<span class="cls">Shape</span> s) {
+    <span class="kw">return switch</span> (s) {
+        <span class="kw">case</span> <span class="cls">Circle</span> c    -> <span class="str">"Circle r="</span> + c.radius;
+        <span class="kw">case</span> <span class="cls">Rectangle</span> r -> <span class="str">"Rect "</span> + r.w + <span class="str">"x"</span> + r.h;
+    };  <span class="cm">// exhaustive — no default needed!</span>
+}
+
+<span class="cm">// Guarded patterns</span>
+<span class="kw">return switch</span> (shape) {
+    <span class="kw">case</span> <span class="cls">Circle</span> c <span class="kw">when</span> c.radius > <span class="num">10</span> -> <span class="str">"big circle"</span>;
+    <span class="kw">case</span> <span class="cls">Circle</span> c -> <span class="str">"small circle"</span>;
+    <span class="kw">case</span> <span class="kw">null</span> -> <span class="str">"null shape"</span>;  <span class="cm">// null handling</span>
+    <span class="kw">default</span> -> <span class="str">"other"</span>;
+};</div>`
+  },
+  {
+    id: 'record', cat: 'Modern Java', title: 'Java 16 — Record Class',
+    tags: ['blue:Java16', 'green:Record'],
+    content: `
+<div class="insight"><strong>Record:</strong> Immutable data carrier. Auto-generates: constructor, getters, equals(), hashCode(), toString(). Replaces verbose POJO for simple data classes.</div>
+
+<div class="codeblock"><span class="cm">// Traditional POJO (verbose)</span>
+<span class="kw">class</span> <span class="cls">Point</span> {
+    <span class="kw">private final int</span> x, y;
+    <span class="cls">Point</span>(<span class="kw">int</span> x, <span class="kw">int</span> y) { <span class="kw">this</span>.x=x; <span class="kw">this</span>.y=y; }
+    <span class="kw">int</span> x() { <span class="kw">return</span> x; }
+    <span class="cm">// ... equals, hashCode, toString</span>
+}
+
+<span class="cm">// Record (concise)</span>
+<span class="kw">record</span> <span class="cls">Point</span>(<span class="kw">int</span> x, <span class="kw">int</span> y) {}  <span class="cm">// that's it!</span>
+
+<span class="cls">Point</span> p = <span class="kw">new</span> <span class="cls">Point</span>(<span class="num">3</span>, <span class="num">4</span>);
+p.x();        <span class="cm">// accessor (not getX)</span>
+p.toString(); <span class="cm">// Point[x=3, y=4]</span></div>
+
+<h3>Record Customization</h3>
+<div class="codeblock"><span class="kw">record</span> <span class="cls">Range</span>(<span class="kw">int</span> min, <span class="kw">int</span> max) {
+    <span class="cls">Range</span> {  <span class="cm">// compact constructor — validation</span>
+        <span class="kw">if</span> (min > max) <span class="kw">throw new</span> <span class="cls">IllegalArgumentException</span>();
+    }
+    <span class="kw">int</span> size() { <span class="kw">return</span> max - min; }  <span class="cm">// custom method</span>
+}</div>
+
+<h3>Record Limitations</h3>
+<div class="table-wrap"><table>
+  <tr><th>Cannot</th><th>Can</th></tr>
+  <tr><td>Extend another class (implicitly extends Record)</td><td>Implement interfaces</td></tr>
+  <tr><td>Have non-final fields</td><td>Have static fields/methods</td></tr>
+  <tr><td>Be abstract</td><td>Have custom methods</td></tr>
+</table></div>`
+  },
+  {
+    id: 'textblock', cat: 'Modern Java', title: 'Java 15 — Text Blocks',
+    tags: ['blue:Java15'],
+    content: `
+<div class="insight"><strong>Text blocks (Java 15):</strong> Multi-line string literals. No escape sequences needed. Automatic formatting.</div>
+
+<div class="codeblock"><span class="cm">// Old way — ugly</span>
+<span class="cls">String</span> json = <span class="str">"{\n"</span> +
+    <span class="str">"  \"name\": \"PK\",\n"</span> +
+    <span class="str">"  \"age\": 25\n"</span> +
+    <span class="str">"}"</span>;
+
+<span class="cm">// Text block — clean</span>
+<span class="cls">String</span> json = <span class="str">"""
+    {
+      "name": "PK",
+      "age": 25
+    }
+    """</span>;  <span class="cm">// closing """ position sets indentation</span></div>
+
+<h3>Formatting Methods</h3>
+<div class="codeblock"><span class="cls">String</span> html = <span class="str">"""
+    &lt;html&gt;
+      &lt;body&gt;Hello %s!&lt;/body&gt;
+    &lt;/html&gt;
+    """</span>.formatted(<span class="str">"PK"</span>);
+
+<span class="cm">// \s = trailing space (prevents stripping)</span>
+<span class="cm">// \ = line continuation (join lines)</span></div>
+
+<div class="highlight"><strong>Indentation:</strong> Common leading whitespace is stripped automatically. The position of the closing <code>"""</code> controls how much indent is removed.</div>`
+  },
+  {
+    id: 'optional', cat: 'Modern Java', title: 'Java Optional (Java 8 to 11)',
+    tags: ['blue:Optional'],
+    content: `
+<div class="insight"><strong>Optional&lt;T&gt;:</strong> Container for a value that may or may not be present. Replaces null returns. Forces callers to handle absence explicitly.</div>
+
+<div class="codeblock"><span class="cm">// Create</span>
+<span class="cls">Optional</span>&lt;<span class="cls">String</span>&gt; empty   = <span class="cls">Optional</span>.empty();
+<span class="cls">Optional</span>&lt;<span class="cls">String</span>&gt; present = <span class="cls">Optional</span>.of(<span class="str">"PK"</span>);
+<span class="cls">Optional</span>&lt;<span class="cls">String</span>&gt; maybe   = <span class="cls">Optional</span>.ofNullable(maybeNull);
+
+<span class="cm">// Check and get</span>
+opt.isPresent()           <span class="cm">// boolean</span>
+opt.isEmpty()             <span class="cm">// Java 11+</span>
+opt.get()                 <span class="cm">// risky — throws if empty</span>
+opt.orElse(<span class="str">"default"</span>)    <span class="cm">// value or default</span>
+opt.orElseGet(supplier)   <span class="cm">// lazy default</span>
+opt.orElseThrow()         <span class="cm">// Java 10+</span>
+
+<span class="cm">// Transform</span>
+opt.map(<span class="cls">String</span>::toUpperCase)
+opt.filter(s -> s.length() > 3)
+opt.flatMap(s -> findUser(s))  <span class="cm">// for methods returning Optional</span>
+
+<span class="cm">// Act if present</span>
+opt.ifPresent(<span class="cls">System</span>.out::println)
+opt.ifPresentOrElse(v -> use(v), () -> log(<span class="str">"missing"</span>)) <span class="cm">// Java 9+</span></div>
+
+<div class="warn"><strong>Don't use Optional as:</strong> Method parameter, field, or collection element. Use it only as method return type to signal possible absence.</div>`
+  }
+];
+
+const CATEGORIES = [...new Set(TOPICS.map(t => t.cat))];
+
+function renderSidebar() {
+  const nav = document.getElementById('sidebar-nav');
+  let html = '';
+  CATEGORIES.forEach(cat => {
+    const catTopics = TOPICS.filter(t => t.cat === cat);
+    html += `<div class="cat-group" data-cat="${cat}">
+      <div class="cat-label">${cat}</div>`;
+    catTopics.forEach(t => {
+      html += `<button class="topic-btn" data-id="${t.id}" onclick="showTopic('${t.id}')">${t.title}</button>`;
+    });
+    html += `</div>`;
+  });
+  nav.innerHTML = html;
+}
+
+function renderTopics() {
+  const container = document.getElementById('topics-container');
+  let html = '';
+  TOPICS.forEach((t, i) => {
+    html += `<div class="topic-panel${i===0?' active':''}" id="panel-${t.id}">
+      <div class="topic-header">
+        <div class="topic-title">${t.title}</div>
+        <div class="topic-tags">${t.tags.map(tag => {
+          const [color, label] = tag.split(':');
+          return `<span class="tag tag-${color}">${label}</span>`;
+        }).join('')}</div>
+      </div>
+      ${t.content}
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function showTopic(id) {
+  document.querySelectorAll('.topic-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.classList.add('active');
+  const btn = document.querySelector(`.topic-btn[data-id="${id}"]`);
+  if (btn) { btn.classList.add('active'); btn.scrollIntoView({block:'nearest'}); }
+  window.scrollTo(0, 0);
+}
+
+function filterTopics(q) {
+  const lower = q.toLowerCase();
+  document.querySelectorAll('.topic-btn').forEach(btn => {
+    const matches = btn.textContent.toLowerCase().includes(lower);
+    btn.style.display = matches ? '' : 'none';
+  });
+  document.querySelectorAll('.cat-group').forEach(g => {
+    const visible = [...g.querySelectorAll('.topic-btn')].some(b => b.style.display !== 'none');
+    g.style.display = visible ? '' : 'none';
+  });
+}
+
+renderSidebar();
+renderTopics();
+// Set first button active
+document.querySelector('.topic-btn')?.classList.add('active');
+</script>
+</body>
+</html>
