@@ -457,8 +457,18 @@
         font-weight: 600;
       }
       @media (max-width: 800px) {
+        .menu-btn {
+          display: block;
+        }
         .sidebar {
           transform: translateX(-100%);
+          transition: transform 0.3s ease;
+          width: 100%;
+          max-width: 300px;
+          box-shadow: 4px 0 15px rgba(0, 0, 0, 0.5);
+        }
+        .sidebar.open {
+          transform: translateX(0);
         }
         .main {
           margin-left: 0;
@@ -468,6 +478,23 @@
         .g3 {
           grid-template-columns: 1fr;
         }
+      }
+      .menu-btn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+        background: var(--sp);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 30px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        font-size: 15px;
+        cursor: pointer;
+        font-family: var(--sans);
       }
     </style>
   </head>
@@ -492,6 +519,7 @@
         <div class="s-nav" id="nav"></div>
       </nav>
       <main class="main" id="mc"></main>
+      <button class="menu-btn" onclick="toggleMenu()">☰ Topics</button>
     </div>
     <script>
       const T = [
@@ -2269,7 +2297,12 @@ dbProps.getPool().getMaxSize();</div>
         mc.innerHTML = h;
       }
 
+      function toggleMenu() {
+        document.querySelector(".sidebar").classList.toggle("open");
+      }
+
       function show(id) {
+        document.querySelector(".sidebar").classList.remove("open");
         document
           .querySelectorAll(".topic")
           .forEach((t) => t.classList.remove("visible"));
