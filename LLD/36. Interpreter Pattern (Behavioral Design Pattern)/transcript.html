@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>36. Interpreter Pattern (Behavioral Design Pattern)</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="interpreter_pattern_notes.html" class="btn">View Notes</a>
+    <h1>36. Interpreter Pattern (Behavioral Design Pattern)</h1>
+    <pre>
+Hey guys.
+Welcome to Concept Encoding.
+And this is Shreyansh.
+And in LD today we are going to do the last design pattern which is interpreted design pattern okay.
+So let's start it without wasting any time.
+This design pattern belongs to which pattern category behavioral pattern it belongs to behavioral pattern
+okay.
+So now let's understand first what does interpreter pattern means.
+Consider this a hand sign.
+What do you interpret out of it.
+So either you can interpret it as a stop or somebody saying hi to you.
+Or it might be the notion of number five.
+Or you can say that it might be like a raising and hand raising a hand.
+So this sign can be interpreted in different ways.
+So it depends upon context in what context We are providing or what is the context then based on that
+context, we can say that, hey, it means a stop.
+For example, context.
+I give you that it's a traffic signal or something, then stop sign there might be like stop somewhere.
+So what I'm trying to say is that interpreter means the way you interpret the expression, the way you
+understand any particular language.
+Right.
+So interpreter design pattern is a way through which you can understand any particular language.
+Right okay.
+So what are the components involved in it.
+Abstract expression.
+So now when.
+So interpreter pattern is specifically for understanding the expression.
+So expression could be let's say a plus b.
+This is an expression right.
+So any expression you can, uh, interpret based upon the context which will be provided.
+Right.
+So this is also considered as an expression.
+Right.
+So into C into D this is also an expression right.
+So interpret design pattern can be used to understand this expression.
+Or you can say that to compute this expression but based on a particular context we will provide to
+it.
+Right.
+What it understand with this.
+So we have an abstract expression.
+An abstract expression has two things terminal expression and non-terminal expression.
+So here if you see that these are terminal expression means you cannot further divide it.
+But this A plus B this is a non-terminal expression.
+This can further be divided into a.
+And this can be divided into b.
+And this is like plus do the plus of it Okay.
+So abstract expression.
+So what are the components involved.
+So components involve is one is abstract expression and another is context.
+Abstract expression can be have a terminal or non-terminal.
+Okay.
+So we will see an example and you will get fully clarified with it.
+This is the UML diagram of it right.
+So here if you see that we have an interface abstract expression there we have a method called interpret.
+And we pass the context to it.
+I told you right what we are in the interpret design pattern.
+We have to interpret an expression using a context.
+Right.
+So abstract expression has one method interpreted and it receive one context.
+Now there are two type of abstract expression can be terminal expression.
+Right.
+And the same method it has to implement non-terminal expression and the same method uh it has to implement.
+And then there is a client.
+The client has access to the context right.
+And it has to pass this context to this abstract expression while calling the interpret.
+Okay.
+So we'll see an example I am showing you an example where let's say that I want to do a into b.
+This is one expression.
+Now what should be the output.
+What you will interpret out of it a into B.
+What some like should I considered a as one or a as two, a as ten or a as something I would considered
+as something else point five.
+So what I would consider that that context will tell.
+But this is one expression which we have to pass to the interpreter.
+And we will also pass the context and based on the context interpreter should interpret it.
+Okay.
+So now here we say that let's see one by one component which we have in the UML right.
+First is abstract expression.
+So I have created one interface I created one here interface abstract expression and the abstract method
+like interpret context okay.
+Then there is one number terminal expression.
+So this is a terminal expression which implement this abstract expression.
+So this is is a relationship okay.
+So I am getting one string value and using this constructor to assign this string value right.
+So this is a method which it has to implement.
+So whatever the context it will get for this string value, it will using that context to get the data
+for it.
+Hey context, this is the data I am getting.
+Tell me what I have to do with it.
+Now context will give you give it right what it interpret.
+This is a terminal I am doing now in a non terminal expression I have given the name multiply non-terminal
+expression.
+So a into b we wanted to do right.
+So this full is a non-terminal.
+This individual is a terminal.
+So for a in the context here if you see the context in the context I created a map map of what A considered
+a as two BS four.
+So map is this.
+So now when this particular A goes to the terminal expression right.
+So for this a context dot get a.
+So it will get two.
+So it will return two from here.
+So when it get b so context dot get b so b would be four.
+It will return four out of this okay.
+Now in the multiply nonterminal expression what it will do is we have left expression and right expression
+right left expression and right expression.
+So in this multiplication we have left expression right expression right.
+So this is just a constructor to assign the left and right.
+And in the it's interpret method we have to call the left expression.
+Whatever the left expression would be we have to call its interpret method and whatever the right expression
+would be, we have to call it it's interpret method and we have to multiply it.
+Right.
+So maybe if left expression is further a non-terminal expression, you can say that it will kind of
+recursion.
+Then it will again call the multiply non-terminal right.
+Might be so.
+But what I am trying to say here is in the non-terminal expression right.
+We are again calling this like here.
+The interpret method.
+Right.
+And either it will go ahead and call the terminal.
+Or again go and call non-terminal depending upon the expression.
+But for this a into B so left is your non-terminal and right is also non-terminal.
+We have provided.
+Okay.
+So here and if you see the client now here, if you see in the client what I am doing in the client,
+I am first setting the context.
+So I created a context object.
+I created the context object.
+Now in the map I have put this two values a I have assigned two and b I have assigned four in the map.
+Right.
+These are the string.
+Now I am trying to interpret this expression.
+So what I am doing is new multiple nonterminal expression.
+So I am creating this object its object.
+Now this object it accept two expression left and right right.
+So I am giving this left.
+This is my left.
+And here it is right right.
+So in the left what I have provided in the left expression I have provided number terminal expression.
+Right.
+So it's a number terminal expression I provided.
+And what is the string value.
+I have provided here a in the right expression what I have provided again a number terminal expression.
+And what is the string value.
+I have provided in the constructor b okay.
+And whatever the expression I have called the interpret and pass the context.
+Now what will happen is this expression dot interpret.
+So what it will call is multiply non-terminal context.
+It will call this method right.
+This two are already set with this number terminal and with a number terminal with value b okay.
+And I have called the interpret and passed the context.
+So here what I am doing is I am calling the left expression dot interpret and passing forward the context
+into right expression dot interpret this one.
+So left expression was number terminal right.
+And uh so it was a.
+So for a it will return two.
+So two into for right expression was also your number one right.
+And b so it will call this uh interpret method with the value b.
+And for b it will return four.
+So two into four.
+Ultimately this will return your eight.
+So you got it.
+So we can even solve harder expressions also is same.
+So let's say I want to solve a into b plus c into D right.
+So one way is that here in the abstract expression I have a terminal expression number.
+Like all these are terminal.
+Then I have one.
+Multiply expression right.
+So which has left and right.
+And ultimately it multiplies those.
+Then I created some expression which again has left right and actually do.
+Plus here if you see that first in the sum.
+So A into b plus c into D we want to do this.
+So first we have to do some this plus.
+So some of some of what two multiplication.
+So this is the first multiply non-terminal expression.
+This is the second non-terminal expression right.
+And for each multiple.
+I have to tell that this is the terminal number terminal there.
+So left expression for multiple are multiply non terminal expression is first number terminal a then
+the second b.
+For the second multiply non-terminal expression I have to provide.
+This is again a number terminal expression.
+And this is also number terminal expression.
+But you can consider it like anything the way your expression would be.
+Right.
+So we have created this expression.
+Now we are wanted to interpret this expression.
+So we are calling hey interpret this expression and pass the context and the context map.
+I have put a considered A as two, B as four CS and DS 16.
+Right.
+And now I am passing this expression.
+I wanted to interpret it and do the context.
+So first expression goes to the sum.
+So it will goes to the sum.
+It will try to do that expression plus.
+Right.
+And it's right.
+So left one is right.
+Multiply one.
+So it will call the multiply this one.
+It will call the multiply with this two number terminal and a and b number terminal b.
+So here we have number terminal with a number terminal with b right.
+So it's left expression will call number terminal with a.
+So it will return two two into number terminal b.
+So b is your four.
+So it will return eight.
+So it's left would get eight I think you got right the crux how it is working.
+So we are computing the expression or interpreting the expression based on the context.
+You can further optimize it by let's say that I have further optimized it.
+Instead of creating multiply sum subtract different different classes, I have created one class called
+binary terminal expression left and right expression, and also receiving the operator right.
+And in the constructor I will receive this and in the interpreter based upon the switch operator.
+If you are doing plus, do this.
+If you are doing multiply, run this.
+Otherwise return zero.
+Let's say I am supporting only two.
+Now here in here this is the same context which I built up.
+Now I am creating binary terminal expression.
+Right?
+non-terminal expression.
+I am passing first.
+Again a non-terminal expression.
+And inside non-terminal expression what I am passing terminal expression A, terminal expression B and
+the operator n2.
+We have to multiply this.
+These three things we pass right.
+And again we have pass.
+Uh second is again one more terminal expression c d and n2.
+Right.
+And ultimately we have passed plus to this one right.
+So first this will get resolved.
+Then this will get resolved.
+Then ultimately all get resolved.
+Okay guys.
+With that overall design patterns are finished in the LD and we will do lot of questions of it.
+Thank you guys.
+Bye.
+    </pre>
+</body>
+</html>

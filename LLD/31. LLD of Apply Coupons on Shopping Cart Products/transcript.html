@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>31. LLD of Apply Coupons on Shopping Cart Products</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="#" class="btn">View Notes</a>
+    <h1>31. LLD of Apply Coupons on Shopping Cart Products</h1>
+    <pre>
+Hi.
+So this is the question which has been shared to me by one of our member.
+Uh, it has been recently asked in an interview, write to him.
+So the question is given.
+Shopping cart with products and coupon.
+Calculate the net price after applying coupon on products.
+Coupons can be different type with certain condition and three condition.
+It has given like n percent of that is 10% off for all the individual products, P percent off on next
+item d person off or nth item of type T.
+Or you can say that like different conditions of applying the coupons.
+So currently it's three.
+You can say that in future for five six more conditions can be added right sequentially.
+Want to apply all the coupons on the card and given the total amount and get the total amount.
+So the question is, let's say that just to brief that in a car shopping cart we have product.
+And for each product there are a possible way that multiple sequence of coupons can be applied right
+based upon the conditions, certain conditions.
+Right.
+So each product is eligible might be eligible for more than one coupons.
+Right.
+So that is you can say that one of the point and ultimately we have to find out the total amount which
+has to be paid okay.
+So if you see the objects which comes into this picture is definitely shopping cart coupon.
+Right.
+Product.
+Now if you see that it is very, very easy also to get diverted toward a the bigger, bigger picture
+of this LED where we have user payment, right?
+Kind of an inventory.
+So that becomes your like an inventory management system like so I'm in my view this question is very,
+very dedicated to this piece of information itself.
+Right.
+So I'm so that's what that's one of the point where I am keeping aside user payment and all invoice
+and everything.
+So I'm staying focus on this part.
+Now here if you see that right.
+Uh so one thing which I can see is that once you have a product, it is possible that we might have
+to apply.
+Coupon one.
+Coupon two, coupon three, or maybe let's say not coupon three, coupon seven, three coupons.
+I have to apply, right.
+And get its price.
+Similarly, for product two multiple coupons can be applied.
+Let's say coupon for coupon one or coupon eight.
+Different coupons applied.
+Right?
+So for each product, multiple coupons can be applied at a time.
+Right.
+Uh, so here, if you see that to me it looks very, very similar to decorator pattern where what decorator
+pattern is where you have an original product.
+Right.
+And without touching that original product we can add certain capabilities to it.
+So here we have applying coupon one to it.
+We are again decorating it with second coupon.
+We are again decorating it with more coupon right.
+So whatever the product amount would be let's say it was ₹100 after coupon one, it would be let's say
+₹90.
+After this it would be 85.
+After this it is 81 and ultimately the final its amount.
+Similarly for each product, we can decorate it, and ultimately, whatever the amount we will get,
+we will sum it up and return the total amount.
+So that's this question.
+Looks to me very, very similar to decorator pattern.
+And I have tried to implement it using the same.
+Right.
+So this is the implementation I will show you the coding part also.
+So this is I have saved the screenshot.
+So here first here if you see that.
+In a shopping cart I have created one class shopping cart.
+Shopping cart has list of product right.
+So now let's see a product class.
+So here we have.
+So I created one abstract class product.
+So shopping.
+Has like product.
+So now here if you see that this is an abstract class product, what does product I have kept?
+I kept name what is the original price and the product type.
+Right.
+And product type is one enum which I have taken.
+And I try to keep its category like electronic furniture.
+Like any decorative like this.
+So I have kept the product type.
+So this three variables.
+It has name, original price, type and using the constructor to set it up right.
+And I make this method abstract get price.
+I'll tell you why.
+So now this product like I created many childs like item one, item two.
+There can be many items right.
+Which are the child of this.
+And I have implemented this get price method right get price and ultimately for currently it is returning
+the original price, whatever the original price I have set.
+So whenever I will create an item while creating an item.
+So here if you see that I am creating an item, let's say fan thousand rupees and it's a electronic
+good.
+Item two is so far original price is 2000 and it's a furniture good.
+So now I am creating each item.
+So whenever I call get price, it will return the price which I have set.
+So this class is your product class.
+And this product class has composition with shopping cart.
+Shopping cart has list of products.
+Okay now see that how I am using a decorator is now there can be lot of coupons right.
+So that's where I did I create one coupon decorator right.
+So I create one coupon decorator.
+And if you see that it extends from the product itself.
+So here, if you see that it is extending from the product.
+So is the relationship.
+Right.
+So it is extending from the product.
+So now this coupon decorator.
+Now this itself is a product.
+Now.
+Now this is itself is a product.
+So let me make a straight line just a second.
+So this is.
+Is the relationship.
+The coupon decorator is a product now.
+So now there can be multiple coupons in our system.
+Let's say I have used two of the coupons.
+Like we can have more coupons also if required.
+First coupon decorator which I have or first coupon which I have taken is percentage test coupon decorator.
+So in the percentage coupon decorator, it's like for every product I have to provide, let's say 10%
+of the discount.
+So here what I am doing here is so this percentage coupon decorator.
+So this is your is a this is again your is a relationship here right here.
+Now here.
+If you see that this percentage coupon decorator has product so it.
+Has a relationship with the product.
+So ultimately what we are doing is we are doing a decorator pattern here.
+So what I did is that the product which it has right.
+So I am setting it up based on the constructor the product and the percentage.
+And in the get price.
+What I am doing is product dot get price and calculate the discount.
+So whatever the discount we will set let's say 10%.
+So I am getting the price after 10% discount.
+I will tell you I am using it similarly in the type coupon decorator, right?
+This is also one of the coupon decorator.
+I also have the product and the discount percentage and based upon the business logic, right.
+This type coupon is like for a particular type we have to give the discount.
+Let's say type is electronic.
+Then only we have to give a discount.
+So just for the clarity, purpose or showing purpose, I have created one static list of eligible types
+on which type coupon can be applied.
+So like I have kept furniture goods and decorative goods.
+Right.
+And using the constructor to set the product percentage and the type right now this is the price which
+it will calculate.
+Okay.
+So now let's see that how I am doing that.
+So in the shopping cart.
+The shopping cart has two method.
+Add to cart and get total price.
+So in the shopping cart whenever you will add a product, right?
+What I am doing is I am first.
+You can say that decorating it with the coupons.
+So whatever the coupons we have in our system, we can add it over here.
+And based upon the business logic, uh, internally, the decorator itself, it can decide whether the
+coupon has to be applied or not.
+Okay.
+So that's why I'm doing.
+So here, if you see that I am adding a product.
+So let's say I'm adding it, uh, adding the first product to the cart.
+Now this first product, what I am doing is new type coupon decorator new Percentage coupon.
+Decorator.
+Right.
+And its constructor parameters I am passing.
+So now here what we're actually gonna happen is.
+So I am creating a type coupon decorator first.
+And if you see that type coupon decorator this which is extending the coupon decorator.
+This itself is a product.
+Right.
+So that's why whatever the product I'm getting, I am decorating it.
+But ultimately the outcome is the product itself.
+So when I'm creating a type coupon decorator, what in the constructor what I am passing percentage
+coupon decorator.
+So here in the product I am passing percentage coupon decorator okay.
+Now in the percentage coupon decorator what I am passing This product ultimately the product, this
+product.
+Right.
+So it is like this I have a product.
+This product is been decorated by percentage decorator percentage.
+And this ultimately get decorated by type coupon decorator okay.
+So like this I have done and keep on adding the product to the cart okay so now till now let's see that
+I have added created product one and product two.
+I have created item one, item two.
+Like this.
+Right.
+So here I am using first I'm creating item one and item two.
+Item one is of ₹1,000.
+Item two is for ₹2,000.
+Then I am creating a shopping cart object and adding this both the items to the cart.
+So when I'm adding to the cart.
+So both the products is getting decorated like this, right.
+So whether this coupon can be applied or not, that logic depend upon inside the decorator.
+But I have decorated like this.
+Right.
+And I in the constructor I have passed like percentage coupon 10% discount type coupon has to provide
+3% discount like this.
+And I have added into the cart.
+So here now what I am doing is once I have added into the cart, I am getting calling the total price.
+So now when I the total price is called inside a shopping cart, what I am doing is I am iterating over
+the product.
+Now for each product I am calling the get price method.
+Okay, so now in this product list, ultimately this product is not stored.
+This decorated product is stored.
+This Ultimately this is also returning the product only, right?
+Everything is product here.
+This coupon decorator is also a product.
+So now here what I am doing is it will first the get price of this type coupon decorator.
+So it will call the get price of this type coupon decorator.
+Now here it is calling product dot get price first.
+So what is the product here in the type coupon decorator.
+So product here is percentage.
+So here if I go the product I set it is the percentage inside the constructor of the this one.
+So here first I am calling get price.
+So first it will now call this percentage coupon.
+It will call percentage coupon.
+Right.
+So, like, what is happening is.
+This is your product.
+This is your percentage.
+This is your type.
+So I called the price over here, but it says that hey, before you calculate my price first calculate
+this price percentage one.
+Now percentage will say that product dot get price.
+What is the product I have set to the percentage.
+I have set the real product right.
+So first I am setting item one.
+So item one get price will call it ultimately is original price.
+So here if you see that it will say that hey call the get price of this original product.
+So for the item one item one original was thousand rupees.
+So it will get thousand rupees to this one.
+So thousand rupees price is what thousand rupees.
+And it will conclude 1000 -1000 into discount percentage.
+How much discount percentage to the person?
+We said 10%.
+Right.
+So it will provide 10% discount.
+So it would be your ₹900.
+So get price.
+Percentage will compute 900.
+So now it is going out right.
+So it compute 900 and it return back to this.
+So this price is your 900.
+Now it comes to here.
+Now it says that hey eligible types contains this type or not so eligible.
+Is this too only when the product type is this to this discount can be applied.
+So whatever the item one is it item one product is electronic good.
+Does electronic good is applicable for this discount?
+No.
+Then it would skip it, then it would skip it and the price would be set as 900 plus, right?
+It was iterating in a loop.
+Now the second product will come product dot get price right.
+The same similar part will happen.
+It will goes to the type from type.
+It will goes to the get price of the percentage and from the percentage it will first calculate the
+ultimate product.
+So product is your item two.
+Item two is of ₹2,000 and it is furniture.
+So here internal it will return ₹2,000.
+And now it will goes back to percentage.
+So 2000 into.
+10% right.
+So I think it will return ₹1,800 to the.
+Type.
+Now it goes to the type.
+This is your 1800 1800 into eligible types contain furniture.
+Yes.
+So it will go inside and discount percentage 5%.
+It will give more discount to that one.
+Right.
+So ultimately it provide certain 1700 something.
+So 1700 something.
+This would be ultimate total price.
+So here if you see that I can run it up.
+And total price after discount is 2646.
+Right.
+So this is so I am not explaining decorator pattern here.
+But just wanted to show that no matter how many more coupons can be added it can be easily supported
+through decorator pattern.
+Yeah.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

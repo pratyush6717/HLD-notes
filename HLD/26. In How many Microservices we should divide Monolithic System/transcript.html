@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>26. In How many Microservices we should divide Monolithic System</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="monolith_to_microservices_ddd.html" class="btn">View Notes</a>
+    <h1>26. In How many Microservices we should divide Monolithic System</h1>
+    <pre>
+Hey guys.
+Welcome back.
+And this is the question which has been shared by, uh, an engineer over the message that it has been
+recently asked to him in his system design round how to divide monolithic system into microservices
+and in how many.
+Right.
+So that is, again, a very kind of you can say that, uh, interviewer is trying to put the interview
+in a tricky situation.
+How many microservices give me a number.
+Right.
+So how many microservices.
+How to determine.
+So first thing first there is like nothing like okay in ten microservices, five microservices, three
+microservices.
+No, there is no such number.
+And uh, there is no such way to determine how much how many microservices.
+So I will tell you like how to answer this question.
+But let me first tell you what why we want Microservices like, because ultimately, when we are going
+to divide the monolithic system into multiple services, like what is our expectation from each services?
+Like if those expectations are fulfilled, then only we can say that yes, expectation is fulfilled.
+We can consider the one microservices, right?
+So why we want microservices?
+What is the expectation out of it?
+First one would be it should be loosely coupled.
+Loosely coupled means if you are updating microservices one.
+If you are some doing an update on here, there is no need to update this also.
+So they are independent to each other.
+The second thing would be like engineers can independently code, test and deploy.
+What does it mean is like now you have two microservices.
+Microservices.
+Microservices two.
+They have their own set of engineers.
+And it's evolving.
+Microservices are evolving independently, right.
+So it's deployment is nowhere dependent on this.
+It's testing is nowhere dependent on this and vice versa.
+Okay.
+The third achievement we want to get by dividing into microservices is uh you can say that less.
+Communication overhead.
+Less communication overhead is means that there should not be any scenario that for each operation or
+each small thing, you have to communicate between these two services.
+Right.
+So more communication overhead means more latency, more complexity, more dependency, which ultimately
+breaks your loose coupling.
+Okay.
+So less communication overhead.
+And another which I would say that like, uh, scale independently.
+So now again two microservices.
+Now let's say this microservice has more traffic than this.
+So it can scale independently.
+Here I have 100 it's instances.
+But this microservice is uh, traffic is not that much.
+Okay.
+I can have only it's, uh, ten micro, ten, ten instances.
+So they should scale independently.
+There should not be a scenario that, hey, if you scale this, then also you have to scale this also.
+So if you have to do that means somewhere there is tight dependency means if more traffic is coming
+here then ultimately this is also calling this much to this so that its traffic is also increasing means
+there is some very tight coupling somewhere.
+Okay.
+So it they should scale independently.
+So these are the four things which we have to keep in mind like what we expect from microservices.
+Okay.
+So now with that being said, now what we what the next process we will take to the interviewer is the
+another part of this question that how many microservices, how do you determine while dividing it.
+Okay.
+So if I want to answer this, I will say that I will follow d d d approach.
+That is domain driven design approach.
+I will use this approach to determine how many microservices are required.
+I do not know the number, but with this I can come up with a number.
+Possibly.
+Okay, I am not saying this is the full proof solution or this is, uh, something will 100 per 100%
+of the time will work.
+There might be, like many engineers, I will just tell you before even going into domain driven design,
+many engineers have their different like, okay, uh, focus on the DB, uh, DB per service or shared
+service.
+Based on that, you can go some, some says that configuration wise, uh, take out the configuration
+separately means you need one configuration for that.
+Read write.
+Uh, you need a different service for read different service for.
+Right.
+So you need two service uh, technology wise technology wise, for example, uh, front end, back end
+and uh, your data access layer.
+So these are three technologies.
+This is UI, this is uh, backend, maybe Java.
+This may be some, uh, MySQL or something.
+So different technology means you need different microservices.
+So you need three microservices here.
+So see it's just a different way how you want to pursue the question and where you want to take uh,
+in whichever area you are more comfortable take in that one.
+But according to me, domain driven design approach is very suitable for answering such type of question.
+Why?
+Now let's see that now let's say that you have a monolithic service.
+Now we wanted to divide into this.
+So domain driven design approach says that first step.
+Domain understand your domain.
+Understand this.
+For example I am taking one domain let's say chat application I am taking one domain as chat application.
+So this is one domain.
+Another domain could be e-commerce.
+Okay, so pick any domain but you have to understand it properly.
+It's user requirement everything.
+Then only the second step can come into the picture okay.
+So the first step domain driven design says that understand your domain properly.
+Sit with the domain experts, sit with the users, understand it, and first clarify what the problem
+statement you want to solve.
+So here I would say that my domain is chat application.
+This is generally clear problem statement.
+Okay.
+The second step here is coming up with sub domains.
+Now you have chat application.
+Which is a domain.
+Now we have to come up with multiple subdomains.
+Okay.
+Multiple subdomains we have to come up with.
+Now question could be what could be the subdomain.
+How to come up with this.
+Because each subdomain have the capability to become one microservice.
+But again how do you determine how many subdomains, what sub what subdomains you have to create.
+So for that there is one approach which DD domain driven design follows is event storming.
+Okay, so event storming.
+So what this approach says that this approach helps to identify the subdomains okay.
+So in this one what we do is we we when I say we we means all the expert.
+So whatever the domain you are working its domain expert okay.
+Not just from the only engineers.
+No domain experts.
+And you are the decision makers, developers, testers.
+And so that's what event storming says that.
+So all sit together, do whiteboarding and what they do is first take out all the events.
+Take out all the events.
+For example, in the chat application, everyone independently thinking like what all events they can
+come up with.
+For example, I can come up with like, okay, uh, first user is registered.
+Uh, then user is registered.
+Then you can say that um.
+User got login.
+This is one event, then message sent then Message delivered.
+Uh, then another event could be like, uh.
+Message deleted.
+Like this.
+So these are all events which we can think of, right?
+It we might miss.
+We it might be, like, not applicable.
+Okay.
+But in the event storming the first step is all the team member individually come up with the events.
+What?
+All events can happen in your domain.
+Okay, so now let's say that we have come up with this only this five.
+But there are possible that we miss something.
+So that's what the second step does is sequence it sequence it and try to find missing events okay.
+Now if we sequence it now put this in sequence.
+Now we have to find out that any missing event.
+So now here we can say that okay.
+User registered user login.
+It is possible that user can log out also from here.
+This also can be an event and it can also send a message.
+So now here if you see this two things can happen in parallel.
+Either can um after logging user can log out also or can send the message.
+So what we can do here is we can do like this.
+So user.
+Registered.
+After that what we said that user log in.
+After that two things can happen right.
+User can log out and message can send this thing can either this or this.
+So we can write in parallel.
+Okay.
+After that what we said this message sent then what is any, any uh, any sequence or any event missed
+here.
+Message sent is from this message delivered.
+And so this is again from the sender perspective there is a message received also.
+So message sent.
+Then we can say that message delivered and message received could happen in like after this message.
+And these two things can happen.
+Okay.
+And after that message deleted okay.
+So anything missed out here like in.
+So it's again not a full proof.
+But when you're sitting with domain expert, it is considered that we will come up with all the events
+here in a proper sequence manner.
+And if we missed any into the first step, we should be able to find those step in the second one.
+Okay.
+So this is the second phase of the event storming that we have a proper sequence.
+And by this step we have figured out all the kind of, ah, uh, events which can happen in our domain.
+Now, here comes your third step.
+Now third step.
+Come here is which is known as bounded context.
+So this is sometimes become very complicated.
+Uh, so I'll tell you a bounded context.
+Understand this in the senses.
+So bounded means consider this as a boundary.
+So this is boundary one.
+This is boundary two.
+Let's say that and you have one object here.
+The context of this object in this boundary might be different from the same object object one and the
+same object.
+Which is present in this context for this boundary Example, let's say that, uh, you are having,
+uh, anything like, uh, pizza, uh, or you can say that, uh, you are having a sandwich.
+In a restaurant.
+So context is there in a restaurant.
+So in this, this is one boundary means that in this boundary for the sandwich, you have a total different
+context, for you are ready to pay for it.
+For you, it's, uh, like a dish which you will pay and you are ready to eat it.
+Okay.
+So it is this object, this sandwich object.
+In this context, restaurant has a total different, uh, you can say that, uh, its own boundary,
+that anybody is ready to pay for it and eat it.
+Now, the second context is, like I'm saying, the context here is that garbage.
+The same object, the same sandwich object.
+Now in the second context is not in the restaurant but in the garbage.
+So this is another context.
+Okay, so here nobody would be able to pay for it, or even if it is given free, nobody agreed to take
+it, right?
+Nobody will eat it for sure and nobody will say that it's it has zero value.
+Okay.
+So what bounded context means even the same thing, but present in two different contexts, considered
+as a different boundaries.
+They have different boundaries.
+So for this one, this sandwich, which is in garbage, considered as a different boundary than the
+sandwich which is present into the restaurant, so it is considered as a different boundary.
+So there are two different boundaries.
+There should not be any dependency between these two.
+So now that's what the third step says that identify the bounded context.
+Now in this case what we do is once we have a sequence.
+Now we say that whatever the logical related events, group them into a one bounded context.
+For example.
+User register.
+User login and user logout.
+Okay.
+So here what what this event is working on.
+What object user.
+Okay.
+So this user here means something.
+Okay.
+This user means something here.
+Let's say user register user login.
+User logout.
+So something it uh with authentication.
+Authorization.
+Some permission.
+So this user has certain values.
+Certain meaning in this context.
+So I would say that this is user management boundary bounded context.
+Okay.
+Now let's say that another uh what all events message sent.
+So message sent.
+Message delivered.
+Message deleted.
+Now here if you see in this case what all these events working on.
+So here message is one event this events are working on.
+So this message here can have certain meaning like who sent it or content.
+Right.
+So different.
+Different uh you can say that uh, status like Pending.
+Delivered.
+Deleted.
+Okay, so this message has certain values.
+Or you can say that certain meaning in this context.
+So we can say that it has like a message bounded context.
+Okay.
+Now similarly we can uh have another is uh here maybe like uh.
+Notification something like user notified.
+Okay.
+Maybe you haven't, uh, open a message.
+Right.
+But you got notified.
+So or user notified or there could more be like, uh.
+User.
+Notified or there can be different, like email mode notified.
+Uh, I was thinking to write an email notified, but I'm thinking let's consider like, notification
+and what else event can happen like, uh, but but for now, let's say that user notified happen that
+you got a pop up like, hey, you have one new message.
+Okay.
+So now here, if you see that even they said that user notified, now we have to decide.
+Hey this notification event happening on which object user.
+Thus user is in the same bounded context or user manage.
+So here this object has certain meaning related with authentication authorization.
+Uh, what was that?
+Permission.
+Right.
+So it has this particular state or in this context it has this meaning.
+But here.
+user notified user here is not equivalent to this or not equivalent to this object here.
+So and so here it might be like related with uh user maybe like only user ID.
+And then after that notification status what is the notification status.
+Are not sent sent.
+Seen something.
+So now here in this case does this user is it the same as what user here on this which this events are
+working on.
+No.
+This user has lot of this.
+Uh you can say that properties.
+But here this user is only user ID.
+So we can't put this event into this bounded context.
+So we then we can check.
+Hey is there any this user, The, uh, belongs here.
+No.
+Then we can say that.
+Okay, this user can be this notification, like user notified should be in different, separate business,
+uh, bounded context.
+So give them like a notification bounded context.
+Okay.
+So you so you got it right.
+What bounded context means like there it is a chance that user is even user object is present here also
+in the notification.
+Similarly user also present during registration.
+But at both the point they have a different meaning.
+That's the same thing which I said even though it's a sandwich, but in a different scenario, they
+are totally different thing, so we should not club them together.
+We should keep them separate.
+Okay, so just understand this from the microservice perspective.
+So we should not merge these two microservices.
+Otherwise it kind of a monolithic.
+Okay, so now for this simple example.
+Now we have a each bounded context.
+Okay.
+Now the forth steps like you can come up with the microservices out of it.
+So now for each bounded context, whatever the objects on which they are working from each of them,
+we can consider it as one.
+Microservices like user management, microservices.
+Here we have message.
+So here we can have something like for this bounded context we can have uh message microservice.
+Similarly for here we can have notification microservice okay.
+And it's also possible that from this uh bounded context there can be multiple events if I'm just saying,
+hypothetically, if there is any event which.
+Model like on object in which that event is working, that belongs to the same bounded context, we
+can create only one microservice for it.
+We don't have to create two microservice, right?
+So I hope this bounded context concept can be clear with that one.
+Okay.
+So we group the events together.
+So here user register user login, user logout all looks very related.
+But what I'm trying to say is that something called user let's say XYZ event.
+Currently nothing is in top of my mind, but I'm saying user anything XYZ event, but that user and
+this user context is same and who determine the context is same?
+Your domain expert who knows the domain like Yes, this is also sharing the same.
+It has to be authenticated.
+It has to be authorized for this event.
+It should have this permission.
+Yes.
+Then it belongs to the same bounded context.
+And we don't have to create a separate microservice for that.
+Okay.
+So with this process I came up with this three micro services okay.
+Okay.
+And there might be yes there might be interaction between them because in message we might have uh,
+some like what user who sent it.
+So maybe user ID is there.
+So it might call it.
+So that's okay.
+That is not violating D-d-d.
+Like they can have minimal uh Duplicacy means user ID is also here.
+User ID is also here.
+So minimal, very minimal duplicacy can be there, but very less dependency should be there.
+Okay.
+And each one, each microservices which we come up should fulfill this loose coupling, uh, independent
+scaling, less communication overhead.
+We are not saying zero communication overhead.
+Less communication overhead.
+Okay.
+And final thing one more thing.
+There is a concept called distributed monolithic.
+We have to save from this sometime.
+Let's say that if you are not following D.d.d.
+If you are not following D.d.d approach and you are following, I told you in a start, right?
+Uh, it's not mandatory to use d.d.d.
+But you can follow different ways, like technology wise.
+Uh, I think, uh, command query.
+Uh, this so for each command means write, each query means read responsibility divided divide the
+responsibility based on command query okay.
+Configuration.
+So there are different ways to divide it.
+But what I'm saying is even though you divide this make sure that it is not your distributed monolithic,
+distributed monolithic means the same thing.
+All the above four points is not fulfilling.
+You remember Amazon Prime scenario.
+What happened to the Amazon Prime?
+Amazon Prime has two service like audio and video.
+Two microservices.
+Okay.
+So it is a good example of distributed monolithic.
+Like they have so much tight coupling that it's become a overhead for them.
+And after that they move to a monolithic.
+If somebody says that, hey, Amazon Prime moved totally from monolithic to microservices.
+No, man.
+Only these two services, audio and video, they unnecessarily divide this.
+And after that it becomes too much overhead between this.
+So they decided to merge this two microservices into one or which has both audio and video, and they
+find 90% efficiency over it.
+They still on a microservices.
+But what I'm trying to say is that like there is no bulletproof.
+That okay, I come up with, uh, two, three microservices or I have to come up with only two.
+I can club this two or not, how to do that?
+So there is no silver bullet.
+Only thing is, yes, this TDD has given some guidelines, uh, which can be followed to come up with
+different microservices.
+And for each microservices we can see that, ah, this 4 or 5 points are fulfilling or not.
+Uh, there are more to this TDD.
+Like there are something called tactical design part of it.
+If you want to know in depth, let me know.
+I can cover a separate dedicated like, uh, full dedicated video of this DDT.
+Okay, guys.
+Thank you.
+Uh, I hope you will find this useful by.
+    </pre>
+</body>
+</html>

@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1. OOPs Concept in Java - 4 Pillars of Object Oriented Programming</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>1. OOPs Concept in Java - 4 Pillars of Object Oriented Programming</h1>
+    <pre>
+Ops fundamentals.
+So this is a very, very basics right.
+What is ops programming even if somebody knows Python right.
+I think Python is also a ops oriented language.
+Right.
+So this is you can say that you will find some similarities.
+But this fundamental is from Java perspective they're slightly changes.
+Right.
+So this is from the total perspective of Java.
+All the syntax which I will tell you everything is from the perspective of Java okay.
+So what we are going to cover today.
+So I will cover is overview of the ops.
+What is ops objects classes, pillars of ops.
+This is very very important from the learning perspective base.
+Plus your interview question, I will tell you what kind of interview questions generally happen on
+this one.
+Right.
+So but remember that this is the most important, uh, question.
+Then we have relationship.
+So as you might already know that, uh.
+Low level design, right?
+Low level design has basics.
+You should have oops knowledge.
+So it's all about is the has a relationship right.
+So you can say that it's a fundamental of everything whether you learn Java right.
+And whether you go through an object oriented principles and all these things.
+So this is the base class for all.
+So let's move to the this thing.
+Oops.
+Overview.
+So as everybody knows that oops stands for object oriented programming as the name itself says that
+it's oriented toward what object.
+So everything you have to think from an object perspective, if any.
+Let's say you get any project, any project.
+Hey, can you design this?
+Hey, let's say after you joining the industry, you get any project.
+So all you have to understand is like, what are all the objects present in whatever you are tasks you
+are doing?
+That's why it is called object oriented.
+Everything revolves around objects.
+So what does it objects?
+Now when we say that everything objects revolves around objects.
+So when we say what does it objects means?
+It's a real world entity like car, bike, atm, anything.
+And when you say that real world entity, you can ask me a question right here.
+What does it mean by real world entity.
+Right.
+So see, any real world entity has two things.
+And if there is any doubt, please, uh, stop me and ask the question, guys.
+So real world, every real world entity has two things, right.
+So what does this two things it has.
+Uh, so one you have is, uh, you know, that we have called behavior.
+One is called behavior and another is called functionality.
+So, so every object has two things.
+One is what is your.
+Behavior behavior.
+We also known as functionality.
+And another thing it is called properties.
+Properties.
+Right.
+So any object has two things I will tell you about this when we will go about the objects.
+But understand this when you will consider any real world entity which has this two things.
+They are known as real world entity.
+And we will go more detail into this.
+How you will identify objects.
+So those who are coming from C background right.
+They know that it is a procedural programming.
+Right now when we are talking about ops.
+So this is the only the difference between procedural programming.
+So you can say that all the advantages of objects generally which are missing in procedural.
+So here procedural what does procedural happen is so you get one task.
+So let's say Piyush got task one.
+So what you will do is it will create function one.
+It will add some task tasks function to add some tasks and if it want to pass some data, it will pass
+some data here and it will complete everything.
+So it just divided into parts called functions and it will pass the data whatever is required from one
+function to another.
+Right.
+So that is generally a procedural programming just functions right.
+It does not provide a proper way to hide data.
+So it sends the data.
+This can also change it right.
+So they are very tightly coupled.
+So what is this thing is they are very tight coupled.
+When I say tight coupled what does tight coupled means.
+So you have one function which creates the object let's say.
+Or you can say that creates a variable.
+Right.
+And you pass that reference to another, or you pass that variable to another so that objects or whatever
+that variable you have created, it's moving around one function to another.
+And what other functions are doing with it.
+It is changing it and then using it function.
+Those who created it there doesn't have any information about it.
+Right?
+So there are very tight couple because they are freely passing the data.
+There is no way to hide the data, right?
+So what I say that it give importance to function over data, procedure programming give importance
+to function it just focus on creating a function, but it doesn't focus on the data.
+And data moves freely from one function to another, from another function to another.
+Right?
+And anybody can change it.
+No control over that.
+Right?
+So these are some of the advantages of overloading inheritance which is missing in procedural right.
+Code reusability not present.
+I will tell you how we can achieve in oops.
+But in one liner you should understand what is procedural procedural focus on functions, not on data.
+Oops.
+The biggest thing is it provide data.
+Hiding.
+What it will do is it will bind your function and data.
+So this function will work on this data, right?
+And it will bind it together so that it has the full control over it.
+Who is who is going to manipulate it?
+They know that okay.
+This function is going to manipulate this data.
+If you want this data, it will write another function.
+Here you call this function and you will get the data.
+So this class has the full control.
+So that's why it says that object provide data hiding give importance to data.
+And in procedural it give importance to function.
+It's a very basic as of now.
+But you will get understand of this when I say that how it hide and all you will learn it.
+But till now it's clear, right?
+What is procedural and ops.
+So sometime the difference they may ask also.
+Okay so now let's move ahead.
+Very, very basic of first thing is objects and classes.
+What is objects and what is classes?
+I told you that objects are the real world entity which has two things properties and behavior.
+Behavior is also known as function and the properties properties are known as state.
+So example see this example.
+So here if you see that dog is an object.
+Why?
+Why dog is an object.
+Because it has these two properties.
+The one is its properties or state.
+So anything if you look and tell what are its color is black.
+Its height is at least this.
+So any properties of any real world entity, you can tell by just looking at it, right.
+These are known as properties or state like okay, if the dog is there, at least you can tell what
+it is color, what is its breed age?
+You might be you can approach, let's say six years younger or it's an older dog.
+So these are known as properties, which you can just tell by observer observing that object.
+Right.
+So if you can give some properties of a real world entity just by observing, those are known as properties
+or state, what are the second thing object has is behavior or function.
+So what are the behavior of a dog?
+Behavior of a dog is bark, sleep eat, etc..
+So these are the functions which dogs perform right?
+So that's why dog is considered as object.
+Because we can have this two things inside an object.
+Right.
+Properties which we can like tell by just looking and the behavior which the functionality it performs.
+Similarly, if I tell you car car is an object.
+Why?
+Why car is an object?
+Because it has two things.
+First thing is all the properties, which we can tell by just looking at this like what?
+Okay, what is the brand, what is the type, what is the color.
+So these are all considered as its properties right.
+And what is the behavior?
+Apply brake drive increase speed etc..
+These are all the functionalities.
+So you got it.
+So object has every object.
+Every object should have this two things or I won't say that should it should be must have this two
+things okay.
+That's where we will call as an object.
+Now you can ask me hey what is class then.
+So class is like it's a blueprint.
+It's a blueprint of an object.
+Or you can say that skeleton.
+Right.
+So I told you that object has these two things.
+So where we will write these two things.
+So in class you write these two things and create an object out of it.
+Right.
+So I'll tell you how to create an object.
+A class is required.
+Right.
+So from class object can be created.
+So class is considered as a blueprint or template which from which objects can be created.
+So let's say I have a class A I will write its properties.
+I will write its properties and I will write its behavior.
+And you know, write a object has two things.
+So properties and behavior.
+I'll define it here in the class.
+So that's why class is known as template.
+Right now we can create an object out of it.
+We can create an object out of it.
+And we can create as many as Object.
+Object one.
+Object two.
+I will tell you how, but from this class I can create so many objects.
+So let's understand the definition of classes.
+Classes provide the template or the blueprint from which object can be created.
+From one class we can create multiple objects.
+And what is the keyword for creating a class is this one is small.
+So now let's see.
+I'll tell you how to create it.
+Let's create one normal simple class.
+Let's say I'm creating a class.
+Let's say I'm creating a class student.
+I'm creating a class student.
+So what are the properties of a student.
+Can you tell me like what are the properties of a student.
+Right.
+Properties is let's say are age age of a student right.
+And we can also tell it's like, okay, this is the properties.
+Let's say it's an age address.
+Or I would say that it's a instead of integer.
+It should be a string right.
+There should be a string.
+It's address.
+These are all the student properties identification age address.
+Right.
+So there could be many.
+So these are known as data variables.
+These are known as data variables.
+So all the properties of a student is known as data variables.
+Now what are the functionalities of a student.
+Right.
+So the functionalities of a student could be what it's perform.
+Let's say I can have functionalities.
+Update.
+Update address.
+So functionality is like a function.
+So this is one function.
+What is function task is to update the address.
+So let's say today this student lives in a certain area.
+Uh let's say uh anything in Jaipur Rajasthan.
+But now it's shifted to another state.
+So we can update this.
+It can update this.
+So update address is just a function or behavior which works on this data.
+So this method.
+So this is known as data method.
+Data method.
+So data methods or which we earlier calling functions work on data variables.
+So any modification any you want to get and all you can use through the function.
+So let's say if anybody wants this Hey, I want an age so you can have like here getter and setter.
+So you can have like get age.
+And what it will do is it will return age.
+So.
+Right.
+So we can write any function.
+This is all known as data methods which will work on this.
+Ultimately this data variables which is known as properties.
+Right.
+So you understand this is a class.
+So class has two things data variables which is nothing but a properties and the functions which is
+nothing but a method.
+And method works on a data variables.
+Okay.
+Now I told you that objects can be created out of it.
+Right?
+So objects can be created like now how how the objects will be created.
+See this.
+So class name student right.
+Let's say I'm wanting to create an engineering student.
+So I'll create let's say engineering Student equals to new class name student.
+Right.
+So here, if you see that I don't go much into this syntax as of now, I'll tell you a syntax.
+But I want you to tell you from this class we can create so many objects.
+So here, if you see that this is the one way of creating an object, which I will tell you in deep,
+maybe in the next session.
+So here, if you see that with this new keyword this is a keyword, right.
+So with this new keyword I created a new object.
+I created an engineering student.
+Similarly, from this one I can create, let's say MBA student.
+MBA student equals to new student new student.
+So this is MBA student.
+Similarly I can say that, uh, another CA student CS student.
+So if you see that just from this class, I created so many students.
+Right.
+And even if you take that in a one class itself, there are hundreds of students.
+So you can say that student one, student two, student three and just change age, address and all
+these things.
+Right.
+So each student each student has their own properties.
+Right.
+So here if you see that what will.
+So now now I created two two objects.
+Engineering student MBA student out of which new student this class.
+Right.
+So how it would be so it let's say this is object one which is engineering student engineering student.
+So it has its own properties like what is the age.
+So let's say age.
+So let's say it set its property like age dot set like I have a get right.
+I can also put one set method set age and in the set age I can set this like let's say put a set age
+and address.
+So it has its own.
+It has its own value.
+Let's say it here.
+Age set is 23.
+Address.
+Its set is something x, y, z and it has its own method.
+Also update address, get age, set age or whatever.
+So this object which we created has all the data variables and data methods and it can have its own
+values.
+Similarly the other object which we created MBA student MBA student.
+Also we created from the same class new student.
+Right.
+So it also has the same data variables data methods.
+So it also has age.
+Maybe it can add its own age.
+Let's say at 25 and its own address.
+Right?
+Maybe it's at ABC.
+Something, right.
+And its own data variables update address.
+Get a set age.
+So if you see that each object, her age object, each object has both data variables, data methods
+and they can have set their own values whichever they want.
+Till now, it's clear or not.
+What is class?
+What is object?
+So now we are done with classes and objects.
+Now let's move forward to the first pillar of oops.
+And till now, don't worry about anything like uh, all the keywords.
+New keyword class.
+We will come more in depth, but classes and object is important to tell because I need to, uh, need
+those into this explaining the four pillar of oops.
+So now understand what is the question comes in an interview like this is not just a base of ops but
+also a very popular interview question.
+The question generally comes is can you explain the ops fundamental like you are explaining to a 14
+year old child?
+So you should be clear with the ops fundamental in such a clarity that you should come up with a very
+simple example which a child can understand.
+Don't use any jargons, right?
+So understand it properly and see that you are relating with the real world.
+Examples.
+If interview says that hey, come up with some certain examples.
+Explain me that even a child can understand, right?
+So let's see with that.
+So I'll try to explain in that manner and see that if it helps.
+And you can come up with different examples of this one.
+So first filter pillar of ops, what is known as data abstraction.
+Data abstraction is data abstraction.
+So suppose that I'll come to the definition second.
+First understand with an example.
+Take an example of a car and you have a brake pedal.
+And if you press it, if you press the brake pedal, what will happen?
+The car speed will reduce.
+But how it reduce?
+Did you know that internally what had happened?
+You don't know it because this is abstracted to us.
+We all care about what we have to do, how it happened, that's not important to us.
+So that's why the definition says that it hides the internal implementation and shows only the essential
+functionality to the user.
+So it shows only the essential functionality.
+What is the essential functionality in terms of car brake pedal?
+Press me.
+If I press it, the car speed will reduce.
+But how?
+Internal implementation is hidden, I don't know.
+Let's say another example.
+Cell phone.
+How call is made.
+You don't know.
+You just say that.
+Okay.
+Once you dial the number and press green button, a call has been made.
+But how call has been made.
+Do you know that?
+No.
+It's obstructed to us.
+We don't know how the data transfer to one and another.
+We don't know how it transfer to the network, how it reached to the other person we don't know.
+We all know is if you press the green button after dialing the number, the call will be made.
+So we only know the essential feature which is given to us, but all the internal implementation is
+hidden from us.
+So this is known as abstraction and how we can achieve it through interface and abstract classes.
+You will get this, uh, more detail into the next chapter where we deep more into this.
+But I will give you a quick highlight of this interface, right?
+But more in depth will come into the next session where we will go one level deeper.
+So as a part of the first pillar, data abstraction, you should know that what data abstraction is,
+data abstraction is like only exposing the essential feature and hide the implementation.
+What are the advantages of data abstraction?
+Advantage of data abstraction is security and confidentiality.
+So let's take this example.
+So guys don't go much about the keywords and in depth.
+We will go slowly in depth.
+But see I'm just telling you how we can achieve this data abstraction.
+So I told you that it can be achieved through interface and abstraction.
+So I am creating an interface.
+So let's say I created an interface let's say car.
+Okay.
+So this is an interface I created.
+A car has so many features which are has.
+But I want to expose let's say, uh.
+Uh, I can create public, uh, apply brake.
+Apply brake.
+This is the method I want to expose.
+Right.
+But user not aware.
+Like, okay, if I apply the brake of a car, what will happen I don't know.
+So all its implementation can I can put it is like here.
+So here I can create a class.
+I'll tell you about this.
+Don't worry about this.
+What happening?
+I all want you to focus in data abstraction.
+How we are doing a data abstraction.
+Understand those interface and the keyword which you are seeing.
+Little bit.
+Keep it aside.
+Just see.
+Keep in your back of the mind.
+When we use it you will see.
+Ah yes I saw that somewhere, right.
+So now let's say I will say that car implementation.
+So all the interface right.
+It just provide a like method.
+We have to implement it like well, so it has to implement this interface car.
+And what it will do is all the methods.
+It will now implement it.
+So public apply brake.
+Now even for user it is just simple apply brake.
+But here it is doing so many things.
+Uh, when we apply the brake it will do so many things here.
+Uh step do step one do.
+Step two.
+Step three.
+Step four.
+Step five.
+And then ultimately speed got reduced.
+The outcome of this is that speed got reduced right.
+So step one, step two, step three, step four.
+Uh, because there might be so many in, uh, engine work, uh, tools work.
+We don't know inside what car happen, happened.
+But what my intention is to tell you that user don't know this functionality.
+All user be told this as okay for car you have apply brake or you can have one more thing that press
+uh you can say that press accelerator.
+So user know that if I press it speed will increase.
+Or you can say that press horn button.
+So I just expose what user is required in a car.
+I all expose this.
+So now user has a car object.
+It can apply brake press accelerator press horn, turn on the headlights.
+All these things it can do.
+But the implementation I am hiding it from it.
+So right when he just call this method press apply brake internally it's doing step one, step two,
+step three, step four, step five.
+And ultimately the outcome is speed got reduced.
+So you know that uh, so from a user perspective it just calling this method apply break.
+And this all implementation is hybrid.
+How how it will happening.
+He doesn't know he's just applying the break.
+So that's why it is called as data abstraction.
+So this is the first pillar.
+Understood.
+Any doubts?
+Shall I proceed?
+Yes.
+Yeah.
+So you are saying, like we are able to hide some functionality from user.
+So my question is what is the need?
+Why are we doing that.
+Even if we tell them how to apply break, it won't cause any harm, right?
+Like what is the issue here?
+Like if we not hide, like, what is the importance if we don't know?
+Yeah.
+So see this is the importance is like the advantage I would say that the first thing is bring this confidentiality.
+So let's say a car has so many features which let's say you are not I don't want to expose it to you.
+So let's say I am the one who created this car and I only want you.
+This three features apply brake, press accelerator and press horn.
+I only want to expose you this three items only.
+But rest of the things I don't want to expose itself, right?
+So if you see that through the interface, I only just put this three methods.
+Now as a user, you can only call this three methods only.
+So one of the reason for this data hiding is confidentiality.
+Like you can not add or expose to the user, which he doesn't bother first thing, right?
+Let's say there is so many features which can mechanic can do directly like but I don't want to expose
+it to user.
+So one thing is confidentiality.
+You can hide the functionalities from the user with the help of the interface.
+Don't add it here.
+User won't be able to interact with it.
+Right.
+So this is the first advantage.
+So are you okay with this first advantage.
+Like you are in line with me.
+Yeah.
+What I'm not understanding is like what will happen if we expose, like what breach will happen in that
+case?
+Okay.
+Like if suppose someone is trying to see our internal methods.
+Yeah.
+Okay.
+So the another is things like see if you are exposing this thing.
+Right.
+There are a lot of thing is client should be now aware of all those things right.
+So now let's say if you are let's say let's talk from that perspective that we are exposing this method
+to all like everyone now can call directly this one.
+And they're well aware of this method.
+Okay.
+If break applies, let's say this is my client.
+This is your Client.
+Uh, class, let's say you are the client class and you want to apply a brake.
+When you want to apply brake earlier, what you were calling is you were calling this apply brake.
+And brake used to apply.
+Now, when we say that okay lets user know the functionality, user let it.
+So now you can say that hey user know about what to do.
+Step one, step two, step three.
+So now user has aware of this steps.
+Also do we want to expose this steps to the user.
+No.
+Because how the internal what are you can say that internal uh mechanics or engineering terms how this
+internal tools interacted between steps.
+Or I am just coming up hypothetically that these are the steps, let's say, uh, yes.
+Step one is, uh, less, uh, battery use.
+This is the step one.
+And I'm just hypothetically because I don't know what the functionality.
+So first step is, let's say less battery use and, uh, when less battery use, something will happen.
+So less is that stop petrol or diesel usage.
+So suddenly it will stop using it so that in something will stop.
+So now you know that there are multiple steps when somebody apply a brake, right?
+So I don't want user to know all these things.
+And another thing is if you don't want if you are saying that what are the disadvantage of it.
+Like if you expose it then user has to know so much things and it will get bombarded with the information.
+It's just one thing when the when you apply brake you have to do all this stuffs ten steps.
+So now user knows all this stuff even though he doesn't care about it, right?
+So what we do is we make our code simplified with this data hiding.
+So we will tell only to client.
+This is only one method.
+Apply break.
+If you apply it, car will stop.
+How?
+How will you stop?
+You don't have to worry about it.
+Leave it to me.
+But if you say that.
+Okay.
+What's the disadvantage?
+If user knows all these things, then another thing is client will get bombarded with.
+Okay, I have to know about step one, step two, step three, step four.
+Right.
+And that's this thing will happen.
+Yeah.
+Also they can mess up with our internal implementation how we have implemented.
+Yes.
+So correct.
+So it's like you can say that it keeps security confidentiality.
+And I would say that it simplifies our client code.
+Because otherwise client.
+I just see I even in the hypothetical I would say that 510 step.
+But do you think that in real what how many steps would have happened internally.
+So client doesn't bother about all those ten steps, right.
+All he wanted is like, hey, apply this apply break.
+Something should have happened this.
+So this is the input output should come to this client is only aware of this I provide this input.
+Give me this output.
+Right.
+But how you will do it I don't care.
+So this kind of data abstraction is we can achieve through interface and abstract which we will see
+later.
+But at least you should be now in proper understanding.
+What is abstraction and what are the different examples you can yourself come up with?
+Okay.
+Shall I move forward?
+Yeah okay.
+Let's see the second pillar.
+Second pillar is data encapsulation.
+Hey, it looks very familiar, right?
+Data abstraction.
+Data encapsulation.
+Now let's say that it is also known as data hiding, right?
+So now what we are saying is we created a class, let's say class A right.
+And it has properties.
+What properties is known as data members data variables or data members data members data variables.
+And it also has functionality.
+Functionality is known as data methods.
+Nothing but methods which work on this one.
+So encapsulation.
+What does it say that bundles the data?
+Bundle the data and the code working on the data?
+So this class has two things variable and the functions which work on this variable right.
+So what this class is doing, this class is doing data encapsulation.
+Right.
+It bundles the data and the functions which operate on this data right into a single unit.
+We can also call this as data hiding.
+So this is actually hiding the data.
+I will tell you how it hiding the data.
+So here before going further let me tell you how it hides the data.
+So now we know that class.
+Let's say I created a class called uh, let's say car.
+I'm the same example or let's say some another example.
+I would say that uh, uh, let's say uh, some cool example, let's say animal, some dog.
+This is one simple example, right?
+So what are the data variable or data members.
+Or you can say that properties let's say is uh color.
+Uh.
+So let's say I have taken a string.
+What is the color?
+So this is data member or data variable, right.
+And I have certain method I told you.
+Right.
+We can update this through data methods which can work on this method.
+So it's let's say get color get dog color.
+So this is one method which will return simply somebody call this it will return okay.
+This is the color actually.
+So this is returning what string.
+And similarly I would said set color.
+We can work on the variable through this.
+So what is the color we are getting let's say color variable.
+And let's say this Us dot color equals to color.
+Don't worry about this keyword, this dot class.
+Right.
+I will all come to this.
+So currently my motto to tell you is what is data encapsulation?
+This keyword is.
+In the next class I will tell you all the keywords why it is required.
+But currently keep all these keywords into the back of mind that yes, this dot and all this thing,
+but not needed as of now.
+Now understand that how it is doing encapsulation.
+So I have a data member color and I have a data methods which work on this variable.
+So I have let's say get method.
+If somebody calls this method it will return the color right.
+If somebody want to change the color right it can call this let's say pass blue color.
+So it will set it blue.
+So let's say I am creating an object.
+Let's say I am creating an object dog.
+Object dog.
+I'm creating an object.
+Let's say Rottweiler, Rottweiler, Rottweiler is one of the dog breed.
+Let's say I'm creating an object through new.
+So now one object is created Rottweiler.
+Now I would say that here Rottweiler dot, this is an object and this is how we call it through in the
+Java dot.
+But don't worry, I am setting the color set color.
+Let's say I set the color black.
+Right.
+So now what will happen is you know that the object is Rottweiler.
+It is created from this class.
+So this class has color object color variable and methods get and set get and set get color set color.
+It has two methods and this one.
+And now what?
+I have set the color black.
+So currently color is set to black.
+Okay.
+So this is how objects will now have the information.
+But if you see that what has happened we have seen that we have encapsulated this info both info data
+member which is known as variables and the functions which work on this together into a single class.
+If anybody wants to change this color, they can call this method right.
+If anybody want this variable, they can call this method.
+So this class has the full control over this members through its functions.
+That's why it is known as encapsulation means bundles the data and the code working on that data into
+a single unit.
+So now in Java oops.
+Because of this classes.
+Because of this classes, we bundle the the data and the functions together into a single class that
+acts as a single unit, right?
+And it is also known as data hiding.
+Like we have hide our data.
+You want certain data variables call our function and through that you can get it.
+But you are not.
+We can allow, but we are saying that we have full control over data.
+It brings control, it brings control.
+And that's why it says that with the help of this, we can bring loosely coupled code.
+If you remember the start procedural programming, it data moves freely like if you have written ten
+function function one, function two, function three.
+It created data one.
+Definitely.
+Function two can also change the data same data one because it passes it because data moves freely from
+all over the code.
+Anybody can change it.
+There is no control over data.
+But now here, because of data encapsulation, this class takes the ownership.
+Okay.
+These are the functions available.
+Use this function to update the variable so it has the full control.
+We can bring control.
+And that's why I say that loosely coupled like everyone knows that now okay.
+Loosely coupled is okay now.
+They are not tightly related to each other.
+Highly tightly coupled means let's say this is class one.
+This is class two right?
+And there is data one.
+It is also changing it.
+Data one also it is changing it.
+So they are very tightly covered.
+If something change here this also get impacted.
+So these are very tightly coupled code.
+And this is not acceptable into the industry.
+We have to develop a loosely coupled code means what does loosely coupled code means you have class
+one.
+Class two.
+If something got changed here, they should not get impacted.
+They should work as an independent different classes.
+So data creating a different classes and putting the variables members appropriately right.
+Helps you to bring the loosely coupled control.
+And it will bring a control better control on our code.
+Understood it like so.
+You can add all the variables which are logically you can say that related into the same class, so
+that all these variables, it has full control over it.
+Data should not move freely it we can keep it in under one class.
+Any doubts?
+Uh, this encapsulation clear?
+Okay.
+Um, one question here.
+Like, suppose I create a class called inside that there is a strange color.
+And suppose I create a new class.
+Uh, cat, suppose.
+And I want to access that color of dog inside this.
+Definitely.
+You can do so.
+How you can do is first you need an object of this one.
+As you know, that class is just a skeleton.
+So I told you that object has ultimately the data.
+This is just a skeleton.
+And this real object has the values.
+So first you need to create an object of this from this cat class.
+Right.
+Let's say uh you create an object like this right.
+And now you can call this uh Rottweiler which we created an object Rottweiler dot, you can say that
+let's say I want a color, right.
+Get dog color.
+Rottweiler dot get color.
+You will get a color string.
+Just take this in a variable.
+Now use it whatever you want.
+So what I'm asking is like by doing this I am able to access the dog class variable.
+So it is like against encapsulation.
+No.
+So see, getting an information is okay.
+But now what full control is in which class.
+Anything you wanted of a dog.
+So see understand from this, let's, uh, let me, uh, tell you with this way I got your point.
+What you're trying to say.
+Getting an object, getting an information is required to run any program, so nobody is self sufficient.
+Everybody need information from other class to perform certain tasks, right?
+Nobody can, uh, have a full functionality.
+So getting an information is okay, but who is taking the ownership to that particular information is
+what we are talking about.
+Let's say I have this data.
+Uh, let's say I'm saying that, uh, student Age, uh, courses which he has taken.
+Right.
+All this information I have.
+So let's say one, I would say that I have a class or let's say when we are talking about dog and cat
+way itself, let's use the same example so that we don't get diverted.
+Okay.
+So now you know that, uh, let's say don't worry about this class itself.
+So now we are creating a class okay.
+Penn.
+Class cat.
+Okay.
+So now in the class.
+Class cat, we are saying that.
+Okay, by creating a dog object.
+So let's say Rottweiler.
+I created a new dog object.
+And now I am able to create using this object which I created I am able to get the its field.
+Get dog color.
+Now I store it in some variable that's a color of a dog color, and I do certain perform operation on
+top of this color.
+Right.
+So now your point is that, hey, how come it's a data encapsulation when other class is able to get
+the data?
+This is your doubt, right?
+So see the dog has this as a variable.
+Now class says that okay I need this data to perform certain work to perform certain task.
+But I cannot take the ownership right to maintain this color.
+And whatever the dog property it has.
+Right.
+Who will take the ownership?
+Who will take the who will bundle this data?
+Is it, let's say if you don't want, if you don't put in a class, let's say it has certain method.
+And will you pass this color as a black, let's say.
+Then this is like a this is like a very tight couple, like okay, somebody sending a black color,
+like, but this is not an object oriented programming.
+It's just like you are passing all the variables, right?
+So here just understand from this from a class perspective what does cat need it all cat needed is this
+dog color information so that it can perform a certain task, but it cannot take an ownership of this
+maintaining this dog related fields.
+If there are certain other class, let's say goat, it can also not take ownership of maintaining the
+properties of a dog, right?
+So only dog class will have the full control over it.
+If you want to get the color, call me get dog color.
+Then only you will get it.
+You want to update it.
+Now you can call dot dot update.
+So now if you see that this Rottweiler class object which we created right of this one.
+It has the full control over it.
+So with this method I have the full control over it.
+And let's say I created this as a private, so I don't want it to tell.
+Now it will confuse.
+So this is known as access specifiers access specifier like private public protected right.
+So and there is one more called default.
+Don't worry about this I wanted to cover in the next session.
+So now but as you asked so there are something called private and public.
+Let's take this for simple public means.
+Anybody can access anybody.
+Right.
+So it let's say I also call this method public.
+Public get doc color right.
+So get doc color it can call.
+But now let's say I make it private private.
+This method is now private.
+It will not be able to call because private is just keep into this class itself.
+Only within the same method can call each other private.
+So don't worry about this one.
+But I wanted to tell you that encapsulation means all the variables and the methods are grouped together
+in a same class, and it has full control over it and how it controls.
+So here.
+Let me explain a very simple term.
+Now the control part.
+But did you get like uh, encapsulation.
+What's the definition of encapsulation says.
+I got it.
+Like you are saying, if there is a color, it will be only modified or accessed via dot class if someone
+else want to access, they have to go through that.
+Correct.
+So that's how we so that's why we are saying that dog class has a full control over it.
+Full control over fields through its method.
+And there are something called access specifiers.
+So this helps them to control more.
+So there are four private public protected and default.
+So this protected and default I will tell you later.
+But let me tell you this thing so that it will clarify all the doubt.
+So let's say let's discuss about this two modifiers private protected.
+So this modifiers can be used on the data members also data methods also.
+So let's say I am using private here.
+So if I haven't used anything means it is default right.
+I will tell you what the when it is default what will happen.
+But I want to tell you let's say I'm Specifically mentioned.
+It's a private.
+Now, when I mention it's a private.
+The class cat class cannot access it like a hey dog when you have this right dog object.
+Rottweiler.
+Dot.
+What is the property name color it cannot access like this.
+It can only be accessed via method which is public.
+So let's say my data member is private and the method to get this color is public.
+So now in another class I am talking.
+In another class it created a Rottweiler object.
+Let's say it created a Rottweiler object.
+It created this Rottweiler object.
+Now from this Rottweiler object, it wanted certain data, but how it cannot get the data.
+One thing is Rod Wheeler dot.
+It directly calls the variable color.
+But now if you see that I have made it private.
+Private says that data will remain in this class cannot be accessed outside of this class.
+So you cannot access from the Cat class.
+But here, if you see that the method is public.
+So now but I can it is open to do this rod Wheeler dot get dog color.
+It can call this method because this is public.
+Anybody can call this method.
+And inside this method it is returning the color.
+So now you see that the what it does.
+The dog class has made a full control.
+Hey you cannot access the color directly.
+You have to call me because I am public.
+You can call me and I will return the color only.
+But if you want.
+Little bit uh, don't want too much harsh.
+Let's say you want people to call directly.
+The color itself lets you can call it, you can make it public.
+Okay.
+I will also make it public.
+Okay.
+Public.
+So now cat class will allow able to allow to this directly access this without even calling the methods
+okay directly.
+It is public.
+So I created the Rottweiler object dog object.
+And I will say that okay Rottweiler dot get color or color directly this.
+So now if you see that the dog class is doing a full control over how the other classes can access its
+data variables either directly, either through method or if I both make private.
+This is also private.
+Other class cannot even either call this or either call this because both are private.
+So somebody some method it should have to get this data.
+So you got it that using access specifiers and this class it has full control over the data.
+Yeah, right.
+So, see, don't worry about this private public protected.
+But I just want you to a glimpse that with the class inside a class, when you put all the data and
+all the functions which operate on this data can have full control, like what other class, how it
+can get the data.
+So see, everything is all about data.
+Push all work on a data.
+But it's like how you will access that data.
+Who will have that control.
+So here the with the help of a class I can control everything like how other class can access the data
+if I made public.
+Yes, you can access it if I make private.
+No.
+Inside this class only can have this thing.
+If, uh, certain public method is there, you can call that and ask that.
+Hey, provide me that data.
+So full control is at here in the class.
+Got this.
+Yeah.
+Cool.
+So now when you are saying that.
+Hey, uh, explain to a 14 year old child data encapsulation.
+Just understand that.
+I'll explain that we have a capsule, right, of medicine.
+So medicine has all the data actually inside the capsule, right.
+So this is nothing but a data encapsulation, which we did.
+The actual data is present inside of a capsule.
+Capsule is just you can say that a cover outside it which is protecting it.
+Similarly in data encapsulation class is nothing but a one which actually keeps the data and it is just
+protecting it through its access identifiers.
+Private public protected default controls it.
+Okay, let's move to the third pillar of inheritance, the very, very important one inheritance.
+We will cover the third pillar of oops in the next part.
+Thank you.
+
+    </pre>
+</body>
+</html>

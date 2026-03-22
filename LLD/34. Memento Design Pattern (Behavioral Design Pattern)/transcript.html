@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>34. Memento Design Pattern (Behavioral Design Pattern)</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="memento_pattern_notes.html" class="btn">View Notes</a>
+    <h1>34. Memento Design Pattern (Behavioral Design Pattern)</h1>
+    <pre>
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And today we are going to do memento design pattern in the low level design.
+And after this only two design patterns are left.
+And mostly we are done with all the design patterns of LED.
+Right.
+So without wasting any time, let's start the memento design patterns.
+And before understanding the UML and the code, we need to understand why this pattern is used and when
+you should use okay.
+So this is a behavioral pattern.
+So this is the pattern category.
+So why you should use this pattern.
+So in an so this pattern is used.
+Or you can say that this pattern is specifically meant to store the object history.
+So whenever you want to build the undo functionality then always think about this pattern that can it
+be done with this because this pattern is specifically For storing the history of an object.
+Okay, so in an interview.
+Many times interviewer asked me that, hey Shreyansh, we want to design an application so that we can
+take a snapshot of its particular state.
+So that's why as many times you can also see that it is also known as snapshot design pattern, because
+for a particular application, whenever you want you can take a snapshot and keep it right.
+And whenever you required you can revert back or go back or undo to that particular snapshot.
+Right.
+And also one more good functionality.
+It provides it do not expose the object internal implementation.
+Right.
+I will tell you about this.
+What does it mean.
+It do not expose the object internal implementation.
+I will come back to it.
+But this is also which makes it like good design pattern for building the undo capability.
+So memento pattern has three major components.
+One is originator, second is memento, and the third is caretaker.
+Originator is what originator is the object actually for which we want to maintain a history.
+Right.
+So original is originator.
+Is it represent the object for which state need to be saved and restored.
+So it represents the object for which I have to save the state.
+Then what is the memento?
+Memento.
+You can say that represent an object which actually holds the state of what?
+Of originator.
+Right?
+So it represents an object which holds the state of the originator.
+So whenever we take a particular snapshot or a particular state, save a particular state of the originator.
+Right.
+So it is stored here.
+It holds.
+It holds the state of the originator memento.
+And then we have a caretaker.
+Caretaker is nothing.
+But you can say that list of memento.
+So we might have to save so many history of this object.
+So there can be so many mementos object.
+But some someone has to store all of this.
+Right.
+And maintain those caretaker manage those list of mementos.
+So I'll tell you this UML diagram.
+So here if you see the originator.
+So originator has let's say member variable state.
+It can have string integer or any other objects.
+But for this demo purpose I have said that let's say there is a state object which has certain properties
+like some property.
+String.
+Integer.
+Let's say val Something.
+So it let's say considered as a state.
+So original originator class has.
+Member variable state.
+Now it exposed two method.
+One method is create memento.
+Second method is restore memento.
+Now come back to this point.
+What I told you that this design pattern do not expose the object internal implementation.
+Right?
+That's where it is helpful that originator class itself expose this to method.
+If anybody from outside of this class want to make sure that, hey, I have to save the state of this
+object, they don't want to understand this object properly.
+They can simply call create memento.
+So there is another method called Restore Memento.
+So whenever I get a memento object it knows that okay from this memento object what all things I need
+to read so that I can go back to the previous state.
+So create memento and read memento.
+Logic holds in the originator and it has the logic what to save in memento and what to read from memento.
+Depend upon what is required to maintain or save the state of this object.
+Okay, so memento, we can have all the variables which are required to save a state of a originator,
+right?
+Whether we can have direct 1 to 1 member variables which are there in the originator.
+Or we can have specify some fields which originator know how to fill those up, because it is going
+to create an object of it.
+So it knows that what all values I need to add.
+Okay, so but for in this example I have just showed that they both have 1 to 1 like it has a state.
+It has also state so that whenever it create a memento it just put its straight object values into this
+state.
+So, originator, you know the purpose.
+Memento.
+You know the purpose.
+And then the caretaker.
+Caretaker.
+What is this?
+It has a list of memento maintains a history, so it exposes two methods.
+One method is add memento.
+So there can be we we might take multiple.
+We might have take multiple snapshot or save multiple state of this originator.
+So there can be many mementos.
+So we have a history list of memento.
+And if we want to add more it expose method.
+Give me the memento I will add it into this list.
+And the second is undo method.
+So what it does is from this list we can put a logic that hey, take out the last memento from this
+list and return it and remove that memento from this list.
+So now let's see an example.
+It will clarify you more right.
+So here I have taken a configuration.
+So I have taken a configuration example.
+So you know that right in you might be working and you have lot of configurations right.
+And it is possible that we might have to revert back.
+There is a issue uh with the current configuration.
+And we might have to roll back to a previous one.
+Right.
+So I'm just taking that example.
+Let's say I have a configuration and this is a originator class.
+It has certain member variable height and width.
+Okay.
+So this is just a constructor to have that.
+This is a setter methods.
+So originator has two method one create memento second restore memento.
+So we will come to this method uh later.
+But let's see first memento class then I have created a configuration memento.
+So configuration memento also has the same variable height width.
+Or you can choose based upon your requirement in the interview that what exactly is required to save
+the state.
+Okay.
+So here height and width is there.
+This is the constructor to set this and a getter method okay.
+So now here in the originator create memento.
+It knows it is actually the one which is creating a memento.
+So it is creating an object of this memento.
+It is creating an object of this.
+And it is filling the memento object, initializing the memento object like what values.
+So it is initializing with height and width.
+This height and width will get initialized to this one.
+So that's why I told you, right?
+Originator do not expose the implementation how to save this state.
+It knows that what is required for me?
+What else, what else, what all things I need to save my state if it only want okay, I only want to
+store height.
+I don't want width so it will only save this.
+Okay.
+So from the outer it they just need to call create and what it has to store that this class will decide.
+So here it is creating an object and passing both this object it will create and this will get initialized
+and it will return the object.
+Similarly in the restore method it will get an object which from which it has to restore, and it will
+update its data height and width.
+It updates its current state with whatever the past saved.
+Memento.
+Okay.
+And here is the caretaker class.
+So in the caretaker class I am maintaining the history of the memento.
+As I mentioned, it maintains the history of the memento.
+So whenever the ad memento comes.
+So this is the first method is exposed.
+Whenever the memento comes, it will just add into the list.
+And the second method is undo.
+So in the undo method, generally the functionality of the caretaker is take out the last state, because
+undo.
+If you have multiple saves, then when you do undo it, just move like to the last, then this, then
+this like right.
+So that's where it does.
+So in the undo it, take out the last index right.
+Take out the memento out of this, remove it and just send it okay.
+So just send this memento.
+So now let's see the client functionality here.
+What.
+So this client can be like which might be using this driver force.
+So here, if you see that I am creating an object of the originator.
+So this is the originator for which we need to save the state of an right.
+This for this object we need to save the state.
+So I am creating an object of an originator.
+And I am initially setting height as five.
+Width is ten.
+So this is the initial state.
+Now I am saving it.
+So originator dot create momentum.
+So what it will do originator it goes.
+It will create momentum.
+It will create a new object of the momentum.
+Put a height and width and return.
+Okay so I got a snapshot.
+This is the first object.
+Now I am calling a caretaker object and adding this memento in the list.
+So now this is the history.
+This is the history right?
+This one is the history list of memento.
+So I have created this object.
+Snapshot one.
+Snapshot one which has height five and width ten.
+This value generally it has.
+Right.
+I added it to the history.
+So it added to the history.
+Now the originator is changing its state.
+Now the originator has changed its state to seven and 12.
+So I've changed this value.
+Earlier it was 510.
+Now it has changed to 712.
+Now I am saving it again.
+So I am saying that hey originator, create the memento.
+So originator will go ahead and create a memento and return it.
+Now when it return it I am again saving it to the.
+I am giving it to the caretaker and telling it hey, add this snapshot also so it adding snapshot to
+Which has seven and 12 value.
+Okay, now originator is changing again.
+Its state originator is now nine and 14.
+Now I see that.
+Hey, something went wrong.
+I need to restore.
+Right?
+So what I am saying is that I am going to the caretaker.
+Hey, caretaker.
+Undo.
+Now what?
+This undo will do.
+Undo will take out the last memento object from the history and return it.
+So it will return this and remove this from this.
+You can say that the list and return this objects with 712.
+So I got this object memento object this one.
+And now I am asking the originator that hey restore from this memento.
+So now the originator object which has the value 914 now it Restored from it.
+Now it will change its value to seven and 12.
+So it will change its value to seven and 12.
+And if you print it, it will print seven.
+Height and width 12.
+This is the same client.
+And if we run it it should be like what should be printing instead of 914.
+We have already done restore.
+So it is printing the last one seven, 12 seven, 12.
+Right.
+So this is very simple.
+You can say the design pattern but very very effective when interviewer is asking you to maintain a
+history of a particular object so that you can develop the undo functionality.
+Okay.
+I hope this is clear with an example, but do practice it with your own example, right.
+And it will help you to get clarify more.
+Okay guys.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

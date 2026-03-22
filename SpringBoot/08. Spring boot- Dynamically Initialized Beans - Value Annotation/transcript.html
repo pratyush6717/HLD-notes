@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>08. Spring boot- Dynamically Initialized Beans - Value Annotation</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>08. Spring boot- Dynamically Initialized Beans - Value Annotation</h1>
+    <pre>
+Hey guys.
+Welcome to Concept and Coding.
+This is Shreyansh.
+And today in Spring Boot we are going to see how to dynamically initialize.
+Been using Add the Value annotation.
+If you remember in the Dependency injection video, I told you about unsatisfied dependency problem
+and how you can resolve it using at the rate qualifier annotation.
+Lot of comments I have received that hey, when we are using at the rate qualifier annotation, will
+it not break dependency inversion?
+So if you read all this right, all this red lines, you will find one thing that they are pointing
+one only one thing that it will break dependency inversion.
+Right.
+So I'll tell you quickly tell you what is unsatisfied dependency problem how qualifier we are using
+it.
+And then two solution first and second solution how we can make it dynamic okay.
+So in the unsatisfied dependency problem what is the problem is that There is an interface order and
+there are two childs online order.
+Offline order.
+Both are at the rate components means manage by spring.
+So very very basic class itself one constructor method and one create order method which is just printing
+created online order created offline orders.
+Very simple.
+Now here what happening is we have a user class which is a controller.
+Now it has a dependency on this order object.
+So I have put auto wired order.
+Now what would happen is when you start an application.
+So this controller is singleton scope because if you by default is scope so it is initialized.
+So spring will try to create its object.
+And while creating an object it will try to resolve the dependency.
+Now spring doesn't know hey which object to assign to this order, whether online order or offline order.
+Now spring doesn't assume anything, so it will just fail.
+Failed application.
+Fail to start.
+Error creating bean with name user.
+It doesn't able to create the bean user because it not able to resolve the dependency order which one
+online or offline.
+So to solve this, we see that there is one more that at the rate primary and at the rate qualifier.
+So how at the rate qualifier was solving it?
+This we provided the qualifier one name to online order.
+So in the online order above at the rate component we add at rate qualifier give any name.
+Similarly, for offline we have added this annotation at rate qualifier, offline order object any name
+and in this user class in this.
+Apart from this, what we were doing before, we have also added this qualifier here spring when you
+are creating an object of user, right?
+So if there are more than one order like this is just an interface, right?
+If there are multiple channels, you can which one, which object you have to assign to this one.
+This this qualifier online order object.
+So this object this class online order object will get injected here.
+Right.
+So this is where everybody pointed out that hey when we are using at the rate qualifier it's kind of
+we are hard coded the value.
+Now this order will always be like online order object.
+If user wanted offline you can't do it.
+Because now when spring will create a user object, it will only assign this online order.
+So whenever you will hit an API, create order.
+So order dot create order which one it will invoke online order one.
+Created online order created online order.
+So it breaks dependency inversion which says that dynamically you can provide any value.
+Now it's not dynamic.
+You have hard coded it.
+So I'll tell you that The first solution for the dynamic using first is using qualifiers itself.
+So the same order two childs online offline the same qualifiers is there for the online order.
+Qualifier is present for the offline order.
+Now here in the user class, what we have done is we have created two objects order same one order object
+but qualifier is online order object right.
+So this is the object online order object which is of type order and the qualifier is online order object.
+Another is offline order object.
+Again same type order only and the qualifier is offline order object okay.
+So see both this online order and offline order.
+Both are singleton.
+Both are singleton only right.
+So both beans will get constructed.
+So this bean will get injected here into this respective objects Offline.
+Offline.
+Order bin will get injected here in this one.
+Because of this qualifier, online order bin will get injected here in this object because of this qualifier.
+Right.
+So now here we have provided two objects.
+Right.
+Two qualifiers.
+Two objects.
+Now in this create user.
+Now since we want dynamic based upon user.
+So now let's say in the create order I have put okay.
+Hey user what you wanted is online order.
+Whether it's true or false is online order.
+If it is an online order yes then use online order object create order.
+Use this one.
+Else if it is false it will goes to else part and use offline order object.
+It will use this offline okay.
+So that is clear that how you can create dynamically using at the rate qualifier.
+And this is very very popular way.
+This is how actually in live today industry does it.
+So it's a industry standard way of doing it.
+So the second this is kind of a second solution where you can dynamically initialize your beam.
+So in the second way I have created an order.
+You have online order offline order.
+Now notice that there is no add the rate component.
+There is no add the rate component here to where I am using configuration bin.
+That's why I am manually providing the configuration now.
+Okay, so now rest all the code is same.
+So rest all code is same, no changes.
+Only thing is I am using now at the rate bin.
+I have already explained how to create a bin using rate bin annotation.
+Now here see what I have done is create order bin.
+So return type is order.
+So it will create an order type whether online order or offline order.
+But I want dynamically so I want I what I did is used at the rate value annotation.
+So at the rate value annotation and this is a placeholder.
+This is how you do it okay.
+Boolean is Boolean is online order.
+And this condition is same if it is online order return online order object else return offline order
+object.
+Now you can ask me hey, from where this value comes see at the rate value means at the rate value is
+used to inject values from various sources like property file, environment variables or inline literals.
+So in this examples this value is coming from configuration.
+So in there is something called application dot properties.
+I have already explained you in the Maven Avon, uh, Maven.
+Uh, video.
+Right.
+I think from starting third or fourth in this playlist.
+So in the application.properties I have set is online order, I have put false.
+So now what would happen is this configuration ultimately gets set into here.
+Right.
+So what spring will does is so whenever spring will see that okay at the right value is there.
+And whatever the placeholder is online order.
+Now spring will see okay.
+In the configuration is same value present.
+If yes it will use this.
+So the false would be assigned here.
+So now what would happen is is online order false.
+It will return offline order object okay.
+So whenever spring has to create a bean of order it will now use this okay.
+So now what would happen when you start an application.
+So in the user here if you see this is at the rate controller and it's a singleton.
+So during application startup eagerly spring try to initialize this eagerly so it will create a user
+bean.
+Now it will see that any dependency yes order it has to resolve.
+So now spring tries to resolve or create an order bean which one online or offline?
+Now here, if you see no at the rate component is present.
+So it will see okay.
+Is there any configuration I have been provided?
+Yes.
+There is a configuration provided for order now.
+It will use this.
+Now it will run this and see that okay.
+At the rate value.
+Any property file something present.
+Yes.
+In property file it able to find this value false okay.
+Offline order.
+So this will get inserted with offline order okay.
+And when you will hit this API order dot create order will be called offline order created offline order.
+And if you want to change dynamically in the application.properties itself, change it to true when
+you change it to true.
+Ultimately, this will get changed to online order because it's like true, it will return online order.
+So see, dynamically we are changing it.
+But here instead of client input we are changing it based on configuration.
+And in the first example we have seen based on the client input how you can do it.
+Okay.
+So you understand this at the right value right.
+It is used to inject value from various sources like property file and inline literals.
+Inline literals means you can also provide accurate value directly.
+Literal string literal.
+You have provided false true directly, right?
+So this value will get set to whatever you have set.
+So in this case false.
+I hope this should be clear now how to dynamically initialization of been.
+If there is any doubt let me know.
+We can discuss further.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

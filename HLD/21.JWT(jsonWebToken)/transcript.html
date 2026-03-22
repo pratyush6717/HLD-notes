@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>21.JWT(jsonWebToken)</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="jwt_notes.html" class="btn">View Notes</a>
+    <h1>21.JWT(jsonWebToken)</h1>
+    <pre>
+Hey guys.
+Welcome to Concept Encoding.
+And this is Shreyansh.
+And today we are going to do this JWT JSON web token.
+And if you have not seen the OAuth and cryptography videos in the same playlist, then I would highly
+recommend to go through this because JWT is highly linked with OAuth, uses JWT and JWT uses cryptographic
+keys and.
+All right, so go through it once it's already been covered.
+And today let's just start without any wasting time.
+What is JWT.
+So in a very, very simple term, it provides a secure way of transmitting information between parties
+as a JSON object.
+Right.
+So you already know JSON object right.
+It's like key value pair key and then value comma key value objects generally, right?
+So what?
+JWT is just a secure way of transmitting information between parties.
+Okay.
+This information can be verified because it's digitally, digitally signed using RSA etc. like Hmac
+is one more algo which we can use.
+Okay, so the message which you are transmitting between parties that can be digitally signed and how
+you can digitally sign.
+I have already explained the cryptography, but for now, in this definition, what you have to focus
+on is it was developed as just a way of transmitting information securely.
+That's all.
+But over the time we are using JWT in many different areas for authentication, for authorization Position
+and in.
+So whenever you are doing single sign on right, you are using JWT.
+And this is also one of the good interview question how you will implement single sign on to implement
+a single sign on you need JWT, right?
+So when I say that authentication JWT is used for authentication means confirming the user identity.
+If I am saying it verifies that yes, he is shreyansh.
+The message which is coming from Shreyansh authorization means it check for permission.
+If I am trying to fetch certain details, then JWT also helps in authorization that does Shreyansh has
+authority to fetch this detail or not.
+Yes, authentication is done.
+I am shreyansh, but do I have an authority to fetch certain details or not that also you can do and
+single sign on.
+You already know that you have signed in one.
+Application one.
+You have signed in.
+You have already logged in.
+Now there are different app.
+App two.
+App three.
+Right.
+Same user.
+So here you have signed in, but with the single sign on you can log in to different application.
+Now without trying to provide your username password.
+So it it was built as a way of just transmitting information securely.
+But this is today at this three places it is highly used.
+And this advantages.
+We will come again once we have finished all the understanding of the JWT.
+Because then only it will make sense because when I say that it is self-contained, it's only when you
+understand what is JWT, how it is a structure looks like, then only you will get to know.
+Yes it's self contained.
+Okay, so don't worry, we will come back to its advantage one more time once we will complete the JWT.
+But for now, what is JWT and where?
+Today they are highly used.
+That should be in total clarity.
+Okay, so this is you can say a flow of JWT today in the authentication part.
+So this is let's say this is a client.
+Okay.
+So this is the first happen is so this is your authentication server.
+So let's say any server which are there are many third party libraries available which provides you
+the APIs through which you can generate token validate token.
+And all right.
+So that's why any application authorization authentication server.
+So this is your app.
+This is your application.
+Right.
+So and this is let's say any third party application.
+Which support token generation and validation.
+Okay.
+There are so many available today.
+And that's one of the advantages of JWT that you don't have to incorporate the authentication logic
+in yourself.
+There are already, uh, third party libraries available, which we can use, and they will take care
+of generating a token, validating the token for you.
+You just have to invoke them.
+Okay.
+So let's call that third party application as authentication server.
+So as a client Right.
+First I have to provide the username password.
+So it will goes to an authentication server.
+You provided your username password.
+Now what this authentication server will do.
+It will generate the token and return right.
+It will generate the token JWT and it will return back to the client.
+Now client will do is the client has the JWT.
+Now it wanted to access a particular resource right.
+So what it will do is it will call our application resource where the resource is actually stored.
+So it will call the resource and pass the JWT in the header.
+In the header.
+Okay.
+So let's say it calls the get API.
+This is the get API.
+Let's say uh some details but it passed the JWT also.
+Now what this resource server your application will do is it will internally calls the API of Authorization
+server.
+Let's say some verify API and it will pass the token which it get from the client.
+Now this all this logic present into authentication server where it will validate.
+Yes, this token is generated by me.
+It is valid.
+I will tell you we will go more deeper into the token part how it validates it.
+But just for now, understand that authentication server will validate the token and it will tell to
+your application that yes this is token is verified.
+It's valid.
+It's valid token.
+Once it is valid token resource owner will grant you the permission and it will return you the data.
+Okay.
+So this is the flow diagram of JWT.
+So till now we are clear.
+But before we proceed further we need to understand what was popular before JWT.
+and what are the problems with it?
+So if you remember right before JWT there was something called session ID or many engineers might know
+it through session ID.
+I have worked with session ID right?
+So but this was very, very popular session ID so in this what used to happen is let's say a client
+first what it will do.
+Is it login with username password.
+The same let's say authorize authorization or authentication server.
+Third party server is there.
+Or generally what used to happen was resource server itself performs this task.
+Also.
+Generally there is no third party library, but for simplification purpose, let's say that you have
+another application which generates the session ID Okay, so first user provide a login with username
+password.
+It goes to your application.
+What it will do is it will create the session ID and save it in DB.
+That's the important part.
+It will put into the DB that this is the session ID right.
+And store all the information like expiry time, let's say session ID this belongs to this user.
+This is the expiry time and other information that what are the roles like.
+It can only fetch user details let's say certain roles it has put.
+So all this data will put will be inserted into DB.
+And this ID session ID which is just a unique random key Will be given back to the client.
+Now with this ID.
+So whenever it's send a request in the cookies.
+This client will also pass this session ID.
+Right now this resource server has to call the DB.
+Now with this session ID fetch all the details, do all the logic okay.
+Expiry time does it expired roles.
+These are the roles.
+So whatever the operation it wanted me to do send like fetch this does it has this roles or not.
+So it will do lot of validation at their side.
+And if it is got validated then only it will send the response, else it will throw error.
+So one of the major major catch is that every time you are hitting a request to fetch the details,
+it is hitting the DB to fetch the details from this particular session ID.
+Why?
+Because at the time of creation of session ID, when the time you provided username password, it was
+stored in DB.
+So it is stateful and JWT is.
+Stateless.
+There is no DB touch.
+Whatever the JWT token we are returning.
+That JWT token has all the information like expiry regarding user information etc. so there is no need
+for DB and that's one of the advantage that it is stateless.
+So Your J session ID is stateful.
+It relies on server side state management.
+Right.
+And since DB comes into the picture, now you know that in case of distributed system this might cause
+a problem, right?
+Let's say the server the application which creates this session ID into this DB right.
+So there are let's say different cluster of DB.
+This is master slave.
+This is one cluster one.
+Let's say there are different cluster of DB.
+So in a distributed system this all has to be sync up.
+All DBS has to sync up.
+We don't know this get request.
+This get request comes to where okay.
+So in case of distributed system extra handling need to be taken care.
+Right.
+And also one important part is during your Get request, your application has to query the DB, perform
+validation on top of it so there would be an extra latency add up of querying the DB.
+Now let's go back to the JWT again that what is its structure?
+How does it become stateless.
+Right.
+It needed so many information that rose expiry user ID and maybe some other unique ID.
+How it is able to store this just a token, right?
+So this is the JWT structure.
+So there are three things right JWT, JWT, J.W. but whenever we are talking about JWT right.
+Ultimately actually we are always talking J.w.s.
+Right.
+So this you can say that always used together.
+JWT J.w.s.
+We will.
+I will tell you how.
+So let's say understand this JWT structure JWT structure has three part one.
+After that there is a dot period.
+Then this is the second part.
+Then again there is a dot and this is the third part okay.
+So this first part is known as header.
+The second part is known as payload.
+And the third part is known as signature right.
+Let's go one by one header.
+So header already contains the metadata information of the token metadata like what is the type always
+JWT you will always find.
+I have never seen any other value apart from JWT till now.
+It's always JWT algo the signing algorithm.
+So here the signing algorithm which you have used RSA or Mac.
+Right.
+Or if there are other different algorithms you can use it, right?
+RSA I've already explained you in the previous cryptographic video and Mac is also I've explained you
+this is symmetric.
+This is symmetric cryptography key.
+This is asymmetric cryptography key.
+Right.
+So I've already explained this.
+So header contains information about metadata of the payload and the signature.
+Now your payload.
+So I told you that payload actually contains the information.
+Or you can say that actually it contains claims right.
+So in simple terms user information or any additional information is kept here.
+Right.
+JWT you see that these are the claims the understand claims.
+Nothing like a just an information whatever you want to get.
+So this these claims are divided into three parts.
+Registered claims.
+Public claims.
+Private claims.
+Okay, so in the payload it is all comes under this only all comes under this only.
+But let's say that there are certain this words which are reserved by JWT.
+So those are known as registered claims.
+They have very specific meaning.
+For example ES which JWT understand as issuer the entity that issued the JWT, for example ES is issued
+by.
+Some are JWT issuer at the rate that something some website link or something which identifies who is
+the issuer, then subject identifies the user, let's say.
+Subject sub 1234567.
+Some unique identifier which identifies the user.
+Who is the user.
+Then your audience identify the recipient for which token is intended.
+AUD let's say AUD would be uh, your whatever your your company name or anything for which it identifies
+the recipient.
+Then expiry time after this.
+So exp is like which tell the expiry time.
+After this time token is not valid, then nbf not before time before this token should not be accepted,
+right?
+So whatever the time is there before that you cannot accept the token and expiry is that after that
+this token is not valid.
+Then there is something called IAT, the time which token is issued and JT is unique.
+JWT id some unique ID for this token.
+So if you see that these names are reserved by JWT means they have predefined predefined name and meaning.
+But now let's say that apart from this registered name, you have to put some other like I have put
+here email.
+So those would be considered as a public claim.
+It's a custom claim which can be shared and understood by multiple parties.
+Right.
+So I have given the name email.
+Anybody can understand that it will contain an email ID of the user.
+Right or certain.
+Don't never ever put some very very you can say that confidential information inside a payload like
+some password or or never put never put your confidential information inside a payload.
+Right.
+So let's say email.
+Apart from that, let's say that, uh, okay, uh, some, uh, country so I can put country, let's
+say India.
+So if you see that these are not registered names, I can put anything email, country, city or let's
+say that last name, first name.
+So these are you can say that a public claim which is understood which is understood by multiple parties.
+Right.
+They know that okay country I will get the what is the country name for this user like city.
+I know that this what city belongs to.
+So these are the public claims.
+These are custom claims.
+You can use any but it should be shared and understood by multiple parties.
+Then there is something called private claims which is like understood by this your authentication server
+itself.
+So let's say that it calls that username password.
+Now this authentication server has to generate the token.
+Now let's say it has put uh I some IAM right.
+And this is uh let's say resource server and resource server one.
+Resource server two.
+And it is passing this token to this JWT token to this.
+Now this resource server one.
+Understood this.
+What is IAM what is IAM.
+It doesn't understood it even though it is present inside here in the payload.
+Let's say another IAM.
+This is not understood by resource server one, resource server two.
+When they pass it to authorization server for validate only.
+This understood it.
+Maybe for some internal purpose it might have added it, which is not understood by multiple parties.
+That's what known as private claim.
+Public claim is understood by multiple parties like, let's say country.
+Yes.
+Now resource server can understood that this is the country for the user.
+But what is IAM I don't know.
+I don't know.
+Only authentication server might know it.
+Who has added it.
+So that is known as private claim.
+It is again a custom claim.
+You can add anything.
+But these are not identified for.
+But these are intended for internal use only and not standardized right.
+So these are not standard like not expected other parties to know this resource server one doesn't know
+this resource server two doesn't know this authentication server which created it.
+They only know this right.
+That's why known as private claim.
+So understood.
+So in the payload you can have have these claims.
+But these claims are generally divided into three parts, but it's all under the same object, just
+an object.
+Now the third part is your signature.
+This is very, very important.
+And that's why I told you sometimes JWT and AWS when we whoever tells you JWT sometimes also covers
+AWS because signature.
+The third part of token is your signature.
+And that's what Jess also is JSON web signature.
+Okay, so they are used.
+You can say that interchangeably.
+So now what signature.
+Now you now you have header.
+Now you have payload.
+Now what you will do how you will get a signature.
+So what signature will do is it will first encode JWT header.
+It will first encode Header base64 encoder.
+It will do header payload.
+Also it will do uh encode base64 encoding for this payload.
+So it will also do base64 encoding for payload.
+So it first encoded this header and it then it first encoded this payload.
+Okay.
+Then in concatenate the header and payload using this dot period.
+So it will put a period and then concatenate this.
+So it's now one string.
+Okay.
+So it would become like this your header and then your encoded payload.
+Encoded header encoded payload.
+So this is known as your message.
+Or generally you can say that uh your information.
+Now you are using RSA or any cryptographic, either asymmetric or symmetric, to create a digital signature.
+Now you will pass it this message string to some algorithm.
+Right.
+So this is your one string message comma some key.
+Because now we are passing it to algorithm.
+If you are using RSA for example asymmetric key you have to pass a private key.
+If you are using Mac you have to pass one secret key.
+And the same secret key would be used at the time of digitally signing it, digitally verifying it.
+Right.
+Because in symmetric key the same key is used.
+Same key is used while signing and while verifying it while right, and in the RSA two keys are used
+are private key and public key.
+So during signing it is signed through private key and during verifying the signature it is verified
+through public key.
+Okay, now once you have got this signature let's say some string encode the signature.
+Also generate in the previous step you can encode it right.
+Now let's say you have.
+So whatever the signature you got let's say x y z a b c.
+This is the signature you got.
+Right.
+You have to encode it.
+Also you have to encode it base64 encoded also and concatenate using this dot.
+So your header base64 your header dot.
+Base64.
+Your payload dot.
+Now your base64 encode of your signature.
+Got it.
+So ultimately this is your JWT.
+Gonna looks like.
+So this is your base64 of header dot.
+This is your base64 encoding of your payload.
+This is your base64 encode of your signature value and how the signature value is generated I told you.
+Okay, so here I have shown one sample get request.
+Here I have shown you one sample API here.
+If you see that I am making a Get request to this some dummy API okay.
+And in the header part there is a header called authorization.
+You have to pass like bearer and pass this this token.
+Now you can ask me, right.
+Hey, why we have to pass this bearer.
+So in the header right there are you can add multiple like key value right.
+So one of the standard industry standard is that wherever you are passing the credential you have to
+pass the credential into authorization header so that it would be handled accordingly by the server.
+Right.
+So that's why I told you right.
+So there are certain industry standard that yes I will get credential.
+So it should be inside this header of authorization.
+So they can put a specific logic.
+It should not be like randomly anywhere coming.
+So this is the header name.
+They have decided that okay authorization put inside this.
+Now inside this authorization there are multiple thing like basic Bearer when like you are doing that
+basic and then some encoded value a b c d e f g something so basic means that you are passing username
+password.
+So when you decode this base64 value decode this.
+For the basic you will get like something like this username colon password.
+But if you are passing like bearer and then value then server will understand that okay this is not
+username password.
+This is token bearer means like industry standard means token is passed to me.
+So I should behave in accordingly.
+Okay.
+So you might have a different logic.
+If username password passed you might have a different logic that okay if bearer comes means token is
+passed to me, then I have to call certain server and validate it okay.
+So JWT is always passed from client to server in the header of authorization, but with the bearer word
+not basic.
+Remember Basic is for username password, so credentials always pass into authorization.
+So this is a sample request.
+Okay.
+So now before going to the challenges with JWT.
+So now let's come back to advantage.
+First thing is you understand that it's a compact.
+We are encoding it.
+And because of its size it can be go inside a header itself HTTP header itself.
+And its transmission is also fast because of its small size.
+I have already told you it is stateless.
+It is self-contained.
+All the information you can kept it expiry time, user ID, anything it is can be digitally signed.
+So I have already told you j.w.s.
+Generally what we understand JWT.
+So we are we are adding a signature right.
+So that is AWS.
+So means we are signing your token.
+So JWT J.w.s.
+Is using interchangeably.
+You can say that.
+So we can sign it using H and RSA.
+And when you sign it at the receiver end you can validate that yes the message is not changed at all
+right.
+Built in expiry time I told you that it is stateless.
+You can add expiry time here.
+So you don't need DB.
+So built in expiry expiry mechanism.
+Is there custom claim additional data can be added in JWT like roles.
+You have to add certain roles for this user.
+You can add it into the claim itself.
+So these are all the advantages of JWT which makes it stateless.
+But now very very important part from interview perspective.
+What are the challenges with JWT?
+So you understood till now, right?
+But before challenges, I will also tell you that let's say single sign on.
+So.
+So let's say that this is your company.
+You have F1, f2, F3 this is you.
+So now I think you already know what how the single sign on works.
+So first it will goes to certain authentication server where it provided username password.
+It will get the JWT token.
+Now what does happen with the single sign on is let's say you are trying to log in to.
+You are trying to opening this app one W-w-w dot let's say f1.com.
+You are trying to open it.
+So what it will do is it will pass the JWT token also whatever you have received.
+And when this app one receives received JWT token, it internally tried to verify the your JWT.
+If it verifies it will sign in.
+Right.
+And all this user information like let's say username email ID is already available in your payload,
+so it can help you to sign in.
+Hi.
+Strange, how does it know?
+It knows to JWT token itself that payload has maybe my name, my email ID so it able to verify me.
+Similarly when it able to goes to app to it will pass jwt app to uses the let's say verify this token
+from the server authentication server once it validated.
+So verification signature everything is all good, nothing tampered.
+It will help me sign in also.
+So here if you see only once I have provided the username password I got the token.
+Now the same token, I am using it to login at multiple places.
+So that is known as so.
+And this is implemented through JWT.
+Now there is one big problem with JWT token invalidation.
+Since JWT is stateless what does stateless means that these servers application server doesn't know
+about this JWT at all, right?
+It is issued to a user.
+Now once it comes to them, they just validate it.
+If it is valid, they will provided the access.
+Now let's say that this user is fraud user.
+This is fraud.
+Now I want to block.
+Now I want to block him.
+Block this user.
+But this user has a token which has expiry time of let's say, uh, today is, uh, March, let's say
+April till 20th or 21st April.
+So till 21st April, this has a valid token.
+Now, even though this is a fraud user, how you will make this token invalid?
+If I make this request to this application two it will check with the server.
+Pass this token.
+This token is valid.
+Its expiry is not yet come.
+So how you will invalidate the token.
+So let's say that I have a blacklisted user.
+How to invalidate a token before its expiration.
+Biggest problem.
+So there are today multiple ways through which we are doing this.
+First is server need to keep the list of blacklisted tokens right.
+And either the DB or cache lookup is required while validating.
+So here.
+You have authentication server, right?
+And then there you have app one.
+App two multiple.
+So it can maintain a.
+Token.
+Blacklisted.
+Blacklisted tokens.
+Right.
+And each token is identified using a particular ID.
+I already told you there is something called unique token ID, right?
+So now let's say that based on that it put the particular JT this token is invalid.
+This is blacklisted.
+Now when this fraud user is passing the JWT token and it is trying to validate it, it will check its
+blacklisted.
+Whether it's putting it in cache, whether it is putting it in DB.
+This blacklisted list it can validate that hey this token ID is there in blacklisted list.
+I need to deny it.
+But this has a problem.
+That which the problem you are solving with session ID avoid lookup of db or cache.
+Now you are doing that.
+Okay so this is one problem.
+But so this this will solve the problem.
+But this again has a disadvantage that you have to do a DB or cache lookup.
+Okay.
+What are the other ways.
+The another way is to change the secret key itself.
+So the change the secret key.
+Uh, let's say that the uh, earlier you were using for signing it, you are using RSA.
+Let's say you are using private key.
+Public key one.
+This is public key one.
+Now you have changed this key to two.
+Two.
+So now at the time of verification it will verify the signature right.
+So now it will try to verify with the new public key.
+So it will invalidate because it was signed through one private key one, and if it will only be verified
+properly if you sign it with public key one only.
+But now you have changed the key itself.
+So it will it will deny the user.
+But what is the problem?
+Or if the apart from this fraud user, if there are some genuine user also which was given a token using
+private key one which was given a token which was signed using private key one that will not be able
+to access your data.
+Also, they might have to log in again.
+So that's the problem.
+That uh, second is if you change the secret key, this will solve the problem.
+But this will make the JWT invalidate for all genuine user also.
+But this is you can say that again a problem.
+What other thing we can do is make a token should be very short lived instead of till April, right?
+Let's say instead of till April.
+What if I make that okay only for five minutes?
+Your token is valid only for five minutes.
+Your token is valid.
+Okay.
+So this will resolve a problem, but still till five minutes that problem exists.
+So this sometimes is very popular.
+And also this is popular.
+That token should be used only once.
+So generally this is combined token should be used only once plus very short lived let's say five minutes.
+And it should be used only once.
+After that you should generate a new token.
+So this might solve a problem okay so but these are the different ways based upon your requirement.
+Uh one of the solution is implemented.
+Right.
+So you can also ask me that.
+Hey, how do we know that token should be used only once again to implement this?
+This, uh, j JT the unique token id.
+JT unique token id is some somebody.
+It has to be stored in cache or somewhere where it will check that.
+Hey, I have seen this token before, right.
+So somewhere it has to do the DB.
+So but you can say that the short lived tokens are that's why very popular.
+It's not whenever you get a token it's not valid for one day, two day, one month.
+They are very short lived.
+Use it in within five ten minutes.
+After that you have to might need to log in again okay.
+So token invalidation has a problem.
+Genuine problem.
+There are different solution for that based upon the requirement of the let's say the question which
+has been asked or your company multiple uh, you can say that mix or one of the solution is implemented.
+Second JWT token is encoded not encrypted, so it's less secure.
+I told you right.
+You have header, then you have payload and then you have signature part.
+Ultimately token is your encoding of header dot encoding of payload dot encoding, base64 encoding of
+your signature value which ultimately got.
+So here if you see that payload has mostly all the information and that is encoded, and you know that
+this encoded payload, you can simply do base64 decode and you will get the data.
+So this is less secure.
+And for that j w e comes into the picture which is JSON web encryption.
+So what it does is nothing.
+Exactly same what we are doing.
+But instead of encoding this letter of this payload, it will do encryption of this payload.
+That's all.
+And at the receiver side when verify should be happen they can decrypt it.
+So your authentication server knows the keys let's say RSA for encryption decryption encryption should
+happen through public key.
+Decryption should happen through private key.
+We have already discussed in the previous video right.
+But JWT is right.
+Encrypt your payload only.
+So JWT token is encoded not encrypted.
+It's not secure.
+What to do?
+Go for JWT.
+In JWT, your payload part is encrypted and when your application calls the your application calls the
+server to verify it.
+So server knows already the key how to decrypt it.
+So they will decrypt the payload and then do it, fetch the information and check expiry time and all
+and then do the validation.
+Okay.
+So third the interview question comes is that in the JWT token ultimately let's say now you will get
+more clarity JWT and AWS JWT token.
+If it is not j.w.s in the JWT token you have header, you have payload and there is no signature.
+So in the header you know that algae part which says that what algorithm you are using for signature?
+It is none.
+I am not signing it.
+So such that is known as unsecured JWT where your algorithm is none for the signature that JWT should
+be rejected.
+Ultimately this JWT there is no signature part.
+An algorithm is none, but this is known as unsecured JWT, J.W. says.
+JSON web signature where you have an algorithm.
+RSA whichever and you are doing the signature.
+Also putting the signature.
+But that is known as j.w.s.
+But since nobody is using JWT without the signature.
+So that's why the terms are JWT J.w.s.
+Use interchangeably because nobody use JWT token with algo.
+None signature always present.
+Okay, so without signature it is known as unsecured JWT which is never entertained.
+It should never be.
+It should always be rejected with algo.
+With none.
+Remember?
+Now see, this fourth and fifth part is very important from, uh, you can say that interview and uh,
+the majorly attacker which use there is something called j w k j w k exploit.
+So in the header I told you about type, I told you about algo.
+But there is something called j w k also, right?
+It is your key JSON map key.
+So public key is shared in this public key is shared in this.
+And it say that.
+So you know that signature you have a message.
+So message is sign using what key private key.
+And this verify message is verified through public key.
+Now this message JWT you got a message and it is already signed right.
+And now this user is trying to call a resource server and passing the JWT.
+Now this resource server should not have any logic to read the in the header.
+There would be some j.w.k it will pass the public key.
+Also this n or e combinedly form a public key, right?
+This is I think, your exponent part and this is your modulus part.
+So this both combine make a public key.
+So resource server should not verify your JWT with the public key which is coming inside this j.w.k.
+No it might be possible that attacker has changed the message right.
+And put its own public key and its changed the signature, also the signature of the.
+So it is possible that in the payload, in the payload, attacker has added some, added some values
+and it's signed it again with its attacker private key.
+Now you got the JWT from this.
+Now you have to verify this sign digitally signed that it is coming.
+Uh it is a valid or not is data is tampered or not.
+If you use this public key which is coming in this j.w.k.
+You might get.
+Yes, it is verified because attacker might have added its public key.
+Hey, verify with my public key.
+So you might get accepted this payload that this is valid payload.
+But my attacker might have added some other details which is not intended.
+So JWT exploit is that never use public key which is shared inside this j.w.k.
+within a header.
+So what to do?
+How?
+So now let's say that resource owner want a public key.
+Want a public key to verify it.
+How to do that.
+Or let's say that resource owner is calling the authentication server.
+Now authentication server has to get the public key to sign it.
+How it knows there is something called kid key ID.
+I told you initially, right.
+There is something in the header.
+Also there is something called kid which you can add it inside a JWT also at the top also.
+So this kid is nothing but a key ID, right?
+And this key ID is used by your authentication server.
+There is whatever the authentication server you are using right.
+They all maintain a well known J.W. Jason.
+So they have their own.
+Or you can say that a link where they have a list of public key, list of public key which can be used.
+So these are you can say that the whitelisted public key which authentication server can use.
+And since these are public key everybody can know it right.
+There is nothing to hide it.
+So that's why they have generally this kind of link.
+Whatever the authorization server, authentication server third party you are using, they might have
+their own well known JS dot JSON.
+This will contain the list of public key and each one will have a ID.
+So this ID is present here.
+So how the public key now authorization server knows that which public key I need to use to verify this
+signature.
+It uses the kid looked into it's Whitelisted public key and choose one kid.
+Okay, this is the public key.
+This is the kid.
+This is somewhere.
+Stored securely.
+Public key.
+And it will use that.
+So now you know that these are the whitelisted.
+These are the whitelisted public keys which can be used.
+Right.
+And with the kid, you can get that with the kid.
+You can use that from the list.
+So you got it.
+Now if attacker you can say that.
+What if attacker adds its own public key here.
+Right.
+And pass that kid right.
+Then it's an issue.
+Then we have to use a third party.
+That's why we always say that choose a third party properly who is well known has taken all the precautions.
+Right.
+Security measures.
+Otherwise, attacker may add its own public key into its whitelisted Stayed right somehow, and then
+pass its own kid in the header and your resource server.
+Uh, or maybe you, when you pass authentication server, use that kid.
+And they say that, yes, this is present into my whitelisted public.
+Let's accept this payload.
+So you got it right.
+These are some of the issues with the JWT.
+And this is actually what JWT is.
+I hope it's clear what problem it solves, what problem it has.
+No there is no silver bullet for any technology.
+JWT is highly used but it has certain gaps.
+But there are like if used properly, right then it's uh like very very beneficial.
+It makes life easier.
+Authentication.
+But.
+Okay guys, see you soon.
+Bye.
+    </pre>
+</body>
+</html>

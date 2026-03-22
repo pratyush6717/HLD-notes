@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16. Null Object Design Pattern (Behavioral Pattern)</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="null_object_pattern_notes.html" class="btn">View Notes</a>
+    <h1>16. Null Object Design Pattern (Behavioral Pattern)</h1>
+    <pre>
+Said, welcome back to the channel.
+And today we will do null object pattern which belongs to a category of behavioral pattern okay.
+So let's first understand the problem before even we try to understand what does null object pattern
+does.
+Okay.
+So let's say that the problem is the our code without null check lead to an unexpected behavior due
+to null pointer exception.
+We all know that we are working in an industry, and we know that null pointer exception is the biggest.
+You can say that error contributor sometime okay, resulting in a poor user experience.
+This is also known as.
+This is also a bad programming practice because null pointer exception in a code means it's a server
+error and it is not handled properly and it is not expected.
+Okay.
+So this shows a use case which is not handled properly.
+And that's why it's a bad programming practice.
+And that's one reason we have to put so many not equals to null checks everywhere across the code,
+so that we can avoid null pointer exception.
+I have seen engineers even with every line of code, they feel like okay, if I put a null pointer exception
+if not equals to null check even though it is not necessary, but they just add it.
+Just it gives a little confidence that okay null pointer exception should not come.
+That's why like we as an engineer we all know that we fear this null pointer exceptions a lot because
+if this comes in life it is does not look good.
+And that's where we use lot of not equals to null checks across the project which makes it difficult
+to manage.
+And it is also a polluting the code unnecessarily.
+So understand this with an example.
+So here I have a vehicle interface which has very two simple uh, you can say that no need to put abstract
+internally, it automatically does that.
+We have a start and stop method.
+Okay so I have two class car which is a vehicle.
+So it's a child of this vehicle class.
+Similarly bike it is a vehicle.
+So it is also a child of this vehicle class.
+And here there are certain car specific fields.
+Bike specific fields.
+Very simple.
+No uh extra in that only thing is very simple interface vehicle.
+And we have two child car and bike and they have, uh, provided the implementation of start and stop.
+That's all.
+Okay.
+Very very simple class.
+Now we have one factory method here.
+Factory pattern.
+So I have a vehicle factory.
+And based on that type, which user is, uh, giving me if it giving me car, I am creating a car object.
+If it is giving me a bike, I am creating a bike object.
+But for everything else, I am returning the null.
+Understand that this is one part of the problem.
+So in one piece of the code, we return the null.
+So let me write here.
+Returning null is also a one part of the problem.
+Okay so I returned the null.
+Now let's say the client which are using it.
+So it calls the factory.
+Hey, give me an object of truck.
+So truck equals to car.
+No.
+Truck equals to bike.
+No.
+What?
+It will return null.
+So my truck object is actually a null.
+Now I have to use that.
+Hey truck object not equals to null.
+Then only try to call the start method.
+Otherwise if you don't put this condition not equal to null, it will throw null pointer exception.
+If you don't put this if condition.
+So we can say that this if condition if not equals to null.
+This is also a problem.
+So returning the null.
+And then we have to put a safeguard that it should not be null.
+That's the problem which actually null object pattern tries to solve.
+Because see this is very basic code.
+Just two classes.
+And with that itself we have to put like return null not equals to null.
+Just imagine when we have thousand of classes methods at how many places we have to put a null check.
+So that's where the null object patterns comes into the picture.
+So it tries to come up with a way so that we can avoid this not equals to null everywhere across the
+code.
+So it says that.
+So null object pattern is a behavioral design pattern that uses polymorphism to eliminate null checks.
+How we will see that.
+So instead of returning null.
+So it is to us.
+Hey engineers, instead of returning null, you can return a null object.
+Okay, so here we.
+It is saying that you can return a null object that implements the expected interface but does nothing
+default behavior.
+So what it what it is saying is that instead of returning null, why can't we return a null object and
+that null object does nothing?
+Or the default behavior which you want, so that you don't have to put not equals to null, even though
+you will try to access it, it will do some default behavior or do nothing.
+This lead to a clean code without redundant null checks everywhere.
+So let's see that how we can do that.
+So consider this class diagram.
+Here we have an interface which has certain operation.
+Okay.
+Now this is the object which provides an implementation.
+So here in this case consider that it is our vehicle.
+And this is car okay.
+Which provides an It's an implementation.
+But here we also create one null object which is also a child of this interface.
+Okay.
+And for this operation it does certain default behavior or do nothing itself.
+Now whenever we have to return null we can return the null object.
+See this one.
+So again the vehicle interface we have car.
+We have bike.
+We have already seen like when you call start it will start the car.
+When you will stop it will stop the car.
+Similarly bike providing an implementation for this two very simple.
+Nothing else.
+Okay now here if you see that null vehicle.
+So I created this null object.
+Null vehicle which is also a child of vehicle.
+So here I am giving the default behavior if I want.
+So for color let's say I give default color.
+Seating capacity is zero okay.
+So that's why I added certain field that.
+So this is not bike specific.
+This is no no specific like so.
+Some default values to the fields okay.
+And when you call start and stop I'm doing do nothing.
+So that's what it says that we can create a null object which does nothing or default behavior whatever
+you like okay.
+So now in the vehicle factory the only difference is that if type is car, return a car object.
+If type is bike, return a bike object.
+Else instead of returning null, we are returning a null vehicle object.
+Null object.
+Okay, now now let's say that vehicle factory dot get vehicle truck.
+So it is car.
+No, it is like no.
+So now it will return null vehicle object.
+So this truck object is not actually null.
+It's null Vehicle object in this scenario.
+So whenever you will try to do dot start it will call this.
+Do nothing.
+So you don't have to put not equals to null.
+Not equals to null.
+You don't have to put it.
+So that's how easy it is.
+And that's how we can avoid so many null checks.
+Okay.
+Only thing is instead of returning null, return the null object.
+And that null object is still a child of your.
+Whatever the product your is, it is one of the child class with the default implementation.
+Okay, easy.
+So it's benefit is it?
+Make code cleaner by eliminating repetitive null checks.
+Reduce null pointer exception risk.
+Increase code readability.
+So null object pattern.
+Again I would say that you will find this into the industry.
+Uh it's very frequently used.
+But still if you have any doubt let me know.
+We can discuss further into the comment section.
+Okay guys.
+Bye.
+    </pre>
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>07. Bean Scopes - Singleton, Prototype, Request and Session Bean Scope</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>07. Bean Scopes - Singleton, Prototype, Request and Session Bean Scope</h1>
+    <pre>
+Hey guys.
+Welcome to Concept and Coding.
+And today we are going to see a new topic in Spring Boot that is been scopes.
+And here till now we have covered all these topics and also all this green which I have highlighted.
+And today dependency injection we have already covered.
+We have already seen bean everything its life cycle.
+And today I'm covering the scopes.
+Very important.
+Okay so we have covered till here.
+Okay so let's start without any wasting time.
+So the first and foremost what is the prerequisite to understand the scope.
+So you have to have the understanding of bean and its life cycle which we have covered in the previous
+session.
+So there I have told you this bean life cycle.
+Right.
+This is the flow.
+It goes.
+So this is very important to understand the scope, right?
+Why?
+Because there are multiple different type of scopes singleton prototype request session.
+And also there are one more application right.
+So there are five types of scopes.
+And generally if you know this life cycle of a bean, it would be helpful for you to picturize like
+okay, at what time the object is getting created.
+Okay.
+So please have a look at this bean and life cycle before you jump into the scope video.
+Okay, let's start with Singleton.
+So this is the default scope.
+So here consider this classes.
+This is the class we have already seen.
+You can create it as a Rest controller where you can define an API like I have given get mapping.
+We have already seen that.
+Okay, so does I have defined any scope here?
+No.
+No scope I have defined here.
+So what would be the default scope here.
+Singleton.
+So what does singleton means.
+Only one instance created per IOC.
+What does that mean?
+I told you, when you start an application, let's say when you start an application, you see that
+you will see web server application context started.
+Right.
+So that's actually your IOC is getting started.
+So only one instance created per IOC.
+Right.
+Or you can say that in most of the manner one instance per application.
+Considering that one application is running only one IOC okay.
+And one more thing.
+If you remember, I told you that Singleton are eagerly initialised by IOC and I have showed you the
+example of eagerly and the lazy initialization.
+Also, while I was explaining you this life cycle, I have explained both eagerly and lazy.
+So singleton are eagerly initialized.
+Let's see an example.
+You will recall it better.
+So this is one class, very basic class.
+I haven't defined anything here.
+No scope.
+So what would be the default singleton?
+This is another test controller two.
+But here if you see I can also do this at the rate scope you can do value equals to like this configurable
+bin factory dot scope singleton.
+So this is like even though singleton is default is singleton only.
+I don't have to write it, but just for demo purpose that you can also specifically write also in this
+way.
+So there is another class which I write user, which is a component, and I can write it like this also.
+And there is a scope and direct you can put a string singleton right.
+Internally this enum it's actually string only singleton right.
+So anything whichever you like you can use it.
+Either you can use directly string or enum or you don't do anything in all manner.
+It's this class is a singleton class.
+Now what would happen when you start the application?
+What would happen?
+So if you know the life cycle of a bean, what would happen is when you start the application IOC started
+and when IOC started, what it will do is it will look for the classes which need to be managed by spring.
+So it will look for at the right component, at the right rest controller kind of classes.
+So it found this test controller one first.
+So what it will do is it will call its constructor test controller one instance initialization test
+controller one instance initialization.
+But this object is not fully constructed yet.
+As you know the life cycle right?
+First it construct a bean, then it inject the dependency then call post construct.
+So currently it created a bean.
+But dependencies are not injected.
+So now it will look for okay is there any dependency.
+Yes.
+User.
+So now user would be invoked.
+So user initialization will happen here.
+If you see second is user initialization.
+So user has any dependency.
+No.
+No dependency.
+So means user now goes to the next life cycle post construct user object created.
+And it's hash code is this.
+So one user object is created.
+User object created.
+So now let's say that user object got created with hash code some 1140202235 something something.
+Okay.
+Now this dependency is injected here in the test controller.
+So in the test controller in the user this got injected test controller one okay.
+So now is there any more dependency here.
+No.
+So now it's post construct will come.
+So now it will write test controller object hash code.
+So it's hash code.
+And also I am writing user hash code.
+So printing this.
+So what it will print test controller object hashCode some new hash code like say this is this object
+hash code.
+And we are also printing this object hash code.
+What would be the same 1140.
+It will print the same like 1140.
+This this and this would be same same user object.
+It would have.
+Right?
+So currently only one object of user is created.
+One object of test controller one is created.
+Okay.
+So this constructor is done eagerly initialized.
+Now spring will say okay.
+Is there any other class for which I need to create eagerly initialized?
+Yes.
+Test controller two.
+It will see that okay, it is singleton.
+It can be do eagerly initialized.
+So what it will do is test controller two instance Turns.
+Initialization test controller to instance initialization.
+Now the second step is inject the dependency.
+Now it says that user.
+So user is singleton means only one object would be created and it's already created right.
+So the same object would be into the test controller two into the user.
+The same object would be inserted, the same object would be inserted.
+And after that it will reach out to post construct as there are no more auto wired.
+So test controller hashCode some new hashCode for this one.
+It's hashCode, this object hashCode.
+And for this user it would be like the same.
+This only.
+So test controller object hashcode user is same.
+So the same one.
+So you got it Like in a single turn, only one object is created per IOC.
+So this is just a different way of telling a class that it's a singleton.
+And when you start an application, it is eagerly initialized.
+And I have shown you with an example that this is how generally it resolves it.
+If the object is not created, it will create.
+And once it is created, the same object is used everywhere.
+And now if you are invoking an API, let's say you are invoking this fetch user API or fetch user two
+API.
+No object construction will happen, it will simply invoke the particular API.
+All the objects are created before itself.
+We have seen okay.
+So Singleton is clear, right?
+Cool.
+Now there is one other important is something called prototype.
+Right.
+So what does prototype say is Says that each time a new object is created, no matter if you are.
+If if a class is defined as prototype, new object is created each and every time.
+Very simple.
+Another important part.
+Very very important.
+It's lazily initialized.
+It's not eagerly initialized.
+So what lazily initialized means when object is created.
+Or you can say that when object is actually needed, actually needed, then only it would get created.
+Okay.
+So when object is actually needed, then only its get created.
+So I will explain you with this simple example right.
+So here test controller one class.
+This is a Rest controller.
+So there are some APIs I have defined here.
+So this is how the prototype you can do at the rate scope and you can use this enum configurable bin
+factory scope prototype.
+Right.
+So this class has this two injection dependencies.
+One is user, one is a student.
+Let's see a student first.
+So a student is a component and there is no scope means it is singleton okay very simple class.
+And this student is dependent on user.
+So this is dependent on this user okay.
+So and test controller is also dependent on user.
+So it is also dependent on this user.
+And what is this user classes prototype.
+So now see here I have I can define a prototype like this using enum.
+Or you can use even a string like directly at prototype in double quotes okay.
+So means user is prototype class scope and test controller one is also a prototype.
+So means every time a new object would be created for it, the student is singleton means only one object
+would be created in the system.
+So now if I run the application, what would happen?
+So now let's say if I run the application, what is IOC will see that it will say okay rest controller.
+It would find it.
+Now it will see its scope.
+Hey is it Singleton.
+No it's a prototype.
+Prototype is lazily initialized.
+Not at the time of application startup.
+So it will skip it.
+No, I won't create its object until it's not used.
+Then it finds, let's say user.
+Hey, user is component.
+Its scope is prototype.
+Okay, this is also lazily.
+I will not invoke it.
+I will not create its object.
+Then it will find a student.
+Okay, this is Singleton.
+Singleton is eagerly initialized.
+I can create this object.
+So first it will create a student instance initialization.
+So it will create student instance initialization.
+And after this what would happen is it will look for dependency.
+Second step.
+Now the dependency is on user.
+So it has to be resolved right.
+So now user is prototype.
+So now at this time user object is created.
+Because it is now it is required.
+It is now used right.
+So now user object would is initialized.
+User is initialized.
+Does user has any dependency.
+No.
+So it's post construct would be called that.
+It's been is properly constructed user hash code.
+Some user hash code is got that this is the user object.
+So this user object is now injected here.
+now.
+Any more auto wire?
+No.
+So now it's post constructor will be invoked.
+Student object.
+hashCode.
+Some hashCode user object.
+So this is the user object would be seeing here.
+So this is student object hashCode and this user object which was created.
+This is what's created right.
+So this is injected here.
+Okay.
+Till now all done.
+Right.
+So now application got started properly.
+Now what would happen.
+Let's say you hit the API fetch user.
+So fetch user is here.
+This API you hit.
+Now when you invoke this API you know that this object would be created by IOC, right?
+So this is a prototype.
+So means IOC has to create a new object of test controller.
+Right.
+So it will create call its constructor test controller one instance initialization.
+So till here we have seen application started.
+Now we hit the API.
+So test controller one instance initialization.
+So what would happen after this.
+It will look for dependency resolution first user.
+So user is marked as prototype.
+I told you that prototype means every time create a new object, even though user object is already
+created and injected here in the student.
+But here now this is also again object requested in test controller.
+New object would be created.
+So for user.
+User new object would be created.
+So with this hash code earlier when a student created it.
+Was this hash code, right?
+So now here if you see user is created with different different object is created for the user.
+Okay.
+Why?
+Because it's a prototype.
+Then a student a student is singleton.
+So means only one object.
+So it was eagerly initialized.
+So whatever the object was there, it would get injected here.
+So whatever the hash code of student was there, the same ultimately got injected here also.
+So (209) 245-0685.
+So because it's a singleton.
+So same object is used in test controller one dependency.
+But for user a new object is constructed.
+Not this one because it's a prototype.
+Because user is prototype every time new object is constructed.
+Right.
+So you understand like every time new object is constructed, if you hit this API, can you just check
+one more time?
+If you hit another time fetch user, what would happen if you hit another time?
+What would happen?
+Since this class is marked as prototype, a new object would be constructed for this.
+So you will see one more like test controller, one instance initialization, one more object would
+be created.
+Okay, so prototype is very simple.
+Every time new object is constructed and it's lazily initialized.
+Third is request.
+This is where ultimately confusion comes in because that's where one more things comes into the picture
+when I show you this part.
+Uh, this proxy mode.
+So this proxy mode also comes into the picture here.
+And that's what make, uh, engineers get At confused with this request.
+Request a scope.
+So what does it mean?
+New object is created for each HTTP request.
+For each HTTP request.
+Let's say fetch user.
+This is one HTTP request.
+Now new object will be created for all the classes which are marked as request right.
+And if in this API, if a particular object is required four times, we will not create four objects
+only one time.
+Okay, let's see that with an example.
+And again it is lazily initialized.
+So example is very simple.
+Again I have created a test controller class right.
+So it has one this API.
+And I have marked this as request.
+This has two dependency.
+One is on user.
+One is on student.
+So let's see.
+User first.
+So user also I have marked as request right.
+So means for each HTTP request a new object has to be created.
+No dependency on this one.
+And for student I called it as a prototype.
+Means every time no matter what, every time new object should be there and it has a dependency on user.
+So now let's see that when you start an application, what would happen?
+And when you invoke this http API, what would happen, how this dependency resolution happen and scopes
+comes into the picture.
+So when you start an application, IOC will look for all the components at the request controller and
+try to create a bean.
+So this it would find test controller one scope is request.
+So this is lazy initialized.
+Nothing would happen.
+Then it next goes to student.
+It found this at the right component scope is prototype.
+Again a lazily initialized.
+Nothing will happen.
+Then it will look able to see user because it is marked as at the right component.
+But again its scope is also request which is lazily initialized.
+So no object is created at the application startup.
+So at application startup here you see that started Springboot application, but no object is created.
+Okay.
+Makes sense.
+Now I am hitting the API fetch user the first time HTTP request is coming.
+Now HTTP request is coming now what would happen?
+So it has to create an object.
+So this is request right.
+So I called fetch user.
+So now with for this HTTP request first test controller object would be created test controller one.
+test controller, one instance initialization.
+Okay, this will get printed.
+Then.
+Second it will look to resolve the dependency.
+So it will goes to the user first user is also marked as request, so means only one instance or new
+instance should be created for each request.
+So for this request is there any user request now?
+No.
+So it will create new object user initialization.
+So user initialization would happen.
+Any dependency.
+No.
+So post construct would be user object hash code.
+So some hash code would get come here.
+Okay.
+So user will get injected here.
+After that it will resolve.
+Student A student is prototype no matter whether this same request Different request it.
+New object has to be created.
+So a student a student instance initialization.
+Now it will go and resolve the dependency.
+It says that user.
+Now here if you see that user is marked as request one object one object per request.
+So one object is already created.
+So student will use this.
+No new object will be created.
+So student will use this user right.
+And student hash code so is hash code will come.
+And what would be the user.
+It it gonna use this user hash code.
+So like this.
+So this is the will expectation.
+So test controller initialization happen.
+So test controller ultimately goes to our user.
+Right?
+So we have seen that we have seen that user user object created with this one.
+And this got injected into this test controller.
+Now then student.
+So student is prototype.
+So new instance would be created.
+And student is dependent on user.
+And user is marked as request.
+Right.
+So same object would be used right.
+The same thing is happening which we have seen with diagram.
+So you got it right.
+And this ultimately the test controller has this user and this student object.
+Okay.
+So this is if this is clear.
+If this is clear the same thing is actually printing in the logs, actually.
+Now, what would happen if the second time you are hitting the API, when the second time you are hitting
+the API, what would happen?
+So till here this is first call.
+Right.
+This is first call.
+Now from here.
+Second call.
+Happening.
+This.
+Now when the second call happening again, I have also copy pasted the same diagram here so that I don't
+have to scroll much.
+So this is request right.
+So now second request is coming.
+So means a new object would be created for this one.
+So it goes to again auto wired user.
+User is again request a new object would be created for this one student.
+A student is any way prototype doesn't matter, right?
+It will use.
+It will create a new object itself.
+So I'll show you that first test controller instance initialization.
+So now here, if you see when I when I hit the second time, it is trying to create a new bean for the
+test controller one.
+Then it goes to the user and it creates a new object for the user.
+Earlier was this.
+Now it's a different object because user is marked as request and this is the new HTTP request.
+Then it goes to the student.
+Student is prototype.
+So no matter same request whatever.
+New object would be created right.
+And then test controller.
+In the test controller we it has an object and a student.
+Right.
+So now here, if you see it has this user and student also has the same user.
+So in the one request, one HTTP request no duplicate objects is created only one time.
+So test controller class student class both wanted user object.
+So user is created only one time 88929.
+Right the same 88929.
+So both test controller and student is using the same user class.
+Okay.
+And each HTTP request a new object is created.
+I hope it's clear.
+What does it http uh scope request means?
+Now the problem comes in.
+Can you answer me this one?
+Consider this below request.
+I have a test controller which I marked as single turn.
+I have a class user which I marked as scope request.
+So test controller one is dependent on this user.
+What would happen.
+Okay, so our basic understanding now is that singleton is.
+Eagerly initialized.
+Request scope is lazy.
+Plus it is attached with.
+HTTP request right attached with HTTP request.
+So when you start an application.
+So IOC will see that okay Rest controller.
+This is Singleton.
+So I can do legally initialize.
+So it will try to create its object.
+So what it will do is test controller one instance initialization test controller one instance initialization.
+Now it will try to solve this dependency.
+It goes to the user okay.
+It says that hey user what is your scope?
+It's a request.
+Is there any during application startup.
+Is there any active HTTP request is present?
+No because application is starting.
+There is no HTTP request.
+So spring will not create its object and that's why it will get fail.
+Error creating bean because it won't be it.
+So the bean fail bean creation fail for this.
+Because this dependency is not resolved.
+Because scope for this user is request and request is tied up with an HTTP request during eagerly initialization.
+Application startup.
+There is no active HTTP request which it can bound to.
+So how do you resolve this?
+The question comes if you have any class which is singleton and it wanted to access, or it has a dependency
+on a class which is scope request.
+How do you resolve this?
+Because during eager initialization it will fail.
+So there is something called proxy mode.
+So in your user class which is request, scope is request.
+If you put a proxy mode like let's say scope proxy mode target underscore class.
+So if you use this, what you are telling to spring boot is that, hey, create a proxy object at the
+time of initialization, even though there is no HTTP request present.
+You can create one proxy object of it, like dummy object of a user, and use it for your object creation.
+Bin creation.
+But when ultimately you gonna invoke me, right?
+Then you can create a real object and tied up with HTTP request.
+So I'll show you with an example.
+Now the same example, but I have just added proxy mode here and started the application.
+Now what would happen.
+IOC will see this singleton test controller one instance initialization test controller one instance
+initialization.
+Now it has a dependency on user.
+So generally it should be like user initialization printing right.
+But no this user is request scope.
+It should be with the HTTP request.
+But I have put a proxy.
+Okay, if there is no HTTP request present, create a dummy object.
+So what it would do is create one dummy object dummy user object and insert it here inside a user.
+So here if you see there is no user initialization call means user object is not created, but somehow
+dummy object got inserted into this one.
+So it inserted it and then post construct here user object.
+Some hash code comes.
+So some dummy object created.
+So this success the being creation of test controller now got success.
+Now when you hit this API now when I'm hitting this API.
+So now this is one HTTP request.
+So now this API.
+What would happen is this actual dependency would get resolved.
+So now here if you see when I hit this API at this point of time, it is actually creating the user
+initialization.
+User initialization.
+There is no dependency user object.
+And now this user object ultimately get inserted into here it update.
+So you got it like what is request.
+And there are lot of confusion happen with here.
+So this request you understood that it is always tied up with HTTP request.
+And if you are trying to create it like say you are a singleton or any application startup, you are
+trying to access this class, you have to use proxy.
+Otherwise it would fail.
+Then there is something called session very very similar to HTTP request, but only thing is object
+is created for each HTTP session.
+You know that once HTTP session is created, HTTP session created.
+You can call many HTTP calls.
+So HTTP request one http request two, request three, request four.
+So on till you don't end HTTP session right.
+So now it's not tied up with each HTTP request.
+One object is created per each HTTP session.
+So it is lazily initialized right.
+And generally when user access any endpoint right.
+First session is created generally.
+Right.
+And it's remain active till it do not expires.
+And you can.
+So there might be some default expire time.
+You can also configure the expire time in the application dot properties.
+I think there is some like servlet session dot expiry sometime you can check this one, but there is
+certain property which can tell which tell that this session should get expired after this time.
+Otherwise spring use some default time, right?
+So I have created one test controller one.
+Now I can you can use this scope like this session.
+It is dependent on this user.
+So user is singleton right.
+Very basic.
+Now what would happen when you start an application.
+So when you start an application this is lazily initialized.
+So session.
+So nothing will happen for this IOC will see that okay it is singleton lazy initialization is possible.
+So user is initialized.
+There is no dependency, so user object hash code would also get printed.
+User initialized.
+User hash code printed.
+Now the first I am hitting this fetch user.
+So I am hitting this.
+So http session would get created right.
+The first time it is creating so its object would create it.
+Test controller one instance initialization.
+So test controller one instance initialization.
+Till here we have seen.
+After that any dependency.
+Yes it has dependency.
+So it will see that okay this is singleton.
+Only one object should exist it for IOC right.
+So whatever the same object that will get injected here and then it will goes to the post construct.
+So test controller one hash code and user hash code.
+So whatever the user hash code, same would come here because the same is got injected here.
+So test controller hash code, whatever the object is created.
+And inside this test controller the dependency of user is the same one because this is singleton one
+nine.
+Okay, now I am calling the API again same.
+So session is still running.
+HTTP session is created when you call the first time, so it is not yet ended, so it is still in running.
+So now I call the fetch user again.
+So it is session.
+So it will not create new object because this is just a new HTTP request, not a new session.
+HTTP session is still valid.
+It's not a new session.
+So will it create new object?
+No, it will not create new object.
+So it just call the API.
+No object creation happen.
+Now here in the third I am calling logout API which ends this session.
+Which end http session.
+So here if you see this is logout API, I have called in this http servlet.
+I specifically get the session and make it invalidate manually right.
+You can also automate it using configuration, but just to demo it I manually invalidated this session.
+So now in the logout I end the session.
+Now I am calling the API again.
+What would happen now you are calling the fetch user API again.
+So now it will create a new session again because there is no session exist.
+So new session again means new test controller one instance initialization.
+Here.
+Test controller one instance initialization after ending new object.
+And this depend on user, but user is singleton so same singleton object would be used.
+No new object should get created.
+So what initially user was created right 619.
+It's the same because it's singleton but new object for test controller is created because old session
+was closed and new session is started.
+So you got it session also.
+So these are the main scopes.
+And there is something called application.
+So application is like very very similar to Singleton.
+Singleton is like one object per IOC application says that one object within different IOC.
+Let's say you you there are three IOC are running IOC one.
+IOC two IOC three.
+There are three.
+IOC's are running.
+To be honest, in this nine years of experience, I haven't found out this use case like one IOC is
+running at a time, right.
+But still it's better to understand this when multiple IOC are running and you want that only one object
+is shared among them, then use application right Singleton.
+Just make sure that in one IOC object only one object is constructed.
+Application.
+Make sure that one object across multiple IOCs.
+Okay, so but that's why I haven't included it because I don't think it's very much popular.
+But yes, it's better to learn it.
+But that's just my opinion.
+Okay, so see you guys.
+I hope you will find this useful.
+Please do share it with your connection if you like it.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

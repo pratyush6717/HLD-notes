@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.sqlvsnosql</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="sql_vs_nosql_notes.html" class="btn">View Notes</a>
+    <h1>8.sqlvsnosql</h1>
+    <pre>
+So let's say during an hld round, and if an interviewer asks you which DB you are going to use SQL
+or NoSQL, and if your answer is that we can use anything, right?
+We can use anything, then definitely you are putting yourself in a difficult situation.
+And if your answer is like I am going to use SQL, or let's say I am going to use NoSQL, but if you
+don't provide why why you are using this?
+Then again, it's kind of a negative for us in the like.
+If you are, don't give a proper reasoning why we are using a particular DB for designing any particular
+question which has been given to us, right?
+So guys, this is Shreyansh and welcome to Concept and Coding.
+So today we are covering this very very important question.
+So let's without wasting time jump into this one.
+And also, guys, before jumping into the question, I will tell you the scope of this video today.
+So the scope of this is when to use SQL, when to use NoSQL.
+Right.
+And some basic about it so that you know what exactly where to use it.
+But the scope is out of scope is I am not going to teach you SQL in detail.
+I'm not going to teach you NoSQL in details.
+Right.
+So with that information, uh, I am just starting the video and it's gonna be very, very helpful for
+you guys for sure.
+Okay, so let's say that I will divide SQL and NoSQL into four categories, right.
+Let me divide it into the four.
+The first part which I want to divide is uh, its structure.
+Right.
+And the second part, which I want to divide its nature.
+Third, I want to divide on basis scalability.
+And third, I want to divide it based on property.
+So I will cover this four part for each SQL and for NoSQL.
+And with this after this four things we learn about this fourth thing structure, nature, scalability
+and property for both SQL and NoSQL.
+You will get a better understanding exactly when we have to use each.
+So let's first talk about SQL.
+As we all know better.
+So what is SQL?
+SQL.
+We already know that it's a structured query language.
+Structured query language which is used to query relational database management system, right RDBMS.
+Relational database management system.
+Right.
+So here in this case, relational database management system, everybody knows that it has table.
+And then it has rows and columns.
+So these are rows then these are columns.
+And this is our known as table right.
+And there are relations between multiple tables.
+Right.
+So one this is let's say parent this is child.
+There could be more other child also.
+Right.
+So relational database management system store the data in a structured form.
+Right.
+Or a structured form.
+What is that structure.
+Form table.
+Inside a table you have a row.
+You have a column.
+And they have a relation between multiple tables.
+So SQL is a way to query to query.
+Or you can say that manage this data which is present inside this tables, right.
+You can write select, query, insert query, update query.
+And with that these queries we are managing the data which is present inside our table.
+Right.
+So now you know the meaning of SQL.
+Now let's see that it's structure right.
+I am covering the first part of SQL.
+So structure with this definition itself I think it is clear that it is maintained.
+So let me maintain here itself.
+So its structure is.
+It maintained tables row column.
+Right.
+And it is a pre determined.
+Right.
+Predetermined.
+You can say that schema.
+What what I mean by predetermined schema means before even you do the query right before even you insert
+the data you have to come up with the schema okay.
+What do you mean by schema?
+Okay.
+This is my table name.
+This will be the column let's say name.
+This column will hold string let's say or varchar in the DB term.
+This is something let's say uh roll number.
+This will store let's say integer or number.
+What would be the length.
+Let's say 20 is the length where let's say 200.
+Right.
+So you got it right.
+What I mean by predetermined schema.
+Predetermined schema is you define the schema.
+You plan the schema beforehand.
+Then.
+Then only you can insert the data.
+Right.
+And then only you can run the query on top of it.
+So it's structure is form of a table rows column.
+And it's a predetermined schema before you start using it.
+So it's a predetermined schema before you start using it.
+Right.
+And also in this structure is it has relations.
+It has tables and inside table.
+It has rows and columns.
+And there are relations.
+Relations between different tables.
+So I think this part is very much clear because it's very simple structure part.
+Right.
+Now let's come to its nature.
+Let's come to its nature part.
+So the what I mean by nature is let's assume that we are on one server, server one and server one has,
+let's say db employee.
+This is the db and inside a particular db there are different tables.
+Let's say this is table one.
+It has multiple columns.
+This is table two.
+For example I am taking only three tables.
+This is table three.
+And let's say this is table two.
+Somehow they are linked.
+Parent child right.
+Let's assume that.
+And it has data.
+Now what nature which I mean is here in a particular server if for a particular user or you can say
+that particular employee if for a particular employee.
+Employee one let's say I am an employee.
+So let's say shreyansh if my data is present inside a particular server.
+Let's say this data is present here.
+ID is one uh, department is let's say it something and this has its, let's say salary.
+And this has something called address something.
+So my information is present here in all the tables.
+So what I for for a particular employee, let's say in my case, my whole data.
+Whole whole data means data present in all the tables will be present inside one server.
+Right?
+It's not like that.
+My table one data is present inside server one, table two and table three data is present inside server
+two.
+Right.
+It is not possible at least.
+And also it is not.
+It is possible.
+I will tell you about sharding also.
+Right.
+But I'm telling you mostly about the generic use case.
+The nature of the SQL.
+Right.
+It is also not possible that let's say my half is not in this table.
+There are, let's say ten columns.
+My five columns are present into server one and in the server two.
+Also there for the table one rest five columns are present.
+No, my whole data is present inside into server one.
+My whole data.
+So that's why I called the nature is let's say it's a little bit concentrated.
+Concentrated or it is like centralized.
+Right.
+So this is the nature I hope you understand what I mean by nature.
+Now let's say about scalability.
+So now what I told you about is like my complete data is present into server one, right.
+But let's say there is a table Employee also.
+And let's say it is holding or let's say it's a user.
+User table is holding a user.
+Let's say it's a online, uh, online selling company web application, and it is storing the user.
+And it has millions of users now.
+So it has, let's say around 10 million records and it is continuously increasing.
+So we need to scale right.
+We need more Ram.
+We need more storage capacity.
+So there are two ways to scale either vertical.
+And second is horizontal.
+In the vertical what we can do is we can increase the Ram size.
+We can increase the storage capacity.
+Right.
+This is called vertical scaling.
+And in the horizontal here comes the concept of sharding, right?
+We can do a sharding based on columns or based on rows.
+So what I told you earlier was it is mostly centralized means my data is present inside table one,
+table two, table three.
+It will store complete information in a particular server, but with the help of sharding I can store
+my partial data itself.
+Let's say my table one data is present here.
+Table two.
+Table three data is present into server two or even in the table one.
+My certain column data is present here.
+Certain column data may be present into server two, but that is not well supported.
+It is not well supported in SQL.
+And that's why we call that the scalability or scale scalability.
+I will say that scale.
+The the way SQL scale more intuitively.
+Or you can say that very well is vertical.
+Right.
+So vertical fits much better to SQL.
+And the last one which I want to cover is the property right.
+So as we all know the asset property of this one SQL a is for atomicity.
+C is for consistency I for isolation and D is for durability right.
+So I think you all know that about asset.
+You can read out in detail.
+But I want to tell you the crux of asset is it makes sure that data integrity.
+Or consistency it makes sure this asset acid property makes sure that data, whatever the data we are,
+store, its integrity maintains, and they should be fully consistent.
+That's all what it required like whenever the transaction happened.
+So there should be a rules it should follow.
+And ultimately once it is done everything data should be totally consistent.
+State data should be total integrity should be maintained.
+Right.
+So these are the properties of this one.
+Right.
+So now you know about SQL.
+What are the little bit properties of SQL structure scalability nature property.
+Now let's come to NoSQL.
+This is very very important part.
+So what does NoSQL means or what is full form.
+Sometime we call it as non-relational.
+Or NoSQL or sometimes it's called not only SQL.
+Now, this is a mostly, uh.
+No one is wrong.
+All three names are correct.
+But this is the mostly preferred.
+Says that not only SQL.
+Right.
+So now I will cover the same thing.
+What structure?
+What was the second one?
+Its nature.
+Then we have, uh, scale and its property.
+The same thing I will cover for no SQL.
+And then you can relate how they are different.
+Okay.
+Now let's come to the structure first.
+SQL SQL works on table columns rows.
+But here it works on NoSQL works on unstructured data.
+So one is your key value guys.
+It's very very important.
+Key value.
+Second is document.
+Document key value db.
+Third is uh it is column column wise db and fourth is graph db.
+So these are the four type of db which I am covering here in the structure SQL table rows column.
+But here in NoSQL it is not table column only.
+So it is structure is for type.
+It can be for type.
+So let's quickly understand what is key value.
+Key value db is the most simplest NoSQL.
+If you have watched my previous video DynamoDB.
+Right here DynamoDB is a key value DB.
+Right.
+So here you have a key.
+You have a value.
+Let's say key is one value is opaque.
+It can be anything.
+It can be string.
+It can be integer.
+It can be JSON.
+So generally this is an opaque two.
+Opaque to the generally opaque.
+Or what does opaque means is you cannot query based on the value.
+You can only query or you can only search based on key.
+Right.
+It's an opaque value is an opaque data.
+We don't know what is the data inside the value.
+It could be string, integer JSON anything right.
+We cannot query.
+We cannot query or search on value but we can query on the key.
+That's why it is very fast and DynamoDB uses it right.
+And I told you where it uses it.
+Also, just check out the previous video.
+Key value store second DocumentDB.
+DocumentDB also has key and it has a value.
+And inside key let's say one.
+And the inside the value.
+It has the JSON or XML.
+It can be anything.
+Right now you will ask what is the difference between key value and DocumentDB in key value db.
+Also I can store JSON and in the DocumentDB also I can store the JSON.
+The difference is inside the DocumentDB you can search based on key and you can also do a query on the
+value.
+Right.
+You can query on the value in the key value.
+You cannot query on the value.
+It's an opaque to us.
+But here you can do a query on this one DocumentDB.
+Right.
+So here you know that MongoDB.
+Is a DocumentDB.
+Third.
+Column wise DB.
+So this is a very interesting kind of DB.
+So here if you see that in the in this kind of NoSQL DB what happen is we have a key.
+And the value is what is the value.
+So this is my key and value is column value.
+So I have column name and its value.
+Column value.
+So let's say column one column two column n and their values right.
+So this is the key.
+And these are the values it is a list of.
+You can say that a column value pair right.
+So let's say column is for example my key is let's say 100001.
+This is the key.
+And now what are the values.
+It says.
+So value is nothing but a list of column value.
+So let's say column is first name.
+First name is let's say shreyansh right.
+Department.
+Let's say it kind of.
+So you got it right.
+This is column field.
+This is value column value.
+And this is my key.
+So for each key it has a list of column value.
+So now here if you see that you will say that okay key.
+It's kind of a similar to uh row.
+This is my one row.
+This is my another.
+No.
+So the you can say that the difference is let's say another another key.
+Now here I have, let's say, three columns of first name department and let's say interest.
+And my interest hobby is, let's say playing, uh, basketball.
+Right.
+But let's say in the for the another key I have, let's say first name, first name, let's say Raj
+department, let's say sales.
+That's all I only two.
+So the number of columns can be dynamic right.
+Some row some key can have more number of columns.
+Some key can even have less number of columns.
+Right.
+So you got it column wise DB.
+Now let's go to the fourth one.
+Now the fourth is graph DB right.
+So in the graph DB kind of a NoSQL.
+What how the data is stored.
+So if the data is stored in a node and edge.
+So there is something called node and there is something called an edge which shows the relationship.
+So let's say for example, my node is one Shreyansh is this is an edge.
+And our relationship is like let's say friend of let's say another node.
+Another node could be anything, uh, let's say x, y, z.
+This one is friend of some other node.
+So now here if you see it can be many other nodes also.
+So here if you see if in a kind of graph kind of situation right.
+Uh, for example in our social networking social networking right.
+Or recommendation recommendation engine.
+Uses this kind of DB NoSQL graph DB where we store the data in the form of nodes and edges, and any
+search happen like in the social network we need to find.
+We can do a directly, find the relation and find the node which are attached to it right in the SQL.
+Also they have a relation parent child relation right.
+This is primary key.
+And let's say this is foreign key and this is how they are attached.
+But it do a full scan so it scan the full rows and then find it.
+But here it's a direct relationship.
+It it is very very fast very very fast.
+It directly goes to here right.
+It stores this where it is connected to.
+So Graphdb is can be used in social networking recommendation engine.
+So I think structure is clear right.
+Structure is clear.
+Key value document graph.
+and column wise, these are the four ways to store the data, not table column wise.
+Now let's come to the nature.
+So if you have seen my previous video again you can see that here.
+The data can be stored in multiple nodes.
+Node one, node two, node three because it doesn't maintain any relation right.
+So it can have certain piece of data.
+It can have certain piece of data.
+So it is decentralized or not decentralized I would say that it is distributed in nature.
+It is distributed in nature.
+And this one SQL was concentrated in nature.
+Right.
+So let's say a user also that is an user.
+So in the user let's say 10 million record out of this 2 million records are present here.
+2 million records are present here.
+It is also possible.
+That is also possible in this case, and it can be done very easily.
+So that's why we say that it's a distributed in nature.
+And if you want to know how these different nodes data can be stored again guys please watch out the
+previous video and actually write a key value store.
+It will give you a very good understanding of how the data is distributed in different nodes in the
+NoSQL.
+So the nature of this is distributed data can be distributed.
+And what is the scale?
+I think it's already answered now horizontal horizontal scaling.
+So now let's say my user table is growing fast.
+As soon as 1 million it crossed.
+And now I will start putting let's say one initial 1 million.
+I am putting here another 1 million.
+I am putting into the node two, another in node three, I can add any number of nodes and stores the
+user data.
+Right.
+So how it is growing, it is growing horizontal and how it was growing vertical.
+And the last is property.
+Right.
+What is this property?
+Is it is not falling acid.
+It is falling base acid.
+They use don't forget or don't use acid.
+It is falling base.
+So what base is?
+It is basically available.
+Basically available right.
+It is called safe state.
+And this is called eventual consistency.
+What does it mean.
+Basically available means it is highly available DB NoSQL highly available is the data is stored in
+distributed manner right.
+User one.
+User two.
+Let's say I am saying that let's say my data is present here and let's say x, y, z data is present
+here.
+And if you have seen the previous video, you know that how it is highly available because there is
+a replication happen.
+So data also present here, data also present here.
+Right.
+And if anything comes for the update of this or anything if this is down it can this can serve the request.
+This can serve the request.
+So it is a highly available DB right.
+That's why it's called basically available.
+So guys please please please do watch out the previous video.
+Lot of things will get you will get clear eventual consistency and all those things right.
+I have explained totally in depth in the previous video.
+Right.
+So basically available means it since it was uh, distributed in nature, the data would be available
+mostly.
+We can never lose the data safe Save state.
+What does save state means?
+Save state means right state can be changed.
+State of data can be changed without interaction itself.
+Can say user hasn't done any interaction.
+Then again the data can be changed.
+How?
+If you have seen the previous video, you will get to know that we maintain the like.
+The data is present into different node node one, node two, node three.
+Or you can say that server server one, server two, server three.
+Right.
+Let's say this is holding Shreyansh and the its we store.
+You know that vector clock.
+So it has let's say one and it has let's say server one.
+And this is the one it is holding Shreyansh two.
+And it says that server two.
+So there are different clock values present.
+So even though there is no interaction, when they automatically sync with each other, they will get
+to know that okay, you have the latest data because it is distributed right.
+Some have a latest copy, some might.
+It is possible that it have a stale copy.
+So when they sync each other it is possible that they will update themselves.
+So that's why it says that state can be changed of a data.
+Data state can be changed even without interaction.
+Right.
+Nobody has given the command but they update themselves.
+So that's what it's called.
+It's a safe state.
+And the third one is eventual consistency.
+Eventual consistency means if you query, you might get stale data.
+But if you repeatedly do the query after some time, after some time, you might get the latest data.
+So that's why it's called eventual consistency.
+You might get stale data, but maybe after some time you will get latest data because they will.
+Once they will sync up, they will update themselves and change to the latest data.
+Right.
+So that's why it says that eventual consistency that after some time if you retry you might get the
+latest data.
+So these are the properties of this one not asset property does it does not follow.
+So now you guys know at least Basic of SQL and NoSQL.
+Now let's come to the very very important part.
+When to use which one.
+When to use.
+SQL and when to use NoSQL.
+I think you might know already by now.
+First of all, if we know that our query is going to be flexible, like if you want flexible query functionality.
+Then we have to go for SQL flexible query functionality.
+What I mean by flexible query functionality is NoSQL does not support complex query.
+Let's say today you are querying based on certain columns like certain columns.
+So today is this three table join.
+Maybe tomorrow business or business need change and it might be five.
+We need five table joins.
+Now for that.
+So it's a flexible.
+So we need SQL for that to support the flexible query.
+And NoSQL does not support flexible query.
+It supports only very basic query search.
+If if you need only basic query search go for NoSQL.
+If you need flexible query functionality, go for SQL.
+Right.
+And also I would say that if you know basic research or you know that in advance.
+What column you need to search for, you need search capability.
+If it's a very basic search, you can use NoSQL.
+Or if you already know that, I will always use kind of this columns, 4 or 5 columns to do my searching.
+Then also you can know because it's not flexible, it's not changing.
+So you can use NoSQL.
+Second thing is your data is kind of a relational nature.
+Relational nature means they have too many thing, uh, dependencies like this is a parent.
+This is a child, right?
+They have a kind of relational relational data.
+Right.
+So here, if you see that in NoSQL, generally data is uh, we put that where the data is not in relational
+form, right?
+It is not too tightly dependent to each other.
+Right.
+So that is another criteria where which we choose that whether to you go for SQL or whether to go for
+NoSQL, just look at the data, what kind of data you are trying to store.
+Like uh, it just like if you are trying to store, uh, kind of, okay, this is my key, this is my
+value.
+And we have to search.
+We don't want like, okay, this is my parent thing.
+And then I need to keep its children's also.
+And then they are related to anybody else.
+So relational means kind of they are linking very much to uh parent hierarchy.
+Just what I mentioned.
+Hierarchy.
+If there are lot of hierarchy in your table then I think relational is better.
+Like, uh, too many relations is present parent child kind of relationship.
+Third one is your data integrity.
+As I already told you, it follow acid.
+It doesn't follow acid property.
+So if data integrity is required means you cannot lose a single transaction, you cannot loot.
+You cannot lose consistency in your database.
+You cannot afford to lose the consistency.
+Then there is no way you can go to NoSQL.
+You have to go to SQL where whenever the data integrity or consistency is required, for example, in
+kind of financial institution.
+This is must.
+So you have to go with SQL consistency.
+Because in NoSQL NoSQL is developed to handle large amount of data, big data, millions of millions
+and millions of data.
+And they are dynamic.
+They are changing.
+So even losing 1 or 2 transaction or in a millions and billions of data, it is of no impact, right?
+So that's why it says that if consistency is required, then go for SQL.
+If consistency is not required, then go for NoSQL.
+Right here you might get lose some data and it's already said that it's eventually consistent.
+You might get the stale data also in your request, which is let's say in case of financial institution
+it is not affordable.
+Another.
+You can say that availability, if you want high availability, high availability and high performance
+and you can afford some inconsistency with Some.
+Inconsistency.
+Then you have to go for NoSQL.
+High availability.
+High performance.
+High performance in search query.
+Right.
+Searching the data.
+So.
+And yeah, your system can, uh, afford some kind of, uh, inconsistency.
+Then you have to go for NoSQL.
+It is very very, very available.
+It is because distributed nature, it can never be down almost.
+Right.
+So it is highly available and the searching capability is very high because data is stored in, uh,
+smaller and distributed nodes.
+And I told you already about consistent, uh, in the previous video of key value data store how it
+can directly go to a particular node and find the data.
+Searching is very fast, right?
+So if you see this, these are like high availability, high performance and asset property consistency
+relational uh data query capability.
+So these are the factors which determine which DB you have to choose.
+Right.
+So I hope this has given you a very, uh, base fundamental between SQL and NoSQL difference which one
+to choose among other what are their different kind of how they are different in structure, nature,
+scale, property.
+Right.
+So I think it will help you in your interview while deciding the DB.
+Right.
+If anything feedback you have for me guys.
+So please go ahead and please provide me the feedback.
+It would be really helpful and I hope you enjoyed this video and please share your thoughts in the comment
+also.
+Okay guys, thanks a lot.
+And bye!
+    </pre>
+</body>
+</html>

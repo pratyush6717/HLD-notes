@@ -1,0 +1,873 @@
+Hey guys, and welcome to Concept and Coding.
+Today I will be covering very, very important topic and very frequently asked topic in an interview,
+which is nothing but an exception handling.
+So apart from just controller advice and response status annotation, I will be covering a lot more
+things and I hope you will find it really, really helpful in your interviews and your day to day work
+also.
+So let's start.
+What are the classes involved in handling an exception?
+So here if you see this is an hierarchy of classes.
+And out of this hierarchy this 5123.
+So these three resolver is very important.
+And this four and five.
+This four and five are generally a helper classes I considered as an helper classes.
+So these five classes are very important in handling an exception.
+And at top we have an interface handler exception resolver which is an interface which expose a method
+I think do resolve exception.
+Okay, so let's understand the sequence when an exception occurs and the role of each five classes.
+So now let's say that you already know that the first controller which is Spring Boot provide to us
+is nothing but a dispatcher servlet.
+So dispatcher servlet is the one which actually invokes our controller also.
+So it is possible that our controller might throw an exception or dispatcher not able to invoke our
+controller itself.
+So in any case, let's say any case exception occurs.
+What would happen.
+So dispatcher servlet will pass the request to this handler exception resolver composite class.
+Okay so this is this class handler exception resolver composite class.
+So this class I considered as mostly a helper.
+And most probably you can say that orchestrator.
+Orchestrator of what orchestrator of this resolver.
+So there are three resolvers exception handler.
+Exception resolver class.
+Second is response status exception resolver and third is default handler exception resolver.
+This three this three resolver.
+So here this class handler exception resolver composite class.
+Invoke this resolver in sequence.
+First will invoke this second this and third this.
+So here what happens is whenever an exception happens.
+So this exception is passed to the first resolver.
+This is your first resolver exception handler exception resolver.
+So once this resolver process.
+It's work.
+The control goes back to your.
+Composite class.
+Then it checks.
+Hey, exception is handled.
+If yes.
+If this resolver is able to handle your exception, then it will not grow further.
+It will return to this one default error attribute class.
+But now let's say that if the handle if the exception is not handled, then this composite class will
+pass it to the your second resolver which is response status exception resolver.
+And after that again before proceeding to the next resolver it again checks.
+Hey is your previous resolver is able to handle the exception?
+If yes, then you know that it will goes to this step.
+Default error attribute.
+If no then only it will goes to the third and last resolver.
+Default handler exception resolver.
+Okay.
+And once all the three resolver completes its task.
+Thus, ultimately the control again comes to default error attribute.
+So no matter whether any resolver is able to handle it or not.
+Ultimately, the control will have to become here.
+If they are able to handle it, then directly will come.
+It will not go to further resolver.
+Otherwise it will pass through all the resolver one, resolver two, and finally resolver three.
+After that, again the control comes to this.
+So and after this the response has been sent to the client.
+So at this point of time, you would be clear that these three are the resolvers classes which actually
+handles an exception.
+It is followed in sequence.
+This is first response status exception resolver is second and default is third.
+And this two are the helper classes.
+This is nothing but an orchestrator which actually orchestrate this three resolver classes.
+--.
+And after that, this is the last one which actually create a response.
+With proper status.
+Timestamp.
+What is the message?
+Proper error response and ultimately send the response.
+So this is ultimately where we create a response actually what is your status?
+What is error message status.
+Let's say 400 error messages.
+Let's say bad request something and ultimately the response is sent.
+Okay.
+Let's see a flow with an example.
+This will clarify you more.
+So I have created a very simple controller class okay I have one Rest controller class.
+Get mapping means it is slash API slash get hyphen user API.
+I'm creating it and I'm throwing null pointer exception and throwing one message.
+Throwing null pointer exception for testing.
+If you run this what output you will see I am hitting this API.
+What output?
+I will see 500 error code and here timestamp status 500 error, internal server error and path.
+How?
+Who set all these things?
+I never set here that it's a 500 internal error code, but somewhere internally it has been set.
+Who we will see that.
+Just one more example creating a one more controller.
+But here now I am throwing new custom exception.
+Okay, you in Java, I have already explained you how you can create a your custom exception.
+So I created a custom exception.
+I extended runtime exception class okay.
+And I have just exposed two fields here Status and message.
+In the constructor I am setting this field and the getter method.
+Okay, so here, if you see that I am throwing new custom exception setting this, it's a bad request.
+And this is the message request is not correct.
+User ID is missing.
+So I am setting a status and message and I am throwing this.
+Now if you run this, hit this API what output you are seeing again 500 internal server error.
+The timestamp.
+Current timestamp.
+Let's say status error path.
+Now here if you see the 500 internal server error.
+Now if you see that hey you are returning bad request, which is nothing but a 400 and messages request
+is not correct.
+User ID is missing.
+But why?
+This seems 500.
+Internal server error is coming.
+What is happening here?
+One thing you need to consider that in both the example we are not creating response entity object,
+we are just returning the exception.
+So some other class is creating the response entity object.
+So from the previous video you already know that whenever we send a response we have to create a response
+entity object.
+Okay.
+In that we set two things body and status.
+But here if you see that we are just returning an exception.
+But still in an output we are seeing this response.
+So somebody is creating response entity for us who I think you already know the answer right.
+Two it's actually default error attribute.
+But why 500.
+Why 500.
+So here what's happening is when you are throwing an exception and not returning response entity means
+you are utilizing the Exception resolver framework.
+Now your all the exception will pass through this flow.
+Okay, if none of the resolver is able to handle your exception, then this default error attribute
+by default value it will set.
+500.
+Okay, so 500 is nothing but a default status code.
+Okay.
+But if you want full control and don't want to rely on exception resolver, then we have to create the
+response entity object.
+Always remember.
+And here the example which I am showing you many company still follows this.
+They don't rely on exception resolver.
+So what happen is here the same thing.
+I am throwing custom exception status and message.
+Very basic.
+Okay, this is your custom exception class.
+And just, uh, just to recap you, this message is just, uh, optional.
+You can even send super, super message.
+So this runtime exception, it's parent is exception class.
+This has I think one field called detailed message.
+Okay.
+So this detailed message is somewhere which uh the framework wanted.
+This message is ultimately gets set to this one.
+So either two way either you just do super message.
+Okay.
+And ultimately it will go to runtime exception.
+Runtime exception here if you see uh let's go runtime exception here again it says super message.
+And here ultimately it gets set into detailed message.
+Okay this is one way.
+Or if I don't want to do super just for clarity purpose I just added here.
+I just added a string message, setting it and overwrite the get message itself and returning this message
+here itself.
+Okay, instead of uh, if you don't want to override it, then you have to do super and pass the message.
+And ultimately this message will get set to that, uh, detailed message field, this one.
+And then if framework call, get message, this one, this detail message would be returned.
+But if you don't want it, I already told you that, uh, you can override this one.
+You can override it and return this message.
+Okay.
+So this is just a quick recap like, uh, so now come back to this one.
+I am doing a try throwing an exception, sending an status and message.
+Now I am catching one.
+I am catching this custom exception and another I am catching this generic exception.
+So definitely this custom exception will get caught this throw new exception.
+Now here, if you see I am returning the response entity, I am creating the response entity body and
+your status.
+So body I am sending is I'm creating an object.
+Object which has this error response is just nothing but a Pojo class which has three things timestamp,
+message and status.
+Very simple.
+So I am creating a new object which is nothing but a Pojo.
+I am setting the date current date.
+What is the message?
+So whatever the exception is coming.
+Okay I'm doing e dot get message.
+So message would be set and whatever the status code E dot get status okay.
+So this status would be set into this object.
+And this object I am putting into the body.
+And then the response what is the response status.
+I said this e dot get status this one only.
+So this is how your response going to look like the 400 bad request which is response entity status.
+And this is your body timestamp status and message.
+This one timestamp status and message.
+So now here, if you see that this resolver I told you that three resolvers are there.
+Those are not even involved.
+Now you have taken control how you are going to handle an exception.
+Custom exception happens how you want to handle it.
+So you have created a response entity and it got returned properly.
+You are able to see proper error messages which you wanted to return.
+Exception resolver is not invoked.
+But when we don't return response entity we just simply return throw.
+Somebody has to create response entity for us.
+That's where the framework comes into the picture And that's where this all resolvers and flow comes
+into the picture.
+Now, I already told you.
+Now when you throw a custom exception.
+So this composite will pass this custom exception to this class resolver.
+The first exception handler exception handler exception resolver says that hey, I only able to handle
+at the rate controller advice and at the rate.
+Exception handler annotation.
+Apart from this I don't know.
+So does custom exception has any such annotation?
+No.
+So this says that I can't handle it.
+It goes here.
+Does exception handle by previous resolver.
+No.
+So it goes to the response status exception resolver.
+Hey can you handle this custom exception.
+It says that hey, I only take care of at the rate response Status annotation.
+I don't know about anything else.
+Again, it goes here.
+Hey, does this resolve?
+It does able to handle this custom exception?
+No.
+Then it goes to the default one.
+If you go to the default one, default one is very like here.
+If you see default handler exception resolver class it has very predefined that okay it handle spring
+framework related issues like method not found.
+Media type not supported right missing parameter exception.
+So it only able to handle predefined exceptions.
+So will it understand custom exception.
+No I don't understand this.
+And ultimately all three resolver pass and control comes to here.
+And default error attribute what it will do here.
+If you see default error attribute it will pass.
+It will put timestamp current date status.
+Now nobody able to handle it.
+So default status would be set as 500 and all other details would be set.
+Path error details and it will return the response entity.
+The response entity would be created with this object and return.
+If any of the resolver is able to handle the exception, then they will just set status and message.
+Okay, now let's say that just assume that exception handler exception resolver is able to handle the
+custom exception.
+Let's say it will just send that okay.
+For this exception this is the status message.
+Let's say 400.
+This is the message.
+It will just set this.
+And then it will say that yes handle it will goes here.
+It will not proceed further.
+And default error attribute will set proper status not default one 400 proper message and then return
+it.
+So you got the flow.
+So here if you see that default error attribute, set this attribute timestamp status everything.
+And then once the attribute is created, it will create a response entity with body and status and return.
+Okay.
+So I'll show you.
+Let's see.
+Now let's say this is an example where I am having a controller.
+Same very basic.
+I am throwing a custom exception.
+Bad request user ID is missing.
+See, I am not returning response entity, I am just throwing it directly.
+If I run it, let me debug it.
+I started the debugger point.
+Now let's say we are hitting it.
+Get user.
+Okay, where the control comes composite first.
+Now here in the composite you will see the resolver.
+It will iterating it.
+all the resolvers.
+So now here if you see resolvers.
+Three resolver first is exception.
+Second is response status, third is default one okay.
+So now if we assume the this custom exception will goes to.
+Now your exception handler exception resolver.
+The first handler the first resolver it will not be able to resolve it.
+So it will goes to the second resolver which is response status exception resolver response status exception.
+Resolver is also not able to handle it.
+Then it will goes to the third one your default handle exception resolver.
+So in the default one no one would be able to handle it.
+Ultimately it goes to the default error attribute.
+And what is the status it will send.
+So here if you see in the attributes the status it will set to 500 internal server error because no
+resolver is able to handle it.
+No resolver is able to handle it.
+And ultimately you see 500 internal server error.
+Okay.
+That's why we saw this message.
+So now question is what exception does this three resolver handles.
+Okay.
+We know the flow.
+We know the sequence.
+We know the reason.
+If we throw an exception if it is not handled I will get 500 default value.
+But what this resolver handles actually I don't want to use custom.
+Let's say you don't want to use this.
+You don't want to handle in each.
+You know that there are so many methods.
+There are so many controllers do in each class, in each controller, in each method you want to do,
+try, catch and handle an exception.
+If it is a small application, it yes, it's good, but if it's a huge application, it's mostly you
+will find it's a code duplicate.
+For the same custom exception, you have to send a status error message and different different places
+so we can make use of the framework.
+But before that we need to understand what this three resolver actually handles.
+Let's start with the first one exception handler exception resolver.
+It is responsible for handling below annotation exception handler annotation and controller advice annotation.
+So now let's go to the exception handler first.
+But say controller level exception handling controller level.
+So by the name itself it should be clear I have one controller user controller.
+Inside this I might have multiple methods get method.
+Now I don't have to worry about doing try catch and everything.
+If any of my business logic, if any exception comes, I will throw it.
+If any business validation comes, I will throw the exception.
+Now in the controller level each controller I can put this method handle.
+Let's say for custom exception handling, I put one method handle custom exception.
+Put an annotation at the exception handler.
+What is this annotation.
+Right.
+What what this exception it handles.
+So we will write it here.
+So what would happen here is that whenever in this controller, no matter how many methods you have
+currently here, I have only one method.
+Even if you have ten methods out of those ten methods, anybody throws custom exception, this handler
+would catch it.
+Okay.
+This handler will say that okay, this handler is for handling the custom exception.
+So this method will get involved.
+Okay.
+The same custom exception it catches here.
+And then we can create a over response entity.
+How you gonna handle it.
+So I'm creating a response entity here that hey whatever the exception is coming read its message.
+Read its status.
+Okay.
+So this is the status I want to set.
+So now here, if you see that this is body right.
+This is body and this body is X dot get message.
+This is a string.
+So response entity I am returning a string.
+And if you see the response 400 bad request which is this status.
+And the body is your message string.
+So that's why only string comes.
+No JSON response.
+You saw no object.
+So user ID is missing.
+Okay.
+Another use case just to show returning error response object instead of just message.
+Like same thing.
+Let's say you are in a single controller no matter how many method you have.
+Anybody throws custom exception.
+I have written one exception handler which takes care of custom exception.
+So this method would get invoked and this custom exception.
+What?
+I am returning a response entity with this error response.
+This is my body now which I'm creating an object object.
+The same thing I have already showed you right time message and status.
+So date message exception dot get message exception dot get status.
+So this three will get set and I will set it to this body.
+And in the response what is the status response status I set this only now you see the response 400
+bad request.
+And now, instead of just a string, you are getting a object.
+Okay, so now this is your body, right?
+So that's why I've written use object here in the response.
+Just see one more use case to show multiple exception handler in one single controller.
+So I have written two method here one get method.
+One API is throwing custom exception.
+Another is throwing let's say illegal argument exception.
+In the same controller.
+I have now added two exception handler one which takes care of custom exception, another takes care
+of illegal argument exception.
+So I have written.
+So this method you can change handle something.
+You can give some name illegal argument exception method.
+So any this exception whenever this exception is thrown custom exception from any method.
+You know that which exception handler will get invoked.
+Any illegal argument exception would be thrown.
+You know which exception will get?
+Which exception handler will get caught.
+Just see one more use case.
+Use case to show one exception handler handling multiple exceptions.
+So now if you see above hey both are doing the same thing.
+Let's say this custom exception is also nothing but a bad request.
+Illegal argument exception is nothing but a bad request and message.
+We are anyway reading from exception.
+We can even generalize it right?
+So you can also do this at the rate custom exception handler.
+And then you can make it an array kind of thing.
+Custom exception or illegal argument exception.
+Anything which occurs this handler will get invoked and response entity.
+This is the message I will set body.
+And this is the status bad request.
+Okay.
+So that also is possible.
+One more use case.
+Let's see that here.
+Now I am not returning response entity.
+Okay I am not returning response entity.
+I am returning I am just setting the response and let the default error attribute create a response
+entity for me.
+So here if you see that the same part two methods.
+Now in the exception handler which takes care of only custom exception.
+I am here to see that I am not returning response entity.
+I am just now here.
+If you see that HTTP servlet response I am accepting in the parameter in the response.
+I have put like what is the status and what is the message?
+I just set this two value two attributes in the response.
+Now when the control goes to default error attribute, you know that it will look for status and message.
+Now, since our exception handler, the first resolver would be able to handle it.
+Okay, so we have already said bad request and message.
+Okay in the response.
+So it will get bad request and proper message.
+I will show you.
+Okay so but here remember that one question should come to your mind that hey Shreyansh first I have
+seen that when we are handling a custom exception, only one parameter was there exception.
+Now here I am seeing two parameter HTTP response also comes in.
+So what all parameters this Method can take, which is annotated with exception handler.
+So you can have HTTP servlet response, HTTP servlet request and exception.
+If you have only one, if your exception handler is accepting only one, or taking care of only one
+exception, you can write exact same exception here, but here if you.
+If your exception handler annotation is taking care of more than one exception, then you have to use
+the parent level.
+Here in this case I am using exception class.
+Okay, so the third parameter you can use is exception and you can use in any order.
+Even I can use custom exception first and HTTP servlet response second.
+So here if you go I'll show you here if you go in exception handler.
+Exception resolver.
+So here inside that it would be like invoke and handle invoke for request.
+Get argument values here.
+If you see that it has something called resolve argument.
+So it so it already knows that.
+What are the supported parameter it has okay.
+So if you pass this it knows that what value it has to fill this.
+If you pass this.
+It knows what value it has to fill.
+So you can use it in any order.
+And if you don't use it if you use it either one or all three, it would be fine.
+Okay.
+But you can't just put like a string.
+This class doesn't know how to support this parameter.
+How to fill this string.
+So then it would not even invoke.
+So here I just wanted to use response because in the HTTP servlet response, I want to set the status
+and the body so that when my control reaches to default error attribute, it knows this field.
+Let's see that.
+So here in this one I am writing one exception handler.
+Public.
+Let's say I don't want to return anything.
+Handle custom exception.
+And this handler I am writing for handling custom exception only custom exception.
+And also I want http servlet response.
+Also you can put request also, but I don't currently need request.
+So now here I am setting response dot send error.
+So it set two things right.
+One is I think int is your status code and then your message.
+So status code I want to set let's say up here whatever the exception this one.
+So exception dot get status dot value and exception dot get message.
+And it has to throw an IO.
+Okay.
+Now if we run this what would happen.
+So now first your controller get invoked and it throws an exception.
+Once an exception is thrown you know that dispatcher servlet will pass it to composite class okay.
+Now this composite class will first pass it to exception handler exception resolver.
+Now it will see that hey this exception is there any exception handler annotation present which can
+takes care of this exception okay.
+Now it is checking.
+Now here it is checking that yes it is invoking and handling.
+So here our exception handler got invoked.
+Now here I have handled it.
+Either you can return response entity here itself.
+Then once you return a response entity then it will not go to your default attribute.
+But here I am just setting the response.
+What is the status?
+What is the message?
+That's all.
+I am not returning the response entity, but I just send the response attributes.
+Now after this one, the control goes to your default error attribute which is setting timestamp.
+Now status what status it will send.
+See 400 okay.
+And it will also set the message user ID is missing.
+And ultimately it will create a response entity and return okay.
+Got it.
+So I think you should be very clear that when you're returning response entity.
+Default attribute is not comes into the picture.
+But now here I am returning just setting the attributes in the response.
+Then default attribute comes into the picture and then it is creating this object.
+But I think exception handler is clear to you right now.
+Let's see global exception handling.
+So now let's say that what happens if there are you have 100 of controllers let's say.
+And everywhere you have to handle the custom exception in a similar way dozen each class, each controller.
+You have to write this method.
+Again it's a code duplicate right then where the global exception handling comes into the picture.
+So how you can create a global exception handling.
+So I can create a new class, annotate it Annotated with at the rate controller advice okay.
+Which tells this resolver that yes, this is a global exception handler and you should take care of
+it.
+And inside this we can write the similar way, the way, the way we are writing a method here.
+Write the same thing.
+You can do it here also.
+Nothing no difference.
+Only thing is this class is now applicable for more than one controller.
+Even user controller, maybe uh, some invoice controller order controller.
+Any exception happens.
+Let's say custom exception.
+Okay.
+The first priority would be given to that.
+Hey, any exception handler which can handle the custom exception is present in your controller.
+No.
+Then it will go and check into the global one which is annotated with controller advice.
+Okay.
+So let's say that if any exception happens, it will properly invoke this.
+and I told you.
+Like what if I provide both controller level and global level exception which has more priority?
+So here I have provided the same custom exception handler at controller level and also at the global
+level.
+And if any exception occurs throw new custom exception which handler will invoke it.
+This or this.
+So user id is missing from controller exception handler.
+So first priority is always your controller level.
+Here controller level.
+And then if not then it goes to the global okay.
+And then in global it checks the same exception handler.
+Also one more question is what if there are two handler which can handle an exception.
+Which one will given priority.
+Now here if you see that in the in the global itself I have two exception handler one is custom exception
+class, another is runtime exception class.
+Now, if this exception is thrown, you know that, uh, ultimately your exception resolver will comes
+into the picture the first resolver.
+And that will use this annotation.
+And it knows that, okay, there are two methods.
+One is this method which can handle this exception.
+But it is exactly matching custom exception.
+Custom exception.
+Another is runtime exception one, but it is also a parent of this one.
+It can also runtime exception also can handle this, but which one to then use.
+So it will use a hierarchy first priority to the exact matching one.
+If there is no exact matching one, then it goes to the upper level its parent okay.
+So currently in this case I have custom exception.
+So this will get invoked.
+But let's say in case if I don't have this then then response runtime exception will get invoked.
+Okay, so you got it.
+The first resolver what it handles.
+This is your exception handler exception resolver.
+It handles this at the exception handler annotation and at the rate controller advice.
+And this is an industry standard.
+Also we use that also in industry how you can use either controller level and either global level also.
+Then there is another called response status exception resolver which is the second resolver in the
+sequence.
+Very confusing part.
+Many people will say that it takes care of at the rate response status annotation.
+The correct definition is it handles uncaught exception.
+Uncaught exception annotated with response status annotation.
+Let's see the meaning of this definition.
+Very confusing.
+I'll tell you why.
+See this use case?
+Very simple controller.
+I am throwing an exception.
+New custom exception.
+I am just throwing a message, that's all.
+And very basic.
+Custom exception class.
+Okay, extending runtime exception.
+And here I am not writing my own message field and overriding the message method.
+I just said that super message.
+So ultimately that message field get filled up.
+But here if you see I have put a response status annotation at top of this custom exception class.
+What is the status bad request?
+So now what happen is I am throwing an exception.
+I am throwing an exception.
+I am not returning response entity.
+So control will goes to resolvers.
+First it will goes to exception handler.
+Exception resolver that don't know how to handle custom exception because there is no.
+At the exception handler which can handle the custom exception.
+So there is no.
+So don't know how to handle this.
+The second it goes to response status exception resolver.
+There it will say that okay custom exception.
+Now it goes to custom exception class and see that hey at the response status is there or not.
+Yes it's there.
+So it would handle it.
+It would be able to handle it.
+So handle uncaught exception.
+This is uncaught exception.
+It's just going through resolver one by one.
+Can you handle me.
+So okay only uncaught exception.
+This response status able to handle it.
+Always remember that.
+So now in this case here if I show you.
+Response status exception resolver.
+Solver.
+Okay.
+So here let's say if any exception comes and it able to resolve it, let's say uh status not equals
+to null.
+Then what it does is.
+It applies it the same thing.
+What we do.
+Right.
+Send it nothing, but it just set the response HTTP servlet response.
+It just send the status okay.
+It is also possible to send a message.
+I will tell you.
+But you know that resolver will do.
+Resolver will not create response entity only in the response.
+It will just set status and message.
+And then your default attribute class create a object out of it.
+So resolver will say that yes, I can handle this because it has response status and this is the status
+code.
+It taken from the annotation.
+So it properly set the response status.
+So it will send it properly send the response status.
+Bad request.
+Okay.
+But here if you see that also second example of this one the same thing I am throwing custom exception.
+This custom exception has annotated with response status.
+Now apart from status I you can also send message these only the two possible things.
+Value and response.
+Value is nothing but your status and reason is your message.
+So here if you see that now when exception this uncaught exception goes reaches till response status
+exception resolver, it will know that status okay.
+And it will also say the reason.
+If reason is also there, then it will send this both status and reason in the response.
+Okay, so it will send this status and reason both.
+So your status will be sent and your proper reason would be sent here.
+Okay.
+Even though now here if you see even though my message is this one but I have, it has given more priority
+to this message.
+If you haven't written this message at the top, what message?
+Come user ID is missing this one.
+So this is nothing but a default.
+Default message would be used by default error attribute class.
+Okay.
+So if no message is given it will also not come here.
+But since you have given the message.
+So this will be user default message and the response status.
+No message was there.
+So it only set status that time.
+But when you have given the response also reason also, then it set the status plus reason and that's
+where invalid request pass this comes rather than this.
+Okay.
+Now actual one more confusion comes into the response status.
+What if I use above an exception handler method.
+Till now it is handling uncaught exception.
+Exception happened which is not.
+Nobody caught it.
+And this exception has this class level response status.
+So our response status exception resolver able to handle it.
+But what if you use it with exception handler.
+Now see this this class controller you have one get mapping get user.
+You are throwing an exception.
+Very basic.
+Sick.
+See that in this custom exception I am not using response entity.
+Here are not response status here.
+Okay, it's just a custom exception.
+I have written one custom exception handler class exception handler method which takes care of this
+custom exception.
+Also I have put response status here.
+Okay, so what is the response status.
+Bad request.
+And the reason is invalid requests.
+And and in the method I have put response entity.
+But here I am sending message.
+You are not authorized forbidden.
+So now here if you see that two different things I am doing in the exception handler, it is setting
+this as a status and this as a body.
+But in the response status, I am sending this as a let's say, the message or this as a status.
+So this is which status will be picked.
+And what is the flow?
+Many times what engineer confuse that okay.
+Response status means it would be handled by our resolver.
+First is exception handler exception resolver then response status response resolver.
+So what they do with this is that okay the first uh exception happen first control will come here.
+It will set the status as forbidden.
+Forbidden and message as you are not authorized, you are not authorized.
+And after that, the control will comes to here, which will set like status, which will override it
+status to bad request and reason as.
+Invalid request.
+Send.
+Okay, so this is wrong.
+Understanding.
+Few things are happening in this.
+You need to understand.
+First thing we are sending response entity.
+Yes.
+The control first comes to the exception handler resolver.
+Here it is creating a response entity itself.
+So definitely it will not goes to the second resolver.
+Okay.
+And you already know from the uh if you goes to the first diagram itself sequence.
+This one any time before even going to the second resolver it first check.
+Hey does exception was handled by the previous resolver exception handler.
+It won't go to the next resolver itself.
+So here in this scenario.
+So here in this scenario exception handler is able to handle the custom exception.
+So the control will never goes to the response status resolver okay.
+It will be here.
+It will be handled by this only.
+And it's creating a response entity itself.
+And if you run this what output you will see you will see 400 bad request status is this message is
+this invalid request.
+And now the where problem comes here.
+You are saying that response status will not get invoked.
+Then shouldn't this forbidden should have come?
+Why this bad request is coming?
+This one response status one.
+Who is handling this?
+If this, not this resolver.
+So here, if you see it is handled by your spring, uh, flow itself, a spring framework itself.
+So see this one.
+Exception handler, exception resolver.
+First it invoke it, it handles it whatever the return value.
+Return value is your response entity itself.
+Okay.
+After this it is handling the status response.
+So not no resolver is handling it.
+See the class servlet Invokable handler method.
+It is spring framework which handles the response status afterward okay.
+So whatever you have set forbidden.
+And this it got override by this response status by Spring Framework itself not by resolver.
+Resolver control will not even go because exception handler takes care of this exception itself.
+So understand it very clearly that don't mix response resolver.
+Once a resolver one particular resolver is handle it.
+Second resolver will not get involved.
+And once you mix this response status with exception handler, you need to only understand that it only
+takes care of uncaught exception means this exception is not handled by exception handler.
+Then it comes here.
+Then only it will handle this uncaught exception, but this one custom exception is already handled
+by exception handler okay so but response entity is response status is there after.
+Exception handler exception resolver it gives the priority to response status so it get override with
+this value.
+Okay.
+So exception handler exception resolver.
+The same thing I showed you.
+You can check the code.
+The response status is done by spring framework not by the response status response resolver.
+Again one more thing.
+You will again Scratch your head.
+Now, what would be the output of this?
+Can you answer this?
+So here, if you see that the same.
+I am writing one exception handler same.
+But only difference is I am now not returning response entity.
+I am just setting the status and the message into the response.
+Like through response, dot send error and setting the status and message in the response.
+And also I have response status which is bad request.
+So what it will print forbidden or bad request when the custom exception comes.
+So custom exception comes.
+It would be called by the first resolver itself.
+Now this exception handler exception resolver it will set this forbidden response dot send error.
+Then as per our previous understanding it would get override by this.
+And we will say that bad request.
+But here if you see that what it's coming 500 internal server error.
+Why?
+Because here, if you see that I am not returning response entity, I am doing response dot send error.
+When you do response dot send error right?
+What happen is let's say that user response dot send error.
+What it does is.
+It set the status.
+It set the message and it commit also okay.
+So it committed.
+The response is committed.
+Now you can't change it.
+So now after that the code as from the code itself, we know that the framework after you done it,
+our spring framework would now set to do response status.
+And it will now also try to do here if you see what that servlet.
+Right.
+So there it will do.
+Yeah.
+So after this one it will try to do set response status.
+It is spring framework, not resolver.
+Again, it will do the same thing.
+Send error the same thing.
+It will again try to do commit.
+So you can't commit again.
+You will.
+It will throw an exception.
+So your exception handler exception resolver throws exception itself.
+And that ultimately turns out to be an internal server error.
+Let's see that.
+I'll show you.
+So here in the exception handler I am setting the response.
+But now let's say that I am putting at the rate response status and value.
+I would say that http bad request or let's say.
+Bad request and reason.
+I will put uh Invalid request sent.
+And in the response status, let's say I am setting instead of exception reading from exception.
+Let's say I'll put just for proper differentiation HTTP status forbidden and the message user ID is
+missing exception.
+Now let's see.
+Start the debugger and put one debugger point at that servlet one also.
+This one.
+Let's hit it.
+So first I'm throwing an exception.
+Once an exception is thrown, control is to the overall composite.
+Now after that exception handler over method exception handler got invoked.
+It set the error.
+So now this will commit it.
+This will commit it.
+Now, after that response status.
+Now here, if you see, I'll put, uh.
+Here, let me put debugger point here.
+We have both.
+Right.
+I think control should come over here.
+So here it try to do send error again.
+As soon as it will do send error.
+See exception comes inside exception handler.
+Exception resolver itself.
+So when ultimately the at this default attributes status is set as internal error.
+Okay.
+So you also have to take care of mine.
+Like when you are using exception handler and response status together.
+Use it wisely.
+So that's why I advise never to use together exception handler and response status together.
+But if let's say you have to use it like this, You have put an exception handler custom exception,
+then put a response status and give them one responsibility.
+Either the method should have got a responsibility to set a status and message, or give a response
+status.
+Only one of them you can't put also like response entity or response dot send error.
+Follow one.
+Either let response status do it or either in this code do it because you know that from the code,
+whatever you set inside this method, inside this method, it will get override by response status.
+So either use this or this to avoid confusion.
+Okay.
+And the third is default handler exception resolver.
+This is very simple.
+Like uh here if you see I am calling certain method which do not even exist.
+I don't have any API.
+Get hyphen user 3223 three.
+The first it will goes to our composite because our controller even not reach.
+Okay.
+Dispatcher.
+Servlet.
+Not able to find the controller.
+The control comes from first itself from composite orchestrator to it will pass through exception handler
+exception resolver then response status response resolver.
+And then the controller comes to your default handler exception resolver.
+So here it will go one by one.
+So what type of exception we are currently throwing.
+It's a no resource found exception no resource found.
+So ultimately it would like this got handled no resource found okay.
+And it's the same thing.
+It will do handle error response.
+It will just send the error status and message Shh.
+Okay.
+For this exception.
+So when the control comes here.
+See, the status is 401404.
+And messages, no static resource.
+Get this.
+So this will get set into the response.
+And then default error attribute.
+It will set a proper status and message okay.
+No resource found this message.
+So default.
+So default handler exception.
+Resolver is just like spring framework related exception method not found.
+Resource not found.
+Likewise.
+Okay, so I hope this exception handling in spring boot is clear.
+You can, uh, try it out like do with your hands.
+You will find a lot of good things.
+And if you have more doubts, please feel free to ping me in the comment section.
+We can discuss more.
+Thank you.
+Bye.

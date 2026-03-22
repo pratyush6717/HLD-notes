@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20.SymmetricandAsymmetricEncryption</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="cryptography_notes.html" class="btn">View Notes</a>
+    <h1>20.SymmetricandAsymmetricEncryption</h1>
+    <pre>
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And today we are going to do a most important topic that is cryptography.
+Why it is most important topic.
+Because we are using it day to day.
+We are using chat application which says that we are end to end encryption.
+How you might be visiting website daily.
+So many websites that are https secure, how you might be using JWT in your day to day work, office
+work, what, how, how JWT do the authentication and integrity right?
+So everywhere, no matter if you go one level deeper, you will find that cryptography got involved.
+So that's why I said it's the most important topic because it make your foundation of system design
+solid.
+Okay, so without wasting any time, let's jump into the topic and let's try to understand it better.
+What is encryption?
+Encryption is the process of converting readable data into the text, which is difficult to understand,
+which is also known as Cypher.
+Right.
+So a text which is easily readable form.
+So through encryption we can convert it to a cypher okay.
+Or the text which is difficult to understand.
+So it makes use of cryptographic key right.
+So consider this as an example.
+Here is a very readable text concept coding okay.
+Now I am passing it through a encryption method.
+This encryption method make use of this key which is known as cryptographic key.
+So encryption method make use of this key and perform its algorithm and convert this readable text into
+a unreadable text or cipher okay.
+So this encryption method might have its own algorithm for this purpose.
+Let's say depending upon the key, its algorithm is that move two letters forward.
+So C convert to F, right.
+So c d e f right.
+So key is two.
+So skip two letters and then convert it to f.
+So this is just a simple very very basic encryption algorithm okay.
+So what I'm trying to say is that this encryption method uses key.
+And based on its algorithm it do the encryption.
+Similarly decryption method it accepts this unreadable text or cipher text.
+Pass it to a decryption method along with the key.
+So this key can be same or can be different depending upon the encryption algorithm which we are using.
+But the thing is, this description method uses this cipher text plus key, which is also known as a
+cryptographic key.
+And then convert this back to a readable format.
+So encryption is of two types.
+Symmetric encryption a symmetric encryption.
+And before I start I tell you that there is nothing like asymmetric encryption is only one which is
+very highly used, because I know that there is a conception that symmetric symmetric encryption is
+nowhere used everywhere.
+Asymmetric encryption is used.
+No, they are both like a left and right hand.
+They are both used simultaneously.
+I'll tell you how.
+And they both are very popular.
+Let's see that.
+And I think by the end of this session you will get clarified why symmetric encryption and asymmetric
+encryption both are equally important.
+Not like asymmetric encryption is popular.
+So symmetric encryption The same key is used for both encryption and decryption.
+So we have seen an example at above right.
+So let's say you have a user this is sender.
+This is receiver right.
+So sender is sending the data passing to an encryption method.
+And let's say key used is five.
+And after this it got data.
+Cipher data.
+This is plaintext.
+This is cipher text right.
+And in the decryption now this receiver what it will do is it pass this cipher text to a decryption
+method.
+And it uses the same key.
+Key equals to five.
+Only it uses the same key.
+And get the again plaintext.
+So symmetric encryption is same.
+Key is used for both encryption and decryption.
+Asymmetric encryption is that uses two different keys that is private and public key.
+So here again you have a user.
+So it has a plain text.
+Okay.
+So here it might call an encryption method using key one right.
+And it gets a cipher text.
+And once this receiver got the cipher text it passed it to a decrypt method.
+And the key it might use is that some key two but different key.
+What I'm trying to say that different key right.
+And then they get the plain text again okay.
+So symmetric encryption same key is used.
+Or symmetric encryption two different key is used which is known as private key and public key depending
+upon the uh like algorithm.
+Let's say uh, you are what operations you are performing.
+Let's say you are encrypting the data then encryption can be done through public key and decryption
+can be happen through private key.
+But there are certain scenarios like digital signature encryption happens to private and decryption
+happen through public.
+So you can say that this what key to use for encryption decryption depending upon the scenario.
+We will see that okay.
+But first part is clear right.
+What is the difference between these two.
+Then the second part is that what are the important algorithm for symmetric.
+So symmetric.
+There are two algorithms DS and DS.
+DS is popular earlier.
+But now it is not recommended because I think in 2005 uh, it has been uh, cracked.
+Right.
+Why it is cracked.
+Because the key size length is only 56 bits.
+So using a brute force approach, this DS encryption has been cracked.
+So ease is something which is more advanced.
+That's why it's named as Advanced Encryption Standard.
+And this is actually very popularly used.
+Why why it is difficult to, uh, break it because the key length is bigger than DS.
+So in DS the key length is 56 bit.
+Here we have 128 bit.
+Or if you want more security, we can even increase it to 192 or 256 bits depending upon.
+But remember the bigger the bits, the more security, but computation would be more so it would be
+little slower also.
+Okay, so based upon your trade offs you can decide what you want okay.
+So it provide this flexibility.
+You can choose 128 key size or 128 bits, 192 bits or 256 bits, a process the data in 128 bit chunks.
+What does it mean that?
+So let's say here my data was concept encoding.
+Concept coding.
+So you know that concept coding internally it would be 010110 in A01 terms it would be there.
+So as performs the encryption or takes the data into 128 bits chunks, it process them into 128 bits
+chunks.
+Likewise that's what this line says, that encryption round depend upon key size.
+This one I will come later when I will explain the as functionality.
+So okay so these are the two algorithm for symmetric encryption.
+Similarly for asymmetric encryption what are the algorithm.
+We have RSA DSA Diffie-Hellman and Ecdsa.
+Right?
+So here in this case, I would say that Diffie-Hellman is also very popular here.
+And RSA is also very popular.
+So RSA uses I think 2048.
+Key length.
+See it's very high right.
+As compared to.
+Yes.
+So you can say that it's more secure more secure than symmetric.
+So now let's see the advantage and disadvantage of both.
+Then you will get to understand that in which scenario symmetric encryption has to be used and in which
+scenario asymmetric encryption has to be used.
+So first thing is symmetric encryption is fast and less computation compared to asymmetric.
+I told you that the key length is 128 bits right.
+And maximum it can be 256 bit.
+And if you see the RSA itself or asymmetric the key length is 2048 bits.
+So the more the key length, the more the computation you have to do.
+And the it would be slow for sure.
+So AOS is faster.
+Symmetric encryption is faster because key length is maximum.
+You can have is 256 bit of AOS.
+So that's why it is good option for encrypting bulk data like a chat application.
+In the chat application you have to do lot of encryption, right.
+There is a lot of uh data.
+You have to, uh, keep on encrypting.
+So it's a good option for symmetric encryption.
+Okay.
+So good for encrypting bulk data.
+So this is the advantage.
+And what is the disadvantage of symmetric encryption.
+by the time you have already known that by this line itself.
+Same key is used for encryption decryption.
+Let's say that this sender and receiver has to talk to each other, and they have to decide that okay,
+this is the sender.
+This is the receiver.
+This sender has to say that that hey this is the key five which we have to use for encryption decryption.
+How it will tell to receiver securely.
+What if there is certain hacker listening to this network.
+And while sender is sending that hey let's use key five for encryption decryption.
+And what if this hacker knows that okay, key is five.
+Whatever the data you will send over the network, it can easily find it.
+And you can decrypt also because it got the key.
+So one of the disadvantage is the key distribution.
+How to securely distribute the key between client and server.
+And that is also makes a very good interview question.
+If you are saying that okay we will use a symmetric key.
+Symmetric encryption and symmetric encryption uses same key.
+The question is how you will make sure that key is securely distributed between sender and receiver
+without hacker knowing it.
+So this is the one disadvantage of symmetric encryption.
+Second is the number of client increases may mean server has to manage those number of symmetric keys
+and distribution.
+What does it mean.
+So let's say you have only one server and you have multiple clients.
+So each client.
+So each client has to have a different key right.
+So let's say for this communication.
+They are using KY five for this communication.
+They are using KY four for this communication KY three.
+This communication KY two.
+They can't use same KY for both because otherwise then he this user can intercept and decrypt its data,
+right?
+So KY should be different for each user.
+So means who has to keep the mapping server has to keep the mapping right.
+Okay.
+User one this is the key five.
+User two.
+Key 432.
+Like this.
+Because KY between different user can be same.
+It has to be different unique.
+It has to be unique okay unique between a client and a server.
+So number of client increases means server has to manage those number of symmetric key and its distribution
+too.
+Because server has to distribute the key also.
+Right.
+So the same problem is existing and it has to manage those number of keys also.
+But advantages it is faster.
+So what is the advantage and disadvantage of asymmetric encryption now?
+No security issue with the key distribution.
+Why?
+So let's say that you have a user which is sender and then you have a receiver.
+Okay.
+So they are what happen is this receiver.
+Or you can say that the server it has its own two keys private key.
+And another is public key.
+Okay.
+So as the name says that public key is known to everybody.
+So let's say even if there is any hacker which is intercepting this network.
+So hacker also knows that server public key sender also knows about the server public key.
+So when sender has to send the data so it will encrypt it using.
+Public key.
+Public key of server so it will encrypt it with what key?
+Public key of server.
+Now this encrypted data goes till receiver.
+And let's say in hacker mid.
+Also it is able to get this encrypted data.
+Now it has to decrypt it for decryption.
+What it required it required private key.
+So private key is only known to this server because this private key is never transferred over the network.
+So hacker is not aware of this private key itself.
+And when it's not able to know the private key this not able to decrypt it only who can able to decrypt
+it?
+Only this server.
+Because this private key only it should be able to decrypt it.
+Okay.
+So that's why it says that no security issue with the key distribution as each user has a secret key
+private key, which then do not forward it.
+Okay.
+What is the second advantage?
+Is it provide a key exchange protocol like Diffie-Hellman.
+One thing is what is the disadvantage of symmetric key distribution?
+Let's say you have a key.
+You have a user the server receiver and server receiver.
+And this is the server or this is client client and server server has key five.
+And it want to securely distribute it to the client.
+How to do it Diffie-Hellman provide the solution.
+And this Diffie-Hellman uses internally a symmetric encryption only public private key concept only.
+So key exchange protocol like Diffie-Hellman can be possible only because of asymmetric encryption.
+Right.
+And that's why I told you symmetric and asymmetric both goes left hand and right hand.
+In many applications like chat application, symmetric encryption is used.
+But for symmetric encryption you have to server has to distribute the key to the client which has to
+be used.
+And through Diffie-Hellman which is based on asymmetric encryption, can be used to transfer that key
+securely on an insecure network itself.
+So without worrying about a hacker.
+Right.
+So I'll tell you how this works.
+Also very important.
+And another advantage of asymmetric is digital signature.
+So digital signature you know that it helps to authenticate and provide integrity.
+So what does it mean that When you have a client, you have a server.
+Client is passing the data to the server.
+Now server has to know that first is client one only send the data.
+Second the data which it has sent.
+Is it modified in mid or not.
+So this is like authentication.
+It authenticate.
+Is this the client only has send the data or somewhere in mid has intercepted and send it something.
+Who has sent it.
+So it provides the it helps digital signature helps authentication.
+Second integrity.
+The data which is I received has somebody modified this data or not.
+So this digital signature is also using a symmetric encryption private public key technology only.
+So these are the advantages of symmetric encryption.
+But what is the disadvantage.
+Advantage.
+Disadvantage is computation intensive, right?
+I told you RSA itself is too.
+I think it uses 2048 bits.
+So let's say a mathematical formula where if you have like certain, let's say number upon or raised
+to power, uh, some your key.
+So some let's say five raised to power 2048.
+I'm just giving you an example of some mathematical formula.
+So more the length of a key, the more computation intensive it is.
+And that's why it is slow also.
+So a symmetric encryption is not suitable for encrypting bulk data as it is little slow compared to
+symmetric.
+So you got it when what is symmetric and what is symmetric.
+Encryption.
+When to use when not to use each.
+Okay.
+So now we will see three important part one is a yes because we are saying encryption, encryption,
+encryption internally encryption.
+What happens?
+It will.
+You don't have to learn the algo or understand fully.
+But I wanted to tell you that when we say encryption I got a key.
+Now I will encrypt it.
+I got a key, now I will encrypt it and I will get a cipher.
+How this encryption works actually until unless you don't get actually a clear picture of it, it's
+always a partial information.
+So I will at least tell you about AES so that you will get to know that how encryption algorithm works,
+whether it's AES or RSA, DSA, they might have different algorithm, but at least you know okay, this
+is how they convert a plain text into a cipher text.
+Then I will tell you about Diffie-Hellman this, how the key is securely transmitted over the network.
+Right.
+Because it's important.
+Because without this, a symmetric encryption is not even possible.
+And then also I told you about digital signature because JWT uses it.
+And our next topic would be JWT.
+So digital signature also we require it.
+Okay.
+So now let's talk about AOS, which is a advanced encryption standard.
+And it's a symmetric encryption algorithm.
+First of all it's a block cipher means it processes the data into blocks of 128 bit.
+I already told you that AOS process into blocks of 128 bits.
+So all the data internally is this.
+And then it processes data into 128 128 bits only before going to this process.
+Let me tell you certain terminology.
+First terminology is state array.
+What is the state array.
+So here, if you see that the data of 128 bits blocks or the key, what is the key size of a 128 bit
+or 192 or 256?
+For this example, I'm saying let's say 128 bit.
+So whether it's a key or whether it's a data it convert it to an array.
+So if it is a 128 bits it will convert into a 4x4 array.
+Right.
+So like this it will convert one byte is eight bits.
+So total 16 bytes.
+Total 16 bytes means 16 into eight is your 128 right.
+Total 128 bits.
+So whether it's your data of 128 bits, this part 101.
+So this 128 bit block.
+So each 128 bit block, it converted into an array like this.
+Even the key which is 128 bit it convert into an array like this which is known as state array.
+Okay.
+Then the second word which you have to know is word a set of four bytes.
+So a set of this yellow line, a set of four byte is known as a set of four byte is known as word.
+So in this 4x4 matrix how many word is possible for 123, four.
+These four yellows right.
+So four byte is known as word.
+And in this 4x4 matrix we can have four words.
+And this group of four word is known as round key.
+So this is your third key term.
+So first is state array.
+You know that.
+What is state area 128 bits?
+Whether it's a data or key, it's organized into 4x4.
+Matrix is known as state array.
+The group of four byte is known as word so, and the group of four words is known as round key.
+Okay.
+So now let's see a quick algo.
+So what does happen in this algo is that say that 128 bit key is generated.
+There might be certain method like random key generation.
+And you tell that we want 128 bit key because we are using for example as 128.
+So means 128 bit key length we have to use.
+So first we have to generate a key of 128 bit key.
+We can use any method like random key generation method.
+Right.
+So we can generate 128 bit key some unique number 128 bit.
+Now we are saying that uh we will call encrypt method.
+And that encrypt method will pass the plain plane data and the key and it will encrypt it.
+How?
+So now what happened internally?
+First.
+Key expansion process happen.
+So what does key expansion process do.
+The 128 bit key.
+This 128 bit key it convert it to 44 words.
+I told you right.
+So 128 bit key means it would be converted into like 4x4 matrix.
+Then this 4x4 matrix there are four words only.
+So how come it converted to 44 words?
+Because maximum we can get is four words one, two, three, four out of this 4x4 matrix.
+So what it does is so the subsequent words it finds like doing an XOR.
+So I'll tell you let's say you have word zero word one word two word three.
+Okay.
+So till three words we can get right easily.
+So we can create a 128 bit keys.
+Right.
+So key byte zero key byte one.
+Likewise key byte 15.
+And this is your word zero word one word two word three.
+So till here we can get but we still need 40 more words.
+How it can get what it can it what it generally do is that it will do XOR it will do XOR of.
+You will get word four right.
+So this word three it I think it passes through of one function for the function this word three.
+And whatever the value it got.
+Right.
+Whatever the value it got, it passed it to XOR and the word zero or you get word four.
+So word five How you get the word five.
+XOR of this word.
+Four.
+And the previous word one.
+Right.
+You got word five.
+How you get word six.
+XOR of the word five and the previous word two.
+Word seven.
+XOR of the word six and the word three.
+So you got next four right?
+So if you want now word eight how you will get it.
+So from the last word you first pass it to one function.
+It will give you certain uh, another uh different value.
+Do an XOR.
+Now the same.
+Repeat the same.
+Let's first now it continuously do this till you get till 43.
+So with this 128 bit we can get 44 words.
+The key is this process is known as key expansion.
+I will tell you why 44 words is required.
+Okay, now we have got the 44 words.
+Now what it does is it take out the first chunk of the data, which has to be encrypted because it processes
+the data into chunks 128 bit blocks.
+Okay.
+So and it has to run for for each block of data.
+And each block is 128 bit.
+So this process now has to run for each block of data.
+So I got my first block of data which is a plain text.
+Now this is the process.
+First add round key.
+What does add round key means.
+Let's say you have a data by zero.
+Data by one.
+Data by two.
+Data by three.
+And then you have data by four.
+Data by five.
+Data by six.
+Data by seven.
+And likewise.
+Right.
+So what it has to do is that add round key.
+So out of this 44 words you know that round key is set of four words.
+So it uses it consumes your word zero word one word two word three.
+Because this four words makes one round key.
+So it use this word zero word one word two word three.
+Now what it will do is it do xor.
+So xor with word zero, xor with word zero, xor with word zero, xor with word zero.
+This one XOR with word one.
+XOR with word one.
+Similarly with word two word two word two word two, word three, word three.
+Likewise.
+So what will do is it adds the round key to the data block.
+Then it performs multiple rounds.
+Round one.
+Round two.
+Round three.
+Round four.
+Round five.
+Round six.
+Round ten.
+And each round contains these four steps.
+So it does substitute byte shift row, mix column and add round key in each round.
+This four operations.
+This four operations happens.
+Right.
+So in each round you say that there is a add round.
+Key means four words.
+It will use four words.
+It will use.
+So four words means ten rounds means total 40 words.
+So here it would be using like 40 word 40 word 41 word 42 word 43.
+It will use this in the last one.
+So 40 words use here in this uh 1 to 10.
+And here we have used for.
+So 44 words is totally overall consume.
+Okay.
+So likewise, uh, so this operation, what it does is that let's say you have the data.
+I'm just I'm not going in depth of each one.
+I'm just add round key.
+You already know right.
+What generally happen it do the XOR substitute byte.
+Let's say you have data byte zero.
+Data byte one.
+Let's say that here data by two.
+I'm just saying uh, just taking for example 012345678.
+Like this.
+You have an array substitute.
+What it will do is let's say that this one, it will substitute with some other byte, this algorithm,
+it has an algorithm that okay this is the byte.
+bite.
+Let me substitute with this.
+So this algorithm knows that with what data it is substituting.
+Okay.
+Shift row means what it does is that let's say do a circular shifting, uh, rows.
+Let's say it do left shift.
+So this four comes here, seven comes here and one goes back.
+Similarly five comes here, six six comes here.
+And three it was 0122 comes here now.
+So shift rows similarly mixed column.
+So what it will do is it will mix the column values.
+So let's say your byte was here.
+Let's say 01011010.
+I'm just saying something.
+So what we'll do is it will mix the column with the upper column, do XOR so it will mix it.
+Certain mixing happens between columns and then add the round key.
+So whatever the let's say for round one it would the words would it will uses 567 for this one is eight,
+nine, ten, 11 and so on.
+And last one it will use this and it will do XOR with all this keys like how we did it here.
+And after all this step we get a ciphertext block.
+You understand this 128 bit plain text block is now converted to a ciphertext block.
+After all this thing.
+And during decryption, this 128 bit ciphertext block is now going in an opposite direction.
+First add the round key.
+Now again the same 42.
+It will start, it will go top and then it will get a 128 bit plain text block.
+So you got it right.
+Whenever we are saying encryption, encryption, encryption we are actually doing lot of this stuff,
+lot of stuffs.
+And mathematics involves in this substitute bytes shift rows mixed column also.
+But at least you got the high level.
+What substitute byte what shift rows actually does mixed columns.
+So do certain change the values based upon the algorithm.
+Right.
+So that's where here it I have mentioned that based upon the key size your round depends.
+So if it is a 128 bit key right.
+How many round it does ten rounds.
+If your key size is 192 bits it do 12 rounds, 256 bits, 14 rounds.
+Right.
+The more bits the more security as it will add.
+Do lot of more modification on your input data.
+Got it.
+So team nobody asked you like okay, tell me how encryption works.
+How Round one works well.
+This is just for your understanding.
+When we are saying encryption, encryption internally, what actually happens?
+There is a lot more mathematics involved in it, which I have kept abstraction with you.
+But this will give you a glance that okay, this is how the data is internally stored into 4x4 matrix.
+And this is when we say that add salt.
+Add salt to the data means adding more rounds, more keys.
+You are adding it right.
+So this is how actually it works.
+Okay.
+Now let's understand the Diffie-Hellman a symmetric encryption.
+Because symmetric encryption is not possible without this.
+And you know the problem because both the parties has to share what key they have to use, what common
+key they have to use, and to share it over the network.
+What if I listen, I'm am a hacker, I listen it, I can able to decrypt it, right?
+The whole encryption algorithm will fail.
+So Diffie-Hellman which is an asymmetric encryption, it provides a way to share the secret key without
+sender and receiver between sender and receiver over secure network.
+Okay.
+So it provide a way to share the secret key between sender and receiver over insecure network.
+How so?
+With diagram I will explain you how and there are formulas involved.
+So I think with this diagram it would clarify you.
+So let's say this is a sender.
+This is a receiver.
+They first this is let's say insecure network.
+Insecure network.
+Just just assume that somebody is listening to this network.
+And whatever the data is going over this network, somebody knows it.
+It's insecure, so first sender and receiver both share between each other that this data.
+Let's say that hey ball is green.
+They both share over the network.
+So at this time what they share is actually the prime number and the primitive root right.
+So they now both know that hey prime number I choose is seven and primitive root is three.
+They shared it over the network that okay.
+Now this also knows that okay prime number is seven.
+Primitive root is three because they have shared over the network.
+So insecure network.
+Any hacker also knows this data okay.
+Okay.
+So at the this is the first step where they have just decide common common data.
+Right.
+So this is the common data prime number and primitive root If anybody of not from mathematical background
+and they ask like what is primitive root.
+So it is what happen is that whatever the prime number you have.
+So let's say primitive root is three three raised to power, one three raised to power two mod seven
+three raised to power three mod seven four mod seven.
+Likewise.
+So whatever the values you got, it should be your between 1 to 3.
+Ultimately, whatever your prime number minus one, you should get all those values right.
+So until where you should use prime number minus one like.
+So I have used a prime number seven.
+So I can do let's say I want to find out a primitive root I start with let's say two two raised to power
+one two raised to power, two two raised to power.
+Three two raised to power.
+Four two raised to power.
+Five two.
+Raised to power six till six.
+Because minus one.
+And also do with mod.
+Whatever the prime number, let's say here is seven mod seven mod seven, mod seven mod seven.
+Now I will check that okay, whatever the values I get, it should have all these values one, two,
+three, till whatever the prime number you have chosen Prime number minus one.
+All the values should have come here.
+So if you see that with three I got one I got two, I got three, I got four, I got five, I got six
+all I got.
+So this is a primitive root of this prime number okay.
+So in the first step this two things is decided.
+What is the prime number I am choosing.
+What is the primitive root?
+I am deciding for this I am I choose for this.
+Now the second second part is I told you this is a a symmetric encryption.
+So now they randomly generation of private key happen.
+Okay.
+So now this sender find out it's one private key.
+This also find out it's one private key.
+So let's say it generated it's private key.
+As for it's generated it's private key as five okay.
+And this is your prime number which is seven.
+And primitive root which is three.
+Prime number is seven and primitive root is three.
+And they're now randomly generation of private key happen.
+They haven't shared it on the network.
+Remember some.
+This is red and green is some private.
+Third step.
+Calculate the public key.
+Now they have to find out the public key.
+So this is the formula.
+Primitive root raised to power private mod prime.
+So here is the primitive root.
+Primitive root was three, prime was seven and private was four.
+Right.
+So three raised to power private four mod prime number which is seven.
+So I got four.
+So my public key is four.
+Similarly this side also it will calculate primitive root is three raised to power private.
+It's private was five mod prime number.
+So prime was seven.
+So it got its public key as five.
+So you know that this public key is something which we can share over the network.
+So now they will exchange the public key.
+Right.
+So they will exchange the public key over this network.
+So it got this five this part grey part grey ball.
+It comes here and this brown comes here.
+Okay.
+So primitive root was three, prime was seven, Prime was seven.
+Primitive root was three.
+So till now hacker knows what.
+Let's say that hacker is continuously listening to this network.
+So hacker has what all information hacker knows about primitive root.
+Prime number seven.
+Primitive root three.
+And this public.
+So it knows about, uh, this, uh, public key five and this public key four.
+So it knows about this two key also this and this.
+But hacker doesn't know about this private key yet.
+At both sides.
+Now with the last step with the last step is to calculate the shared secret key.
+The formula is that the public key which I got.
+raised to power private mod Prime.
+So what is the public key?
+I got?
+Public key I got was five five raised to power.
+Private key.
+My private key.
+So this was four right.
+Mod prime number I got two.
+Similarly here is shared public key.
+The public key which I got is that four four raised to power my private key which is five mod prime
+number which I got two.
+Now here if you see that both got the same key.
+Now hacker even though has all this information but it doesn't know about this private key, this key,
+this private key.
+So it cannot compute this value.
+So you know that this is how Diffie-Hellman works, that it helps to share the secret key without T1
+hackers know about it because they don't.
+Hacker doesn't know about the private key.
+Now you can ask me right here.
+Like can't hacker do brute force and compute this?
+What?
+How we can say that Diffie-Hellman is secure.
+So generally what we say is that let's say some value raised to power private key.
+Okay.
+When we are doing mod something mod n and you are getting certain output.
+So the Diffie-Hellman is that says that choose the private key very very big.
+Okay.
+So that even if hacker knows this value, hacker knows this value.
+And even hacker know this value, without this private key, it cannot find like what is the private
+key?
+Even if we do brute force.
+One, two 123456.
+It would.
+It would be very difficult.
+It gonna take years, right.
+Because first we are doing mod n so we don't know whether with four.
+Also I'm getting the same value of five.
+Also we are getting the same value.
+We don't know.
+So this process makes it very complicated.
+Says that choose the private key big very big.
+So that it's gonna take years for hacker to compute the output value, even if it know what is the output,
+but it don't know the private key.
+So it's gonna take years to compute this.
+So that is clear.
+Like so this computation is very expensive value raised to power private key.
+So that's where the Diffie-Hellman says that it is secure.
+It enables the securely transmission of keys over the network.
+And it uses public private key.
+So it uses a symmetric encryption.
+You got it right.
+So now let's see how digital signature works.
+So I already told you that digital signature is used for two purposes.
+One is for authentication.
+And second is integrity of data.
+Authentication means that it provides a sender has to know that okay this data is coming from this user
+only the intended user okay.
+And the integrity of data means the data which I the sender is getting is the same which was actually
+sent.
+Or if something has been uh, modified in mid.
+Okay.
+So how it does.
+So here this is the flow diagram of this digital signature.
+So let's say you have a plain data.
+Let's say hello.
+Okay.
+So I am not doing the encryption of this plain data.
+This is just a part to explain the digital signature.
+So let's say plain data.
+Hello.
+First is pass it to a hash function and generate the hash.
+So I got the hash.
+You know the property of a hash is that if a same data is passed through a hash function again and again
+you will get the same hash value.
+But even if the little very minor is something change in the data, the hash function will generate
+a total different hash value.
+Okay, so the first part is pass this plain data to a hash function.
+Compute the hash of it and this hash is of fixed size.
+No matter.
+You have so big data, so less data, you will get a fixed size hash value.
+Then we have to pass it to a sign algorithm.
+So in the sign algorithm the sender.
+So this is the sender.
+So sender has to pass its private key which is secret to this sender.
+So it will sign sign this hash with its private key.
+So with this sign algorithm you will get certain value which is known as signature okay.
+So what it does at the sender side.
+So it take the plain data pass it to hash function.
+You got the fixed size hash value.
+Now for this hash value you pass it to the sign algorithm.
+And you also provided the private key using this private key.
+And this hash value it generates some value which is known as signature.
+Now when you pass your request you pass the data.
+For this example, I am not doing encryption of this data.
+Just say that I am passing the plane data itself.
+So now I am passing this two things to the receiver.
+The plane data and the signature.
+Now first thing receiver now has to know authentication that okay the sender one only has send this
+data and also the integrity of data that this data is not changed.
+Whatever the data it got.
+So what it will do is whatever the plane data I got I compute the hash function.
+And I told you whenever the same data, no matter how many times you pass it to the hash function,
+you will get the same value.
+So you will get some certain hash.
+Now you want to know that whether this data has been changed or not.
+So what I will do from the signature now you will pass it to the verify Algorithm.
+In the Verifi algorithm, you pass which key the public key of the sender.
+So you remember during the sign sign has happened to private key, which is secret to it.
+So you would be only able to you can say that the verify only with the help of sender public key.
+So this if you are able to verify means you are able to authenticate because.
+Sender private key sender one private key only its public key sender one public key only would be able
+to verify.
+Let's say some other sender has sent it.
+Sender five.
+Right.
+So you can't just verify it with sender one.
+Public key.
+Right.
+That's not possible.
+So once you able to verify that with the sender public key, you able to verify that and you able to
+get the hash function out of it.
+And once you get the hash value, you can match it.
+What the plain data hash and what the signature hash you got.
+Is it equal or not?
+If it is equal means data is not changed at all.
+If it is not equal means this plain data has been modified in mid.
+Right.
+So this digital signatures this is how it helps authentication and integrity of data identification.
+Right.
+And that's why it is also known as asymmetric encryption because it uses private key and public key.
+So during signing it is signed through private key of a sender.
+And during verifying it uses the public key of the sender only.
+Okay.
+I hope you got little bit understanding of cryptography.
+Okay, guys, uh, if you have any doubt, please bring me in the comment section.
+Uh, we can discuss more.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

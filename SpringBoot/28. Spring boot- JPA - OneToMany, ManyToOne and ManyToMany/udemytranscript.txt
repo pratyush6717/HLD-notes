@@ -1,0 +1,935 @@
+Guys, she said.
+Welcome to concept encoding.
+Uh, so in today's video, we will be covering the remaining mappings, which are left like one to many,
+many to one and many to many.
+But if you have already seen the previous video where we were discussed about 1 to 1 unidirectional
+and bidirectional, then this video would be just a piece of cake.
+Uh, like nothing else.
+Like so very, very easy to understand.
+That's what I'm trying to say.
+So let's start without wasting any time.
+Like one to many.
+Unidirectional.
+You already know reference exists only in one direction.
+Okay.
+And one to many.
+One entity associated with multiple records in another entity.
+One to many, like user can have many orders.
+One user many orders.
+Okay.
+So now let's say that if you remember, if you recall 1 to 1 okay, let's say you have a user and address.
+Okay.
+So here you are storing the foreign key.
+Remember like you are storing the foreign key of this ID user ID.
+Now here in one to many.
+You have a user.
+Now let's say you have an order.
+Let's say this is user one.
+User one have let's say order one, order two, order three.
+Now I want to store the reference how you would store it before understanding it.
+Just think logically like how we will store it.
+So is it possible.
+And I am talking about unidirectional.
+All right.
+So only one way we have a reference.
+So can we store in the user like you one order one.
+Because here you have only one row for the user.
+Next is user two.
+then you have user three.
+So how you will store it in one.
+You have only one row for user.
+So we we can't store here right.
+Because there can be many orders.
+We can't have one order right.
+So one way is we have a new table where we store that.
+Hey this is user one, order one, user one, order two.
+User one, order three.
+Like this okay.
+And what is the other way?
+Other way is that here in this order table itself I have one more column.
+Here we have user one.
+This order two also belongs to user one.
+Order three also belongs to user one.
+So these are the two ways.
+So what is the default way in this way.
+So this is the default way.
+It creates a new table.
+And if you want if you don't want to create a new table.
+And if you want this behavior like in the order table in the child one itself.
+We want a foreign key of the parent.
+Then we have to specifically tell into the join column.
+Okay.
+We'll see.
+So this is what I told here that it creates a new table by default generally.
+And you know that one to many.
+In the previous video I told you by default it's a lazy loading.
+And I have already explained what is eager loading and lazy loading.
+So just see this example.
+Now I have created one entity user details.
+This is all we have seen.
+The user has let's say user id which I calling id name phone.
+Now in one to many.
+I have also have order details.
+I have it stable.
+This order has let's say order ID which I'm calling ID only and let's say product name.
+That's all.
+And it's getter and setter.
+Now in one to many one user can have many order rights.
+So I have created a list of orders inside this user details.
+And now I have put one to many annotation here.
+Okay, now I am telling JPA that it has one to many relationship means we have to handle the foreign
+key.
+But how?
+So here by default what it will do.
+I told you what is the behavior?
+It will create a new table.
+Okay.
+And I also told you about the cascade type.
+What would happen with the cascade type okay.
+Cascade type.
+Merge insert right.
+Similarly all means whenever you will insert a user detail order, detail would also get inserted.
+If you delete the user detail parent, the child will also get deleted.
+So now here if you see what is happening, how is your user table gonna look like It has ID name and
+phone, ID name and phone.
+How is your order detail gonna look like?
+ID and product name, ID and product name, but where this one to many is going to show default is it
+should create a new table.
+So here if you see that it created a new table user detail order detail it by default it created okay.
+And here if you see that this is the IDs it created by default.
+So this is the ID and this is the id okay.
+But what if you don't want to create a new table.
+Because in one to many relationship I feel that this is the better way.
+Like one user, let's say if user one have multiple orders, then the optimized way is that you have
+multiple order one, order one, order two, order three here only we can have like it belongs to user
+one.
+This is belongs to user one.
+This belongs to user one.
+This is a foreign key of here.
+So this is the foreign key.
+So how to achieve this behavior instead of creating a new table.
+So nothing much we have to just use at the rate join column.
+So in 1 to 1 if you remember this we uses to provide a name to the what name we want to give to a foreign
+key right here in one.
+To many, this also been used to tell JPA that we don't want to store, or we don't want to create a
+new table.
+Instead, manage the foreign key into the child table itself.
+Okay, so here, now here, if you see everything same, same everything, what I'm done is same.
+Only thing is this is added newly added join column.
+Okay.
+Understand like who is storing a foreign key?
+Then only it would be better clear.
+So here you have a user.
+You have a order.
+So let's say order one.
+Order two.
+Here you gonna have a user one correct.
+So this one join column name.
+What is the name I'm giving user ID foreign key because this is the user ID foreign key okay.
+Because this is the ID which going to store.
+And what is the reference column.
+Name this over this table user table ID.
+What is the id I'm calling user id okay.
+So this is the id okay.
+So if you are clear that where the foreign key is going to be created in 1 to 1, it is used to create
+here itself inside a parent, but in one to many, you know that parent can't hold it because one to
+many one row can't.
+You can't have like zero order one, order 2 in 1.
+So it has to create a new table.
+But we don't want a new table to create it.
+That's why we are using a join column which enforce JPA to add it into the child itself.
+And we tell that, hey, this is the name of the column we wanted for the foreign key, and it is referenced
+to this column ID.
+Okay.
+So now how it's going to look like in the user detail what you're gonna see ID name phone, ID name
+phone and in the order detail you will have ID product name and also this foreign key okay.
+And this foreign key is the name user underscore id underscore f k is the name.
+What we give.
+And this is tied up with this user ID.
+Reference id is the user id we give okay.
+Now if we do a first insert call now.
+Now I am calling user.
+I am trying to do an insert.
+So user has name, phone and a list of orders.
+It has a list of orders right.
+So I'm providing an orders.
+I am giving two ice cream and cold drink.
+So if you see my order entity one is ID which is auto generated.
+Another is only product name.
+So I'm giving like since it's a list, I am giving an array.
+And inside that I am creating two objects.
+One is ice cream, one is cold drink.
+Once you hit it.
+So here if you see data is inserted and it even so it created a user and it now you got a user ID and
+even it created an order two orders and also created an order ID is also for them.
+So here if you see user is created and this two order is created, one is ice cream, one is cold ring.
+And here if you see the foreign key is updated properly one so it's parent is one.
+So one to many okay.
+Depending so see in one to many use case my recommendation would be this one.
+Instead of creating a new table okay.
+Generally new table we create in many to many scenario only okay in one.
+If you have a use case in one to many it's better you could add it here itself.
+Otherwise you have to maintain one more table and maintaining one more table you like.
+It has its own, uh, advantage disadvantage.
+But I would say that in one to many use case, generally this is you can say that the better readable
+and faster way of accessing the data.
+Okay.
+Now if I want to do Get call now I want to do get call off it.
+So what would happen.
+So here if you see this is just a controller, I have added uh so that you can easily understand it
+better I think in 1 to 1.
+Uh, I have already explained this like dtos and all.
+So here, if you see one to many, I already told you, right?
+By default is lazy.
+Okay, so this is the get call.
+So now here, if you see first I am doing find by ID whatever the id, I am fetching it.
+My expectation is since I am doing user controller, user has let's say three childs order one, order
+two, order three.
+So here I am first fetching the user so it will only fetch user, not orders at.
+At this point of time only user is fetch, not order.
+Then I am saying that going to map user to user DTO.
+So now I am going to construct the DTO.
+So now here I am constructing the DTO.
+So in the DTO construction I am putting ID name phone.
+Now here I am printing one message going to query order table here.
+Now you know that in the lazy whenever we are going to access it like get me the order detail, then
+it will hit a one more select query, one more select query on order table and then it will fetch the
+order details.
+So we can see the output.
+I did one get call.
+So here I am doing one get call.
+I've got the data.
+But here if you see first it make a Select query on only from user table.
+So it first fetch only user data.
+Then it printed this.
+Going to map user detail to user DTO.
+Then internally here while doing a mapping it is first printing going to query order table here.
+Now going to query order detail.
+Now when I specifically did get me the order detail.
+Now at this point of time it will hit an order and it fetch the data and return.
+So you can if you remember, if you haven't watched the previous video, you might be thinking hey,
+why I am creating dto it just to showcase you how lazy working because if I am just returning it from
+here, right?
+Uh, from this itself, I will return, let's say return output here itself.
+Okay, now what would happen is you will still get the same output.
+You will get the order itself.
+But there you get confused that hey, it's a lazy.
+Then why this order get comes because because of serialization.
+Okay.
+When you do a, uh, Jason, uh, when in the response, we return a JSON, right?
+So our Jackson internally call get API.
+So even though we are not calling Jackson internally, call the get right here we have the getters and
+setters right getters and setters.
+So here internally it calls get order details.
+So internally Jackson invokes it.
+So to avoid the confusion to show that how lazy working at what exactly time the order is getting fetched
+when specifically we want maybe your scenario you don't want to return the order details, then you
+don't have to do this and no order query would be hit.
+Okay, eager, fetch.
+You already know that if you want eagerly you can simply put fetch type eager and simply return find
+by ID.
+You don't have to do dto like it will always return full itself.
+And in the query itself you can double verify.
+Now the select query is like from user table.
+Now join with the order table.
+Earlier it was only from user table in the lazy one.
+Okay.
+And the casket type I have already explained you in the previous video with the example that persist
+merge removal all works in the same scenario, right?
+So now here, whatever the casket type we are using right?
+Casket type all.
+So means when you create a new user, if there are an order it will also get created.
+If you use remove you remove the user, then all its associated order will also get removed.
+If you update it, if there is an associated order and you are trying to update it, that will also
+get updated.
+It.
+And if you want all this feature, you can use all.
+Okay, so this one I have also explained you in the previous one.
+Now there is this is one very interesting uh, is something called orphan removal.
+Now with one to many there is one question comes that okay this is my user.
+User one.
+This user has.
+Order one.
+Order two.
+Order three.
+Order four.
+User one.
+Okay.
+Now it is possible that in future I am updating that user one has only order one, order two and order
+three.
+I am removing the order four from the collection here.
+If you see in the user.
+In the user.
+You are maintaining a list, right?
+List of order details.
+Where is it?
+You are maintaining a list inside a user.
+You are maintaining a list.
+What if you update this list and instead of four orders you are just having now one order here instead
+of four four orders, you updated the collection and now you have only three orders and now you are
+calling save.
+You are not calling delete, you are just calling save again.
+Okay, maybe you can say that update you are calling update.
+So if you are not doing orphan removal what would happen is this will change to null.
+But this will not delete.
+So this will become orphan.
+Now earlier user one has all four orders.
+Later on you updated only that.
+Okay.
+Order one.
+Order two, order three is there in the collection.
+Order four.
+You have removed from the collection in the Java code and you call save again internally.
+Save?
+See that a ID is already there.
+So internally try to update it.
+So for order four it will change it to null.
+It will remove it because now it is not there in the collection.
+But this would be known as orphan.
+This would be known as now orphan because it doesn't have any parent.
+And this is generally we are calling as a child table.
+So that's why we call orphan removal any orphan child you have remove it okay.
+So that's where automatically removes child entry when child removed from the parent collection okay.
+So just see this example.
+This is just a controller I'm just created this a testing even though it's a get.
+Don't worry about it.
+This is just for the testing the orphan.
+So I have created first insert user.
+So we will create two orders.
+User order one.
+Order two.
+Okay.
+After that I will invoke this API.
+And in that one I will first fetch the data user details.
+And it is uh, it will get all the data.
+Right now I am doing get order details right.
+So all this user one both the orders will come and I am removing the zeroth index.
+I am removing this and I am again saving it.
+Remember I am not deleting it, I'm just saving.
+It means I am updating it because it has the id.
+So internally it will go for the an update.
+So what would happen?
+Let's see that.
+First I am inserting it.
+So here this is the post API I am inserting.
+One user has two orders ice cream and cold drink.
+So now in the user detail one user is created and two orders is created.
+Okay.
+Both has the foreign key properly set.
+Now I am testing orphan removal.
+So currently orphan removal by default is false.
+Only by default is false.
+Okay.
+So means we are testing an existing behavior.
+Till now.
+What we are doing now I am calling the other API this API which I am calling you.
+So what it will do, it will first fetch it, remove one order and then save it.
+So means order.
+One is now orphan.
+So now here.
+If you see that order one is not coming into the response.
+User detail has one user order.
+Detail still has two.
+But here if you see one is considered as null.
+Now zeroth one because I am removing it, I am removing the zero.
+So I am remove the one from the collection.
+So this one got updated to null.
+So now this has become orphan.
+It doesn't have any parent.
+Okay.
+So now so here if you see right you can check the console how it works.
+So it first did a select okay since it's a lazy one.
+So it didn't it only hit user table.
+Then after that I did this get order details right.
+So at this point of time it hit the order table.
+So from there I removed one zeroth index order I removed from the collection and I call save.
+Internally it will call update only.
+So here it is calling Update and Order detail.
+This one is setting null.
+One is setting null because I have removed it from the collection.
+Now, if I want orphan removal functionality, then what we can do is in one to many cascade type all,
+there is one more field like orphan removal equals to true so we can set it.
+So what would happen now the same API we are hitting again the same output.
+But if you see the DB now user detail.
+Yes.
+Order detail.
+Now only one the orphan which was an ice cream in that scenario got removed deleted.
+So now here if you see the query also you will see one delete query also.
+Okay so orphan removal true equals to.
+We are telling JPA that hey if you are seeing that we are removing an entity.
+So you remember right persistence context everything is in memory like so user has.
+Order one.
+Order two.
+Okay.
+Everything is in memory.
+Now you are removing order one from the collection.
+So persistence, context.
+Everything has known about it.
+And now when you're calling JPA update, it knows that this order has been removed from the user collection.
+So first it update it to null, first it update it to null, and then later on it deleted it.
+So it's a two step process.
+But that JPA will take care of removing the orphan child.
+So if anybody in interview asks you about this like, um, what are the challenge comes in one to many.
+Uh, it's orphan removal.
+This is how we can handle it.
+And sometime it also asks that how it is different from cascade delete and orphan removal.
+Cascade delete and orphan removal C.
+Both are different concept in Cascade delete means you are so user has two childs order one order two.
+In cascade delete means you are deleting the parent and cascade.
+It will delete the child.
+Also that what cascade delete is okay if you deleting the parent child will also get deleted.
+Orphan removal is you are removing a child.
+You are removing the child from the collection, not from the DB.
+You are not deleting the child from the DB you're removing from the collection only.
+Okay, then we have to tell JPA that remove it from the DB also.
+That's what orphan removal is.
+Okay and orphan.
+You already know that without parent in this scenario.
+Your child table child row doesn't have any foreign key which points to the parent.
+Okay, I hope this is clear.
+Uh, if this is clear, then we can move to bidirectional.
+That is again a very, very simple but again an important concept.
+One to many bidirectional.
+If you are clear with the 1 to 1 bidirectional, then it would be less confusing for you here.
+But before I proceed further, I will tell you that there are 3 or 4 things.
+Parent child.
+Then another is your owing and inverse side.
+Owing side.
+Inverse side.
+Don't get confused that hey parent is always the owing side.
+Child is always the inverse side.
+No, you know that parent and child concept, right?
+Like depends in your business, which is considered as a parent and which is considered as a child like
+parent.
+If parent exists, then only child can exist.
+Okay.
+If child existence is dependent upon parent.
+So parent child relationship.
+We can determine from the situation to situation because we can easily identify that yes, child dependency
+is on parent.
+If parent goes, child also goes.
+But what is owing side and inverse side don't get confused with that.
+Owing is always parent.
+Inverse is also child no owing means those which side contains the foreign key.
+Which side contains the foreign key.
+Inverse is like the which side do not contains the foreign key.
+Simple.
+Easy to remember.
+So which side is holds the foreign key relationship in a table?
+Inverse side is no foreign key is created in the table.
+In 1 to 1 we have a parent table.
+We have a child table in 1 to 1 bidirectional.
+You know that foreign key is created here in the parent key 1 to 1.
+So this is your parent row.
+This is your address let's say user address.
+So address ID.
+So here inside this parent is now the owing side.
+But now in one to many you have a user.
+You have an order.
+Okay.
+User one.
+User two here you have order one.
+Order two belongs to user one.
+Order three belongs to user two.
+So this is your foreign key now here.
+So who is the winning side?
+This one is the winning side.
+Now your child is now your owing side.
+And this is the inverse side doesn't hold the primary foreign key.
+Okay.
+So always easy to remember which one is owing side and which one is reverse side.
+So in one to many bidirectional.
+So here if you see in the owing side we always write at the right joint column.
+Okay.
+Because in unidirectional you know that only one side we keep it.
+Okay.
+But now in the owing are bidirectional.
+We have two side inverse side and owing side.
+So generally joint column is put into the owing side which holds the primary key.
+Okay.
+So now in the order details user has many orders.
+Order one.
+Order two.
+Order three.
+So now here.
+If you see that order details, you have an ID, product name and one user also one.
+Remember, one more thing.
+Bidirectional doesn't change your DB structure like a unidirectional.
+In a unidirectional and bidirectional, the table structure would remain the same.
+You have a user, you have an order.
+You have a user ID here, you have an order ID, here you have a product.
+And here only also you have one user foreign key like in unidirectional.
+Same here.
+But here what happen is here in the bidirectional you have reference from the both side.
+One is like maintained into the table and another is on the Java object side itself.
+So now here if you see which one is your owing side?
+Owing side is the one which holds the foreign key.
+Foreign key is holds by your child.
+Table.
+Order.
+Okay.
+We are saying that order is my child table.
+So now here I have id, I have product.
+Now I am creating a user details user okay.
+Because one order can have only one user okay.
+One order can have only one user.
+This way.
+So that's why.
+So what is the foreign key name.
+Join key column user id owing fk.
+This is the name I want to give.
+And what is the column it point to user id this one in the user table.
+User id this is pointing to this id okay.
+And this is just a getter setter nothing much.
+And here in the inverse side.
+Now your inverse side is your currently here parent which do not hold the foreign key.
+So here you have an ID name phone.
+And here I have a list of orders.
+List of orders.
+And now since it inverse side.
+So that's why I am using one to many here map by user detail.
+So notice one more thing here.
+Parent to child.
+Here is one to many.
+One user has many child and they're many to one.
+Okay, many orders can have only one parent.
+Okay so that's why many to one annotation is used here.
+Okay.
+So at the inverse side I am using map by user details.
+So this will tell JPA that this side is not handling the foreign key.
+This is just like a reference in the Java code.
+In the Java code.
+You can access the order details here from this side also and from there user details.
+This side also.
+But this is the one owing side where we have a join column.
+This is the one which actually responsible for creating a foreign key in the table okay.
+And this is just a map by user details that this is just a reference to this one.
+And this is all our getter setter okay.
+So first thing is clear.
+Which one is your owing side.
+Which one is your invoice side at the owing side okay.
+So here in this case in one to many your child is your owing side which holds the foreign key.
+So that's why you put many to one annotation.
+First part.
+Second part is you use the join column at the owing side and you can give proper.
+What is the name you wanted and the respective column in the parent which is pointing to?
+Okay.
+And in the corresponding parent table which is do not hold the foreign key.
+So it's an inverse side.
+And there we have to use one to many.
+And we have to give just it's a map by.
+Okay.
+And it is mapping to this one.
+Okay.
+So means JPA.
+It will tell JPA that we don't have to create any foreign key column here, just a map by in Java code
+itself it would be used okay.
+It is not maintaining any foreign key.
+So first is clear.
+Second is I already told you in the previous video JSON identity info like when in case of bidirectional
+during serialization recursion issue can come.
+So there are many scenarios you can use JSON ignore.
+Right.
+And there are other ways.
+So identity info we can use it like this.
+Okay.
+So this is the second way this we have already discussed in the previous video why we needed it to stop
+the recursion, because during serialization user now has reference to order.
+Order now has reference to user.
+So it should not go continuously.
+And now here if you see the third last scenario here is during set orders.
+We are setting this here.
+So what we are actually doing here.
+So now here if you see see this.
+With this example I am creating a user, I am creating a user and name phone number.
+And this user has two orders ice cream and cold drink placing two order.
+You know that cascade type is all so means child table will also get created.
+Okay, so user would be created and child would be created.
+Now here if you see from the user we are creating a user.
+Right.
+So child table how it will create it will call set order internally.
+Right now if we just call set order here.
+If you do this only.
+This two things would come null.
+Why.
+Because in the bidirectional this is your inverse side.
+Here we are telling JPA that this is just a map by.
+This is not maintaining any foreign key relationship you don't have to worry about at this class.
+So during when you are creating an order from this two rows, it will create set orders.
+What should be the value which going inside this it doesn't know it won't automatically JPA would add
+because JPA is not maintaining this as like a maintaining a foreign key.
+Okay.
+Only this one owing one many to one where we have put a join column.
+It is maintaining that here this is mapped by which is inverse.
+So here whatever the order we have order details.
+So what I'm doing is I'm iterating over an order and I'm putting user details this.
+So I'm inserting the reference of this user details that whatever the user I am creating, whatever
+the order you are creating, this order has user details.
+This one, this user.
+And that's where this one is coming here at both side okay.
+That's why this one is coming at both side.
+So if you understand owing and inverse then this things understanding this thing would be very easy
+for you.
+That why we are doing what.
+Okay.
+When we have to where where we have to use join column.
+Okay.
+Uh in one to Two.
+In a unidirectional.
+It's very easy.
+We have to use at one side only.
+Okay.
+But in bidirectional it becomes confusing where we have to use.
+So always use it at the owing side.
+Other.
+At the map you have to take care of the like.
+Any mapping you have to do.
+You have to do in 1 to 1 bidirectional.
+We are not doing this because our parent has owing the foreign key, right?
+So JPA will take care of it.
+So even though we are putting address right, just setting an address, it will take care of inserting
+the address ID properly foreign key properly.
+Because this is our primary itself.
+Parent table itself is your owing side.
+So if you are creating a user that table itself has a foreign key.
+So JPA will manage it.
+But here in this one to many scenario this is inverse side now.
+So JPA will not take care of filling up the order ID, a foreign key, filling up the foreign key here
+so we have to maintain it.
+Okay.
+Similarly you can call user join.
+It will properly come and no recursion problem will come.
+Also because recursion problem we have solved through this JSON identity info.
+Now also you can use JSON ignore if you want.
+Generally if you ask my preference.
+Also let's say user has order, order has user.
+So generally at one side you can always put like JSON ignore.
+Generally in the child side we can always put JSON ignore.
+From parent side we can have an order from child side we can put JSON ignore.
+We don't want uh again the parent information parent information we have already taken out.
+But it depends upon your business logic how you are accessing generally from parent.
+We access the child detail.
+That's why we don't want parent details again.
+And that's why we put JSON ignore in the child one.
+1 to 1.
+Many to one.
+Unidirectional.
+Before I go to many to one unidirectional.
+Many to one bidirectional.
+Is same as what we did just now.
+One to many bidirectional, right?
+It is also equivalent to many to one bidirectional.
+See, whenever we are talking about one to many, we are saying that parent to child.
+And when we are talking about many to one, generally depending upon the concept, generally we are
+talking about child to parent.
+Okay.
+So here in this case bidirectional child to parent.
+Bidirectional.
+In this case let's say user order scenario.
+Now if I have to use many to one I.
+This is my many I am talking hey many order has one user, many order has one user.
+Now I have changed the way of talking or my perceptive now in one to many I was talking from parent
+to child, now in many to one.
+Generally it goes in a reverse direction like many orders.
+One user but still user is my driving.
+Uh, like user is my driving one like it is the considered as a parent so many to one bidirectional
+is exactly same as generally one to many bidirectional same piece of code would be written because here
+if you see whichever is the owing party, that would have many to one here annotation and the inverse
+side will have one to many.
+Okay.
+so only little slightly difference come in many to one unidirectional.
+That is also very very similar to your one to many.
+Okay.
+So now here if you see that we'll see this with an example.
+You will get to know easily.
+Okay I will first tell you about this table entity.
+Yeah.
+So earlier we were talking about one user can have many order order one order two one to many.
+Now we are talking about multiple orders.
+Can belongs to one user many to one.
+It's the same thing right?
+Just way of seeing the problem is different.
+Now if you see this user details I am not putting anything.
+I have user ID name phone now here.
+If you see the parent doesn't know about child in one to many Any parent know about the child?
+Because here we have a list of orders.
+Now in this many to one, we are talking from the child perspective.
+So here if you see parent doesn't know about what is the like how many childs are there user ID name
+phone that's all.
+But in the order details it know about a parent.
+And here we have put many to one cascade type all join column.
+We can say that this is the you know that table wise also exactly same child table only will contain
+the foreign key order details only contain the foreign key.
+And this foreign key belongs to the ID okay.
+Exactly same as one to many.
+Only thing that they are in one to many.
+Your parent has about knowledge of the child.
+List of order.
+And here we are using one to many now in many to one.
+Your parent doesn't know about your child, your child knows about your parent.
+Aaron and we are using many to one annotation here, but DB schema wise exactly same.
+And bidirectional is exactly same as one to many bidirectional.
+Okay.
+So you can try it out.
+Exactly.
+It's just same.
+It just way of talking like um one to many many to one.
+It's just like from parent to child, child to parent, that's all.
+And then we have many to many unidirectional.
+So now here in this case you need to understand many to many.
+There is no parent child concept okay.
+Anybody based upon your business can be treated as a parent, can be treated as a child.
+Similarly can be treated as an owing.
+Can be treated as an inverse.
+Both can be owing.
+Both can be inverse.
+Like you can take any one of them as an owing side, any one of them as an inverse side.
+Because many to many.
+reference.
+And it's a unidirectional means one way only.
+Now see that.
+Let's say you have product one.
+Product two.
+Okay.
+One are so many to many.
+So here, if you see that order one, order two, order one can also have product one and product two.
+Order two can also have product one and product two okay.
+So now here if you see product one is associated with order one and product one is associated with order
+two.
+Similarly order one is associated with product one and product two.
+So we have many to many relationship here.
+No one is dependent on anybody.
+So order details.
+And here I am creating one more entity product details in order.
+I have nothing but an order number which is auto generated.
+And since this is we are talking about unidirectional means, I want to reference from one side itself.
+So I want from order two product like I want to in the code wise, I want to read from DB schema wise
+unidirectional, bidirectional.
+You know that.
+Exactly same.
+No difference.
+Only thing is Java code how you can reference like how you can access it.
+So in unidirectional I want let's say I'm putting inside an order.
+From order I can reach all product one, product two.
+So that's why I put list of product details means order is knowing about all the products.
+And inside a product you have a product ID, what is the name?
+What is the price?
+But you can only move in one direction from order to product like here in in one direction only.
+Okay.
+So how you can, you know.
+And one more thing.
+You know that you have an order table.
+You have, let's say order one, order two.
+You have a product table, you have a product one, product two.
+Now you have to associated it with order.
+One is associated with product one, product two how you can store it and can you store it here.
+Can you store it in the child table?
+There is no child parent relationship.
+So in many to many always we create a new table.
+Order one product one.
+Order one, product two, order two, product one, order two, product two, or product three.
+So now this is how many to many in a new table we create.
+So that's why there is something called list of products.
+Because one order can be associated with many products.
+So now I am putting at the rate many to many relationship.
+Now we are telling to the JPA that it's a many to many.
+And I'm since it has to create a new table so we can tell this at the join table.
+What is the table name I want to create?
+I want to create order underscore product.
+This is the name I want to give order underscore product.
+And this foreign key right.
+One foreign key in order one foreign key in product.
+So that's why join column you can make anybody as uh owing and anybody has inverse I'm telling you.
+So join column one I am killing order ID inverse join column is your product ID this one okay.
+So two columns it will create into this new table like this.
+And this is just a getter setter.
+So now here if you see your order details is just your order number which is auto generated.
+Your product detail is product ID, name, price, product ID, name, price.
+And now because of this many to many mapping a new table order underscore product would be created which
+has two columns.
+One is order ID and one is product ID, order ID and product ID.
+Okay, we can test it like so.
+Here I have simply created a Rest controller product controller okay.
+And I have created one order controller.
+So very very simple.
+So here if you see just see what I am doing here I will one by one I will tell you let's say step one
+create a product.
+So I am hitting a product API API slash product, slash API slash product.
+So this is the insert product Method is getting invoked.
+Product has, uh, name and price, right?
+So I am first creating one product.
+And then I'm creating second product called ring.
+So two product I am creating.
+So product is created I got an ID so in the DB.
+Now here if you see that two products are now there in my schema in the DB.
+Currently no order is there.
+So first step I did is created two products.
+Now I am creating an order.
+Now here if you see insert order when I'm creating an order.
+Now let's say that order one.
+So product one and product two I already have in a DB.
+Okay.
+Now this order one I am saying that hey associate this order with this product.
+Product one and product two let's say I have more product p3 p4.
+But in order one I want to associate it with only P1 and P2.
+So means I'm passing the ID, so first it will fetch product IDs.
+Once it will fetch the product ID it will add it to the orders, set product details.
+And then I am saving the order.
+Okay.
+So here in my product, uh, here in my order detail, I have a list of product details.
+Okay.
+So that's where I am setting it.
+Like now if you see it would become more clear with this.
+Now I am creating an order.
+So this is the first order API I'm creating.
+So order has only order number which is auto generated right?
+This is auto generated.
+Rest is like the list of product list of product.
+So I am passing a list of product.
+Now here I have already created two products.
+One is ice cream which has id one and another ID two is cold ring.
+rain.
+So I'm just passing that.
+Hey, associated this order with this product id product id one and here product ID two.
+So what my code will do from this order which request is coming.
+It will take out the ID and it will search.
+So first ID one I am sending right this ID one.
+This ID one.
+So for this ID one it will first go.
+And from the DB it take out its details.
+Then its a stream right.
+Then it goes second and then it will take out its detail and it will collect into this list.
+Okay now I have the complete list of this product ID one.
+And similarly product two which is for cold ring and its price.
+And here we have ice cream and its price 100.
+Now I am inserting into my order details and I am saving it now.
+Okay, so now what is the expectation here?
+Here if you see the response, my order is created one and it is associated with the existing product
+itself.
+So currently I have achieved this one order one already I have product one.
+Product two.
+It is associated with this now.
+Now I am creating another order okay.
+So orders are order number is auto generated.
+So on successful order number two would be created.
+But I am associating it with product only product ID two.
+So what would happen with the code is that it will take out a product ID.
+It will find.
+So it will get this detail product two in the list and save it okay.
+So what it will do is.
+It will return like this.
+Now if you see the DB order detailed two orders created product detail only two product which we initially
+created and in the order product which is a new table there I have like with one order product one,
+one order product two, and with the second order only product two is associated.
+Okay.
+And here if you see we are inserting an order now here if you see uh where it goes entity.
+Yeah.
+This order we are this is maintaining the like here we have a join table many to many relationship okay.
+So means JPA knows that it has to fill up this IDs foreign key and product ID.
+So that's where we are not worry about our code itself that okay, update order ID and product ID properly
+okay.
+Because in this class itself it will create it will create a new table.
+It has this two fields and JPA is maintaining it.
+It is not mapped by.
+So we don't have to worry about that properly.
+Order ID product product ID is set.
+JPA will take care of it if it is a mapped by.
+Let's say that if it is a mapped by then we have to set.
+Then JPA will not take care of setting the order ID product id okay, since this is foreign key is properly
+maintaining by JPA, we don't have to worry about.
+So this getter setter itself we can rely easily.
+Okay.
+So now here, if you see that we are achieving many to many relationship properly.
+And now in the bidirectional, you know that DB structure is going to be the same.
+No difference.
+Only thing differ is now we have a reference from both side.
+We have a user or we have an order and we have a product.
+Okay.
+We can go from order to product from product to order.
+But now here in this scenario many to many.
+Can you tell me which one is owing and which one is inverse?
+First of all, there is no child and parent concept in many to many of product is not dependent on order.
+Order is not dependent on product.
+First of all, okay, both are independent.
+If one goes down or one goes deleted, other one not get deleted, right?
+And who can keep the foreign key.
+So here if you see nobody here, we create a new table.
+Where is this new table?
+Here we create a new table.
+Okay.
+Neither product is keeping the foreign key.
+Neither order is creating a foreign key.
+So we can give ownership of anybody.
+We can make anyone as annoying and another one as an inverse.
+So let's say that I am keeping the order as an owing itself.
+So there I am putting like this like order has a list of product.
+So I am putting exactly the same.
+Many to many new table created.
+And this is the two IDs.
+It has to create exactly same and product details.
+Now here if you see this three table now it's a inverse also.
+Right.
+So list of orders also.
+But I want to.
+created inverse map by.
+So I have created many to many here also map by this product details this one okay DB schema wise no
+difference.
+Exactly.
+Same only thing is like uh in the Java code how you can reference it, which one you want to keep as
+an owing, which one you want to keep as an inverse.
+Owing generally contains the foreign key.
+Okay.
+So here nobody contains the foreign key.
+New table is created.
+So it's just like you want to give responsibility to order detail entity to create a new table or product
+to create a new table.
+Here I am creating an order, uh, responsibility to create a new table.
+That's all.
+Nothing much.
+And whenever you will create an order, okay.
+It will take care automatically update product ID and order ID associated properly.
+But now here, if you say this is map by okay, it is also a list of orders.
+So now let's say if you are creating a product and product also has list of order one.
+Order two like this inverse you are doing.
+Will it properly create or fill up this table?
+Will it properly fill up this table?
+No it will not.
+It will create product.
+It will create order.
+But will it take care of this foreign key properly?
+Update.
+No, you have to take care of it.
+Filling this table because it's a map like it's only Java reference.
+JPA is not managing the DB here, here at the root join.
+And this is not mapped by.
+So JPA takes care of responsibility.
+When you go for order and from order you are creating products properly ID would be created, foreign
+key would be updated but vice versa.
+Now here product you are have product one, let's say ice cream and you are getting the hey associated
+with two orders.
+It will not update the foreign key table properly because it's just a map.
+So you have to write your properly in the setter code that update the foreign key also.
+Okay, so based upon your business logic, how generally operation comes like product is always there
+product one, product two and orders now coming in your system.
+Okay.
+So it's better that you make it an owing side.
+So always based upon your business logic depends like which one is going to be the owing.
+Which one is going to be the inverse.
+If you make opposite you blindly choose anyone as an owing and anyone as has an inverse, then you have
+to take care of responsibility of updating the foreign key properly.
+That's the only thing you have to consider in the bidirectional.
+Okay, with that being said, all the mappings are completed, but do practice it out.
+It's all easy, but if you practice it with your hand, you will get proper clarify like okay, to whom
+we are saying owing to him, we are saying inverse.
+Why one to many, many to one is so related to each other?
+It's just about the concept.
+When we are saying one to many parent to child, many to one, sometime child to parent.
+It's just a way of saying okay.
+So it creates a lot of confusion, but they are very tightly related to each other.
+Okay guys.
+So last topic left in JPA which is your custom queries right.
+And criteria queries we will cover that soon also.
+And after that we will start with spring security.
+Okay guys.
+Thank you.
+Bye.

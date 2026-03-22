@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03. Maven and its Lifecycle</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>03. Maven and its Lifecycle</h1>
+    <pre>
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And today we are going to do the next topic of Springboot that is Maven right.
+This is you can say that the most underestimated topic.
+We generally think it's just mostly Maven to build generation.
+Nothing much more than that.
+But today I will show you what all things Maven can do.
+Why it is very important to know about Maven and how it makes our developer life easy.
+Okay, so let's start with the newest topic in Springboot that is Maven.
+So Maven is a project management tool, not just build management tool or build generation tool.
+No, it's a project management tool which helps developer with build generation.
+So it's just one part of it, right?
+Also dependency resolution documentation.
+And there are lot many other functionality which Maven provide Okay, so Maven uses Palm Project Object
+model to achieve this.
+So whenever we give Maven command right.
+Let's say Maven Maven install.
+Maven you can see that there are another component deploy.
+We will go through this commands.
+But whenever what I am trying to say whenever we give this commands to Maven what Maven first do is
+it look for Pom.xml in the current directory from the directory.
+Currently you are running this command.
+So it looks for pom.xml and then try to look for the configuration.
+What it has to do with this.
+Okay.
+So Maven is highly dependent.
+You can say that Pom dot XML.
+Okay.
+So if you remember before Maven there is something called ant which was very popular.
+Okay, so in the end we have to tell generally what to do and how to do.
+In Maven.
+Generally we have to only tell what to do, what to do, how to do.
+That's now Maven is taking care of Maven knows that okay.
+You only tell me what to do, how to do.
+I will take care of it.
+For example, we have given this command maven install for example.
+Now we tell Maven what to do.
+Okay you have to install.
+How?
+I haven't tell.
+Now that Maven will take care of it.
+What?
+Okay.
+You have.
+Tell me what you have to do now.
+How to do it that Maven will achieve in.
+And we have to tell what to do and also how to do it.
+We have to provide the step sequence of steps to achieve what we have to do.
+Okay.
+So advantage of it is, uh, one is that it simplifies the developer with various tasks like build generation,
+dependency resolution, documentation and lot more things.
+And also it only we have to provide what to do to it, right.
+What tasks we have to do, how that maven's take care of it.
+Okay.
+Clear.
+Like what's the advantage maven's provide why Maven exists, right?
+So if you remember, this is the Maven project structure, which it follows okay.
+And if you remember in the previous video where we have, uh, downloaded or set up the Spring Boot
+project and we have selected the Maven.
+So this project got, uh, downloaded right with one class, spring boot application in this package
+are learning spring boot.
+This is our, uh, the app name which we give and source main Java.
+And this is what we provided into the, uh, group ID artifact.
+And if you remember.
+So this is the package how the maven follows.
+And there would be one pom.xml.
+So this is what generally maven project structure is.
+So whatever your app name is it will first create its directory.
+Then in the main directory itself you will have Pom okay.
+Then there you have source main Java okay.
+So source main Java.
+And there you provided in the spring boot we have provided this three.
+Right.
+So it create a package like this.
+Com concept and coding learning spring boot.
+These three things we have provided while creating a spring boot project if you remember.
+And this is one Java application class It will create like this.
+Okay.
+And here if you see in the source parallel you will find one package of test and then the same Java
+com and the same name, the same project structure.
+And it's equivalent test class.
+Right.
+So this is generally unit test cases where we will write in this class for this.
+For this Java class we will write unit test cases in this okay.
+So here if you see that we have source.
+Source.
+They have test in parallel the same Java.
+Com concept coding learning spring boot and spring boot application test okay.
+So this is the project structure for Maven which generally follows.
+And that's why you see this kind of structure when we downloaded the project from the Spring Boot using
+Maven.
+If you have selected Gradle, might be some other structure got downloaded which Gradle supports.
+But for Maven this is the project structure which Maven supports.
+Okay.
+Now when the project got downloaded right.
+So this Pom.xml we got right.
+So the same Pom.xml I have copied here, and I will show you what exactly it is like, how to read this
+Pom.xml what generally the meaning of each properties and elements defined here.
+Okay, so here if you see the first part, this project okay.
+This first part what here you will see certain kind of schema schema location okay.
+So what is it.
+It specify the XML schema.
+Also make sure that our XML adheres to the correct structure and version defined by the Maven.
+So whatever the XML, you can say that the rules it has provided in this schema.
+This should be the name.
+Okay.
+Inside this parent you can have group ID artifact version only.
+You can't by default use.
+Hey, can I write this?
+Uh, here something x y z x y z.
+Close.
+Can I do something?
+No it is.
+This XYZ is not defined in the schema of the parent inside this.
+So we can't write something like randomly.
+It has to follow properly.
+What in within this element.
+What all things can we write.
+Right.
+So it should follow certain schema here.
+If you see the parent part this one this is used to define the parent project.
+The project, if you remember, which we have downloaded from Spring Boot.
+Right.
+So the form which we got.
+So in the form you will see this parent block means this is the child form.
+Child form of what.
+It's a child form of this.
+So in Maven each pom dot XML is a child of some other form.
+Right.
+If it is, if you have defined this.
+So currently it's a child of this this project form.
+So whatever this project.
+So these are you know that group ID and artifact ID uniquely identify a particular project in the Maven
+central.
+Okay.
+So in this project this is the version there would be some Pom.xml.
+So that would be parent of this bomb parent.
+Okay.
+So each Pom has one parent.
+If there is no parent defined in the pom, let's say that if there is no parent defined in the Pom,
+then Maven automatically by default.
+Make inherited from a super Pom.
+So in Maven every pom which you are writing right internally by default it's a child of super Pom.xml
+okay.
+So generally in our case in our Pom the Pom.xml which got downloaded in our project, this one which
+got downloaded with the project, it is given that it's a child of this, this project.
+So spring boot starter parent spring boot.
+some starter parent project.
+Its pom.xml.
+So this is its parent and this itself might be a child of super Pom dot XML.
+Okay.
+So you got it.
+So this there could be some other uh there could be some other parent for this one.
+Or if no, then it ultimately would be a child of this.
+So we can in simple terms, we can say that super Pom is something which is at the top of the hierarchy.
+Now whatever the Pom you will create, whether this or this.
+Generally it's a child of this super pom only.
+Okay.
+So the parent used to define the parent project current project inherit the configuration from specified
+parent project.
+So our project and is inherited the configurations from here.
+So in our pom.xml If you see this is very small.
+Pom.
+Right.
+There is not much configuration.
+Why?
+Because it might be using the configuration from its parent in its parent.
+It might have provided lot of configurations.
+Right.
+So since it's a child of it it will use its configuration whatever its dependencies, all the dependency
+which this parent has or the configuration which parent has all will automatically comes to your child
+also.
+So if this parent field is not specified, Maven by default inherit the configuration from super form.
+So this is the link of the Maven super form I have provided.
+Okay, so you can check out the super form dot HTML here.
+There are lot of configurations.
+By default configurations are available which generally comes to your project.
+This configuration and dependencies okay.
+So you understood what is the meaning of this?
+Parent means our project is generally a child of this project, actually.
+This three parts.
+I have already informed you, right?
+In the previous when we created this Springboot project group ID artifact id version, this three uniquely
+identify our project which we are creating.
+So this is the company name.
+Generally you can say this is your ultimately the project name.
+And this is the version currently.
+So this uniquely identified your project in the Maven Central.
+Okay then we have something called properties.
+So what is property is it's a key value pair for configuration right.
+So this is a key.
+This is a value okay.
+So it can be referenced throughout the XML file.
+So now in all other XML file I can use this property.
+This key.
+How?
+Let's say in this dependency group ID artifact id and let's say I want to use certain version.
+I can use like that that let's say version I can do like this dollar this Java version Java dot version
+close.
+So now this dollar Java dot version.
+Ultimately what Maven will do it will check in the properties.
+Hey for this key is there any value defined.
+Yes 17 is defined.
+So this will get ultimately with replaced with.
+710 okay.
+So anything which you define in properties.
+It's a generally a key value.
+And then this key can be referenced anywhere in the in this form.
+Okay.
+Now let's see the next property which is like repositories.
+So what does it do.
+This is from Maven.
+Look for dependent project dependency and download the artifact jars.
+So here if you see that in this this repository we have defined it one URL.
+Okay.
+So what this URL is this is the like URL from where you want to download your dependencies.
+So this is the next if you see we have a list of dependencies.
+First is this.
+This is our first dependency.
+Then this is our second dependency.
+Now from where this dependency will get resolved.
+From this.
+Okay, so this is where this is from where Maven look for project dependency and download the jars.
+Right.
+So this is generally you can say that I have written it for you.
+But here if you see in the project which is downloaded you will find that this is missing.
+This is not there.
+Generally this is added, uh, this is a by default which Maven added.
+You can say that maybe in the super pom.xml you might find that that this is by default value is present.
+If you don't add it from its parent Pom this will get added.
+So by default it will always download from Maven Central only by default.
+So even if you don't write this, maybe if you go and check in Super Pom you will find this.
+So that's why it is not required to add it here.
+And even in the pom.xml which you downloaded, if you double check, you won't find it because I have
+added just to show you that from where it downloaded the dependency.
+So till till dependency is all clear right now.
+Actual maven starts when you see the build this build element.
+And before I tell you about this build you first need to understand the build lifecycle.
+Then only you would be able to understand why we have to provide this build.
+What is the usage?
+Deep dive into this.
+But first let's understand the build lifecycle.
+So below is the maven build lifecycle.
+So let's say that first is validate.
+So this first phase is Phases.
+Validate phase.
+What is the second phase?
+Second phase is compile.
+We will see each phase in depth.
+But I'm telling you that these are the sequence.
+First phase.
+Second phase.
+Third phase is what test.
+Okay.
+So first it will validate the project structure.
+Second it will compile the source code.
+In the third phase it will do the testing it do unit it.
+Run the test cases.
+In the fourth phase what it will do it will package means it will package the compile code into this
+jar.
+Fifth phase.
+Fifth phase is verify.
+It will verify the integrity of this package.
+Sixth phase is install the package into local repository and the final and the seventh phases, deploy
+where it will deploy the package into the remote repository.
+So we will see each seven phases in depth.
+And then after that you can say that yes you are clear with Maven.
+But one thing you have to say that these all are sequential steps.
+Let's say that if you want to run package phase, which one is the package phase?
+Fourth phase, then all its previous phase will also get executed first.
+So now let's say if you say that hey, I only want to run this phase when you give the command to run
+this phase only then all its previous phase first will get completed.
+This will get completed first.
+This will get completed first and then only this will run.
+Okay.
+So there are you can say that sequential.
+So there are different phases right.
+So these are all phases.
+And each phases has goals.
+Multiple goals.
+Goals one.
+Goal two.
+There can be different goals.
+So first phase can have multiple goals.
+Second phase can have multiple goals.
+So consider goal as nothing but a task.
+In first phase validate phase there can be multiple tasks.
+Second phase is your compile phase.
+There can be 2 or 3 tasks which it might be doing right.
+So that's what I have written here.
+If you want to run a specific task of a particular phase, for example, again let's say for the package
+inside a package, there are let's say goal one, goal two, Goal five.
+Let's say there are multiple goals in the package.
+This is your phase four.
+Now let's say that hey, I want to execute this goal and there could be more goal.
+Let's say.
+So this is nothing but a task which is happening in this phase.
+Okay.
+So you want to perform this task.
+So to perform this task first it will goes in sequence.
+It will perform all the tasks of this phase, all the tasks, all the goals of this phase, all the
+tasks of this phase.
+And in the fourth phase it will perform all the its previous tasks, this task, this task and till
+this task.
+So.
+Got it.
+If you want to do any particular task, if you want to run a particular task, then all its previous
+phases and their tasks will also get completed.
+If you want to add a specific task in a specific phase.
+Maven provide the functionality of flexibility to add it.
+Let's say that, for example, in this install in the sixth phase, what is the sixth phase is install.
+There are three tasks.
+Task one.
+Task two.
+Task three.
+In the sixth phase of install, this is the phase.
+There are, let's say three tasks.
+Now you want that.
+Hey, I want to add another task for in the in this phase.
+In the install phase.
+How you can do it through build.
+Okay.
+So this build element help you to add a new task Inside one of this phase.
+So this is the validate first phase is your validate.
+What validate does is it validate the project structure.
+Okay.
+So here if you see that Maven already has this validate phase and it is executing its task.
+But if you want to add more tasks and we can use build element and add the goal to a specific phase.
+So now what is the command to run the validate Maven validate.
+So now here if you see what I am doing here I am adding a new plugin.
+I am adding a new plugin.
+This would be inside build.
+Build close.
+Like this.
+Inside this build we are writing a plugins, write plugins and then writing a plugin.
+So I'm writing a new task here.
+I am writing a new task here.
+So this is the group ID, this is the artifact ID this maven already support plugin, right?
+Maven has so many plugins, you can either create your own task or you can already Maven which supports
+you can uh, whatever the Maven support, you can add it based upon your project need.
+So this is one plugin which Maven support.
+So in this these are the coordinates where it will go and download what task it is.
+Now here if you see in the execution we are this is the task okay.
+And here if you see this task is added to which phase validate phase okay.
+So Maven already has this default phases.
+Each phases already has different uh defined goals which Maven by default has it.
+What it has to do.
+But if you have a requirement to add more tasks, this is how you can do.
+And you can also provide the configuration.
+If any configuration requirement is to read, it will read this.
+So what ultimately doing is this plugin.
+This plugin.
+Right.
+What actually does is it do the check style.
+It will validate your check style.
+For example uh my code Styles.xml.
+There should be if there should be like a space between that certain a code check style.
+So it will validate that that your code is following a particular style or not.
+Every company has different code style.
+Some follows this, some follows this right.
+So they want to have a different structure.
+So you can use that.
+So you can enforce it here in the validate phase itself before compiling itself, it will first validate.
+So you got it.
+The second is compile compilation of source code.
+You already know what compilation will do.
+Okay.
+So it will convert your Java code to.
+Byte code dot class files.
+Okay.
+So we have to run the command Maven compile.
+And when we run the Maven compile you know that it is following a sequence.
+So even though we are running this command Maven compile directly this phase.
+But first it will also complete the validate phase also.
+So it will validate and compile your code and put it under target.
+Classes will show you.
+So now let's say I have run this command Maven compile.
+So this is the project right on the same project.
+If I run Maven compile, then this project, what it will do is.
+So here if you see.
+This is the phase it is running.
+You won't find validate phase.
+Because I told you Maven doesn't validate anything like it doesn't restrict you.
+Whatever how you want to write a code, you can write it.
+But in case you want, you can add this plugin.
+Like you can go through and check different plugins and you can add for validate.
+But here if you see when you do Maven compile.
+So this phase runs and what it does is it generated the it internally do Java C.
+And now now understand this I didn't tell I haven't tell Maven that Add do Java.
+See something?
+I just told him compile.
+Maven.
+Compile.
+I told him what to do.
+How to do.
+I didn't tell it, but internally it has this plugins, right?
+So what it will do is it when this command comes right.
+Maven compile.
+So what it will do is it will Maven will look for Pom dot XML and it look for this maven something called
+compile plugin in our Pom.
+It's not there but might be in super Pom it would be there.
+So in Super Pom it would be having certain coordinates group ID artifact ID version.
+So Maven will use that and fetch whatever the details it has to fetch.
+So there Maven has already provided all the Maven has already all the details.
+How to compile the code, whether through Java, C or is there any other way?
+It's their headache.
+We don't know, right?
+But internally it uses Java C and it moves the classes to this target.
+So here if you see this is our project source main Java.
+This is our package.
+This is the classes which we wrote.
+And here and after Maven compile you will see new folder comes into the picture.
+After this test there is something called target comes in inside target classes.
+And if you see that there are all the dot classes files comes in.
+So these are the bytecode for this.
+So you got it.
+So this is I was saying so previously ant was popular there.
+We have to tell what to do and how to do.
+So this is just one example of how we used to do like in 20 1516.
+Like we have to say that, okay, compile, this is the project and we have to do compile where this
+is the we provide, this is the destination directory where you have to put the compile code.
+And we also put that you have to do this Java C okay.
+So here if you see that we are providing it that okay you have to compile.
+So what.
+And here we provide the command also Java C.
+How.
+So what.
+And how what both we provided to the.
+And so read all the files within this folder.
+Put it here.
+How this.
+But in Maven this is abstracted.
+Now only we tell them Maven compile and now this.
+All this logic is now abstracted within Maven code base.
+You can say that Maven Central.
+It might have certain plugins.
+So it's like a plug and play.
+That plugin you just plug in your pom and it will work.
+Okay so third one is test.
+So when you know that what is the command maven test.
+So now when we run this Maven test you know that first it will run validate.
+Second it will run compile.
+And then only it will run test.
+So it will validate compile and then run the test cases in your project.
+So this is our project right.
+This is the class.
+And let's say this is the test class which is inside a test package.
+I have already told you this is the structure of Maven inside this test class.
+Let's say I have written one unit test case.
+So this is unit test cases.
+I have just simply written System.out.println.
+Concept and coding test case running.
+Now I am running Maven test so it will do first validate validate.
+Generally Maven doesn't do anything and we also haven't added anything.
+Then second it will do compile.
+It did the compiling.
+And the third it is running the test.
+So in compilation it didn't do anything because nothing to compile because already everything is compiled.
+Because I have just done the compilation.
+So already everything is compiled.
+So that's why it didn't compile.
+So that's why it said that nothing to compile.
+All classes are up to date, but here it follows the sequence.
+First it goes to the compile and then only it comes to the test.
+And then it run all the tests, all the test cases, unit test cases inside this folder.
+And here it will see that concept encoding test is running.
+It should get printing over here somewhere.
+Yeah.
+Concept encoding task is running.
+It got printed.
+Build success.
+Okay, so this phase is clear.
+The next phase is package.
+The command is Maven package.
+Now, you know we are trying to run this phase.
+This phase?
+When it runs, it has to run its previous phases also.
+What it will do, whatever the compile code which we got right, it will create a jar out of it.
+First complete, validate compile, then test, and then run the package phase in which it generates
+a Jar file or dot file.
+Whichever you have selected, we have selected dot jar in our spring boot.
+So when I run Maven package command.
+So validate is nothing.
+So this is then it do compile phase, then test phase.
+This is the test phase is running and our test cases ran.
+And after the test cases it will do the jar phase.
+This is your fourth.
+And if you see that where it put the jar into.
+So it's building the jar.
+Into this target here.
+So earlier this is our package right after compilation and all.
+So after Maven package in the target itself you will see this jar get constructed.
+Right now this jar you can share with someone, they can add it as a dependency.
+You can deploy it right.
+So this now has everything.
+It's packed.
+Everything.
+Whatever is required for our project to run.
+Okay.
+It is bundled of everything.
+So you got it.
+Maven package.
+What it does, it creates a jar and put into under this target folder.
+Okay.
+After that package.
+What is the fifth phase?
+Fifth phase is verify.
+Maven verify.
+So generally also here Maven doesn't force you to verify anything.
+So might be currently I don't think there is any task present here.
+It but we can add it right.
+So let's say my I want I, I want to add one verify phase that I want to check the integrity of the
+package.
+Like so I want to do static code analysis.
+Static code analysis like checks apart from unit test cases.
+Static code analysis means like, uh, if if your if the code has some unused variable unused import
+empty catch block.
+No usage of object duplicate code.
+I want to find all these things and report it as a warning or might be something, right.
+So I can add a plugin which does all this thing so I can add it in the verify phase.
+So here if you see that I am adding a new plugin.
+So I provided the coordinate to the Maven.
+Hey this is the PMD.
+So PMD has provided all this functionality.
+PMD tool can all do all these things.
+So this is the coordinate where this PMD we can download the dependency right.
+And in this PMD this is the goal.
+This is the task we wanted to do right out of this plugin.
+There might be multiple goals or multiple tasks.
+I want only this PMDD task.
+So this PMDD task does all these things.
+And I want to put it into which phase?
+Verify phase.
+Okay.
+So how it does this?
+We don't know.
+Some some company or some other, some developer have built this and deployed it into the Maven.
+And it's open source.
+We can use it now.
+We are using this in our code base.
+This is way so we can provide it code in it.
+The task name which they have given we can tell them okay, this is the task name which we have to perform
+and put it into this phase.
+Verify phase.
+Okay.
+Now when you do Maven verify what it will do.
+It will first validate compile test package and then run the check for all this issues.
+If it find anything then it will report you.
+Okay.
+Your sixth phase is install command is maven install.
+So when you do the install you have validated your code.
+You have your byte code dot class file.
+You have run the test cases.
+You have dot jar file.
+Right.
+Currently in the target folder you have also verified that everything is good.
+There is no static analysis or if you want you can add more verify like checksum signature anything
+right.
+So verification is also done.
+Now you want to install.
+Install means you want to install the package this dot jar file into the local repository.
+Now understand this what is local repository.
+So in Maven this is something that this is.
+Your system.
+So let's say me.
+So this is me.
+This is my system.
+Okay.
+And let's say this is.
+Maven central.
+This is public.
+Okay.
+This is where so many repositories are available okay.
+So whatever this jar file is created there is something called local repository here in my system.
+So local repository.
+Is lies.
+There is in my system okay.
+And this is when this dot jar file I have to deploy it somewhere outside my system that is known as
+remote repository.
+So let's say in this case Maven Central can be your remote repository.
+If you are working in a company, then you are within a network where your company has managing your
+remote repository.
+So whatever the jar file you will upload, it will get uploaded here.
+Not to Maven which is public.
+It will get.
+So this is your remote.
+But in simple terms local repository is something in your own system, right?
+And remote repository is something is outside of your system.
+I will tell you how you can configure that.
+Whether I should be using this and my company somewhere, a repository or Maven central repository.
+How to do that, I'll tell you.
+But what it will do package what this Maven install Maven install will do.
+It will install the dot jar package dot jar package into the local maven repository, which is typically
+located in your user home directory.
+If you are using a mac then it will go under here.
+Right.
+So your home then dot m2 folder will get created and repository.
+So when you will download Maven right.
+When you will download Maven right.
+Then you will find that this maven will create this repository, this folder, this path will create.
+So whenever you do install so it will deploy the it will install this dot jar package.
+Inside this path and this path you can configure you can change it Get right.
+So there is something called settings.xml in this M2 folder itself.
+In this M2 folder there is something called settings.xml file.
+In the settings.xml file there is something called local repository.
+So you can change this path.
+Then whenever you do maven install right.
+So all your dependencies, uh, all your jar package will goes to that path, not to this path.
+Okay.
+So here is like this is the generally the structure.
+So whenever you download the maven you will see that M2 folder is also created in your home page.
+Inside M2 you will find Settings.xml.
+And also you will find a repository folder okay.
+Currently you will find only this this three m2 Repository folder and settings.xml.
+That's all.
+Now when you will run Maven install, when you run Maven install, what it will do is it will copy all
+the dependencies jar into this path and it will follow the path.
+So it will create like Com concept encoding learning spring boot like you're the proper hierarchy it
+will make.
+And then it will ultimately put the snapshot dot jar file.
+So earlier it was present under dot target right during package.
+So during maven install it will put into this my local repository.
+This is local repository.
+And this path I don't want to put into under repository I want to create some other folder might say
+my folder my folder.
+And I wanted to put it here.
+You can change it in the settings.xml.
+You can change the path of the local repository or give whatever the path you wanted.
+So the jar file will goes into that one.
+Okay.
+So here now here I am doing Maven install.
+So it will do first validate then it will do second compile.
+Then it will run test cases.
+After running test cases what it will do it will do the package right.
+It will do the package after running the package it will do verify.
+I think we don't have verify.
+And after that it do install.
+So it do sequence of stop and during install whatever the jar file was created as part of first uh this
+maven package, it will use that jar file and put it into from target, from target to your local repository
+path dot m2 repository concept encoding this path, it will put it.
+Okay.
+And if you want to change it you can change it in Settings.xml.
+So whenever you download a maven this dot m2 folder will be created, repository will be created, settings
+will be created Settings.xml and you can change it as required.
+Okay.
+Got it.
+So now whenever.
+So now you have local repository.
+And then you know that there is something called remote repository.
+Remote repository.
+Remote repository could be your company or the Maven central.
+So whenever you have to download any dependency your palm dot XML maven Maven will first will give preference
+to local repository.
+It will check hey in the local repository.
+Do I have this dependency or not?
+If the dependency is not there then it will go to remote repository, downloaded it and put it into
+the local.
+Now again in future when it has to look, then it will look to the remote, uh, local and it will automatically
+find it because it has already been put in the previous step itself.
+So.
+Got it.
+So that's why local repository.
+You can say that it helps so that we can avoid calling remote repository again and again during dependency
+resolution also.
+And the last step here in this is the seventh phase is deploy.
+The command is Maven deploy.
+And now you know that when you are doing this Maven deploy command, even if you are running this,
+all this phases will run also.
+But what it will do is it will deploy the dot jar file to remote repository.
+Now remote repository could be your company central or could be Maven public which is public.
+Its central whichever you will define I will tell you how you can define it.
+So in the Pom dot XML you have to define something like this.
+Distribution management.
+Okay.
+Distribution management.
+Inside distribution management you have to tell repository where it has to deploy your remote repository
+URL.
+Okay, so if you see in your company the form which we have got in our form, the dependency management
+is not there because it considers that we don't have to deploy.
+It's just our internal learning purpose.
+So we don't have to deploy our code to Maven Central or something.
+So we don't have this.
+But if you want to deploy.
+So you have to put the URL where you have to deploy in.
+If you are working in a company then check your company's form.
+You will you will find that you have provided your company's URL here.
+So whenever you do Maven deploy, it will go to your company central somewhere, right?
+And you for connecting it you might need to provide the username password also.
+Right.
+Because we can't just connect to any URL and upload the jar file there.
+You have to authenticate yourself.
+So the the username password generally we put into Settings.xml.
+In the settings.xml there is something called server you can add.
+And in that the ID is your remote repository ID and the username password you can give remote repository
+username and password.
+So with this username password it can connect to your uh this URL.
+And it will upload the jar there.
+But there is no default uh maven provide.
+So if you for our code here, if you see that you won't find any dependency management, you won't find
+any, uh, not dependency distribution management.
+You won't find any distribution management and remote repository.
+If you run the Maven deploy for our current project, right, you will face the below error build failure
+y deployment failure repository element was not specified in the Pom inside distribution management
+element.
+So you have to add it.
+So now let's say that if you don't want to deploy this, uh, to your company or something, you want
+to deploy it to the Maven Maven Central, you can provide the Maven central URL and Maven central URL.
+No, there is no need for username and password because it's public.
+Uh, there is no username password.
+You can keep it empty, right?
+So this is the URL for the Maven central.
+If I add this distribution management in our pom right.
+And run this Maven deploy it will I can deploy it to the Maven central.
+Then you also can download that from Maven with this group ID artifact ID version.
+This is the coordinate you can.
+Now once it got to the Maven central anybody can download this then.
+You got it.
+Okay guys.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4. Quiz Question - Why only 1 Public Class in JAVA file</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>4. Quiz Question - Why only 1 Public Class in JAVA file</h1>
+    <pre>
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+So in the previous video we have seen about JRE, JDK, JVM and dot class files.
+And also one basic Java class right.
+So where there I told you that one thing in a Java class, single file in a Java single file, we can
+have only one public class.
+So this is one of the very good interview question that why in Java file we can have only one public
+class right.
+So because if you haven't seen the previous video check it out before.
+So I'll tell you that if you remember in a class where I created, let's say, a right, and you remember
+that we have created a method public static void main string args.
+Right.
+So what I told you that main is over starting or we call as entry point.
+From this we can call other classes, other methods and all these things right.
+But this is the starting point.
+And from there our code begins.
+We can have more methods but we will call it from here.
+Right.
+So one thing is, and I told you that this main method should be inside a public class should be inside
+a public class.
+So let's see the everything relation.
+Why it's all required okay.
+So one thing is first thing main method should be inside.
+Public class second is.
+Public class name.
+Should be Same as.
+File name.
+If you understand these two properly, you.
+I think you will get the answer.
+So first of all, main method should be inside public class, right?
+You know why?
+Why it should be inside a public class.
+Because you know that.
+Who will call the main method JVM?
+If you know from the previous method, JVM is going to invoke the main method and it's so it need access
+to this method, right?
+And I told you that it is created as a static so that JVM can just call with a class name, right?
+Simply class name.
+Whatever the class name is, let's say A is the class name a dot main, right?
+So it can call with just a class name okay.
+So we want this class to be public so that it would be accessible to the JVM outside its package so
+that this class would be available outside.
+So why main method is inside a public class?
+Because it has to be accessed by JVM, right?
+Because main method is invoked by JVM using a class name.
+So that class should be accessible.
+So we made it a public.
+Okay, we got this.
+Now the thing is why public class name should be same as file name.
+What does it mean?
+So let's say if you have created a file let's say employee dot Java, and if any class you are creating
+public then it's name public class name should be name should be same as file name only.
+It should be employee only.
+You cannot keep this as public class manager.
+You cannot keep this by keeping a file name as employee dot Java.
+This is not allowed.
+Now understand this.
+Why?
+Why public class name?
+Why public class name should be same as file name.
+Why Java restrict this?
+So now let's understand this.
+Employee dot Java only employee dot Java.
+Let's say it has 100 of classes class A class B.
+Similarly.
+Similarly it has class x, y, z.
+It has so many classes right.
+And I told you that JVM is going to invoke the method.
+Main method and main method should be inside a public class.
+If there are more than one public class public public public, then how would JVM know?
+Main method is inside which class, right?
+But if we.
+If Java has put a restriction that okay, only one public class can be present and its name should be
+same as whatever the file name.
+So now let's say only one public class, let's say here be class B.
+So definitely it would be B dot Java right?
+So JVM can easily know that it doesn't have to know about even there are 100 classes.
+JVM doesn't have to worry about it.
+It just knows that okay, if B dot Java is there, right?
+This is the file name.
+So any public method, any public class there should be B only right.
+And in that only main method can exist because main method can be inside a public class.
+Right.
+Main method can be inside only a public class.
+And the public class name should be same as a file name.
+Understood.
+So both are related and both JVM needed it.
+And so that Java put a restriction.
+So I think you got it right.
+So because of this two interlinked it we make that in Java a single file can have only one public class.
+    </pre>
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02. Spring boot Project Setup and Layered Architecture</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>02. Spring boot Project Setup and Layered Architecture</h1>
+    <pre>
+Hey guys.
+Welcome to Concept Encoding.
+And this is Shreyansh.
+And today we are going to do the second topic of Spring Boot setting up our project.
+And I will also tell you about the layered architecture which Spring Boot generally we follow.
+Okay.
+So let's start without wasting any time.
+Setting up the Spring Boot project is very, very easy.
+That's my experience right after this session.
+When you try to set up, let me know your experience.
+Also like, do you find it easy or hard right?
+So how you can set up is first you can directly go to spring initializer URL.
+So this is the URL start.spring.io.
+So this type of page will get open okay.
+So what you have to do is you have to select the language.
+So I'm comfortable with Java.
+So I'm using Java and the dependency like so maven I am generally use as a dependency, all the management
+and all.
+So you can choose either Gradle and Maven, whichever you like.
+Like so I generally follow Maven.
+Okay.
+So if you don't know Maven, don't worry.
+If you, uh, know from our playlist or like we will discuss about the Maven in-depth, uh, at least
+how our Maven architecture or Pom.xml looks like.
+Okay.
+So I have chosen Maven for that one project.
+Choose the version of Spring Boot.
+So let's pick the latest 13.2.3 okay, so fill up these details.
+Your project metadata.
+So these are group and artifact is something which uniquely identifies your project okay.
+So generally group is something your company name and anything.
+So I just use com dot concept and coding artifact is generally uh the project name.
+Right.
+So I have just given the name as a learning spring boot.
+You can give anything, right?
+The group but combining group and artifact individually identifies a particular project.
+Okay, this name and description we can give accordingly what project we are building.
+Okay.
+So ultimately this is how our package name gonna look like.
+Okay.
+So after this one you have to decide the packaging jar or VAR.
+If anybody who don't know what's the difference between jar and var and when to use.
+So just one minute so that I will explain this one.
+It will get clarifies to you.
+So jar means Java archive var means a web archive.
+So in the world of microservices and stand wherever you need standalone Java application you have to
+use only jar, right?
+When I say that what is mean by standalone Java application?
+Let's say that we are writing one application Java application and we just started its server.
+That's all.
+So this is a standalone application.
+It doesn't need anything else.
+You send it the request it will give you the response.
+But in case of var you need let's say the complete web archive like HTML, CSS, JavaScript, some JSP
+pages.
+Right.
+If you need a complete bundle complete package for the web application, then it is then go for var
+right?
+We used to use it way back long, but nowadays in the world of microservices, each micro, each component,
+each microservice is an individual standalone application.
+Okay.
+So in today's world mostly you will find we are using jar only Java archive which are Java standalone
+application.
+You don't need HTML, CSS, JavaScript, everything to be done together.
+No Java Java classes.
+It's libraries, all its resources.
+That's all.
+Pick the Java version which you are comfortable with it so it giving two options 1721 I picked 17 okay.
+And then there comes the dependencies.
+So for now I have chosen one dependency spring web.
+So spring web says that uh, help in building the web RESTful APIs.
+Right.
+Uh, we will get the embedded, uh, server, uh, servlet container Tomcat.
+Right.
+So we are getting all this things.
+So this is basic sufficient to create a web application microservice.
+We can create a server with with this spring web.
+Okay.
+Let's say that we want to connect with DB and all.
+There would be more like a spring jay, so we can add more dependencies directly in the maven if required.
+So just for the starting setting up the project, we can start with one.
+So in our Maven Pom.xml only initial dependency will get added for this one.
+And as soon as we progress we require more dependency.
+We will add in our Maven pom.xml file.
+Okay.
+And after that you will.
+There will be one generate option.
+You can generate it and the project will get downloaded to your system.
+Now you can open your favorite IDE.
+My favorite IDE is IntelliJ.
+And you know that those who are using IntelliJ.
+There is another way of setting up the Spring Boot project is uh, you can click on the file in the
+new you will see project.
+And when you click on the project there is something called spring.
+Right.
+So it is not available in the community version.
+It is available in the ultimate version.
+I think it required uh, some payment, but uh, for community version this is locked.
+Okay.
+So those who have ultimate version, they can even create a spring boot directly from their system,
+uh, from their IDE itself or otherwise.
+You can just simply, uh, do open you can just, uh, open the project.
+Right, which you, which is downloaded.
+So the downloaded would contain.
+So these all things which I have written, this will not be there.
+So it would be this would be ultimately get downloaded when you open the project which is downloaded
+in the IDE.
+So these two things you will get a Pom and you will get a spring boot application class.
+That's all.
+And this is the package which we have defined there.
+Right.
+So this simple, very basic things now comes into this.
+If you run it your if you run this Tomcat is started okay.
+Server is getting started.
+Right.
+But since we haven't written any control or anything, nothing would uh, you can't hit any API but
+project setup that easily.
+Okay.
+Or you see that all the dependencies, whichever we have set, it's available here.
+Only two dependencies comes with the web, uh, this one and the test to writing a unit test cases.
+If we required more in future, we can add more here.
+Okay.
+So setting up the project is that easy in Spring Boot.
+And one thing also today I will, uh, wanted to explain you is what is layered architecture in Spring
+Boot.
+Okay.
+So in spring boot generally this layered architecture is something which is mostly used right?
+And in many big MNCs you will find this layered architecture only.
+So what is this layered architecture?
+So let's say these are the clients.
+They are hitting any API okay.
+So this is the first layer which is controller layer.
+So this controller layer has all the classes which has annotation like at the rate controller at the
+rate rest controller like this.
+So these are the classes which host your endpoints right.
+Like we have seen previously.
+Like like slash payment slash payment slash some endpoint one.
+Like these.
+All classes only host that API and client hit that API right.
+They will interact your component with the these APIs itself.
+And controller layer is the first starting point.
+Uh which host hosts those APIs.
+Second layer is your service layer.
+So these classes generally has at the service annotation.
+And this is where we put our business logic.
+So all your business logic whatever patterns whatever the business specific logic, anywhere anything
+which you have to put, you have to put inside the service layer.
+Right.
+Not in controller, not in repository service layer.
+This is the third layer which is called repository layer.
+So there generally you will find classes which is annotated with like at the repository annotations.
+And its work is to connect with the DB right.
+So maybe my SQL may be NoSQL whatever.
+So this layer actually interact with the DB, fetch the data and return to the service layer or if it
+has to insert repository layer takes the responsibility to insert the data also.
+So repository layer generally and should be interacted with DB.
+So many times people what we do is we from service layer.
+Also we sometimes start doing get calls and insert calls into DB.
+See nobody is stopping it, right?
+We can do whatever we want, but it's a not.
+You can say that the correct way of doing it, as per the layer architecture repository layer should
+be the one which should touch DB.
+Okay, so apart from this three layers, there are certain uh, other you can say that packages which
+we create as spring.
+So one very important is this DTO this is not a layer.
+This is you can say that the additional packages we create okay.
+So one is DTO.
+What is dto?
+Let me explain you.
+Okay, so see DTO is generally you can say that data transfer object.
+Okay.
+So now let's say that client is hitting certain post API and they are sending certain body the data
+in the body.
+Let's say certain ID 123 certain number uh number card or card number.
+Let's say certain my card number 54321.
+So certain information coming it from the post API.
+The client which is sending.
+So in the DTO data transfer object.
+So generally there are two type we can create.
+One is request DTO one is response DTO.
+So in the request DTO, what we do is we map App.
+The data, which is coming from the client or outside our component to this DTO request DTO so that
+our business layer repository whatever gonna work with gonna work with the request DTO not with the
+fields which are coming from the external API, like the clients which you are initiating.
+Why?
+Because let's say that in future the schema got changed and let's say its ID name got changed to certain,
+uh, certain this thing like identification, uh, from ID name change to identification or let's say
+sequence number.
+Okay.
+So we have to change at all the places where this ID is used.
+So it has to be changed to sequence number.
+But if you are using request DTO then at the controller layer itself.
+So controller layer takes the responsibility of doing the mapping.
+ping from, uh, the parameters from API parameter to request DTO.
+And now everywhere everyone works on the request DTO.
+So only this controller class will get impacted if any of the schema got changed.
+Because this is the place where we are doing the mapping.
+Okay.
+Similarly, the response DTO.
+So now let's say that service layer calls the response repository layer.
+Hey fetch me the data repository layer, get the data and return it.
+Is it a good way that in the DB, let's say if we have a column name as uh card certain card ID, let's
+say I'm just taking that card ID so is it a good way that we return the card ID in the response itself,
+our DB column name?
+No.
+So what we do is the service layer do the mapping, whatever the values which are coming from repository
+of a DB, map it to the response DTO what ultimately goes out of your system?
+Right.
+And we will map it and return it in the response.
+DTO.
+Okay.
+So you got like what DTO is data.
+Data transfer object then utility.
+Utility is like in the utility as the name says, that put anything which is common across service layer
+or repository.
+In service layer you might be creating multiple classes.
+Class one, class two, class three, class four.
+And they might be have certain.
+They might want to use certain common method.
+Right.
+So that common method we can put into utility generally helper methods.
+So they can call that utility methods.
+So generally utility method you can say that helper methods which is generally common among more than
+one classes.
+Okay then you have entity.
+So in the entity is uh, so classes generally annotated with like this annotation entity.
+And these are the pojos.
+And let's say for example class employee.
+So now let's say it has uh id string employee name and the getters and setters.
+So it's just a Pojo.
+Certain fields ID name and it's get get method and set method.
+And we have annotated with at the entity.
+So this is a direct representation of our table.
+Which table employee table employee table would have two columns.
+One would be ID another would be name.
+Right.
+So this entity.
+Whatever the classes we put into the entity packages, they are the direct representation of our table.
+And what generally happens is let's say you want to insert the data service layer, want to insert the
+data.
+So what they do is they will create an object of entity.
+They put the values here and then call repository.
+They insert this object like so.
+Now internally whether JDBC, JPA which you are using, they will ultimately map to the corresponding
+columns and the table.
+They will update it.
+Similarly when you are fetching the data from the repository.
+So it has to let's say you are fetching select.
+Asterisk from employee something.
+Now it will return certain rows let's say list of what list of what.
+It will return some rows.
+Right.
+List of what Word list of this employee entity.
+List of employee entity.
+This query will ultimately return.
+So our spring JPA JDBC internally do this mapping.
+So we will come to that point how they do it.
+But understand that what entity is entity is just classes which are direct representation of our tables.
+So they have the same field name is exactly the same what we have in the column of that particular table.
+So they are just normal simple Pojo classes fields and their getter and setter.
+Right.
+So generally entities are used by repositories mostly.
+And then we have configuration.
+So there is something called application dot property files.
+We will see that.
+So there we can put configuration.
+So like certain you want to increase uh certain timeout value uh or you want.
+So there are a lot of configurations comes in.
+Right.
+So in our code let's say uh you want to put certain value let's say int val equals to ten.
+This hard coded generally is avoided in your code base.
+There should not be any hard coded value.
+It should be driven through configuration so that in future it can be changed without doing code changes.
+Okay.
+So that's where we can put configuration in application dot properties.
+We can put that okay.
+Let's say that value equals to ten today okay.
+And in here we can use instead of ten certain like config dot value I'm just taking so that it will
+read from config.
+It will read that value.
+In future you need to change from ten to let's say 20.
+You don't need code changes.
+Simply config dot value right in the config you can change it.
+No code changes required.
+We can directly push the configuration.
+Okay.
+So this is the generally the layered architecture.
+Okay.
+So I've created controller.
+So created a controller.
+So this controller package has the class which has at the rate rest controller.
+Okay.
+So it has one get mapping ID.
+So now what it will do first.
+So this ID right.
+So what first it is doing is using the DTO right.
+So what I am doing is so here Paymentrequest is a DTO.
+This is a request DTO because I am not forwarding this ID into my service layer.
+Because if in future this ID value get changed, I don't want my service layer to get changed also.
+So in the DTO, first I set this.
+So I'm setting this value into here in my internal DTO.
+Okay.
+So first mapping is done.
+Then what controller does is it passes to the service layer that hey fetch, get the payment details
+by ID and this is my internal DTO.
+Go ahead.
+Now the request goes to your service.
+This is the service.
+Payment service.
+So what payment service do is payment service interact with the repository.
+So there it has dependency on repository.
+So it tells repository that hey get the payment by this ID and this is the DTO right.
+And uh it goes to the repository.
+So this is the repository has payment repository.
+So here if you see at the repository and on the service at the rate service was there.
+So now what repository will do.
+Repository has to connect with the DB and fetch the details.
+So for example execute query, I have just written that it will connect with db and fetch the data.
+We will see how it will connect maybe in the later classes.
+Uh, but uh in the this session we will see that okay.
+Assume that it connected to the DB and fetch the data.
+So ultimately the data comes into the hit the query and we get into the entity.
+Because in Java everything is object, right?
+Whatever the data you get from DB you will get into some object.
+So that's why I created entity payment entity.
+So now let's say that I have a table which has this 41234 uh details.
+So it will return me certain entity okay.
+And ultimately what it will do is it will return this entity back to the service.
+Now what service will do.
+Service.
+Service will do a mapping.
+Mapping from our entity which correspond to our DB table to the response DTO.
+So here payment response.
+So this is our DTO.
+And but the response okay.
+So in this fields I will send back to the client.
+So this fields name would be different than what my DB tables names are DB table column names are so
+but I do just a mapping.
+So okay.
+And after doing the mapping the service returns to the.
+Your controller.
+Ultimately it goes to the controller.
+And what controller will do.
+It will send the response back okay to the client and send the response.
+Spring boot application.
+Now let's start it.
+So started.
+Now let's hit this API.
+So my Tomcat started on 8080.
+Now Let's see.
+Hit it.
+So see we got the response payment ID amount currency and all.
+So this might be details get from DB and we return in the response.
+So in the payment repository we have set this values right.
+So we assume that we get this data from db in the entity.
+And then we return back right.
+And here if you see that I am setting here set payment amount payment amount.
+But the what field I'm getting amount.
+Why.
+Because I have done a mapping in the service uh service layer right.
+So I have done a mapping this amount currency.
+So these fields are different than what my db db uh table columns is okay.
+So if you have any issue with setting up this project, uh, let's discuss in the comment section.
+Okay.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>41. Java ScheduledThreadPoolExecutor - Shutdown Vs AwaitTermination - Multithreading</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>41. Java ScheduledThreadPoolExecutor - Shutdown Vs AwaitTermination - Multithreading</h1>
+    <pre>
+Hey, guys.
+Welcome back.
+This is Suryansh.
+And in multithreading today we are going to cover these four topics.
+So this and this virtual thread versus normal thread and shutdown versus await termination.
+This is an interview question which has been recently asked in Java interview.
+And one of the engineer has asked me to cover this two part as he has faced this two questions.
+So we will also see what are these right.
+So let's start.
+Let's cover see what is the difference between shutdown versus await termination versus shutdown.
+Now very very simple.
+We have already seen this shutdown.
+You already know initiates orderly shutdown of the executor service right.
+Orderly shutdown of the executor service.
+Remember this I will tell you what does it mean after calling shutdown executor will not accept any
+new task submission Mission already submitted tasks will continue to execute.
+What does it mean?
+You know that we create a thread pool executor, right?
+And after that, we call submit and our runnable task.
+So this submit this task has been submitted to thread pool executor.
+Right.
+So when we call shutdown what it does two things.
+One thing is it stop.
+It will not accept any new task submission.
+So after shutdown no new task will be accepted.
+Second thing is already submitted.
+Task will continue to execute.
+Let's say thread one is already executed.
+Task one.
+Thread two is already executing task two.
+So those will not get any interruption.
+They will continue to work.
+Okay.
+So let's see an example.
+First task submission after shutdown right.
+So this is the normal executor I am creating.
+We already know that.
+So I am using executors class and I am creating this new fixed thread pool five.
+Right.
+We have already seen this, right?
+So now I have created a pool.
+I am submitting one task right?
+So now one task is already submitted.
+Now I have shut down this task.
+Now I have shut down this thread pool executor.
+Now if you are trying to submit the task, another task now to this thread pool executor.
+Generally it should not allow and that's where you will get an exception rejected because thread pool
+has been shut down.
+It will not accept any new task, but any task which is already submitted.
+It will continue to work properly.
+Right.
+So this any thread which pick this task, it will continue to work properly.
+Right?
+So shut down do not impact the already submitted tasks that right.
+So here the same example.
+I am trying to say that I have created a thread pool executor calling the submit submitted one task
+right?
+So then I have made the shutdown.
+I have shut down this thread pool executor.
+Now after that this main thread is finished, but this thread is continuously running right?
+I have make it sleep for five seconds so that we can just get to know that okay, even though the main
+thread is finished, the thread is still working.
+So if you see the output you will see the output is first, it will print this main thread unblocked
+and finished processing.
+Right?
+And after that it will say that new task.
+It will print this.
+So what does we get?
+Get to know that even though thread pool is shut down, this thread, whichever has fixed the task,
+it is not interrupted.
+It will continue to work its properly.
+After five seconds it will print new task right, after five seconds it will print new tasks.
+Okay, so shutdown is clear.
+Right.
+It is very clear.
+You can even, uh, code and test that, right?
+Shutdown dot submit any runnable tasks.
+Right.
+So just say that I want to make this thread.
+Dot sleep.
+Let's say for five seconds.
+Okay.
+Let me zoom it a bit.
+Okay.
+So I've created a thread pool executor.
+Uh, and I'm submitting a task.
+Right.
+And after this five second waiting, it just printing task completed.
+Okay.
+Now this pool I am.
+Shutting it down.
+Right.
+And the main.
+The main thread is completed, so this will get completed.
+But this thread will wait for five seconds.
+And then I'm showing you because we will use the same example for await termination.
+So main thread is completed.
+It is now waiting for five seconds and then it printed.
+Task completed okay.
+So this should be clear.
+Shut down now.
+Await termination.
+What does it mean?
+See, it's an optional functionality.
+Either return true or false.
+Right.
+One thing you have to remember that it's an optional functionality.
+It do not force the thread pool executor to stop or to do anything.
+It's just kind of a checking what it will check, I will tell you, but it simply return true or false?
+It is used after calling shutdown method, right?
+So if you are calling before a wait termination mostly of no use, it is used after calling shutdown
+method.
+It blocks the calling thread for a specific timeout period and wait for Executorservice.
+Shutdown returns true if the Executorservice gets shutdown with specific timeout, else false.
+So in the previous one shutdown, you know that what happened is when we call the shutdown, the main
+thread doesn't wait.
+It just goes to the next line.
+Main thread is completed and goes out.
+So I told you that await termination is used after calling the shutdown right?
+So here I am calling Boolean is terminated equals to pools object await termination.
+Let's say I want to wait only for two seconds.
+Two seconds.
+Right.
+So here it required try catch block.
+Right.
+And I am printing here.
+Is terminated.
+What is it?
+Whether true or false.
+Okay.
+Now see what is happening.
+Await termination.
+So what it does is.
+So once you after call the shut down, the main thread goes here.
+Now when we are doing await termination two second we have provided two second.
+So for two seconds this main thread will wait.
+Right.
+So if in two seconds if this pool thread pool executor is not shut down because we have called the shutdown
+right.
+So this await termination is just a checking whether thread pool executor is shut down or not.
+So how much time it wait?
+It wait for two seconds.
+Right.
+the main thread.
+Wait for two seconds and check.
+Is your pool shut down or not?
+Definitely it won't because thread is currently running and until this thread is not yet finished,
+this pool cannot be shut down, right?
+So it will return false here.
+So now let's run it.
+So now here.
+If you see that currently nothing is terminated.
+False.
+And after that it comes.
+Main thread is completed.
+Right.
+So first after it called shutdown it blocked the main thread for two seconds.
+Then it checks terminated.
+False.
+It's in two seconds.
+This thread pool is not shut down.
+Then it printed this.
+Then the main thread is.
+After two seconds it got unblocked and then it printed this.
+After five seconds the thread completed.
+So it whether it returned true or false, right?
+If the if it is shut down, it will return true.
+Okay.
+But it is an optional functionality.
+If you have any use case where you have to perform certain tasks after the thread pool is shut down,
+then you can use it.
+Otherwise it's just an optional.
+It doesn't do anything.
+It doesn't force to get shut down or it doesn't do anything.
+It just getting the information whether it is shut down or not.
+So that's why it is known as optional functionality.
+Got it.
+Then third we have is shutdown now.
+So one thing you have to know it's a best effort attempt to stop or interrupt the actively executing
+task.
+Right.
+So let's say you have a thread pool executor right.
+And it also has a queue.
+So task is waiting.
+Task one waiting.
+And already had thread one performing tasks.
+Let's say two thread two performing, let's say task three and task one is let's say waiting.
+So what it will do is it will stop or interrupt the actively executing task.
+Right.
+So it will interrupt this task.
+Also hold the processing of the task which are waiting.
+So there might be some task or thread which are in wait state waiting for some event to happen.
+So it will hold those or return the list of tasks which are awaiting execution.
+So there might be some tasks which are waiting to get executed so it will return the list.
+So what it is trying to do is shut down now right.
+It tried to shut down the thread pool executor as soon as possible.
+So now take this example.
+So here for let's say 15 seconds I have used the sleep on this thread.
+So for 15 seconds it will be on complete sleep.
+And after that it should print right.
+If I am using the shutdown.
+But here now I'm using shut down now.
+Okay.
+So now let's say that I'm doing calling this one.
+So if I'm calling normal shutdown, you already know what would happen.
+It will get printed this first and this thread will not get interrupted.
+It will wait for 15 seconds and then it will print this.
+But now I am using thread shutdown.
+Now what it will do is it will even interrupt the actively executing task.
+So it will not wait for 15 seconds.
+It will interrupt it right.
+So here, if you see that task completed as soon as.
+So it didn't even let it sleep.
+It interrupted it and simply completed.
+So sometimes it might happen that it will not even complete it successfully.
+It just throws an exception and goes out interrupted.
+Right?
+But that's why it is called a best effort.
+It just interrupted this sleeping thread and it completed its task and completed as soon as possible.
+But this is on active execution task.
+Second thing is the tasks which are waiting for any event like it will just stop them.
+They will not get even chance to get completed, right?
+It halts the processing of the tasks which are waiting.
+Return the list of tasks which are waiting awaiting execution.
+So this queue task.
+If there are any, it will just return this task that these are not even processed.
+So got it.
+You got this difference between all these three.
+So the next topic is scheduled thread pool executor.
+Okay so we have seen different thread pool executor.
+Now now this is very interesting thread pool executor schedule as the name itself give you a hint.
+Scheduled some task right.
+So yes it helps to schedule the tasks.
+So it's a child of thread pool executor.
+And it has this whatever the methods which are present into thread pool executor.
+Right.
+write, submit or whatever the methods we have seen, it's all there.
+So additionally, these four methods are newly present into thread pool.
+Executor.
+Very very simple method.
+Right?
+Uh, so one thing is schedule runnable task.
+Whatever the task which we have to this delay and unit.
+So let's say schedule, let's say this is the task I want to run.
+Hello.
+Okay.
+This is just a runnable task.
+Delay.
+Let's say three time unit is time unit dot second.
+Let's say this is the method which I invoke.
+So what does it mean?
+Is scheduled a runnable task.
+So this is my runnable task.
+So scheduled this task after a specific delay after this much time.
+So after three second this task will run.
+How many times?
+Only one.
+Only one time.
+This will run.
+If you put 13 seconds.
+After 13 seconds, this will run.
+So now this is the thread pool executor which we have created first.
+Okay, so you can use the executors the same class itself.
+And we have created the thread pool executor.
+So now here the when we have created five what does it created.
+Core pool size minimum means minimum thread.
+So what is the maximum max value.
+Anything you want keep alive.
+Time is zero.
+Nanosecond means this five thread will always wait.
+Will always.
+Even though five threads are idle, it will still be there.
+It will not get removed.
+So maximum thread how many it create as soon as you will require it.
+And this is the minimum number of thread it will create scheduled.
+Okay, so now we have to do schedule You'll and then runnable object.
+We have to print.
+Hello.
+Right.
+So we need System.out.println.
+So let's use this.
+Hello.
+Okay.
+Uh here after this one we have to give time.
+So let's say after five seconds.
+It should be printed okay.
+So.
+Let's run it.
+So after five seconds it will wait for five second.
+And then.
+Hello.
+Should get printed here.
+Hello.
+So you already you now know right?
+What does schedules mean.
+The second method is schedule.
+But instead of runnable we have a callable.
+Right.
+And the same method.
+Now you know the difference right between runnable and callable.
+Runnable do not returns any value.
+Callable returns a value.
+Right.
+The same example.
+But if I am able to return something right, let's say something, anything or.
+Return the string itself.
+Right.
+Let's say return.
+Hello.
+Now, this is also a which method it will call callable because it is returning now.
+Now it is returning.
+Right.
+So in the future object you can call.
+So future object.
+You can save it.
+And now you can print it.
+Future object dot get.
+So we have to put it into.
+Try catch block.
+Okay.
+So this is I think runnable callable is already we have discussed in depth.
+How you can return it.
+How you can catch it, right?
+So after five seconds this will run.
+So it will return it and then it will print it.
+Okay.
+Hello.
+But what if you want to run it more than one time?
+Then there is a method called scheduled at fixed rate.
+It scheduled a runnable task for repeated execution with a fixed rate.
+Let's say that you are doing scheduled at fixed rate.
+Right.
+So this is runnable.
+So I'm just printing system dot out dot println.
+Just printing.
+Hello.
+Initial delay is that say three I want after three seconds every five seconds I want it.
+So initial delay.
+Is that okay.
+First time it should run after three seconds.
+After first time it should run every five seconds right.
+So that's I want to run it.
+Let's say that.
+So 123.
+So after three second first time it printed.
+Now it will wait for five seconds every time.
+And it keep on printing.
+Hello.
+Now again five seconds.
+It will wait again.
+It will print.
+Hello again.
+Five second it will wait.
+It will print.
+Hello.
+Right again.
+Five second it will be.
+And it keep on going.
+Right it keep on going.
+You have to cancel this based on your requirement.
+Otherwise it will not stop.
+Let's say that I am doing thread dot sleep.
+Let's say after.
+10s.
+After ten second.
+We have to cancel this.
+And how to cancel is.
+We need a future object here.
+So future.
+This is runnable right?
+So for runnable it doesn't return anything.
+So it has to be question mark.
+We already discussed this future object.
+Now using this future object we can call cancel.
+Do you want to interrupt it?
+True.
+Right.
+So after 10s it will interrupt it.
+So now let's run it again.
+So first three second it will wait.
+And then hello will come now five second it will wait.
+It will come only after 10s.
+It will interrupt it.
+So I think I think it got cancelled because ten second might have been finished.
+And that's where it is cancelled now.
+So now let's understand this use case.
+What we are trying to say is that now let's say that previous task itself is taking longer time somehow.
+So it is taking six seconds, let's say.
+And initial delay.
+I have kept it one that okay after first second this thread should get start working thread is thread.
+Pick the task thread completed the task.
+Okay, so what I'm trying to say is that let's say after one second itself, this task will get be picked
+and it will print this thread.
+Pick the task.
+Now it is waiting for six seconds.
+Let's say this task is certain big task so it will taking six seconds.
+Now let's say after three seconds itself, another task has to be scheduled, right?
+But it cannot be start till the previous one completed.
+So now what would happen is that after three seconds, the another task has to be scheduled, right?
+It has to be done.
+But since previous task is not completed, it cannot be start.
+So first previous task should be finished and then only the other task can be initiated, right?
+Till then, it will wait into the queue.
+Okay.
+So see this?
+So let's see that.
+So after one second thread, pick the task.
+Now it is waiting for six second three seconds.
+Another task.
+See?
+That's what I'm trying to say.
+Both comes together.
+You got it right.
+Why?
+Both comes together?
+Because the previous task is doing.
+Waiting for six seconds is taking six second.
+The next task is already scheduled.
+Now it is waiting in the queue.
+As soon as the previous task completed, the next task is picked from the queue.
+Got it.
+And there is another method called scheduled with fixed delay.
+Scheduled with fixed delay.
+So this is very very similar to this.
+But only difference is instead of fixed rate if I do.
+Fixed delay.
+Schedule with fixed delay.
+Now, what would happen here?
+Now, the only change would happen is, let's say the previous task is running only once it gets completed,
+then only the timer will start for the second one three seconds and then it will be started.
+That.
+So after one second task, the task six seconds.
+It will wait.
+After six second it will.
+Now it is waiting three seconds.
+Now it will come.
+You got it.
+Right.
+So these are the methods in the schedule thread pool executor.
+I hope this one is clear.
+Right?
+Okay, so another this two topics I will continue into the next video to make sure that video length
+is shorter.
+Thank you.
+    </pre>
+</body>
+</html>

@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>25. Control Flow Statements - Decision Making, Looping & Branching Statements</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>25. Control Flow Statements - Decision Making, Looping & Branching Statements</h1>
+    <pre>
+Hello.
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And today in Java we are going to do control flow statements.
+Right.
+So control flow statements are of three types.
+One is decision making statements where all if if else condition generally comes in.
+Second one is your iterative statement where the for loops and the loops which comes into the picture.
+And the third one is branching statement where break and continue comes in.
+So we'll go further into this one and just remember that, uh, their switch expression is introduced
+from Java 12.
+Right before that.
+If you have a JDK installed of previous version, and if you try to use a switch expression, you might
+not be able to use it.
+Okay.
+So let's further go ahead into decision making statement.
+So this is very very little bit straightforward.
+Not a very uh hard topic to understand but still, it's good that we will cover everything about it
+so that if anybody is new to this one, they have an in-depth knowledge about it.
+If you already know some of this thing, please feel free to skip it.
+Okay, so decision making statement first.
+If then and it is sometimes also known as simple if condition.
+So what does it says that if condition is true then if block will get executed.
+So let's say this is the simple scenario.
+So you have if condition which is always the whatever the expression you will give, it should either
+return true or false.
+If it is true then this code within this block will get executed, otherwise it will get skipped.
+Take this simple example.
+Here I have a main class.
+Write any name and just a main method.
+So I have taken any method.
+So this is the main functionality which I wanted to show.
+So I have created an integer variable value ten.
+And what if condition I have put if value is greater than eight, ten is greater than eight.
+It will return true.
+So this expression is now converting into true right?
+So if value ten is greater than eight true then this block will get executed.
+So it will print only get executed when value is greater than eight right.
+So it get printed.
+Plus after inside this block it will get as a normal flow.
+Like whatever the block statement, whatever the code statement after this block will get executed.
+So this block will also get executed.
+Okay.
+So this is simple if there is something called if else.
+So it is similar to it.
+But also what we have is if condition is true.
+If this condition is true then this block will get executed.
+Same as earlier.
+Here we have else part also.
+Else.
+If this is false, then run this code block.
+Okay.
+If condition is true.
+If block will get executed.
+If condition is false.
+If this condition is false, then this code will get else block will get executed.
+Okay.
+So now let's say here what I have is.
+What I have is variable seven.
+I am checking condition if seven greater than eight false.
+So what will get printed.
+Else block.
+This code will execute if value is less than or equal to eight less than or equal to eight.
+And after that the rest of the code.
+Okay.
+The third one is if else if ladder.
+Later.
+Right.
+So what?
+Here we have is so there we have it contains if statement with multiple or chain of else if statement.
+It evaluates the condition from top and goes to the bottom.
+And any condition get true the block will get executed.
+Okay.
+What does it says that if else if letter.
+So we have one if statement and we have chain of else if else if else if there could be many else if
+right and last one is else okay.
+So it's a chain of chain of else if statement.
+Right.
+And it goes from top to bottom.
+So first it check if condition.
+If this is true this block will get executed.
+If this is false next block.
+Else if will get evaluated.
+If this is false next else if will get evaluated.
+If any of them become true that particular block will get executed if none of the block if none of the
+condition elsif, or if condition gets true, the else block will get ultimately get invoked, right?
+So else part is, you can say that the if none of the condition get true, then it only get executed.
+So for example value is 13.
+So first if statement will get evaluated if value equals to equals to one no.
+So again.
+Now second else if value equals to equals to two no 13 is equals to equals to no.
+Then.
+So here we are going top to bottom each if else if we are evaluating from value equals to equals to
+three.
+No.
+Then if none of the condition is evaluated what will get executed.
+The else part right.
+So else part value is 13.
+It will print and the rest of the code Okay.
+So you can have it.
+You can keep it or not keep it.
+You can even have just simple if else if else if that's also.
+So if you want certain kind of okay.
+If none of the condition is matched I need to run certain generic code.
+Then you can put else part right.
+But it is not mandatory to put.
+Then another type of if statement we have is nested.
+If statement right it is if else statement within if block or else block.
+So you know that we have two block right.
+If condition.
+Else we have condition.
+So within that itself you can also have another if else.
+So there can be nested right.
+There is no constraint like you can have two level three level.
+So just see this is simple example.
+So here I have a value which is defined as a 13 integer value if value is greater than eight, true.
+So this.
+If block will get executed, it will go inside this right.
+So this will print value is greater than eight.
+So value is greater than eight is got printed.
+Now here if you see that this is the nested file.
+So within an if condition I have put another if else.
+So if value is greater value is less than 15.
+Yes 13 is less than 15.
+So this if block will get executed because it got true value is greater than eight, but less than 15
+value is greater than eight but less than 15 okay.
+So once this got printed this block so else block will not get executed.
+Because if got executed.
+And after that, uh, this rest of the code will get executed.
+Okay.
+So you see that here?
+One if another that I have put another if else you can put more if here inside this.
+So there is no you can say that restriction like how many nested if you can have how many nested or
+if else you can have right here itself.
+You can also put if else inside else you can put if else.
+So nested if means if else block within an if else block right.
+You can have any number of levels, no control over it.
+Okay.
+So now there are certain uh things which we have called switch which is little bit, you can say that
+more information which we have now.
+So we gonna discuss about switch statement switch expression which is latest.
+So switch statement.
+It is similar to if else if ladder.
+So whatever the if else if ladder we have right.
+If else if ladder Later if else if else if multiple.
+So it is very very similar to it right.
+How it is get similar to it.
+First don't see this diagram.
+First see this syntax first and then we'll see how it is very very similar to this.
+So this is the syntax.
+So switch is the keyword switch.
+We will have an expression here okay.
+So we have an expression here.
+Then we have different cases.
+Case value one.
+If expression and value one got matched up this code statement will get executed.
+We have used break here.
+I'll tell you why it is used okay.
+If value one is not matched it will again like if else right later top to bottom.
+We will go and check each case case case and whichever case, whichever case value got matched with
+an expression, that code block will get executed Turn right and then else if else if later.
+What is the default thing?
+Generic thing we are using?
+Like else, if nothing got matched up, what should get executed?
+Similarly, in switch statement we have something called default.
+If nothing, no case value is matched up with an expression.
+This will get executed.
+Okay, so now let's switch.
+See this how it's gonna look like.
+So here we have the switch expression.
+This is our switch expression.
+Now we are here matching top to bottom.
+We are going.
+So first we are matching the expression value.
+So expression will always give you one value.
+So we will get that value and compare it with case value one.
+If that got true.
+If it is true we will run the code.
+This is the code we have right.
+And if you put a break we will get out of the switch.
+If you put a break, we will get out of the switch.
+But let's say if we don't put a break, what will happen?
+Let's say if it is a true, we will execute the code.
+If you don't use the break, it will execute the second code also.
+Right?
+It will evaluate it.
+The second one also.
+Okay.
+So but here we will see that.
+Let's see that.
+What if it is become false.
+So if this expression value is not equals to the case value one.
+If it is false what it will do is it will go from top to bottom.
+Now match with the second case value okay.
+If this case value got matched true it will execute that code.
+It will execute its code right.
+And after that we will put a break and it will get end of the switch.
+Right?
+So it goes from all let's say if this is so this is if this is also false, then ultimately let's say
+if all the cases has been exhausted finished.
+Ultimately if we have used default.
+So it will run this, go inside this default one and run the code right.
+And we will break it and it goes end of the switch.
+So break at default is optional.
+If default is used at the end.
+Right.
+There is no sequencing in the switch that this case should be at top.
+This case should be at bottom.
+Default should be at last.
+There is no sequencing in switch.
+Even default can be used at top also.
+Right I will show you with all example.
+So don't worry about that one.
+So.
+But first understand that what switch statement it is very to if else if later I think if that is clear,
+we can proceed further, like with more different, different examples of switch that why it is very
+very similar to if else if ladder you got it like we are going from top to bottom.
+Whatever the expression we have, we are going to matching with each use cases and if any of the case
+value get matched up, that particular code get executed.
+If none of the case value get matched up, we will execute the default one.
+Okay.
+So now let's see.
+And different different examples first right.
+So this is one simple example I have taken integer a equals to one integer b equals to two.
+This is my switch statement right.
+And what is the expression I am using a plus b one plus two.
+So it would be like what would be the expression value is three.
+So now here I am putting different case.
+Case one.
+Case two.
+Case three.
+Default.
+So.
+Case.
+So what is the a plus B is three one plus two right.
+So now what it will do is it will first match with the case value one.
+If one equals to equals to three.
+No it is not.
+So it will check this.
+Now second case what is the value.
+It's two is two equals to equals to three.
+No it will goes to the third case.
+So this case what is the case value.
+We have provided three.
+If it three equals to equals to three.
+Yes.
+Then what.
+It will print system dot dot dot print ln a plus b is three.
+And now we have done a break.
+So as soon as you do a break it will go out of this block.
+Right.
+So it will print a plus B is three right.
+So you see that it is very very similar to if else if ladder part.
+So now let's see.
+Different.
+Different uh, sample also.
+Right.
+So let's say that.
+I am using without break statement.
+I told you, right.
+What?
+I told you that if you don't break it right, it will go.
+And to the second case, let's see this case.
+How?
+So check this out A plus B what is that again three.
+So first it check case.
+What is the value one.
+One is equals to equals to three.
+No it will goes to this two is equals to equals to three.
+No it will go here three is equals to equals to three.
+Yes.
+So it will print a plus b is three.
+It printed this.
+But here if you see that I haven't used the break statement.
+So what.
+I told you that if the break statement is not used, what it will do is it will just go and execute
+the code of the next one.
+So here it doesn't break happen.
+So what it will do is it will execute this below code also.
+System.out.println.
+A plus b is for it printed that also right.
+So here also I haven't used the break statement.
+So what it will do is it will check the next.
+So next is nothing but a default.
+So it will print a plus B which is nothing but a three.
+Okay so you got it.
+So why break is important.
+So if break is not used what it will do is it will execute the next code statement.
+If again next code statement doesn't use the break it will again bottom follow the next code.
+Okay.
+Let's see one more use case.
+So here what I'm doing is.
+So till now, whatever the example we have used is use default at last.
+And I told that if default is used at last then we don't need optional.
+Then we don't need break.
+Break is an optional because default is last after that.
+Even if you don't break it, there is no code.
+But what if default is used before?
+Because I told you in switch case there is nothing.
+No sequencing, right?
+A plus B is three.
+So case one not match case two not match case three.
+Right.
+So case three A plus B is three.
+Yes this will get executed a plus B is three will get executed.
+Now here.
+Do we have a break statement.
+No there is no break statement.
+This will get executed.
+Case four A plus B is four.
+This will get executed now.
+Here.
+Does any other here?
+No, nothing.
+So now here.
+If you see that default is not initiated.
+So there is nothing like default will always be get executed at the end.
+Nothing.
+So case three.
+What is the below case?
+It has it just run its code.
+So case four also doesn't have a break.
+So it check.
+Hey is there any case or default mentioned below me?
+No.
+That's all.
+It doesn't print anything.
+Got it.
+So here.
+What I wanted to show you that default can be at anywhere.
+Cases can be at any sequence.
+Doesn't matter.
+But remember if you are using default other than at last you have to use break.
+It's now it's not optional because if you don't use a break again it will print its bottom one right.
+So this is one of the thing which we have to know.
+So here I have showed this one a plus B is nine plus 110.
+So for each cases first it will evaluate.
+Case one does not match two does not match three doesn't match four doesn't match.
+So it will look for default.
+Okay.
+Default.
+Found it.
+So what it will do is it will print A plus B which is ten.
+Then.
+See I haven't used break so it will print the next one.
+System.out.println a plus b is two a plus b is two.
+But here let's see the break and it will go out of this switch.
+Now it will not print the below code.
+Got it.
+Let's see another use case which I wanted to show you for the switch case is that we can combine the
+cases also.
+For example, this is the like.
+I have taken a variable month as an string march.
+Right now here I have put a different cases like January case January case February case March.
+So all three cases, if any of them is true, then this code will get executed and after that will break
+it.
+So now you can see that what we are doing is we are clubbing the cases also.
+So this is also possible.
+So this is one way of clubbing and another way of clubbing is case.
+January comma.
+February comma.
+March like this.
+Also you can club it right.
+Either you can have in different lines right.
+Or either you can have in the same line.
+I think I have shown that also.
+Yeah.
+Case January, February, March.
+You can also have in the same line also same thing.
+Right.
+But what I wanted to show you that you can club the cases if they have a similar code to be run right.
+So so March.
+March will be like January, February, March.
+So yes, it will come true.
+So month value is in quarter one.
+It will print break.
+It will go out of the switch statement.
+Right.
+So this is similar.
+But I just wanted to show you that in a single line also we can do.
+So these are all the different ways switch can be used.
+But few things we need to take care of this switch right.
+First of all two cases cannot have the same value.
+We cannot have like case one we cannot have another case one that is not allowed.
+Right.
+So two cases cannot have the same value.
+Uh, your uh, the compiler will not even allow it.
+Second, switch expression data type And case value.
+Constant data type should be same, right?
+What does it mean that here if you see that what I am trying to do is that a plus B what it is integer.
+So this should be also an integer.
+It can't be like switch.
+Let's say I'm looking for certain string.
+Let's say march.
+I can't use like say case two.
+No.
+So this is a string expression is a string and case value is integer.
+No that is not allowed.
+So this is a string.
+This should also be a string January.
+Right.
+So you got it right.
+What does it say.
+Switch expression data type and the case value.
+Data type should be same.
+Third the case value should be either literal or constant.
+What does it mean?
+So now you one thing.
+You might have noticed that with the different examples we have used in the expression, we are able
+to use the variables.
+But can we use variable here?
+We can, but those variables should be either constant.
+So either we can use literals or constant only at the case right.
+For example take this example I have an integer value equals to one right.
+Now switch statement I am using an expression two plus one minus two.
+Right.
+So it's three minus two, which is nothing but a one.
+Now here in the case instead of writing like this case one I am using.
+variable case value.
+So here if you see that compiler has shown me the error right.
+Why?
+Because in the case what value we can use either literals or constant either use one two, three, four
+hard coded constants.
+Or if you are wanted to make use of variable, it should be constant.
+And in Java how you make a field value constant, you can put a final.
+Once you declare a final any variable, once it is initialized, you can't change its value.
+So now here, if you see that error is gone now why?
+Because now this is constant.
+Its value cannot be changed, right?
+So in the case the value should be either literal or constant.
+Right?
+All use cases need not to be handled.
+Need not to be handled right.
+I'll tell you why this I mentioned.
+So here, if you see that a simple example I have used of an enum.
+You know that enum is a constant.
+That's why I am able to use it here, right?
+So let's say I have de as an enum.
+Monday.
+Tuesday.
+Wednesday.
+Thursday.
+Friday.
+Saturday.
+Sunday.
+I am using a de enum value as an expression.
+I have put one variable put a Friday.
+Now I am putting a cases case Monday I have used.
+I have used certain code like output value.
+I'm assigning it one break Tuesday, Wednesday, Thursday.
+But here if you see that I haven't put Friday, Saturday or Sunday code.
+Also I haven't put the default also.
+So what would be the output for this one.
+So my expression enum value was Friday.
+So it will match for this case Monday.
+No.
+Tuesday.
+No.
+Wednesday?
+No.
+Thursday?
+No.
+So nothing will get executed.
+So what would output?
+Value would be zero.
+So here what I meant to say is that all use cases need not need to be handled.
+So it's not.
+So switch statement doesn't force you to put a default right or doesn't force you to like cover all
+the use cases.
+Nested switch statement is possible so you can put switch within switch also.
+So the same example the above which I use.
+So here the switch I am using that.
+Let's say I put Monday case Monday it will become true output value.
+I have assigned it to the one.
+Now I put again switch switch.
+Now on this output value it has case one.
+So output value is one right.
+Yes.
+Match output value.
+It will print this one.
+So it will print output value this one.
+So it will break.
+It will go out of this switch, then it will do break.
+It will go out of this switch and then it will execute the statement.
+Rest of the code output value.
+What is the output value?
+I have initialized it here so it would be one.
+You got it.
+Uh nested switch statement is possible.
+Very simple switch within switch you can put.
+What is the supported data type.
+Very very important.
+And sometimes it's an interview question also.
+So now one thing you should note is that whatever the examples I have taken.
+So these are the only supported database for primitive data types.
+We can have integer.
+These are the primitive integer short byte character right.
+You can also have like see like this.
+Also write wrapper types of the above primitive type is also allowed, so for int it would be integer.
+And character right.
+So for here for this one is enum.
+Enum is also allowed.
+String is also allowed right.
+So for for it so total ten data types are allowed.
+Okay.
+So you know that string is also a kind of constant right.
+Why string is a constant.
+Can you tell me like we if we remember we have discussed in that right string pool and all.
+You remember this right?
+It is immutable.
+Enum is already a constant.
+I told you in the enum when we discussed, right?
+So we know that it's a constant integer short byte character.
+All this for primitive data types we can use here in the switch expression here.
+So here in the cases anything has to be like constant or literals Literal right literal like c a or
+constant one, two, three, or provide a final and use it.
+And in the switch, whatever the expression you are going to use, it should be of this out of this
+ten data types only, nothing else, no float double nothing.
+Right.
+Because it generally do comparison equals equals right.
+So that's why it generally supports this only okay.
+So these are the data types which switch statements support.
+Now let us see that.
+Another point which you have to remember is return is not possible within switch case.
+So here if you see that let's say you have this scenario.
+So what we were doing here is let's say in this example see this example.
+Yeah this one.
+So here we are Having a variable output value zero and we are updating it.
+If any of the case condition is true.
+But can we do this like this.
+So output value can we initialize can switch statement can return certain out of this.
+So switch I have taken an integer primitive data type.
+It is allowed value okay.
+Now it will match the case.
+Case value is one.
+So case one it become true.
+Can I return one here so that this string output value can have this one.
+No switch statement.
+We can't do return.
+So return is not allowed here like this.
+So return is not possible within switch case.
+And that's where there are two different ways using Case.
+N this label and using yield statement.
+Okay.
+So generally you can say that this is available from Java 12.
+If you have a JDK before Java 12 like you might not be able to test this scenarios.
+Okay.
+So let's understand this case and this arrow label how it helps us with the expression and returning
+the value.
+So now see this part I have integer value one.
+I am using this value.
+Code block start.
+So value is one.
+So it will look for the case.
+Case one okay so this got matched.
+So now here if you see that I am using case case whatever the value of that case.
+So whatever the value of that case.
+So arrow option I am using.
+So what this arrow will do is it will return.
+It will return whatever the data type you are expecting in an expression of this right hand side, the
+left hand side of the switch.
+Right.
+Whatever you are expecting is it will return that one.
+So I am expecting the string right.
+So this is an expression.
+This is switch expression right.
+So here this switch is returning an string.
+And here it will have this value.
+So value is one.
+So this case will get true.
+And because of this arrow it will return this value right.
+And this value data type should be similar to what it is.
+Who is getting assigned with this.
+Right.
+So and one more thing you might have noticed is there is no break statement required.
+Right.
+Because this arrow will return it from here.
+Right?
+So that's why there is no break statement required.
+So if you see that it is little bit clean also it's very much clean.
+You you don't need break break because break using a break here inside a switch.
+It's a very error prone.
+Sometimes if you forget to put a break it might run the next code block.
+So using this arrow it makes sure that you don't need to worry about break.
+So it will simply return it from here right.
+So what the output value after this it will print.
+It will print one string.
+Okay.
+So few things you have to notice right here which I want to tell Because this is a switch expression
+and we are it is returning the value which somebody is getting initialized with.
+So it has to cover all possible use cases in switch statement.
+What?
+I told you that.
+There is one right?
+All use cases need not to be handled.
+And I showed you like we.
+I haven't used Friday Saturday, Sunday.
+There is no default.
+Right.
+Because this is a switch statement.
+Nobody.
+This is not an expression.
+No no nobody is getting are catching the value.
+And.
+All right.
+But in the switch expression this variable is getting initialized by the switch.
+So all possible use cases need to be handled for this expression.
+So I have taken one example the same example Sample value is one switch value.
+So.
+Case one.
+Case two.
+Even though here value is one, you know that it will get match for sure, right?
+But still I am getting a compilation error.
+Why?
+What compilation error says that switch expression does not cover all possible input use cases?
+How you can fix it?
+You have to put default right.
+So let's say if this case doesn't match.
+If this case doesn't match, what would be the default to be executed?
+So all the possible use cases have to be handled.
+If you are using enum, then all the enums you have to use or either put use a default.
+Okay, so if you're using an expression, make sure that all possible use cases need to be handled right.
+And there is no need of using the break.
+So another thing is using this arrow.
+We cannot have the block of statement.
+Right?
+Like what I mean to say is that you are doing case one arrow.
+You can't have this block.
+Now you can have you can't have multiple codes now here.
+Right.
+It will always return the next statement which you will write.
+So how you will.
+Because.
+Because in the case one there might be a scenario where you have to write certain code logic, right.
+And then return the value.
+So how it is possible if this with an arrow it is not possible to write a block.
+It is with the help of the yield.
+The second part yield statement.
+So whenever you wanted to have a block and you wanted to return, use a yield.
+So here in this case I am putting a string output.
+Well this value is getting assigned with switch statement.
+Switch value.
+It is one, right?
+So first thing I have covered all the use cases.
+Case one.
+Case two.
+Case three might be or default right.
+So I have covered all the use cases and nothing.
+Match default will take care of it.
+So case one.
+Now I am having an arrow.
+It will return it right.
+But I have used a block.
+Now.
+Since I am using a block, I have to return.
+I have to use the yield now.
+Because now you can write some ten code logic here.
+But whatever you want it to return, you can use return it through yield.
+So whenever you are using a block in an expression, in an expression, and if you wanted to return,
+you have to use yield.
+So in the case two I am also using a block.
+So I am returning it using yield.
+And I put can put a logic here in the default I am not using a block, so I am directly returning from
+here.
+Only one line, right?
+So it will return it from here itself.
+Got it.
+So that is the way of returning the value from the switch case.
+Okay.
+So here now we have covered, uh, this decision making statement.
+That's the only you can say that little bit uh, more detail.
+The next part is very, very simple.
+Right here.
+Next we have is iterative statement.
+So first iterative statement is the for loop.
+So in the for loop this is how we have three part.
+First initialize the variable.
+Second is conditional check.
+Third is increment or decrement the variable.
+Okay.
+So now let's see how it works.
+So this is just a class.
+This is just a method.
+And this is a for loop I have used.
+So what is the in the for loop?
+This is the keyword for block start.
+So what is the first initialization of a variable.
+So I have initialized the variable integer value equals to one semicolon right.
+Not comma semicolon okay.
+Value is assigned.
+What is the second part?
+Condition check value is less than equal to ten.
+True.
+If it is true, what will happen?
+It will execute the statement right value is equals to one.
+One is less than or equals to ten.
+True.
+So what it will do is it will print the value System.out.println.
+Value one.
+Print it.
+Now it will go and check increment third part increment or decrement of variable.
+So I am incrementing well plus plus.
+So now.
+Well, you become two.
+Now it will check the condition again.
+Hey, two is less than equals to ten.
+True.
+If it is true again.
+System.out.println.
+Well two.
+Then again it will check incremented it become three it check the condition again before implementing
+the code.
+Three is less than equals to ten.
+Yes.
+So 3456789.
+Now it will go to 1010 less than equals to ten.
+True it will print ten.
+It will increment plus plus 1111 less than or equals to ten.
+No it become false.
+So this is how the for loop works.
+So you can also have multiple for loops nested for loops right.
+So this is the two for loops I have used in.
+So I have used outer loop.
+So this is outer loop.
+This is the inner loop.
+I have used.
+You can put another for loop inside this one.
+So for each value of an outer loop, inner loop will get executed completely.
+So here I have initialized it x equals to one x equals to one one less than equals to three one less
+than equals to three.
+True it is true.
+Then this will get executed.
+Now here, if you see that this whole for loop will get executed y equals to one and y less than equals
+to three.
+Right.
+So this will get executed y.
+So y so for x equals to one y1 y2 y3 will get executed.
+This for loop will run after it run three times it goes up x plus plus it become two two less than equals
+to three.
+Yes.
+So it will go inside, and then this for loop will get executed again because we are initializing again.
+So for x equals to two again y equals to 123 will happen.
+Then again x plus plus x equals to three.
+Again Y123.
+So you got it right for each value of x.
+The inner loop will get run every time okay.
+So generally this two time for loop is very useful in the 2D matrix.
+Scenario 123456789.
+So x axis the outer loop.
+You can use an x axis right.
+And inner loop is y axis.
+So for each.
+So for each x axis you have to run the y.
+So outer one can be your x axis.
+Inner one can be your y axis.
+So it will print like this.
+Okay.
+So this is your for loop.
+The next one is your while loop.
+So while loop is also very very similar it's just a different way of representing the first we initialize
+the variable.
+Then we check the condition.
+And inside this block itself we will increment decremented.
+So let's take understand this with an example.
+So I have taken initialize the variable at top.
+First initialize the variable.
+Now I'm checking value less than equals to five.
+Yes one less than equal to five.
+True.
+The code will get executed within this block.
+Value plus plus right.
+So first it printed one system dot dot print ln one value become plus plus.
+So value become two two less than or equals to five.
+True it print again.
+Then plus plus 345.
+So for five it will print again.
+And five plus plus six six.
+Less than equals to five.
+No, it will go out of this block.
+Okay.
+Then another is do while loop, so do while loop is required when you want to run a loop at least one
+time.
+So one time loop will run no matter what.
+So it is like initialize the variable.
+This is the keyword do and then we have a while.
+Remember this semicolon at the end.
+So let's understand with an example.
+Let's say I have initialized the well equals to one.
+So do while loop is.
+So first do is the keyword block is started.
+So now here this code will get executed at least once.
+So system dot dot dot println val is one printed val plus plus become two.
+So now it will check the condition two less than or equals to five.
+If it is true then the block will get executed.
+Yes, two is less than or equal to five plus plus become three.
+Three less than or equal to five.
+Four less than or equals to five.
+Plus plus five.
+Five.
+Less than equals to five.
+Yes.
+Right then.
+Five plus plus six.
+Six.
+Less than or equal to five.
+False.
+It will go out.
+So difference between do while loop and while loop is that in the while loop first we compare.
+If that is true then only we will run.
+But in the do while loop, at least one time loop will run, and because the condition check is after
+that.
+Okay, then there is one more call is for each loop.
+So this is generally to iterate over array or collections array or collections.
+So next topic we're gonna start with the collections only.
+So I'll cover like how to iterate.
+And also generate is very simple.
+So we will understand with array which we have already covered.
+So now let's say I have created this array and I have created an array 12345.
+So how I can iterate over it.
+So this is known as foreach loop.
+So here I have created a for loop.
+Right now this is for each.
+Don't get mixed it up with normal for loop right.
+It's for each.
+So variable array I have put array I have put.
+So for each value for each value of this array it will this value will get assigned.
+So first I am initializing this val with one system dot println val is one.
+Then again this loop will get executed till this array or collection is not empty.
+It will run like this.
+Then it goes to the second R its pointer.
+So what is the value two.
+So two is getting assigned to.
+Well it gets printed then three, then four, then five.
+Then once the array is fully iterated empty or the collection we have fully iterated, we have reached
+to the end.
+Then for loop will become false and it goes out right.
+So in the.
+For each loop it is used to iterate array or collections, and it will iterate over the elements of
+an array or collections.
+And it goes like this.
+And iterate till the end is reached okay.
+The last one is the branching statement in control flow statement, where we have two part break and
+continue.
+So this is mostly used with the loop.
+So whenever we are doing a loop.
+This branching statement can be used.
+So here if you see that I am taking a very simple example.
+First of break statement.
+So I have taken a for loop for I have initializes the variable variable equals to one.
+The second part is condition check one is less than equals to ten.
+True.
+So as per the code it should go inside this code block.
+So val equals to equals to three.
+No val is currently one.
+So this block will not get executed.
+System.out.println one.
+Get executed.
+So now it will get incremented and condition will check again two is less than or equals to ten.
+Yes.
+Now the code will get executed.
+I have a check.
+If two equals to equals to three.
+No I have printed two now plus plus three.
+Three is less than or equals to ten.
+Yes.
+Now it will go inside.
+Three is equals to equals to three.
+This if condition become true.
+Now what I am doing break.
+So now when I do a break it will go out of this for loop.
+The immediate for loop.
+What I mean to say the immediate for loop.
+For example I have used two for loop and I have used the break.
+So here if you see that it will get out of this immediate for loop.
+So immediate for loop is this one.
+So it will go out of this for loop.
+But still it is inside this for loop right.
+It is still inside this for loop.
+Right.
+So this for loop will still be running only it will break this for loop.
+Okay.
+So that's what the usage of break.
+So what break will do is it will break your loop.
+So whenever it will find out a break inside a for loop.
+What it will do is it will break whatever the rest of the condition it might have to run.
+Otherwise, if break is not there, what it will do, it will.
+It will print 123456789 ten.
+So after but at value when it was three.
+If it is true, it we have done the break.
+So it only print one, two and rest of the code.
+It breaks, it goes out.
+Right.
+So that is one of the break statement and another is continue.
+So continue does the opposite kind of thing generally.
+So here if you see that what continue will do, it will not break the for loop.
+It will not break the for loop, it will not exit.
+But what it will do is it will skip that value the further iteration of that value.
+For example, value equals to one value less than equals to ten value plus plus.
+So in general it has to print 123456789 ten.
+Right.
+But I have put one code here.
+If value equals to equals to three, continue.
+So for the one it printed because one is equals to equals to three.
+No.
+So it printed plus plus two.
+Two less than equals to ten.
+True.
+But this code will not be true.
+So it just printed this.
+So two will get printed two plus.
+Plus what it will become three.
+Three less than equals to ten.
+True.
+Then this if condition three equals to equals to three.
+True.
+Now it will do continue.
+So what it what continue will do is it will go and say that.
+Hey now incremented further don't proceed the further statement.
+So for three the next of the code block, whatever it has it will not get executed.
+It will just skip it and do plus plus.
+So it will become four for less than equals to ten.
+Yes four equals to equals to three.
+Now it will print four.
+So here if you see that three got skipped.
+So the output 12456789 ten.
+So what continued will do is continue will skip that particular value and just do increment plus plus
+right.
+But it will not break the for loop.
+What break will do is it will just go out of the for loop itself.
+Okay.
+So these are very simple part like I would say that just try it out once right.
+But uh this is certain new part switch expression.
+So just uh, have uh, hands on practice on this once.
+But this is generally what our control flow statements are, right?
+And those who are from C++ background might be they find it very easy because C++ also has mostly the
+same logic.
+Seems okay guys.
+Okay guys.
+Any doubt, any question?
+Please feel free to ping me on the comment and let's discuss.
+Thank you guys.
+Bye.
+    </pre>
+</body>
+</html>

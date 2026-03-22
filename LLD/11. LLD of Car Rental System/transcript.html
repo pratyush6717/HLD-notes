@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11. LLD of Car Rental System</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="#" class="btn">View Notes</a>
+    <h1>11. LLD of Car Rental System</h1>
+    <pre>
+Other side.
+Welcome back.
+And today in low level design we are going to design the car rental system okay.
+So let's start without wasting any time because we have to do complete coding also okay so let's understand
+the flow first.
+So when.
+So let's say we have a certain system okay.
+Car rental system.
+And when any user comes in.
+So what's the flow.
+So user comes to a car rental system.
+Select a particular store based on its location.
+So first it do some filtering okay.
+It put its location and filter the particular store based on its location.
+Search for vehicles based on vehicle type and its availability.
+So what does it mean.
+Is that okay, once you have selected the store of a particular location, let's say store one, you
+have selected which is present into, let's say, city.
+City.
+And this is the area one.
+Okay.
+Particular store you have selected.
+Now in this store there are many vehicles you have to filter out now what vehicle type you are interested.
+So here if you see even the question says that car rental system.
+But we have to design our system that in future we should be able to handle four Wheeler, two Wheeler,
+etc..
+Okay, so we should be able to filter what type of vehicle you wanted.
+You wanted four Wheeler okay.
+And its availability like you want for day let's say on you want to book for second and third let's
+say December okay.
+So all the vehicles available on these two dates should get listed down okay.
+So now after selecting a particular store you have searched for the vehicle.
+Now reserve the schedule vehicle now.
+Whatever the vehicle you are interested in, whatever the selected vehicle, you have to reserve it.
+Okay.
+And while reserving it, you need.
+We need to handle concurrency as two user should not be able to reserve the same vehicle for the same
+time.
+Okay.
+So yes, we found the vehicle what we wanted.
+We have reserve it now.
+We will start the trip.
+We will submit the vehicle and when submitting the bill will be generated against the reservation.
+Okay.
+So whatever the reservation we have done, the bill will be generated against that.
+And after that, a payment will be made against the bill.
+So this is very simplified flow for a car rental system.
+But you can discuss with an interviewer.
+Does he or she is in line with this flow or not, because the car rental system is very huge.
+But we will be designing only this flow itself.
+Okay, so based on the above understanding, we identify below major objects involved in this design.
+So all these are marked yellow like user is an object store vehicle reserve bill payment.
+These are all different objects.
+While gathering the requirement and gathering the flow, understanding the flow, we listed down the
+major objects we identified.
+Okay.
+So as I mentioned earlier, also that object which thing can be considered as an object?
+Object has two things property and behavior.
+Anything which has these two things properties means like your which like what is the color of this
+object?
+This is just an example okay.
+This is a property okay.
+Similarly behavior is what it will do.
+Like methods any function it can do.
+So any object which has this two things can be considered as an object.
+So let's start the UML based on this initial understanding of the flow and the objects which we have
+identified.
+So first is vehicle.
+So here if you see that I have not created like a car or bike or anything, I have just created a vehicle
+which has vehicle ID vehicle number.
+What is the vehicle type.
+So here vehicle type I have put four Wheeler or two Wheeler.
+Similarly what is the daily rental cost for this vehicle and vehicle status whether it's available booked
+or is it maintenance and the getter and setter.
+So it's just a simple Pojo class.
+Okay.
+So very very simple Pojo class which has this property.
+So here if you see the code we can add more details also.
+So inside a product we call.
+So if you want you can add company name model name km driven average CC number of seats.
+So these are more information.
+You can add it okay.
+But for now since in our design we are not using this.
+So I just kept very minimal one.
+Now vehicle object is not intelligent, it's just a Pojo.
+We need some other intelligent object which can manage vehicle inventory like maintaining the overall
+vehicle list, maintaining booked vehicle list, add vehicle, remove vehicle check for vehicle availability.
+So this vehicle class this just a Pojo.
+It's not smart enough.
+So we need something else which can handle the list.
+And that's where Vehicle Inventory Manager comes into the picture.
+And each store has their own inventory manager.
+So inventory vehicle inventory manager I have kept this class.
+So this we have already seen.
+So I have created a vehicle inventory manager.
+So this has a list of vehicle or here I have kept a map.
+Concurrent map.
+So this map has like a vehicle ID.
+What's this vehicle.
+So it has all the vehicles which is present.
+Okay.
+And each store has its own vehicle inventory manager.
+So if you have ten stores, ten stores will have their own vehicle inventory manager.
+Correct.
+So that's why this is not a singleton class.
+Don't make it singleton One for each store.
+They will have their own vehicle inventory manager.
+And for now I have just very simplistic map like vehicle ID vehicle which is contain all the vehicles
+present and we have a method add vehicle, get vehicle.
+You can remove vehicle.
+All this functionality which can be done inside a vehicle inventory manager.
+This class will get more complex when we move into reservation, but for now understand why we have
+added Vehicle Inventory Manager because in a system so many vehicles can be present, right?
+So we need someone to manage those.
+Then let's come to reservation.
+Reservation does not need full vehicle and user details so we can keep their IDs itself in it.
+So what does reservation do.
+Right.
+So here if you see you have a vehicle, you have a vehicle inventory manager.
+So reservation if you focus on this reservation part.
+What does reservation will have.
+Reservation will have a reservation ID vehicle ID against which the reservation is made.
+User ID which user has made the reservation?
+Okay.
+So here we have a user and I have a user ID.
+So I just kept user id.
+I don't add the whole object because you don't need full object of the user.
+Similarly I just kept vehicle id, I don't need full vehicle object here.
+Vehicle object has so many things kilometer driven and all the things I don't need all of those things.
+I just put vehicle ID.
+If more details are required I will fetch it out from that vehicle ID, I will make a query and fetch
+it out.
+Okay, so for reservation what I need is vehicle ID against which the reservation is made.
+Who made it user id from and two.
+This is the date period within which this vehicle is booked.
+Reservation type.
+Reservation type is like whether I am using daily basis or hourly basis.
+Okay, this will help us in our billing whether I'm charging for the daily or whether I'm charging hourly.
+So what's the reservation type reservation status, whether it's scheduled, whether it's going on in
+use, completed, cancelled, what's the status of the reservation and the getter and setter?
+Very simple.
+Okay.
+So now what objects we have seen we have seen vehicle.
+We have an inventory which is nothing but currently a list of vehicle managing the list of vehicle.
+We have a reservation and user.
+Now reservation is also not a smart enough to handle capabilities like maintaining the list of reservation
+we in a store there can be 100 of reservation.
+And this is just one Pojo, one represent one reservation, but we can have 100 of reservation, right?
+Creation of reservation.
+Cancellation of reservation.
+Removing the reservation.
+Who will handle that?
+That's where reservation Manager comes into the picture.
+And also this store has its own.
+Every store has their own reservation manager.
+So that's where I introduce reservation manager.
+So store also has this store also has reservation manager.
+Also store has vehicle inventory manager.
+Now here if you see reservation manager it has generally what we have is we keep list of or you can
+say that map of list of whatever you want map of let's say ID which is nothing but a reservation ID
+and the reservation.
+So we can have multiple entries into this map.
+Okay.
+But here what I have done is I have taken out this map into reservation repository.
+Why?
+You will get to know in just a few minutes why I have taken out this.
+Info.
+List of reservation into a repository.
+Okay, this I have done to remove the circular dependency.
+I will just going to tell now.
+Okay, so reservation manager has two things.
+One is it has relationship with this vehicle inventory manager.
+And also it has relationship with this reservation repository.
+Why it has a dependency with vehicle inventory manager.
+because whenever you make any reservation, you have to update the vehicle status.
+Also, vehicle status is whether it's booked or when the reservation is completed or cancelled.
+You should make it available also so it can't directly update vehicle right?
+So it talk with Vehicle Inventory Manager and ask them that hey this is the vehicle update its status
+also.
+So managing the vehicle is not the task of reservation.
+It will ask the inventory manager a vehicle inventory manager that will change the vehicle status.
+Similarly reservation rap repo.
+This one just has this list of reservation.
+All it maintaining all the reservation.
+So you can, uh, add you save or you can say that you can add a reservation into this map.
+You can find it.
+Any particular reservation ID you can remove this.
+Okay.
+So this reservation manager has this dependency.
+And whenever it will have to do fine, it will call this whenever it has to remove it will call reservation
+repository itself okay.
+And reservation repository has reservation.
+Now you might be thinking hey Shreyansh, why we need reservation repository?
+Why can't this map I put into reservation manager itself like we did into vehicle inventory manager?
+It has this map also.
+Okay, so the reason I created this is I told you that to remove the circular dependency, why there
+is a circular dependency.
+See this one.
+So we have one requirement.
+Create a reservation should only be successful when vehicle is available on that particular date.
+So we need to maintain some information about the vehicle.
+Okay.
+so what's the right place to hold that?
+Vehicles booking information.
+That's vehicle inventory manager.
+It holds all the information about the vehicle.
+So here if you see that I have maintaining this vehicle booking ID.
+So this is nothing but a again a concurrent map because see many threads might be touching this.
+So it's better to have a concurrent map so that because we are doing in-memory everything we are handling
+in memory, there is no DB currently.
+So many threads might be touching this, so it's always safe to use whatever the collections you are
+using.
+Make it concurrent.
+So now here if you see I have have a map of vehicle ID and the list of reservations ID, so one vehicle
+can have multiple reservation for this one.
+Reservation one.
+Reservation two.
+Reservation three vehicle two have multiple reservation.
+Reservation four.
+Reservation five.
+So this is for let's say one and two.
+This is for.
+For one and 2nd December.
+This is for three and 4th December.
+This is for five and 6th December.
+Like this.
+For one and 2nd December.
+Equal to.
+So this reservation has this information right booked from book to everything.
+So I don't need like vehicle one.
+It is book from 1 to 2 okay.
+So if I only keep reservation ID itself from there I can take out the information for the reservation.
+I can take out what the date it is booked from to till.
+So that's where I have put vehicle ID versus the list of reservation IDs, because this will help me
+to find out the available vehicles on a particular day, which user has selected.
+Okay.
+And now you.
+When you have a reservation ID using this reservation ID, you have to fetch the particular reservation.
+And if reservation manager holds the this this all reservation info then it need to it need to have
+a dependency of for this reservation manager.
+And then there would be a circular dependency.
+So what I have done is I have introduced a reservation repository which has this all the reservation.
+Okay.
+And now reservation manager is calling it.
+And even vehicle inventory manager has dependency on it.
+So with this we able to break the circular dependency.
+And this is totally fine.
+Okay.
+Always take out like what can be like, uh, independent task.
+So this is an independent task.
+You can find you can delete, you can manage everything.
+So this is can be an independent.
+Okay.
+Now multiple objects can use it.
+And with that we able to successfully break the circular dependency.
+Okay.
+Now here if you see the vehicle inventory manager I told you is maintaining a list of vehicles booking
+IDs, you can say that against a vehicle using this map.
+And it also has the reservation repository dependency because we have a reservation ID against a vehicle.
+So using this reservation ID we have to fetch the find by ID we have to fetch the reservation.
+Now we have method like get available vehicles okay.
+Then we have like release vehicle book vehicle is available.
+All these things we have introduced because in the reservation manager when you create a reservation
+Okay.
+You not only create one new reservation, but you also have to update the status of the vehicle.
+So that's why book vehicle.
+Okay.
+So when you book a vehicle it will put update this map reservation booking ID map.
+Also it will change the status also.
+Similarly when you cancel the reservation.
+So here release vehicle I have introduced so that you will release it from this booking map.
+That yes this reservation is removed now.
+And also you have to change the status of the vehicle.
+Now that it is available okay.
+Similarly, when you start the trip or complete the trip or you remove it.
+So if there is any impact goes on the vehicle.
+Those methods I have introduced.
+Okay.
+Till now it is clear.
+Now we have one more thing to handle, which is concurrency.
+So two important things to consider while handling the concurrency.
+First, the collection, like a list of vehicle list of booked vehicle should be able to handle concurrency.
+I have already done that.
+All the collections which I have used, I have made concurrent because multiple thread might be accessing
+it, reading it, writing it.
+So I want it to be safe.
+Okay.
+Since we are not using DB, we are in the low level design.
+We always do in memory, so it's better to have your collection concurrent so that underlying data structure
+should be consistent when multiple threads try to read and write in it.
+Second, very important regarding this question.
+Neat capability to put lock per vehicle.
+This is needed to achieve atomicity.
+Why you need to put lock per vehicle.
+Understand this with this scenario.
+Assume both thread one and thread two are running concurrently.
+So thread one what it will do.
+Check for vehicle availability.
+Touches the list of vehicle.
+So here I have vehicle one.
+Vehicle two.
+So thread one comes okay.
+And also in parallel thread to come that is also checked for vehicle availability.
+Thread two.
+Hey, for 1st December I am looking for a vehicle availability.
+So this system returns.
+Yes, vehicle one is available to both okay.
+And both selected are same vehicle okay.
+Now they both try to reserve this particular vehicle V1.
+So when they both try to reserve it.
+See our collection is concurrent means only one operation at a time can do.
+Make changes in it.
+Okay, but it will not stop any duplicate.
+Things which you are trying to do.
+So here, if you see first thread one, try to reserve it.
+Okay.
+So it would be able to do the reservation.
+So we call one.
+It will put.
+Yeah.
+Reservation one.
+So it will create a new reservation and insert it.
+Okay.
+While thread two might be waiting because it's a concurrent map because it's a concurrent map let's
+say.
+Okay.
+And it also want to add it and it's a concurrent.
+So thread two might be waiting.
+And once it is done and when thread two get a chance it will also try to reserve the same vehicle.
+And it will create its own reservation.
+So it will add reservation two also.
+So even so for the same vehicle two reservation is created for the same day 1st December.
+Okay.
+Which cause a problem.
+So you understand that just by using the concurrent map is not sufficient in this scenario.
+So we have to handle this concurrency in this scenario by putting a lock.
+How.
+Now let's say again the same system we have vehicle one.
+Vehicle two.
+Two threads comes into this place.
+Thread one.
+Thread two.
+Both look for 1st December.
+Hey any vehicle available for 1st December?
+It says that system says yeah V one.
+And both select a particular vehicle that okay.
+Yes V1I wanted to go with.
+Now here if you see we have to put lock on V one.
+This is important.
+Now anyone who picks a particular vehicle I put a lock.
+Now who put a lock.
+Let's say thread One has acquired the lock thread, one has acquired the lock now.
+So now it will check for availability again.
+Hey, is this again available?
+Is this available?
+Yes, currently it is available.
+There is in the map against the vehicle.
+There is no reservation for that particular day.
+So it's available.
+It will try to resolve this particular vehicle.
+Update the list of books.
+So it creates a new reservation and update this list.
+And then it releases the lock.
+The lock is released.
+So lock is removed.
+Now the thread two will go.
+It will put a lock on V1.
+So now who will take a lock?
+Thread two.
+Now again it's check for availability.
+Hey, is it available again?
+So see now two times we are checking the availability.
+First it take out like what?
+All the vehicles are available for a particular day.
+Okay.
+And After taking a lock it again checking because it might be updated by some other thread while it
+is waiting on the law.
+Okay, so it's checking for the availability.
+So now here for this vehicle one already reservation one is present for the 1st December.
+So check for availability would fail.
+It will return false and it would not be able to create a new reservation.
+So we need vehicle wise locking functionality.
+And that's where in the vehicle inventory manager I have added this locking behavior.
+So in Java I have already covered this Rentrant lock.
+If you haven't seen it kindly check it out.
+So here if you see that integer comma.
+So this is the map like integer would be here I would be using vehicle ID and this is just a lock object
+okay.
+So for this vehicle this is the object where they will lock it.
+Unlock it.
+You can say that okay.
+And I would be using this as a weaker lock.
+And I have introduced one method.
+Uh here put vehicle, put lock on vehicle.
+So whatever the vehicle ID you will give in this one I will put it like vehicle one.
+I have put a lock and any other one which want to acquire a lock.
+They will check this.
+Hey is there any lock present?
+Then it will have to wait.
+Okay.
+So I will show you like how we are using the lock here.
+So let's let's first check vehicle inventory manager.
+So till here let's see the code first okay.
+Very important one.
+So vehicle we have already seen now vehicle inventory manager.
+So here we have list of all vehicles like it's a currently a map.
+So vehicle ID and vehicle so all the entries would be present.
+The second is booking like a vehicle ID and it would be a list of reservation IDs.
+Then I am using for this logging vehicle ID and the log object and the reservation repository.
+So now here if you see the method which I have exposed is add vehicle, we can add a vehicle into the
+list of vehicles.
+New vehicle we are adding if we have to fetch any particular vehicle that also we can done from this
+we can take out.
+Now here if you see the log for vehicle.
+What how I am putting a log on the vehicle.
+Is that vehicle log put if absent.
+So whenever this method is invoked what it does what it do is that on this vehicle log map against this
+vehicle ID it create a log object okay.
+So its task is to add an entry into this log map for a particular vehicle ID.
+Now this is important.
+Availability check is available or not.
+So how I am checking so is available what information I am getting vehicle ID and this from to two.
+Whether this vehicle is available between these two dates or not.
+So vehicle one is present between let's say 2nd December to 4th December.
+You need to check okay.
+So what I am doing is first taking out a vehicle information from the vehicles map.
+Okay.
+I have only ID from this ID I take out the vehicle object.
+Okay.
+If the vehicle status is maintenance, I am returning false that it is not available.
+Just a basic validation I have added.
+Okay.
+And here now I am checking the booking IDs.
+What?
+All the reservation happened against this vehicle.
+So vehicle booking ideas get.
+Vehicle.
+I will get a list of reservations.
+Okay.
+Now I have to iterate over each reservation because now let's say vehicle one has three reservation.
+Reservation one, reservation two, reservation three.
+And I have to check each reservation because reservation has from and two information.
+So I need to check that.
+Is there any overlapping what user has selected and what's already reservation is from.
+So I do a simple thing that see this is if this is the thing it's two and this is from this is fine
+okay.
+Let's say this is R1 R1 two and this is new new R new reservation.
+And this is new reservation.
+So when new reservation form is after the two of reservation one that is also fine.
+Or this scenario.
+The reservation one from is after the new reservation two.
+That is also fine.
+They are not overlapping any other scenario.
+It would be overlap means you can't book for this date.
+So that's what I am doing.
+So I have a reservation ID.
+I am using the repository to fetch the reservation.
+I found the reservation and from the reservation I take out this book from book till information and
+I'm checking the overlapping.
+So this overlapping method I have put into a different class just for.
+So consider this as a helper class.
+Okay.
+So it is just checking the same thing which I told you.
+If two is before the from which the user has selected and the from is after the two, the same thing,
+the same logic, which I have told you.
+So both this scenario are okay.
+Apart from anything, there is an overlap.
+Okay.
+So if there is an overlap return false means it is not available.
+Otherwise it is available.
+So this is the available method we have added.
+Now we have a reservation method.
+So reservation method I have told you that first we have to put a lock.
+So that's what I am doing.
+So whatever the vehicle ID you want to reserve.
+So this has a reservation ID from two.
+So now here if you see.
+This create reservation is invoked.
+So it has created a reservation.
+Now it has to update the book vehicle of the inventory manager because it has to update the status.
+Okay.
+So that's why.
+So we already have a reservation ID, we have a vehicle ID and from to two we have to book it.
+So what I'm doing is I'm first locking the vehicle.
+So here I put a lock on the vehicle.
+So lock for vehicle.
+What it will do is on against this vehicle ID it put an entry into the vehicle lock.
+Cool.
+Now I am putting lock dot lock.
+So that object is now locked.
+You can say that that lock object is now locked.
+Now I am checking is available again I am checking for the availability.
+Again is available the method I have already explained you.
+If it is not available we return false here.
+If it is not available, we don't go and create a reservation or try to book it again.
+You can say that.
+Okay, so here if you see one question might have come to you.
+Hey reservation is not created already.
+We got the reservation ID.
+So here, if you see what I have done, is I only created an ID first, then I am trying to reserve
+it.
+And then later I am creating a reservation when it able to reserve it properly.
+If in this check, check for availability.
+If it is not available I am returning vehicle not available for selected date.
+Okay and then I am creating the reservation.
+So first I am creating just an reservation ID and try to reserve it.
+Okay so.
+I put a lock.
+I check it is available.
+If it is available, return true.
+Uh means proceed further.
+If it is not available, return from here itself.
+Now if it is available, what I am doing is inside a booking.
+IDs.
+Okay.
+Inside this booking IDs, we are adding an entry that hey, this is the vehicle and this is the reservation
+ID you need to add.
+And I'm changing the status of vehicle to booked and return true from here and in the finally unlock
+it.
+And finally we have to unlock release the lock.
+Okay, so this is the reserve which exactly doing this thing.
+Then we have release for release.
+Also you have to do the same thing.
+You have to take a lock because you are working on a vehicle.
+Right.
+So you have to acquire a lock first.
+Then from the booking IDs, you have to take out all the reservation against it and remove that particular
+reservation from its list.
+Okay.
+And you need to change the status of the vehicle to available.
+And after that change it to unlock.
+Very simple.
+And similarly we have get available vehicles because initially uh user might need that.
+Hey, give me a vehicle type two Wheeler four Wheeler and it should be available from this to this date.
+So this is just a vehicle search functionality which would be used by user to filter out a vehicle.
+Okay.
+Initially we told right.
+It will ask uh, let's say thread one or user one will ask hey for this date what all the vehicles are
+available so that this method is does the same thing.
+So what it will do is it will take out all the vehicles and one by one is check like okay, whatever
+the vehicle type user has asked for two Wheeler, four Wheeler, it should match that vehicle.
+And also I'm calling is available method that whatever the date user has provided is it available within
+that date.
+If it is true then only filter out so it will filter out only vehicles which match the vehicle type
+and which has availability within this date.
+So here, if you are not aware of the stream I have already covered into the Java.
+Kindly check it out.
+So this is our vehicle Inventory manager.
+Okay, now see a reservation.
+Reservation class is simple like reservation ID, vehicle ID, user ID, book from book two.
+Like we have seen just a Pojo getter, setter, reservation manager.
+Here if you see that has reservation repository, reservation repository has nothing but a kind of maintaining
+the list of all the vehicles.
+Okay, so here I'm using map, uh, reservation ID versus reservation.
+So here you can add you can find by ID you can remove you can get all all this thing we can do.
+And then in the reservation manager I have inventory manager okay.
+Now here if you see what all things I have like it expose get method because anybody has to fetch a
+particular reservation detail, they will call manager itself.
+They don't directly talk to repository.
+Let's say okay.
+So you can call this find by ID.
+It can fetch the details.
+Create reservation.
+Now when you create a reservation what information I got I got vehicle ID, I got user from two.
+And the reservation type okay.
+Reservation type is whether you want hourly or daily.
+So first I am just taking out a ID reservation ID and then I try to invoke the inventory.
+Hey, try to book it because multiple threads might be able to reserve it.
+Multiple user try to reserve it.
+So that's why I don't create reservation.
+First I create only ID and then try to reserve the vehicle if vehicle is able to reserve properly.
+This method we have already seen where I put a lock.
+If vehicle is resolved properly then I am creating a reservation.
+The same ID I used.
+Okay and save it.
+I call the repository and add the reservation.
+Similarly cancel reservation.
+What it has to be done.
+Like whatever the reservation idea, I have to cancel.
+I will call a repository, get a reservation.
+Okay, now I will change the reservation status to cancel.
+And also I will invoke the inventory to release it.
+So in this release it will put a lock and then it will change the it will remove from the booking list
+and it will make it to available and finally unlock it.
+Okay.
+And after that reservation repository will remove from the reservation ID.
+Once the inventory is properly released, we can remove the reservation from the repository also.
+Make sense?
+So now we have a strip.
+So strip I have just added like okay, when the reservation ID uh, we need to start the trip, we got
+a reservation.
+We change the reservation status to induce that reservation is in use.
+Submit vehicle now here.
+If you see when you submit the vehicle what all things happening, you find out the reservation.
+From this reservation ID, you change the reservation status to completed.
+And also you have to release the vehicle reservation is completed.
+Right.
+Vehicle is submitted.
+So you have to release the vehicle also.
+In that case also we have to release the vehicle.
+So Reservation manager hold all these things.
+I hope you understand concurrency part.
+That is very important in this one.
+Okay.
+And now we have Bill.
+So Bill holds info like reservation ID against the bill is associated with.
+And we don't need full object.
+We don't.
+You don't want to keep full resolution object inside a bill.
+Resolution has lot of information.
+You don't need it.
+You only want resolution ID.
+So that's what I am doing.
+So I created a bill.
+I have only bill ID, reservation ID bill amount and whether the bill is paid or not and its getter
+setter.
+So it's nothing but a simple Pojo.
+That's all minimal information you wanted.
+And this bill is not smart enough.
+So here that's why I created a bill manager which maintains the all the bills collection.
+Okay.
+So Bill ID and I have a bill against it.
+So I have multiple entries like this.
+And also to generate the bill method, instead of just providing an implementation into the bill manager
+we can have a billing strategy.
+So that's why it has a dependency on the billing strategy.
+So here I have used a strategy design pattern.
+So billing strategy could be hourly billing strategy daily billing strategy.
+They might have a different method to generate a bill calculation.
+Calculation part would be different right.
+So that logic resides into the specific strategy implementation.
+Okay so I have just added the billing strategy.
+What are the billing strategy.
+We will use we will use that specific class okay.
+Now here if you see that this billing strategy has dependency on this vehicle inventory manager okay.
+So here Bill is bill has this reservation ID okay.
+When we get hey create a bill I get a reservation.
+Hey, for this reservation you have to create a bill.
+See what I am doing.
+So, bill manager.
+So generate bill is the one which get invoked by the store by store will create that hey create a bill
+for this reservation so they will pass me the reservation.
+Now I will invoke this generate bill okay.
+Whether hourly or daily they will have their own logic.
+So here if you see that currently I have only daily billing strategy, pass the reservation.
+Now they will have their own computation logic.
+So what I am doing here is I am creating a bill I am just using from this reservation.
+I am just putting reservation ID, I don't keep the full object, so I just put reservation ID now to
+compute this total bill amount.
+I need this info in the vehicle.
+I have this daily rental cost right which is interested by daily billing strategy.
+They need to access this information how they can do.
+They have only reservation object which is coming.
+So from the reservation we can take out a vehicle ID reservation, has vehicle reservation, has this
+vehicle ID and I have put a dependency here.
+Vehicle inventory manager dependency.
+It has the dependency here.
+So I am using this inventory manager.
+And I will call this find by vehicle.
+Get vehicle with the ID.
+So I will pass the ID I will get a vehicle.
+And from this vehicle I will get a daily cost.
+Okay.
+And from this reservation how long this how many days this vehicle has been used?
+I will use it to compute the total.
+Okay.
+So you got Bill, bill manager and the bill strategy purpose.
+Okay.
+So similarly I am doing for the payment very very similar to bill payment, hold info like bill ID it
+doesn't need complete bill.
+So that's why I have a payment.
+Payment ID it has only bill ID and how much amount is paid.
+What is the payment mode.
+Okay.
+So amount paid is because like say for one bill multiple payments can be made.
+So currently I have not handled multiple payment scenario but I have put amount paid.
+Uh that can be handled in payment manager.
+We can easily do that.
+We can have a collection also from or from this collection also we can do that.
+So we have a payment which only has bill ID.
+And this payment manager okay which is called by a store itself a store calls the payment manager it
+it says that hey make a payment for this bill so it will pass the bill also.
+So now here if you see payment manager.
+So make payment.
+It will pass a bill and this payment amount for.
+For now assume that this payment amount is equivalent to whatever the bill has the amount, but it is
+possible that this payment amount could be lesser than this.
+So we need to introduce that a partial paid scenario and all this.
+But for simplicity payment amount would here would always be equals to whatever the bill amount is.
+So now I have a bill.
+Now make payment I am using payment strategy again strategy design pattern I'm using because cash payment
+strategy would be different UPI payment strategy would be different.
+So whatever the strategy you will customer will choose to make a payment.
+The control will goes to there and it will process the payment.
+So here I am creating a payment okay.
+So here I'm creating a payment.
+And I am putting payment ID bill ID payment amount payment mode.
+Because this is UPI payment strategy.
+So.
+So it's, uh, putting up more payment mode, UPI and it change bill status to paid.
+So I am not storing the complete bill, only bill ID.
+Okay, so you got it.
+How?
+Payment, payment manager and payment strategies used here in the system.
+Now I have store.
+So we have already uh our store is ready.
+So store has bill manager.
+The store has payment manager.
+Store has reservation manager store has vehicle inventory manager.
+So store has all this thing and store has its store ID and location.
+So whenever any let's say you want to create reservation, it will use a reservation manager and pass
+the responsibility that hey you create reservation whenever it is stored.
+Need to generate a bill.
+It will use a bill manager and pass the responsibility.
+That you generate a bill.
+Okay, so you can say that it's more of an orchestrator to drive the complete flow.
+Now the last vehicle rental system because we can have many stores.
+Also we don't have one store.
+So vehicle rental system can have list of stores.
+So we have let's say our website vehicle rental system.
+We can have onboard many stores in it.
+And on this website we can have many users also.
+So I have stores I have users.
+And it will whichever particular store is selected okay.
+Let's say at initially user comes that hey give me a store of this location one okay.
+It has a list of store and the store has this location information.
+It will expose certain method that they filter out the store, return it, and now once it has the store
+object, we can directly do all these things.
+Okay.
+So it has a list of store and it has a list of users.
+So this is our complete car rental system.
+Check it out again and I will show you the demo here.
+So first here if you see the demo part if I run this.
+So it is doing what we are asking it to do okay.
+So here if you see first thing which I am saying is I created a rental system over.
+Let's say this this object I am creating.
+I am first adding a store location.
+So this is just a location object store location.
+I am creating a new store, a store ID and this is the store location.
+So I have created a store one and added the store into the rental system.
+So store is added create user.
+So I'm creating two user user one user two add it into the rental system.
+So now our rental system also has two users.
+Also in a particular store I am adding certain inventory.
+So I added vehicle one, I added vehicle two.
+And in the store one inventory I added it okay.
+Store one inventory I added it.
+Now here if you see when store one inventory.
+So here if you see get inventory it will return me the inventory manager okay.
+And using that inventory manager I am adding the vehicle.
+So store is not adding it.
+Store just uses the inventory manager and add it.
+Or even we can have simply add inventory we can have method like.
+Add inventory let's say.
+And here I have let's say vehicle vehicle one.
+And internally I can call let's say get inventory.
+I will get an inventory manager.
+Inventory manager and use that inventory manager to store this thing.
+Add vehicle okay.
+So still that is okay because store is not adding the inventory.
+It just using inventory manager to add the vehicle.
+So I have added the vehicle.
+So this is mostly a setup.
+So we have added a store.
+We have added a users into the system and within a store I have added the vehicles.
+So this is all done now.
+The fourth step which I am doing is user select a particular store, let's say rental system.
+I'm getting a store.
+This one user selected this.
+Hey, I want this 1001 store okay.
+And it put like from this to this date I want to book the vehicle.
+So first thing what I am doing is from this store I am taking out all the available vehicles, all the
+available vehicles.
+So that's what I am doing here is now so selected store whatever the user has selected the store, get
+the vehicle.
+User is interested in four Wheeler and this to this date from to two date.
+Now you know that when you do selected store get vehicle it will use inventory manager and it ask it.
+Hey get the available vehicles and it will invoke this method.
+It will list iterate through all the vehicles, filter out based on the type and the date whether it
+is available or not.
+So it's using is available method which we have already seen.
+So all the available vehicles would be listed.
+Okay.
+Now once the vehicle available vehicles we have, what it will do is it will try to create a reservation
+against one vehicle.
+So it will use selected store create reservation vehicle ID which vehicle it is interested in.
+So this is currently you can say that testing flow right.
+So I have hardcoded that okay vehicle one I am interested.
+User one is trying to do the booking from this date to this reservation.
+I am interested in daily.
+So create reservation.
+What it will use is it will store use the reservation manager.
+Pass it to create reservation.
+So what it will do is it will first get a reservation ID that's all.
+And it will try to book the inventory.
+And in the inventory reserve it will put a lock check is available.
+It will add an entry to the booking Map, it will change the status of the vehicle and then after that
+it will unlock it.
+Once it's able to properly resolve the inventory, it will create a reservation and store it.
+Okay, so once the reservation is made, user will start the trip.
+So it will call selected store start trip and it will just pass the reservation ID that.
+Yes, I want to start the strip and store.
+Simply use the reservation manager and it will change the status of the reservation.
+Similarly, when it submit the vehicle, it will call the submit vehicle method which is present into
+the selected store store.
+Just pass this request to the reservation manager.
+Reservation manager reservation ID found out the reservation changes status to completed.
+Try to release the vehicle inventory by calling the inventory dot release and.
+once the vehicle is released properly here, if you see now the vehicle is submitted means it is released.
+Okay, now I am making a payment bill is generated so selected store whatever the store.
+It will say that hey generate a bill.
+And here this is the reservation ID and I am using a daily billing strategy okay.
+And it passed the inventory of the selected store.
+So generate bill I have already said that hey this is the reservation ID use this billing strategy.
+Okay.
+Because billing strategy we are deciding on runtime that okay you want a billing hourly or daily whatever
+you want.
+So Reservation manager will first based on the reservation ID okay, I got a reservation and now I am
+just asking the bill.
+Hey, this is the billing strategy user is interested in.
+So update yourself and asking the bill manager that generate a bill.
+Okay, for this reservation now bill is generated I am making a payment so selected store I am saying
+hey make a payment for this bill.
+And this is the strategy I am interested in UPI payment strategy.
+So again same thing like for this bill.
+First I am using the payment manager set its payment strategy.
+Like what user is trying to make a payment with using a payment manager to make a payment.
+And I pass this bill and what the amount and if the payment is made successfully, I reservation I removing
+it here now after making.
+So after making the payment, I am removing the reservation.
+I am not removing the reservation after just submitting the vehicle just because after payment only
+I am removing the reservation.
+So once the reservation remove is called.
+So from the repository it would be removed.
+And I'm just printing it.
+So you will get this output.
+So try it out.
+Okay.
+Go through this.
+All the objects one by one.
+Again I will share the git link.
+Also I have already post all the code working code.
+You can check it out and if there is any question let me know.
+We can discuss further in the comment section.
+But again, this is not a one single solution.
+There can be many solution.
+Okay, there can be better solution, better design.
+But in low level design there is no one single solution.
+Okay.
+So if you can think of a different way of implementing this, that would is also totally fine okay.
+Okay.
+Any question let me know.
+We can discuss further in comment section by.
+    </pre>
+</body>
+</html>

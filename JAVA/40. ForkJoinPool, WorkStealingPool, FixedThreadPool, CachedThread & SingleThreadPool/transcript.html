@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>40. ForkJoinPool, WorkStealingPool, FixedThreadPool, CachedThread & SingleThreadPool</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>40. ForkJoinPool, WorkStealingPool, FixedThreadPool, CachedThread & SingleThreadPool</h1>
+    <pre>
+Hey guys.
+Welcome to concept encoding.
+This is Shreyansh.
+And today in the multi-threading we are going to do Executor's utility class.
+And also the fork join pool.
+Very very important topic for join pool.
+So that we will also cover today.
+And you're gonna love it.
+Uh there's a lot of information in there I want to share.
+So in the thread pool executor.
+So this is how till now we were creating the thread pool executor.
+Right.
+So this is generally you can known as custom thread pool executor.
+Custom thread pool executor like we we ourself creating core pool size maximum pool size.
+So we customizing the our thread pool based upon our need.
+Right.
+So there is a class utility class executors which is present into Java.util dot concurrent package.
+So it provide a lot of factory methods which we can use to create a thread pool executor, right.
+So what, all those factory methods.
+Right.
+So that I will tell you today.
+Okay.
+So this is the first one.
+So let's say your requirement is that you want a fixed thread pool executor.
+Right.
+So generally we have this core pool size which is you can say that the minimum pool minimum thread pool
+and max is the maximum number of threads right.
+So in with the fixed thread pool executor it creates a thread pool executor with a fixed number of threads
+means your min and max pools are same whatever you will provide.
+So in this method, whatever the number you will provide, the min and max would be the same.
+So this is how generally we create executor.
+So I told you right.
+This is the class right.
+And this is the static method.
+You can directly call with the class name.
+So executor dot new fixed thread pool and you give the number.
+So now what would happen is the min and max pool size is same five.
+What would be the queue size?
+It's an unbounded unbounded means.
+It might be behind using linked list.
+So there is no size right till it has a don't have a memory issue.
+It can grow thread alive time when idle.
+Yes.
+So even though the threads are idle, there is no task at all.
+Even though this five threads which are created would still be alive, right?
+So thread will still be alive even when idle.
+So you can now ask, right?
+Hey, when to use this fixed thread pool executor.
+So when to use.
+So when you have an exact info how many async task is needed, then you can go for it, right?
+You have an exact info that.
+Yes, I need five threads.
+That's all.
+I don't want to use more than that.
+Right?
+So go for that.
+But what is the disadvantage?
+Disadvantage is not good when workload is heavy as it will lead to limited concurrency, right?
+If somehow workload is become very heavy.
+Right.
+You might have capability to have more threads.
+But now since you are using fixed thread pool, you have fixed your size min and max.
+Right?
+You can't create more threads now.
+So that is the problem with it.
+So that's the disadvantage.
+So this is how we generally create this.
+So generally you can achieve the same thing by uh providing this here all this customize.
+You can provide all this customized information here.
+But this is just like a handy.
+So this is just you can say that a factory method, if this requirement fits you use it.
+Otherwise you can go for custom one, right?
+So these are the properties of the fixed thread pool executor.
+And this is how you're gonna create it.
+Executors dot new fixed thread pool give the size and just submit it.
+And the task which you wanted to submit whether you want to submit runnable task.
+Right.
+This is the second one.
+Cached thread pool executor.
+Right.
+So what it is used for.
+So this is a method which is we use executors dot new cache thread pool.
+Right.
+This is the method we have to use new cache thread pool.
+So this method creates a thread pool that creates a new thread as needed dynamically.
+Right.
+So initially let's say it has zero threads.
+So what is the minimum and max pool.
+So minimum is zero.
+There is so this in this pool there is zero thread.
+But as request comes in it keep on creating a new thread.
+It keep on creating a new threads.
+Right?
+So what is the maximum number of threads it can create?
+Is integer dot max values till the memory doesn't cause any issue, it keep on creating it.
+So you can ask me a question at this point.
+Hey what is the use of queue then?
+Generally we keep the thread count limited certain limited number and if more jobs comes into this then
+we put the task into the queue.
+Yes, but in this one the queue size is zero.
+Or generally you can say that the when you use this new thread pool queue is not even use queue size
+is zero, right?
+So as soon as request comes in it creates a thread and assign go work, right.
+So thread alive time when idle is 62nd.
+So now let's say it has created.
+Let's say there are 100 requests comes in suddenly.
+Now it created 100 threads.
+Thread one.
+Thread two.
+Thread 100.
+Now let's say this thread got free, right?
+Now there is no more task.
+So when this thread will get dead if they are idle for 60.
+Second, if the thread is idle for 60s after 62nd that thread will get terminated.
+Right?
+So thread is alive when idle only for 62nd after after 62nd it will get terminated.
+So when you should use this.
+So it is good for handling burst of short lived tasks.
+So if you have a scenario where the task is going to be live for very short durations, right?
+Then you can go for it, right?
+If you have a task which gonna run for long duration of time, it's never.
+You can say that suggested to use this pool executor because it is generally suited for short lived
+tasks.
+So and you know, the disadvantage by now is that if many long lived tasks are submitted rapidly, thread
+pool can create so many threads which might lead to an increased memory usage, right?
+Because so many threads you have, so many tasks are submitted and so many threads has been created.
+And they are not.
+They are.
+They are not getting terminated soon.
+They are long running.
+So it might cause a memory issue.
+So it is only suggested for short lived tasks.
+And after 60s it gets terminated if it is idle.
+Okay, so this is how you generally created executor dot new cache thread pool.
+And then you can submit the runnable task to it.
+This is the third one single thread executor.
+This is the method which you gonna use it.
+New single thread executor method.
+You can use it.
+It create an executor with just single worker thread.
+So in a thread pool you now will have only one thread.
+And you have a queue, right.
+So what is the minimum and maximum pool size?
+Only one.
+What is the queue size?
+Unblocking queue means it might be using linked list.
+Internally there is like queue can be huge thread alive when idle.
+Yes.
+So as it is only one thread, even if there is queue is empty.
+Totally this thread will still be alive.
+When to use.
+When you need to process the task sequentially, then only it is suggested to use.
+Disadvantage.
+No concurrency at all, right.
+Very straightforward.
+Thread pool.
+Executor.
+Right.
+Internally, it creates only one thread.
+Okay.
+Now here we have another.
+Is work stealing pool executor.
+Very very important part.
+Work stealing pool executor.
+And before I tell you about work stealing pool executor, you have to understand.
+Now fork join pool also because this work stealing pool executor, it internally creates a fork join
+pool executor only.
+And generally it's almost same.
+Now I will tell you what it does actually.
+Okay.
+So now let's understand with this part how this work Stilling pool executor works.
+So it create a fork.
+Join pool executor.
+Right.
+So fork and join.
+So I'll tell you that what generally fork join is.
+You have submitted a task right.
+So let's say it is a big task.
+Now this big task has to be divided into smaller tasks.
+How we can do is using fork.
+Using fork.
+Right.
+You can do further degradation of this subtask using fork only.
+Right.
+And after that you can call join.
+Right.
+You can call join where it will wait for each subtask to finish, where it will wait for each subtask
+to finish join.
+And ultimately it will return the final result.
+I will show you an example of this.
+Right.
+We will see a code for this.
+Right.
+So I will show you this fork and join how to do that.
+But you understand right.
+What is fork join pool executor.
+When I said that fork join pool executor.
+The concept is the big task is divided into multiple subtasks.
+Using fork, the each subtask can be further subdivided right into further subtasks.
+And then ultimately we call a join where we wait for those subtasks to get finished.
+And ultimately we club the result together and return the final result.
+Right.
+So what is the purpose is the purpose is to bring more.
+Parallelism.
+Right.
+So that small task can be like if there are more subtasks, if only one big task is there means only
+one thread gonna work.
+But now since you have created multiple subtasks, it is.
+We can make certain framework like pool, fork, join, pool, provide that framework work stealing
+that.
+This subtask can be divided to multiple threads.
+Hey thread one you do this.
+Hey thread two you do this right so we can bring more parallelism.
+Like we will divide this subtask to multiple threads that hey, different threads, you go and work
+and then will club the result together.
+So earlier only one thread is going to do the task.
+Now multiple threads are going to do the task.
+And what is the way of achieving this fork?
+Join pool is work stealing pool executor.
+That is the name stealing, right?
+Work stealing.
+I will tell you now what just happened.
+Okay, so till now.
+Now you have know what is fork join pool.
+Now let's say how it works first.
+So till now.
+Do you know what is the flow?
+Let's say this is thread pool.
+You have thread one, thread two.
+You have queue.
+That's it.
+Queue.
+Uh 012.
+Size three.
+Now what happens is let's say task one.
+Come.
+Task one come.
+What it will do.
+Thread one is allotted to it.
+Booked.
+Task two is coming.
+What would happen is thread two is allotted.
+Booked.
+Task three is coming.
+What would happen is queued.
+It would be entered into the queue.
+Right?
+Task four is coming.
+What would happen is it would be put into queue.
+Now let's say thread one got free, right?
+It got free.
+It completed.
+Task one is completed.
+Thread one got free.
+What thread one will do.
+Thread one will look into the queue and pick the item from the Q.
+So thread one will now do this and it will remove the item from the queue.
+So this is basic.
+We have already know now what work is stealing.
+Pool executor has done is it has now extended this concept.
+How now what happened is again understand this what changes it has done.
+So again we have a thread pool.
+Right now we have thread one, thread two.
+We have a queue.
+Till now everything is same.
+Let's say it uses unblock queue means the queue can be of any size, right?
+Okay.
+There is now first differences here.
+It maintains a dequeue also.
+So there is a d q.
+D q for this thread.
+Thread two to also maintain its DQ threat to also maintain its DQ.
+So one thing first thing, you have noticed that each thread has its own DQ, which is known as work
+stealing.
+Q right, let me, uh, I will show you that this is the name which they have given.
+So.
+Here, let's say executor Dot.
+Right.
+And we are seeing this.
+Work stealing pool right inside this work stealing pool.
+We need to see that, uh, work stealing.
+Q right, so this work stealing Q is associated with Which is thread right.
+So this is work stealing queue.
+Okay.
+And this queue is known as submission queue.
+Submission queue.
+So.
+Submission queues.
+So you can read more about in their documentation of this submission.
+Queues.
+Right.
+So this queue is known as submission queue.
+Now what happens now let's say task coming right.
+Just understand the flow.
+Very important task one is coming right.
+So what happen is task one comes let's say thread one takes it.
+Now let's say task two comes.
+Thread two takes it.
+Now this task which I am talking about now let's say this task is something which can be divided into
+further subtasks, right?
+I'll tell you how you can divide it.
+So any tasks which can be divided into subtasks, you have to create make a child of a recursive task
+or recursive action.
+I will explain you how.
+But for now you have to understand the flow.
+Okay, this task one let's say it cannot be divided.
+It cannot be divided.
+So no issues.
+So thread one picks it.
+It will work it as use as usual.
+What we know thread one picks it.
+Now thread two is let's say it is a it is your this this task.
+Recursive task or recursive action.
+So let's say it is your instead of task.
+Let me put it's a.
+Recursive action right or recursive tasks something.
+So it is a normal task.
+It's a recursive task, right.
+And let's say thread two picks it.
+Okay so this thread is currently booked.
+This thread is currently booked.
+Okay.
+Now let's say task three comes in.
+Normal task three.
+What would happen is both threads are busy.
+It would be goes into the queue.
+Which queue?
+Submission queue.
+This is your task three till now.
+All clear.
+Everything how it is usual working now.
+See what happens now.
+Since this is a recursive task means this task two.
+Now let's say it can be divided into two subtasks.
+Subtask one.
+Subtask two.
+Right.
+This task two let's say, is divided into two subtasks.
+Subtask one.
+Subtask two.
+Now how these two subtasks would be handled.
+So thread two start working on this subtask one.
+Thread two will start working on this subtask one.
+And this subtask another subtask it will put into its work stealing queue.
+Hey this is the subtask two I have.
+And currently thread two is now gonna work on.
+So this recursive task is now broken into two and thread two.
+Start working on the subtask one, subtask one of thread two.
+Right.
+So your thread two is currently work on subtask one of task two and the subtask two it has put into
+its work stealing queue.
+Okay.
+Now what would happen is let's say thread Read.
+Task one is finished.
+This one is completed now.
+Thread one is free now.
+What the first priority it will do.
+Thread one will do first.
+Checking its work.
+Stealing queue.
+Hey, any task is present here in my work.
+Stealing queue or not?
+Hey!
+No, it is empty.
+So what is the priority?
+Priority is first check on.
+Work stealing queue.
+Okay, so task one thread one will check first its own work queue.
+Hey, is there any queue in any task present in my work?
+Stealing?
+No.
+Right.
+Then second, it will check.
+Second priority is submission queue.
+Check.
+Hey, if any task is waiting in the queue.
+Yes.
+Task three is waiting in the queue.
+So it will pick the task three.
+So now task three has been taken from the submission.
+And now it's given to thread one.
+Okay.
+So now let's say thread one is working on it.
+So and this one has been removed.
+But for the sake of discussion let's say I am trying to say that thread two is still occupied with subtask
+one, right?
+Just for discussion, I'm saying thread two is still busy with the subtask one of task two and its work
+is still in queue is still.
+Subtask two is currently pending.
+It has to do that.
+And Task thread one has now picked the thread three and let's say it also completed it.
+This is also completed and this become free also.
+So thread one is now free again right.
+And this queue is now empty right.
+And this task one is completed.
+Task three is also now completed.
+Now what will we do?
+Thread one first priorities.
+It checks on work stealing.
+Q is there any task present into my work?
+Stealing?
+Q no.
+Second, it checks the submission.
+Q is there any task present into the submission?
+Q no, now, third, it will see that.
+Can I steal some task from busy thread?
+Now it will see that hey is there any busy thread.
+And there are tasks pending into his uh it's work stealing q's.
+So it says that yes, task thread two is busy with some tasks and it's work.
+Stealing Q is has certain tasks pending, so it will steal this and put it into its work.
+Stealing.
+telling you.
+So it, put it, steal it and this become free here.
+Now it is free and it can start working on it.
+So now task one can now work on.
+Subtask two of task two.
+Right.
+So that's why it is known as stealing right.
+So there is no stealing can happen on submission.
+There is only one submission queue.
+But each thread maintain its own work stealing queue.
+Right.
+And a thread which is free and less occupied can steal the task from a busy thread from its work.
+Stealing cuz you got the term now work stealing pool executor.
+What does it mean?
+Right flow you should be able to understand that, uh, how this Flo is there, right?
+So what is the priority?
+First priority is that each thread, whenever it gets free, it will first check its work stealing queue.
+If there is no no task, then it will go and check the submission queue.
+If also it is there is no task.
+It will check some busy threads and see that if it can steal the task from their work stealing queues.
+Now few question arrives to your mind that hey Shreyansh, two things I need to know first.
+How to divide the task now.
+How to divide the task into subtasks.
+Second is how to put that task into.
+Work.
+Join or not.
+Work.
+Join work.
+Steal.
+Work, stealing.
+Q okay, so these two questions should comes to your mind how to divide the task into subtasks and how
+to put the task into a work stealing.
+Q now let's see that right.
+So I will tell you this point also.
+But this is the flow steps which I have.
+Whatever I explained you this I have written here.
+Right.
+You can consider while making the notes.
+Okay.
+Now understand this first question how task can be split into multiple subtasks, right?
+For that you need to extend recursive task or recursive action classes.
+Right.
+So this is I have showed a very simple example.
+Right.
+So what's the difference whenever your subtask need to return anything.
+Go for recursive tasks.
+Right.
+When?
+Whenever your subtask need to return.
+Return the value.
+Anything.
+Value.
+Then go for this.
+Whenever your subtask do not return any value, you can go for recursive action, right?
+So why this is required for a class.
+So now let's say that what I am trying to do is let's say I am trying to make one simple task.
+I am creating a simple task, and my task requirement is that whatever the start and end I will give,
+let's say I will start, give one and end I would give, let's say 100 start and end.
+I need to make a sum of it like one plus two plus three plus plus 100.
+So I want to have this task create whatever the start and end you will give.
+I will have to compute the sum of all and return.
+But now what?
+I'm trying to show you that how you can.
+So this is one task.
+This is your one task.
+Now I want to do subtask of it.
+I need to divide this.
+How?
+So I have created a class compute subtask.
+You can give any name like it's a class name.
+Now I am extended this recursive task.
+Right.
+What output?
+It will return integer.
+It's a it's a generic.
+You can like whatever the your subtask gonna return it.
+You can have that integer.
+Okay.
+This is just the my member variables start and end.
+This is the constructor where I will initialize this.
+Now here if you go to the recursive class right here.
+Let's see.
+Right.
+Write recursive tasks here.
+If you see this class.
+This class has one method called compute.
+So we have to implement this method right.
+This is the main computation performed by this task.
+Right.
+So we have to provide the implementation.
+And this is where we have to divide our tasks.
+So how I am dividing it.
+So I am saying that if the end minus start is less than equals to four, if there are four values only,
+then I don't need to divide further.
+So you can say that it's like a condition terminating condition right.
+So if there are only four items then I don't need to divide further.
+I can simply iterate and compute the sum.
+Else if there are more.
+Let's say if there are 812345678.
+Split the task like like a binary search.
+Right.
+It's the same.
+Find the mid start plus and divide by two.
+Find the mid.
+And I am now creating two tasks.
+So see I am not calling this method like in binary.
+We call this method right recursively recursion.
+So I am not calling this method.
+I'm creating two tasks the same new compute some tasks again, right?
+Whichever this class I am creating, I created this two objects of it, calling it as left task, calling
+it as right task right.
+And in the left and right I just added this the index.
+So let's say it's A12345678.
+So 124I have assigned to this.
+And 567, eight I assigned to this one.
+That's what I did.
+So start to mid mid plus one to n.
+So these are the two tasks I provided right.
+So these are the two tasks I provided.
+And what I did is I called the fork.
+So this is what you need to know that when I call the fork what does happen.
+So fork the subtask for parallel execution.
+So whenever you call fork what it means is this left task.
+So here the same example.
+Task two is divided into sub task one sub task two.
+And initially task two was doing by let's say thread thread two.
+Right.
+This was the scenario.
+So when this task is divided into two this one of the subtask gonna pick by thread two and another is
+put into its work still in.
+Q so the same thing.
+So let's say whatever the thread, let's say T1 is currently performing this task.
+And this now is divided into two parts.
+So whatever the thread it will start working on let's say left thread.
+So thread one will now work on this left task.
+And that task is put where into thread one work stealing queue.
+So now you got it.
+How to put the task into the work queue.
+Whenever you do fork.
+Whenever you do fork right, so means you are dividing the task into two parts.
+One part, the same thread gonna start because now that big task is now no more.
+It's small chunks.
+So one chunk is gonna pick by the thread, and another chunk is gonna be put into its work stealing
+queue, which is can be steal by buy can be still buy some other thread which is free.
+Okay, so now you have the answer your how to divide the task.
+We have to create a class child of recursive task or recursive action.
+We have to implement this method.
+Compute right.
+And in this simple example or whatever the example I have told you.
+So here we have divided the task into two left task and right task.
+And we have started the fork parallel execution.
+Now this fork has been done.
+Now I have to wait for the join so it will go now when this task has been picked right.
+So the same compute will get called.
+Now it will say that n minus the start is less than equal to four.
+Yes 1234.
+It's less than equal to four.
+So it will find its sum.
+It won't further divide it.
+But let's say if it is less than equals to two.
+So this task will get further divided 1234.
+And this will get further divided 25678.
+Right.
+So you know right how they gonna pick it.
+So whichever thread was working on this 1234 the same thread.
+Gonna pick it.
+It will put it into its working queue.
+Work stealing queue.
+Similarly.
+Likewise.
+Otherwise.
+Okay.
+And after that all this division works.
+We have to put a join.
+So what this join do is it will wait for that particular subtask to finish.
+Right.
+It will wait for that subtask to finish.
+So I am waiting on my left result.
+So here the left result right.
+This task I am joining here at the bottom.
+Whatever it would be there, let it be finished.
+Right.
+So when the next state will come, it will wait it here.
+Join would be running.
+So it will wait for it to get completed.
+Right.
+So ultimately it has to wait.
+Left result.
+Ultimately it has to wait for right result.
+Right.
+So join is like we are joining the result.
+Taking the result from all the subtasks, clubbing it together and returning it and returning it.
+I hope it is clear how you can create the task which can be divided into subtasks, right?
+So I have extended it from recursive task because here if you see that I am returning, I am returning
+the value from this compute in recursive action.
+Recursive action.
+This compute is void.
+Returning void it.
+Do not return anything.
+Then you can go ahead with recursive action.
+But the core point is that.
+Whatever the tasks you have divided into multiple subtasks which you want two, three, four, whatever,
+call the fork on that so that we are allowing them to run parallelly.
+And when I say that run parallelly means we are putting task into work, stealing queues so that other
+threads can pick it up.
+And then we have to also put the join so that we have to wait for them to get complete and ultimately
+combine the result and return.
+Very simple.
+Okay.
+Got it.
+So here I am calling this fork join pool dot common pool.
+So one way is that you can call this method work Stilling Pool Executor, which is present into this
+one.
+I have showed right executors dot new work stilling pool internally itself.
+It will create a fork join pool only.
+Right.
+And another way is that calling the fork join pool class and call the common pool.
+Create the fork join pool object first and then submit it and then call the submit and submit the task
+to it.
+Now thing is, when you submit.
+When you fork.
+When you submit where this task goes.
+Submission queue right?
+Generally if any thread is free it will pick.
+If thread is not free, it will goes into submission queue.
+Whenever you do, fork where it will go.
+work stealing.
+Q.
+And in the work, stealing Q multiple threads gonna steal from which?
+Q not from submission.
+Q from work stealing Q if thread is free.
+If thread doesn't have any task into its work stealing.
+Q if there is no task present into submission Q also, then only it can go ahead in the third priority.
+It can steal the task from the other thread.
+Q.
+Got it.
+So now you know that.
+Yeah.
+Now one thing left is how many number of threads we can create.
+How many number of threads in this pool we can create.
+So there are two ways.
+So either so here you can say that while new work is work stilling pool.
+Either you don't provide anything.
+If you don't provide anything, what it will do is available.
+Processor.
+It will call this method runtime dot available processor.
+How many processors are there?
+That much thread it will create for?
+If you have four processors it will create four thread.
+If you have eight processor it will create eight threads.
+If you have 16 processor it will create 16 threads, right.
+Another way is that you put yourself the value.
+There is another overloaded method where you provide it.
+Hey, I need this much thread and when you provide this then it's a min and max is both same, right?
+And it retain that number.
+This much thread will always be active, right?
+So.
+Now you understand what is fork join pool.
+How many number of threaded squid you know?
+Two types of QS.
+It maintains submission Q work Q, you know.
+Right.
+Q why it used DQ.
+Because in the work stealing Q right.
+Whenever any other thread steal the task, it will steal it from the back.
+This is front right.
+So other thread whenever steal the task where from it it steal it steal from the back not from the front.
+From front.
+The same thread.
+Let's say this is the task two work stealing.
+So task two when consume from front.
+But any other thread want to steal it?
+Steal from the back.
+Okay.
+So with that I think fork join pool should be clear with you.
+Just try to implement this example by your own.
+Make your own notes.
+It will get more clear.
+If you have any question, let me know.
+We will discuss more.
+    </pre>
+</body>
+</html>

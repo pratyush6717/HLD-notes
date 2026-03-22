@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04. Spring boot Controller Layer Annotations</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>04. Spring boot Controller Layer Annotations</h1>
+    <pre>
+Hey guys.
+Welcome to Concept Encoding.
+And this is Shreyansh.
+And in today's topic I will cover all these annotations which are covered in yellow.
+The green.
+This is spring boot application I have already covered in the first part introduction to Spring Boot
+uh, where I will explaining about the difference between spring MVC and Spring Boot.
+Right?
+Do you remember?
+So let's focus on this yellow annotations today.
+So let's start without wasting any time.
+So I think you can recall this diagram from the first introduction to Spring Boot where the dispatcher
+servlet, whenever any user hit any API let's say fetch user get call.
+So what dispatcher servlet will do.
+It will make use of handler mapping to identify the controller which can handle this request okay.
+So what all the annotations which generally you can say that uh Helps are doing this handling mapping
+handler mapping.
+Right.
+So we will see those.
+So as part of this all the annotations which I am going to tell, I will tell you why it is required,
+what the purpose it solves, but how exactly these annotations created how exactly Springboot or Java
+understand read this annotations.
+Those are beyond the scope of today's topic so that you will understand more about in the Java.
+Like I have already mentioned, Java is the prerequisite, right?
+So in Java Playlist Basics to advance, check out the eight in number video annotations I have covered
+in depth.
+You will get more better understanding.
+Okay, so let's start that in the handler mapping.
+If you see that the first and foremost is this annotation at the rate controller right on the second
+is like you can also have at the rate rest controller They are same, they solve the same purpose with
+a minor, very minor difference.
+So what?
+At the rate controller and at the rate rest controllers tell to the spring.
+So it indicates that this class is responsible for handling incoming HTTP requests.
+So there can be let's say 100 of controller classes.
+So spring boot will include this also.
+Right.
+Then determine whether this particular controller class can be used for to handle any specific API which
+user has invoked or not.
+That is again it has to determine that will see.
+But at least this controller will this classes which has this annotations actually get it into the list
+of controller classes.
+Because the only these classes spring boot will consider that.
+Yes, you guys are eligible to handle the HTTP request.
+Okay, so what is the difference between add the rate controller and add the rate rest controller.
+So there is a very minor difference that add the rate rest controller is your controller plus response
+body annotation here.
+If you see in the controller class every method.
+I have used at the rate response body, but in the rest controller here.
+If you see in every method I haven't used at the rate response body.
+So what does at the rate response body annotations mean?
+So at the rate response body tells that the return type of the method, the return type of the method
+should be considered as your HTTP response.
+Right?
+So if you don't write this, let's say what would happen if you don't write at the rate response body?
+What spring boot will do whatever the return type.
+So return type is a string.
+So let's say I am instead of returning this big I am returning.
+Let's say just hello I am returning just hello.
+So what Spring Boot will do is Spring boot will try to resolve this.
+So it will consider as the name of a view and it will try to resolve this.
+Let's say hello.
+So it will try to say that.
+Hey hello dot JSP.
+Is there any view like this.
+It will try to look for it and then if it finds it it will try to render it on the UI.
+Okay.
+But with the response body we are specifically telling to the spring boot that hey, this is not a view
+which you have to render.
+This is a HTTP response Body, right?
+Sand.
+Sand as it is.
+Don't consider it as a view.
+Consider it as a rest response.
+Okay, but now you can tell.
+Hey, for the rest controller, why this response body is not required on this.
+Each method.
+Why?
+Because here if you see that in the rest controller, rest controller is nothing but a controller with
+response body, right?
+So you don't specifically have to mention at every method that the response type should.
+Spring boot should not consider the response type as a view name.
+Consider this as a rest http response only.
+So that's why generally you can say that everywhere you will find we are using Rest controller rather
+than controller, because it's pretty convenient that you don't have to put rest response body in each
+method.
+Okay, now here is the second part here.
+If you see that something called request mapping which actually does the mapping of a API okay.
+So now we have defined the controller class.
+Now we have defined the controller class that okay this is the class I have called it a controller.
+This is the class I have called it Rest controller okay.
+So what all APIs this controller is hosting.
+So now I am writing those what all APIs this controller is hosting.
+So let's say this is one API slash get call.
+Fetch user.
+And another is let's say post.
+Save user.
+Let's say these two APIs I want to host into this controller.
+So how how I can do that using request mapping.
+So now let's say this is the method I have written.
+Get user detail here I have all the business logic to go search in DB or do whatever, get the details
+of the user and return it.
+But now I want to map this API that whenever a user invoke this API, this particular method should
+get invoked.
+Okay, so what I have to do is first of all the starting point of the method.
+This method should be hosted in controller.
+You know already why?
+Because dispatcher servlet only considered controllers only.
+Okay, so this method the all the logic right.
+So generally this method should be present into controller.
+And now we have to add the mapping.
+Mapping of what this API to this method we have to map it.
+So this is annotation called at the request mapping.
+Right.
+As the name says that it is mapping the request to what to this method.
+So here if you now go and check this annotation at the request mapping.
+You will find certain methods right.
+So one of the thing is parameter is like path.
+What is the path or what is the your API path slash fetch user.
+So I have defined slash fetch user.
+So here I can also use value right.
+So here if you see that here they have told either you can use value or path and they have given the
+alias.
+So value is considered alias for path and this path is alias for value.
+So whatever names suit you better you can use that to understand.
+So I always find link with that path is actually which defines this URL.
+So I mostly use path.
+The second is like method whether it's a Get request port or Post request put request delete request.
+You can use here.
+So there is something called method.
+So you can choose like whether it's a get post put patch delete whatever it request is.
+You can tell right now here if you see that this annotation request mapping annotation it has this two
+annotations also at the rate mapping at the rate reflective.
+So this annotations what generally spring boot denotes to the spring boot that it has to do the mapping.
+Here the mapping logic.
+So see all this logic is generally internal to spring boot and it is resolved through reflection.
+Right.
+It is resolved through reflection which you will get to know how uh, in this uh annotation.
+So all the annotations are resolved through reflection only.
+So in the request mapping these two annotations actually helps doing the mapping.
+So here if you see this at the rate reflective controller mapping reflective processor.
+So here what it is doing controller mapping reflective processor.
+So if you go internally and check right what it is doing is it is doing actually the reflection.
+And it is ultimately task is to do the controller mapping.
+As the name suggests it's do the mapping.
+Okay.
+This controller has all can handle all this APIs.
+Let's say get API is handled by sample controller.
+This API is handled by also sample controller.
+So all this mapping is generally happen here in the reflective part in the second uh alternative here.
+If you see I have used this like instead of this line, I have used it like this at the rate get mapping.
+Now if you see at the rate get mapping.
+So at the rate get mapping is nothing but a request mapping.
+But with a method request method dot get.
+So ultimately what it is just simplifying or adding little bit more readability that this method equals
+to get.
+You don't have to now write it specifically in the get mapping it is specifically set.
+The default value of this method is get only.
+You just have to give the path right.
+Since get mapping is also a request mapping, you will have all the values path value and all would
+be present.
+So you can give path that this is the fetch user, right?
+Similarly, if you have a Post request you can write post mapping.
+So both are right.
+But generally you can say that this is mostly preferred because of easy readability.
+And also just to notice one more thing that this request mapping right.
+You can also write at a class level.
+Now let's say your API is something like this.
+At the rate API slash fetch user at the API slash save user.
+So now here if you see these are the common In all the APIs which you are hosting in this controller.
+Then instead of writing like here, path equals to slash API slash fetch user slash API slash save user.
+What it will do is at the class level, we can use a mapping and provide a value or path, whichever
+you feel right and provide the common path.
+So at the API is common right.
+So you can provide at the top.
+And in the below one you can just write the remaining path right.
+So it will ultimately get appended.
+So whenever the mapping will actually happen.
+So mapping would happen like at the API slash fetch user.
+Right.
+This is the get call.
+It belongs to which controller.
+This controller sample controller right.
+And which method it has to invoke.
+It has to invoke this.
+Get user details like that.
+So these mappings will be done because that logic is still present in the request mapping only.
+Okay.
+So so now you understand this controller Rest controller.
+What's the difference between them.
+Response body.
+Also we know request mapping I have already told you.
+So the next we have is something called request parameter.
+So here if you see that uh let's see this API.
+So in this API this is nothing but a host.
+This is your path right?
+This is your path like slash API slash fetch user.
+And after this question mark you will see this is your first request parameter.
+This is your second separated by end.
+And this is your third separated by end.
+Okay.
+So there are three request parameter.
+So request parameter is generally started after question mark.
+It helps to bind the request parameter to controller method parameter.
+How.
+So here I have created a very simple class sample controller.
+I have annotated with Rest controller to tell the Springboot that this class.
+Consider this class.
+It might host certain APIs.
+What API?
+Now I am doing the mapping.
+I have put the Rest request mapping at the request mapping to consider this as a common part.
+So I put it at the above.
+Now I have created this method which will host all the logic to get the user details.
+Now this method.
+I have done a mapping for this API path.
+So I have put the Get request because it's a get call right.
+So at the Get mapping I have put the path.
+So it will do a mapping of this to this method.
+Now this request parameter three request parameters I have to map it to this member method member method
+variables.
+So how I can map it through request parameter.
+So here if you see that I have put at the request parameter and the name which I have used is like first
+name exact naming here for this request parameter.
+Right.
+And the value of it will get set under this first name.
+And there is also one more thing called required.
+So default value is true.
+So means let's say that for this first name I haven't held required, so means this is mandatory.
+When a user invoke this API, right?
+Right?
+Then mapping will only be happen with this method when first name is present.
+If first name is not present, it this this will not be invoked, right?
+For the last name I have mentioned required equals to false.
+So even if user do not pass the last name right, it would be considered as null.
+Okay, so now let's see that with the one sample.
+So here request mapping I have give value equals to first name.
+Let's create one more at the rate request param or name equals to.
+Because I told you either you can choose value or you can choose name or last Name, and I have mentioned
+it that.
+Required equals to false.
+It is not required.
+String last name so it user can send it in the API or can not send it.
+So let's say output is fetch user details of the first name plus and last name.
+I'll print this like what the last name comes okay.
+And it will return it.
+So generally I have used at the rate rest controller at the rate response body is not required.
+Okay so let's try to hit it okay so I have started the server.
+Now let's run it localhost.
+API.
+Slash fetch user.
+First name equals to.
+I am passing Shreyansh and I am not passing last name because that is not mandatory.
+So I am not passing.
+So what it says that fetch user details of shreyansh and last name is null.
+But what if I miss the first name itself and I pass last name?
+Now here, if you see that it's not able to resolve the API itself.
+Why?
+Because I have to tell that this is mandatory by default request parameter is true.
+Okay, so the mapping happens such that the URL fetch user where first name should be present.
+It should be present.
+Then only this method should get invoked Vote okay.
+So request parameter is clear right?
+So now you need to understand that the framework Spring framework automatically perform type conversion
+here from the request parameter string representation to a specific type.
+So generally these all type conversion IT support primitive types.
+IT support support wrapper string enums and custom object type.
+So this part is clear right.
+This is very simple.
+Let's say you are passing at the rate API slash user question mark.
+Age equals equals to 20 right.
+Or age equals to anything.
+Just what I am trying to say that any number.
+So this is ultimately a string currently.
+But in the API you write here API we are catching it in int right.
+So there is some typecast Typecasting happen, right?
+So that framework automatically performs so primitive type typecasting okay.
+This is an integer.
+This string this value can be type casted to integer.
+Yes it will do.
+So those typecasting it will perform.
+But let's say that uh you want to specifically let's say uh 23 slash for slash 9099 something some date.
+This is a string.
+Now you want to typecast into particular date object.
+This is my date.
+So how this string will get typecast to date.
+How you have to put certain logic right that you can do it through custom object type.
+Right.
+I will explain you this custom object type with very simple example, right?
+This will help you clarify.
+You can write your own custom object types also.
+So understand this with this.
+So very simple class right.
+I have created a controller class with Rest controller.
+Put a request mapping based API method one simple get method with this path which is mapped to this
+method, right?
+These are the three request parameters.
+Now this is the first name.
+Now my requirement is that whatever the first name should come, user can also give like this.
+User can also give like this s h r y a n some all small, all big, some big, some small.
+Because it's a string, right?
+There is no guarantee how the data will come.
+But before you assign this value to this.
+method parameter.
+You want to do certain kind of, let's say some type casting or certain your logic custom logic that
+you can help do through property editor.
+So this property editor or how we can use is there is something annotation called init binder.
+So in this controller class I have written one init binder right.
+I have put this annotation.
+So what this annotation tells to the spring boot that.
+Hey, for each method, whenever any API get invoked, first run this binder and see if any of its parameter
+required certain pre-processing.
+So what I am doing is here.
+If you see that it accepts one parameter called binder it register, we can register our custom editor.
+So I'm writing our custom editor.
+So this is I have write a custom editor.
+But what it accepts three parameters.
+So first one is what should be the return type ultimately.
+So it would be uh, so what is the string actually you want it right.
+So I wanted string right.
+So this string matches with this string dot class.
+Right.
+So string dot class.
+Yes.
+It matches this method parameter matches this.
+And also check the name request param name.
+First name okay.
+Exactly.
+Match this.
+Then what is the property editor you have to run.
+So I have written custom editor right.
+So I have written my own custom editor.
+I have written one class my first name property editor.
+You have to extend it property editor support because this is the parameter which it accepts.
+Property editor support.
+So I have created a first name property editor child of this one.
+So I have created an object of it.
+So what it will do is it will invoke it set text, text.
+Because everything which comes from the URI, it is nothing but a text.
+Now it comes as a text.
+Now you can do anything.
+Now here, if you see that I have done the trimming and also make it to the lower case.
+So even though I am passing the capital letter, ultimately it will do the trim and make it a small
+case, right?
+And then ultimately it will get set into the first name.
+So you got it.
+You can do custom object types also with this.
+Then there is something called path variable.
+So path variable is like used to extract the value from the path of the URL and bind it to the controller
+method parameter.
+So here if you see that at the rate API slash fetch user slash.
+Let's say I pass.
+This is 12345.
+Like in the API itself, there is nothing like a question mark and value equals to 12345.
+No those are request parameter.
+This is path parameter within the path itself API path itself.
+There is certain data you have provided right.
+So you have to extract the value and push it into the method parameter okay.
+So generally your API is like API slash fetch user slash certain id.
+So generally this curly braces right.
+This is like a dynamic.
+Some value can come inside this 1234587 something some string.
+You have to do the mapping.
+So this is where we are done.
+So this is a normal class simple class which are marked as Rest controller.
+Put the base at the rest API.
+Now this is the get call.
+And I have done a mapping that this is the path fetch user first name first name.
+So like it can come anything right?
+Any string.
+But I have given any.
+This is the first name.
+And now I have to fetch this value to a method parameter.
+So this is the method it will map to because I have written this get mapping on top of it.
+Now this is the at the path variable is the annotation which tells the spring boot that in this path
+fetch out this first name, which is this part.
+Let's say user is passing this, fetch out this right.
+So value of for this first name and put it into this.
+Like this.
+Okay, so now there is something called request body.
+So it bind the body of the HTTP request typically JSON or XML to controller method parameter Java object.
+So here very very simple.
+It's all simple.
+So here if you see that the similar class I have created a controller class right in this method.
+Right.
+This is the API.
+Let's say I am creating a post mapping.
+So let's say this is the post request save user right.
+And in the method parameter it's an object user object user object.
+And I have put it as request body.
+So now in the request body a JSON will come JSON object will come.
+Now JSON object like this.
+So I am passing in the request.
+So here the data raw.
+Here I'm passing JSON.
+So it has username and email.
+So those will ultimately get mapped to this user.
+How Spring Boot might use either I think JSON or Jackson out of these two libraries using this tool
+libraries.
+This JSON object is typecast to this object from this JSON object to this Java object it construct,
+right?
+So it requests body.
+I have annotated with request body means we are telling a spring boot that hey, whatever the API coming,
+check out its body and whatever the data you see, you have to map it to this.
+And in the user class I have created this user class and the user class I have created two things Thanks.
+Username and email.
+So now if you notice that email I have kept exactly same as this JSON key.
+So JSON or Jason whatever library they can easily identify.
+Okay, this name is exactly same as this.
+So this value should be mapped to this.
+But now here if you see that it is here user underscore name.
+And here it is username.
+So it will not get mapped.
+But just to show you I have here tell that we can also do that put JSON property.
+This is Jackson.
+I have used I have put this annotation key that JSON property in the JSON.
+This field user underscore name should get mapped to username right.
+So and we have a getter setter get and setter keys.
+So Jackson will invoke it to set the values.
+So got it.
+So now when this method gets invoked.
+So user dot username you will find out this and user dot email you will find out this dummy value.
+Okay.
+And we have last thing is response entity.
+So now it represent the entire HTTP response.
+Till now you know two things controller and rest controller.
+Controller.
+You know that if you don't provide at the rate response body by default, spring boot will try to render
+it.
+Consider as a view name, right?
+But the name rest controller inherently has at the rate response body right.
+And the name itself like Rest controller.
+So what ultimately does is us that all the response of this Rest controller is considered as an HTTP
+response only, right?
+So in this response entity, what response entity says that it represents the entire HTTP response?
+So in response there are multiple parts.
+We have body, we have status we have header.
+So this response body which Rest controller has is nothing but this specific part.
+It talks about this part right.
+Response entity is like combination of all.
+This is known as response entity.
+So here in this one sample this method is returning response entity string.
+So here what it whatever IT process let's say whatever value it fetches from DB or something I am creating
+a response entity dot right.
+For setting status I am setting status http okay means 200 successfully if it is a bad request or if
+it is a validation failure.
+Select an appropriate response code.
+Right.
+So currently this successfully done.
+So I'm selecting the HTTP status code as okay 200.
+And then put a body my my actual response.
+The content I have put in the body.
+Even if I want I can put header.
+Also more details.
+So the complete with status body header everything that is known as response entity.
+So in rest controller when we are just simply returning a string not response entity, spring boot will
+always considered as a Rest controller that this string would be considered as an HTTP response, and
+if it is an HTTP response means it's considered as a response entity only.
+Right.
+So internally spring boot create response entity only like this only response entity of a string.
+When we are simply returning a string in case of Rest controller.
+But in case of controller, that's not true.
+Right?
+That's not true internally.
+Internally spring boot will not create response entity because for controller, if response body is
+not provided, it will considered as a view name.
+So I can show you.
+Now let's say I am passing controller.
+I am not passing here response body right when I'm passing response body annotate response body, then
+internally it will create response entity for this string.
+But when I am not creating response body and let's let me try to run it.
+I have started the server.
+Let's hit the same API again.
+See some error?
+Why?
+Because this output, whatever the name, fetch user details of let's say this string, it is considered
+as a name of the view and it try to find out those file and wanted to render it right.
+So it internally didn't create it as a response entity.
+Okay.
+So for this for today I will keep it here and I will cover the rest of the topic in the next part of
+it.
+Okay team any doubt, please feel free to ping me in the comment section and we'll, uh, see you soon.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

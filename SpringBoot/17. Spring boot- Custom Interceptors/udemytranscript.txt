@@ -1,0 +1,438 @@
+Hey guys.
+Welcome to concept Encoding.
+This is Shreyansh.
+And today in the Spring Boot video we are going to cover the custom interceptors right.
+Very very important topic because in future whatever the topics we are going to cover caching, logging,
+authentication.
+We might have to write our own custom interceptors.
+So before we touch those topics this has to be pretty clear.
+So what is interceptor actually?
+Uh, so I would say in a very simple words it's a mediator which get invoked before or after your actual
+code.
+Right.
+So this is what we can say as an interceptor.
+So this is the two prerequisite video I would like to suggest.
+And the links I will give you in the description section that this is the Java Inside this Java playlist
+you will get this annotation video in depth and in the spring playlist itself.
+I hope that if you are watching this video, you are following the sequence and AOP you have already
+covered.
+Okay.
+With that being said, let's start with the Custom interceptors.
+So now the first is we have to write a custom interceptor for request before even reaching to a specific
+controller class, right?
+So now let's say that take this example, very very simple example I have taken a user controller.
+I have written one controller Rest controller user controller.
+It has one method which I have put get mapping annotation.
+And the path I have given is get user.
+But I want some custom interceptor Before even my controller get invoked.
+Now, if you remember the very, very first video of the Spring Boot playlist intro introduction there,
+I showed you this diagram, right?
+So when the request actually comes right, first it goes to the servlet container right where our application
+is deployed.
+Then we have something called dispatcher servlet.
+So dispatcher servlet is one which is responsible right okay.
+With the request which is coming which controller it should assign to.
+So it will choose the controller also okay.
+So now we want a custom interceptor before reaching to our controller.
+So means somewhere dispatcher servlet.
+And this uh invoking the controller method we our code of custom interceptor should get invoked.
+Okay.
+So let's see that how can be done.
+So let's say that this is one user controller I have created.
+Very very basic only has one get method get user.
+And uh this is the custom interceptor I have created.
+So I have created a public class, my custom interceptor.
+And I have annotated with at the rate component means spring will take care of its, uh, been creation.
+Now here, if you see, I have implemented with the handler interceptor.
+So when you implement it with the handler interceptor, you have to provide an implementation for this
+three methods pre handle, post handle and after completion okay.
+So pre handle is like before even your user controller method get invoked.
+This will get executed.
+After that your actual code will get executed means your user controller will get invoked.
+And once your actual code get invoked then post handle will get executed.
+And after that after completion will get executed.
+Okay, so this is the three methods, which is are the meaning.
+So you can ask me right.
+Hey what is the difference between post handle and after completion?
+Both is getting executed after my controller I will tell you, but for now.
+Just consider this one.
+If you have implements the handler interceptor, we have to provide an implementation of this three
+depending upon our needs, like how we wanted what we wanted to do in this.
+Okay, now we have to register this interceptor like for which API it has to invoke.
+So how to do that?
+In our configuration class Appconfig, we have to implement web MVC configure.
+Inside that we have to override this method add interceptor.
+And inside this method we have to do a registry.
+So this is the parameter it accept registry.
+Inside this we have to add our interceptor.
+Hey this is my custom interceptor.
+So here if you see that I have already done add the rate component right.
+So means been is already created.
+That's why I am just doing at the rate auto wired here.
+If if I am not writing it at the rate component, you know what?
+It has to be done at the rate been here and creating a new object here.
+Okay.
+So currently I'm doing at the rate auto wired because at the rate component is there, so been would
+be created and that would get auto wired here.
+So now coming back again to this method first in the registry we have to add the interceptor.
+And we have to provide what is the custom interceptor we have to invoke.
+Then this two is like first add path pattern for what all URLs.
+We have to invoke this custom interceptor.
+So it's a pattern.
+So it's a comma separated list right.
+So what I have given is slash API slash stress.
+Any like slash API slash get user any API right.
+Asterisk can be replaced with anything it will get.
+This custom interceptor will get invoked.
+Now here is one more uh field is exclude path patterns.
+So if there are certain paths which you have to exclude out of this, you can specifically mention this
+and it can get excluded.
+Uh, so here I have mentioned slash API slash update user.
+So that would now be excluded.
+And also delete user also will get excluded.
+Okay.
+For rest other this interceptor will get applied okay.
+So the changes are clear right.
+We have to first provide our custom interceptor where we will override this uh methods by implementing
+the handler interceptor.
+And we will provide like what exactly we wanted.
+Okay.
+And then we have to configure our custom interceptor like this.
+So this is for like when before even our controller get invoked.
+Now here if you see if I am opening here.
+Dispatcher.
+Servlet.
+So here, if you see that it is inside your spring web MVC right.
+And it is there dispatcher servlet dot class.
+We are inside our dispatcher servlet dot class.
+So in this one if you see us do dispatch okay.
+So this is actually dispatch.
+So here it will do is first apply the pre handle.
+So when it says that apply the pre handle means it first it will based on this it will invoke this pre
+handle.
+After that it will call handle.
+So this is the place where actually your controller will get invoked.
+This is the place your actual controller will get invoked.
+So now means your controller get invoked.
+Now your code will get executed.
+Now see difference between post handle and after completion.
+So now your controller get executed.
+After it's completed it is running the post handle, right?
+Okay, so it makes sense post.
+So after your controller, this code will get executed.
+Now what about this after.
+So this after is like say that whether it's a success or even if there is exception after completion
+will run.
+So if there are any exception, your post will not get executed, but after will be.
+So I think it's similarly like finally in Java, right?
+So no matter, even if there is an exception after completion will run.
+So this is success.
+So whenever so pre handle run after pre handle your controller then post.
+And after that this success here inside it is also running after Okay, so during success also it will
+run and if there is any exception also it will run after.
+Okay, so I hope the difference is clear between post handle and after completion.
+So now here if you see if I run this get user.
+If I hit this get user API.
+So I have added in the path param slash API slash.
+So anything.
+So it's this custom interceptor should invoke.
+And it is also not excluded.
+So first it goes inside pre handle.
+Then it invoke my controller.
+So controller is doing something okay.
+Then after that it goes out post handle.
+And after that completion even though it's a success.
+Okay so this is how you do when you have to intercept the request before reaching to a specific controller
+class.
+Okay.
+It it would be helpful in so many use cases.
+Authentication authorization will see that later part.
+But this should be clear.
+Like how to intercept the calls before call reach to the controller.
+Now the second part is I want to have a custom interceptor for request after reaching to a specific
+controller class.
+So now the my controller has been invoked and now it is invoking particular methods or something.
+Now I want my custom interceptor.
+So now we'll see that how to do that.
+So I will break it down into two steps.
+The step one is creation of custom annotation.
+Okay.
+So how do you create a first custom annotation.
+We can create custom annotation using the keyword at the rate interface.
+Okay.
+So this is an example where if you see I am creating my custom annotation.
+So I am using keyword at the rate interface.
+And I can give whatever name I like for my annotation.
+I have given the name my custom annotation.
+Okay, so now this annotation I can use like this.
+Like you are using like at the rate override at the rate something like Rest controller, request controller
+at the rate get mapping.
+Similarly.
+Now this is my I have created annotation.
+So I'm using at the rate my custom annotation okay so currently what it will do.
+Nothing.
+I have just created an annotation.
+We will see how to make use of this annotation.
+But this is one way we can create our annotation.
+Now very very two important meta annotation property, which we have to understand, right?
+If you go through this one right, you will find totally in depth one.
+But here I'm just setting up the context, which is very, very important to understand this.
+So this two meta annotation has to be clear very well.
+One is at the right target.
+So meta means annotation which are applied over an annotation.
+Okay.
+So don't worry we will I will tell you how.
+So here at the target meta annotation means this meta annotation tells where we can apply the particular
+annotation right on a method or a class or constructor, etc..
+Let's see this example.
+So I am creating my custom annotation using a keyword at the interface.
+I am creating my custom annotation whatever I like.
+Now this annotation, I will.
+I should apply it over method, over class, over constructor.
+What all so using at the rate target meta annotation I can specify this.
+So here at the target I said that element type dot method.
+So means over method only.
+You can use this annotation if you have more than one places you want to use it.
+You can tell it like this.
+Like an array element type dot constructor.
+You can use this annotation.
+My custom annotation which I have created.
+You can use it over constructor, over method, over parameters or over fields also.
+Right.
+So there are many ways we can, uh, tell that hey, yes, this annotation you can use at all this places.
+So this is the purpose of target meta annotation.
+Right?
+And I and I think you already got it.
+Why it's called meta annotation means it is used over an annotation.
+So this is one of my annotation.
+My custom annotation.
+So this at the rate target is used over a annotation.
+And another is at the rate retention.
+This meta annotation tells how the particular annotation will be stored in Java.
+So these are the three values.
+One is retention policy.
+Dot source annotation will be discarded by compiler itself, and it's not even recorded in dot class
+file.
+Right.
+So here if you see this example I have created an annotation at the rate interface, my custom annotation
+target I have given that okay used it over a method.
+But what is the retention I have given retention policy dot source okay, so this annotation I am using
+in a.
+I have created a class user and I have a method update user over that.
+I am using it.
+Okay, so it's valid, but when I am converting I am doing let's say Java C now this Java class.
+Now converting it to a byte code, let's say dot class file.
+Now in the dot class file.
+Since I am using source, it will not.
+This annotation will not get converted or not carry forward in the dot class file.
+So here if you see there is no annotation, and if you see at the rate override annotation right.
+Actually it is source.
+So it is just for the readability of the engineers.
+But it do not add any value.
+It even not even convert it to our byte code.
+Okay.
+So annotation will be discarded by compiler itself and it's not even recorded in dot class file.
+There is another retention policies class annotation will be recorded in dot class file but ignored
+by JVM during runtime.
+So if you use dot class.
+Then here during this dot class file you might see at the rate my custom annotation.
+But will it add any value?
+Nothing, right?
+Because JVM during runtime will not even consider it and it totally ignore write it.
+So you can say that it's uh, in the bytecode even though it's added, but JVM will not even consider
+it.
+And there is something called dot runtime annotation will be recorded in dot class file and also available
+during runtime.
+So now here for this one only we can write some custom logic that hey, during your code is running
+during runtime, you can fetch the annotation and do something based on that.
+Okay, so here if you see an example I have creating my annotation.
+My custom annotation uses the keyword at the right interface.
+Target is method and retention is runtime.
+And I am using this annotation over this method which is inside a user class.
+Now I converted it to a dot class file here.
+If you see now here.
+If you see that it get inside a dot class file and even during the runtime.
+Also I can even do reflection and read hey, this method has any annotation.
+If yes, do this something, we'll see that.
+But these three are the retention policies.
+So whenever we are creating our custom annotation right we have to provide what is the target and what
+is the retention.
+So this two like we have to provide now one more very very important part when we will write our interceptors.
+Right.
+We have to uh, you can say that add some information for a particular method.
+Right.
+So how to in the annotation my custom annotation how I can send certain information.
+So there are fields also.
+So we can create a custom annotation with methods which is more like a field.
+And inside this field we can add value.
+So here this methods which we are going to write has no parameter no body first.
+Second thing is return type is very very restricted to primitive int boolean double.
+So there are total eight primitive types.
+So it is limited to primitive types.
+You can use a string.
+You can use enum.
+You can use like class, type class, whether it should be a string dot class, whatever dot class.
+Right.
+But should be dot class right?
+Annotations or an array of above.
+You can say string array int array boolean array that also can be used right.
+Why?
+Why there is a restriction if if something is going in your in your mind like hey because C annotations
+are very lightweight right?
+We have to keep it very, very restricted because we don't want to expand its use cases and all.
+So that's why this only return types are allowed and how to do that.
+I am writing my own custom annotation, my custom annotation with at the rate interface keyword.
+I have used at the target at the detention.
+Now here if you see I want one value, let's say.
+Key.
+So here, if you see that this method doesn't have any return type and uh, not any parameter and return
+type is string, which is allowed one.
+Right.
+And you can provide a default value for this is like like default default key name.
+Now in this class over this method, when I'm using this annotation I can pass certain information like
+this.
+For this key value is user key for this method.
+User key.
+Now wherever my interceptor will catch it up, it can get this value.
+Also from this annotation we will see tell you how, but for now you can say that when you write a custom
+annotation we can pass certain value like this.
+And when we write our own interceptor right during caching, during logging.
+This feature gonna help us a lot because we always have to pass certain information during interceptors.
+So this is one example I showed you.
+Like with more fields, like I am writing my custom annotation at the interface.
+This now I have just for demoing purpose I am written one method like int key I.
+I don't call it a method, I will call it a field.
+Mostly it's a field only generally, but this is the way of representing it inside this one.
+So int key no parameter return type is n string.
+Return type is a string.
+Default value.
+You can give anything here I have given zero class type key.
+So this is the return type default I have written a string dot class enum key.
+So you can create any enum.
+So default value is this and return type is enum only string array key.
+So you can return string array Default value.
+You can return any array of the string similarly.
+Like this.
+And in the class when you are using this, you can use my custom annotation which you have created.
+Now you can pass certain value int key.
+I am passing ten string key string right?
+So I am passing some user class type key.
+I am passing user dot class enum key.
+I am passing some another enum.
+So you got it right.
+We can pass certain values in this annotation.
+So you can say that these are mostly fields.
+And we are just filling the values of these fields.
+And you can provide a default method like here inside that itself.
+So at this point of time you should be clear that how to create a custom annotation.
+Now you can write your custom annotation like at the rate I can even create at the rate shreyansh.
+So at this point we should be clear like how to create.
+Now the second part is creating our custom interceptors.
+So now here, if you see what I am doing here I am creating a user controller class.
+Very very simple class.
+I having one method get user which is with this path get mapping.
+This is the path and this is invoking this user.
+This is invoking this user class okay.
+Uh annotated with at the rate component.
+Beans.
+Beans is created by spring.
+It has one method called get user.
+Now here if you see that get user I have annotated with my at the rate custom annotation.
+So this is the custom annotation I have created.
+Now we already know how to create right?
+And only one name string default value is empty.
+So name I can provide news.
+Okay, so this is the custom annotation I have given over the get user.
+Now I want to write my interceptor.
+Okay, if you have seen the AOP video you can easily get it.
+How to write an interceptor.
+Now I am writing.
+I am creating a class.
+My custom interceptor at the write component tells that bin should be created by spring at the rate
+expect means that this class will be considered as an interceptor, where will have a pointcut and advice.
+Okay, so now I am writing one method.
+If if you get a doubt, what is pointcut?
+What advice?
+I would say stop here itself.
+Please check out the AOP video and then come back.
+Otherwise it will create you the confusion because we have already discussed the pointcut and advice
+in depth in AOP.
+So now here if you see that this method I am providing one point card at the rate annotation.
+So what?
+At the rate annotation you remember, you can you recall it will look for this annotation which we have
+provided.
+So com concept encoding dot learning spring boot dot custom interceptor.
+So this is the path where I have created this my custom annotation.
+Right.
+So this is the path for this my custom annotation.
+This one.
+This one my custom annotation.
+So at the annotation means hey run this advice, run this advice or this method when whenever you see
+this annotation.
+My custom annotation okay.
+So now here if you see from here this class user controller.
+I am controlling.
+I am calling this.
+This class.
+User class.
+This method from user controller I am calling user class and now this method has annotation at the rate
+my custom annotation.
+So what it will do is it will intercept it and how intercept will work in the AOP.
+I have already showed you that.
+What how internally the proxy get involved and what would happen.
+So.
+But because of this point card we can tell that okay listen to this annotation.
+And once you find this annotation okay.
+Like when a particular method is invoked and that method is annotated with that annotation specific
+annotation I have to run this advice.
+So here if you see that it is like at the rate around means before, then your code and then after.
+So here, do something before actual method.
+Now see this what I am doing here.
+Now I have a join point.
+Right from this join point I can take out a method.
+Okay.
+This method write all the metadata information about this method I can get what is the return type?
+What is the parameter is this method has any annotation?
+All this thing I can do.
+So now that's the same thing I am doing.
+Hey this method is annotation present this my custom annotation.
+If this is present true then what I am doing is.
+From this method I am taking out this annotation details.
+So now I am getting this annotation detail and see that from this annotation I can read out this dot
+name.
+Okay, it will print user.
+Okay.
+And after that I have done some pre work.
+I just did printing and after that it called proceed.
+And you know that when it called proceed what it happen.
+Our actual method will get invoked.
+This get the user detail and after once it done it will do something after actual method.
+So now if you run this what would happen is it will print do something before actual method.
+So this got printed after that.
+Uh, when it try to invoke this right when it tried to invoke this method get user okay.
+So because of this pointcut it goes here it print this.
+And here if you see that yes, this method is annotated with my custom annotation.
+So it will uh annotation present true.
+It will get the annotation and it will name from annotation.
+It will print user.
+And then ultimately it will call the method get the user details and after that do something after actual
+method.
+So we have created our one interceptor.
+Okay.
+So both the interceptors I have are told you if we want to have a interceptor before even the controller,
+how we can do that.
+Right.
+And if we want after the controller, like any particular method or annotation.
+Right.
+We have to return an interception.
+How?
+How we can do that.
+Okay.
+So practice this out a lot because in future videos we might have to write few interceptors.
+Uh, because that's the that's very much required for logging, for caching, for authentication, authorization,
+everything.
+Okay guys, any doubts?
+Feel free to, uh, comment.
+Uh, we will discuss further.
+Thank you.
+Bye.

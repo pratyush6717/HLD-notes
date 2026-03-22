@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>26. Collections - Hierarchy - Iterable Interface - Collection vs Collections</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>26. Collections - Hierarchy - Iterable Interface - Collection vs Collections</h1>
+    <pre>
+Hey guys.
+Welcome to Concept Encoding.
+And today in Java we are going to do Java collection framework.
+Very very important.
+So without wasting time let's start it.
+So what is Java collection framework.
+Right.
+So first thing is it was added in Java version 1.2 right.
+So this Java collection framework has two parts like let's first understand what is collection.
+Collection is nothing but a group of objects right.
+Which are also known as group of elements okay.
+So you know like array we create an array int array and let's say a and then we add 1234.
+This is also a collection right.
+It's a collection of integer.
+So collection is nothing but a group of objects in which package it is present.
+It is present in Java dot util dot package.
+Right.
+So here if you see that in this example list is one of the collection, and if you go inside that it
+is available in Java dot util package, okay.
+And it is available from when.
+So if you see this collection that is available since 1.2 okay.
+So what is framework then.
+So we understand the collection.
+What is framework.
+So framework is something which provide us the architecture to manage this group of objects.
+Right.
+So it provides already an architecture.
+So you know that there are lot of classes, interfaces, methods, functionality already built in in
+the Java.
+Right.
+And they are all clubbed together.
+All these collections are clubbed together.
+Because I am going to tell you about all this collection framework.
+Right.
+Which who is the parent, who is the child and all these things.
+So those combined together is known as framework.
+Right.
+So it provides the architecture to manage this group of objects like you can add it, update it, delete,
+search etc. anything on this group.
+You don't have to write anything new, right?
+To support certain thing.
+Everything is built in.
+So that's what is known as collection framework.
+Okay.
+And if you want certain something to be added new, you know that framework is something which is done
+all the ground job.
+And on top of that you can build something on your own also.
+So that's why it has collection framework means it is a group of elements and it is providing you a
+lot of functionality already built in as a framework.
+And you can use that framework also to build your own also if required.
+But generally everything is present and mostly all the requirement you wanted.
+It should already be present.
+Okay.
+Why do we need a Java collection framework.
+So this is very important question.
+Why do we need Java collection framework.
+So before I told you that it was added in Java version 1.2 right.
+So before Java version 1.2 there is already an array vector hash table.
+So prior to GCF, GCF, I mean since Java collection framework.
+So prior to Java collection framework we already have array vector tables.
+I told you an array.
+So there is a vector.
+So see don't worry about this.
+What is array.
+What is vector.
+Hash tables.
+Array.
+You already know vector and all I will tell you because here also we have a vector.
+So I will give you a proper clear definition of what is vector and all.
+But for now assume that it's just a type of a collection.
+So before this collection framework we already have this collection.
+But then why we need this framework to be into the picture.
+So let me tell you with this example let's see this example and then understand the problem.
+What is the requirement of the collection framework.
+So I have created a simple main class simple method.
+So this is I am creating an array.
+So I have created an integer array of what size of four.
+Okay now I am inserting an element in an array.
+So how I am inserting this array of zero equals to one.
+Now if you want to read the element which is at index zero, how you will read it?
+Array of zero.
+This is how you read it.
+So this is how you write it.
+This is how you read it in the array.
+Now let's see about the vector.
+How you will read and write into the vector vector integer.
+So this is how you create a vector.
+Okay.
+So it's a vector of integer right.
+So you kind of you created a collection okay.
+Now you are inserting an element.
+So how you are writing or inserting an element into the vector dot add how you get it dot get.
+So this is how you read.
+So one thing you should notice that whether it's an array or whether it's a vector, whether it's hash
+table, there is a different way of writing.
+Reading, writing reading of depending upon the different collection.
+Okay, so there is nothing like a common and it's become very difficult to remember the method which
+you have to use.
+Okay.
+So that's where the problem which I mentioned problem is there is no common interface.
+There is no common interface.
+So it's difficult to remember the method for each for array.
+This is how you read it.
+For vector you need this is how you read it.
+Dot get zero or get dot get one dot get two.
+For array you need like this.
+Maybe for hash table you need to do something like this or another.
+So you got the problem for different collection, you need to understand or need.
+You need to remember the different way to write or different way to fetch.
+So that is one of the bottleneck.
+Which collection framework has removed it?
+How?
+I'll tell you how, but that is Java collection frameworks comes into the picture to make our life easy.
+And this is the hierarchy present.
+Now I'll tell you how this problem will be resolved.
+But this is the hierarchy of the Java collection framework.
+Okay.
+So these are the all the.
+So this light blue is your interface.
+And this purple one is your this pink one is your concrete class.
+Okay.
+So now here if you see that first who is the parent interface.
+It writable it writable right.
+collection.
+This is also an interface.
+So this is also an interface right.
+So it extends from this okay.
+So now let's say what advantage this collection framework is doing here.
+Just concentrate on this first pink one.
+So here if you see that priority queue array queue linked list ArrayList.
+Vector stack trees Hashset linked Hashset.
+They are all child of what collection and collection is ultimately child of iterable.
+Okay, so now let's say if for read there is one method like get right and for right or insert.
+Let's say there is method called dot put or put.
+So now no matter what you are using, whether you're using vector, whether you are using ArrayList,
+whether you are using linked list, priority queue has set tree set.
+No matter what you are using, You don't have to remember the method name and okay for Hashset.
+I need to use this method to insert I for vector.
+I need to use this method to insert or read no because it.
+Since it's an interface, it will.
+It has exposed certain methods, let's say get and put and all are the child classes of this collection
+only.
+So they have to implement that only okay.
+So all you have to worry about that.
+How what is the use case to use the priority queue when it is used how it will work.
+So now you now you see that instead of remembering the methods, now you should be more focusing on
+your code that which one to pick based upon your need, right?
+So let's say for example, what I mean to say the need is stack.
+I'm just giving you a stack is let's say when you insert it like this one.
+Then second item goes here.
+Third item is on top of it.
+Fourth item is on top of it.
+So this is how insertion happens.
+And when you remove it it remove from the top.
+So first four will be removed.
+Then three then two then one okay.
+Similarly there is something called q.
+This is the q.
+So here insertion would be like 12345.
+Right.
+And if you are removing it if from the first one one then first will remove, second will remove.
+So what I mean to say is that every collection is kind of or you can say that unique in its requirement
+based upon the requirement, you have to particularly select a collection, but you don't have to remember
+that, okay, for ArrayList I have to do for reading the element I have to use get for insertion.
+I used to do put now what to do for stack.
+For stack.
+Also the same thing because the parent is same.
+Interface is same.
+Got it.
+So this is how collection is solving.
+So you can say that in if an interview if somebody asks that why collection framework is required.
+So one of the you can answer this one.
+We have a collection before right.
+But this is one of the problem which happened that there is no common interface.
+And because of that it is very difficult to remember the method.
+Right.
+With this example you can explain okay.
+So now we know that why we need Java collection framework.
+Now let's see this little bit hierarchy one more time.
+Okay.
+So now let me explain you the hierarchy.
+Okay.
+So see this hierarchy.
+So we have two type of collection.
+One is this which is a parent is irritable and all are its child and another is map.
+So map is not a child of irritable.
+Okay.
+So these are the two set of collections.
+And we will cover all.
+We will cover all this part, all this uh, this pink one.
+Right.
+We will cover all this concrete classes.
+So now let's see this.
+So this is your parent or root irritable.
+So irritable is added in Java 1.5 right.
+Till Java 1.2 this was added collection.
+And this all below.
+It also added as a Java 1.2 only irritable was added in Java 1.5.
+Okay so but I'll tell you like before it irritable.
+What are the challenges and why it was added?
+Okay.
+But first.
+Now see that collection is extending This iterable interface.
+Okay, so you already know that if you are following the series, that interface one, right?
+If another interface two has to extend or this capability of interface one, what it has to do, it
+has to do extend.
+Okay.
+So collection is extending the iterable collection has three childs.
+Or you can say that again an interface which is extending from the collection Q list and set.
+And similarly there are certain concrete classes.
+Right.
+And there are certain more interfaces which is doing an extent.
+Okay.
+So now let's go through first iterable.
+Okay.
+Let's first go through iterable.
+Why treatable is used iterable is used to traverse the collection.
+It is used to traverse the collection.
+So here, if you see that we have a collection, what are the collection?
+Priority queue.
+Array.
+Queue.
+Linked list.
+Array.
+List.
+Vector stack.
+These are all your collection.
+So iterable helps in what it helps you in traversing it.
+Okay.
+Below are the methods which are frequently used in the iterable.
+Okay.
+So here if you see that first one is iterator method.
+Second one is for each method.
+So iterator method was available in Java 1.5.
+For each method is available in Java 1.8 okay.
+So we'll look at both.
+So first look at iterator.
+So in the iterator it returns the iterator object which provide below method to iterate the collection
+okay.
+So let's understand this with an example.
+Sample.
+So I have created a class, right?
+I have created a class and a simple method.
+Now first I am creating a collection.
+Let's say I am creating a ArrayList.
+I am creating an ArrayList collection.
+So I have created a list of integer equals to new ArrayList.
+Right?
+And you already know that interface variable can hold an object of a child one.
+So I am holding a list of integer equals to new ArrayList.
+So I have created an object of a collection ArrayList and I added a value 1234.
+I have added four values.
+Okay, now I want to iterate it how you can iterate it, right?
+So first method of iterating is using the iterator which is available in iterable interface.
+So you know that list array list is a child of list.
+List is a child of collection.
+Collection is a child of iterable.
+So iterable has this method iterator.
+So now first I have used values this values iterator.
+So what it will do.
+This will return the iterator object iterator object.
+It will return.
+So it will give me an iterator object.
+Now after I get the iterator object, what iterator object has certain methods?
+It has these three methods has next.
+What has next tell you it returns true if there are more elements in the collection.
+Next returns the next element in the iteration.
+Remove.
+Remove the last element returned by the iterator.
+So let's see this.
+So I have four elements in the queue.
+One.
+234.
+Okay.
+This is values.
+Okay.
+So now I have got an iterator values dot iterator.
+Okay so now I told you that first I will use Hasnext method.
+If there are more elements in the collection it will return true.
+So I have used this loop.
+While there are more elements in the collection.
+Iterator dot Hasnext.
+Is there any more element?
+So currently it is at this point, yes.
+Because we haven't started.
+Right?
+We haven't started iterating.
+Yes, there are more elements which has not been iterated.
+So it will return true.
+If it returns true, it will go inside and it will say that iterator dot next.
+So what next will do returns the next element in the iteration.
+So what's the next element.
+This.
+So it will return one right.
+It will return one.
+System.out.println.
+It will print one okay.
+Then if value equals to equals to three no currently it's one.
+So it goes again while value iterator dot has next.
+So currently we are here has next is it has more value after one.
+Yes two is still there.
+So it will return true goes next.
+Then I'm using value iterator dot next.
+So it will return the next value.
+What is that two System.out.println.
+It will return two value equals to equals to three.
+No.
+Again check has next.
+Yes.
+Still two more are unprocessed.
+Then it will do dot next.
+So it will do dot next.
+So it will return three.
+System.out.println.
+Value three.
+If value equals to equals to three.
+Yes.
+What I am doing is iterator dot remove.
+So now it is removing the last element return.
+Last element return was three only.
+So it will remove it from the list.
+Okay.
+Then again while loop iterator dot has next.
+Yes four is still has to be iterated so it will return true iterator dot next.
+So my iterator goes here System.out.println.
+Value.
+So value is four.
+Printed value equals to equals to three.
+No.
+So now again value iterator dot has.
+Next.
+No nothing is there now.
+So it will return false.
+It goes out finish.
+So now here if you see that from this list I have removed the third item while iterating.
+So now can we check.
+So now I am using the enhanced for loop.
+We have already seen this before, right?
+So I am iterating over the list values.
+Okay.
+So for each value I am printing.
+So what will it print?
+It will print one two and four.
+Three is already removed from the list one two and four three is already removed.
+So you know that.
+Now you know that we can use iterator which is present into iterable, right?
+This method we can use which will return you an object of an iterator object.
+And in this object there are three methods which you can use it to iterate it or remove it also.
+Okay.
+And if you want a simple iteration like this is also another way.
+So this is the first approach using iterator using iterator.
+Second approach is using enhanced for loop using enhanced for loop.
+So here if you see that in this is treatable.
+It says that implementing this interface allows an object to be the target of for each loop.
+So now here, if you see that we are doing nothing but a for each loop.
+Right.
+So any.
+Any collection which is a child of iterable.
+They can be accessed using for each loop also.
+So here you can see that for each loop I am doing.
+So this is also the second way.
+Third way is using for each method for each method which is available in Java 1.8.
+Okay.
+So what it does it it iterate the collection using lambda expression.
+I have already explained the lambda expression in the previous video, right?
+If you have not seen it, please first check it.
+So lambda expression is called for each element in the collection.
+How so?
+Now I am using the foreach method.
+Okay so now values.
+Okay so here the values dot foreach.
+So I am calling the foreach method right.
+Now here if you see that in the for each method what it is doing.
+So this is the for each method which is present into the iterable.
+Okay.
+So now here if you see what is the parameter in for each consumer.
+And if you recall it, I have already told you that there is already an inbuilt functional interface.
+So here if you see that consumer is one of the functional interface inbuilt.
+Okay.
+So it has this method abstract method which we have to which we can make use of lambda expression here.
+Right.
+So that's what I am doing now.
+So values dot for each.
+And inside the parameter which is a functional interface I can make use of lambda expression.
+Okay.
+So I have given the expression here.
+Okay.
+So now inside this method what it does is for each value.
+So this what our object is calling.
+So values is the one which is calling right.
+So this represent this values.
+So it is like this.
+Now for each value it is calling the lambda expression for each values.
+So this is our this is the lambda expression which get invoked for each value which are present inside
+this.
+Because here if you see it is doing for each loop on this.
+So this is the values on which it is will run.
+Okay.
+So here in the consumer it is accepting one as a parameter.
+So this is I have added okay.
+So it's a functional interface I am using the lambda expression and I am just doing System.out.println.
+So whatever the value, I get it here, I just print it again.
+If you are thinking that you are getting confused in lambda expression, please check the previous video,
+right?
+Because uh, if you are not seeing the lambda expression, it would be difficult to explain because
+again, itself in itself is a big topic, right?
+That's why I covered in a separate video.
+But understand this.
+The for each method is available in Java 1.8 because it is making use of functional interface.
+So values dot for each.
+Internally, it will iterate over each value of a list and calling the expression functional interface
+abstract method.
+And this is the expression it will get invoked for each one okay.
+So this is the consumer only one parameter it is expecting.
+So I passed one parameter and printing that and what parameter it is returning inside the method.
+It is returning this value t only, which is nothing but a iterating over the values.
+This values.
+First it will return one two and then four.
+Three is already removed from the list, right?
+Previously.
+So 124.
+So you got it.
+There are three ways to iterate the collection.
+First is using iterator.
+Iterator will return an iterator object, and in the iterator object there are three methods which we
+can use it.
+So for iteration actually you need only two.
+Third one is just to remove it.
+So otherwise you need only hasnext and next second one is for each loop normal which we use it.
+Third one is using for each method which uses lambda expression which is available in Java 1.8.
+Okay, so now you can ask me a question.
+Hey iterator, you are saying that iterator is added into Java 1.5, but collection is already present
+in Java 1.2.
+Then how we use to iterate before, like how we used to iterate.
+So see here.
+So here inside the collection let's go to the collection class.
+Inside the collection there was already one it iterator iterator method.
+There are already one iterator method.
+So it just you can say that for convenience they have added one interface here.
+They have added one interface here and exposed all the iterable methods here in this one.
+Earlier each collection has the iterator right.
+So iterator class this this one.
+This iterator object is already present in Java 1.2.
+And it is present with each collection.
+It is present here with here.
+But they just added the iterator interface and exposed it here.
+All the kind of iteration like Java 1.8.
+This was exposed in Java 1.8.
+So that's why they added one interface iterable all the previously.
+What are the methods available for?
+Iterator has also been added here.
+Plus they added what are the additional they wanted to add for Java 1.8 okay.
+So it's like nothing like only in Java 1.5 we are having the uh, this this thing only iterator is in
+Java 1.5.
+Iterator object is already present into Java 1.2 also, but it is present under collection.
+But now it is also present under iterable.
+Okay, so now you know what is the use of iterator.
+It is used to traverse the collection and these are the ways to traverse the collections.
+Okay.
+Now let's come to the second one collection this part okay.
+So.
+Collection.
+You already know that it represents the group of objects or group of elements.
+It's an interface which provide method to work on group of objects.
+So this is the method.
+This is the interface which provide lot of methods which ultimate the concrete collections classes have
+to implement and get put.
+So many methods are generally exposed here, right.
+Which ultimately get implemented by each other each and everyone collection okay.
+So it provide a method to work on the group of objects.
+Below are the most common used method which are implemented by its child class like ArrayList Zstack.
+So these are all the methods which are present in the collection which are frequently used okay.
+So one is size.
+It is available in Java 1.2 itself.
+So what does size is size?
+Return the total number of elements present in the collection.
+Okay.
+So let's say this is the collection.
+I have 1234.
+What is the size?
+It will return.
+Four is empty.
+Used to check if collection is empty or has certain value.
+Return true or false.
+Okay, so let's say this is the collection.
+See if I check if C is empty or not C is not empty.
+It has certain value.
+Contains used to search an element in the collection.
+I will show you an example of each one, but just understand this.
+Contain is used to search an element whether the collection has that element or not.
+If it contains, it will return true.
+If not, it will return false.
+Two array.
+So it converts the collection to an array, and this method is generally used to insert an element into
+the collection.
+Remove.
+Used to remove an element from the collection.
+Action.
+Add all use to insert one collection into the another collection.
+Remove all.
+Remove all the elements from the collections which are present in the collection passed in the parameter.
+So in parameter, whatever the collection you will give me, I will remove all the elements of that
+one from the my collection which I'm working on.
+We'll see an example clear.
+It will remove all the elements from the collection.
+It will clear your collection then equals used to check if two collections are equal or not.
+This is super important.
+Stream and parallel stream.
+This is available in Java 1.8.
+Java eight write stream provide an effective way to work with collection, filtering, processing data
+searching.
+It will do that okay and I will cover it separate in a separate video like how the stream works proper,
+right?
+So in the below example I will explain all the methods.
+But for stream I will explain after once we have complete.
+All right.
+Priority queue.
+Queue, linked list and all.
+Then with that examples I will explain you the stream one.
+Okay, because this is super important, I will make a separate video for the stream only okay.
+And then iterator.
+As I told you, that iterator method was already present into Java 1.2.
+Only iterable interface was added, but iterable object was there.
+So you can also use it to iterate.
+Now let's see this example.
+Simple example.
+It's just like all the methods I have used here.
+So that's why it is big.
+So first I have created a list.
+I have created a list new ArrayList.
+I added three items two three, four.
+So now let's say I have added two, three and four.
+So first thing let's see the size values.
+I'm checking the size method.
+So values dot size.
+What is the.
+It will return three.
+Okay.
+Second one I am checking values.
+This is values collection.
+Right.
+Values is empty.
+No it has certain values right.
+So it will return false.
+Then I'm checking does values dot contain five.
+Does it contain five?
+No.
+So it return false.
+Then what I'm doing is I am adding the element five.
+So I'm adding five.
+Here I have done add.
+Now I am checking values dot contain five.
+Yes.
+Now it will say true I have added it.
+Okay.
+Now I am removing.
+So now here, if you see that there are two ways to remove remove using index.
+So I am doing values dot remove.
+If you give simply give integer primitive primitive value then it will be considered as an index values
+dot remove three.
+So 0123 index.
+So five will get removed.
+Okay, so now I am just checking values dot contain five.
+No it has been removed right.
+So it will be false.
+Now I'm removing by object values dot remove.
+Now I have created this primitive integer into a object integer dot value of.
+You know that it is a wrapper object of primitive run, right?
+So now it is an object.
+So now it is not be considered as an index, it will be considered as an object.
+So values dot remove.
+So it will look for three and remove it.
+If there are multiple three.
+It will remove the first one.
+Okay.
+So it.
+Now instead of going through the index it will remove the value three itself.
+So now I'm checking values that contain three.
+No three doesn't contain.
+So it will also return false.
+Okay.
+So now let's say I have created another collection.
+Uh earlier it was values which is ArrayList.
+Now I'm containing stack which is stack values.
+Okay.
+So now this is my collection two.
+This was collection one.
+Now what I am doing add all.
+So add all says that used to insert one collection into another collection.
+So what I am doing is I am adding the stack values to the values.
+So it was two and four because three and five was deleted two and four.
+for now.
+What I have added.
+678I have added here 678
+okay, so values dot contains all.
+Now I am checking contents on stack values.
+Does all the values of this stack values which is six, seven, eight are present here in the values.
+In the values, yes, six, seven eight would be present.
+So it should return true.
+True.
+Okay then I'm checking.
+Uh, I'm, I'm removing one element from the values integer dot value f.
+So I am removing as an object not as an index.
+So I'm removing the seven seven has been removed.
+Now I'm checking again contains all stack values.
+So 678 contains in values.
+No six is seven is already removed.
+So it should return false okay so contains all.
+Check this collection value is present here in this or not.
+Okay, now what I'm doing is I'm doing remove all.
+So what I am removing from this values I am removing everything value 678 I'm removing this from this
+values.
+So from this values I am removing six seven is already removed.
+I have removed eight also.
+Now I am checking again.
+That does it contains eight or not?
+Does it contain eight?
+No eight has been removed so it will return false.
+Now I am doing clear values dot clear.
+So it should have removed this also.
+So now it is empty.
+Now I am checking values.
+Dot is empty.
+It will return true.
+So now you know that these are all the methods which are common to all the methods, all the collections,
+whether it's a priority queue, whether it's a array linked list ArrayList vector stacked.
+All this one.
+Okay, so if you understand it with the ArrayList itself, you will ultimately explain it with all.
+All you need to understand is where to use priority queue, how it is actually used.
+Okay, but you understand the purpose of the collection, right?
+So these are all the methods which are exposed by collections which is help us which provided a common
+interface.
+Right now, no matter if you see that, if you have already seen that I have uses a list, I have same
+user and stack, but this method is same dot add dot add dot add list also dot add dot dot add.
+I don't have to remember.
+I know that even in the for the priority queue, if I have to use I have to use dot add to insert.
+Let's say if anything to remove right?
+So dot remove should be used to remove no matter what.
+So if you see that this framework has solved so many things for you.
+Otherwise, just see that if this is not a common, if there is nothing common between priority queue
+and ArrayList, so it might be using dot add, ArrayList might be using something dot insert.
+How you will remember this syntax for which I have to do dot add for which I have to do dot insert for
+which what are the parameter it take whatever the parameter it does, it takes.
+But because of this collection, because of this framework, it's very easy to remember if you just
+know this method.
+Okay, this is gonna work for all of this methods, right?
+So this is the power of the collections framework, right?
+And I have explained you iterable and the collection.
+Now we will go each priority queue array each choice.
+What are the different in what scenarios which to use.
+And then I will tell you the super important the streams which is available in Java 1.8 and very frequently
+asked question.
+But before that, there is one more questions come.
+Difference between collection versus collections.
+See its look very confusion a collection collections.
+What's that man.
+Doesn't it same.
+So see, collection is something which we are.
+It's a part of the collection framework.
+So this is collection without S.
+It's an interface.
+Right.
+And it's a part of collection framework which support this all these methods.
+Right.
+So it's a part of Java collection framework.
+And it's an interface which expose various method which is implemented by various collection like ArrayList
+stack this, we are good with it.
+But now what is collections.
+So here if you see that collections is a utility class.
+When I say that utility class means all the methods in it would be static, right?
+So we can see that.
+Collections.
+So if you go inside these collections, if you see that this is a class, this is not interface, right.
+And here if you see that it might have all the static method because it's a utility class.
+Right.
+See all the methods are static.
+Okay.
+So that's why it's known as utility class because it provide only static methods.
+Why?
+It is a utility class.
+It helps us to operate on collection.
+So it expose certain method like this.
+So now you have created a collection let's say list or stack or something.
+So this collection is a utility class which expose certain method which helps to do certain operations
+like sorting, binary search, reverse swap.
+So you can say that it's a utility.
+It's just an add on.
+It's not like something very very much requirement.
+You can also write your logic to sort it, but that's why it is known as utility class.
+You can it just make your work a little bit easier by providing these methods so it is available in
+the collections class, not interface class collections like sort search, get reverse shuffle, swap
+copy, min, max, rotate.
+So these are very common methods.
+Self-explanatory.
+So I have created a list a collection.
+Now let's say I'm using this utility method collections dot.
+Because it's a static method I can call it I don't need an object.
+I can call it with a class name itself collections dot max.
+So what is the max value?
+It will return four.
+This will return four collections dot min.
+What?
+It will return one collections dot sort so it will sort it one.
+So it is 1324 right.
+It will print.
+If you print it, it will print one, two, three, four.
+Then for printing I am using for each method Okay, so this is the difference.
+This is just a utility method.
+This is a part of Java collection framework which is available in 1.2 okay.
+Got it.
+So in the next we will go through each of this one and understand how they are different from each other
+and which one to use when and and then we will, uh, go through for this map also.
+First we'll let's cover this one.
+And we also understand that why map cannot be a part of an iterable or under collection.
+There can also be have a separate one more like map.
+Why map is not part of this one collection?
+Why map is not part of iterable?
+So there are couple of more questions which I will cover in the next video.
+Okay guys, and stream is I will cover the last.
+It's very important.
+I need a separate video for it.
+One.
+Okay guys, see you any doubt.
+Do practice this one and we will complete the collection as soon as possible.
+Okay guys.
+See you.
+Bye.
+    </pre>
+</body>
+</html>

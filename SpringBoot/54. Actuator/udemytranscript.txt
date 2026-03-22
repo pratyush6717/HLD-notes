@@ -1,0 +1,1001 @@
+On this side.
+
+Welcome back to the channel.
+
+And today in Spring Boot we are going to cover actuator.
+
+So let's start without wasting any time.
+
+Actuator provide production ready endpoints to monitor and manage the spring boot application okay how.
+
+Let's say that whatever the project you have, all you need to add is your actuator dependency.
+
+Okay, if you are creating a fresh project, just add this dependency.
+
+Also internally it brings this spring boot hyphen starter hyphen actuator to your pom.xml.
+
+Okay.
+
+And if you already have the project set up, just add this dependency okay.
+
+Once the dependency is set.
+
+Now if you see the application dot properties there are two major property okay.
+
+So this one is all optional.
+
+First one is optional management dot endpoints dot web dot base hyphen path okay.
+
+So base path So I use slash manage.
+
+I told you it's optional.
+
+If I don't use it, the base path would be slash actuator.
+
+Okay.
+
+So actuator provide production ready end points.
+
+There are so many end points.
+
+So you can say that this is the base path.
+
+So there would be like slash.
+
+After that there would be metric name.
+
+There are so many.
+
+But base is this slash actuator slash metric name.
+
+Okay.
+
+But since I have overrided it because I don't want to use slash actuator, I want my personalized.
+
+So I use slash manage.
+
+Okay.
+
+But this is optional.
+
+Another property is also you can say that optional management dot endpoints dot web dot exposure dot
+
+include.
+
+So currently I have put star means all the matrices all the matrices endpoints are exposed.
+
+Okay.
+
+If I told you that it's an optional if it is not added.
+
+If this property is not added, only health and info.
+
+These two endpoints are visible.
+
+Okay, you would be able to invoke only these two endpoints.
+
+Others are not.
+
+So if you want only selected then you can use comma separated here like health comma info and point
+
+comma metrics endpoint comma loggers endpoint.
+
+Likewise.
+
+But for testing purpose we want to enable all the endpoints.
+
+So I put star here okay.
+
+But if you this is also an optional.
+
+If you don't add it only these two endpoints you would be able to hit okay.
+
+So that's all we have added the dependency in application dot properties.
+
+We have added and generally both are optional.
+
+And we are just starting our application and our application is started.
+
+Now if you see that I am hitting this endpoint slash manage slash health.
+
+So this is the base one.
+
+Instead of slash actuator.
+
+I have changed it to slash manage in application dot property.
+
+And this is slash health.
+
+Now it give me this.
+
+It means that my server is up and running okay.
+
+So it give me certain input data information.
+
+Similarly there is another endpoint slash metric.
+
+If I invoked it like slash manage.
+
+This is my base slash metrics okay.
+
+What it return it returned me all the endpoints which are currently available within this matrix.
+
+Okay.
+
+So let's say that I pick one of this endpoint.
+
+So I have to call like slash manage.
+
+This is the base okay slash metrics because we are going to use this one and one.
+
+We are going to use one of the metrics of which are present inside this slash matrix.
+
+And we are using this one executor dot dot core.
+
+So slash manage slash matrix slash executor dot pool dot core.
+
+So it returns me like what all the thread pool executors are present and what the thread pool size.
+
+Okay.
+
+So likewise you see that there are lot more matrices available for JVM for your CPU process for your
+
+server.
+
+Okay, for your thread pool executor, you can get lot more information about your system okay.
+
+So let's see some useful inbuilt actuator endpoints.
+
+So these are also an inbuilt only.
+
+But this is just to show the demo like okay how you can add actuator within your project.
+
+Very simple.
+
+All you need is your dependency.
+
+You have to enable or expose the endpoints which you have to use.
+
+This is optional.
+
+If you don't use it, you have to use slash actuator as a base path.
+
+If you want, you can give some meaningful name like slash manage.
+
+Okay.
+
+And you are able to hit the endpoints.
+
+So there are so many endpoints like slash health.
+
+Now let's little bit further deep into this because this is very important one.
+
+So by default it provide the health status of our application whether it's up down out of service.
+
+Unknown okay.
+
+Currently our app is up and running.
+
+So that's why it is giving up.
+
+So here if you see that we can even extend to add additional check.
+
+So apart from so let's say that my requirement is that hey okay my application is up and running.
+
+My Tomcat is up and running.
+
+But I also want to check like hey, what about my DB?
+
+Is it up and running or not?
+
+What about the cache?
+
+What about the my message broker?
+
+So once If all of this are up, then only I want to make my system up.
+
+If any of them is down, it should be down.
+
+Okay.
+
+So that also you can extend it.
+
+Okay.
+
+So very simple in this one let's say that I am adding DB functionality into the health itself okay.
+
+So this is something that I am writing a class database health indicator.
+
+This is the class name which I have given.
+
+You can give any name.
+
+All you have to do is you have to implement health indicator.
+
+This health indicator interface is for this slash endpoint.
+
+Slash health endpoint okay.
+
+So we have to provide an implementation for this health method.
+
+So since it is database so you can have your custom logic here to check whether the DB is up or not.
+
+So here for now I am just returning.
+
+True.
+
+But in the production We can simulate like by checking whether that I'm able to query DB or not.
+
+Okay, so for now let's say I am returning true that yes, my DB is up.
+
+So if DB is up I am making health dot up.
+
+Okay for the DB.
+
+So for each one there is a health, for each one there is a health.
+
+So I'm making it's health up.
+
+Okay.
+
+And also I have added the message like DB available.
+
+If it is not available I am making the health down.
+
+And with message like DB not available.
+
+Similarly for cache I am doing another class cache health indicator which implements health indicator.
+
+Implemented the health method.
+
+Check the cache status.
+
+And now here.
+
+If you notice that I specifically made it false okay, just for testing purpose.
+
+Now if the cache is up I can make cache health So it health is up or down, whatever we are doing.
+
+So for now it is false.
+
+So it would be held down with message like cash not available.
+
+Okay.
+
+So now if you hit this slash manage slash health okay you will see that hey got status down.
+
+Hey why why only this one.
+
+Where is this message DB available or cash not available.
+
+And why down.
+
+So see the above status one is aggregated one aggregated one.
+
+And inside this it has multiple.
+
+So where we have DB we have cash okay.
+
+So when all are up when everything is up then only the above status is up.
+
+If any one of the sub component or sub metric you can say that is down.
+
+The above one is down also.
+
+Saw.
+
+Okay.
+
+So but you can say that okay.
+
+That is understood.
+
+But where is the information?
+
+I am not able to see my DB and this cache which I have added.
+
+Okay I know that this is down because for the cache one I have specifically made false and for cache
+
+it is down.
+
+So that's why my overall aggregated is down also.
+
+But where is the information?
+
+See, by default health only show this much above status.
+
+But if you want the complete details.
+
+Also we have to add this management dot endpoint dot health show hyphen details equals to always by
+
+default.
+
+It's never okay.
+
+Once you add this application dot properties and hit it again okay.
+
+Now here if you see the details are added cache details, we make it the status down specifically.
+
+And this is the info cache not available for database.
+
+It's up and detail is DB available.
+
+And since once sub service is down, the overall status is down.
+
+Okay.
+
+Similarly we have so many matrices right.
+
+We have uh slash matrix endpoint.
+
+And we have already seen that when you invoke this one it gives you a list of all the matrices which
+
+are available within this.
+
+And we can access particular matrix like this slash matrix slash particular matrix within this okay.
+
+So there are so many available inside this.
+
+Matrices like JVM memory use how much memory currently used by the JVM so you can get that information
+
+okay JVM dot memory dot max.
+
+What is the maximum memory JVM can use.
+
+So how you can use this that slash manage slash matrix slash matrix slash right.
+
+Because these are all the matrices are present within this endpoint.
+
+Okay.
+
+So this I want to use this.
+
+So JVM dot memory dot use.
+
+So it will give you this info.
+
+Similarly you can get garbage collection matrices like JVM dot gc dot pos okay.
+
+So you can get multiple information that okay total number of GC events occur, how many times GC has
+
+run, total time spent, and what is the longest single GC pause observed.
+
+Okay, so you can get all this information.
+
+Similarly, you can get information regarding your thread, your system usage or your request HTTP server
+
+dot request.
+
+If you use this, you can get what is the total number of HTTP requests you have received.
+
+Total time is spent handling all the requests.
+
+Longest time taken to handle single request.
+
+All this information you can get.
+
+Okay.
+
+So you can play different with this different end points.
+
+You will get better information depending upon your need.
+
+Your company, what matters you are interested in.
+
+Okay, so there are more like thread dump, heap dump.
+
+So those information are also available.
+
+So another API is like slash manage slash thread dump okay.
+
+So it helps you to diagnose deadlock or thread leaks.
+
+Which thread are active blocked waiting okay.
+
+Even the stack trace.
+
+What code is executing by which thread thread name and everything.
+
+So this is output you will get.
+
+Hey, this is the thread.
+
+Currently it is the stack trace.
+
+Currently it is running this code.
+
+It is currently like waiting or blocked or what is the state runnable.
+
+Different thread.
+
+So all this information you will get whatever you want.
+
+Okay, so this is the official documentation.
+
+Okay.
+
+Um, I will put it into the description section.
+
+Also, you can use it.
+
+It has a list of all the endpoints.
+
+And based on your company needs and the metrics which you are interested in you can use that.
+
+Okay.
+
+So you have heaped um mappings beans.
+
+What are beans in your uh spring application.
+
+Is there.
+
+Shut down okay.
+
+Loggers.
+
+So many things okay.
+
+Now only thing specifically I want to mention that this shutdown and heap dump, even though we have
+
+put a star right, you remember, exposed all the endpoints here, exposed all the endpoint star.
+
+Even after that.
+
+Also, you won't be able to hit slash shutdown and slash heap dump like slash manage slash Shut down
+
+and slash manage slash heap dump.
+
+You won't be able to hit it.
+
+Why?
+
+Because they are very critical endpoints.
+
+When you invoke shutdown, it will stop your application.
+
+When you call the heap dump right, it will expose sensitive information like some token, password,
+
+etc..
+
+So Spring Boot want you to take additional.
+
+You can say that, uh measure that.
+
+Hey, yes, you are totally accepted the risk involved by exposing then these endpoints.
+
+So for this you have to specifically mention like this in the property management dot endpoint dot heap
+
+dump dot access unrestricted.
+
+Currently it's restricted.
+
+Similarly for shutdown also management dot endpoint dot shutdown dot access unrestricted.
+
+After that only you would be able to access this even though you have mentioned star, you have to unrestricted
+
+manually.
+
+It is just way of saying that spring boot saying hey, you have accepted the risk involved.
+
+Okay, so you can say that with great power actuator provide you great power.
+
+The responsibility, great responsibility also comes okay security.
+
+Very important part here in that is all these endpoints are generally public okay.
+
+So like slash health slash info slash matrix slash whatever the pool JVM these are all public.
+
+Anybody can invoke it if they know your URL and port number okay.
+
+And these can expose some critical info about your system.
+
+You don't want anybody to be get uh call this endpoint.
+
+So you have to add security to this endpoint.
+
+So we have already covered spring security in depth.
+
+Kindly check it out.
+
+All we can do is that you have in the dependency.
+
+You have to add the spring security.
+
+Okay, we have already covered.
+
+If you have already covered spring security, you might already know this thing.
+
+Very simple part.
+
+So you need spring security dependency.
+
+And in the security config we have again I am saying you if you haven't seen the spring security video,
+
+you might be seeing this as are out of the context like what is going on.
+
+But that's what I mentioned.
+
+Like kindly check it out.
+
+Spring security where we have discussed everything this in depth.
+
+Okay.
+
+So there we have a filter chain.
+
+So here I have put that okay.
+
+Only the health and info.
+
+You can permit everything okay.
+
+But for any other request you need to authenticate.
+
+So even if you don't want to this you can just simply say any request authenticated okay.
+
+You can choose any authentication JWT for here I am just using basic authentication for testing purpose
+
+Okay.
+
+And in application dot properties you can provide username password.
+
+Again this is just for testing basic authentication okay.
+
+For more in depth like.
+
+How security works.
+
+You can check it out here.
+
+So just wanted to highlight that you can.
+
+Secure these endpoints like any request you have to authenticate or you can add more.
+
+Like hey request matcher like any endpoint start with slash manage or slash actuator say.
+
+Star star any endpoint start with this should has role let's say admin you can add this.
+
+We have already seen this before how we can do that.
+
+But I'm saying that you can reuse those.
+
+To manage your actuator endpoints that they have some specific roles and they should be properly authenticated
+
+before anybody can use it.
+
+Okay.
+
+So let's say that if I try to use it slash envy without providing the authentication, it will say unauthorized.
+
+And after providing username and password it will it show me the data.
+
+Okay.
+
+So before proceeding further, if you haven't seen the spring security, kindly check it out.
+
+Because I am not covering here because that would be duplicate and it's not a small topic.
+
+There are total overall nine parts in this one.
+
+So spring security is a very big topic.
+
+So kindly check it out.
+
+And this all these things would be clear.
+
+So just at here my intention is to just tell that always make sure that in spring security you have
+
+specifically checking that all the actuator endpoints has a specific role checks for authorization and
+
+it should be authenticated also.
+
+This is very important.
+
+Custom actuator endpoints okay.
+
+So like we have so many endpoints like slash actuator or let's say that we have changed it to slash
+
+manage right.
+
+We can add our own custom endpoint here.
+
+Also how with this annotation at the right end point okay.
+
+So over the class you just need to annotate at the endpoint ID equals to whatever the name you will
+
+give.
+
+So see this example.
+
+So I have written one class like my custom stats endpoint.
+
+Any name which you can give.
+
+And this is a bean.
+
+So you have to put at the root component.
+
+Now all I have added is at the root end point ID equals to.
+
+This is the endpoint.
+
+I have added my hyphen custom hyphen stats.
+
+So this will become slash actuator slash or slash manage slash this one My custom stats.
+
+So this is the new endpoint.
+
+Actuator endpoint I have added now.
+
+Now within this class we can either have read operation.
+
+It's equivalent to get.
+
+We can have write operation equivalent to post.
+
+And we can have delete operation equivalent to delete.
+
+Okay within this class.
+
+So now let's say that within this class I have exposed the endpoint I am adding read operation two read
+
+operation.
+
+So one is I am adding a method public string read all and I'm just returning.
+
+Hello spring boot.
+
+Okay so now I have annotated with add the read operation.
+
+So this is a get.
+
+So if you hit a get request slash actuator or slash manage whatever slash this endpoint my hyphen custom
+
+hyphen stats that's all.
+
+And this is a get call.
+
+So which method it will invoke, it will invoke this method.
+
+Okay.
+
+So it will return.
+
+Hello spring boot.
+
+Similarly, I have added another method and annotated with at the read operation.
+
+But here if you see that I have added some selectors, selector is more like.
+
+After this one we can provide certain.
+
+You can say that placeholder for that for name I can have let's say Shreyansh here message.
+
+Hello.
+
+Okay.
+
+So you can say that after this your endpoint.
+
+After this your endpoint.
+
+These are selectors.
+
+Selector one, selector two selector three which are in sequence.
+
+And it should be matched with it in sequence.
+
+Okay.
+
+So now I have let's say slash actuator slash my custom strat slash I have put.
+
+So this get mapped to this one.
+
+Hello.
+
+This get mapped to this one Okay so two selectors.
+
+So it will pick a method.
+
+And it's a get.
+
+So it pick a read operation method and has two actuator uh two selectors.
+
+So this method will get invoked.
+
+And yes one more thing we have to add before running is.
+
+So this is the custom endpoint.
+
+We have to expose it also okay.
+
+So you you if you are using selected one health comma info comma you have to provide here also.
+
+Otherwise you can just simply put a star.
+
+It will automatically get exposed.
+
+Okay.
+
+Now if I just hit slash manage uh because I have overwrite slash actuator.
+
+So I'm using slash manage slash my custom stat.
+
+So this is a get call and no selector.
+
+So this method will get invoked.
+
+Hello spring boot.
+
+Now I am calling slash manage slash my custom endpoint.
+
+Now this is selector one.
+
+Selector two.
+
+So it will pick one get.
+
+So this is get called right.
+
+It will pick some get read operation method which has two selector matching it name messages.
+
+Both are string so it will get invoked.
+
+Okay.
+
+Similarly we have write operation and delete operation okay so this is post.
+
+This is delete okay.
+
+So return type can be anything.
+
+It return type at anywhere.
+
+You can have either string primitive Pojo whatever you want to return okay.
+
+So write operation is also no difference in that delete operation.
+
+No difference in that.
+
+You can even have selectors also like this I am using.
+
+So I have a refresh method annotated with right.
+
+So any endpoint which is invoking post slash manage or slash actuator slash my hyphen custom hyphen
+
+stats.
+
+So this is a post no selectors.
+
+So it will see that which method with write operation matches it.
+
+So this will get matched and this code will get executed.
+
+Similarly, if it is a delete HTTP method and slash manage slash my custom stat and the selector is
+
+like key my key.
+
+So it will see that okay, delete.
+
+So it will look for all the method which are annotated with delete.
+
+And then it will try to match the selector.
+
+So one selector only which is string matched.
+
+This will get executed.
+
+Okay.
+
+And also very important that Spring Boot considered this right.
+
+And delete operation very critical okay.
+
+So it requires authentication for that one.
+
+If you have writing a custom endpoint and you are using write operation and delete operation right then
+
+Spring Boot say that hey these are critical means it is changing something post and delete Okay, so
+
+it specifically warned that you should have authentication for it.
+
+So you can just simply add the same security filter, any request you want it to be authenticated.
+
+That's all okay for if you are just using get read operation, even though you are not adding security,
+
+you would be able to hit properly.
+
+Okay, but if you are using write and delete operation specifically, you have to make sure that these
+
+endpoints actuator endpoints or specifically let's say this where the write and delete operations are
+
+present on this endpoint.
+
+At least this should be authenticated.
+
+Okay.
+
+And again you have to make sure that you include this okay.
+
+Or expose this or use a star okay.
+
+And if you see that now if you are calling post my custom star start, you have to provide username
+
+password because it has to be authenticated.
+
+It got invoked.
+
+Similarly delete this endpoint and one selector so it will match the method you have to provide.
+
+Username password because we are authenticating here.
+
+Basic authentication.
+
+Okay.
+
+So reset done.
+
+It worked okay.
+
+Very important part.
+
+This is very important.
+
+Adding a new custom endpoint actuator endpoint is very important because this is used by a lot of frameworks.
+
+Let's say that even the refresh scope.
+
+Okay in the centralized configuration that also uses it.
+
+We will see that later.
+
+But I just want to say that lot of Spring frameworks uses this functionality that they expose an endpoints.
+
+And if we call them it do something okay.
+
+And those endpoints are supported through this actuator.
+
+Endpoints.
+
+Custom endpoints.
+
+Now one more important thing is hey, I got it.
+
+Actuator.
+
+Help us to provide the metrics and these metrics we can push to monitoring platform.
+
+You can you know that there are so many monitoring platform.
+
+One of the very popular is Datadog.
+
+Another another is Prometheus CloudWatch I think CloudWatch is from Amazon okay.
+
+So there are so many monitoring platforms available.
+
+So we can push this data to this monitoring platform also.
+
+So how see this might not be needed.
+
+But this is you can say that in the companies they are using it okay.
+
+So to understand the actuator you can say that you can skip it.
+
+But I would say that within a company definitely you might be using some monitoring platform for your
+
+application there.
+
+You will see that Internally how it actually your application is putting the data into your monitoring
+
+platform.
+
+So now let's say in the data doc I'm using data Doc.
+
+And currently I took a free trial of it.
+
+Now in this one I goes to my this profile.
+
+And here if you see that there is something called API keys within the API keys I created a new key
+
+and copied it.
+
+Now in the application dot properties I just added this management dot data doc dot matrix dot export
+
+dot api key and I added this API key.
+
+Okay.
+
+So this is since this is a testing profile.
+
+Okay.
+
+So that's why I'm adding it here.
+
+But it's never recommended to add a key like this in the application dot properties either add it into
+
+environment variable.
+
+But this is a profile just for testing.
+
+Okay.
+
+So you can uh add key.
+
+I added the key like this here.
+
+Okay.
+
+Another thing is you have to enable the export.
+
+True means that you are allowing the spring boot to push the data to the data dock.
+
+Okay.
+
+And another is that in which frequency is spring boot has to push the data.
+
+So I put five second means every five second it will push the metric to the data dock.
+
+And yes you need to add the dependency also.
+
+So I added the dependency micrometer hyphen registry.
+
+Hyphen Datadog.
+
+So this dependency I have added okay.
+
+And I added this application dot properties.
+
+And in the Datadog profile you have created the key.
+
+Use that key here.
+
+Very simple.
+
+Okay.
+
+Now all the metrics of spring boot actuator now automatically pushed to the Datadog.
+
+If you open a Datadog and here you see metrics.
+
+Okay.
+
+So here in the same one you will see the metrics, right.
+
+So if you click the metrics you will see summary.
+
+Explore volume and within a summary you will see a list of matrices.
+
+So I open just one matrix like HTTP server dot request count.
+
+If I open it you able to see certain graphs now.
+
+So every time I invoke my application it's like a request I am making a request.
+
+So it is like a count graph is that those data is get published to Datadog.
+
+And this you will get certain graphs to visualize and monitor.
+
+Okay.
+
+So if you check out this summary you will see like so many hundred of matrices, you can choose the
+
+matrix which you want to monitor and you can see your application health.
+
+Okay.
+
+Try it out.
+
+It's very interesting like and lot of learning.
+
+Okay.
+
+But if you still have any doubt let me know.
+
+We can discuss further.
+
+Okay guys.
+
+Thank you.
+
+Bye.

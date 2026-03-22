@@ -1,0 +1,381 @@
+Is welcome to concept encoding.
+This is Shreyansh.
+And today in Spring Boot we are going to start at the transaction annotation.
+But before that I would highly recommend you to watch these two videos.
+The one is the concurrency control which I have shared in the playlist.
+And another is the Spring Boot AOP, which we have just recently covered in the Spring Boot playlist.
+Okay, so if you already know about these two concepts, then we are good to go and let's start it.
+So one thing before we start we have to understand about critical section.
+So it's a very simple critical section definition.
+So it's a code segment where shared resources are being accessed and modified okay.
+So now let's say that this is my shared resource.
+You so a cab okay.
+So in DB let's say that this car has ID 1001 and currently status is available.
+Now there is a code segment where we are accessing this shared resource and also trying to update it.
+Okay.
+So that's why it's known as critical section.
+So now what happens is when multiple requests try to access this critical section data inconsistency
+inconsistency can happen.
+Now let's say that four people are trying to book a cab parallel.
+So now let's say that four requests comes here in the critical section in parallel.
+So all will read car with 1001.
+Yes, they will all read successfully if status is available.
+Yes.
+Current status is available.
+Updated to book for all four.
+They will write.
+Your car is booked.
+If critical section is not handled properly right.
+Then during multiple requests data inconsistency can happen.
+So what is the solution?
+The solution is usage of transaction.
+The transaction helps to achieve asset property we like during first year or second year.
+We all have studied asset property in the DB right.
+So we just to remind you that the first A in the asset is atomicity.
+Atomicity says that in a transaction, if any operation fails, the entire transaction will get rollback.
+What does it mean quickly?
+Let's say that in a DB A has ₹10, B has ₹20.
+Now this is your transaction in transaction.
+Let's say you want to debit a ₹5.
+You want to credit B ₹5.
+This is a particular, let's say transaction one.
+Okay.
+So now what?
+Atomicity says that first these are operation.
+Operation one.
+Operation two.
+Okay.
+So let's say the first operation executed, you debited a.
+So now it would be like ₹5.
+Now during credit some failure happened and this operation got failed.
+The credit operation got failed.
+So as per the atomicity, if any operation fails, the entire transaction will get rollback.
+So entire transaction, whatever the operations are there previous operation will get rollback.
+So means this debit operation which got success will also get rollback.
+So this instead of ₹5 it will again goes back to ₹10.
+Okay.
+So that's what actually.
+Lead to consistency which says that before and after the transaction our DB should be consistent only.
+So my DB was inconsistent.
+State ₹10 and ₹20.
+Right?
+A and B after running the transaction.
+Right.
+Whether it's a successful or failure, doesn't matter, right?
+If it is a success, my DB state would be a would be, let's say ₹5 and B would be ₹25.
+So this state of a DB is also consistent if there is a failure.
+So again my DB state would be consistent.
+Okay.
+So this property consistency says that no matter after and before the transaction my DB should be consistent
+only there should not be any inconsistency like okay the debit got successfully happen ₹5 but credit
+doesn't happen.
+So credit is still ₹20.
+That is inconsistent state okay.
+So both are linked to each other.
+Then there is a something called isolation.
+Isolation says that even if multiple transactions are running in parallel, they do not interfere with
+each other.
+So this is just one operation, right?
+You need to debit a ₹5 credit B ₹5.
+This is just a one transaction.
+There could be, let's say multiple transaction running in parallel.
+There could be another transaction like debit A ₹2, credit B ₹2.
+There could be another transaction credit a debit b something.
+Something x y something.
+So what I'm trying to say is that multiple transaction can run at the same time, but they will feel
+like they are running individually, independently, right?
+In an isolation environment, like nobody is interfering to each other.
+Okay.
+So now let's say that everybody wants to update a transaction one, transaction two, transaction three.
+And if there are any more, all wants to update a so transaction makes sure that one only one of them
+will take up lock on this and one of them only will update it.
+Okay.
+And once the lock is free then only it will be given to another transaction and then it will work.
+So internally transaction make a proper sequence.
+Even though from the outside world we all see that all transactions are running in parallel.
+But it's not right internally.
+Transactional.
+Make use of locking and make sure that the operations are in proper sequence manner.
+So each transaction feels that they are running in isolation and no no multiple transaction interfere
+with each other.
+And the last one is durability, which says that once your transaction, let's say this transaction
+done its operation and it done commit.
+Now once the commit is happened.
+Right.
+This data is persisted means now, even if your system crash, this data should not get lost.
+Okay, so that's what durability says.
+That and all this atomicity, consistency, isolation and durability guarantee is provided by transaction.
+And that's why it is very, very popular into during financial kind of applications, all financial
+applications mostly use uh which DB which have which provide this asset property.
+Okay.
+So generally this is like you begin a transaction, then you have your operations.
+Then if all operations got success you do commit means you persisted into the DB.
+Else if any failure your rollback will happen right.
+Rollback of all transactions and you end the transaction.
+So you have to do this.
+You have to do this And now understand that in your application, let's say you have 100 methods, you
+have 100 methods, or I would say that 1000 methods.
+So let's say that you have 1000 methods which where it is actually touching the DB.
+Okay.
+So let's say that this is update update user.
+So it is actually touching the DB write update bulk user.
+This is also actually updating the DB update user by id something.
+This is by email ID something different different flavors right.
+So all these are actually internally touching the DB.
+So you have to use this transaction for each.
+Now here if you see that your actual business logic is this only which one is your actual business logic.
+Actually this debit from a credit to be.
+But here if you see that the lot of things you have to do just for the transactional just to achieve
+the asset property begin if all success commit else rollback and transaction.
+But if you focus this read only, this is actually your business logic.
+Rest is all the verbose, right?
+This is.
+And if you see that there's lot of duplicate, you have to do, you have to do in this method, this
+method, this method, this is just one class.
+If there are hundreds of class multiple methods in all methods you have to put begin transaction and
+transaction.
+If all success commit, else rollback and then you have to put your operation.
+So this can be simplified through at the rate transactional annotation in spring boot.
+Right.
+So in spring boot we can achieve this through this annotation.
+So if you want to use this annotation you have to add certain dependency.
+So this two dependency you have to add the first dependency is like dependent upon your which DB you
+are using.
+So let's say if you are using relational db then data JPA works fine right?
+From this data JPA you can you can get at the rate transactional annotation, right?
+If you are not using relational DB, you are using NoSQL because there are many NoSQL DB which also
+provide transactional support.
+So this dependency will get changed depend upon the DB which you are using.
+Okay.
+Because you need at the rate transactional annotation, but it is coming from which dependency depend
+upon the DB.
+And now since DB got involved you have to use a particular driver also database driver also.
+So this is the second dependency you have to add.
+So in the form you also have to add database driver.
+Right.
+And in application dot property you have to provide it username and password also.
+So this database driver I haven't uh explaining you here.
+What is the dependency and what things you have to put in application dot property.
+Because in the next topic after at the rate transaction we will cover this in depth.
+For now, like whatever the DB you are using for learning.
+Right.
+Uh, you can just check what is the database driver dependency in spring boot documentation.
+You will get that.
+Add this into the Pom.xml right.
+So that will works out.
+But this two dependency you have to add.
+And also this is optional right.
+At the rate enable transaction management in your spring boot application class main where you are actually
+the main method is there.
+This is optional because even if you don't write, I told you that Spring Boot automatically configures
+so many things for us, so it will add it for us even if you don't write it.
+But just for mentioning that this is also required.
+Let's say that somehow spring do not add it.
+Let's see what would happen then in whatever method you have put at the rate transactional annotation,
+right?
+That will not be read.
+So it's like we have to enable the transaction management actually.
+Right.
+So with that, once this available is spring boot scan for and look for at the transactional specifically.
+But generally it's not added it's automatically added by spring boot.
+Just a heads up okay.
+Now at the transactional property can be applied at class level and at method level.
+If you applied at the class level then it will automatically get applied to all the public methods,
+but not at the private method.
+Okay, and if you are using at the method level, it will get applied to only particular method only.
+So now you are using transaction.
+So only update car.
+Now all this is now your critical section.
+Kind of.
+So all this code inside this is now your critical section right.
+And it would get handled through like begin transaction.
+Right.
+All your business logic.
+Right.
+And if any failure inside this operation rollback will happen.
+And after all successful commit will happen right.
+This will but not for this because this is method level.
+Okay.
+So now transaction management in spring boot uses AOP.
+That's why I told you that AOP is the first prerequisite, which you should know Because here you have
+to know about pointcut and advice, which we have explained in AOP.
+Otherwise, you will not understand how transaction management actually works internally.
+So what happened is internally transaction management, this annotation right at the rate transactional.
+Uses AOP.
+I told you the use of AOP, that AOP told us that hey you focus on your business logic, right?
+And all the verbose like duplicate code.
+I can take care of it.
+And now I already told you that here this is all duplicate.
+You have to write in each and every method which you which is like duplicate, right?
+And only this is your business logic.
+You have to concentrate only this debit from A and credit to B.
+This all verbose is not actually your problem.
+So that's where AOP comes into the picture.
+So All this.
+Now we are using at the rate transaction only.
+But where is actually begin transaction.
+All success.
+Then do commit.
+Else any failure do rollback and transaction.
+Where.
+All this where where are all this code.
+It is present inside a particular aspect.
+Okay I will tell you how how it done where it is present.
+But this verbose code is present there and it has a placeholder join point.
+You already know that from the previous right in the join point it invokes your method.
+Okay, so this is actually your business logic.
+So you focus on this method right.
+Adding all these things AOP will take care of it just by this annotation okay.
+So internally AOP are internally at the transactional.
+What I told you, right?
+It uses AOP.
+AOP has all.
+AOP has Pointcut expression.
+Pointcut expression and advice and advice.
+Okay, so the Pointcut expression which it might be using is like this.
+At the rate within and the path of this annotation transactional.
+So all the package Subpackage right.
+It will look for all the classes and inside all the classes, all the method which has this annotation,
+if any method it found that it has at transactional annotation the match will happen, the Pointcut
+expression match will happen.
+And when the Pointcut expression match will happen, you know that what generally happen is advice is
+run okay, the advice is run.
+And what is the advice here?
+Now once the pointcut expression matches in at the transactional, It runs an around type advice.
+So there are three type of advice I told you after, before and around.
+So the this around type is generally used for transactional right.
+And where is this advice method which is executed.
+It is present inside the transactional interceptor class.
+And this is the your method which is act as an advice.
+Okay.
+So now here if you see I am showing you the code, I have written a very very simple controller class.
+Okay.
+This controller class I have given a name user controller.
+Right.
+And the API is slash API slash update user okay.
+So slash API and I have created a method called update user.
+And this is the get get mapping generally should be post mapping because I'm trying to update.
+Okay.
+This is just an example.
+You can change it.
+So this is the API I wanted to expose slash update user okay.
+Inside this I am calling this dependency.
+I have put an auto wire on user.
+So this so user dot update user.
+Now here if you see that in the update user method I have used at the rate transactional annotation
+okay.
+So now at transactional proper annotation brings me all the capability of asset right.
+So now what how this actually works.
+Where is begin and all these things.
+So you know that first point when you start an application the Pointcut expression will match the Pointcut
+expression.
+Let's say that this is the Pointcut expression.
+Okay.
+So using this Pointcut expression it is able to see that yes, this is a match.
+A method has this annotation.
+That's what we are looking for.
+Now what advice has to run.
+Okay.
+So which is the advice.
+So inside a transactional interceptor class there is this method invoke within transaction.
+This is nothing but an advice right.
+So this will get invoked.
+So now here if you see that in this advice method you will see that first it will create a transaction
+okay.
+Then it will invoke your method right.
+So your transaction is started like this.
+Begin transaction.
+Transaction is started.
+Then you can perform your operation.
+This is the place it invokes your method.
+So this method will get invoked.
+Now you perform your update query.
+Now, if any exception comes, if any exception comes.
+What it will do is it will catch it and it will inside this it will roll back.
+If you go inside this complete transaction after throwing, you will see that it will it will be doing
+rollback.
+But if there is no exception everything is success.
+It should do commit.
+So all success it is doing commit transaction.
+Now no matter if you have if you have hundreds of classes like this user, there is another table.
+Let's say employee.
+There is another table.
+Let's say like order another class.
+You have so many classes and each class has multiple methods.
+1010 methods which is querying the DB, updating the DB right.
+Modifying the DB.
+So you have you don't have to write all this in each and every method.
+You will just use at the rate transactional.
+Now here, if you see that this code is used only at once, right.
+You don't have to duplicate it.
+And this is not even part of your code.
+This is coming from Spring Boot framework itself.
+So this is not so.
+You are just concentrating on your method.
+You are just method got invoked here.
+You are just concentrating on your business logic.
+Okay.
+So let's let me tell you this.
+Like so the same thing I have this controller class okay.
+One simple update method.
+You can change it to post mapping okay.
+Update user.
+It's calling an update user method.
+And inside this update user method this is again at the rate component uh managed by Spring Boot.
+But I have put at the rate transaction here.
+So currently I'm not throwing any exception here.
+Let's say everything got success.
+Now let's say that I am starting my application Okay, so I have started my application.
+Okay, now let's run this.
+So I am hitting this API update user slash API slash update user.
+So now when I hit this now here if you see the first control goes to into this method invoke within
+transaction which is there in transaction aspect support.
+If you see that the transaction interceptor class right, it extends from transaction aspect support
+itself.
+So it's a parent class of transaction interceptor generally.
+So this transaction aspect support is nothing but a parent class of transaction interceptor.
+So here invoke within transaction get invoked.
+Now currently what it is doing is it is creating a transaction.
+After that it will proceed over.
+It will call our method.
+Now here if you see our method call.
+So what now you can run your operation.
+Whatever the operation you have to run update DB whatever.
+Now, what would happen is once the operations are performed, if everything is success, it will try
+to commit.
+So commit successful.
+Now let's say that instead of all success, I am throwing an exception.
+New runtime exception.
+I'm throwing some runtime exception.
+Now let's start an application again.
+Okay, so now I am hitting the API again.
+So first it will create a transaction.
+Once the transaction is begin transaction happen it will try to invoke our method.
+Now our method is throwing an exception.
+So it has been catch.
+And if you go inside this what it is doing is it is doing rollback.
+Okay.
+So actually it does rollback.
+So got it.
+Now internally just by putting at the rate transactional everything magically works out.
+So there is nothing magic.
+Everything code is there.
+But only thing is, it is hidden from us.
+Spring boot is taking care of it, right?
+But internally we are still doing the same thing.
+So now you know how the transaction works.
+Now we have to understand all these things much better way.
+What is transaction context?
+Different types of transaction manager.
+Programmatic and declarative.
+The propagation.
+Right.
+Very important.
+So there are different type of propagation isolation level.
+Configure transaction timeout.
+What is read only transaction and many more.
+So we will go in this depth in next part of this video.
+I'll see you in the next part of this video.
+And there we will cover all the remaining part of the transaction annotation.
+Thank you.
+Bye.

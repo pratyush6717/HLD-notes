@@ -1,0 +1,690 @@
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And today we are going to do the first topic of Spring Boot that is Introduction to Spring Boot.
+And I will cover this thing what problem it solves and its features and advantages.
+So let's start without wasting any time.
+So why Spring Boot exists today?
+What problem it solves right?
+How it is differ from Spring Framework.
+There are a lot of questions about it.
+So to clarify about it, like the complete picture, we have to go a little bit back when servlets were
+popular.
+So back in 2015 and 2016 I worked a lot on servlet, and I know how hard it was to manage the application.
+And currently we are working on Spring Boot and we know that how easy it is compared to servlet.
+So I will not tell you about in depth about it, but at least I will tell you what problem was exist
+in the servlets.
+What problem it solves.
+Okay, so let's go.
+So that's why I mentioned before we talk about the spring or spring boot.
+First we need to understand about servlet and servlet container.
+So these are the foundation for building web application.
+Back in 2013 1415 this servlets are very popular.
+And these are you can say that the foundation for the web application spring and spring spring boot
+internally uses the same concept.
+Right.
+So they servlets actually build the foundation.
+So what is servlet.
+Servlet is a Java class which handles client requests, processes it and returns the response.
+So consider this as a class where you have defined any one.
+Your API input request comes in.
+This is known as sublet.
+Uh, this API got invoked.
+It will do some processing and return the response.
+So this actually, which handles the request, processes it, and returns the, uh, send.
+The response back is known as sublet.
+And what is servlet container?
+A servlet containers are the one which manages the servlets.
+So there can be so many servlets.
+So servlet containers are the one which manage this servlets which manage this servlets.
+Okay.
+So I will come to this diagram.
+But let me first tell you in a very easy manner how we used to write a web application.
+Very simple.
+Only one you can say that one class.
+I will tell you.
+So this is how servlet used to look like okay, so I have defined my API here.
+So here at the web servlet slash demo servlet right one.
+Demo servlet one.
+So this is you can say that my API and I extend it with HTTP servlet.
+So a one servlet can have only one do get do put do post do delete.
+Right.
+Uh these are the methods which we have to override and provide the implementation.
+So here if you see that this is the servlet.
+And in this method any Get request which comes it will come to this.
+So it will get comes to this I am doing processing and ultimately will send the response if required.
+So currently I am void no response.
+So any response will go.
+So HTTP response will go in the this response I can set it here.
+Okay.
+So this is known as sublet.
+So this is I make another sublet because we can have more than one sublet.
+So that's why I created another sublet and give them the name demo sublet two.
+Okay.
+So in this sublet also I can have do get do, put, do post do delete right and do something and return
+if required.
+So I can have multiple servlets.
+So there is something called web dot XML.
+And this is the culprit actually which makes everything too complex.
+So what in the web.xml there are so many things we use to do filtering and.
+All right.
+But let's keep aside.
+Uh, the one thing which we have to do is the servlet mapping.
+So what servlet mapping is that.
+So this is one servlet demo servlet one.
+Right.
+So this is the servlet name demo servlet one.
+What all URL this will handle okay.
+What all URL this will handle.
+So let's say slash servlet one this if if customer hit this URL let's say demo servlet one okay.
+So it will come to this servlet.
+So this servlet will handle.
+So that's what it's mapping is if user invoke this API slash demo servlet one slash first endpoint some
+endpoint which servlet will handle.
+There are multiple servlet.
+Servlet one servlet two servlet three servlet 100.
+So if customer hit this API which sublet will handle.
+So I have mapped it to sublet one this servlet.
+So that API will come to here this sublet one.
+And after this it will go inside a particular method.
+If user has hit the get HTTP request get so it will go inside.
+Do get and check the request info.
+Okay, first end point slash demo servlet one and user hit first end point.
+So okay this elsif will get executed okay.
+And if user hit this API if user hit this API.
+So in the servlet mapping Web.xml it has been mapped to which servlet servlet demo servlet one.
+So it will goes to the demo servlet one.
+And let's say it is again a get call.
+So it will goes to the do get.
+And then it will check all the if condition.
+Okay.
+Uh this is the this else if condition got match slash second end point.
+So this this processing will start.
+So you got it.
+If if.
+the put API got invoked.
+Put slash.
+Demo.
+Servlet one.
+So what would get invoked?
+Okay.
+Demo servlet one is the API which is mapped to this API.
+This servlet.
+Okay this servlet will invoke this is the put.
+So it will goes to do put and then it will see okay this is the path and do the processing.
+So similarly another mapping I have done is for my second servlet.
+So this is how servlet used to work.
+Now let's come to this diagram.
+So when input request comes in.
+It first has to goes to the Tomcat.
+This is the server which is also known as actually your servlet container right.
+This is not service container.
+My bad.
+It's servlet container.
+So Tomcat used to know also known as servlet container.
+Okay.
+So we have to deploy our application here in the Tomcat servlet container.
+So our application has all this servlet servlet two and all this.
+We will convert it to war and we will deploy it here in the Tomcat.
+Now what this servlet container will do I told you that servlet containers are the one which manages
+the servlet.
+So what it will do is at the first it will invoke use the Web.xml and see that hey user has invoked
+demo servlet one slash first endpoint.
+Whoo!
+So now this servlet container will use this Web.xml this mappings and identify which servlet has to
+be invoked.
+So in Web.xml it will check that.
+Okay.
+Uh, demo servlet one first.
+Endpoint.
+Yeah.
+Demo servlet one.
+First endpoint.
+This one.
+Which servlet gonna be handle?
+This is the name.
+Servlet name.
+Demo.
+Servlet one okay.
+So this is the name demo servlet one.
+Which class?
+Demo servlet.
+So I have kept the name and class name same.
+So this is the name you can give any name.
+So with this name it will find out the mapping class.
+So this class will get invoked.
+And this class is a servlet class.
+So it now know which servlet has to invoke.
+And then ultimately it calls the servlet right.
+So it will call this demo servlet one right.
+That particular method because it knows that it's a get call.
+Right.
+So it will invoke its do get method.
+And now this sublet would should be able to handle it okay.
+So this piece of code would be executing it.
+And it will send the response Once back.
+So you got the house I used to work.
+Now there are certain problems in it.
+Which Spring Framework solves, right?
+Spring framework says you can say that is a family which has lot of features, right?
+And you can say that even Spring Boot is comes under this spring framework only.
+Okay.
+But I would say that before Spring Boot comes there is something called spring MVC.
+This comes before Spring Boot okay.
+So we will come to Spring Boot.
+So to solve the issues of the sublet I will tell you the issues.
+Spring MVC comes into the picture.
+So what all problems it solves.
+So Spring framework solves challenges which exist with servlets.
+What first removal of Web.xml.
+This web.xml becomes too big.
+So because see, when you work on a production level application where it takes handles millions and
+billions of requests.
+This one servlet two servlet, there can be hundreds of servlets.
+And to have the mappings of those hundreds of servlet, it become too big, right?
+Also, this web.xml holds lot of information like filtering.
+Any request comes it has to go through filter what sequence of filtering it has to go that also maintains
+over here.
+So this Web.xml is contains lot of information and it's become very difficult to manage and understand
+it.
+So spring framework introduce annotation based configuration.
+So removal of web dot XML completely makes developer life lot easy because now developer can work through
+annotations.
+Okay.
+So the second advantage of Spring framework is inversion of control.
+Very important IOC.
+So what IOC definition is IOC is more flexible way to manage object dependencies and its life cycle
+through dependency injection.
+So sometimes you say that hey dependency injection.
+And sometimes some people say IOC both are same.
+So generally you can say dependency injection is an implementation of IOC okay.
+So sometimes somebody calls IOC, sometimes somebody say dependency injection but they both are same.
+Okay.
+So what is inversion of control.
+Uh I'll tell you.
+Here, let's see this example.
+Then we'll come back to a more advantages.
+Okay.
+So here if you see that consider this example simple Java class okay.
+In this simple Java class I have created a payment class.
+And I this payment card is depend on this user.
+So I am creating an object of this user.
+There is a simple method get sender details ID.
+So what I'm doing is I'm using this object sender calling its method get user detail and passing the
+ID.
+So what it will do is it will invoke this user class, this method, pass the ID and it will fetch certain
+data of this ID and maybe return it or do something.
+Okay.
+So what is the problem.
+You see I see there is one major problem is very tight coupling.
+So there is a very tight coupling between payment and user class.
+You can ask me, right?
+Hey, what do you mean by tight coupling here?
+So see, this is I can tell you what.
+Like what I mean by tight coupling.
+Suppose I want to write unit test cases for the payment get sender details method.
+You already know that unit test cases means only if.
+Let's say, if I am writing a unit test cases for this payment class.
+Right.
+So I should have the capability to test this method only this method.
+If this method is invoking some outside different class method, I should be able to mock it.
+Mock it in the sense okay sender dot.
+If whenever this is called, let's say I should always get this value.
+So I mocked this.
+That's what unit testing is, right?
+You should be able to mock the data which you are not testing.
+Okay.
+So as in the mock testing of this class and this method, I should not test this.
+So that's why I should be able to mock it.
+But will you be able to mock if you are creating a new object here?
+If you are creating a new object here, it will definitely call this for sure.
+So how you will mock it?
+There is no way, right?
+So definitely writing a unit test cases would gonna be a very, very difficult.
+So how the inversion of control or dependency injection solve it.
+So in spring framework again verse don't worry about this annotations.
+I will explain the annotation in the upcoming session, but this component auto wired.
+What is the usage of this component?
+Just keep aside first, but just understand the concept right.
+So with the dependency injection what problem we solve is.
+So now here we have used certain annotation which tells the spring that hey you manage it.
+Okay.
+So here if you see that user I have given at the rate component.
+And now this, I handle it to the spring.
+Hey you manage this bean okay.
+You manage this class.
+Similarly payment also I have created at the rate component.
+And this class is also now get managed by spring.
+And here I have put at the rate auto wired.
+So auto wired tells the spring to resolve and add this object dependency.
+Whenever this class get initiated.
+Okay, so now whenever this class get initiated, what spring will say that okay, add the auto wire
+is there means I need to create an object of it.
+Okay.
+So it will resolve it.
+Spring will resolve the dependency.
+It will create object.
+We are not creating object here like this.
+Okay.
+So what advantage we get here.
+The advantage is let's say that first unit test cases.
+Unit test cases I can mock it.
+I can tell spring.
+Hey create a mock data for it.
+Mock it.
+Now during runtime, spring will create a mock object of it.
+And using that mock object, I can say that, hey, whenever that mock mock user object dot get something
+has been invoked, do do this.
+Okay, so what happen is that now we have the control okay.
+So here I haven't hard coded it like new user which always create a new user I.
+Now this is getting managed by spring.
+And this process is known as dependency injection.
+Unit testing is much harder in servlet.
+And I already told you how it become easy in the spring through dependency injection.
+We have already seen the process difficult to manage rest API as you already see that.
+Each servlet can have only one get method one put method one post method Write one particular servlet,
+but let's say there can be for this servlet.
+Let's say there could be ten APIs which has to handle.
+So generally this is how it should.
+We used to do if else if else if okay.
+So in this path which is handled by this servlet, whenever this path comes do this.
+Whenever this path comes for the get do this whenever for get this path.
+Come do this.
+So it's not very you can say that, uh, flexible way to handle the, uh input request which is coming.
+Right.
+So path mapping makes code little difficult to understand.
+That's what I used to feel, right.
+So spring MVC provide an organized approach to handle the request.
+And it's easy to build RESTful API.
+I'll tell you like very very simple.
+We are also using it.
+right are very easy way.
+So here if you see I have also taken an example this one.
+So we have like at the rate get mapping this path.
+Now you can have another at the rate another get mapping.
+Let's say at the rate payment some certain my endpoint certain endpoint let's say one.
+Right.
+So you and it's method public string.
+Public string.
+Some let's say method.
+Now do something.
+So in one class we don't have to have like all the get API's.
+If else if else if else you can have a proper.
+If there are ten get API's you can have ten mappings properly.
+So it's very easy to understand.
+And you can say that or more organized way of handling the request Okay, so it's easy to build RESTful
+APIs.
+So there are many more advantages of a spring framework.
+And the spring framework brings a lot of other advantages.
+I have already told you that integration a lot of integrations are present.
+Okay.
+Developer can choose different combination of technologies and framework which best fits their requirement.
+For example, for unit testing you can choose JUnit.
+Mockito integration is available in spring.
+You can start using it.
+Let's say for data you can use hibernate JDBC, JPA lot of integration available.
+If you want hibernate based upon your specific need, go ahead, use it.
+If you want JDBC, go ahead, use it.
+Similarly, for asynchronous programming, caching, messaging, security all integrations present.
+This will take your picture.
+Clear your picture completely okay about this spring framework.
+So request comes in.
+Again like us.
+Same here.
+We have something called servlet container.
+So Tomcat is the servlet container.
+We have to deploy our application here.
+Remember the word I am saying we have to deploy right.
+So whatever the application we have we have to create a war.
+Deploy it here in the servlet container.
+Tomcat okay.
+Why I am focusing more because it will.
+It's an advantage of spring boot.
+I'll come to that.
+So in the spring framework.
+Or you can say that in spring MVC earlier when request comes in it goes to the servlet container and
+servlet container which is Tomcat.
+We have deployed our application.
+Then it the request goes to dispatcher servlet.
+It is also known as the first controller.
+Also known as first controller dispatcher.
+Servlet.
+Okay, so in spring these classes are where they're these classes, right.
+Where we have exposed the APIs.
+Right.
+This is known as controller right.
+So we can have so many controller classes right.
+Let's say I have this uh payment controller.
+Right.
+I have this payment controller class.
+I have a put the annotation controller to tell the spring that this is the controller class.
+So any API will come.
+You will find certain mapping here.
+So similarly I can have so many controller class.
+Let's say that class order.
+Order controller I will also have annotation at the rate controller here.
+Sales controller something so so many controller class there.
+So which controller class to invoke for this API.
+So let's say that the request comes slash uh demo slash endpoint one.
+This API comes now which controller will handle it in the servlet.
+This is going to do that stuff.
+Servlet container.
+But in spring no spring there is something called dispatcher servlet.
+So this servlet container pass it to dispatcher servlet all the endpoints.
+Now this dispatcher servlet which is also known as first controller will decide which ultimately controller
+I have to pass this require and how it will do.
+So first it will choose the controller and it uses handler mapping.
+Okay So here we are doing request mapping here.
+If you see these are the annotation I told you we are not doing web.xml.
+We are not creating Web.xml in Spring Framework annotations.
+We are using it.
+So you can just see that internally it might be doing certain XML configuration and all, but for us
+it's a simple annotation that we have mapped this class.
+We have mapped this payment controller class.
+To handle this request mapping at the rate payment API okay.
+So like this mapping we have done.
+So first dispatcher server dispatcher servlet uses the handler mapping to know which controller to invoke.
+Now it knows that okay uh for example payment API.
+Now let's say instead of this demo it is slash payment API.
+Now, based on this handler mapping it knows that okay it has to invoke this controller payment controller.
+Okay.
+Now it has to create an instance.
+Right.
+Because I have because here in the spring we cannot you won't find anywhere uh equals to new equals
+to new.
+So dispatcher servlet is now going to create an instance of what.
+Create an instance of your controller class payment controller.
+So now it will create an instance of your payment controller.
+And it will use it will use.
+Or you can say that the leverage IOC inversion of control now.
+Now what it will do is that okay I need to create an instance of payment controller.
+But for for that I have to also resolve the dependencies if there are any.
+So it will see that okay IOC now it will goes to the IOC.
+IOC uses dependency injection.
+And with that it will say that okay at the auto wire means this payment controller is dependent on this
+object.
+I have to resolve it.
+So now IOC will create an object for this and inject it right.
+So it will on the fly.
+It will now create an object of it and populate it with the object.
+Okay.
+So now the instance is created for this.
+And all the dependencies are resolved for this which are where this class depend on us.
+All the auto wires are resolved.
+By whom?
+By IOC right.
+All the dependencies are injected.
+Now what it will do is it will dispatcher will invoke the controller method, particular method.
+So now that particular method Let's say the API was uh, end point is let's say slash payment API slash
+payment.
+This is the request.
+So it will say that okay slash payment it will invoke this particular get mapping.
+Okay.
+So here if you see that these mappings helping the dispatcher servlet to determine which controller
+and which method to invoke which controller and which method to invoke.
+Okay.
+So is it clear like when I'm saying handler mapping.
+What is what does it mean.
+This mappings request mapping get mapping.
+These are ultimately helping the dispatcher servlet to determine which controller to call.
+And in this controller which method to invoke based upon this API which is coming.
+It will do this mappings and find out the controller and method.
+So ultimately in the controller method.
+So this will now process it and then ultimately return it.
+And it goes.
+So spring framework is clear like where the IOC comes into the picture actually.
+Right.
+Okay.
+So till now you clear that from the journey from servlet to spring framework, which is spring MVC.
+You know the advantage.
+Now why what's the need of Spring Boot now.
+What's the use of spring boot?
+But before spring boot, let's see the one example of spring MVC.
+So that will clarify when we will see the advantage of a spring boot.
+So this is a very, very simple spring MVC application.
+You can say that okay I have created a controller class one controller class like payment controller.
+Put again ignore the annotations.
+We will see the annotation in depth.
+But for now just remember this is one of the controller one.
+One of the controller class where kind of a similar to servlet where any request comes in, processes
+it and return it.
+Okay.
+And these are the mapping in servlet.
+We were doing a mapping in Web.xml in spring MVC.
+These are the annotations we are using and mapping whenever any API comes in.
+So these mapping helps which controller should handle it and what method and dispatcher servlet is going
+to use it.
+So this class is created.
+This is something called Pom.xml where we have written the dependencies.
+So this is first dependency.
+Let's say we are creating a web application web app spring MVC.
+So we have created its version.
+Then you want sublet.
+You have created its version.
+Added dependency.
+Let's say if you want unit test cases JUnit, you have added its dependency with the version.
+So for simpler perspective I have written three dependencies.
+Uh, you can write into the pom.xml.
+This is Maven, right?
+So I have written three dependencies.
+The another class is Appconfig.
+So this class in this class generally in the spring MVC we have this annotation important where what
+this tells is that it loads lot of dependencies which spring MVC is required.
+Right.
+So it loads all of it.
+Then another annotation you have is at the rate component scan.
+So we provide a package.
+So what is this?
+Only within this package you are telling that hey spring only within within this package.
+And below you go and manage whatever the controllers or whatever the controllers.
+I am creating it, right?
+Controllers, beans and all.
+So we are telling spring to do a scanning whatever because spring has to search right?
+The controller and everything.
+So we have to give it a path from where it has to start searching for the component scanning.
+So we can provide it here.
+So that's where it's known as configuration classes because it load configuration for spring MVC which
+is required to work.
+And also components can be define it here.
+And I told you that dispatcher servlet is used in spring MVC.
+And this dispatcher servlet is the first controller.
+All the requests from servlet controller comes to it and it.
+It performs all this stuffs.
+Select the controller.
+Create an instance.
+So that's why there is one called dispatcher servlet class.
+We have to create like this in spring MVC.
+We have to extend this dispatcher servlet this one.
+And we have to provide this three methods.
+We have to override this three methods provide what is the conflict class.
+We can provide it there.
+This is our conflict because this class name can be anything right.
+So we have to give like what is the conflict class.
+So any dependency it required it can load it enable MVC right.
+This is an annotation.
+So this annotation load lot of spring MVC kind of libraries internally then servlet mapping.
+So we have told that any request coming with this slash itself, you have to handle it right.
+So those also we have mentioned in this dispatcher servlet.
+What all requests we it has to handle.
+So this means all okay so this if you see that even a basic application I am writing I have to have
+one controller, this form, this config and this dispatcher servlet.
+And you already know what is the dispatcher servlet controller and IOC and all.
+So this spring framework is clear.
+Now you can tell me, hey, why Spring boot is required.
+What problem is spring boot solve?
+Why it exists today.
+Spring boot solve challenges with exist with spring MVC see three big things.
+First, dependency management here.
+If you see that in the spring Pom.xml spring MVC, spring MVC, if you focus a little bit, you are
+adding a dependency, whatever you require, and you also have to provide the version.
+You also have to provide the version.
+Now let's say that in future you have to upgrade the version of J units from, let's say four point
+13.2 to, let's say 5.1.2 something.
+But will this version work with this version also?
+It might, it might not, because you know that the dependencies should be compatible with each other.
+So this is one problem with the spring Dependency management.
+So no need for adding different dependencies separately and also their compatible version heading springs.
+Keep it easy.
+So spring boot, keep it easy.
+You have to just give like this starter web and starter test.
+So this web already internally it will load whatever dependency it required to create a web application.
+This will load whatever the dependency it required for testing.
+So it will automatically add the dependency for you.
+And here also if you see you don't you are not defining any versions also.
+So you don't have to worry it will automatically load those version which are compatible with each other
+and internally it will load all the dependencies which might require for creating a web application.
+Here you might require 1520 dependencies.
+I have written only three, but it might require 1520.
+But here you might only need two.
+Internally it will load all in here you need.
+Is that this parent?
+That's all.
+What?
+Spring boot version you are using three version.
+That's all.
+You only you have to define the spring version here.
+Starter.
+Parent version.
+Rest all this thing.
+You don't have to define the version itself internally.
+It will keep loading.
+Keep adding the version.
+It is now spring boot headache.
+So dependency management is the first advantage of spring boot over spring MVC.
+Okay so understand this that this is your spring MVC.
+This is your spring boot.
+So all the benefits of spring MVC is also present into spring boot plus additional something.
+So dependency management is same thing.
+It is doing the same thing.
+Spring boot is doing the same thing as spring MVC.
+But now it's a little bit abstracted to us.
+Second thing is second advantage is auto configuration here.
+If you see that this dispatcher servlet, this is kind of a configuration right.
+This class is kind of a configuration.
+This class is also a configuration web app config.
+Right.
+These are a lot of configuration class.
+So that's why the another advantage of spring boot is auto configuration.
+No need for separately configuring dispatcher servlet App.config.
+You don't need to define component scan web and enable web MVC Spring boot internally add by default
+values for it.
+So Spring boot internally will add by default values of at the rate component scan.
+So wherever your application start application exists main method.
+From that package onwards it will start.
+So what it does is, uh, there was a term called, if I remember correctly, there was a term called
+open, open opinion.
+Opinionated.
+Uh, just double check once.
+I think that's why we call that spring boot has opinionated nature means it will give opinion.
+So opinion means it.
+Choose by default.
+Hey component scan, I am choosing the package as, uh, from wherever your application main method
+starts.
+That package I will choose.
+So if most of the time you can go ahead with this spring boot opinion.
+Okay, so that's why you don't have to write this.
+But let's say that if you are not agree with Spring boot opinion or by default, you can anyway add
+this your own.
+Also, I will tell you you can add it, but that's why it is known as auto configuration means Is no
+need for separately configuration.
+Configuring all this dispatcher servlet.
+App.config components can springboot and internally by default, but if you want you can.
+In this spring boot class you can add component scan if you want to change the default values right.
+We will see that at the rate component scan.
+What does it mean and all.
+Don't worry about this, but understand what is mean by auto configuration.
+And there is a term called I think opinionated.
+That's the same thing.
+Spring boot gives the opinion that I am using this.
+So if you are agree with this opinion you don't need this configuration.
+It's auto configure.
+If you deviate from its opinion you you can write component scan and give your package from where to
+start.
+So only one class you required here in Spring Boot is this spring boot.
+This annotation is spring boot application annotation.
+So this annotation itself internally has at the rate enable web MVC at the rate component scan dispatcher
+sublet all the configuration auto configuration are.
+You can say that hidden inside this one annotation itself.
+And this is your main method, the start of the application.
+Okay.
+So second advantage is clear auto configuration.
+There is.
+Now you don't need to create this class.
+You don't need to create this class.
+You don't need to do add the rate component scan.
+Everything is taken care by Spring Boot itself.
+So now it's very clean class one.
+And the third very big advantage is embedded server.
+So from if you remember I was focusing on the term that we have to deploy.
+Or we have to first create a var of our application and deploy that into the Tomcat, which is a servlet
+container.
+Okay.
+In both Servlet and Spring MVC.
+But in spring boot in spring boot server is already embedded.
+You don't have to generate a var.
+You don't have to take a var and deploy it to Tomcat.
+Servlet container server is already embedded inside it.
+It automatically does it for us.
+We don't have to do it right.
+Servlet container is already embedded.
+We don't have to do all this stuff.
+Just run the application.
+I will tell you how.
+So what is a spring boot?
+In simple term it provide a quick way to create a production ready application.
+It is based on spring config, spring framework only spring MVC it support convention over configuration.
+I already told you that auto configuration part, right?
+It uses default values for configuration.
+And if developer don't want to go with convention, they the way something is done, they can override
+it.
+Convention means the way something is done.
+Default values.
+If you don't agree with the default values, you can always override it.
+That is, convention over configuration means so it support convention over configuration.
+It also helps you run an application as quick as possible right?
+So now this is very simple here.
+If you see that Pom.xml is very simple here parent dot parent is there where with the version.
+But now it's dependency here.
+If you see that only two dependency you don't have to add more.
+You don't have to add version also.
+So you don't have to worry about dependency management.
+There is nothing no configuration.
+You created one controller class I have defined a controller class, I have defined the mapping which
+API are one.
+Get call for sampling and this is the start application.
+I told you why it is required all the auto configuration here hidden inside it.
+Now.
+Now when you start this application, this method and if you on the chrome if you just call this if
+the client is invoking this slash my API slash first API Springboot is nothing but a spring MVC, right?
+The same dispatcher servlet is hidden to us, but internally dispatcher servlet will use this mapping.
+It will identify okay, my API, which controller?
+Okay.
+My API is mapped to this my controller okay.
+First API which method this get method will get invoke and it will print this hello from concept encoding.
+So dispatcher servlet will create an object of it and it will pass it to IOC.
+If there is any dependence to resolve any dependency, if there at the rate auto wire, nothing is there.
+So no need of IOC.
+It just simply create an object of this and invoke this.
+Okay.
+So let me show you here.
+This is the Spring boot here.
+If you see I am just simply running run here.
+If you see that tomcat is started so I don't have to create var, I don't have to deploy automatically.
+Server started on this port.
+Now we can just simply go and in the Chrome we can add this API localhost.
+This is on this is the port where it started and this is the API I am hitting.
+So this is the API.
+I have written controller my API and this is the endpoint first API.
+If I press enter center.
+Hello from concept encoding.
+Don't worry about this setup of this project that we will see in the second part or second session,
+but focus on the points like why Spring Boot needed at the first place.
+That was the big I can tell you just three advantage of this embedded server auto configuration, dependency
+management.
+And I can simply cover this whole video in 15 20 minutes itself.
+But without understanding the servlets, what problem exists, what spring MVC solves it, and what
+are the problem in spring MVC itself, which Spring Boot solves?
+Without that, it's a partial knowledge, but I hope you like it and you will share it with your connection
+if you think it will help them.
+So thank you for that and see you in next video.
+Bye!

@@ -1,0 +1,583 @@
+Hey guys, on this side and welcome to the next video of Spring Boot.
+So in Spring Boot I wanted to cover an exception handling, but I feel that before learning about exception
+handling, we first need to understand more better about response and different type of response codes.
+Okay, so today I will cover an in-depth about our response in Spring Boot.
+So response generally consist of three parts status code header and body okay.
+So status code is nothing but an HTTP response code like 200 500 etc. we will see.
+Header is something which is an additional information we can send, and body is the data which need
+to be sent in response okay.
+So to send this response in spring boot we can use response entity object.
+So here if you see this response entity it's a generic class.
+So whatever the type you will pass.
+That type is of this body.
+So here if you see if I search for response entity class in this response entity this t if you go to
+the parent class, this T is nothing but a type of a body okay.
+So if if you are putting this as a string then in the body you can only put a string.
+If this is a particular class object, you have to put the same object of that class only.
+So take this as an example.
+So here I have creating a simple inside of a controller.
+This is my simple method which is a get mapping get user.
+So this get user here the response entity.
+This is I am returning it and the type is string, so means my body would can only be sent as a string.
+So now here if you see in the response entity object response or entity dot status okay, so this is
+a static method I am sending what should be the status.
+So each status denote a particular uh like what exactly happened to your request.
+So for this status I am saying that okay request is okay, HTTP status is okay.
+And we can pass the header.
+So here if you see I am passing like this you can create an HTTP header object.
+And inside this HTTP header you can put a name and value.
+What is the header name and header value.
+So some additional information which you like to add okay.
+And then dot body.
+And here the body type is your string.
+So here we will put a string here.
+So I just put like my response body object on go here.
+So this is an string.
+So this is a how we can send a response back from our controller.
+But here if you notice that.
+So here we are when we are doing response entity dot status dot header dot body.
+So this body should always be at last right.
+So body should be last.
+So actually it's kind of using builder design pattern okay.
+So here if you see when I am doing dot status.
+So dot status method actually returning what is the return type of status.
+Body builder okay.
+So means it is still not a final final status which we have to send.
+Then I am doing dot header.
+So what is the return type of header is B which is nothing but a bodybuilder if you go and check.
+Okay, so again, this is a builder pattern which we are using.
+And when we do dot body.
+So here if you see the response of the body actual is the response entity final object which we actually
+has to return.
+So response entity.
+So that's why you can't do like set status dot body and then dot header.
+No that will not work.
+Right.
+So I think you already know uh builder design pattern which I have already covered in my Design Patterns
+video.
+So I hope this is one practical example where a spring boot is using builder design pattern.
+And that's why dot body would always comes at last.
+So what to do when we don't want to add any body in the response?
+There are many scenarios like delete use case where we don't add any response in the body or any data
+into the body.
+So what we do.
+So here you can't do that.
+Hey Dot body and do something.
+We can't do that right.
+So here we can use this method build.
+So here if you see the build method actually also returns the response or entity.
+And if you go inside build method you will do see that it will do dot body.
+And inside it will put null only.
+So here if you see if in the response entity, if we see build method what exactly is doing.
+So here it see that build method.
+What exactly is doing dot body.
+And it just putting a null.
+And ultimately the final response which we have to send okay.
+So here if you see the same method I am putting dot status dot header.
+Now I don't want specifically to put here dot body null so I can use it dot build.
+So internally it will put my body null.
+Okay.
+So that's where somewhere you will see dot build and somewhere you don't find.
+Hey there is no dot build.
+So why.
+So in that case you can already know that if dot build is used means there is no body and if body is
+present, you don't need build method because body itself generates a response entity for this.
+Okay.
+So now here if you see just see this one I am creating, uh this is my controller class.
+I am doing get mapping.
+Now here I am creating an object new user.
+I have created one object and I am returning that object itself.
+Now here, if you see, I am not putting response entity here.
+That's also you can use.
+So what happen is spring boot internally wrap it around your response or entity.
+So internally it would be like response entity user okay.
+So usage of response entity is not like a mandatory.
+You can directly return the object whatever you want it to do.
+And ultimately internally Spring Framework will do a wrapping of this okay.
+And here if you see I am not sending any status I am not putting any header.
+So what should be the status by default status would get set here is 200 okay.
+So that would status will go.
+But if you have to specifically set an status you have to use response entity okay.
+Otherwise if you are not using by default would go 200 okay.
+Okay.
+Now there is something called at the rate response body.
+So this is very interesting.
+And many times this is we don't even consider it right.
+But it has very important meaning.
+So let's see that when we return plain string or Pojo directly from the class like here.
+In this case I am returning Pojo right then response body annotation is required.
+But now you can say that hey here you haven't put a response body here I haven't put response body here.
+Then how it is working now you are saying there whenever we are directly returning any plain string
+or any Pojo class something, then at the response body is required annotation is required.
+Why?
+So first of all, we need to see why it required it.
+It is required because it tell to considered value as response body not as the view.
+So this whatever the object which I am returning considered as a body, the response body not as a view.
+Okay.
+So now let's see an example.
+In the above example, we did not use at the rate response body.
+As I told you right here, if you see I am directly returning a user an object, and here I haven't
+used at the rate response body, I haven't used it because this at the rate rest controller.
+If you go inside it and check I have I went inside this rest controller.
+If you go inside and check it has this at the rate response body.
+So by default with all methods within this user controller which has this annotation with all method,
+this response body will get appended.
+Okay, so you don't need to specifically add this annotation because in the rest controller itself,
+this response body is present.
+But let's say that you are using at the rest controller.
+You are not using Rest controller, you are using add the controller.
+Then will this code work?
+Now here if you see that I am using add controller, now I am directly returning a string okay or any
+object right?
+Will this work?
+Now here.
+If you try to run this it will throw an error.
+Not found.
+What?
+It not found what it is trying to search.
+So here you are trying to return a string.
+So what?
+Since this controller do not inherit like at the response body.
+So by default this spring boot will be considered as a name of a view.
+Okay, so Spring Boot will try to look for some file with this name.
+Okay.
+And since there is no such file exit it says that not found.
+Maybe some JSP files are right or something.
+So it tries to render like hey where is that view present.
+So that's where with at the rate controller you have to specifically use response body.
+You have to tell that hey what I am returning considered as the response body, not as a view.
+Okay.
+Now now we know that response entity what it is.
+We have to be very clear with the response codes because this is not only important for learning exception
+handling also, and also in your day to day project and from the interview perspective also this is
+like very very important.
+So we have five categories 1X2XX, 3X4X and 5XX.
+So 1XX is very less frequently used.
+To be honest.
+It is mostly informational.
+So information is like when the client and server are talking right.
+And server has to send some information to client.
+Then server use this response code and it is also called as.
+This is like a intermittent code.
+So server when tells to the client some information this is not the final response.
+This is not the final response.
+Server might still be processing and then later it might return a final response.
+So this one is just an informational one.
+And it could be an interim interim response code, not the final one.
+Second one is success, which is like whenever the request is success Then we use two x return code.
+There are so many return codes.
+I will tell you three x axis for redirection.
+When you want client to look at some other API or some other resource to get the data.
+For X is like a validation error, like something is not either client did not send the correct correct
+data to you, or there is some business logic failure and but this is an expected expected failure.
+This request should fail.
+Okay.
+So that's why it's like a validation failure.
+This is this five x is server error which is like all this request should get success.
+But because of some issue at the server null pointer exception typecast exception something it got failed
+which should not be.
+And we should always make sure that our component should have five errors as low as possible, so I
+will cover the one axis at last.
+So let's start with two x axis.
+So here if you see that request received from client is processed successfully.
+So here if you see I have added five most frequently used status code of 2X2 hundred.
+Reason is okay.
+So this is mostly used in get method and post method.
+So here in the get method your request is successful and you are returning the response body.
+So response body exists.
+And in the post call when the it's an idempotent call.
+When I call mean.
+Let's say that post call one.
+So post is like addition of new user.
+So now let's say that new user is added.
+User one added.
+Now again.
+Duplicate call.
+Duplicate call is coming.
+Now what happen is it will not insert a new new row.
+So what it will say is that.
+Hey, it's an iodoprotein.
+Iodoprotein means the same row is already present.
+So it will say 200 means no new row is created.
+But request is success and it will return the same data for this one.
+Okay, so no.
+When it is an idempotent, no new row is created.
+Okay.
+The same row is used and the data is returned and it will pass as 200 okay.
+So during post call add call we returned 200.
+And it yes it has response body 201 is created.
+It means created and it is mostly frequently used with the post API request is successful and new resource
+is created.
+So when the first call come post.
+So there we created a new row in the DB and that's where we returned 201 means some row is created.
+Okay 202 accepted.
+So here it is.
+Also most frequently used with the post request is successfully accepted by the server, but processing
+is not yet completed.
+So mostly like batch processing like export import we use this.
+So what generally happen is client invoke an API.
+Let's say add export.
+Now the server method simply return your 202, this one accepted and before returning 202.
+It might have spawned a new thread, some new thread and continuously processing it.
+Now this this task might take some time.
+Ten minutes, 15 minutes, some exporting, importing huge data we don't know.
+So it's like accepted but not yet completed.
+204 no content is your delete operation request is successful and we are not returning any data in the
+response body.
+Okay.
+If data is returned in the response body, we have to send 200.
+If data is not returned in the response body, 204 should be returned and request is successful.
+Means like no post processing is happening, everything is completed like all the processing is completed.
+Like this 206 partial content.
+So this is also a post API mostly used.
+So generally when you are performing bulk operations like bulk additions, I am trying to do bulk addition
+of let's say 100 users.
+Now, out of 100 users, 95 got passed and five requests got failed.
+So what shall I tell to the client whether it's a request is success or fail, then we can tell that,
+hey, 2006, it's a partial content.
+Like partial.
+It's a partial, not fully content.
+Right.
+So this is how we can use 2006 as a partial content response code.
+This is just one example.
+Then we have three which is called redirection.
+Client must take additional action to complete the request.
+So now the action item is on the client.
+So mostly frequently used when we migrate from legacy API to the new API.
+Okay.
+So here let's say that 301 which is a moved permanently.
+Okay.
+So now here what happened is it says that all requests should be directed to the new URI.
+The old URI which client is trying to access is now moved permanently.
+So here I will show you one example.
+So in this one here, if you see that, let me zoom it a bit.
+Okay.
+I hope it is visible.
+So here, if you see the very simple controller class I have one get mapping old get user.
+So this is an old API.
+Now in this case I am returning.
+What I am returning is response entity set dot status is moved permanently.
+So move permanently is your 301.
+And in the header I am returning location.
+This is the header name and the value.
+I am putting the new API value slash API slash new.
+Get user this one and inside this get mapping I am just uh returning response entity status is okay
+and body is success.
+Simple.
+Okay.
+So now here if you see from the postman, if I am running, if I am hitting old get user.
+So here.
+If you see I am getting success now you can ask right?
+Hey you are hitting old get user API which is actually not not there.
+Body is empty, it's not returning and status is moved permanently.
+How come you are getting status 200?
+And if you see that the response is success, which is actually my new API body actually success.
+So how come this postman automatically redirected me to the new API when I'm just hitting old get user?
+So here if you see that when we are so all the clients know this, understand this status codes.
+So when I said that move permanently means some action is required from the client.
+What action?
+In the header.
+I have put a location and the new API.
+So if in the postman, if you go to the settings there.
+If you turn it off, this automatic follow redirects.
+If I turn it off now, if you run it here, if you see.
+Do you see any response.
+No.
+What is the response code?
+You got 301 moved permanently.
+Now.
+Now in the header this location is there which actually client follow.
+So you got it.
+So client understand this right okay.
+If 301 is coming then I have to go look at the location in the header.
+And whatever the new API I will follow it okay.
+Then there is something called 308 permanent redirect.
+Permanent redirect and move permanently.
+There is a slight difference.
+Okay.
+The slight difference is that in the 308 it do not allow HTTP method to change while redirect.
+For example, your old API call is the post, but you can redirect it to get.
+But in the 308 you can't do that if your old API is post.
+The new API should also be the post.
+But here in the three zero move permanently, this is not the restriction.
+If your old uh API is your post, the redirected you can move to get also.
+So this method there is no such restriction.
+But in 308 this is actually improved.
+And it makes sure that the post if old is post then new also should be post only.
+That's the only difference then very important 304 not modified.
+So here, if you see, I'll tell you where most of the engineers use this response code wrongly.
+But let's first understand where it.
+What is the purpose of this 304 not modified.
+So client make a get call server return it with the last modified time in header.
+So this is the first step.
+Server makes a simple get call some get call server return the data, but along with the data, also
+send the last modified time when this data, which I am returning when it was last modified.
+Now client cache the response whatever the data response it got for the get call it, cache it now client
+make another get call.
+Pass this last modified time in header and the header name is if modified since okay.
+So client add this data into the header if modified since Sense.
+So what we can do is when we are writing a API, right?
+And we want to add this functionality, we can read this header if modified, since if it is present
+into the get call, what it will do is server will check the particular resource last update time with
+what client provided.
+Okay, in my db for this row.
+User one.
+It was last updated on let's say 13th September and if modified since earlier which client earlier when
+it make a get call is let's say also is 13th September.
+Now let's say that if if there are no change, like the client has the latest data itself, there is
+no modification in the DB.
+After that, the server will say that 304 not modified server do not load all the data and return all
+the data server will simply say that 304 not modified, and client will use its cache data.
+But let's say that client data has 12th September, but in DB it's now updated and it has 13th September.
+Then what it will do is server will load it, server will process the request as usual and return the
+new values.
+So that is what the main purpose of 304 not modified.
+But I when I talk with different engineers, they also use with the patch calls how they are using with
+the patch calls.
+Now let's say that you have one data into a DB user.
+One name is SJ.
+Let's say now one patch call is coming.
+Now patch call says that hey update name to SJ.
+Now our API let's say update API, update user API.
+Try to update the name, but before that we have a business logic that hey, in DB, whatever the name
+we have, if it is equals to equals to whatever the name it is coming SJ like the new name, whatever
+the new name, it is coming, then don't update, then don't update.
+No, no need to update required, right?
+Already in DB is there?
+And also you are trying to update SJ what is the point of updating it?
+So generally our business logic has this.
+And there we try to send that hey 304 not modified but this is wrong 304 not modified.
+This is not the actual purpose.
+The purpose of 304 is generally used with the.
+When the client using the caching and client is also passing this header and server consuming this headers
+if modified since but never try to use with the patch like in this scenario.
+In this case.
+Generally you can pass 200 okay.
+Like no row updated nothing.
+Right.
+Or 200 for like no content.
+Okay.
+So then we have for XX which is a validation error.
+Client need to pass the correct request to the user server.
+So the server has failed this request.
+But it's not a fault of a server.
+It's either for fault of a client or business logic.
+So there are many popular for error codes.
+First is 400, which is nothing but a bad request.
+Most frequently used with get post patch delete APIs.
+Client is not passing the required details to process the request.
+If for a particular API, I need these three fields.
+If client is not passing one of the field, Then server will fail with bad request.
+Hey, you haven't given me the correct request itself.
+I need these details to process the request for zero one.
+Unauthorized.
+Again popular with all the APIs.
+Any API which require authentication.
+So if you see that in the header when you pass a request, certain API required, like some token,
+like bearer token or basic authentication where you provide a username password itself.
+But if you are not providing those, then and if you try to access that API, it will fail with 401
+unauthorized.
+Any API which accept the authentication and if you are not providing this, it will fail.
+403 forbidden is Let's say you have an API user API.
+Okay.
+Now in this user API there is certain operation.
+There is certain operation.
+Let's say that if API gets invoked from admin, if admin invokes that, then it's okay.
+Let's say that, uh, there is something called address.
+Address updation.
+Updation of an address can only be done by admin.
+No other user has permission for it.
+If if a call comes apart from admin and they are trying to update an address, okay, then it will fail
+it with forbidden because that client do not have that permission to update the address.
+Only admin as a client has the permission.
+Okay.
+Then we have 404 not found.
+So here what happens is generally popular with get patch and delete, not with the post.
+Because in the post we are trying to create a new row, but here.
+404 here in the APIs, let's say you are doing a Get call.
+You are trying to fetch certain user 123.
+Hey, get me the details of this user.
+You are trying to do a patch.
+Hey this is a patch call for this user.
+So now we are working on a particular ID, we are telling a server that hey, I want to do a get on
+this ID or patch update of this ID or delete this ID.
+So what generally server will do is it will try to find the details of the ID which you are passing
+in a DB.
+In this case let's say one, two, three it trying to fetch, but in DB there is no such ID present.
+What server will do it?
+Server will send 404 not found.
+Hey, I didn't found the resource itself.
+What you are trying to look for?
+Okay, so maybe client not had sent this ID correctly.
+Then we have 405 method not allowed.
+So again let's say that hitting get API but with post http method.
+So here in this case it's a get.
+But if I just make it post what I will get 405 method not allowed.
+So I have this is the get API.
+But if you are trying to hit with the wrong method you will get this.
+422 is Unprocessable entity again popularly frequently used with all this methods during get post patch
+delete.
+What exactly 422 is that some business logic failure?
+Business logic failure means that very specific to your business.
+Let's say that France users should not be allowed to open an account.
+Okay, as we haven't got a license in this country, so France users should not get onboarded.
+But if any request comes to post for user countries, let's say France.
+Okay, even though request is valid, everything is proper.
+All the fields are set.
+But your business logic will stop this.
+Okay, so your business logic will catch this.
+That and says that hey, it's an unprocessable entity.
+We cannot process it.
+It's a business validation actually.
+Then we have something called 4 to 9.
+Too many requests.
+So here what happened is that we are putting a rule for example, one user can max make ten calls in
+a minute.
+This is the maximum calls it can make in a minute.
+Now if user 12345 makes the 11th call in a minute, then that will get blocked and will throw that 4
+to 9 too many requests.
+Okay.
+So consider this type of a rate limiting.
+It's a type of rate limiting.
+We are trying to do that.
+Uh if too many request user is making okay then your rate limiter will say that hey not allowed.
+Uh, so in a minute, ten calls are allowed, right?
+So okay.
+One, two, three, four till ten calls are all success in a minute.
+The 11th call.
+Let's say that it says that.
+Hey, rate limiter says that.
+Hey, the 11th call which you are trying to process.
+This is not allowed now.
+So what you can do is you can send 4 to 9 too many requests.
+And also there is something called 409 which is called conflict actually.
+So 409 conflict.
+Is that like uh, you have one request, one request, which is already in, in progress.
+It's not yet completed in progress.
+Let's say slash user 123.
+Any API let's say patch API okay.
+So mostly 409 conflict is popular with patch, delete and post not with the get.
+Get is like you can do as many times get.
+But this three operations patch, delete and post.
+What happen is that when it is in progress, when it is in progress and another request comes same slash
+user.
+Slash 123.
+Same thing.
+Exactly same.
+What it will say is that we return 409 and we say that, hey, conflict, it's already in progress.
+So what generally we do is we put a lock, right, let's say in some cache or itself say that, hey,
+one, two, three.
+Currently will says that some it is locked.
+Okay.
+So till this request is not completed, this lock would be there.
+And if any request comes while this above request is in progress, it would like conflict and we will
+return 409.
+So generally this lock generally we also put TTL itself after let's say ten second automatically get
+released because we know that 10s is sufficient for a one API to get completed.
+Depending upon your API's, maybe you can put five second one second two seconds right?
+Or if you don't want to put TTL, you want to manually release it.
+Okay.
+Request a success and then go and remove the lock.
+Remove this lock.
+Okay.
+So 409 conflict is also very popular.
+Okay.
+Then we have five access like a server error request got failed at server.
+Even though client passed the valid request means something wrong at server.
+So here if you see that this is the most popular like always we send 500 internal error code.
+Generally any issue comes because for us server should not fail at all.
+When we write a code, we write in a way that this if it's a valid request.
+All the validations like for all the four access it has crossed, all validations are success.
+Then request should get success.
+So every time we write a code, we write in a manner that if there is request, is proper.
+No business logic failure.
+User is properly authenticated.
+Has the permission.
+Request should be success.
+But if still it is failing.
+We don't know man.
+Like we are not purposely writing a code to fail and handle it.
+No.
+So that's why most of the error goes into this bucket.
+Internal server error.
+Because we we are writing the code, but somehow it is failing which we might have to debug.
+So it's that's why internal server error generic error code when no specific reason is suitable.
+Okay.
+501 not so generally here if you see the null pointer.
+Exceptions are the major culprits here.
+Sometime DB is down okay.
+So those are the factors which can contribute to a server failure.
+Then we have 501 not implemented here.
+What happened is uh API lacks the ability to fulfill the request.
+So what happens is sometimes we do, uh, code in chunks.
+So now let's say that I have created this API slash API slash user, but the code implementation is
+not fully.
+But I have put that a if this API has been invoked, return this 1501 error code.
+Okay.
+Because this implementation I have not completed yet, I will I will do it.
+So API is in development and future it would be available.
+But if you are still calling it you will get five zero.
+One means currently this API is not completed, it's in development.
+It do not have the ability to fulfill the request today, but in future.
+Yes, it might be.
+Then there is something called bad gateway.
+So server acting as a proxy and while calling upstream got invalid response.
+What does it mean?
+So for example my application is deployed behind reverse proxy nginx.
+So this is your engine X and this is your application.
+Okay.
+If nginx is not able to communicate with my application.
+So here nginx is uh here working as a gateway okay.
+And it is trying to communicate with my application but it's not able to communicate okay.
+Because of let's say misconfiguration of port number or something.
+Then it is eligible to throw 502 bad gateway server acting as a proxy.
+So this is acting as a proxy while calling upstream.
+So it is trying to call upstream my application but get invalid response like not able to reach it so
+didn't get a valid response.
+Maybe be some time out while doing a connection.
+And then it says that bad gateway.
+And then we have one access like information which is very less frequently used.
+So interim response to communicate request progress or its status before processing the final request.
+So here one has 100 which is continue mostly used in post API.
+So what happened is before sending the request client, check with the server if it can handle the request
+and ready.
+So at step one client add few things in the header first like what is the content length.
+What is the content type.
+And this header also put that hey expect 100.
+So now when the request goes to the server request server will see that hey okay in the header Expect
+is present, so means it.
+It doesn't have to process the request.
+Now it knows that the client is just checking.
+So server validate everything.
+Client is authenticated.
+It has proper permission.
+It has content type length do proper validation.
+All the till for access.
+So the the server makes sure that no for no no error should have come in this okay.
+So all the validation will be done.
+And server send that.
+Yes.
+Send 100 in the response code that continue.
+And after that client receive it and invoke the API without the expect header and server process the
+request.
+So now here if you see that this 100 where this server centered, this is not the final response code.
+This is just an interim.
+Okay.
+So client pass to the server that hey can I server check it and say that.
+Yes you can.
+And then ultimately client pass the request and server sent this.
+So this is the final response actually.
+So this that's why one access is known as informational that it is just an interim response code.
+Which server send it to send certain information to the client.
+To be honest, in the last nine years I haven't used this 100.
+Continue.
+Okay.
+But most of the other response codes is like frequently used.
+We have done a lot of migration from legacy and here.
+So 33X is also very frequently used.
+So it's not like that.
+Okay guys.
+So any doubt any question let me know.
+We can discuss further.
+Thank you.
+Bye.

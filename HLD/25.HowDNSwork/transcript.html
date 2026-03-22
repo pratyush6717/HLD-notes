@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>25.HowDNSwork</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="dns_notes.html" class="btn">View Notes</a>
+    <h1>25.HowDNSwork</h1>
+    <pre>
+Hey guys, and welcome to Concept Encoding.
+And today in part we are going to cover the Domain Name System.
+It's sometime looks very easy.
+But at the same end if you go in depth it becomes a little complicated also.
+So let us start without wasting any time.
+So the first thing very basic is what is IP address.
+IP address is a unique numerical label assigned to each device connected to internet.
+So consider them as an address so that any other device can locate them over the internet.
+So you already know IPv4 and IP v6.
+So these are two kind of addresses which is assigned to any device which is connected over the internet.
+What is domain name.
+So domain name.
+It's a human readable and friendly address used to identify a device on the internet.
+So one point we are saying that device has a unique numerical label, let's say 170 2.3, 2.4.8 something.
+So it's very difficult.
+It's not human readable and it's not easy to remember if there are multiple devices you have to communicate
+with.
+So the more easy and readable, friendly way for human is assigning a name to them that is known as
+domain name, like google.com, amazon.com, then what is DNS?
+DNS is nothing, but you can say a mediator, which helps to translate the domain name into IP addresses
+because over the internet device only understand this IP address.
+Nobody understands this amazon.com google.com.
+So some system is required which translate this name to IP address.
+And that's where DNS comes into the picture.
+So this is all okay, right?
+One liner is good, but how?
+How actually it does this thing that is more important.
+So currently there are two approach recursive and iterative.
+I will tell you both.
+But before even going to the first part which is recursive, let's see this one.
+So whenever let's say you are typing W-w-w-what concept encoding.com.
+And generally we don't write dot at the end, but it's also there implicitly it added.
+So consider this like a hierarchy dot.
+Then you have.com.
+Then you have.
+Concept and coding.
+And then you have w w w okay.
+If you go from bottom to up then your complete address would become there like w w w dot concept coding.com
+and then this.
+So each one has like some different organization.
+Take a like responsibility.
+So this part this the first dot is known as root.
+The second.com is known as top level domain.
+Okay.
+This is known as top level domain.
+This is known as root.
+And the concept and coding generally this is known as second level domain.
+And the last w-w-w is known as sub domain.
+Sub domain okay.
+And combining this concept and coding.com is known as domain name.
+Generally when somebody says hey what's your domain name.
+I would say concept and coding.com.
+But if somebody asks me hey what is your FQDN Fxn fully qualified domain name.
+Then I would say full from subdomain to root.
+Okay.
+Now with that being said, let's go to the recursive approach.
+So let's say you are currently at your browser and you want to talk to W-w-w-what concept encoding.com.
+What would happen.
+So at every system OS level there is a DNS client available already which is generally known as stub
+resolver.
+So what.
+Whenever you type anything the first part is it checks its local cache.
+Hey does concept and W-w-w-what concept encoding dotcom?
+I have a IP address of it.
+Yes or no?
+Okay, so the first part is check the local cache and in your system you can do it ipconfig slash display
+DNS so you will see what all this your stub uh, stub resolver DNS client.
+Currently hold the DNS information in its cache.
+So before I go, proceed further, like after the cache hit or cache miss happened, let's first understand
+about this, uh, little bit about each DNS record.
+So this each one is known as one DNS record DNS record.
+Let's see in one DNS record what is there.
+So one DNS record has below main information.
+There are so many information but these three are the main one which we have to focus.
+The first one is record name.
+It contains your domain name or subdomain name.
+Then you have CNAME record.
+CNAME record is nothing but a canonical name stands for canonical name.
+It is used for alias.
+Okay, we can map one domain to another.
+For example w w w dot.
+Google.com.
+I can whenever somebody type this I can also move it to google.com.
+If somebody writes blog dot google.com I can again move it to google.com.
+Okay.
+Whether you type w w w or you directly write google.com, all traffic will goes to the same google.com
+only even though you write blog dot google.com.
+Again the traffic goes to google.com.
+So this is nothing but an alias.
+This is nothing but we are creating an alias okay.
+So canonical name is used to create alias.
+And we can map one domain to another.
+Mostly use this subdomain only.
+We can't create like hey w w w dot google.com.
+If somebody type this, move it to amazon.com.
+No.
+So that would be wrong right.
+So it's mostly used at subdomain level like after your domain when you have subdomain right.
+So generally this alias comes into picture during subdomain only.
+Then last is a a record.
+A record is generally nothing but an address record stand for address record.
+And it maps a record name to an IP address.
+So this is where actually holds the IP address.
+Okay.
+Whatever the record name you have it has this IP address.
+So check this example once it will this three things will get clear to you with this.
+So one record name record name.
+What I told you whether a domain name or subdomain name.
+So whenever you see at the rate internally it's considered as a domain name.
+So.
+Concept and coding.
+Dot name coding.com.
+So either you write concept and coding.com or internally when you are writing a DNS record at the rate
+is generally considered as you are talking about domain name concept and coding.
+Dot com type is one, type is one means it's a a record.
+It's not a C name.
+It's not an alias, it's an A record.
+So mean you can expect an IP address.
+So in the A host you will find an IP address okay.
+So there is one more record.
+Record name is W-w-w I told you that.
+And the record name contains your domain name or sub domain name.
+So here I am having the sub domain name w-w-w okay.
+So what is the type.
+Type is five means it's a C name okay.
+So when we know that it's a C name means it's an alias.
+So definitely there will not be any a address host.
+Right.
+So there is different called CNAME record.
+So what it actually point to whatever you want to point to puts its record name.
+So CNAME record I point to concept encoding.com dot actually.
+So what would happen is whenever somebody is typing w-w-w dot concept encoding concept encoding.com.
+So this record name w w w right.
+What would happen is it will say that it's a C name.
+And what is the record which actually has to do lookup concept encoding.com.
+So somebody has to again go and make a query to this concept encoding.com.
+And which is nothing but actually an at the rate.
+And ultimately they will get this address.
+Got it.
+So there could be multiple chain C name Rename points to rename this, rename point to this name, and
+ultimately to the actual record a host one.
+Okay, so similarly here you are seeing this.
+So if you see your ipconfig slash display DNS.
+So this is how you will see.
+So here if you see this is one record.
+Record name is something your domain name okay.
+What is the record type.
+Record type is five means it's a C name.
+You won't see a address host okay.
+So there would be a one CNAME record which says that hey.
+Connect with this because I am just an alias.
+Now this again query has to be made that hey, what is the address for this one?
+So actually it's this record name.
+Is this what is the record type A means.
+It's an actual where you will find an address, address, host.
+You will be there.
+So address record would be there and it has actual IP address.
+So I hope CNAME is clear.
+So if I show you just see this one.
+So there are so each one is one record.
+So this is one record.
+This is one record.
+This is one DNS record okay.
+So don't worry about this I will cover everything.
+What is NS and all.
+So here first see that A this is your type is a means address host.
+What is the value for this one is that at the rate generally means concept encoding.com.
+And what is the data it point to see?
+Currently I don't having a unique IP address like for my server which is running, I am using website
+builder.
+Com it's open a page and this page is currently hosted through Website Builder site.
+So there would be a IP address for this one.
+Okay, if in future I have my own server running right, I will just do an edit and I will change the.
+I will put my IP address.
+So whenever somebody will put concept encoding.com it will ultimately reach to that my server okay.
+Now here if you see that another record is CNAME here.
+If you see two records are there CNAME if anybody is writing w-w-w.
+So I have told you that CNAME only works at the subdomain level, so means you have already comes to
+the level that okay, it's a concept encoding.com.
+You have come to this level.
+Now after that subdomain there are different subdomains can be w-w-w blog mail dot concept encoding,
+dot com blog dot concept.
+You can have anything.
+Okay so what I have put a name that, hey, if anybody writes if anybody writes w w w concept encoding.com,
+then also it's open the same page.
+Okay.
+So I just pointed it to that.
+Hey if this subdomain comes point to concept encoding.com dot itself.
+So ultimately this nothing it will again one more query will be hit and it will see that hey what is
+the address of concept encoding.com dot which is nothing but a at the rate.
+And ultimately this website got open.
+Okay.
+So first thing again goes back to this.
+When browser wants to talk to concept encoding.com the DNS client.
+First it checks its internal local cache if no record is found.
+If no DNS record is found for this, it goes and check to a DNS resolver.
+So this is the second we are making.
+So this is the second part.
+Now how your system get to know that.
+What is the address of DNS resolver.
+So here if you see.
+If you open the network which you are connected with Wi-Fi or Ethernet, whichever you are connecting,
+just open its setting and look for DNS and you will see the DNS server okay.
+So this is generally the DNS resolver which is provided by your ISP internet service provider.
+If you don't want to use the DNS resolver IP, which is provided by your ISP.
+And if you wanted to use custom, let's say Google Public DNS resolver, you can modify it and use 8.8.8.8,
+which is a Google public DNS resolver.
+Okay.
+So using that, uh, DNS resolver, your DNS clients make the second call to the DNS resolver.
+Hey, I didn't find any data in my local cache.
+This is the DNS query.
+Can you help me to find the IP address of W-w-w-what concept and coding.com?
+Cool.
+So now DNS resolver got the query what it will do.
+So now DNS resolver I told you that there are three parts.
+So generally we have sub domain.
+Then you have second level domain.
+Then you have a top level domain and then you have root.
+And I told you that each one is managed by some different entities.
+So now DNS resolve first it will do is it will check its cache.
+It will check its own cache.
+So every system maintain its own cash.
+Okay.
+Before going further.
+So now let's say that DNS resolver look at its cache.
+They hey I have a IP address for W-w-w-what concept encoding.
+No I don't have.
+If I have it will return from here.
+If no then only after the further query happen.
+So now it first goes to the root.
+So here the third step comes into the picture DNS resolver.
+Now asking the root hey what's the IP address of W-w-w-what concept encoding.com.
+And it reached to the root.
+Now you can ask a question that how DNS resolver know which route to connect.
+What is the IP address of root.
+So here if you see all over the world there are 13 root servers A to M only 13 root servers.
+Each root server is maintained by one different organization.
+Let's say a root server is maintained by Very sign.
+Okay.
+So their record name is a dot root hyphen server dot net.
+And if you go to ina website you will find the IP address of it a host also for this some IP address.
+So I haven't added the IP address here just for the space purpose.
+But you got it right.
+There are only 13 root servers all over the world A to M, and each one is operated by some different
+organization.
+So E root is operated by NASA.
+So G is maintained by US Department.
+Similarly different different different.
+So what happen is DNS resolver will pick the root which is near to the user which is near to the user.
+So now one root domain one root server out of this 13 got the request.
+Hey what's the IP of W-w-w-what concept encoding.com.
+Again This also maintain its own cache.
+If it don't find the data in its cache, say, I don't know what's the IP address of this I don't have
+in my cache.
+Again, it goes to the next level of TLD top level domain.
+So currently there are 1000 plus TLD and it keeps on adding and removing.
+So let's say.com.in.io.edu.
+Like this.
+There are so many TLD.
+Okay some new can get added.
+So the number varies.
+So but I can say that there are 1000 plus TLDs are available.
+And root domain also have access to this like root domain.
+Maintain this information for each one.
+So what happen is root domain says that hey I don't have the IP address for this, but I have the IP
+address of the tld.com TLD because I am looking for concept encoding.com okay.
+so root domain knows that.
+Hey this address somebody might be under of.com TLD.
+So even though there are multiple tld.edu.com.n.io root domain will pass the IP address of.com TLD.
+This address of this server to the DNS resolver.
+Okay.
+So now DNS resolver what it will do is it will query again fifth step to.com TLD.
+So this is your top level domain.
+Hey what's the IP of w-w-w-what concept encoding.com okay.
+Now what would happen again.
+Same thing.
+It also maintain its own cache.
+Each server maintain its own cache.
+If the data is not present into the cache, then only they will move forward.
+Okay, let's say that data is not there.
+So each TLD maintains the DNS record for authoritative name servers.
+Okay, so now what happens is we have to go and see that second level domain.
+Right.
+So this is the domain concept and coding.
+But the servers is known as authoritative authoritative servers okay.
+So now what happens is dotcom knows that okay you are looking for concept and coding.
+Concept and coding is.
+Owned by GoDaddy.
+Let's say so because let's say when I go and purchase the concept and coding from GoDaddy.
+So GoDaddy act as a registrar.
+In that case you can ask.
+Right?
+Right.
+How top level domain knows that for concept encoding it has to goes to GoDaddy?
+Why not to some other, uh, provider?
+Why not like Google authoritative server?
+Why not Amazon authoritative server.
+Why only GoDaddy?
+So what happen is generally whenever user apply for a domain like concept encoding.com, let's say from
+GoDaddy.
+So GoDaddy act as a registrar okay.
+And it communicate with the respective TLD registry.
+So here I am opting for.com so it will act it.
+So GoDaddy registrar act as registrar and talk with.com TLD registry.
+And this.com registry is maintained by VeriSign.
+So means GoDaddy is now contracted with VeriSign that hey this concept encoding.com.
+This is the authoritative servers which would help to resolve it.
+And you can pass this information to me whenever somebody is looking for concept and coding domain.
+Okay, so with that TLD registry, maintain a record that okay, whenever I get concept encoding, I
+have to pass to this authoritative this authoritative servers, which is owned by GoDaddy, which is
+owned by GoDaddy.
+So I need to pass this to this authoritative servers okay.
+So now when.com receives this information, it don't find the data in its cache.
+But it knows that okay.
+Concept encoding I need to pass to this authoritative server.
+Now if I show you when GoDaddy registered itself with.com registry, it passed this to authoritative
+servers name servers.
+This is also known as authoritative servers.
+So tld.com TLD knows this two servers.
+This is nothing but an authoritative domain servers.
+So any request which is coming to this.com TLD, if it see that, hey, it's a concept encoding.
+It knows that it has to pass information to this.
+They would be only to resolve it.
+And NS is nothing but an authoritative name servers.
+So what.com will do?
+It will pass the IP address of GoDaddy authoritative servers to the DNS resolver.
+So it will pass both NS zero three domain control com NS zero four domain control.com dot.
+So it will pass this both the servers to this DNS resolver.
+So now it's up to DNS resolver to pick any and invoke.
+So here if you see that this so is also get passed.
+So which says that primary primary use primary as N03.
+But if you don't get an answer from this DNS resolver, then query the secondary one.
+Okay.
+So so you can say that additional information which provides.
+So DNS resolver get all this information from the TLD that for concept encoding.
+Now which authoritative server it has to connect to and it will make the next step.
+Seventh call to a respective servers.
+In this case it's a GoDaddy server and 03. domain control.com something.
+So that server will reach it which is controlled by GoDaddy.
+Then yes, with the help of this one it able to resolve this.
+Now it knows about this all the record it will tell.
+Yes this is the IP address and the DNS resolver will return it ultimately to the client.
+So here if you see why it is called recursive because from the client perspective it just asks to a
+DNS resolver, do you have a IP address?
+And ultimately it gets an answer.
+But here, if you see DNS resolver is doing so many recursive calls, first it adds it asks with the
+root.
+If root gives the IP address of TLD, it contact TLD, then it contact authoritative.
+So it's a recursive call.
+But for client it's only one request and one answer.
+Okay, so I think recursive is clear.
+And before I goes to iterative I want to also tell you about the DNS zone.
+So many engineers get confused with like what is DNS zone.
+But first understand this.
+Another problem that okay my domain name is concept and coding.com.
+But here if you see the subdomain.
+The subdomain, what is the control till?
+What level this subdomain can goes?
+Okay, I can have mail dot concept encoding.
+I can have blog dot concept encoding.
+I can have admin dot concept encoding.
+I can have CD and dot image dot media.
+This is again a subdomain.
+So this dot concept encoding.com I can have system design, dot resource concept encoding, dot com
+etc. etc. so there is no limit like after a particular domain what level you can go currently.
+What is the problem with this?
+You can say, hey, what is the problem with this?
+The problem is here.
+Once your authoritative server authoritative server in this one, what are the authoritative server?
+Let's say n 03. domain control.com.
+This is the this is TLD ptld.
+Let's say, uh, dot com this and that.
+Hey resolver DNS resolver, you can check with this domain server, which is an authoritative server
+and asks for anything about concept and coding.
+Okay.
+Concept encoding.com.
+So this.com has passed that hey you can ask anything about concept encoding from this server.
+Now if you see that if I have so many domains internally subdomains mail blog admin dot b dot c dot
+e.
+So here if you see that this server has to maintain the record for each one record for concept encoding.com
+record for blog dot concept encoding, dot com mail, dot admin dot concept and a dot b dot c dot concept.
+Okay, so it has to maintain the record for each one.
+So this is one problem.
+Second problem is that let's say that my mail dot concept and coding is very, very highly requested.
+One like so many requests are coming to this one.
+So now say that this server become more loaded.
+So now you have only one server and zero three which is your primary.
+Now there are so many requests are coming for this one.
+Mostly for you can say that mail dot concept encoding.com, but for other let's say admin dot concept
+encoding.com traffic is very less.
+But still only one server is there.
+It become bombarded with the traffic.
+So what it can do is similarly like TLD it can do offload the traffic that say that hey NS 03. some
+server which is your.
+Authoritative server.
+It can offload the traffic to, let's say, hey, anything you want to ask for blog.
+Or you can say that mail mail dot concept encoding.com.
+This is your authoritative server, let's say zero five server.
+This is authoritative server for resolving this subdomain mail dot.
+Now whatever would be a dot mail.
+This will take care of it okay.
+So it will keep the record itself here.
+It will keep the record of all.
+But it knows that whenever somebody is asking for mail I have to pass it to this NS zero five.
+It will just as soon as the traffic come to this, it will just offload the traffic to this record lookup
+and everything CNAME and all would be handled by this server.
+So now what we are doing is we are offloading the traffic from our main authoritative server.
+So TLD is still pointing to this.
+this.com is still pointing to this first authoritative server.
+Now it knows that.
+Okay, I will take care of blog dot concept encoding.com concept encoding.com.
+A dot b dot concept encoding.com.
+But anything which comes like mail dot concept encoding.com for mail I have provided this is the authoritative
+server.
+So this is it will just forward the request to this one and you take care of it.
+So each authoritative servers are creating their zone.
+Actually this is its zone.
+It takes care of this records.
+This is its zone.
+Let's take care of this record.
+So that's where I am saying that if zone is not there, then only one authoritative server which holds
+the DNS record, record name, IP address, TTL, etc..
+Query for all the subdomains and how many subdomains you can have.
+You don't know.
+You can have as many subdomains as possible.
+And if, let's say any of the subdomain is high traffic, taking your one authoritative server will
+get overloaded.
+So we can distribute the load by creating more authoritative domain servers, just how we distribute
+the traffic between TLD server like.com u u server take care of it dot n u take care of it.
+Similarly in.
+In use subdomain level we can create more zones here.
+Zone one you take care of concept encoding.com mail dot concept encoding uh.com I can create another
+zone which takes care of blog dot concept encoding.com.
+And this will also take care of us.
+Dot Concept encoding, o dot blog, dot concept encoding.com.
+And they have different servers.
+So now anything which is requesting for blog us dot blog.
+So whenever the request comes from TLD here, it don't have to answer this.
+What's the IP address of this.
+It don't have to resolve.
+It will just forward the request to hey this server take care of this blog dot concept US dot dot concept.com
+thing called iterative.
+So in recursive you saw that DNS resolver is taking responsibility of everything.
+But in iterative DNS client is the one.
+So first it will check its local cache if data is there well and good.
+If no it will call the DNS resolver.
+Hey what's the IP of concept encoding?
+If it's not there in its cache, it will pass the root domain IP to the client.
+Now it's client responsibility in iterative that check each server by its own DNS resolver will not
+do.
+That's why it's known as iterative.
+So root domain will send that hey this is the IP addresses for the TLDs.
+You can connect with any one of them.
+Then it will connect with TLD.
+One of the server.
+If TLD cache do not have that data then it will send the IP addresses of authoritative servers.
+DNS client will now invoke one of the authoritative server.
+And if it is address is there it will return it.
+So in short here DNS client is responsible for making a recursive call to resolve the address.
+And in the recursive DNS resolver do it for you.
+So.
+So I hope this DNS part is clear.
+If you have any doubt let me know in the comment section we can discuss further.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

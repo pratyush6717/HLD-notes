@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2. OOPs Concept in Java - Part2 - 4 Pillars of Object Oriented Programming</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>2. OOPs Concept in Java - Part2 - 4 Pillars of Object Oriented Programming</h1>
+    <pre>
+Let's move to the third pillar of inheritance.
+The very, very important one inheritance.
+So now inheritance, the key.
+Our parent and we are the inherited from our parent child.
+So my parent has let's say capability one.
+So child inherit and child has capability.
+Let's say something new to.
+But since it's a child or it's inherited it also possess this capability.
+Also parents can be benefit.
+That's nothing but an inheritance capability of a class to inherit properties from the parent class.
+So this is a child class.
+It has the capability to inherit the properties from the parent.
+So parent has let's say parent class has property.
+Let's say I have a property called color.
+Let's say in a dog color.
+Child has, let's say, a property called age.
+Data properties, you know, right now data variables.
+So now if you see that child also now automatically has color also.
+So because it inherit.
+So whatever the parent has child will also has child has its own properties age but it also has its
+parent.
+Also parent has color right.
+So ultimately you can also access with child object color.
+Also this property is also accessible but opposite is not true.
+So if you have parent object you will not be able to access age.
+But if you have child object you can access color also parent.
+Also, it can inherit both functions and variables so we don't have to write them again in the child
+classes.
+I told you right?
+Whatever the variables and functions, two things a class can have.
+This child will also have variable functions.
+So child will have all the functions which parent has plus all the variables is parent has.
+We don't have to write it again.
+It if it inherited from here it can have all this.
+But parent doesn't have the one.
+Let me tell you with an example.
+For example class vehicle I created a vehicle.
+A class vehicle can have let's say vehicle had have what all the properties vehicle have is engine.
+Let's say I would say that Boolean.
+Has engine.
+It has this variable.
+And let's say it has one function uh let's say a get engine.
+It will return this variable has engine.
+And this is boolean return type.
+I'll tell you about this one.
+So let's say this is one normal class A vehicle.
+It has what certain one data variable.
+It has one function.
+A class can have only two things variables and functions.
+Right now I told you that inheritance means we are creating a child of this class.
+So now what I am creating is kind of this vehicle.
+Vehicle as a child class called let's say car.
+I want to create this one.
+How I can create now I can create another class.
+So this is another class car.
+Class is car.
+How can I inherit.
+Inherit can be done through keyword extends.
+Don't worry about this.
+We'll go more deep.
+Extends.
+This extends vehicle.
+Vehicle.
+So now with this extend keyword, we make the child as a we make car as a child of vehicle.
+Right.
+And I add it, uh.
+This thing is in.
+What is the CC 800 cc or whatever.
+This one.
+Or I would say that more is like a type petrol or diesel type, something like this.
+Let's say a string, uh, type.
+So okay, so now car has its own type, whether it's a or you can say that car type is like a hatchback,
+hatchback, SUV sedan.
+What is the car type.
+So but this is its own variable and it can have its own method.
+Also get car type let's say and it will return the car type.
+Now what we have done is we have created a vehicle which has its own variable and functions.
+And we have created a car.
+Car is also now we make it a child of a vehicle through keyword extends.
+Right.
+So now it becomes a child.
+And car has its own variable and functions.
+It has its own variable and function car type and get method.
+But since car is a child of vehicle, it has its access to all the variable and function it has access
+to.
+Engine also has engine and this one.
+So now let's say if I created a car object how you can create an object.
+So let's say I want to create this class object this class.
+So car let's say I created an object.
+Let's say Swift equals to new is the keyword which help us to create an object of car.
+So now I created a car object Swift.
+So now I wanted to access Swift Dot I wanted to access if I write get engine.
+Jet engine.
+Is it a valid or not?
+It is a valid because even though jet engine method is not present into the car here, it has only get
+car type, get car type but get engine is there?
+No, but since car is a child of vehicle.
+Vehicle has get engine.
+It can access it right.
+But now let's say you created a vehicle object.
+Let's say vehicle.
+My vehicle object equals to new vehicle.
+Now vehicle object.
+This vehicle object whichever I created dot, let's say I'm creating get car type.
+Get car type.
+Is it right or not.
+No.
+Because vehicle is not inherited from car.
+It cannot take its properties.
+Right.
+So it cannot it it doesn't have get car type.
+So this it doesn't have any car type so it cannot access it.
+Right.
+So it can only access its own one, but its child can access it one.
+Understood.
+This one.
+Inheritance.
+Right.
+So this is known as inheritance.
+And there are different types of inheritance.
+Single inheritance.
+Multi-level, hierarchical and multiple inheritance.
+Let me tell you.
+Like in a quick manner, what are the different ones?
+So inheritance can be achieved through two ways that I will tell you in the next one.
+So but here understand the inheritance one the four types of inheritance.
+And there is some certain thing called diamond problem which is very important.
+So four types of inheritance single single class A.
+This is known as class B.
+This is single inheritance.
+Second is multilevel.
+Multi-level is you have class A, second level is your, let's say class B.
+Then from class B somebody extended class C it can go on.
+So this is known as your multilevel.
+Now there is something called.
+Hierarchical.
+And there is something called another is multiple.
+Multiple multiple.
+You have class A Class B.
+Class C.
+It extended from both, which is not allowed in Java.
+It might be allowed in C++, but in Java it is not allowed.
+I will tell you why.
+Right?
+So here, uh, and this is one thing called in hierarchical is.
+Class A.
+Class B inherited from class A.
+Class C inherited also from class A right.
+But this is not allowed from class A and B a C cannot have it.
+This is not allowed.
+Right.
+Somebody let's say till here it is allowed.
+Hierarchical is allowed from one class.
+Class B can extend class A.
+Class C can extend class A but in the multiple from both the classes this is not allowed.
+This is known as diamond problem.
+Diamond problem.
+So this is not allowed.
+There is a way through which we can get this right.
+So I told you that with extend it cannot be done.
+But through interface we can do it.
+I'll tell you later.
+But see this.
+Why this is not allowed.
+This is important to understand this one.
+Why this diamond problem is not allowed.
+So here let me add a new slide.
+So see understand this one.
+Very simple to understand it.
+But sometime, uh, many candidate get confused why?
+Uh, multiple is not allowed.
+Class B.
+Class C okay.
+Example, let's take one example.
+Class have had one method.
+Let's say get engine simple.
+Same example get engine okay.
+Let's say class B also has one method.
+Get engine same method.
+But because it's a different different class, right method can happen.
+Now I am creating a class C.
+It extends let's say if it present extend from a comma B.
+Let's say this is not possible.
+But let's say if this is not allowed in Java, so it is not possible.
+But let's say if it is, if it is, what is the issue?
+Now, I told you that a class child class has access to both parent members and function.
+Now let's say I create a class C object.
+Uh, class C Object equals to new c.
+New c.
+Let's say I created a C class object.
+This is a c class object equals to new c.
+Now if I'm creating object dot get engine.
+What it will do.
+So now this is a child class object.
+This is a child class object.
+And I called Get engine.
+Now will it call a get engine of class A or get engine of class B?
+Which one it will call it will not able to identify hey, which class engine I have to invoke to make
+this simple, Java doesn't add it itself.
+Right.
+So with the extend keyword it cannot be done.
+You understand the problem?
+Diamond problem.
+Yeah.
+So there is a confusion.
+Which method?
+Which method to call because class child class has access to both the one parent class feature no parent,
+so it also has access to get engine.
+It also has access to get engine.
+But when somebody calls a child class C get engine, which one to call now doesn't know.
+So this is known as diamond problem.
+It is not allowed through interface.
+We can allow it through.
+Let's say if I create a class now not class interface A, interface B now I created one class C, now
+it implements.
+So whenever there is an interface right it use implements to extend.
+It is also child class.
+Now a comma B.
+Now this is allowed right.
+But how this is allowed we will see later.
+But through this one we can do a hack on this one because it will override it override functionality.
+So I'll tell you this later.
+So I'll keep this like interface.
+We will go detail.
+Otherwise currently it will confuse you.
+But now understand this with the class one.
+It is not possible.
+Diamond problem cannot be resolved.
+But with interface it can be resolved.
+Interface.
+Also it's a proper child only we can call it as a child member class only.
+But with this it can be solved.
+But I'll tell you where because first we need to understand the overriding for it.
+Okay?
+So keep it later when we will go.
+Interface.
+Right?
+I'll come to this again, but I hope currently you understand what is inheritance?
+What are the different types of inheritance and why multiple inheritance is not possible.
+It is known as diamond problem.
+It cannot be solved through interface.
+It can be solved.
+So one question.
+The last example which we try to extend, although it is wrong, you already said.
+say?
+But suppose if I have the jet engine, uh, in class C itself.
+Mm.
+Then it's not an issue.
+Then it's not an issue because it will ultimately call its one only.
+But c uh, but it has a chance of issue because, uh, class C, if it doesn't add that jet engine method
+to itself, then means if jet engine present it to its parent, it will call that, then it's an issue,
+right?
+Yes, you are right, man.
+So that's where uh, now you ask this question, then I'll tell you that that's why interface it's not
+an issue because in interface you cannot implement like this.
+In interface you can only say that jet engine.
+That's all.
+You don't implement it.
+So let's say this interface A this interface B jet engine You don't implement it.
+Now when you write class C, which is implementing implements a comma B both from both.
+Now it has to implement.
+Now it will say get engine.
+Now it will do its implementation.
+So that's why with interface we should be able to do is because with interface you cannot write it,
+just a definition you provide in the interface for the method.
+The code implementation is not possible inside an interface.
+You just provide a definition.
+So whichever class implements the interface it has the responsibility to write proper implementation
+of it.
+Right.
+So we will come to interface later.
+But yeah, but since you asked that question because if class C implements it it's not an issue.
+And that's where interface makes class C mandatory.
+Yeah.
+Hey I have defined get engine Then only I haven't implemented it.
+Class B has also defined Get engine.
+I haven't implemented it.
+But now since class C has implemented from both.
+So it has to implement all the methods which interface has.
+So it has to implement it.
+Now get engine.
+So it has to implement.
+So ultimately whenever object will call it will call.
+Its only.
+And because if we if there is a common method also then only 111 method also.
+Yeah true.
+So that's why multiple inheritance is not possible.
+But through interface we can solve it.
+And it's a diamond problem which is not supported but through interface you can say that it's a hack.
+What is the advantage of inheritance.
+Somebody asks like code reusability because let's say parent has certain code, which I don't want to
+write it.
+Again, I can reuse it.
+So code reusability.
+And another is we can achieve polymorphism using inheritance.
+That's why I wanted to tell.
+Now what happen is polymorphism through inheritance I will tell you now the next one is polymorphism
+last, right?
+I hope you are not overflowed with information.
+You are in proper in line with me.
+Like, uh, base is important, but this is the last one, right?
+I will not stretch much.
+Uh, so till now you are with me, right?
+All the pillars properly.
+Guys.
+Okay.
+Yeah.
+So now let's come to the polymorphism.
+I'll tell you how inheritance helps in polymorphism.
+So there are C poly means many morphism means form a same method.
+So let's say you have a method.
+A same method has the capability to take many forms.
+It is known as polymorphism.
+Let's say I have one method uh example which I have taken is a person.
+A person can be a father.
+A person can be a husband, a person can be an employee.
+So a person has ability to take many forms, so it's a polymorphism.
+Water.
+Water can be in liquid solid gas.
+The same thing in different forms.
+It is known as polymorphism.
+So a same method.
+Same method behaves differently in different situation right.
+I'll tell you how it behaves differently.
+So there are two type of polymorphism which is very frequently asked method overloading which is known
+as static polymorphism also known as compile time polymorphism.
+Any with anything they can ask explain compile time polymorphism or static polymorphism or method overloading.
+Another type is method overriding or dynamic polymorphism or runtime polymorphism.
+So these are the different names.
+Now let's see.
+Let's say you have one class.
+Class uh take it as a some.
+sum.
+I have a sum right?
+And I have a method.
+Let's say I get or I will say that.
+Uh.
+Do some.
+Int a comma int b.
+Let's say returning the int it return a plus b.
+So let's say you have a class sum and the one of the method is do sum it.
+It takes two variable a and b.
+So what it is returning it just do some and return.
+This is simple method.
+So now I'm first telling you overloading.
+Or compile time compile time.
+Polymorphism or static polymorphism.
+So what is static polymorphism or overloading?
+Is int I right.
+Same method with same name.
+Do some, do some right.
+But here if you see that it differs in parameters.
+So this is you can say that overloading.
+So here if you see that do some do some.
+But here it is taking integer.
+It is here it is taking string.
+This is allowed.
+It is known as overloading I can write another do some integer a comma integer b comma integer c.
+Right.
+So here now I have three.
+Do some do some again do some.
+But here it has two integer.
+Here it has three integers.
+Now.
+So here, if you see that what is overloading is a same method, a same method name, a same method
+name, but the parameter defaults.
+Here it is taking integer, here it is taking string.
+But here it is again taking integer but different number.
+So all are different.
+So here it is two.
+It is three.
+It is known as overloading.
+So it's a compile time because here at the compile time itself Java knows that.
+Let's say somebody is calling, let's say somebody is calling an some object.
+Some let's say I'm creating an object calculate object calc object new some.
+So I am creating a some class object.
+Now I am calling one method calc object.
+I am creating a calc object calc object dot do some.
+Now I am passing let's say five comma two so it knows that which method to call if I pass.
+Do some, uh, a comma b.
+It knows that which method to call these are string.
+It will call a string.
+Right.
+If I pass three uh three comma four comma two.
+So it knows that which method to call.
+So it already has all the information at the compile time itself.
+Right.
+Even though name are same.
+Do some do some do some.
+Right.
+But it knows that okay.
+Whenever this it has two integer.
+Whenever two integer will come.
+It will pass it to this one.
+Whenever a string will come it will connect to this one.
+Right.
+So but here if you see till now it is clear what is overloading.
+This is known as method overloading or static polymorphism or compile time polymorphism.
+Um, one question is like suppose if I write in to do some uh and then int x comma int y mm.
+Just changing the name of the parameter.
+No but the type is same.
+No, that is, uh, if I have x and y here, it's still wrong, because now type is same.
+Okay, so let's say here one example I want to tell, let's say this is one method certain and I am
+writing another method.
+Now I am changing the return type string.
+Do some int x comma int y again function.
+So here if you say it is int x again here it is into a similar method.
+Name is same, return type is different.
+Here it was returning integer.
+Now here it is returning string.
+It will change it to string and return.
+This is not allowed on the basis of return.
+Type overloading cannot be done only on the basis of parameters.
+It can differ on the basis of runtime.
+On the basis of return type it is not possible.
+So this is a very time interviewer asked that is this a right way to do it or not.
+Overloading.
+Everything is same, but return type is changed.
+This is not allowed because during compile time, right?
+It doesn't check the return type.
+So return type even though are different, it doesn't bother because it only compares while doing binding
+right?
+While it bind it only compare the arguments which you are going to pass.
+What it's going to return.
+It doesn't check the binding on top of it.
+It's just check.
+Okay.
+What arguments you are going to pass.
+See here.
+Just see this example.
+So now I have two classes.
+Now two methods sorry two methods the same.
+But one is differ in the return type of n.
+Another is differ on the return type of string.
+Now another class I am calling let's say object the same calc object calc object dot do some.
+five comma two.
+Again do some five comma two.
+But one is returning integer one is returning string.
+But it will get confused.
+Hey, which one to call?
+Do I need to call?
+Both are integer integer because on the return type it won't check.
+Okay.
+Are you taking it?
+Assigning it into integer or into string?
+It.
+Do not check this.
+Okay.
+You are taking it into integer.
+I need to call this one.
+Okay.
+You are taking this into string.
+I need to call this one because many times it possible that you don't bother about catching it.
+You don't bother about hey, whatever you get, I don't worry about it.
+You just call it right.
+So based upon this information itself, arguments both are same.
+It cannot determine which to invoke.
+Right.
+So that's why return type it ignores.
+And that's why if return types only differs it is not known as correct overloading.
+Okay, you got it.
+Compile time overloading.
+Yeah.
+Now let's see.
+Uh, method overriding, which I think you already know by now, because the previous question which
+has been asked.
+Right.
+Let's say you have class A.
+I have a method, let's say get engine.
+It returning.
+Let's say true something.
+Okay.
+This is this method class.
+This class closed.
+Now I'm creating class B.
+It extends Matlab.
+It's a child of class A.
+Here class B has the properties of class A means it has access to get engine.
+But it also let's say I don't want to return.
+True I need my own behavior.
+It can override it, get engine, it overrides it.
+And it says that it does its own computation and say that return based upon that computation, it returns,
+let's say true or false.
+Let's say false.
+So it changed the behavior of the parent, even though method name is same and everything is same.
+So in the overriding, if it has integer a, comma integer b, it should also have integer a, comma
+integer b even the argument should be same in method overriding even the argument should be same.
+Everything should be same.
+Only the internal implementation can be differ.
+And now which one to call, whether this or this that depend upon runtime runtime.
+So now let's say I created an object of class B, class B object.
+Let's say b.
+OBJ equals to.
+Let's say it's an object new b I created one object of class B and I am doing b dot get engine.
+Which one it will invoke.
+It will invoke the this engine get engine because it will call the method which is present inside this
+class get engine let's say two integer right.
+Integer a comma integer b.
+Let's say five comma two.
+So it will call this one.
+But if I create a class object of class A, a object a equals to new a, and I will say that object
+a dot get engine.
+Four comma two anything.
+Now it will call which one.
+It will call this one because this is now this class object.
+So it will call this one.
+So here if you see that.
+So a child is be both has same method.
+Get engine get engine except exactly the same definition of a method.
+Return type is same method name is same argument type is same exactly everything is same.
+Only the implementation might differ.
+Might differ, right?
+But which method to call it depend upon runtime depending upon the object which you have created.
+If you have created an object of this one and you call the method, it will invoke this method.
+If you created an object of this class and then invoke Get Engine, it will call this one.
+This is known as dynamic.
+On the runtime, you decide which method to call and also known as overriding in the overriding even
+the arguments method name return type.
+Everything is same in overloading.
+Argument type should be changed and it's in the same class.
+But here overriding everything should be the same and it through like inheritance, child class a,
+B and then it has the exactly same methods.
+Understood polymorphism.
+So in method overriding uh, like as usual.
+So first whatever call the method we call it will be first looking inside the child.
+Now if it is present, whatever object, which class object you are creating.
+So let's say you created an object of class B, then it first check.
+Hey I have this.
+Yeah.
+Then it will call itself.
+Right.
+So yeah.
+So that is the procedure right.
+If suppose we create a class B object then first you will see in class B if the method is present correct.
+If it is missing then you will check if it is extending from some correct class and then go to that.
+Correct.
+You are right.
+Right and overriding means the Same method present into the child class also.
+Return type.
+Same method.
+Name.
+Same.
+Argument.
+Same.
+Only the functionality differs.
+Got that?
+Overriding.
+We look for everything.
+Return type.
+Parameter.
+Type.
+Everything.
+Parameters.
+Name.
+Yeah.
+But in overloading we just check for name and different number of arguments types or different number.
+Return type.
+Right, right.
+So in method overloading inside a one class only, you have two methods with the same name and different
+arguments or types of arguments.
+But in the method overriding its parent child inside a parent you have same function.
+And in child class you also have the same function.
+Exactly.
+Duplicate.
+Right.
+And then which one to call that depend upon runtime which object you have.
+Right.
+But in overloading.
+Same class, but something changed.
+Some argument changed because you can't have duplicate methods into the same class.
+Correct?
+Correct.
+So that covers the four pillars.
+Now just before going I will tell you the relationship.
+It hardly take five minutes but it is important.
+So whatever we have learned, if you see that we have covered two things, is the relationship has a
+relationship.
+Very very important part.
+Right.
+So whatever the inheritance you have learned A is a parent of B.
+B is a child of A right.
+This is known as inheritance or is a relationship.
+B is a a right.
+Let's say vehicle.
+Car.
+So car is a child of vehicle.
+So I would say that it is is a relationship.
+Car is a vehicle, right?
+For example, achieved through inheritance.
+Dog is an animal.
+So I have an animal.
+I created a dog so I can say that dog is an animal.
+Inheritance form is.
+Inheritance form is a is a relationship.
+Okay, so whenever somebody asks, hey, can you tell me is a relationship?
+What do you understand by this?
+Means nothing but an inheritance.
+So it means indirectly.
+They are asking you about inheritance.
+Okay, tell that now.
+Second is has a relationship.
+Has a relationship.
+Means.
+Has a relationship means.
+Uh, I mean, you are very late.
+Okay.
+So now has a relationship means.
+You created a class A.
+Now let's say you have another class B.
+Right.
+So in the class A itself you has the object of class B.
+So let's say class A has what?
+What?
+Two things.
+Class A has data variables and data methods.
+Data variables and data methods.
+So data variables like it has let's say integer x.
+And it also has object of this one.
+So it has let's say class b uh b object B class object.
+So this is also a variable means instead of primitive like say integer it has the object of this one.
+So has a relation says that whenever an object is used in another class.
+So object of class B is present into class A.
+So I can say that class A has class B.
+So class A has object of class B right.
+So it can be 1 to 1 relation one to many many to many.
+For example a student And course.
+This is class course.
+This is class.
+Excuse my Spelling's handwriting.
+Class student.
+Class.
+Course.
+So I told you that has a relationship.
+Can have 1 to 1.
+One to many, many to many.
+So.
+Right.
+Let's say a student can have one course, right?
+Let's say it has taken one course.
+So I have an object here.
+Course.
+Let's say I have some English.
+So a student can have one course.
+So it's a 1 to 1, one to many.
+One to many.
+A student has list of course.
+List of course.
+So it will have let's say list here.
+Now course list.
+It can have English Hindi right.
+Maths.
+It has a list of course.
+Got it.
+So student has if one course one object of a course it has 1 to 1.
+If a student one to many means student has many courses, list of courses one to many and another is
+important is many to many.
+So now here if you see that the student has list of courses but a course, let's say if it's an English
+course, it has a list of student.
+A one English course can be taken by many students.
+So it does also have a list of students.
+So here if you say that a student has many courses, one student can have many courses.
+Similarly a one course let's say English can have many students.
+Right?
+So has a relationship means one class has an object of another class.
+Right.
+It is known as hazard relationship.
+And hazard relationship could be 1 to 1 one to many many to many.
+Take this example a bike has an engine.
+If you created a bike class and you have an another engine class, so you create a bike and we can create
+an engine object.
+Bike has an engine object.
+A school has a class, a school has a student.
+You got it.
+What is has a relationship?
+Whenever inside a particular class, you have an object of another class.
+It is also known as data member data variable, but it is an object of another class.
+It is known as has a relationship you understand has a relationship.
+Yeah.
+So like does it depends only on classes or classes.
+Classes.
+Classes only classes.
+Classes objects okay okay.
+So now I was thinking one thing like main method always have lot of class instantiation.
+Huh?
+It's very but that is a method.
+No that is a method.
+So it's all I'm talking about the class.
+So class A has.
+So this is a data variable itself like integer age right.
+Similarly it has a variable also this one.
+So now see this.
+This has a relationship is of two types.
+Again very important guys.
+This.
+Aggregation and composition.
+The last is weak relation.
+Weak relation is strong relation.
+Matter of definition.
+Now you have taken, let's say uh, student or let's say school, a school, a school, a class.
+And then you have a student, a student as one class.
+The school has many students.
+It has list of student object, let's say student.
+It has list of student object.
+But now let's say it has has a relationship because one class has an object of another class.
+But now let's say one thing got destroyed.
+Let's say student got destroyed.
+This class, I deleted it will school will get deleted.
+No write a school will.
+Both are.
+It's.
+That's why it is called weak relationship.
+If any one is removed, another thing will not get removed, right?
+Both objects can survive independently.
+Means ending of one object will not end another object.
+If I destroy the school, will a student will get destroyed.
+Also, no students will enroll to some other school.
+But this school destroyed.
+Both are independent, right?
+Similarly, just take an example that school classes or rooms?
+School rooms.
+Now let's say if I destroyed school, definitely room will also get destroyed.
+Let's say room has 100 rooms.
+School has 100 rooms.
+If I destroyed school, definitely rooms will also get destroyed.
+So they are strongly related.
+Strongly related.
+Ending of one object will end another object.
+You got it.
+Hey, one question.
+Like you said in school, you have list of students, huh?
+Okay.
+In weak relationship.
+Can you remove students from school?
+It won't impact school.
+Correct.
+School later will can have another student's future.
+But school will still be present.
+But it's an empty.
+So suppose I create an object of school, and then I try to access this list of students.
+What will happen?
+It will be empty.
+Let's say empty.
+No students and list would be empty.
+That's it.
+Like suppose that list has been cited with creating an object of the student.
+Okay, so you are creating a if object is not even present.
+Yeah.
+But that's okay.
+We can remove that thing.
+But the school is not destroyed.
+Yeah.
+School is not destroyed.
+But won't that give any error?
+Because we are trying to access a class called College student, which is not present.
+Okay, so see this one now?
+Okay.
+Uh, see, with this simple example, there are, let's say 100 students.
+Okay.
+If you remove five students, will school get destroyed?
+No, no.
+Right.
+If definitely you.
+I'm what?
+I think your question is if you definitely delete this class itself.
+Student class.
+Definitely.
+You have to change it because there will be a compilation error.
+Right.
+But I'm saying is let's say you have 100 student out of 100 student, if you destroyed even 99 student
+or even all hundred students, you destroyed the objects.
+But you have a class, but you destroyed all the objects.
+A student will not.
+School will not get deleted.
+But let's say you have a school, a school and rooms.
+Now in a particular.
+When you create a school object, then you create rooms, right?
+Okay.
+I have created a school a.
+The school A has four rooms.
+I created another school B, school B has ten rooms.
+Now, if I destroy this object, this four classes will automatically get destroyed.
+Also, if I destroy this object.
+Now I'm talking about object.
+If I destroy this object, this whatever that classes which I have rooms which I have created that will
+also get destroyed.
+But if you destroy the class itself, then definitely there will be compilation error for sure if somebody
+has the reference.
+Okay, okay, but understand it's all talking from the object perspective.
+If removing of one object impacts other, it's a strong has a relationship.
+If removing of one object doesn't impact the other, it is a weak has the relationship weak relationship
+known as aggregation strong is known as composition.
+Okay, see you guys.
+Bye.
+    </pre>
+</body>
+</html>

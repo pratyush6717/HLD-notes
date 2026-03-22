@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>31. Collections in Java - Part6 - SET</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>31. Collections in Java - Part6 - SET</h1>
+    <pre>
+Hey guys.
+Welcome back to the side.
+And now till now we have completed almost all the things in the collections.
+And only thing which is left is set.
+So if you haven't seen the previous video of HashMap I would say that please go ahead and watch that
+first because hash set linked has set tree map tree set.
+Internally they use HashMap, linked HashMap and tree map only right.
+So they are very much equivalent itself.
+Okay.
+So let's finish today's set and then we will the only topic which will be left in the collections would
+be streams.
+Okay.
+So set is very very simple if you understand the map.
+So collection of an object but it does not contain duplicate value.
+And why it doesn't contain a duplicate value.
+You might have already know the answer.
+Can you put into the comment section why said doesn't contain a duplicate value, right?
+It uses internally what hash map and why hash map cannot have duplicate value.
+Please comment down in the comment section.
+Right?
+It can have only one null value you can insert.
+Unlike list, set is not ordered.
+Collections means object inside set does not follow the insertion order.
+So this is also a one condition that in linked hash set you can have insertion order again.
+Second question why linked hash set?
+Maintain an insertion order.
+You know that now already internally what it might be using linked hash map right.
+Right.
+So and you already know that how linked HashMap maintains an insertion order.
+So generally when we say that SAT set doesn't follow the insertion order, but it's one of the flavor
+linked hash set maintains the insertion order set cannot be accessed via index.
+So you know that list we can access via index 012 set we cannot access via index.
+So generally few questions which comes to your mind right.
+Hey what data structure is used in stack internally as it doesn't allow duplicate value?
+If you have seen the previous video, you have already know the answer what structure it used internally,
+right HashMap and it order is not guarantee.
+Then what?
+What if you wanted to sort the set collection?
+How to sort it you know right tree set and why it is internally using tree map.
+Okay, so if you haven't seen again one more time, if you haven't seen the previous video, you might
+be thinking that I am rushing.
+But if you have seen the previous video, this all makes sense to you that this is very, very similar
+to the one which we have already done.
+Okay, so here I will tell you what happened is so we will see this method first.
+But let me first tell you the first implementation of hash set.
+Right.
+Just see this hash set first.
+This will connect all the dots.
+If you have like when I'm saying it is all very very similar.
+So Hashset is internally using HashMap right.
+The way we use to create a hash map.
+So you know right in hash map what two things we have key and value right.
+So now Anna has set when you are inserting an element you are trying to add right.
+You are doing map dot put internally.
+Eternally.
+Now you are saying that hey, this is hash set means it is kind of an only value.
+It cannot have key value.
+Then how it is using key value.
+What is the key?
+What is the value here?
+But here in the hash set we have only one thing.
+Let's see like this set of integer, it will have only like one, five, nine 1113, 41.
+It is only one values, right?
+How it is using this hash map where we have only key value.
+So this is how internally it does.
+So when you do set dot add 12, what internally it is doing is it is doing map dot put only internally
+using hash map only.
+And in the key it is putting this 12 and in the value it is putting one dummy object.
+New object.
+It just put a dummy object, nothing else.
+So ultimately this key set is what actually is this?
+So let me show you also that let's open which class has set class.
+Okay.
+In the hash set class let's see the add method.
+Add method.
+So here if you see that internally it using what HashMap only and it when it is doing put it put the
+element like element which you are inserting.
+So I'm inserting element let's say one here.
+What is the element I am trying to insert is 12.
+So 12.
+And here what is this present.
+Present is nothing but a dummy object dummy value to associate with an object.
+So it is using HashMap only and in the key part it is putting all this value 12 1133 four and in the
+value part it is nothing but a dummy object.
+New object.
+No meaning.
+Only take this key.
+Only.
+Okay, so that's why I'm saying it is exactly the same.
+The value is just a dummy object.
+And whatever the value you wanted to insert, it is put inside a key.
+Okay.
+So what all methods set interface contains.
+So this has around this 13 method.
+So you already know that set is a child of collection.
+So all the methods which are present into the collection are also present into the set.
+But here if you see that there are few new new methods let's understand that one.
+So add I have already shown you that what it does.
+So it contains no duplicate value.
+It inserts the element in the set only if element is not already present.
+If it is present, it will override it generally.
+And if the same value is already present, then it returns false at right.
+So this is you already know the answer.
+Like how how it does actually.
+So now just concentrate on this three methods add all.
+So now you know that in the mathematics you have set right right set subset and all.
+So it is like this three method will uh you can say that very very similar to those mathematical term
+set.
+So let's say you have two set collection.
+Set one has 12 1133 four.
+Set two has 11 988 ten 512.
+Now you are doing add all set one.
+Then add all will be like equivalent to plus of both all unique element.
+Union of two set collection.
+All unique, all duplicate.
+So here if you see that 12 1133 412 1133 411 is already now present into the hash set, nothing will
+happen.
+Nine, eight, eight, ten, five, 12, 12 is already there.
+So it is just like a union, right?
+All the duplicate value it will not even insert, right?
+No exception will come, but it will.
+It won't insert any duplicate value internally.
+It is doing single single add only right?
+If anything it found duplicate it.
+Just simply don't add it because it's a key right?
+When key already present, then there is nothing to overwrite value.
+There is nothing to overwrite it.
+Just say that a key already present return false so nothing will happen in that.
+Remove all, so remove all.
+So you have set one.
+Set two.
+Now I am doing set one dot.
+Remove all set two.
+So from this set all the elements of the set two will get removed.
+So from 12 1133 for any element which is also present into the set, two will get removed.
+So set two has 11.
+So 11 will get removed 988, ten, five, 12, 12 is removed, so only 33 and four will left right.
+So remove all difference is equivalent to difference.
+Then there is something called retain all.
+Retain all is like this part common to both right.
+So 1211 is common in both.
+So that will come like an intersection intersection okay.
+So it might looks very similar to our how we have read in the mathematics.
+Right.
+Rest.
+All methods are very, very same, which we have already seen in the collections.
+What clears will do.
+What is empty will do.
+Nothing difference.
+Okay, so now the hash set which we have already seen what internally it is using, it is internally
+using HashMap and in the HashMap.
+You already know that when I am creating a new hash set right?
+And when I'm adding an element, it will not guarantee the order because HashMap also do not guarantee
+the order right and I.
+So I have already explained how HashMap internally works, why it doesn't guarantee the order.
+Uh, you can check that, right?
+So here I have explained the union intersection and the difference.
+The same example there is whatever the examples which I have taken here.
+Just implement it here so you can try implementing this with yourself.
+It is very very straightforward.
+So the same examples I have taken in two sets.
+I am doing union set one dot add all after union.
+We got this, then again created us two set and I am doing retain all.
+Retain all is like only intersection part 11 and 12.
+Right 11 and 12.
+And then we are doing a difference.
+So created a two set and then doing remove all from the set one.
+So got a difference.
+You can try this out.
+So in short has set is Threadsafe know why it is not thread safe because HashMap is also not thread
+safe right?
+So does it maintain insertion order?
+No.
+Why?
+Because HashMap also doesn't maintain the insertion order.
+Null element is allowed.
+Yes.
+Only one duplicate elements are allowed.
+No.
+What is the threadsafe version of it?
+Right.
+So there is one Threadsafe version you can use is there is something called concurrent HashMap class
+in that this method is present new key set.
+So here I can do concurrent HashMap equals to new concurrent HashMap.
+And in that there is something called new key set method.
+So this will return me a new set which is a thread safe.
+Okay so now whatever you can do it's a thread safe operation.
+Now today I will also tell you one thing that when you are iterating over this list set collection,
+right.
+So I am I created an iterator object and I'm checking has next.
+Now I'm iterating.
+So now here if you see that I am trying to add an element while iterating.
+So now let's say the set is one, two, three, four, five.
+This is the set.
+Now you are iterating over this while iterating.
+You are here at this point currently iterating and you are inserting an element here.
+Eight.
+If it is not a thread safe collection, then it will throw concurrent modification exception because
+you cannot modify the collection while somebody is using it while you are using it, right?
+So it says that concurrent modification.
+Hey, one thread is already reading it and somebody is trying to update it also.
+So this collection, this collection is being used for reading.
+But now also while it is reading we are also trying to insert so two operation we are trying to perform.
+So it throws concurrent modification exception.
+Okay so see here I've used this headset.
+Headset is not thread safe.
+So if you try to add while doing iterating it will throw concurrent modification.
+But if it's a thread safe, thread safe means in a single collection multiple threads can work together,
+then you won't find any issue because internally it will synchronize.
+Internally it will synchronize.
+Only one operation can happen at a time.
+No two operation can be performed.
+Reading and addition can't be done concurrently.
+Right.
+So that is you can say that one of the key reason for you also to use thread safe version, right?
+If you have a scenario where you want to add while somebody is also reading it.
+Okay, but this is just a one to show you an example.
+This is scenario also might happen when you are working, but here Threadsafe version is in the concurrent
+HashMap.
+There is a new key set method which will give you a Threadsafe set.
+Okay.
+Time complexity is very similar to HashMap.
+What HashMap used to give because internally using HashMap only.
+So whatever the time complexity of HashMap is, it would be the same similarly linked hash set.
+So now you already know that linked hash set internally using linked HashMap, right?
+I have already explained how linked HashMap works, so linked HashMap maintains the insertion order.
+How?
+Because it maintains internally.
+What can you put into the comment?
+Doubly linked list.
+Right?
+Again, it is not a thread safe because linked hash map is also not a thread safe.
+And you can make it a thread safe like this.
+Collections dot synchronize map.
+And inside that you can put this linked hash map.
+I have already explained in the previous like how you can do for linked HashMap.
+Similarly you can do for linked hash set.
+Right now you can ask me here in the linked hash map.
+Uh, you told that we can maintain insertion order plus excess order.
+And in the linked hash set.
+And you are saying that only insertion order is maintained?
+Why not excess order.
+So here if you see that in the linked hash map, whenever you create an object, uh, let's see that.
+Let me add a linked hash map.
+So.
+I'm creating a new linked hash set.
+Let's go inside this so you know that there is one object called, uh, what was that?
+Access.
+Uh, access order.
+Right.
+So for that access order, we have to set it.
+True.
+But when you are creating a linked hash map, the Boolean value, it never passes it, right.
+So even if you pass it true.
+Hey, you want it to maintain an access order, right?
+It is never passed it.
+It's just say that dummy.
+Right.
+So always only one if.
+Because access order would be false.
+So only insertion order would be maintained.
+No, you can't even control the access order because that exposure is not even given into the linked
+hash set.
+So even though we are passing through hay, we wanted the access order.
+But that is just a dummy.
+It's not even passed.
+It is a dummy ignored.
+This is ignored.
+Okay.
+So that's why we in the left hand side only insertion order is maintain access order.
+Do not even maintain.
+Okay.
+So here I have created a linked hash set values I have put.
+Now I am iterating.
+So you will get.
+I will get the way I have inserted 277 8263 five.
+How?
+Because internally it maintain a doubly linked list.
+Right.
+So very very clear.
+Right.
+So it's just you can say that name what we are doing it.
+But now we are only interested in keys value.
+It is just a dummy object.
+New object.
+Nothing dummy object.
+So now we are only interested in keys time complexity.
+Can you tell me what is the time complexity of linked hashtag would be?
+What is the time complexity of linked hash map?
+The same time complexity of would be linked hash set.
+Also write Big-O of one only amortized means average tree set internally using tree map.
+Right?
+And what is the time complexity of tree map big O of log N?
+Why?
+Because it uses the red black tree.
+Or you can say that the balanced binary search tree, right?
+So it cannot store null values and the same.
+The tree set also has the time complexity of big O of log N, because internally it uses tree map.
+We can also double check that.
+So let's say this tree set internally it's creating an object of blue tree map itself.
+Tree map okay.
+So you know that tree map?
+You can have either ascending order or descending order.
+Right.
+So here, if I haven't given any comparator while creating a new tree set.
+Right.
+Internally using tree map only, I haven't given any comparator.
+Then natural ordering would be used and for integer natural ordering would be ascending.
+So when I added this two, five, 63, 77, 82 increasing order, it stored it.
+But if I give the comparator here like new tree set, like I can give a comparator also like integer
+a, comma integer b b minus a.
+If I can do this, it will store into the descending order.
+Like exactly a tree map.
+And you are iterating it and printing it, and it print the value.
+What would be the time complexity?
+The time complexity would be big O of log N because it uses internally this.
+So that's why I have covered this set after we have covered the map so that it makes more sense.
+Otherwise, if I have covered the set before, there would be lot of questions how it's internally working.
+But since we have already covered the hash map, linked hash map and tree map, you might be thinking
+it is very simple and it might be make more sense that it only concentrate on the keys.
+Value is just a dummy and complexity wise everything is time.
+Complexity is everything is same like a map hash map.
+Okay guys.
+So now only one topic in collections left which is stream and I will make it soon.
+Okay guys, any doubt, feel free to ping me.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

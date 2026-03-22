@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>48. Bulkhead Pattern</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>48. Bulkhead Pattern</h1>
+    <pre>
+Hey guys.
+And welcome back to the channel.
+And let's start today with the fault tolerant Microservices part two.
+So in part one we have already seen about rate limiter.
+And if you have not seen it kindly have a look because that's uh you will understand what is actually
+fault tolerant microservices are.
+So today we will start with the bulkhead and see what are the various use cases it supports.
+That's also very important like when we are going to build the bulkhead.
+So very quick rate limiter.
+It protects our application from clients.
+This is why I am telling you again about rate rate limiter in just one minute is because clear distinction
+need to be present between rate limiter and bulkhead, because many times a confusion happens like which
+one is bulkhead?
+Which one is rate limiter.
+So focus here is that rate limiter protects our application.
+Let's say our application is order.
+It protects our application.
+From whom?
+From clients.
+So let's say this is my client.
+And client is sending me too many requests.
+So it limited limit them.
+Hey, how many requests we can accept within a specific window.
+Right.
+And also one more thing is rate limit and never talks about concurrency.
+So just rate limit.
+Rate limit says that hey I can accept ten requests in one minute.
+Either you can send me ten requests in one shot or one by one.
+It never talks about concurrency.
+It just says that what is the limit?
+Okay.
+But it protect us from our clients.
+Now let's go to the bulkhead that it helps to control how many concurrent requests can go to downstream
+service.
+Now let's say this is our service order now.
+I am more concerned about the request which I am sending to my downstream.
+Now, I am not concerned about the request which I am getting from my clients.
+Okay, so that is one of the major difference.
+And bulkhead majorly talks about the concurrent request.
+We will see that.
+And if you understand this two use cases right.
+So there are two possible use cases.
+If you understand those two use cases, no matter when a interviewer or in your implementation, like
+a scenario is put, you would be able to clearly understand that whether rate limiter or bulkhead need
+to be applied.
+So understand that one is very very simple use case.
+Let's say you have order.
+This is your component and this is your downstream product.
+So order invokes product API.
+Let's say product is a small and lightweight service and can only handle three concurrent requests.
+Okay.
+And product itself is very lightweight.
+It doesn't have put rate limiter on itself.
+Okay.
+But with the bulkhead you can control that.
+Okay.
+So you know, that product can handle only three concurrent requests at a time.
+Okay.
+So it accepts three requests all at the same time.
+But when the fourth comes.
+No.
+There is no thread left.
+So when any one of them get free, then the another request would get fulfilled.
+Okay.
+So this is very, very simple use case.
+Very simple use case.
+And this use case is resolved through schema for bulkhead.
+So there are two types of bulkhead one is schema for bulkhead.
+We have seen another one I am going to tell.
+But for this use case whenever interviewer put this use case for bulkhead is our answer.
+Okay, we will see it how it, uh, functionality.
+But I think this is clear, right?
+Whenever there is a condition that, uh, you have a downstream which can only accept this many concurrent
+requests, how you can handle it through Sema for bulkhead.
+Okay.
+Another use case.
+Very, very important use case.
+And also remember that before I go to this use case, remember one very, very important system design
+problem which is like a noisy neighbor.
+Problem.
+If you can recall this problem, what it says that let's say this is your application.
+And your application have multiple tenants.
+Tenant 110 and 210 and three.
+So let's say that you have one of the tenant which is very, very noisy.
+Like the traffic from this tenant is so high that it consume all resources, all resources, and even
+the tenants, which are not like, uh, sending that much traffic or let's say they are just hitting
+one call, but their request is denied because all of your resources are used by one tenant.
+That is known as noisy neighbor problem, that you have one neighbor which is very noisy, a very,
+very similar.
+But you can say that the context is very, uh, narrow in this use case, noisy neighbor context is
+big, like it includes thread infrastructure, resources DB like Everything.
+If your tenant is using the resources like consider everything, DB resource, infrastructures, threads,
+everything.
+But here we are mostly talking about thread in this use case.
+Now consider this use case.
+You will find very very similarity to noisy neighbor.
+But the context is again I'm telling it's very narrow noisy neighbor problem.
+Context is very broader.
+So let's say that API one makes a downstream call to product service.
+So I have.
+So this is our component order is our component.
+And we have API one which when it gets invoked it make a call to product service.
+Product service is very fast right.
+Product service returns the response in less than 100 millisecond only.
+So it's a very fast service.
+Okay, now we have API two.
+And when this API got invoked, it actually invokes internally payment service.
+Now this payment service is slow.
+It might take five seconds to process a request.
+Let's say it has to further go to third party endpoint.
+But this is slow.
+This is slow service.
+And for API one the product is fast service.
+This is our setup.
+Now let's say what if there is a sudden spike in API two traffic?
+What if there is a sudden spike in API two traffic and it internally invoke the payment component,
+which is slow?
+Now your thread got blocked for five seconds.
+Thread one got blocked for five, second thread two got blocked for five seconds.
+Similarly your N threads got blocked for five seconds.
+Okay.
+So when a sudden spike comes in API, two do.
+More and more calls are made to payment service, which is slow, and it is possible that they might
+not be a concurrent.
+But since this is a slow service, it blocks your thread longer for five seconds and more, and it possible
+that your all threads of order service are now blocked.
+So let's say it has a thread pool of ten threads and there is a sudden spike comes in API to all ten
+threads are now blocked here.
+Okay, so there is no thread here.
+Just assume that.
+Now if any request comes to API one okay.
+And this API one, will it be able to fulfill it?
+No, there is no thread left in the thread pool.
+So either it has to wait or it will get rejected.
+So even though.
+It invokes a very fast service, there is not much traffic to API one, but still it gets suffer because
+of API two.
+So you can say that.
+We can.
+So you remember there is a ship concept.
+So in a ship there are different compartments.
+So if water fills up into one of the compartment they block it so that water do not spill over into
+the rest of the compartment.
+So very very similar concept is used in the use case two if you are.
+So they will put a limit.
+They will put a limit.
+Or you can say that threadpool.
+So they limit the threads.
+Hey API two they I know that you are invoking an endpoint which is very slow.
+So I give you only max five threads.
+Let's say you can't use more threads than that.
+Okay, so even though I have total ten threads in my order thread pool, we I have only allocated five
+threads to API two, not more than that.
+Okay, so I have and if let's say suddenly more requests coming in the API to more than five.
+Either they have to wait it or get rejected because the max I can allocate is fifth.
+So you can say that similar to this one, I have provided a limit.
+Okay.
+So that only resource I can provide you an okay.
+So that my other endpoint do not suffer.
+So you understand this use case.
+Whenever we have multiple endpoint and one of the endpoint, we have to make sure that it do not consume
+all the resources.
+Then bulkhead can be used and it has a thread pool bulkhead type.
+So this is the second type of bulkhead thread pool bulkhead through which we can limit the resource
+to a particular endpoint.
+Okay.
+So we'll see that also.
+So these are the two types of bulkhead.
+Thread pool bulkhead.
+Let's go one by one.
+So for bulkhead limit the number of concurrent calls using counter.
+Okay.
+So you have this API.
+You have this product service.
+So max three concurrent calls forth one should be rejected.
+So at a time three calls can go into your critical section.
+You can say that critical section critical section.
+Here is the one where we are invoking the API.
+The one where we are invoking the API.
+Consider that that is our critical section.
+So three calls are allowed.
+Three threads are allowed.
+The fourth thread it has to wait till one of them get is free.
+Okay.
+So if you understand the bulk, if you need to understand the bulkhead, Understand more like a thread,
+pools and all.
+So in that case it would be easy to understand.
+So when I say that three calls so just says that only we have three threads okay.
+So only three concurrent requests Max can go to this critical section.
+The fourth one it will get rejected because there is no thread left.
+Now why the name semaphore.
+Because the counter.
+How it managed that only three requests can go.
+So it uses a semaphore locking strategy.
+So if you are following the Java playlist also in that multithreading series, I have told about the
+semaphore locks in that I have explained, like how semaphore manages the counter that allows three
+calls or four calls or five calls.
+Whatever the number we will give that many requests can goes into a critical section.
+So internally it uses a semaphore lock.
+Okay.
+So kindly have a look if you have any doubt with the semaphore how semaphore locking works.
+How it allow n number of concurrent calls.
+Okay.
+So in short limit the number of concurrent calls using counter.
+And here internally it uses semaphore lock.
+If the limit is reached further calls are rejected immediately or block for a specific wait time.
+Let's see that the first thing first, like we did in the rate limiter, we have to add a dependency
+only.
+We have to add a dependency of resilience.
+For J.
+That's all because resilience for J provide us multiple fault tolerance like rate limiter, bulkhead
+retry, circuit breaker and all.
+So we don't have to individually download the dependency resilience for J.
+Dependency is enough.
+This is just a controller like we have normal.
+No change.
+The feign client I am using.
+Yeah.
+So controller is invoking the product service method invoke product API.
+Okay.
+So let's say that this is the place where I'm actually invoking my other application product here.
+It has one endpoint API.
+Okay.
+And this is my order component.
+And I am trying to invoke the product call.
+That's the place.
+So here I am just invoking it very normal using feign client know nothing difference.
+But now this annotation I have put on top of it at the bulkhead.
+Bulkhead.
+Give a name to this.
+What is the type of bulkhead you want to use?
+So I want to use bulkhead type dot semaphore.
+Okay.
+And what is the fallback method?
+if there is any thing happen.
+Let's say that semaphore if it reaches the limit three concurrent request.
+Fourth comes which get are either queued or failed.
+So once it is failed, it moves to the fallback method.
+This one.
+Now what will happen here is also.
+So this one is simple right?
+We have to just put annotation.
+We will see how it works.
+So now let's see that application dot properties.
+In application dot properties we have to put resilience dot bulkhead dot instance the name we have given
+here the bulkhead name.
+What is the maximum concurrent called is two.
+Maximum concurrent call means maximum concurrent threads are allowed into a critical section.
+So this is considered my critical section.
+Maximum threads can go inside which can invoke the product API.
+Okay.
+So maximum I want is two.
+Not more than that.
+And there is something called max wait duration.
+Currently I put it zero means fail it immediately.
+Don't even wait it.
+If there is no thread left, fail it immediately and call the product fallback method.
+But if you want that hey, it should not fail immediately.
+Then you can provide some values here like so you can provide like 500 Ms. milliseconds one second like
+this.
+So you can provide in Ms. is for milliseconds S for second M for minute, H for hours D for delay.
+So here if you see if wait time is zero reject immediately wait time.
+You can also give 300 millisecond two second one minute.
+Like this.
+You can define based on like how much time you want a particular thread to wait before it get rejected
+immediately.
+Make sense?
+So this.
+I told you that this.
+Everything is handled by AOP.
+AOP at runtime.
+Proxy code.
+Okay.
+So when this annotation is seen by AOP, it add a proxy code and it knows that it has a semaphore.
+And this is a code and it will use this semaphore locking strategy.
+It just add a code for the semaphore lock how the semaphore lock is implemented.
+So if you see this semaphore functionality right you will easily get to know how this concurrency handled.
+Okay I will put it into the description section also that the link for this video.
+So you can check the semaphore part only so that it will get clear to you.
+but semaphore bulkhead is clear, right?
+Why exactly it is used for.
+Okay, now see the thread pool bulkhead.
+So again one thing is in thread pool bulkhead, we are managing what we are limiting one of our API.
+You can say that or a critical section place so that it don't consume all the resource.
+So it is calling this.
+It is calling this let's say.
+So I'm limiting this that hey, when you are invoking this downstream use only this much resource.
+You can't use all the resource or all the threads.
+Okay.
+So that my other end points or my other my complete as a whole application should not get affected because
+of this.
+So assign a dedicated thread pool for each service.
+Each service means let's say you have a payment service like this endpoint is invoking a payment service.
+You can provide a dedicated thread pool for this if you have let's say sales order is calling sales
+service.
+You can provide a dedicated thread pool like okay, you can use this much resource only if you are invoking
+this downstream service.
+Okay.
+Only that pool is used to call the downstream.
+Very important.
+It is only for the downstream.
+Okay, but first thing first as the name thread pool bulk ahead.
+What it is using thread pool again in the Java, the whole dedicated video of thread pool and thread
+pool.
+Executor I have created very in depth.
+I have explained how exactly thread pools works, so kindly have a look like it will help you understand
+like what internally AOP might be doing how it is creating a thread pool, how it is adding a task into
+a thread pool.
+So thread pool has let's say task, initial task or initial threads, let's say four threads.
+Also it has a queue of size particular size n.
+So task has to be submitted.
+And once it is submitted, if there is no thread, will it put here or it will reject it.
+So we have all the points discussed here.
+So kindly have a look of thread pool.
+Then it would be little bit more clear how internally AOP might be doing it.
+So here if you see its implementation nothing much difference.
+So here the order service where we are invoking the product API.
+So you can see that this is our critical section.
+Okay I want to limit that.
+Only limited number of threads goes inside.
+Okay, so I have put at the bulkhead.
+Give it a name of this bulkhead.
+Bulkhead type which I'm using is thread pool.
+The fallback is this method okay.
+Now I am using a thread pool.
+Means you know that thread pool has the configuration.
+What is the minimum number of threads?
+What is the maximum number of threads?
+Okay, so that's we have to define what is the queue capacity.
+So in application dot properties like this we can define those thread pool properties.
+Resilience for thread pool bulkhead instances.
+The name this is the name right.
+So core thread pool size is the threads which will always be present into a thread pool three maximum
+thread pool is three also okay.
+So generally what happens is let's say if the you can say that minimum like core is two and maximum
+is three, let's say the queue size is your two, or let's say queue size is four.
+So 12344 spaces.
+So let's say this thread is busy.
+This thread is busy.
+So both the threads are busy.
+Request one.
+It is fulfilling.
+It is request two it is fulfilling.
+If any further requests come then queue would be used.
+Then request three would be put here.
+Request for request five.
+Request six okay so total six requests here.
+Now request seven comes now.
+There is no thread currently pending because the minimum thread pool or core thread pool is two and
+both are working.
+Queue is full.
+Will it reject the request?
+No, because max thread pool size let's say is three, so means it will create new thread and request
+seven work on that.
+Now if eight comes, does any thread there in the thread pool?
+No.
+Is any queue has space?
+No.
+Does the max limit reach?
+Yes.
+Maximum is three.
+Three threads are already working so now this will be rejected.
+So I have already explained everything into this one.
+So this is just a very quick brief so that you can recall what is minimum thread pool max thread pool
+queue capacity.
+So based on this configuration it actually creates a thread pool.
+How to create a thread pool.
+You will get understand when you see this.
+Now here if you see EOP proxy intercept your method call okay.
+So with the bulkhead it know it.
+Intercept your method call.
+So it submits your method to bulkhead thread Threadpool configured via Application.properties.
+So consider this.
+Internally AOP might be doing like this.
+Completablefuture supply async.
+So this supply async.
+Actually submit your request to a thread pool.
+Submit your request to thread pool.
+Okay.
+And the whole method body is submitted as a task.
+So this whole method right.
+Whatever.
+So currently here I am only my critical section is the place downstream API which I am calling.
+So you need to make sure very very specific that where you are putting this annotation.
+So whatever the business logic validation you have within this method right.
+That would be submitted.
+Okay.
+So use it very carefully.
+That only downstream call should be present into this because bulkhead is mostly applicable for the
+downstream only.
+Controlling the downstream right.
+How much resource I can use while calling the downstream.
+Okay, so you know that here in the thread pool, this is how this is the way of submitting the request
+to a thread or thread pool.
+So supply a sink and then you put the your method logic.
+The whole method body runs here right.
+And which thread pool executor it will has to use.
+So it will use bulkhead thread pool executor which it will create using this configuration.
+So one thing important is that it returns Completablefuture object.
+It returns Completablefuture object.
+Why?
+Because internally AOP intercepting it and AOP going to submit the request to a thread pool and the
+way to submit a request is this Completablefuture supply async?
+Because the request might has to wait either in queue or it will get accepted, one thread would be
+allocated to it which will start work and it will return the Completablefuture object.
+Okay.
+And that thread will continue working it.
+So the same thing is, since, uh, we are not writing the code, AOP is writing it, but the concept
+behind the same it is doing the same.
+We get a Completable future object and the AOP also returns a Completablefuture only.
+So that's why it want a return type Completablefuture.
+Okay, and whatever the fallback method we will write.
+Also it should match.
+We have already discussed in the rate limiter, so that's why I have a return type.
+Similarly here only here it is also string.
+String only thing is it has throwable extra.
+Okay.
+So you can test it like uh I have just added system dot out dot println here just for the testing of
+this one.
+Like um, so I've just put it like this thread name.
+This thread is currently fulfilling this.
+Method call.
+Right.
+So currently we have a thread pool size is three and Q is two.
+This is what we have defined right initially.
+So here if you see let me clarify a bit.
+So here if you see what is the thread pool size three and max is also three.
+So maximum we have three threads only and the q is only two.
+So here if you see.
+I invoke the API six times.
+So six times I invoke my endpoint.
+So order controller I have invoked order controller is invoking the invoke product API.
+So six times I have invoked the API.
+So means internally.
+So my controller.
+My service.
+And this is the product API.
+Okay.
+123456 time I invoke.
+So six times they call service method.
+You can say that uh my critical section where my logic is there to invoke the product API.
+So six times it might have tried to tried to invoke product API, but let's see the behavior.
+So first time I have three threads and two queue.
+So first time request comes.
+So six calls right.
+So first one is given to thread one.
+So this one is getting fulfilled by thread.
+One second request is fulfilled by thread two.
+Second request is fulfilled by thread two.
+So there are three threads, right?
+So thread three fulfill the request three.
+So see the name bulkhead product service three.
+So it is using my.
+Product instance right.
+So it's using my thread pool.
+Whatever we have created thread pool for product service.
+It is not using the common one which is for the My Order application.
+No.
+Whatever I have created is specifically for my downstream.
+It is using that thread pool.
+This one.
+So this is also a you can validate.
+That's why I am printing the thread name right.
+So thread one, thread two.
+Thread three is also fulfilling.
+So now all three threads are busy.
+They are fulfilling three requests.
+Now request four and request five.
+This four and five there is no thread left so it would be inserted into Q okay.
+And the sixth one, the my all three threads are busy.
+Q is full with request four and five, and the request six will get rejected.
+So request six got rejected.
+Product service is busy.
+Okay, so it got rejected.
+Now once two thread got free it will pick from my Q request four and request five will get fulfilled
+either by thread one or thread two.
+So thread one become free it pick request for thread two become free it become request five.
+So exact thread pool functionality no difference.
+Whatever.
+We have implemented thread pool right into plain Java internally spring AOP just doing that only it
+is writing that code for us.
+Just this is the configuration and only thing is like uh, this is our task.
+Like this is the task.
+It is submitted to a thread for processing.
+That's all.
+Okay.
+Yeah.
+So this is a very important part.
+Um, so here.
+Yeah.
+One very important thing I wanted to I was looking for that one.
+So here, let me clarify a bit a little bit.
+Let me delete the writing so that it is clearly visible.
+Yeah.
+Focus on this part when I am submitting a task here.
+Right.
+I am putting Completablefuture dot completed future and this here never do supply async.
+So we if you know thread pool, you know that in plain Java we are doing this Completablefuture dot
+supply async and internally it will submit a task to a thread pool.
+This will submit the task to thread pool.
+And who should do it?
+AOP should do it and AOP is doing that.
+AOP internally submit this.
+So we should not do supply async here.
+We can.
+We have to use completed future here.
+So completed future is doing nothing.
+It is a wrapper like whatever your task.
+So this is my actually a task which I want uh to be submitted to a thread pool actually.
+Okay.
+But I can't do because return type is completablefuture.
+I just can't have this.
+I have I can't just return a string.
+I can't just return a string because return type is completablefuture.
+So I have to wrap it up.
+So I have to wrap it up inside a Completablefuture object.
+That's all.
+So completed future.
+Do not submit the task to thread pool it only wrap the output, that's all.
+So never use supply async here.
+So if you just if you want to do testing right just do Completablefuture dot supply async and just submit
+this okay.
+And also just print the thread pool name.
+Just what is the thread name right before submitting just put a thread name.
+So like here let's say you are doing dot supply async and this product by id product client by product
+by id something something.
+And you have a thread name and just see that.
+Does your bulkhead thread pool used or not.
+It will not because now you are submitting the request.
+When you are submitting the request to a thread pool, you are using a thread from your order application,
+right?
+Your order application you are using it.
+So you need to use Aopp because Aopp will now have the proper understanding that, okay, when the bulkhead
+annotation is used, this is the name, this is the service.
+Then I have to look for Application.properties and whatever the name you have provided for the bulkhead.
+That bulkhead, uh, particular name is configuration.
+I have to route read.
+I have to create a thread pool and use that.
+So AOP does that for us and do supply us a method and pass the thread pool executor along with it.
+Okay.
+So if you just create supply a sink and provide the method, it will use default one, default one for
+your order application.
+Or either you have to manually handle that.
+You have to manually create a thread pool and pass your bulkhead bulkhead thread pool.
+executor, then it will use this pool.
+But you have to create now.
+First executor.
+Bulkhead.
+Executor.
+You have to create first.
+For this all configuration you have to create that.
+This is the max.
+This is the min.
+This is the queue.
+Once the executor is created.
+Now if you are calling the supply async supply async, then provide the task which you want to submit.
+Let's say this is the task of calling the downstream.
+And then in the comma the executor.
+You have to pass this executor you have to pass.
+Then it will work fine because now you are creating a executor.
+You are passing, you are submitting supply async.
+You are submitting to a thread pool, and you are also tell which executor to use.
+Now it will not use the common one, but if you just simply do supply async and the task calling the
+downstream, let's say this one.
+It will use common thread pool and you don't have to manually create a executor because this at the
+bulkhead.
+Ultimately internally going to do the same thing.
+It will first create thread pool executor and then call supply async and pass your this task and how
+it thread pool executor is created and all.
+It's all discussed here in depth in description section.
+I will put this thing.
+Got it.
+So last one minute.
+Let's see our time limiter.
+Because I am not going to cover the time limiter.
+Reason being is that time limiter is used to prevent async call from hanging indefinitely.
+Okay.
+Time limiter is non-blocking and resilience for J means it is designed for asynchronous operation that
+returns a reactive type like mono flux.
+So you remember that in a blocking.
+So here if you remember in the pink line.
+So pink line rest template rest line.
+These are all blocking calls.
+These threads are waiting.
+And the thread should not wait indefinitely.
+They should not hang indefinitely.
+So we have provided that connection timeout and timeout.
+We have already seen that in the client example.
+So we provided right connection timeout.
+How much time it takes to make a HTTP or TCP connection read timeout.
+How much time I should wait before I get a response from the downstream.
+So only this much time it will wait.
+It will not wait indefinitely.
+So for blocking calls we can handle it through this.
+But what about async calls, right?
+Let's say you fire and forget this is you fire and forget.
+Now async.
+There is a thread in asking it is working, how you make sure that it don't hang or continuously work
+indefinitely, so that thread should get also freed up.
+Okay, so that's where time limiter is used.
+So I will cover it when we will cover the web flux reactive programming in that it will make more sense
+because in the blocking rest template rest line it does not make sense because it is non-blocking in
+resilience 4G.
+Okay.
+Even if you put into non-blocking let's say at the rate time limiter.
+Okay.
+So what it will happen is you call, you submit a request, you submit a task to a thread pool, say,
+and your thread got freed.
+And now async thread is working.
+So it will not ultimately free this up.
+It will just try to free your this thing which is automatically get freed.
+It just submit a task to a thread pool bull and just finished.
+Move ahead.
+Now this async thread is working.
+So here in the blocking mechanism it will not be able to free this async call.
+So we will ultimately see when we will start the web flux.
+Okay.
+So if there is any doubt let me know in the comment section we can discuss further.
+But please practice this with hand like play with this configuration.
+Debug it and you will understand better right?
+And I would say that if you are not familiar with thread pool and this get it more uh like have a look
+at once please.
+Because then you will get clearly understand that what AOP might be doing inside how it is creating
+a thread pool executor, and how it is submitting a request to a thread pool.
+Okay.
+Okay guys.
+Thank you.
+Have a good day.
+Bye.
+    </pre>
+</body>
+</html>

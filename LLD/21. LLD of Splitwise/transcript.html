@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>21. LLD of Splitwise</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="#" class="btn">View Notes</a>
+    <h1>21. LLD of Splitwise</h1>
+    <pre>
+Hey guys.
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And if this question has been asked to you in any of the interview, can you please comment down the
+company name in which this question has been asked?
+Because this is a very, very important question, as we all know, right?
+So without wasting any time, let's jump into the low level design of Splitwise.
+Okay, so here, to anyone who don't know what is Splitwise app, right?
+So Splitwise is an app from which you can add expense.
+And split between your friends.
+Right.
+So let's say you have added an expense ₹400 for, let's say, lunch.
+And then let's say you have four friends friend one, friend two, friend three, and yourself, let's
+say shreyansh.
+So you can split 100 hundred rupees or any unequal amount also.
+and it will.
+This app will also take care of the maintaining the balance sheet.
+How much?
+This friend, this friend, how much you owe, how much you get back from which friend and all these
+things.
+So now the first step is in any of the if you are following my videos, first step is requirement.
+Gathering.
+And how do we require a gather the requirements is.
+First define a happy flow.
+Let's define the happy flow of the Splitwise app.
+So let's say I have opened a Splitwise app.
+I have downloaded the Splitwise app right?
+So I am already present.
+First I can add my friends.
+Right.
+So I can add friend one, friend two.
+Friend three friend n I can add many friends, right?
+Then what I can create is then I can create a groups.
+I can create n groups.
+Also I can create group one, group two, group n, right.
+This is let's say my college group.
+This is my let's say home.
+Home expenses something right.
+You can create any group.
+Right.
+Or let's say this is outing any groups.
+Then what you will have is you can add.
+Friends to a particular group only friend one, friend three and friend seven.
+You have added to group one.
+In group particular group you have added only friend two and friend five, right?
+So you can now add friends to a particular group.
+Then it is possible that you can add an expense here from here.
+So expense you can add, or you can directly add an expense from the Splitwise app.
+So this is possible both the way is possible that you are creating an expense inside a group, or you
+are creating an expense from directly the Splitwise app itself.
+It's not attached to any group, right?
+So this is the happy flow.
+And uh, definitely when you're creating an expense, you should have a split, a split between friends,
+right?
+So split between friend one, friend two.
+Friend three.
+You should be able to split.
+Split one.
+Split two.
+Like this.
+So this is generally the happy flow of a splitwise app or expense split app.
+Now let's take out gather the requirements.
+Okay, so first requirement is I should be able to add friends.
+So you should be able to add friends.
+Capability.
+This is one requirement I should have.
+I should be able to add a group.
+You should be able to add or you can say that manage group.
+Okay I should be able to add friend inside a group.
+Add or you can say that manage friend.
+Inside a group.
+Okay.
+This is one capability that I should be able to add a friend inside a group.
+Then expense manage expenses.
+Inside a group.
+Inside a group I can create an expense.
+And outside the group or without a group.
+Okay, again, one more thing.
+I should be able to split the expenses.
+Split expenses.
+Capability.
+Now this here, you should ask a question.
+That split can be of many types.
+So do we need a capability like equal split.
+Unequal split.
+Percentage wise split.
+What does it mean that let's say ₹400 can be equally split between four friends 100, 100, 100, 100?
+Unequals means it is unequal amount.
+Let's say ₹50, ₹100, ₹50, ₹200.
+An equal amount, split percentage wise is, let's say 10%.
+And let's say this is 20%, then 5%.
+5%.
+So split like this.
+Right.
+So depends.
+So ask the interviewer that.
+Do we need all three capabilities in the Splitwise app?
+Most probably.
+Interviewer will waiting for this right?
+Yes I need this capability.
+Equal and equal and percentage wise split because this is main.
+Okay.
+So we have taken care of this one also.
+So generally if you see that these are the five high level requirements which we can think of.
+Right.
+And one more thing is balance sheet.
+Balance sheet of each user.
+Right balance sheet of each user.
+We wanted okay.
+Because that is what uh splitwise does right for each user.
+So some kind of balance sheet you need to maintain.
+So that's why we need to have a balance sheet for each user, so a requirement is clear.
+Are you clear with the requirements?
+Right.
+A bit simpler right.
+Now let's go one level more deeper.
+Right.
+Before jumping into our step two, let's say come to our step two.
+What is the step two after step one requirement gathering.
+What are the step two object identification.
+Of object flow.
+First is definitely splitwise because this would be the driver app driver object.
+So Splitwise.
+What would be the second one?
+Second one would be definitely the friends.
+Or you can say that members or user.
+I will let's say let me call it user then.
+So this is done.
+This is done.
+Then we have a group.
+Then friends is just nothing but an added.
+Then expense.
+And then we need a split capability.
+So we will let's, uh, let's put into a question mark here.
+Split.
+Right.
+And anything else.
+So add friend group expense and expense capability equal equal split.
+Unequal split so that we will cover in the spread and the balance sheet.
+Some kind of balance sheet we wanted to maintain.
+Right.
+Let's say let's discuss more on this.
+So these are the high level objects which I can identify from my flows and requirement gathering.
+Right.
+Now before going to the UML diagram first let's understand this thing right?
+How does Splitwise works?
+Actually, I will tell you, this thing is very important.
+Very, very important.
+So what happens when you create an expense?
+Let's understand from that perspective.
+Right.
+So first thing I wanted to cover is what happens.
+When expense is created.
+And another question I will cover is balance sheet.
+So we will little bit more deep dive into this tool.
+And this will help us in designing us the Splitwise.
+So let's say I'm creating an expense.
+So I am creating an expense let's say lunch.
+Okay so this is my title and I'm amount is ₹400 right.
+And paid by is let's say I am paying it Shreyansh.
+Now I want to split between my, uh equally between all my friends.
+Right?
+So I have, let's say I want to split.
+So I am splitting.
+So now what are the three types of split we can have is equal, unequal or percentage.
+Let's say I am using a equal type.
+So let's say I have friend one, friend two, friend three and myself shreyansh.
+So it will split equally right.
+Now let's see here.
+Notice that I have my friend name and amount how much he owes.
+Okay so each friend how much the amount they owe for this payment.
+Right.
+So this is split equally.
+So now this is all happening at UI layer.
+So at UI you will select this.
+And now when you say that okay create expense API.
+So this is create expense.
+So we get this information.
+Okay.
+This user.
+Oh this amount.
+This user.
+Oh this amount.
+This user.
+Oh this amount.
+This user.
+Oh this amount.
+And that type is equal.
+Similarly, the percentage wise what will happen in the percentage if it was a percentage right.
+If it was a percentage there are two ways.
+Let's say again ₹400.
+But I choose a percentage wise.
+Then each friend you will assign a percentage 5%, 5%, something like 80%.
+So it should all be 100%.
+But you will come up with a percentage and maybe possible.
+So now at here there are two scenarios in the UI.
+They will just send the percentage to my server or UI will compute the amount and then will send it
+right.
+So we will discuss both the scenarios.
+How to take care of both right.
+Either UI will based on the 405%, it will compute the amount or it will just send the percentage and
+the server will compute the amount.
+Right.
+So but you got it right.
+What we get.
+So we get this splits of each friend comes a friend amount percentage.
+Right.
+So this one I wanted to tell you okay.
+This will be very much useful.
+Like just keep this in mind.
+This is very very useful okay.
+Second thing I want to talk about balance sheet.
+Right before we jump into the balance sheet let's look out the view in a split by let's say I am opening
+the split wise, right?
+I have opened a split wise app.
+So what does it shows to me?
+And this is my friend.
+Let's say Shubham is my friend right?
+So let's understand the view let's say for each user.
+So now here user are estranged.
+And what does it show to me?
+Like total amount.
+Oh or get back whether I am in negative or whether I am in positive, whether I have to give money or
+whether I have.
+I am asking money, right?
+And it will give me a drill down.
+Okay.
+Friend one.
+Friend two.
+Friend three.
+This is how much you have to give ₹100 to this friend, right?
+You have to give means.
+Oh, Shreyansh, get back from friend to ₹500.
+I get back from him.
+But for friend one I have to give ₹100.
+Shreyansh Shreyansh oh I also oh two.
+Friend three is like ₹100 like this.
+So now if you see that what I wanted to show you that each friend, each user has their own view, right?
+So most probably they might be storing that.
+Okay.
+User one have each this kind of data structure where each friend.
+So here in this case let's say it's me.
+Let's say I have an information about my each friend that whether I have to get back or whether I have
+to give or, oh, whether I owe money to this friend or whether I get back the money from him.
+Right.
+So from each user, I have this information.
+Okay.
+So just wanted to give a highlight on the balance sheet when I will, uh, design this object, you
+will get better understanding.
+Just keep this in two things in mind.
+Right.
+How the expense is created split equally percentage wise.
+What data we get from the input and during balance sheet.
+How what is the view.
+Okay.
+So now let's jump into the UML diagram.
+And guys I'll show you the coding also.
+And so this is my I have completed the coding also and I have pushed the coding into this GitLab link.
+Right.
+So here I think you know already know about this GitLab link I have put into the description.
+So go to the low level design folder.
+Inside this go to the design split files.
+You will find the coding.
+Okay I'll put it into this one description.
+So let's go with the UML and always start with I will start with the like bottom up approach.
+So I am going with first defining an expense.
+So let's define an expense.
+So this is my expense right.
+So let me show you also in parallel.
+So expense what I have put expense ID.
+ID some description.
+Let's say I have you can give some description, let's say lunch.
+Dinner description.
+Then I have put amount.
+This expense is how much amount.
+Double.
+Amount.
+Then who paid this.
+Who paid this.
+Then I have a user paid by.
+Right.
+So we will create this class.
+Uh, after this then I have put a split type.
+Right.
+So I told you right now during expense creation, you will define what split type you are using for
+this expense percentage wise equal or this one.
+So I am defining an enum.
+So I'm defining an enum.
+Split type.
+Whether equal.
+Unequal or.
+Percentage wise.
+So here I have that split type.
+Split type.
+And the splits.
+Right.
+Because I told you that we get this information also this this is nothing but a splits.
+And what does the splits has split has friend or user.
+This is user.
+And how much money because may be possible that in equal in equal we will get money like or unequal.
+Also we will get an money but percentage wise we will get a percentage.
+Yeah.
+So we have a list of split right.
+So what is that split?
+So in split currently I am putting user and amount.
+So what is the user?
+Who is the user and.
+Amount.
+Right.
+So in the split you can also put the percentage also integer like percentage.
+You can easily expand it.
+Let's say.
+So currently what I am taking a use case.
+That client will compute.
+This client will compute this amount and send me right.
+So client will compute this amount and send me.
+But you can also expand it easily that no client will send me percentage itself.
+And if they send you percentage you can just keep like what percentage they send.
+So currently I have implemented that okay.
+Client will compute the amount and send me.
+Right.
+But you can easily add a percentage also.
+So expense has splits.
+So expense has.
+Splits right.
+So this enum is present.
+So that's pretty much we have in the expense class right.
+So this pretty much we have okay.
+Now we just need to create a user class right.
+Because we are using users okay.
+So let me create a user here.
+Starting.
+Okay.
+So we will define user more.
+But let's say that expense has user.
+So expense has.
+User also okay till now we are good.
+Okay, so now let's come to this, uh, another part.
+So now we have created an expense.
+Now, if you see that we have to maintain this expense also.
+Right?
+We have to create, update and everything, let's say possible.
+So generally, instead of putting into everything into expense, right.
+I treat expense as a dumb object which just keep information and all the controlling will happen through
+generally which I prefer is.
+Expense controller.
+Right.
+So in expense controller I will show you what happens.
+So here expense controller will create an expense.
+It is taking that responsibility of creating an expense.
+So it is creating an expense right.
+And if in future it want to update, you can um expose the API to update it also.
+Right.
+So here it is helping creating an expense.
+Right.
+So now this is the expense controller, right?
+So now this is very, very important which I use.
+Right.
+So now let's see this.
+So whenever somebody is calling hey expense controller create an expense for me right.
+So expense controller create expense.
+So now somebody is calling expense controller.
+Let's say it.
+So expense expense can be created from two place we saw right.
+Expense can be created from a group.
+Expense can be created directly from the Splitwise app.
+And I told you this expense creation request what all it has.
+It has this information.
+So amount paid by split type split wise a percentage equal or unequal.
+And the splits.
+So expense controller get all this information Right.
+And based on the split type.
+So here I will define.
+Expanse.
+Split.
+This is my interface.
+Here I have put validate.
+Validate request I'll tell you what is this and what all it currently have.
+Equal split.
+Unequal split.
+Percentage split.
+And they have to implement this method.
+I will tell you how they will use it.
+So now let's say expense controller.
+Expense controller is exposing the create expense method right.
+So here I am exposing Create.
+Expense method.
+Create.
+Expense method.
+Right.
+What does this method will get?
+So create expense.
+Now you know that okay.
+When I'm creating an expense, when I'm creating an expense I will get okay amount.
+Who paid this right.
+And the splits.
+His friends may not split.
+Friend one let's say ₹100.
+Friend two ₹200.
+Friend three ₹300.
+Let's say right.
+And also the split type.
+He equal unequal percentage.
+So generally this is passed by the client during create expense.
+So create expense.
+So I am getting this all information.
+Who paid?
+What is the split wise type.
+Equal unequal or percentage.
+All the split details or split details is nothing but a this this friend, a friend expense amount,
+total expense amount, description and expense ID right?
+So now based on this expense controller will go to expense split using a factory pattern based upon
+the split type.
+Based upon the split type, whether it is equal, unequal or percentage, it will goes to a split factory.
+So it will also has.
+Split factory.
+So I have defined a split factory right.
+So this is my.
+Split factory.
+So expense controller will goes to split factory and it will say that hey I got split type as equal.
+Let's say I got, uh.
+Or let's say I got unequal.
+Hey, I got unequal split type.
+Can you give me an object of it?
+So it will return the unequal expense split.
+Right.
+So this one will return it one object.
+So it will return the object of this one.
+Okay.
+Now expense controller.
+Got it.
+Now expense controller.
+What it will do is it will validate the request first.
+Hey now it will call this one and validate the request.
+Now it will pass this split and split type and amount.
+So validate request.
+So I am getting two thing split list evenly.
+I'm getting this information concept amount divide.
+And the amount total amount.
+So so so let's say for example so but the client has given us this.
+So I need to validate right I need to validate.
+So based upon that split factory.
+The split factory.
+Split factory.
+Unequal.
+So validate request or unequal.
+Now unequal will check sum is equal.
+So then so plus 200 plus 100 600.
+This is not a valid.
+So it will fail this right.
+Percentage wise you can also add like okay five percentage ten percentage.
+So all percentage.
+Validation all percentage should be accumulated to 100% right.
+And amount compute.
+Will be validated right.
+So generally this validate request you can expand this validate request.
+Or you can say that compute amount.
+You can also have.
+So that's why I was saying you right percentage.
+Depending upon the interviewer, the interviewer said that no, no.
+From a client you will always get an amount after converting an amount, then we are good with this.
+We are good with only validate requests like whatever the client is passing to us only we have to validate
+equal case equal split class call.
+So everything is equal sorry equal.
+And it is equivalent to the total amount unequal.
+Everything is.
+After summing up all the split is it equals to this or not okay other client other you will get only
+percentage.
+Then you can easily expand this class to add a compute amount.
+And from the percentage one you can compute the amount and fill it.
+Fill it up in the split.
+This one, if you get only percentage, you can easily compute and fill it up here inside this class
+itself.
+Right.
+So this is very easily extensible now scalable, very scalable.
+In future any other come you can do it okay.
+So.
+No expense.
+Great.
+Almost.
+And we have defined the split also.
+Okay.
+Now let's move forward.
+User okay.
+What does user has.
+So see user has three things user id user name and its balance sheet.
+Let's define it.
+User id.
+String.
+User name and user expense.
+Balance sheet I have put it I'll tell you this class.
+So user expense balance sheet.
+Why?
+Why I have put this here.
+Balance sheet.
+Every user, every user is maintaining their view.
+Sorry, friends.
+So something like this for each user.
+Let's say Shreyansh knows everything.
+Like okay for his friends.
+How much I have to take from this friend, right?
+So for each user there is some balance sheet.
+So for each user this is for each user there is something called a balance sheet.
+Right.
+So this is my user.
+This is my user this one.
+And each user has its balance sheet this one.
+So that's why I put a balance sheet here right.
+Similarly for user two it will maintain its balance sheet like this.
+Right.
+So user balance sheet maintain friends.
+So that's why for each user, maintaining its friends balance sheet.
+Okay, so now can there be only one user in the system?
+So let's let me put it a red mark that we have.
+We will define it more.
+But before this can there be only one user?
+No, there can be many user.
+Right.
+And generally I prefer to write controller.
+So I will write user controller.
+User controller will have list of user.
+Right.
+So here I am creating a user controller.
+User controller has list of user right.
+So it has.
+It has list of user and it will perform the Crud operation.
+So let's say from the Splitwise app you want to add user remove user update user.
+Everything will be happen through controller not directly direct on the user and on the Splitwise app.
+And on the Splitwise app.
+You have this user controller user controller object.
+So Splitwise has user controller.
+Okay so user.
+User but at the expense of Splitwise or group.
+Right.
+Balance sheet.
+Split group okay.
+So now let's see I'm creating a group here.
+A group group A group has group ID right.
+So I have a string ID some group ID group name or group name.
+Right.
+Or group group members add.
+user add so it will have list of user.
+Okay so group has list of users.
+Plus what else.
+Group of expense.
+Create flow from inside a group.
+You can create an expense.
+You can create many expenses.
+So.
+It is also has list of expense.
+Expense list.
+Click on expense group.
+And definitely it has to create an expense.
+So it has expense controller also expense controller.
+Expense controller.
+So this all I have in a group group ID name what all the members in a group you can add a member from
+a group you can remove a member from the group, not from the split file a ARB user group.
+User group.
+So that's why I don't want user controller inside a group.
+Okay.
+Split remove groups.
+So group is maintaining their own list of user.
+It can add or remove from that only.
+Then I have expense list.
+Expense may add or remove groups and expense controller to manage those expenses.
+So group.
+Has expense controller.
+Right.
+And group has users also group has a list of users.
+So let's say I'm taking a.
+Group has list of users members or group also group has expenses.
+So let's say I'm just taking out this thing from.
+From this expenses, this group apart.
+Now there can be many groups.
+A group?
+No, there can be many groups.
+Right?
+So definitely we need group controller.
+Or group controller.
+Group controller has nothing but a list of group.
+So it will have list of group.
+It has so group activity.
+Create a group.
+So means it has group controller.
+It has group controller.
+See I don't want to put a list of group inside an Splitwise app because otherwise responsibility will
+come to a Splitwise app.
+Splitwise app is a just a driver.
+It doesn't have to have logic like which group I have to update and call the method.
+It will just delegate the task to group group controller.
+Hey, you take care of all the Crud operation of groups.
+I will just call you.
+Any change in the logic, you will take care of it, right?
+So Splitwise has user controller, group controller and we are done with the group.
+Balance sheet.
+The interesting part, right.
+Just understand this.
+Okay, so now we have told that inside a user each user is maintaining the balance sheet friends balance
+sheet or its balance sheet.
+And I told you how the data structures looks like for each user.
+For each user they are maintaining a balance sheet.
+Okay friends, get back to it now.
+This friends get back now or something like this.
+And what are the total amount?
+Total get back amount.
+Total payment I have made total my expenses.
+This all information it has to maintain in a balance sheet and a drill down level also.
+Okay.
+Total.
+Get back.
+I have ₹500.
+But kiss kiss say.
+Then we need.
+Okay.
+This friend you get back this much.
+Okay.
+Total o 400.
+I have to give 400.
+To whom?
+So then.
+Friend.
+Wise information we needed.
+So that's where I have come up with this.
+I have come up with this.
+Uh, let me show you.
+Balance sheet.
+Yeah.
+User expense, balance sheet.
+Right.
+So here.
+User expense balance sheet.
+What does I have I have.
+User versus balance.
+So for each user, for each user I have to maintain information about its friends versus their balance,
+how much I need to get back.
+And no.
+So that's why I am maintaining a map of user versus balance.
+Right.
+So some object.
+And what is this balance?
+This balance is nothing.
+What two information get back and oh.
+So here balance I have is amount or amount.
+Get back.
+So.
+Amount or.
+Double amount.
+Get back her friends.
+For example.
+Shreyansh.
+User.
+Maintain a balance sheet.
+User.
+So my friends.
+Friend.
+One Friend one.
+Map your balance.
+Balance object.
+Balance object has.
+Get back!
+And.
+Oh!
+What?
+Is friend say.
+I have to give or get back.
+So it depend upon the amount.
+I have 200 amount here or 300 amount here.
+So I can take out like this.
+Okay.
+This is the map.
+So for Shreyansh it has maintaining its balance sheet.
+In the balance sheet it has user.
+Okay.
+This user what is the balance.
+So does it chance is asking money or it has to give get back or.
+Oh right.
+For each user I for each of my friend, I know whether I have to get back or whether I have to owe money.
+Right?
+So that's why I am maintaining this balance for each of my friend, right?
+So I will say that instead of object for better understanding.
+Friend balance sheet my friend balance.
+So it is my friend balance.
+So each friend.
+What is the balance I have to oh I am owing the money or I have to get the get back the money from him
+or her okay.
+What else.
+So I have a total expense.
+So Splitwise is like what is the.
+Total?
+My expense.
+Some kind of Uber level?
+Uh, you can say that balance sheet, right?
+Total payment.
+I have done total payment.
+Payment expense.
+Right.
+Then total owe.
+Total or drill down.
+Uh, user friends.
+From how much?
+Friend to whom I need to give.
+double total.
+Get back whether I will get back.
+Total.
+Okay.
+Total chance.
+You get back ₹1,000.
+But if I want to drill down, I can iterate over this map.
+Okay, so this is.
+I put a high level total.
+Get back.
+Total low.
+Total amount.
+Total expense.
+Right.
+And if I want to drill down of each friend I will go this and check their balance.
+Okay.
+Whether I will get back or whether I owe.
+Right.
+So user has each user maintain their balance sheet.
+Right now there can be.
+So now here if you see I have bring down another controller balance sheet controller.
+Because why this is the very very important part.
+How you will update how you will update this balance sheet as soon as when we create an expense.
+So expense should be able to update this right.
+So now let's say a use case user is going inside a group.
+And from inside a group it is creating an expense.
+And from creating an expense it has created the expense let's say split equally.
+So controller will take a responsibility that as soon as the expense is created, it should update the
+balance sheet of a user.
+So there is certain logic.
+So that's why I put balance sheet controller.
+So balance sheet controller update this and it holds the business logic.
+It holds the business logic expense controller call this.
+Okay.
+So now let's see this understand with this expense controller group say from a group I am creating an
+expense.
+So and I'll send that okay.
+This is the split type.
+These are the split details which I got from the client and all this thing.
+So it will first go to Split Factory.
+Hey, give me the object and it will then first validate the request okay.
+The amount and all split amount and total amount.
+Everything is fine or not.
+Or if it do computation, if anything is required then it will create the expense.
+It will create the expense.
+Now once the expense is created, it need to update the balance sheet right of the users.
+So that's the logic I have put inside this one.
+So now it is updating the balance sheet right.
+Because expense is created it need to update the balance sheet.
+I will tell you this logic.
+You can write another logic based upon your need, but I will tell you what I have written.
+I am what is my logic?
+So expense controller is calling balance sheet controller and it is updating the balance sheet.
+So this is the complete UML.
+I will just tell you the logic of this, right?
+I'm going to explain you this logic, but this is the complete split wise.
+Now let's jump into the balance sheet controller.
+Balance sheet controller.
+How it will update the balance sheet.
+So see now what data structure I am using is for user one.
+It is maintaining all their friend list user two, user three, user four for example.
+And each user is maintaining user by balance.
+And balance is what is amount and get back.
+So it will have get back.
+Or oh user one owes money to user two or user one.
+Get back from user two.
+Right.
+Get back.
+Oh get back.
+Oh.
+Similarly I am taking two.
+User example User two.
+User two.
+Maintaining.
+User one.
+User three.
+And let's say user seven.
+Right.
+So it will have its get back.
+And oh and also what all information we are putting into the balance sheet.
+Total expense total payment total or total get back.
+So it has like total expense total user expense.
+Total payment total.
+Get back.
+Total.
+Oh.
+Now let's take one example.
+Let's say user one made a payment of ₹500 and split.
+Equally between user one and user two.
+Right.
+So now in this case what the data will come to expense.
+Expense amount.
+₹500 okay.
+Split type.
+Equally.
+And split details.
+Uh, split details.
+Split details will be like you.
+One, ₹250.
+You two ₹250.
+Right.
+Because 500 equally you.
+This is given by the UI of the expense controller.
+Balance sheet.
+This expense credit card.
+Right?
+And now it is calling balance sheet controller.
+Hey, update the balance sheet of this users.
+So now.
+It is split.
+So user one.
+User one is a total expense.
+Expense for user one is same.
+User one, user two, user two, or let's say paid by is paid by user one to user one.
+User two.
+User one is asking ₹250.
+So I will go to this user and see it's okay, get back the amount first is zero.
+I will increase it to 250 plus 250.
+Now I am asking ₹250 from the user.
+Right?
+Total payment.
+Payment.
+This is.
+The payment is paid by me.
+So I have increased the total payment ₹500.
+Get back.
+Total mirror increase 250 000.
+Now O is zero.
+Similarly, I will also do update the user to.
+So user two now owe money to user one.
+So user two it owes to 50 to user one.
+Right.
+And it's got total expense.
+I will update okay 250 because this much it's oh total payment zero.
+He hasn't made the payment.
+User one made the payment total.
+Get back zero.
+Does he get back anything from anyone?
+No.
+Get back.
+Oh right.
+And total oh 250 because this is you understand how this what I am doing actually in the balance controller.
+So here I am from the expense controller I am getting who paid the money.
+What are the splits?
+Splits?
+I'm getting this splits.
+Who paid the money and Amount.
+Total amount.
+So now first I'm doing is I'm iterating over the splits.
+I'm iterating over the splits.
+First I am updating.
+Right.
+So if this is the same user, if this is the same user user one.
+If this is the same user I'm just updating his total expense.
+Right?
+Otherwise if it's a different user.
+So I am doing two things.
+First thing is I am updating this also and I am also updating this.
+So here if you see I am first updating the balance of the paid who paid it.
+So user one paid.
+So I'm updating the balance of the paid.
+You can check out this logic.
+I the similar what I have told you right?
+So I'm iterating over the friend and I am increasing the get back amount increasing the get back amount.
+How much this much Right.
+Similarly, I'm updating the balance sheet of the O user.
+User two and goes to the user one because he paid.
+Right.
+And what I'm updating I am updating the O balance.
+I am updating the O balance amount to plus O amount.
+₹250.
+And also I will update its total.
+Uh, total your expense.
+Total o right.
+Total o total expense.
+Right.
+So there.
+So this is my logic of maintaining the balance sheet.
+Right.
+But this is the total overall view of an splitwise.
+Right.
+This is a complete flow.
+Right.
+And in Splitwise they will follow up.
+Question generally is can you do the simplify of expenses.
+This is most of an algorithm based I will not cover today maybe in next session.
+So it has an algorithm.
+So generally we use graph.
+If you see the CEO of Splitwise, he mentioned in the Quora that to simplify of expenses feature they
+use graph.
+And graph can be easily applied to this kind of data structure.
+So I have completed the simplify also.
+I'll tell you later.
+But for today this is everything about Splitwise.
+I hope you find it very useful.
+Go and check out this code and you will get to know once you will do yourself dry, run it and it would
+be very easy.
+All we have to comment like how we maintain a balance sheet and all those things, right?
+So I hope uh, please share with your connections guys.
+And please do comment do like as much as you can guys.
+Please share it with your connection.
+I really need all the support from you and good luck guys.
+If you if this has been asked in your interview or going to be asked in an interview, just pour though.
+Okay guys, have a nice day.
+Bye.
+    </pre>
+</body>
+</html>

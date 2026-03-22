@@ -1,0 +1,702 @@
+Hey guys, on this side, welcome to concept and coding.
+Uh, in JPA till now we have seen about what is JDBC and in JPA architecture and first level caching,
+second level caching.
+Right.
+And many more things.
+So today let's go further and see more annotations and how the mapping of the entity and tables happens.
+So this is the first thing we have to configure in our application dot properties spring dot JPA dot
+hibernate dot DDL hyphen auto.
+What does it do.
+It's a configuration which tell hibernate regarding how to create and manage the DB schema.
+So we have to add it into application dot properties file.
+Okay.
+So here here if you see in the application dot properties we have to add this value.
+So in the application dot properties, we have to add this value so we can provide certain values like
+none.
+Update.
+Validate.
+Create.
+Draw.
+Okay.
+Depending upon our use case we can define any one of them.
+So the first one is the none.
+It do not create schema.
+Do not update schema.
+Do not delete schema.
+Actually it does nothing and it is good for production.
+So for production I would always recommend use this only.
+Nothing else.
+Because in production we do write DB script and then give to DBA.
+DBA will run.
+We have a plan for rollback.
+Everything okay.
+So always use none in the production while you are doing development update is a good choice like here.
+Like it will create schema.
+If it is not there it will update the schema.
+Okay, if it is already there, let's say you are.
+There are already four columns.
+Now in your entity.
+There are five columns, so one new column.
+So it will update it.
+It will add new but it will not delete anything.
+Okay does update but without deleting any existing data or schema.
+Good for development environment.
+The third one is validate again it do not create.
+Do not update.
+Do not delete any data or schema.
+It just validate or do a matching between the entities and the DB schema.
+Right.
+Whatever the entities which you have created in your classes and it will match that both are matching
+or not.
+If it find any discrepancy it will throw an exception.
+Then fourth one is create.
+It will create a schema update schema and yes, it deletes schema also.
+So drop and recreate the schema during application startup.
+So whenever you start your application, right.
+So first it will drop.
+Drop all the data, all the schema and then creates a new schema fresh.
+Similarly there is something called create hyphen drop.
+It is very very similar to create.
+But only thing is when you start an application it will create the schema.
+But when you shut down the application it will drop the schema.
+Okay.
+So create what it does is during application startup itself it first drop and then recreate here.
+What it will do is during startup it just do only create and during application shutdown it do only
+drop.
+Okay.
+You can test all these things by keeping the value here.
+Let's say for say I am using create hyphen drop okay.
+So now when I start an application so what it does It just create trouble.
+When I stop the application now, I am stopping it.
+So during a stop, it drops it.
+Okay.
+Similarly, if I use create, you know what will happen during create only it will first drop and then
+create okay.
+So first it will drop table and then create okay.
+So we can easily validate uh using this.
+And we can choose depending upon our choice.
+But I have already told you in production always go for none.
+And development uh, update is sufficient.
+Okay.
+Before proceeding further, let me also tell you about difference between DB and schema.
+I am not sure I am, uh, I am pretty much sure many of you are already aware of this.
+It's a nothing related with Java.
+It's a DB concept.
+So there are two part write db and schema.
+A db can have multiple schemas, right?
+Schema one.
+Schema two.
+Schema three.
+Schema four.
+Right.
+So you can in this schema you can have logical grouping of tables.
+Table one.
+Table two.
+Table three.
+Let's say table four.
+Table five.
+Table six belongs to schema two.
+Similarly you can logical group the tables into different schemas.
+So how these are helpful right.
+Generally in organization where they have only one DB but there are multiple teams.
+So they can create different schemas for each team.
+And they can provide a proper ownership to the different team to each schema.
+So they can utilize only one DB, but inside one db itself they can have multiple schema.
+And each schema ownership belongs to one particular team.
+You can say okay, so they can group their tables in a particular schema, and they own the ownership
+for that one.
+If you don't provide any schema, then you are ultimately adding your table directly here.
+Okay, so that is also right.
+But uh, if, if, if you can say that in your company, each team has their own DB, then this is okay,
+right?
+My team has my own DB so that is okay.
+I don't have to create a schema, but there are a scenario like if one db is shared by multiple teams
+then schemas comes into the picture.
+Okay.
+So that's your uh the term schema.
+We are saying it right.
+Okay.
+Now let's start.
+The first thing we have to start with at the rate table annotation.
+So if you remember from our previous video, while creating an entity, I was using the entity annotation
+because this will tell that JPA has to look for this class and treat this class as an entity means it
+is equivalent to a table in a DB, okay.
+And each instance of this entity considered as a row in that table.
+But we were not using at the root table annotation till yet.
+Why?
+Because it's an optional field.
+If you don't define it, hibernate will create the table name based on the entity name.
+So my entity name is user detail.
+So maybe hibernate internally will create user underscore details.
+So generally S2 will create all capital letter and follow the camel case whenever there is a camel case
+it put underscore.
+But you can specifically mention yourself by at the root table itself.
+Give the name.
+So when you will check your DB you will see that this name, whatever you have defined here that will
+come.
+Okay.
+So if you see inside this table annotation, this is the name which is used to provide what specific
+name you wanted to give to your table.
+Okay, then there is something called schema.
+I already told you what schema is, right.
+So if you want your table to be part of a particular schema then provided here.
+Okay.
+If you don't want to be part of any schema, don't add it.
+Okay.
+So now here, if you say that I want to part of any schema.
+So I put schema and provided the name onboarding.
+So there is one schema.
+So remember that hibernate not automatically create this schema.
+We have to create the schema.
+So here in this case how we can create the schema is see this one.
+So in application dot properties there is something called spring dot data source dot URL where we have
+provided.
+What is the DB.
+Okay there we have to provide like this.
+Init equals to.
+Now we have to create a schema.
+Create a schema.
+If not exist, whatever the name of the schema you want to give.
+If you want to create more schema, you can another add like create schema.
+You can add as many schemas you like this wanted.
+Okay so we can create a schema first.
+Schemas are not.
+If you just write schema here but not right here.
+Hibernate not will not automatically create schema.
+It will say that schema not found.
+So we first have to create schema like this okay.
+Then we can tell that okay this table should belongs to this schema.
+If you don't want to be part of this or any schema don't write it okay.
+So now what would happen is if you see there is one schema already created okay.
+And now this user details and goes here.
+User detail goes here.
+So there I also have one more entity which is like order details, right?
+And I didn't use any schema so it directly goes under the DB.
+It is not under part of any schema.
+Okay.
+So and I already told you what schema is.
+It's nothing but a logical grouping of tables.
+Okay.
+You can provide some permission that only these these these teams or engineers will have permission
+for this schema.
+Nobody can access it apart from those rules okay.
+So that's why if you want you can use schema provide like this only in the condition that you have defined
+the schema or created the schema before itself.
+So then you have third one here in this table attribute is unique constraints.
+So like this you can add in a table.
+We have multiple columns which you want it to be unique.
+Okay.
+Column one.
+Column two.
+Column three.
+Let's say you want certain columns to be unique.
+Then you can define like this.
+So unique constraints equals to.
+Right.
+And it accepts the annotation unique constraint annotation column name whatever the column name which
+you have provided.
+So single column unique constraint.
+So I might have a column name phone.
+Now I made it unique constraint.
+So all the values inside it would be unique.
+Similarly you can also club together two columns together composite unique constraint.
+So they both together should be unique.
+Name and email together should be unique.
+Okay.
+So you can give like this column names equals to this one at the unique constraint.
+Okay.
+So this is a table level.
+So in in a particular table whatever the columns you have you can provide this uniqueness constraint
+like this.
+Okay.
+So now here if you see that this is my fields columns and I have put a constraint.
+Unique constraint on phone and name and email.
+So if you check the schema here I will see that uh.
+Here I can see that phone number is constraint added UK is uh unique key right.
+Unique constraint.
+Similarly this both email and name they both are same key right.
+Because I have used it together.
+So together they form a unique constraint.
+Okay.
+So like this you can add more values.
+So table has one more attribute which we can use is indexes.
+So here if you go here.
+So we can add indexes like this.
+You can use indexes equals to and any number of index you want to create on a columns of a table.
+So now let's say that I want to create.
+So these are my column I want to create an index on phone.
+Okay.
+So I have put the name name of an index in the column list which is a string I give like phone.
+This is the column name.
+So on phone this index is created okay.
+On phone.
+Similarly I created another index okay I gave this name.
+And on the composite column on this two columns, I have added it.
+So here column list.
+If you go inside this index annotation right column list is then a string.
+So it accept like this okay so name comma comma separated.
+So comma separated column we can provide so name comma email so index on composite columns okay.
+So here if you see that the same name which is on name and email okay.
+So now it's been indexed.
+Now we have to see at the rate column annotation.
+Very simple.
+Again it's an optional field.
+If not defined JPA will add it with default values okay.
+So now let's say that I have created uh entity and I provided the table name user underscore details
+okay.
+And uh, now these are all the fields, even though here and here I haven't provided the rate column.
+And for this I am providing at the rate column.
+JPA also add annotation for this for this but with default values.
+But here I am not using default values, I am setting mine so at the rate column name even though its
+name.
+But in the db I want name full underscore name.
+Okay, so if you see that in DB what name comes full underscore name, not just name okay.
+So that is one thing.
+Another thing is if there is only one column you want to make it unique, you can also do it here.
+Unique equals to true.
+Similarly as we saw above right we have unique constraint.
+So there also you can use it on a single column.
+Or if you don't want to use at a table level you can also use at a column level.
+So you can use like unique equals to true if you want to make it nullable true or false.
+That value can be null or not.
+You can provide like it can be empty or not.
+So by this attribute you can set it and even the length of the field you can determine if you don't
+provide this value.
+JPA internally set the default values like email.
+It will be considered as capital or hibernate.
+Generally for S2, everything are turned out to be a capital letter, right?
+And phone it changed to phone but with default values.
+Unique might be false, nullable might be false, length might be let's say 50 okay.
+So some default values it will set.
+Okay.
+Now these are the two another important annotation.
+We have to be aware at the rate id annotation and at the rate generated value annotation.
+So now what at the rate id is used for It is used to mark the field as a primary key.
+Okay, every table should have one unique value, which is used to uniquely identify each record that
+is known as primary key.
+And in an entity and in an entity right.
+The class we can use at the rate ID annotation to mark the field as primary key.
+So each entity can have only one primary key.
+So each entity at the rate entity cannot can have only one primary key, and only one field can be annotated
+with at the rate id I can't do like hey, this is also at the rate ID email is also at the rate id no,
+only one field.
+We can mark it at the rate ID.
+But now your question might come.
+Hey what about the composite primary key in composite key There can be more than one column.
+Then how to do that?
+Because we have put a constraint that at the rate ID can only be used on one field.
+But what about the composite primary key how it can be handled.
+So there are two ways to handle composite primary key.
+One is using at the rate embeddable and at the rate embedded ID.
+Another is with at the rate ID class and at the rate id annotation.
+Okay, so we'll see this.
+But there are certain rules which we have to follow.
+So it must be a public class.
+So we create a new class where we provide all the fields which are composite primary key.
+That class should be a public class.
+I will provide you a reason Also, it must implement the serializable interface.
+Write that public class need to implement the serializable interface.
+It should have one no argument constructor and must override the equals and hashCode method.
+Okay, so there is a proper reasoning why this rule need to be followed.
+And we'll see that.
+First let's see with this at the rate ID class and at the rate id annotation how composite primary key
+can be defined.
+Primary key.
+It's already clear right.
+We have already seen example.
+Here I am using primary key at the rate id okay.
+So ID is my primary key PK.
+But for composite key see how to do it.
+So first approach let's say that using at the rate ID class and at the rate id annotation.
+Now let's say that this is my table okay I have created an entity.
+This is the table name which I have given.
+These are the field, and I want these two columns to mark as a composite key name and address.
+Together they uniquely identify a row.
+Okay, so now here in this how we can do is I can't put at the rate ID here at the rate ID here.
+Note it won't work.
+So we first approach we are using it at the rate ID class.
+So see this one.
+So I have created one class public class.
+The first rule I have created a public class let's say user details seek composite key.
+And I have implement the serializable second rule.
+Okay.
+We defined all the fields which I wanted to considered as a composite key.
+So I want name and address right.
+So I put name and address here.
+The third rule it should have one won no argument.
+Constructor even if you don't write it.
+Generally a default constructor is always added if you don't have any argument constructor, but for
+uh, rules to follow.
+Just to say I mentioned here that this is the third rule which says that there should be one no argument
+constructor should be present.
+And the fourth rule says that we should override the equal and the hashCode method.
+So I have override it.
+So I have name and address.
+Right.
+So equals I have said that if object whatever the this object and the object which is coming, if both
+are equal directly return true.
+No problem.
+The other use case is that if the object which is coming and this objects are different than return
+false.
+If the instance instance is same, it is still a user details, then I can compare this individual value.
+Also, if value is also matching name and address is also matching, then I would say that yes, they
+are equal.
+Okay.
+Either.
+So in short, either both the objects, this object, the one in the parameter and the one this object,
+if both are same, then return true.
+If both objects are different but of same type, then we individually compare all the values like name,
+address.
+If they both are equal, then we say that yes, the both objects are equal and similarly hashcode.
+I am using objects dot hash and passing this list of values, and internally it will create some hashcode
+and return.
+Okay, so this is the fourth line.
+You have to provide your own functionality for the equals and hashCode.
+I will tell you also why now once this class is created, what we have to do is in your entity class
+where you have defined your table.
+There we have to use this at the rate id class annotation and this is the class user details k dot class.
+Okay, like this.
+We have to provide this annotation and whatever the fields for which you have determined a composite
+key, you have put at the rate ID over here.
+So remember that this ID is not equivalent to that primary key.
+No.
+Now you have annotated your class with at the rate ID class right now, whatever the at the rate ID
+you will put on the field, those together would be considered as composite key.
+And those should be present into this class here.
+Okay.
+Now here, if you see the schema, uh, you will see that index name it created on address.
+And name this address and name it created a composite key together.
+Okay.
+so this is one way.
+But now your question can come in, say why it has to implement serializable.
+Why we have to implement equivalent hash code.
+So this is my understanding why we need to override equivalent hash code.
+So you from the previous video, you know that JPA internally maintain first level caching.
+And also we can implement second level caching.
+And in both it uses HashMap.
+And generally we have key and value right in HashMap.
+The key is generally the primary key.
+So now here in this case the key is our composite key right.
+And it's a separate class more than one field.
+So how the equal and the hash code should work that you will guide right for your scenario okay.
+Only if name is equal I can consider that yes two objects are equal.
+But in some scenario, no, all the field exactly should match, then I would say it is equal.
+It determines, like your business, uh, functionality.
+Okay.
+So that is one of the reason because internally we use uh HashMap for lot of features JPA like for first
+level caching.
+So it relies on this key which is nothing but a primary key.
+So for that HashMap it required equals and hashCode.
+Okay.
+Another you can say that then why we need to implement serializable.
+And why we when when we were using primary key like at the rate only entity.
+And let's say at the rate ID primary key let's say long ID we were not implementing this class.
+Uh, implement serializable right.
+Why then for composite key I need to, uh, implement serializable.
+That question can also come.
+So the my understanding is unlike single primary key like a string, long composite key, or custom
+classes.
+Okay, you are not just putting at the rate ID over here now, like one field string or long or something.
+In the composite key, we are creating a separate class okay.
+That considered as a composite key.
+Now we need to make sure that this class should be like in a serializable format.
+Like in future if required, I should be able to serialize this class.
+Okay, so JPA need to make sure that those classes should be properly serializable.
+And if you implement that class class serializable, that will make sure that yes, in future let's
+say that, uh, during distributed caching and over the network, we have to pass this object.
+JPA should be able to serialize this class properly.
+Class.
+So this is the second approach using embeddable and embedded ID annotation the composite key.
+So again I am creating a new class.
+Public class first rule.
+Second rule implement the serializable third rule.
+Have one no arg constructor.
+Fourth rule uh I have equals and hashCode defined.
+Same everything.
+Same.
+But only thing is I have put at the rate embeddable here one annotation here and in the entity.
+Now I don't need at the rate ID class something right.
+No.
+Now in the entity I can use at the rate embedded ID and provide the class this this class.
+Okay.
+So I can provide the reference of this class.
+Now this will make sure that this would be added as a primary key composite key.
+So now when the table get created for this entity right here address name phone all comes properly.
+Address, name, phone all comes properly and even the address and name, address and name are indexed
+both together.
+Okay, so this is the second approach using at the rate embeddable and at the rate embedded ID for the
+composite key how we can create it.
+And we have one more like a very important part is at the rate generated value annotation.
+So now we know how to define primary key.
+At the rate id annotation.
+But we can also define its generation strategy too.
+By default primary key columns are not auto fill.
+Remember that.
+So let's say that I have put at the rate ID long ID.
+Now whenever you are trying to do insert, you have to provide like what ID?
+Because even though it's a primary key, right.
+But it will not be like auto fill.
+You have to provide like what ID unique value or some unique value.
+You have to provide.
+But with the help of add the generated value annotation, you can transfer this responsibility to hibernate
+also.
+Okay, so at the rate generated value only works with at the rate id annotation only for single primary
+key, not for the composite one.
+You remember like at the rate ID class, in that we can also use at the rate id id but those are different.
+Those are not the primary key one.
+Those are composite key ones.
+So at the rate generated value works only with rate ID annotation for single primary key one.
+So what are the different types we can give.
+The first type is identity.
+So like this we can give.
+So here I have created at the rate entity class Last given a table name.
+User underscore details.
+I have this three field for the long.
+I have created at the rate ID it's a primary key, but I have put an at.
+The generated value strategy I have given is generation type dot identity.
+So this means that auto increment it's an auto increment field.
+So each insert will generate a new value.
+So here if you see that first time I did an insert with this object, this is the response I got ID
+is created one.
+Even though I haven't passed anything ID one second time I hit it with some value.
+I got id two even though I haven't passed ID anything here.
+Okay, internally it auto increments ID two and if you check the db it will like this 1234.
+Like it will goes on okay And this is very very specific to table.
+Okay.
+This is very important.
+And many big industries also uses this generation type dot sequence.
+Okay.
+Big companies use it in a little bit different flavor I can tell you.
+But first understand this one used to generate unique numbers.
+Okay.
+Speed up the efficiency.
+When we catch sequence value more control than identity we'll understand these three points more better.
+Let's first see this query.
+Now let's say that if I am writing a DB query you can create a sequence like this.
+Hey create sequence.
+You can give some name whatever you want.
+Increment by 25, start with 100.
+Maximum value is 9999.
+So you can create a sequence.
+Let's say that uh, I have one sequence which is named user underscore seq.
+This is the name start value is.
+Let's say 100 increment.
+I have tell is 25 and max value of tell is 9999.
+So now when anybody asks this that hey give me the value.
+Let's say next.
+Well give me the next.
+Well.
+So it will start with 100 not with some one, two, three.
+Whatever the start you have pointed.
+Then again it says that hey give me next.
+Well then increment by 25 125, one 5175 200.
+Like this.
+It will go till it reach max 9999.
+After that we can tell what to do.
+Okay?
+Whether we want I think cycle or no cycle means after that don't again go to 100.
+Okay.
+Or after that stop it okay.
+So we can provide this Also, it has feature that we can cache.
+It can generate, hibernate can generate, let's say 50 values only in the one time itself.
+It can ask the sequence that, hey, generate 50 values and give it to me, and hibernate can cache
+it in its memory so that every time it need one unique value, it don't have to ask the sequence that
+hey, give me, give me, give me the next value so you can save some DB hit.
+You can simply directly ask, hey, give me 50 value, give me 100 values.
+It will generate it and send it to you and hibernate can store it.
+So it also has that capability.
+So how to define it into the entity.
+Let's see that.
+How to do that I am creating a new entity class at the rate ID.
+So I have this three field.
+And for this id I want a sequence generator like how we do it.
+So how to do that.
+First let's create a sequence generator.
+So at the rate sequence generator is the annotation which we have to use.
+This is the name.
+First field name is the unique name.
+But for the JPA, which in the Java classes you can use different entity.
+You can use okay.
+The first is the name unique.
+Any name you can provide and it can be used within the classes itself.
+Then second field is sequence name.
+This is the name which ultimately goes to the db in the DB what name you want for this sequence.
+So that will go.
+Or let's say that in DB you have already created the sequence yourself, and now you want it to attach
+to this sequence generator.
+Then you can provide the sequence name.
+So from DB it will not create new.
+It will use that db.
+Name one if it already has.
+If it don't have it will create new initial value from where it will start.
+allocation size.
+This is like hibernate is asking that, hey, uh, generate five values, five unique values, and give
+it to me.
+So now you can say that when you have writing a direct SQL query, you have more control over max value.
+You have more control over like, uh, what is the increment by 2550 or on.
+So here at the rate sequence generator there are not much field, only this, so 100.
+After that it will increment by one 101 102 103.
+Like this.
+It will go okay.
+But it provide us the capability that, uh, hibernate can tell in a single shot, generate this five
+unique values, give it to me and it will cache it.
+Okay.
+So this is for sequence generator.
+Now we put at the rate generated value.
+Now the strategy which we are using is sequence And generator which we are using is this one.
+This okay.
+So now they both got linked with this.
+So now when you start an application right.
+So here.
+First time I hit what ID I got 100 not one because I have told like what is the initial value.
+Second time I hit I got 101.
+Because here in the sequence generator we don't have a capability to tell increment.
+But so it's always increment by one only.
+And in db it will go like this.
+Okay.
+So these I have already explained you what is name sequence name initial value allocation size.
+So here if you see allocation size I have given five right here in this one.
+So now see this.
+So I am hitting five time insert.
+So first time it did insert 100.
+Second time 101, 102, 103, 104.
+Right.
+So three, four, five insert happen.
+No DB call has been made.
+Okay.
+After that.
+When six time I am doing insert okay before that it make one.
+Next value with that sequence db sequence name okay hibernate will fetch another five values okay.
+So that's where it says that sequence helps in caching so that we can cache certain prefetch values
+unique values.
+And you can use it okay.
+From the cache.
+You don't have to every time go and check with the DB that hey give me one unique value Okay.
+So that is also one of the advantage of the sequence.
+So here I can show you here in the this one.
+So let's see that generated value sequence let's say.
+So currently application is not running.
+So I am creating a sequence generator name I am giving some unique unique um user details anything.
+This is for entity.
+But in the DB I want name like user underscore SKU.
+I want this name in the db for this sequence okay.
+And initial value I want it to start with 200 and allocation size I want three.
+So in in one time it makes a db query three queries it will generate okay.
+And this and this ID, I will link it with this generator equals to this name.
+Okay so now they are linked.
+Now I am starting my application.
+So now my application got started.
+Now let's see.
+So here if you see the one sequence is created.
+What is the sequence name.
+User underscore SKU.
+Right.
+This is the name right.
+User underscore SKU I have given this is the name db name initial value is 200 and increment by three.
+So generally here this is wrong like incremented is one allocation size.
+I have provided three here in hibernate.
+Allocation size means in the three three chunk whenever any it it will make a query for the sequence.
+It will get three IDs in return and store it.
+Okay, now let's say that the first time I am making a post call, let's say a.
+So when I'm hitting it, it started with ID 200.
+Okay.
+So if we see the lock.
+So first time it make a query.
+Hey give me the because the insert we are doing the insert for the first time right.
+So it will make one db query to take out the sequence from the DB unique sequence and the allocation
+size.
+I have given three, so means three IDs it has got and stored it, so then it inserted it.
+Then I hit another two times one two.
+So now here if you see it does insert does insert.
+But it did not make any query for the sequence to give any value because it already has.
+Now the fourth time I do here, if you see It makes one query select next value from user underscore
+sequence okay.
+And then it does insert.
+Now again another two times you won't see anything right.
+So here if you see another two times you don't see anything.
+And if you make now again you will see uh select query for the user sequence okay.
+And.
+You can ask me like hey what is the advantage of sequence over identity.
+First thing I'll tell you that sequence is very important.
+What many companies does is they have a separate very small microservice which expose some API and which
+many microservices are using it to generate sequence, generate sequence, generate sequence.
+So one advantage we already see that this sequence right.
+It is not tied up with very specific to a table.
+It is a total separate logic, and that's why it can be considered as a separate microservice.
+And it takes a control.
+And you can say that a centralized, we can have all the logic which takes care of all the unique value
+key generation, and it helps or fulfill all the different microservices.
+So we can have custom logic.
+One advantage of sequence over identity is we can have custom logic sequence generation logic is independent
+of table.
+So multiple table can use it right.
+So even if you have ten tables those can use it like so.
+It can helps to generate a unique number for those ten.
+It's not very specific tied up to a specific table in identity.
+It is very tied up like auto increment of a table.
+So where it tied up range of IDs can be cached.
+So we can avoid hitting database each time a new ID is required and another is better.
+Portability means identity is very DB specific.
+Some DB autoincrement is different.
+Maybe Oracle is different, MySQL is different.
+Postgres is different.
+How the auto autoincrement works.
+And let's say that today you are in Oracle and you wanted to move to MySQL there.
+Auto Autoincrement works totally different.
+So portability brings an issue.
+But if you are using sequence, since you are taking the responsibility, what should be the start?
+How much should be increment?
+What should be the end?
+So portability is like easy, better portability.
+You can move from different DB as the consistent behavior you can have into multiple DB's okay, because
+you have more control.
+So there is one more like generation type dot table.
+I will not explain that because it hardly used in the industry.
+So there is like how we are using here at the rate sequence generator, right?
+Similarly there is something called at the rate table generator.
+This annotation is used, but it's very less efficient.
+Why?
+Because here a new table is created just for let's say maintaining the sequence okay.
+It has one column let's say sequence.
+And it, it keep on adding.
+You can say that let's say one column, one value, it keep on incrementing and it gives the value.
+But a new table is created and it's very less efficient you know.
+Right.
+Why a separate table is created just for maintaining unique ID.
+Each time ID is required, select and update query is executed.
+First you make a Select query.
+Hey, give me the value it will return.
+Let's say this is the well and second time you update it, change from 1 to 2.
+Now this should be the next value.
+Now you know that when a table is involved, a complexity comes when the concurrency handling.
+When multiple operation is happening in parallel, it required lock unlock feature also which can lead
+to performance bottleneck.
+Now let's say current value is for this table S is one.
+Now to uh insert operation comes and they both want what should be the next value I can use for the
+primary key.
+Now the goes to this table.
+And since this table we they have to put a lock right.
+So one have to put a lock.
+Consume it okay I will use one and increment it to two.
+So that second one it can use two okay.
+But remember that in sequence it's an atomic counter.
+There is no table.
+There is no table involved.
+It's just a counter.
+So it's much more efficient and faster okay.
+And DB is only handling it that counter.
+Okay.
+So here now this logic comes to you in the table.
+You as soon as table comes you have to maintain it.
+But that DB internally handles sequence like whatever the counter it has atomic counter it will handle
+like 1 to 2 like.
+So even though concurrency happen, it makes sure that only one of them, uh, all of them get the unique
+value.
+Okay.
+So that's why I in nine years I have never seen that at the table generator is used.
+But I can tell you that this sequence is very, very used.
+Okay.
+So in next part I will cover all this relationship association 1 to 1, one to many.
+And in then part seven last part I will cover the custom queries, criteria, queries, pagination and
+sorting.
+So only these two left and hopefully I will complete it as soon as possible.

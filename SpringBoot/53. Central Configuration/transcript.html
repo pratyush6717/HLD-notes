@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>53. Central Configuration</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>53. Central Configuration</h1>
+    <pre>
+Hey guys.
+
+Welcome back to the channel.
+
+And today in spring microservices we are going to do centralized configuration.
+
+And I can say that in most of the companies which are dealing with the spring boot, they are following
+
+the centralized configuration approach only for managing the configurations.
+
+But let's see the problem first.
+
+And with that you will get to know better understanding that why?
+
+Why everyone is following the centralized configuration approach okay.
+
+The first problem is rebuild and redeploy.
+
+Assume that this is your application order application and this is the Application.properties where
+
+you are maintaining your configuration.
+
+Now say that you have to update this configuration.
+
+What you have to do.
+
+You have to edit the application.properties file.
+
+And after that you have to rebuild your jar and then redeploy the surface okay.
+
+So just one configuration update, you have to rebuild and redeploy.
+
+And with that itself, you can know that it's a big pain.
+
+Okay.
+
+Now the problem two is that inconsistent config across services.
+
+Many times what happens is there have similar configuration across multiple microservices like this.
+
+Let's say uh I have a very big order microservices which I have further divided into two smaller microservices.
+
+One is pre order and another is post order application.
+
+So both are different microservices but both helps in fulfilling the order itself pre order and post
+
+order.
+
+So definitely that the DB which they are pointing to with the same DB.
+
+Okay.
+
+And this is just a one configuration.
+
+There can be many configuration which are common across multiple microservices.
+
+So this is just one example.
+
+So whenever you are making any update or adding a new property file, you have to make sure that it
+
+is consistent across all the microservices.
+
+Okay.
+
+So that is another challenge.
+
+Okay.
+
+Now let's say that you change the DB.
+
+You have made the change to order hyphen DB to something else, and you made only changes in the pre
+
+order.
+
+You forgot to make change in to the post order application.
+
+Then it's become inconsistent configuration across different applications.
+
+The third problem is no runtime update.
+
+This is very important.
+
+Now let's say that your application is already running in live and you need to change certain configuration.
+
+Okay.
+
+Then how your application which is running in live can see those configuration changes.
+
+Is it possible?
+
+Currently no because Application.properties file is loaded only once at startup.
+
+When your application is getting, you are starting your application.
+
+Let's say order application only that time it read application.properties file okay.
+
+After that, if you make any changes into this one, there is no way that runtime itself while this
+
+application is running it, observe the changes.
+
+Okay, this has been updated.
+
+There is no way.
+
+Okay, so you have to stop it, okay?
+
+You have to rebuild it and then you have to deploy it again.
+
+Currently this is the way.
+
+Okay.
+
+If you have application.properties with the particular microservice, what is the problem for time consuming
+
+rollback.
+
+I told you that if any configuration change you make, you have to let's say raise the PR, get it merged.
+
+Then you have to build the service again and then you have to redeploy.
+
+Everything has to be done.
+
+And if any issue comes, you have to follow the complete process again, which is a time consuming process.
+
+Okay.
+
+So that's what I have mentioned it here.
+
+You have to manually add it.
+
+You have to rebuild it.
+
+You have to redeploy.
+
+If multiple servers are impacted you need to fix all like in this example.
+
+Let's say if db url has you have done misconfiguration, then you have to do the same process for this
+
+pre-order application.
+
+You have to the same process for post order application.
+
+Okay.
+
+So the rollback is time consuming.
+
+So what's the solution for that solution for is centralized configuration with spring cloud config.
+
+Very important you will find mostly companies are using this okay.
+
+So here the first, you can say that this is the outer layer one.
+
+In the first layer, which is we have our config files.
+
+So we create a git repository just to store the config files.
+
+Okay.
+
+This is where we put our dot properties files.
+
+Okay.
+
+Even though you have multiple microservices for all the microservices we we have to put the configuration
+
+files dot property files here in this git repository.
+
+Okay.
+
+So this is our first thing we will see.
+
+We will go in depth of each of layer separately.
+
+So this is the first thing.
+
+Now the second thing is another microservice config server.
+
+So its task is to fetch the config from the git.
+
+So here.
+
+So this config server fetches the application.properties from this git repository where we have only
+
+the property files.
+
+Okay.
+
+And in the layer three you can see that we have our microservices individual microservices.
+
+It connect with the config server.
+
+Okay.
+
+So you can say that order is connecting with config server and saying that hey can you help me fetch
+
+the properties for this order application.
+
+It goes to the config files git repository where the properties files are there.
+
+It fetches the property from there and provide it to the order service.
+
+Okay.
+
+So now let's go one by one at each service.
+
+Let's say step one setting up the config file repository.
+
+Okay.
+
+So within this repository we know that we have to keep all the property file for all the microservices.
+
+Okay so I created a simple git repository.
+
+Nothing like a maven project or nothing simple git repository which has plain files application dot
+
+property files.
+
+Yes, you can group it under a particular folder also.
+
+So like I have created one folder global.
+
+There I have put all these properties application dot property application hyphen dev dot property application
+
+hyphen prod and application hyphen dot property.
+
+So these are different profiles.
+
+And before I proceed further, if you have any doubt with the profile we have already covered in depth
+
+into the Spring Boot series like so we have seen like what is dev QA, prod profiles?
+
+Okay, so kindly check it out.
+
+Like if you have any doubt with this like okay what does application hyphen dev dot property means and
+
+uh respectively other files also okay.
+
+So these are global files.
+
+Okay.
+
+I name into the folder global and I have put application dot properties.
+
+And it's different profile like dev prod QA.
+
+Similarly I have created one folder order service.
+
+Within that I have put all the application all the property files for the order service.
+
+Now here if you see that if I have your let's say this is your service order service.
+
+And within that application dot property file you give the application name.
+
+So name is you have given let's say order hyphen service.
+
+So the same name you have to use it here.
+
+Okay.
+
+So for a particular specific application you have to use application name.
+
+Application name.
+
+Let's say order hyphen service dot properties order hyphen service hyphen dev dot properties.
+
+So different profile hyphen dev hyphen prod.
+
+Hyphen qa.
+
+So these are the different profiles for the order services.
+
+Okay.
+
+Similarly if you have different other microservices like invoice you can create different folder invoice
+
+service and whatever the name you have used in the invoice application, we will see that in when we
+
+will write the whole code, we will see that the same name you have to use it, let's say invoice hyphen
+
+service dot properties invoice hyphen service hyphen dev dot properties.
+
+Likewise okay.
+
+Now very important is the precedence okay.
+
+These global why have why I have specifically termed the name global.
+
+Why.
+
+Because application dot properties.
+
+And these are all you can say that applies to all the microservices.
+
+For example let's say you have global and you have application dot properties Is dev qa prod.
+
+Likewise.
+
+Similarly you have order it's order service dot property order service hyphen dev hyphen qa hyphen prod.
+
+Likewise similarly for invoice similarly you have payment service.
+
+Okay.
+
+So let's say you have different microservices.
+
+So this global act as a fallback okay.
+
+Fallback for which configuration.
+
+Now let's say that you are specifically looking for order.
+
+And let's say this dev hey you are looking for configuration within this order service and to the dev
+
+configuration.
+
+So if that configuration is missing here then it will follow certain sequence to okay what is the next
+
+fallback.
+
+Can I fallback to this global.
+
+Okay.
+
+If yes.
+
+And if configuration found then it will use that.
+
+So that's where I mean that very important to understand the precedence.
+
+So I will come to this points later.
+
+The first I will want to explain you the precedence which is very important, and understand this with
+
+this example first.
+
+So we will see this example first.
+
+Then we will see this generic one.
+
+And then we will read this, uh this one.
+
+Then it will become super clear.
+
+Now let's say you are this is your application order service.
+
+This is your application.
+
+And you are looking for config profile div.
+
+Okay.
+
+So currently let's say you are working with the profile div.
+
+So what is the precedence.
+
+So first it will look for order hyphen service hyphen div dot properties okay so this is the first precedence
+
+okay.
+
+Now let's say that your configuration is missing in this one, then it will fall back to.
+
+I told you that these are the global.
+
+This act as a fallback.
+
+Now, if you are looking for this configuration within this dev and the configuration is missing here,
+
+it fall back to the global one.
+
+But global one.
+
+Which one?
+
+There are so many.
+
+So you are looking for hyphen dev right.
+
+So it will first fallback to this hyphen dev.
+
+Okay.
+
+So application hyphen dev dot property.
+
+So this is a global one but it's specific profile whatever you are looking for.
+
+Now let's say that again you the configuration is missing here.
+
+Okay.
+
+So now what it will do.
+
+Let's go back here.
+
+Now the configuration is missing also here in this dev.
+
+So should I fall back to this one or should I fall back to order hyphen service dot properties.
+
+Okay.
+
+So See application dot properties is fallback for all profile dev prod qa okay.
+
+Similarly, order hyphen service dot properties is fallback for all dev prod qa okay.
+
+So first what internally does that it try to look into the dev itself application dot application hyphen
+
+dev dot properties which is a global one but specific profile.
+
+Now if it is missing if property is missing there instead of looking into application dot properties
+
+which is for all common for all microservices, it first look into order hyphen service dot properties.
+
+Now it got fallback to order hyphen service dot properties.
+
+It says that okay, uh, the configuration is missing into the dev itself.
+
+Then I would fall back to whatever the order hyphen service dot properties has okay because this is
+
+common for QA for all profile dev prod.
+
+This is the default.
+
+You can say that.
+
+Okay.
+
+So first precedence is whatever the exact profile you are looking for or exact application you are looking
+
+for.
+
+So it first look into that.
+
+Otherwise it will look into the global one but exact profile.
+
+So you can see that the profile is important first.
+
+So first preference is always profile first exact application then the global one but exact profile.
+
+If that is missing here then it will goes to the okay.
+
+Now for this application, whatever the common for all the profiles, I will use that.
+
+If it is missing there also, then it has no choice but to fall back to the default one like application
+
+dot properties, which is for all microservices for all profile.
+
+Okay, now let's say that if that is also So configuration is missing.
+
+It is not there.
+
+Then it will fall back to particular order with each application.
+
+There is also application dot properties application hyphen dev dot properties.
+
+Okay then it will it will fall back to that local.
+
+So local always has the last precedence.
+
+Okay.
+
+So then it will fall back to application hyphen dev dot properties.
+
+If that is missing configuration is missing there then it will ultimately fall back to Application.properties
+
+local one local means now with your application.
+
+Whatever the property files you have application dot properties file.
+
+So this is the same thing I have mentioned here.
+
+Okay.
+
+Now read this term global properties which I have defined here.
+
+Application dot property applies to all service and all profile All service.
+
+All profile.
+
+Application.
+
+Particular profile.
+
+Application.
+
+Hyphen.
+
+Dev application.
+
+Hyphen QA application.
+
+Hyphen.
+
+Prod.
+
+This apply to all service but with specific profile.
+
+Similarly, we have specific services specific like your application name dot properties applies to
+
+particular service.
+
+Let's say you have order service dot property.
+
+So this is applied to order service only particular service but all profile dev prod.
+
+Similarly you have application name hyphen profile.
+
+So particular service particular profile.
+
+Okay.
+
+So.
+
+This precedence is very very important where most of the confusion happens.
+
+If you are clear with this precedence I think you would be able to properly clearly understand and manage
+
+the git repository for this config files.
+
+Okay.
+
+And also you can just see this.
+
+This is the generic of this itself.
+
+Like the first precedence is application name.
+
+Whatever the particular application you are trying to search and its particular profile.
+
+If that is missing then the global but the same profile is the next order.
+
+If that config is missing there itself, then the particular application name dot properties.
+
+Okay, now this is common let's say for QA dev prod but for particular service only.
+
+If that is missing here, then it goes to ultimate fallback to Application.properties which is a global
+
+for all microservice all profiles.
+
+Then after that it fall back to local specific microservice, their application hyphen dev or QA, whichever
+
+you are looking for that properties and its local application dot properties.
+
+At last we will see that with an example.
+
+I hope this step one is clear and the precedence is very important.
+
+Again, I am telling precedence is very important.
+
+This is where most of the confusion happen.
+
+Now let's move back.
+
+Uh, move forward to the step two.
+
+We have already done the setup of this config files.
+
+Now we have to set up the config server.
+
+So config server is the one which fetches the config from this git.
+
+So this application which we are now going to write that ultimately fetches the property from this git.
+
+So you can open the spring initializer.
+
+And from there we can uh add this like whatever the version you want to work with, always pick the
+
+let's say uh, 1721 whichever you are comfortable with.
+
+Right.
+
+And the stable version.
+
+Now here you will see that you have to pick this.
+
+form.
+
+Dependency config.
+
+Server dependency.
+
+Okay.
+
+So this brings this dependency into our pom.xml.
+
+Spring cloud config server.
+
+So this is our act as a server and its task is to fetch the properties.
+
+Okay.
+
+So now let's see that.
+
+So first you have done that.
+
+You have created this project and chosen this dependency config server.
+
+And make sure that your Pom has this dependency added.
+
+Now in its application.properties you have to add certain things.
+
+First thing is you have to provide a git URI.
+
+Spring cloud config server git uri which git uri this where we have provided the configuration property
+
+files property files right in the git repository, so its git URL we have to provide.
+
+So this is the git URL.
+
+Okay.
+
+So at this point of time this git is public.
+
+So you can directly write like this.
+
+You don't need any username.
+
+You don't need any password.
+
+You can directly give the URL link okay.
+
+If it is a public git repo okay.
+
+Now the second is configuration is spring cloud config server git search path.
+
+So here I have created two folders.
+
+If you remember from this I created two folders here.
+
+One is global.
+
+Another is Order service.
+
+So I have provided the search path here.
+
+Search this folders Order service and the global.
+
+If you haven't created any folder and just you have like plane dot property file without any folders,
+
+then you don't need this one.
+
+but if you have divided into like proper folders, then you need to divide provide all the folders which
+
+it need to look.
+
+Then the third is git clone dot on start so it can be true or false.
+
+So if it is true then what would happen is it will download the property from central config at the
+
+time of application startup.
+
+If it is false, it will be downloaded at the time of first request.
+
+So now when you going to start this application config server at the time of application startup itself,
+
+it will download all the properties okay and cache it.
+
+But if you make it false, then when the first request come not at the time of application startup,
+
+when the first request come at that point of time, it will download it and then put a cache.
+
+Anyway, it will download and put into the cache.
+
+But at what time is the application startup or at the first request that we have to tell?
+
+So I would always say that always use clone on start during application startup itself.
+
+It will download it and put it into the cache.
+
+And the third and the another configuration is git dot default hyphen label like which from which branch
+
+you have to fetch it by default is main itself.
+
+But let's say you have very, uh, feature specific changes.
+
+So you can give a branch name from where this property file has to be fetched.
+
+So default is main.
+
+Even if you don't skip this one it will fetch it from main only.
+
+But if you have any different other branch which is not main, then you can use this git default hyphen
+
+label and you can provide a branch name from branch name of which this config file git repository.
+
+Okay.
+
+So this is the thing which you require.
+
+Now, the question might have come to you.
+
+Okay.
+
+This is the public git repo link.
+
+We can directly provide a link and it would be able to access it.
+
+But most of the cases repos are not public.
+
+It is private.
+
+Then what to do.
+
+So like this.
+
+So let's say that whatever the config file which I have created, this one, this repo, I have specifically
+
+made it private.
+
+So you will see the lock sign here.
+
+Now what.
+
+How to add it.
+
+So we need username and password.
+
+And for password specifically token.
+
+So if you are using GitLab so in in the GitLab if you see the right hand side of your this is your repo.
+
+And here if you see three dots within that go to the project setting.
+
+Inside the project setting you will see access token.
+
+From that access token you just create a new token and copy it.
+
+But if you are using GitHub, click on your profile within that profile, go to the setting from that
+
+setting goes to developer setting.
+
+From developer setting you will see Personal Access token.
+
+Click on fine grained token and you can create one token here and just copy it.
+
+Once you do that in the application.properties earlier, you have already provided the URI.
+
+That is okay.
+
+Still, we have to do that, but now we have to provide this git dot username git dot password also.
+
+Okay.
+
+And it's never recommended to directly put your username and password here itself okay.
+
+Always put into environment variable.
+
+Or if you have any server which manage the keys or fetch it from there.
+
+Okay so for now I am putting into the environment.
+
+So in the IntelliJ if you open the run click on run, click on Edit Configuration.
+
+Figuration there you can add.
+
+So git underscore username.
+
+Git underscore username.
+
+And you put whatever the username you have.
+
+So generally after like whatever the gitlab.com github.com whatever the name you have generally that
+
+is the username.
+
+But you can check your profile.
+
+You have created into that git account and see what is the username you have given.
+
+Generally this is the username.
+
+So you you can put your username like this.
+
+Git underscore username equals to this semicolon.
+
+Now your token git.
+
+The name I have for the placeholder is git underscore underscore token git underscore underscore token.
+
+Now paste it your token.
+
+Done.
+
+So if you have a private repo you have to just add username and token also.
+
+And how you can create the token.
+
+You can see this.
+
+Order like this is the way for the GitLab and GitHub.
+
+Okay so till now what we have done is like we have created an application with this dependency config
+
+server.
+
+We have added application.properties, provided the git URL, what search path and this what branch.
+
+We have to fetch the properties.
+
+And one last thing we have to do is within the application the main class.
+
+The main class.
+
+You have to just enable the config server at the rate enable config server.
+
+Why it is required?
+
+Because this will turn this spring boot app into central configuration server means it will load the
+
+repository file from central config repo during application startup and expose certain endpoints.
+
+So you can say that if you don't add this, the certain beans will not get initialized.
+
+So when you add this, then spring will get to know that okay you are creating a config server.
+
+Okay.
+
+Which task is to fetch the property from the, uh, you can say that the central configuration where
+
+you have kept a repository from that it has to fetch the configuration and then it expose certain.
+
+You can say that it has its own controller where it has exposed certain endpoint which we can use.
+
+Okay.
+
+So this is one of the endpoint slash application slash profile slash label.
+
+So let's test till this point.
+
+So I have updated the central config repo with the property files.
+
+So this is the central config repo which has just plain property files.
+
+Okay.
+
+Just see this for global.
+
+I have added this application dot properties hyphen dev hyphen prod hyphen qa and application dot properties
+
+I have put.
+
+This is the configuration custom dot message.
+
+Hello from global default.
+
+So this is global.
+
+And this is default like for all QA prod dev profiles.
+
+Similarly for application dev I just put hello from global dev since Application.properties right.
+
+It's a global but dev it's like global dev.
+
+Similarly for prod you will see that a hello from global prod and for QA hello from global QA.
+
+Now inside the order service I have this order hyphen service, hyphen dev, hyphen prod, hyphen QA
+
+and this one.
+
+So here I have just put hello from order default the same configuration custom dot message same.
+
+But the message is hello from order default.
+
+So this is the default for this order service for QA for prod for dev but only for order service.
+
+So hello from order default.
+
+So for this one, I've just put a message.
+
+Hello from order Dave.
+
+For this one, hello from order prod.
+
+Hello from order QA.
+
+So likewise for with one configuration I have filled this property files.
+
+And so my repo is ready and I have pushed it into the main.
+
+Okay.
+
+And I started the configuration server with the.
+
+I have done everything and I have put put this annotation also and started the application for this
+
+configuration.
+
+Now once you start this configuration and once you have added this annotation, I told you that it act
+
+as a config server.
+
+It expose certain endpoints like this okay application slash profile slash label.
+
+So now I am just hitting that one localhost 8888.
+
+So at this this is the port number which I'm using for config.
+
+So here if you go above I am using 8888 for this config server.
+
+Okay so this is the config server which we are creating right.
+
+So it is running on 8888.
+
+So now let's see that.
+
+So first is application.
+
+Application.
+
+So I put the application name order hyphen service.
+
+What is the profile I'm looking for Dave.
+
+And which label main.
+
+So if you don't even provide label right it will by default look for main.
+
+But if you specifically provide a main then it will use this like from which which branch you are specifically
+
+looking for.
+
+If you don't give it okay, if you don't give it, it will look at your application dot properties for
+
+config server and if you have defined there whatever the branch name you are looking for.
+
+Default hyphen label.
+
+Right?
+
+It will use that branch.
+
+If you haven't defined that itself, it will use main.
+
+Okay.
+
+Otherwise you can use uh directly provide into this also.
+
+Now here if you see what is the order you are expecting without even looking this what is the order
+
+you are expecting?
+
+Okay.
+
+Just write down in your copy what is the order?
+
+So now here I am hitting order hyphen service div.
+
+So it will look for first order hyphen service hyphen de.
+
+If configuration is missing it will look for application hyphen dev.
+
+Then it will look for order hyphen service dot properties.
+
+And last it will look for application dot properties.
+
+So now if you see the response it will give me an array.
+
+So this array act as a precedence.
+
+So first first precedence is Hello from order, dev.
+
+Hello from order dev.
+
+So it is coming from order hyphen service.
+
+Hyphen.
+
+Dev dot properties.
+
+The second in the array is hello from global dev.
+
+It is coming from application hyphen dev.
+
+Then the third in the order is hello from order default.
+
+It is coming from order hyphen service dot properties.
+
+And the last in the order is hello from global default which is application dot properties.
+
+Till this point we haven't added our order application.
+
+Okay so if it is missing there also then it fall back to ultimately local.
+
+That is the last.
+
+That's why the local has the last precedence.
+
+If configuration is missing here itself then it fall back to the local.
+
+So till here we have done means our configuration server is also set up and endpoint is working fine.
+
+If we hit the end point, we are getting the response from the get.
+
+Now the step three is adding the microservices.
+
+So this git repo we are all the properties are present.
+
+That is done.
+
+Config server is done which is able to fetch the file.
+
+Now all we have to write is our individual independent microservices.
+
+Now let's say I am creating order microservice.
+
+So this is order service.
+
+You can create it.
+
+Now remember that this is your client.
+
+This is your config server.
+
+Now this is your config client.
+
+So you have to add this dependency config client dependency.
+
+It will bring this spring hyphen cloud hyphen starter hyphen config.
+
+So this is act as your config client now okay.
+
+So here if you see on startup this app will contact a config server during application startup when
+
+you start an order service.
+
+At that point of time, it contacts the configuration server.
+
+The configuration server you know that it is enabled with this at the rate enable config server and
+
+fetch its configuration.
+
+It automatically load those properties into the app environment as if they were local application properties.
+
+So for this I will tell you we will come with an example for this one.
+
+So will this line will commit.
+
+So now let's say that you have downloaded this created this project.
+
+You have this dependency.
+
+Double sure that you have this dependency added.
+
+Now I have created its application dot properties also.
+
+So inside this application dot property, this one I have provided the name order hyphen service.
+
+Remember that this is the name only we are using into our centralized config repo for order service
+
+right order hyphen service.
+
+So whatever the name you would give, you have to use the same name in the git repository where you
+
+are maintaining the property files.
+
+The second configuration I am adding it is spring dot config dot import.
+
+This is the config server config server url.
+
+Okay host and port number.
+
+You can use Eureka server.
+
+Okay.
+
+If you don't want to hardcode it.
+
+Generally we never hard code it.
+
+Okay.
+
+So you can integrate with Eureka server.
+
+We have already seen how to integrate with Eureka Server.
+
+We have already covered that.
+
+So here I have directly hard coded the URL, but I would highly recommend that.
+
+Watch out the Eureka server video where we have uh integrated.
+
+We are dynamically fetching the host and the port number.
+
+Okay, but before that I have put this optional config server.
+
+What does it mean?
+
+I am telling that hey order service.
+
+Even if config server is down, you don't have to fail, you don't.
+
+Your application should be able to start up okay and your source of truth would be your local application
+
+dot properties.
+
+Okay, so your source of truth would be your dev, your QA, your prod okay.
+
+So don't rely.
+
+So this is just an optional if you are if you see that config server is down or unreachable, your application
+
+startup should not fail.
+
+Okay.
+
+But if you skip this.
+
+And your config server this one your config server is not up or down On unreachable.
+
+Your order service will not even start itself.
+
+Okay, so that's why I have put it optional.
+
+Then I have put the profile spring dot profiles dot active div okay.
+
+For now I have for testing purpose I have keep it div that.
+
+Hey, yes I am working in the development environment.
+
+So I want to load this div properties.
+
+And if you see the profile video also, you can see that there is also a way to dynamic uh, while starting
+
+the application you can provide whether which profile you want to work.
+
+So that is one way.
+
+Another way is that in the application dot properties you can override like which environment you are
+
+working at.
+
+Okay.
+
+So both is correct.
+
+Now let's say you are working in the development environment.
+
+You just change that active profile.
+
+Let's say div okay.
+
+And yes you have put the configure custom message hello hello from local default.
+
+Similarly for the dev, this is the message.
+
+Hello from local dev.
+
+And then you have QA.
+
+Hello from local QA.
+
+So I have defined this property file also.
+
+Okay so now you know the order now.
+
+Till this point you are clear that first this is the precedence.
+
+If the configuration is missing here in the global default also, then ultimately it fall back to this
+
+local property files.
+
+Okay.
+
+Let's say you are looking for dev right.
+
+So it will first give precedence to application hyphen dev.
+
+If it is missing then it will go to this local application dot properties which is default for dev qa
+
+prod.
+
+Okay.
+
+Then you can add the order controller.
+
+Simple.
+
+In the order controller you have let's say at the right value.
+
+You are looking for custom dot message Okay.
+
+And just very simply using this here into this and you can try hitting it.
+
+I am just hitting this endpoint slash order slash fetch.
+
+Okay.
+
+This is your order application.
+
+It is running on 8080.
+
+Now if you see that from where it fetch, fetch.
+
+Order and message.
+
+Hello from order.
+
+Dev.
+
+Fetch.
+
+Order and message.
+
+Hello from order dev.
+
+So where it might have come from?
+
+Local?
+
+No, it has come from this one.
+
+The first one.
+
+Hello from order.
+
+Dev.
+
+Okay.
+
+So now one question might have come to your mind.
+
+Hey, our order application is running and someone has updated the central config.
+
+So you have your config repo here.
+
+Now then you have config server.
+
+And then you have order service.
+
+Now your order service is running.
+
+But somebody has updated.
+
+Updated the properties how your order service will get to know until and unless you won't do application
+
+startup it will not reflect.
+
+Okay.
+
+Do I need to restart the app every time, anytime, any change happen in this repo?
+
+That's where the biggest advantage comes into the picture.
+
+It has a you can say that a feature to dynamic update the properties.
+
+Okay.
+
+So there is a concept called refresh scope.
+
+But for that we have to understand the actuator actuator.
+
+Okay.
+
+So for that we have to understand the actuator okay.
+
+So I will cover the actuator first.
+
+And after that I will cover the refresh scope.
+
+And with that I think it would become clear from end to end that okay we have till now created this
+
+central configuration okay.
+
+Now all is very important thing left is dynamic update.
+
+Even my order service is running.
+
+How it can fetch the latest changes from this repo.
+
+Okay that's where the refresh scope comes into the picture.
+
+But for that you need to understand the actuator first.
+
+So see you in the next video.
+
+And if there is any doubt feel free to comment in the comment section.
+
+We will discuss further.
+
+Okay guys.
+
+Bye.
+    </pre>
+</body>
+</html>

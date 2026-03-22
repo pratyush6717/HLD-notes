@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>17. State Design Pattern (Behavioral)  Design Vending Machine</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="#" class="btn">View Notes</a>
+    <h1>17. State Design Pattern (Behavioral)  Design Vending Machine</h1>
+    <pre>
+Hey guys and welcome back to the channel.
+And today we are going to cover state design pattern using multiple examples like vending machine traffic
+signal okay.
+So let's first understand the behavior of traffic signal.
+And then we will see and learn about how state design pattern actually fit into these type of question
+okay.
+So let's start with traffic signal because this one is simple vending machine.
+Second one because that you can say it's a mid level question.
+So in traffic signal what generally we have is we have different states like initial state is red.
+And once the red state is achieved it moves to the green state.
+Then it performs its operation.
+And after the green state work is done, it moves to the next state yellow.
+And after that it again goes to the next state, which is again red.
+So there are a sequence of steps states red state which has certain operation like make signal red,
+then green state, which task is to make the green signal, uh, signal green and then yellow state
+which task is to make the signal yellow?
+Right.
+So these type of problems where object change the state after performing certain operation can be solved
+through state design pattern.
+Okay.
+So again, uh, go through this object, change the state after performing certain operation.
+So here let's say this is an object after performing an operation of a red, let's say make signal red,
+it change its state to green.
+So these kind of behavior can be solved through state design pattern.
+Other problem like television where state is on off vending machine where state could be idle.
+Then accept coin product selection.
+Different states will go through.
+But there are so many problems which interviewer can ask.
+And we have to identify that, okay, this problem does have any state, okay.
+Depending upon certain operation, if depending on certain operation, if state is getting impacted
+means it can be solved through state design pattern.
+Okay.
+So now here we comes our state design pattern definition.
+State design pattern allows an object to change its behavior dynamically at runtime whenever there is
+a change in internal state.
+Okay.
+So you can go through this definition again.
+But let's come to this UML so that it becomes super clear.
+And when we go through this definition again this will be like proper understandable, like what this
+definition is trying to say.
+So this is the UML of state uh, state design pattern.
+So here we have an product any object.
+Okay.
+It could be a vending machine.
+It could be a traffic signal.
+It could be a television, like any product.
+So we take out the state of a product.
+Okay.
+So there we have a product state interface.
+So this is you can say that interface or abstract class whichever uh we want.
+And here internally we put all the operations which are possible within that particular state.
+Okay.
+So then we create a multiple child classes for this product state let's say state one.
+State two, state three.
+So whatever the states applicable that become a child class of this interface or abstract class, this
+product state okay.
+And each state implements provide their own logic for the particular operation which is eligible for
+that state.
+For example, here in this case, let's say I have total ten operations.
+So in the state, one only operation one, operation five and operation seven is eligible.
+So it will provide an implementation for this three okay.
+Similarly state two only deals with operation two.
+Operation eight.
+And here it will deal with operation three and operation four.
+Let's say an operation ten.
+Let's say just an example.
+So we have all the operations possible in the interface or abstract class.
+And each state provide an implementation for these operation.
+And also one more thing.
+So that is the first part.
+Each state provide an implementation for their only operation which they are only interested in.
+Second is on each operation it will decide the next state whether it has to be in the same state after
+performing this operation, or it has to move to the different state that is also we can do.
+So this this part is clear.
+We have a we have a product and we separate out its state into this interface and its child classes.
+Now here, if you see that this product has state, this product has state.
+So that's why it has a relationship okay.
+And here it also expose the method set current state whatever the current state is.
+So let's say initially whenever the you create an object of product its current state is state one.
+So this is the initial state.
+So when the initial state you will start performing let's say operation one.
+After that here it receive an object of the product also.
+So once it does an operation I told you after performing an operation it can decide whether I have two
+in the same state or I need to change so it can call this.
+It has the product object.
+It can call the set current state and set the next state which it wants.
+Let's see this with an example of traffic signal.
+So here this is my product traffic light.
+Traffic light is our product.
+Okay.
+And all the possible state it can have I take it out separately.
+So traffic light state I kept it as an interface.
+And I have only one operation.
+So see this is are generally a light.
+This is my traffic light.
+So these are one state.
+So this is state one.
+This is state two.
+This is state three.
+So state one is red state.
+State two is my green state.
+And state three is like yellow state.
+So three different state possible.
+Now in each state what all operation is possible.
+So in the case of traffic light Only one operation is possible.
+That is like you can make the light red here.
+In this case, you can make the light green.
+In this case you can make the light yellow so that only one operation.
+So I gave it the name action.
+Whenever this action is invoked it will.
+What it will do is it will do.
+Let's say if it is a red state it will make the signal red.
+If it's a green, it will make the signal green.
+Okay.
+So that's what I am doing.
+So red state is implementing this and what it will do.
+It will stop behavior.
+So what it will do is whatever the signal is it will change its color to red let's say.
+And now this is important that the traffic light here I am sending an object of traffic light.
+Right.
+Once it is done its operation, read it.
+Change the next state to Two signal dot set state green state so it will change it to next green state.
+Okay.
+Similarly, my green state which is also a child of this traffic light state.
+So it is providing its own implementation that it will do certain go behavior.
+It will make the signal green.
+And once it is done its task it will make change the state signal dot set state.
+Yellow state.
+Okay.
+So it will update the traffic light signal.
+Its state is changed to yellow state suddenly.
+Uh, then we have a yellow state, which is also providing an implementation for this method.
+Its behavior is making like, uh, the traffic light yellow.
+And once it is done, it will change the signal state to again red, again red.
+So this will continuously go on.
+Okay.
+So this is one part we have done.
+So we have created a product state and all its state.
+Now let's see our product traffic light.
+So traffic light has traffic light state.
+So that's why it has a relationship.
+So traffic light state this one.
+So it has okay.
+And this is the constructor I told you whenever we create an object of traffic light we will provide
+it some initial state.
+So initial state whenever the constructor is called the initial state which I have provided is in red.
+So whatever the state is I provided the red state.
+So this is my initial state okay.
+And this is one setter method I provided so that each state can update this state based on the operation.
+Okay.
+And you can say that this is the starting like okay start change.
+So whenever this method is invoked it will call this state method state dot action.
+So see this one.
+So I have created a new traffic light when I created a new traffic light.
+What is the state of this traffic light is currently red state.
+So currently it is red.
+Okay now I am calling traffic light dot change.
+So when I click this, when I invoke this method what it does state dot action this.
+So what it will do is it will invoke this.
+So red right.
+So initial state is red.
+So it will call this method action.
+So it will implement the red behavior.
+It will make the signal red.
+And then it will change the signal uh state.
+So this state now object is changed to green state okay.
+So when I call the change it perform a red operation.
+And then it change the state to red to green.
+Now when you call change again.
+So what would happen is it will call state dot action.
+So it will call this one.
+So it will perform the go behavior.
+It will make the signal green.
+And also it will change the signal state.
+Now it holds a yellow okay.
+Again when you called it change it will call state dot action.
+Now it holds yellow right.
+So it will call this one.
+So it will perform whatever the behavior it has to do.
+And it change the behavior of this one.
+Now it will hold again red okay.
+And you can continuously perform the operations like this.
+So this traffic signals I have created based on the state design pattern.
+So I hope the state design pattern is clear right with this simple traffic light signal.
+So again change read this definition of this state pattern.
+Allow an object It to change its behavior dynamically at runtime whenever there is a change in its internal
+state.
+Okay, so its internal state.
+This is the internal state.
+Whenever it is changed, let's say it is yellow.
+And whenever you perform its behavior or action or function, you can say behavior is a function.
+So you will get some different behavior right based on the state the behavior change.
+Okay.
+So based on an internal state its behavior is getting changed of an object.
+So that's what the definition of state design pattern said.
+Now similarly in interview we can also get a question of design vending machine.
+And I believe that this can also be performed through state design pattern.
+And here This is a vending machine.
+So here, if you say that, uh, general operation is that the first is user click on that start insert
+coin.
+So user can now start putting the coin.
+So machine become active.
+So currently it's an idle state.
+So it's an idle state.
+So this is the zeroth step.
+So first user clicked on this start insert coin so that the machine is in position to accepting the
+coin.
+So this user can insert coin.
+So second step you can say that the user is inserting the coin once user finished it.
+Now what it can do is it can select the product okay.
+Now it can click the hey I am done with inserting the coin.
+Now I want to select the product and it can put a code.
+Let's say I am interested in this 101.
+So it will it will put the code once it is done.
+Either it can cancel it so that it can get the refund, or once it is properly success, it can collect
+the item.
+Okay.
+And if there is a change, a change can be collected too.
+So this is very minimalistic design of a vending machine.
+And if you see the state we can cover this in a particular state diagram of this also.
+So initially the vending machine is in my idle state.
+Now when the user click that insert coin button.
+So my vending machine is changing the state to collect money state.
+So in this user can perform many operations like insert coin.
+Whenever user insert coin, choose an insert coin operation.
+It is always remain in the same state.
+Whenever a choose a user, choose select product operation.
+So these are different operation.
+Whenever this operation is, choose the state change, it moves to the selection state.
+Okay.
+Now here user can choose the product.
+And here if everything goes good it moves to the dispense product state okay.
+And if the product is dispensed successfully it's ultimately move to the again to the idle state.
+But there is a chance that at this point of time where user is inserting the money in the collect money
+state, it can also click refund or cancel the transaction.
+So we should be able to refund and move to the idle state.
+Similarly, during the selection state also user decide that okay I don't want product now.
+It can also cancel here or there is insufficient fund.
+It can move to, it can refund and move to the idle stage.
+So I am not saying that this state diagram or this, you can say that the event of sequence of state
+is like realistic.
+Depending upon your discussion with the interviewer.
+You can modify or upgrade this diagram.
+But for simplicity, uh, simply we need to understand with a minimalistic design.
+Okay.
+So we can understand this complex vending machine with this, like okay, these are the four states
+possible and these are the sequence between them.
+Make sense.
+So we have an ideal state where what all operation is possible.
+This is the one operation.
+Press insert coin button.
+User can only do this.
+Or another it can do is like uh update inventory.
+This is another operation.
+Possible because when the machine is idle, you can either press insert coin button or you can even
+update the inventory.
+Now once it changes the state to has money state, it can do following operation insert coin, you can
+insert coin, you can select product.
+You can cancel or refund.
+Once it moves to selection state it can choose the product, you can return it.
+Return the change.
+Let's say user has.
+The product is for ₹12, but user has inserted ₹30.
+So certain change need to be done right so we can return the change here.
+If user wanted to get a full refund, it can also refund at this state also.
+Then the last state is dispensed product state and what all operation machine can do at this is like
+only dispense the product.
+So this is the possible state and each state what all operations are possible that we have come up with.
+So with this state diagram, if we have to do the design for this vending machine, we can do like this.
+So here what is my product.
+My product is vending machine.
+Let me zoom it a bit.
+My product is vending machine.
+Now let's first see its state.
+So this is my state I have chosen a an abstract class and all the possible operations.
+Okay, so all the possible operations which we have think of this machine can do.
+Press insert coin, insert coin.
+These are all operations right.
+So I have written here click on Insert Coin button.
+This is one operation okay.
+So by default it is doing nothing.
+Click on start product selection button.
+Insert coin.
+Choose product right.
+Get change dispense product refund.
+Full money update inventory.
+So this is all the different operations which our vending machine can do.
+Now depend upon states.
+Let's say first is idle state.
+In idle state is only interested in this two operation.
+Click on Insert coin button.
+Whenever this operation is, choose what it does it.
+So this is the machine, right?
+Which is we are accepting.
+So it moves the machine vending machine to a next state set vending machine state to has money state.
+So it changes the state of the machine when this operation is chosen.
+And another thing which we can do when we are idle is update the inventory.
+So whatever the inventory we have we can update it add items.
+Similarly the next state is has money state.
+So out of this operation the has money state is only interested in this.
+Three when you are move into this state means the vending machine now can accept the coins.
+So one is insert coin.
+Now user can insert the coin, accepted the coin and it keep on appending the coins okay.
+Second it can do is that once it is done user can select the product.
+Okay.
+So as soon as the user has clicked hey start product selection button okay.
+What we are doing is we are moving the vending machine state from has money to selection state.
+Okay.
+Because user has choose this operation product selection.
+So we are moving it to the new state.
+So we change the state into this operation.
+And also one more operation.
+Uh, in this state user can perform is that it can choose to refund full money.
+So here we are refunding it.
+And when we are refunding it we change the machine state to idle back.
+Okay.
+So third is selection state.
+So let's say user moves to the selection state what all user can do.
+So in the selection stage if you see it can do this three things okay.
+So out of this operation it is only interested in performing this three things.
+So one is selection state.
+It can choose product.
+So in while choosing the product.
+This is a logic which you can go through.
+So I'll just give you a high level what I am doing.
+So whatever the code number I am taking out that item.
+Okay, I am checking how much coins user has given me.
+What is the price of the current item?
+If it is item is more expensive than what user has inserted the coin, then I would say insufficient
+amount.
+Okay.
+And throw an exception.
+But if user has provided more money then I have to change it.
+Okay.
+So I do get change similarly here.
+Uh, if all goods go.
+If everything goes good, then ultimately I am changing the state of machine to dispense state.
+So now I have a sufficient money.
+I have refunded the extra amount which user has given.
+I have the product and I move the machine state to dispenser state.
+Next state.
+Okay, so I am calling new dispenser state and Using this code number.
+Like which item I have to dispense.
+Okay.
+And the machine.
+So this is the next step.
+Dispense the state.
+So when this is invoked it automatically call this operation.
+So we don't want user to have certain button that you have to dispense product.
+So as soon as this constructor is invoked it calling this method dispense product and it provides an
+implementation product has been dispensed updated the inventory okay.
+And change the machine state back to idle.
+So it's again change state back to idle.
+So different states interested only in certain specific operations.
+And also on each operation they can decide whether I have to change the state of a product or not.
+Simple.
+Okay.
+And see this vending machine.
+Now this is the product.
+It has this vending machine state.
+So it has a relationship with this vending machine state.
+And during constructor when we create a vending machine what is the initial state we are giving this
+idol.
+So our machine start with the idol state okay.
+And we have a set method where this each state can set this machine state whenever required.
+Okay.
+So this is the minimalistic design.
+Now in the vending machine if you need more like if interviewer asking more then here I will give you
+what extra I am doing.
+So here if you see that in this vending machine this is all inventory okay.
+So this is all inventory and I called this is as like an item shelf.
+So this is one shelf which has a code for it okay.
+And this item shelf F keeps an item.
+So that's what I am doing.
+So this vending machine has an inventory.
+Okay.
+So has an inventory.
+So I have an inventory class.
+So inventory has nothing but an list of items a list of item shelf okay.
+So each item shelf has three things code item and whether it is sold out or not.
+So this is one item shelf.
+This is one item shelf which has a code which has an item and whether it has information, whether it
+is sold out or not.
+Now each item I told you it has item right?
+So has item.
+So item has two things.
+What is its type?
+What is its price.
+So type I have chosen like Coke, Pepsi, juice, soda water.
+You can add anything.
+Whatever the different type of items this vending machine has.
+So item has what is the type and what is the price?
+So this is the extra information we can have in our vending machine.
+Okay.
+Yeah.
+And also one more things vending machine has this coin.
+So that's why I have a list of coins okay.
+And here I have a enum which has like penny nickel dime quarter.
+This is just to maintain a list of coins.
+And this is nothing but a getter setter.
+So now understand this with this function.
+So first thing what I am doing is I am creating a new vending machine.
+So when I'm creating a new vending machine, what it will do is this constructor will get invoked.
+And what what is the current state of my vending state is idle.
+So currently it is in idle and new inventory ten means I am creating an inventory of ten items.
+Shelf.
+So ten item shelf I am creating.
+Okay, currently coin list is empty.
+There is no coin, so I have just set up my machine.
+Then I am filling up the inventory.
+So I call the method Fill up inventory.
+So in this I am doing nothing but whatever the ten shelves I have on let's say on three, I fill up
+the cork.
+On another three I fill up the Pepsi juice soda.
+So this is just like filling up the slots, the items shelf.
+So in each item shelf can keep an item.
+So I'm creating a new item object every time and keeping it.
+So I'm filling this up.
+Nothing much.
+Okay.
+And after that.
+So now once my vending machine is ready it has inventory.
+Now what I am doing is clicking on Insert Coin button.
+So here.
+So this is the.
+So currently it is printing the get vending machine state.
+So what is the current state.
+Here it is.
+idle.
+Okay.
+So here.
+Now I am clicking.
+So now here I am invoking the method that hey vending state dot click on Insert coin button.
+So what would happen is I'm invoking this.
+Click on Insert coin button because current state is idle.
+So what would happen is it will move the machine state to has money state.
+So it will move to this state.
+Okay.
+So now if you print this like what is the money.
+Uh current vending machine state it's now moved to has money state.
+So now it can accept coin.
+So I'm invoking insert coin nickel quarter.
+So here I am invoking this method.
+And here if you see that it is not changing the state of my machine.
+Okay.
+So it just accepting the coin.
+Now that is done I am invoking a method product selection button.
+So I am invoking the click on start product selection button.
+So current my state is this only because I inserted coin only and state is not changed.
+So now I click this button click on Start Product selection button.
+So what would happen with this is like my machine state changed to selection state.
+Okay so now I am doing get machine state.
+So it would be like selection state now.
+And now I am choosing the product 102.
+So choose product method I am invoking.
+So it will call this one.
+So here it perform operation that okay I have sufficient money or not.
+And if there is an extra money it will dispense, it will refund me and ultimately it will change my
+state to dispense state.
+It will change my state to dispense state if I have sufficient money.
+And when dispense state is invoked constructor invoke it automatically dispense my product.
+Okay, so if I run this.
+So here currently my vending machine is in idle state.
+I am filling up the inventory.
+So this is the inventory which I filled up currently.
+All are available.
+And these are different item shelves.
+So currently we have given ten item shelves.
+So we have different item shelves.
+Now currently I'm clicking on Insert Coin button.
+So it moved to the has money state and it accepted the coins.
+Then I'm clicking on Product selection button okay.
+And as soon as you click on Product Selection button the machine state changed to selection state.
+Now here you can choose the product.
+Which product we choose 102102 was ₹1,212.
+And how many money we have given nickel and quarter, right nickel and quarter.
+So nickel is five and quarter is 25.
+So total ₹30 we have given and product is for ₹12.
+So it in the dispense tray it will give me refund back ₹18.
+Okay.
+So that logic I have put it here into this one.
+Okay.
+So if paid uh paid by user is greater than the item here.
+If paid by user is greater than the item, get change.
+Okay.
+Once this get change is done, return the amount extra amount it will move to the dispenser state.
+So currently vending machine is in dispenser state and product has been dispensed and vending state
+moves to idle state.
+So that's all happening here.
+So as soon as the this constructor is invoked it will product has been dispensed.
+It will move the.
+Machine back to the idle state.
+Okay.
+So practice with your hand.
+This question, try to, uh.
+So I'm not saying that vending machine can only be created through this, uh, state design pattern.
+It can be created through multiple, uh, designs.
+Also, you can have a total separate design, but I wanted to explain you state design pattern.
+That's what my main motto is.
+Okay.
+So that with this two example, whenever any new question interview asks.
+So we should first think that okay, does that involve states okay.
+And those states get changed based on certain behavior.
+If that is the case then state design pattern is the perfect solution.
+Okay guys, if there is any doubt, we can discuss further into the comment section by.
+    </pre>
+</body>
+</html>

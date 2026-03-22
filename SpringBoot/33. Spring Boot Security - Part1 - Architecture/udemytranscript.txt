@@ -1,0 +1,262 @@
+Share on this site.
+Welcome to Concept and Coding.
+And today in the first part of Spring Boot Security, we will be understanding its architecture.
+Right.
+But before we start, if you haven't gone through this video, kindly have a look.
+Because in this one I have explained about different type of attacks, right?
+CSRF, XSS, SQL injection I have also explained about cards.
+So this will give you a better understanding like why exactly we want security.
+Okay, so now I am assuming that you already know about this attacks.
+Now we need to protect our resources from these attacks.
+How we can do that?
+Definitely we have to do authentication and authorization.
+Authentication means verify who you are or you.
+In simple terms, we can say that.
+How I would say that.
+Yes.
+Hey, I am how I can tell I will provide my username and password something.
+And I will tell somebody that yes, this is me.
+So verify who you are.
+Authorization is check what you are allowed to do.
+So maybe I am authenticated, but I am only allowed to view but not allowed to update.
+So that is the, uh, you can say that it's come under the scope of authorization check what only you
+are allowed to do.
+Even though you are authenticated, you are only allowed to view the page.
+You don't allow to update it or make any changes.
+Okay, so these two things has to be properly handled in our application so that we can protect our
+customers from these attacks.
+And yeah, that's where Spring Boot security comes into the picture.
+Very very important.
+And that's where we have to first understand its architecture before even we jump into different type
+of authentication.
+Also This is its architecture.
+But here, if you see it's just an extension of this one.
+Filters.
+So in video number 18 we have already seen what are filters right.
+And where exactly they fit.
+So when the first request comes in it goes to the servlet container from servlet container to filter
+chain.
+There are multiple layers of filters.
+Filter one.
+Filter two.
+Filter n okay.
+And from this filter it goes to a particular dispatcher servlet and from dispatcher servlet, then interceptor
+and then interceptor to actual the controller where our business logic lies or where our APIs are present.
+So now spring security.
+Where does it fit into this?
+Now if you are already covered filters and you are clear with the filter chain Now whenever you enable
+the spring security in your application.
+Now here, if you see there is something called security filter chain, get added into your one of the
+filter chain.
+So you still have multiple filters in your application.
+Filter one filter two filter n.
+But one of the filter get also added which is security filter.
+So security filter is generally we can say that security filter chain because there are multiple security
+filters get added.
+Okay.
+Consider it is like here.
+Consider it like this filter chain.
+Here you have filter one.
+Filter two filter three.
+Like this filter n.
+Consider this out of filter three to this one.
+This is your security filter chain.
+Like these filters are added because of security, because you opted for security.
+And since you opted for security these filters will spring boot will add it.
+Okay.
+In the existing list of filters.
+Okay.
+So first thing is clear right where exactly the security filter chain fits.
+It's just nothing.
+But inside whatever the filter chain you have it just get fitted into that only.
+So there are multiple filters.
+Security filters.
+Okay.
+Now before I go further, like what are each of these filter.
+There are different authentication method like form based where you provide username password.
+You have like stateless one like basic authentication, JWT, OAuth okay.
+And there could be many also.
+So for each authentication method, for each authentication method there is a different filter involved.
+Okay, so it's not.
+So let's say what I'm trying to say is that maybe if you are opting this authentication method form
+based, then only these two are eligible.
+All are not eligible.
+Okay.
+Let's say you wanted to go with JWT.
+Then it's maybe these two.
+Let's say there would be some another JWT filter.
+Let's say these two username password.
+And these two only would be applicable then this and this would not be applicable.
+Similarly, if you go with the basic authentication then this is not applicable.
+This is not applicable only this is applicable.
+So my point here to tell you that depending upon which authentication method you are choosing, which
+we will see later based on that, that particular filter is get processed.
+It's not like each request will go through this, then this, then this, then this.
+Till then.
+No.
+Okay.
+So if you are using basic authentication, then this will be skipped.
+This will be skipped.
+Only this will get executed.
+Okay.
+Don't worry about each of this filter as when we will do each and every authentication method.
+We will understand its filter also.
+Okay, but for now, try to understand the flow.
+What happens when the flow comes in?
+Now let's say a request comes in, it goes to the filter.
+And since you are opted for security so it goes to one of the security filter also.
+Now let's say it goes to one of the security filter.
+Then what's the next step.
+It will pass the request to authentication manager.
+Now here if you see that in the authentication manager accept one parameter which is of authenticate
+object Authenticate.
+So this authenticate object is like contains multiple fields.
+Again this is not the right time to dig deeper into each and every object.
+We will see when we will do each and every authentication methods.
+But for now understand like very high level.
+What is the flow architecture.
+Each authentication each authenticate object contains like is authenticated is authenticated.
+True false okay.
+So currently it's at this point of time it is false.
+It's not authenticated.
+What are the roles okay.
+Currently it would be let's say empty.
+I'm just saying.
+So it is you can say that this authenticate object could be partial or incomplete at this point of time.
+And it is not user is not authenticated.
+So whenever the request comes in.
+Yeah, it will pass to the filters and then it will pass through the security filter chain.
+And depending upon the authentication method we are following, it will goes to one of the filter.
+And the filter will create this authenticate object.
+Currently it would be false.
+It's not authenticated.
+It will pass that request to authenticate manager.
+Authenticate manager is an interface and provider manager is the implementation.
+It's a default implementation.
+Okay.
+So what this provider manager or you can say that authentication manager does this has the knowledge
+that my request is coming from this filter.
+I have to pass it to which provider.
+Which provider okay.
+So you can say that it's a bridge between the filter and the provider.
+So this provider manager get a request authenticate with authenticate object, which is currently partial.
+It has the business logic which knows that okay, this is the filter and this is the authentication
+method.
+I need to pass it to this provider and it will delegate the authentication to one of the provider.
+There are multiple providers.
+It will delegate one of to the one of the provider.
+For example if you are using username password or you can say that session based session or session
+or you can say that stateful authentication method.
+Then it will pass the request to authentication provider which takes care of username password and also
+manage the user session.
+Similarly, let's say if you are following stateless and processing JWT, then this provider manager
+will delegate the request to which JWT authentication provider.
+Similarly, if you are following OAuth, it will pass to or we will see that later when we will cover
+each and every authentication method.
+But at least at this point of time, we know that, okay, if the request comes filter chain, one of
+the filter chain will get invoked.
+This will pass the request to Authentication manager.
+Authentication manager implementation is provider manager.
+It's nothing but a bridge between filter and one of the provider which actually does the work or actually
+does the authentication.
+Okay.
+For example, this Dao authentication provider like let's say username password okay.
+User provide the username password.
+So it actually does the work.
+So this password is you know that spring always store the password in hashed form okay.
+So now if whatever the password is coming from user it has to be encoded.
+So it has proper integration with password encoder.
+So raw password is hash during registration and during validation.
+Raw password is hash and then only compared.
+So this only takes care of all the logic now.
+So it first do the hashing of the password.
+Then it will fetch existing.
+So you are passing currently.
+Now a my password is x y z.
+But previously when you created it you created x y let's say capital G.
+So it has to fetch the existing details also.
+Right.
+So that will take care of it.
+So it also has integration with user Detail service.
+Again it's an interface.
+User detail service has two flavor in-memory and JDBC user detail manager.
+In-memory means all this username password is stored in memory okay.
+So it's you can say that it's a temporary, but if you want to store it in the DB, you can use JDBC
+User Detail Manager where the username and password is stored in the DB.
+So it will load it and it will do comparison whatever user is now sending us and whatever we have received
+earlier, are they matching or not?
+Based on that, it will again return back with the authenticate object only, but now it will be complete
+authenticate true.
+False okay.
+And ultimately authentication manager return back to the filter with the fully authenticated response,
+whether it is authenticated yes or no.
+And this filter, if it authenticated it will store the object into security context.
+If authentication is false it will throw bad credentials.
+But if it is fully authenticated, like yes, it this user is authenticated through this one of the
+filter which uh which was invoked.
+It stores that authenticate object into security context.
+Now this security context will get added into your request goes into the dispatcher servlet.
+If you have the interceptor it will go through the interceptor.
+And ultimately it will reach to the controller your API.
+So at this point of time, your API also has this security context.
+One more thing I just want to highlight again, since we have multiple authentication method like form
+based like basic authentication JWT, OAuth.
+Consider this architecture as a template today, okay?
+Because for each authentication method we will again draw this architecture.
+But for each flow there would be some minor changes.
+Okay.
+Just for example for form based login okay.
+You are doing certain extra steps here.
+But let's say for basic authentication you are totally missing this step.
+You don't need this step.
+You don't need to put it.
+So I am just giving you one example okay.
+We will I don't want to jump into each authentication method.
+What we are doing, what we are not doing.
+But I'm just giving you one example that maybe depending upon each authentication method, we might
+be doing one of the step, or we might be skipping or doing extra in this architecture itself.
+So consider this architecture as a base, and for each authentication method we will run through this
+base template or architecture itself.
+Okay.
+Which filter get invoked?
+Which filter get skipped?
+Why and which filter got invoked from this filter?
+What exactly happened in the authenticate object?
+Which provider got invoked?
+What that provider does actually inside?
+Okay.
+What's the response or fully authenticate object looks like.
+Okay.
+And what else data we put into security context and what exactly the controller uses it like okay.
+So we will connect the dots for each authenticate method later.
+But for now just understand this is the flow.
+When any request comes in and you have integrated the spring spring boot security in your application.
+Okay, so in the spring boot or in your spring boot project, if your project is already present, which
+we are already, this playlist is all going.
+So I think by this time you already have set up the Spring Boot Project.
+So you need to add the below dependencies.
+Okay, so these two dependencies you can add one is spring boot starter security.
+So this spring boot security dependency is like add feature like authentication authorization and the
+filter.
+So this filter chain will get included.
+This all filter chain this authentication manager provider everything get included.
+And there is something called spring session JDBC.
+This is only required.
+This is optional.
+It's not mandatory.
+This is only required if you want to maintain session based authentication.
+And you want to store into the DB.
+If you want to store into the ultimately DB then you need it, but we will see that when we will actually
+do, uh, stateful stateful authentication.
+So for now, you can you can say that you don't need it.
+You only need this one.
+But if you are setting up a new project in the spring initializer itself, you can set up spring web
+and you can take spring security.
+So with spring security you will get this okay.
+And only if you want DB support, uh, for the session weights you can take it.
+But again this is for now not required.
+We will see when we will do state stateful authentication okay.
+Now we will go ahead with each and every authentication method in depth considering this as a base architecture.
+Okay guys.
+Thank you.
+Bye.

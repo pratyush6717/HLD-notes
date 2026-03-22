@@ -1,0 +1,317 @@
+Hey guys.
+Welcome to Concept and Coding.
+This is Suryansh.
+And today in Springboot I will tell you one more very important annotation conditional on property.
+So this what makes this annotation very important.
+Because in a large scale application where there are thousands of beans.
+Right.
+And many of those beans are initialized during application startup.
+Okay.
+So it will cluttered your application context during with the unnecessary beans also which might you
+not required.
+So that's where this annotation comes into the picture.
+And that's what makes it very very important.
+Interview question that how we can uncluttered our application context with unnecessary beans.
+Okay.
+So we will understand this properly with an examples and advantage and disadvantage of it.
+So let's start.
+So what does it mean conditional on property.
+As the name says that bean is created conditionally.
+What does it mean if condition becomes true, been would be created.
+If condition is false.
+Beans would not be created.
+Okay, so just understand this.
+Understand with this example you already know the behavior of this.
+So I have created two class.
+No.
+No SQL connection and MySQL connection.
+Both are annotated with at the root component just a constructor inside it.
+Similarly I have db connection which has dependency on this MySQL connection and no SQL connection okay.
+Again at the root component are managed by Spring Boot.
+And then we have at the root post construct uh, which only get initialized after only get invoked after
+the bean is successfully created.
+So there I am printing that.
+Okay.
+Uh, DB connection bean is created.
+And if this object is null or not, if this object is null or not okay.
+So you know that if I start the application, what would happen?
+So whenever to start an application what would happen is by default our single turn, so means eagerly
+initialized.
+So what would happen is no SQL connection object would be initialized.
+So it's initialization of NoSQL bean.
+Initialization of MySQL connection bean will get printed.
+Okay, after that spring boot.
+Also find this because this is also singleton by default.
+So after the bean is created it will try to uh, inject the my SQL and NoSQL dependency into it.
+So it will inject it.
+So this is the object for this one.
+And this is the object for this one.
+So after this post construct would get invoked DB connection been created with dependency below.
+It will print is MySQL object null?
+No.
+It will have the proper object reference.
+False.
+Is NoSQL object null?
+No.
+False.
+Okay, so you already know the behavior of this.
+But now if interviewer asks you what if we want to create only one bean?
+Either my SQL or NoSQL.
+Okay, so the background of this question is that in a company, what generally happens is there is
+a kind of a migration.
+Always some migrations keep on happening.
+So let's say that companies migrating from MySQL to NoSQL now company has now let's say fully migrated.
+Now they want to stop creating bean of it, only want to create a bean of this NoSQL.
+So that's why the question can comes here is if you want to create only one bean, either this or this,
+depending upon the migration, some feature.
+So this is the use case one.
+And another use case which comes is that we have two components sharing same code base but one component
+need MySQL connection and another need no SQL connection.
+So the background of this is that in most of the application, what generally happen is let's say you
+have two application application one.
+Application two.
+And there is some let's say common code base.
+So this application in its Pom dot XML file has dependency on this common code base.
+Similarly, application two also has in Pom.xml.
+Dependency is set for this common code base, so both the application is depend on this common code
+base.
+Now, in this common code base you have MySQL connection.
+And NoSQL connection class.
+Now.
+No SQL connection class is needed by application one.
+And MySQL connection is needed by application two.
+But the question is that for application one, MySQL should not be should not be created.
+And for application two only MySQL connection bin is required.
+No SQL bin should not be created.
+So in short the same same only one bin can be created for an application.
+So how you can do that?
+The answer is at the rate conditional on property annotation.
+It's a very, very simple but important to understand the use cases properly.
+So now the same example I am showcasing with at conditional on property annotation.
+So here in this one here, if you see the same class MySQL connection annotated with at the rate added
+component and no SQL connection class annotated with added component.
+But now here I am adding one more annotation at the rate conditional on property.
+Now this has four parts.
+One is prefix, second is value.
+So these two prefix and value forms your key in an application dot properties.
+So in application dot properties the first part is your prefix.
+Then there is a dot and after dot whatever the part you have that makes your value.
+So here we have SQL connection as a prefix enabled as value.
+So in application property your key is SQL connection dot enabled.
+So this is your key.
+Okay.
+So.
+This becomes your key now with prefix and value right, separated by dot.
+Now the third part is having value.
+So this is a string.
+So here you can put anything right.
+So for now in this example I have put SQL connection dot enabled.
+True.
+You can also put any string let's say SQL or anything.
+Right.
+It's a string.
+So for now I have just put true.
+So now what it will do is the third part is match.
+So in the application dot properties, whatever the value you have put here for this key, whatever
+the key value you have put here, it will match it with this here.
+Okay.
+So that's what I am trying to say.
+This is just a string you can put here.
+If you are putting SQL you can also put SQL here also.
+So it's just a matching string.
+So for this prefix dot value which makes a key in an application dot property whatever the key value
+it is.
+Evaluator.
+It will if it get matched with this having value this.
+If it get matched with this then only been will get created.
+Okay, if not, if they are not matched then been will not get created.
+Okay, so there is one.
+Another thing is match if missing.
+So let's say in application dot properties this this key is not not present itself.
+So do you want to consider this as a being I should create been or not.
+So that's what if you make it false means if this property is not present, if this key is not present
+considered as false, you should not create the been.
+So you got this right this four values of this.
+So now what do you understand with this.
+So here in the conditional on property SQL connection dot enabled in the application dot properties
+I have put true.
+Having value is also true right and match is missing is false.
+Similarly for NoSQL prefix is this NoSQL connection enabled?
+Having value is true match if missing is false.
+Okay, so now this is first part.
+This annotation is just a first part and this is your second part.
+So wherever you are using this dependency.
+So now my DB connection is dependent on my SQL and NoSQL.
+And these classes are annotated with at the right condition on property.
+So we have to make this required equals to false.
+Because when you only do auto wired by default internally your required is true okay.
+By default required is true.
+What does this tells to the spring boot?
+That hey, when you are creating a bean of db connection object of if auto wired is true, required
+is true.
+The object of this dependency should get resolved.
+Means it should be present.
+This object should be present.
+But when you say that required equals to false means, that object might not get be present means.
+For this MySQL connection I have put required equals to false.
+So it tells that hey, concert is not as a fast fail if if the bean you don't find the bean of MySQL
+connection it's okay.
+Required is false right?
+Make it null and proceed further.
+Okay so you understand write required equals to false is required.
+Is required whenever that particular dependency.
+Let's say in this case dependency is MySQL SQL connection here.
+So that is annotated with at the rate conditional on property.
+Okay.
+So these are the two parts whenever you use and at the rate conditional on property.
+Now you start an application.
+What would happen.
+So now when you start an application.
+So first Spring Boot will see this okay.
+At the rate component uh it is a default singleton.
+So it is uh eligible for lazy initialize uh not lazy eager initialization.
+But now it, it sees hey at the rate conditional on property is also defined.
+So it will make a key.
+Using this prefix and value Sqlconnection dot enabled.
+It will make a key look into the application dot properties okay it found the key.
+Now it will check out its value.
+Key value.
+It's true.
+Now it will compare this string with this having value okay now it matches.
+If it matches means yes object need to be created so this object will get created.
+Initialization of my my MySQL connection bin.
+So initialization of MySQL connection bin.
+Now spring boot found this NoSQL connection.
+It's a singleton.
+Yes.
+Uh eagerly initialization can be done.
+But now at the rate conditional on property found it.
+Now it make a key NoSQL dot enable NoSQL connection dot enabled.
+So now it will look into the application dot property.
+Does it found this NoSQL connection dot enable.
+No.
+So match is missing.
+So it is missing I have to match it.
+False.
+So means there is no match.
+So bean should not be created for this one.
+So here if you see there is no bean for NoSQL connection is created.
+Now this got spring boot.
+Got this again a singleton eagerly initialization.
+So bean would be created for DB connection.
+Now it will resolve the dependency for this to.
+my SQL bean is existing.
+Yes, MySQL bean is existing so it will get a reference for this one object.
+NoSQL NoSQL a bean existed no, because unconditionally condition become false, right?
+Because this are prefix value does not exist.
+So bean is not created.
+So bean is not created but it will check.
+Hey the required is marked as false or true.
+So it is false.
+Then it's okay.
+It will keep it null.
+But if it is marked as true or by default you didn't give it or don't give it, then it is considered
+true.
+Only in that case this will fail, right?
+But since we have make required equals to false means, even though bean doesn't exist for this, it's
+okay.
+It will make it null and proceed further.
+So Dbconnection bean is created post construct object is method is invoked so it will print this line
+first.
+Dbconnection been created.
+Is my SQL connection object null?
+This one?
+No, because this bin is created right?
+MySQL bin is created because of the prefix value was present properly.
+So it's false.
+First one is false.
+No, it is not null.
+Is NoSQL object null?
+Yes, it is null because it's a prefix value.
+There was no key present and that's why it become false and no object created.
+Okay, so it will print true here.
+So you got it.
+Now I am controlling the creation of a bean through this annotation okay.
+And it's configurable means you can put into your application dot properties.
+And if you want to enable a NoSQL connection you can put here NoSQL Connection enabled.
+I told you that it is just a string you can put.
+Let's say you want instead of true false.
+You can put NoSQL something and the same value.
+You can put it here NoSQL.
+So means one this two matches right.
+This two matches.
+This two string matches.
+Then only it is considered as this hit and then only been will be created.
+Right.
+And if itself it is missing.
+Missing means you can tell okay if it is missed I still I want to create a bin put true if it is missing
+and you don't want to create a bin, put false.
+Okay, so I hope this would be clear.
+So what are the advantages and disadvantages of it.
+Very important advantage first is very very visible is toggling of feature right I told you right.
+First use case in which happens into the company is that they are keep on migration happening.
+So you can put a toggle.
+Now you want to toggle from MySQL to NoSQL using just an application property.
+You can add this toggling and automatically that particular bean will start getting created right.
+Avoid cluttering of application context with unnecessary beans.
+Consider the scenario where applications are thousands of beans out of the thousands of beans.
+There might be so many beans which are not unnecessary, right?
+So we can avoid application context to be like cluttered with those unnecessary beans and we can control
+them their creation using this annotation.
+Save memory.
+So during application startup all the beans get created and it is stored.
+So it requires certain memory right?
+So when you are controlling the creation of the beans and you are not creating bean of the unnecessary
+classes, then you are saving the memory, right?
+So that is also one advantage.
+Another is reduce application startup times.
+So I told you all eagerly initialized beans which are generally singleton at the.
+When you start an application that time object is created for them.
+Bean is created for them.
+Now consider that during application startup you have to create 1000 beans, right?
+So it will definitely take memory and the time also.
+So if you are controlling that okay.
+For unnecessary beans I don't have to create it.
+Your application startup time will get reduced okay.
+So these are the advantages.
+We should uh we should tell when interviewer asks.
+And the disadvantage is that misconfiguration can happen.
+So for example now in the application dot properties you have to put the value right.
+So misconfiguration means you want it to put true.
+But by mistake you put false.
+You wanted some value as well.
+Here you have put SQL but somewhere here put true having value.
+True.
+You want a true false but somewhere put SQL.
+So some misconfiguration happens, right?
+Code complexity increases.
+Code complexity increases when over use.
+Now consider the scenario where you have hundred of classes and above 100 of classes.
+You have put this annotation.
+Now it's always you have to go and check the property file.
+Hey is this been creation is what is it enable or not.
+Right.
+So that is like little code complexity increases where it's always like will the bean will get created
+or not.
+You have to keep on checking application property file.
+Third is another is like multiple bean creation with same configuration.
+So what if what if if the same configuration with the SQL connection dot enable what for the NoSQL?
+Also, I am using SQL connection not enabled.
+What if the with the same configuration I am controlling the bin creation of multiple classes?
+That is wrong right?
+This creates confusion.
+So multiple bin creation with same configuration brings confusion.
+So that should be avoided.
+Complexity in managing I already told you, you have to keep on managing the property files and their
+value equivalent values in this annotation.
+So there is some managing you have to do.
+So these are the advantages and disadvantages of this annotation.
+But do try it out because this is used a lot in the live application production application.
+Right.
+And this is a very valid two use cases which today in life you will find this use cases and where this
+annotation helps you.
+Okay.
+So if you have any doubt let me know.
+We can discuss more and we'll see you in the next video.
+Thank you.
+Bye.

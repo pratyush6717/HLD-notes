@@ -1,0 +1,402 @@
+Hey guys.
+Welcome to concept encoding.
+This is Shreyansh.
+So yesterday I made a video on Springboot interceptors.
+And I see a lot of comments regarding.
+Filters versus interceptors.
+And what is filters specifically.
+Uh, so I what I anticipated from this is that there are a lot of doubts between when to use filter,
+when to use interceptor.
+What is the exact difference.
+So today I will discuss, uh, about this.
+And I hope that after this video your doubts will get clarified.
+And like you can easily decide when to go for filter.
+When to go for interceptor.
+Okay, let's start without wasting any time.
+So let's before even seeing further.
+Right.
+Let's see this one liner definition.
+Right.
+And even though if you don't understand any of these terms, it's okay.
+Because once we go further after that we will come back again.
+And then we read this.
+It will make more sense.
+So filter it.
+Intercept the HTTP request and response before they reach to the servlet.
+Okay.
+And what is interceptor says?
+It's specific to spring framework and intercept HTTP request and response before they reach to the controller.
+Or I would say that before they reach to the controller and after servlet.
+Okay, so read it one more time.
+It filter intercept the HTTP request and response before the request.
+Reach to the servlet and interceptor is after servlet but before controller.
+Okay so just keep this in mind and we'll proceed further.
+This two definition will get clear soon.
+So if you remember this diagram which I have discussed in the first video of Spring boot discussion,
+and in yesterday also in the, uh, interceptor video.
+So we know that right?
+When a request comes in, our servlet container catches it and it will pass it to one of the servlet.
+So in Spring Boot, we have a dispatcher servlet dispatcher servlet takes care of couple of things right.
+Which controller this request should go right.
+And it will create an instance and it will ultimately invoke that controller.
+Okay.
+So this is I hope it's clear.
+But now let's see this one.
+I have further drilled down this diagram to understand the filter and interceptor more.
+When the request comes in.
+So here if you say when the request comes in it goes to our servlet container.
+In that case let's say Tomcat.
+Now when the Tomcat or servlet container get this HTTP request What it will do is before assigning to
+a servlet.
+Particular servlet, our filter comes into the picture.
+We can have multiple filter.
+Filter one.
+Filter two.
+It's generally called as a chain of filters.
+Right.
+So after filter one filter two will run.
+If there are more filters that will run.
+And after that one of the specific servlet will get involved.
+Right.
+Now let's say that if we are running a spring boot then dispatcher servlet will get invoked.
+And this dispatcher servlet.
+Now here is our interceptor.
+So before this dispatcher servlet handles the request to controller our interceptors comes into the
+picture here.
+So with this diagram now you should see that where the filter lies in and where the interceptors lies
+in.
+So filter lies in Listen before the request handed over to Soviet and interceptors lies before the request
+handed over to controllers.
+Okay, so now with this one, few doubts might have come to your mind that, hey, first of all, what
+is Soviet?
+Is it possible that more than one Soviet is there?
+Let me tell you about this one.
+So what happened is, first of all, what is Soviet?
+Okay, sublet is nothing but a Java class which accepts the incoming request, process it and returns
+the response.
+Okay.
+So in you can say that it is a play, like a plain Java code itself.
+It's our business logic sublet.
+Its purpose is that whatever the requests coming in process it and return the response also.
+Okay.
+That's what sublet is, You remember that, uh, if you have worked in monolithic services.
+Right.
+Let's say that we have Rest APIs.
+Also, we have Soap APIs.
+Also.
+We have something called expose API for file uploading multiple different tasks.
+So what we can do is we can write different servlets for this.
+So I can create one servlet which handles only Rest APIs.
+I can create another servlet which handles Soap APIs.
+I can create another servlet which can handle only file uploads.
+So multiple.
+Or you can say that you can create one more servlets which handle only static data like images or something.
+Okay.
+So when the request comes to the servlet container it decide that hey this request will be handled by
+which which servlet.
+So each servlet can configure that.
+hey, this rest API.
+Let's say that this can configure the hey I can handle slash API slash star.
+So anything which starts with slash API, I can handle it.
+Okay.
+Similarly soap API can provide some configuration.
+Which servlet container will use and decide which servlet to invoke.
+Now in the microservices right.
+And now let's say that when we are discussing about spring boot specific and it's a microservice, let's
+say that it's not a monolithic where I have a static data also and something Soap API's and all.
+So now when you say that when we discuss more about microservices and specifically Spring Boot, so
+there the need of multiple servlets are reduced.
+In 20 1716 when we used to code we used to have multiple servlet.
+And this is servlets are nothing but a plain Java code right?
+So whatever the controller you are writing is just like a specific APIs like this is let's say slash
+API slash user, another controller slash API slash let's say order.
+But here this servlet accept anything slash API star.
+So anything start with slash API.
+This dispatcher servlet will take care of it earlier.
+We don't use to have this controller in this servlet itself.
+We used to have all the code logic and we have factory here okay.
+If it is user go and perform this logic.
+If it is order go and perform this logic.
+Okay.
+So what I mean to say here is that now when we are specifically doing microservices and spring boot,
+the need of multiple servlets has been reduced.
+So mostly our dispatcher servlet, if you see the default configuration is slash slash asterisk means
+mean anything?
+Any API dispatcher servlet would be able to handle.
+So whatever the request coming is to the Tomcat, if Tomcat sees that okay request is started with slash
+and anything, it will just pass it to the dispatcher servlet dispatcher servlet will pass it to one
+of the controller.
+Okay.
+So now you know what is servlet.
+Okay.
+And this is when I show that we can create multiple servlet.
+If we want servlet one I can configure it to rest API.
+Servlet two can be configured for Soap API's.
+Similarly dispatcher servlet.
+Default is slash this.
+Okay.
+And today if even if you want hey dispatcher servlet I only want to handle slash API slash stress that
+also you can do.
+Okay I won't go further into that how you can do it.
+But in the at the configuration class itself you can do that.
+You can update this configuration to this and only only those APIs will come to a dispatcher servlet.
+Not all.
+So with this diagram, at least now we are clear that filter is before the request, get assigned to
+a particular servlet, and interceptor is after one of the servlet is assigned specifically.
+So this is very, very, uh, spring related part.
+So if I just, uh, pick a red color, I would say that this is very, very specific to spring framework.
+So interceptor is you can say that two two points, one is after the servlet is chosen.
+And which servlet specifically spring boot.
+So dispatcher servlet is very very specific for spring boot.
+So interceptor is nothing but a spring boot concept which I would say.
+So once the spring boot servlet which is dispatcher servlet is chosen.
+So then before this dispatcher servlet, assign the request to the controller intercept intercept it.
+And for filter you can say that before the servlet container, assign the request to one of the servlet
+before that itself filters comes into the picture.
+So now you are clear that when to use filter whenever you want to put a logic which is common for all
+the servlets like spring boot security like spring boot.
+Security.
+So spring boot security is uses filter because it is applied all HTTP requests and response and irrespective
+of the servlets because it's a very, very generic code, it's not very specific to our application
+or something.
+So it can be applied to multiple servlets also.
+So that's why it uses a filter.
+So it lies in this area.
+Okay.
+And whenever you want something specific to your application particular subnet.
+Okay.
+I want let's say this dispatcher subnet.
+So let's say that call this as a rest API servlet.
+If anything is specific to Rest API servlet then you can add interceptor for this.
+Okay.
+So you got it.
+Anything is specific to a particular servlet.
+You can use interceptor anything which is common for all the servlets you can use filter.
+Okay.
+So this is what I have explained it here.
+So filter is used when we want to intercept HTTP request and response and logic agnostic of the underlying
+servlets.
+We can have many filters and have ordering between them.
+You can provide an ordering which one to run in which orders.
+Similarly, in intercept is used when we want to intercept HTTP request and response same, and add
+logic specific to a particular servlet.
+In this case, interceptor is mostly a spring boot concept.
+You can say that.
+So we can say that specific to a spring boot servlet dispatcher servlet.
+So it intercept it, whatever the request is coming.
+Servlet container whatever the request is coming to dispatcher servlet.
+Let's say out of many let's assume that there are many servlet.
+So whatever it is coming to dispatcher servlet.
+This interceptor will only take care intercept that only it can't intercept servlet to a request right.
+So that's what I mean here specific to a particular servlet.
+We can have many interceptors and have ordering between them two also.
+This is also possible.
+We can have more than one interceptors also.
+I will tell you how you can have.
+So here multiple interceptors and it's ordering how to write it.
+So in previous video, I already told you how you can add one interceptor I showed you by creating one
+custom inter interceptor and there we discussed about pre handle post handle after completion.
+Okay.
+So here I will show you how you can add more than one interceptor and ordering also.
+So here if you see that one more thing is the pre handle.
+So pre handle is something which returns true or false right.
+This post handle returns void after completion.
+Returns void.
+This pre handle returns true and false.
+So if pre handle return false.
+Next filter and controller will not get invoked.
+So here in the code itself we can check.
+So here if you see the what was that dispatcher servlet apply pre handle.
+If pre handle return false this become true and it will just simply return okay.
+Your next your next controller and next or not.
+Next filter, next controller and next interceptor will not get invoked itself.
+So how to create?
+How to add more than one interceptor.
+So now let's say that from the previous video you already know that how to create one interceptor.
+Similarly I have created another interceptor and I have auto wired here and from previous video you
+also know that how to register it.
+Similarly, you can also add one more time registry dot add interceptor.
+You can add the second one also, and you see that this sequence is actually followed.
+So since you added my custom interceptor fun, my custom interceptor two.
+So this interceptor would be executed first.
+This would be executed second.
+So now you have interceptor one.
+Interceptor two.
+So when the request comes in so request goes like this.
+And response goes like this.
+So this is your request.
+And this is your response.
+So when the request comes in what it goes one interceptor one request and then interceptor two.
+And when the response goes out.
+So response what you will see interceptor two will get invoked first then interceptor one because interceptor
+two interceptor one like this.
+Okay.
+So here I am showing you the output.
+Right.
+So only I have put a catalog in pre handle post handle and after completion.
+So here if you see when the request comes in.
+So this is the order is maintained.
+So interceptor one it is going first.
+So first it will go inside pre handle pre handle of interceptor one.
+So request is coming right.
+So interceptor one then interceptor two.
+So interceptor one then pre handle of interceptor two.
+Right?
+Then your code logic, then your code logic.
+Now it has to response goes out right then post handle of interceptor two.
+First post handle of interceptor one.
+Similarly, after completion of two and then one.
+And ultimately it goes out okay.
+So this is how the sequence is maintained.
+And how to add filter.
+You can add your filters also like here.
+If you see either Jakarta Dot servlet you can use or here in the Java X dot you will find filter.
+You can choose any of this library.
+So I am creating my filter one.
+Implement this filter so it has three method in it do filter and destroy.
+So in it like uh once the object of this my filter is get created, This method is get invoked only
+one time.
+If you have to initialize something generally I've never seen via.
+I have specifically initialized something.
+But even if.
+Let's say you want to set up some name or something, you want to specifically initialize something
+in this, you can do that, right?
+But this is the main part do filter.
+So do filter is like do something before you process the request.
+So this is like do filter right next here if there are multiple filter filter one.
+Filter two filter three.
+So currently let's say this my filter one.
+After that when you do do filter it will just call the next thing.
+If the next part is filter two, it will call it.
+If the next part is let's say code logic itself, no more filter, then code logic will get invoked,
+right?
+And the similar behavior is maintained in the filter also.
+So when the request comes in it goes in here.
+Filter one, filter two, filter three, and the.
+When the response goes out, it goes into reverse.
+Filter three.
+Filter two.
+Filter one.
+So do filter is nothing but process the rest of the code.
+If you are at filter one, the process next of the code is filter two.
+If you are filter two, next code is filter three.
+If filter three, next is your actual code logic and then reverse.
+So this is the after processing it.
+Similarly, I have added another filter my filter two implements filter the same thing.
+I have just putted the logic my filter two inside process it something my filter two complete here.
+My filter one is there okay, now this is the configuration.
+So here I am creating a bean of my filter.
+My first filter.
+In this I am doing its registration.
+So this is the process how you can create an object of registration bean be.
+You can set the filter.
+So I am creating a new object because here if you see that I am not putting at the rate component,
+otherwise I don't have to create a new object.
+So I am creating an object.
+What is the filter?
+This filter can take care of what all URL.
+So I have put slash asterisk right and I have set the specific order two.
+So just specifically purposely I have given that order two for the filter one and for filter two, I
+have specifically given the order one, just to show you that, uh, through this order we can maintain
+the sequence.
+Similarly, I created a second filter.
+So I have created an object of a registration bin.
+Set the filter for this okay.
+My filter two what all added what all for this specific URL pattern.
+This filter will get invoked and the order I have kept it one.
+And I have written this registration bin.
+That's all.
+Now when you see the output.
+So now you have filter two and then filter one because its order is one for the filter two.
+Right.
+And this order is two.
+I have specifically purposely mentioned this.
+So now when the request comes in first it will invoke filter two and then filter one.
+And during the response reverse my filter two inside.
+So first it goes here my inside this one.
+Then it will go.
+What it would happen is it will go inside this my filter two inside and do do filter process.
+Rest of the code.
+Now the process.
+Rest of the code.
+Here there is more filter.
+Yes.
+Filter one.
+So it will goes to the next filter.
+My filter is filter one inside.
+Now this filter one it goes inside printed.
+This do filter means processed.
+Next of the code.
+No more filters.
+Code logic will run.
+Hitting.
+So this is my business logic.
+Code logic.
+Now the response goes out.
+So first it will goes out of this my filter one completed.
+And then after that it will goes out of my filter two completed.
+Okay.
+So this is how you can create filter.
+And if you add both interceptors.
+So if you add both the logic from the above one right.
+And you run the output here, if you see this would happen.
+So your is like a servlet container, then filter, then servlet and then controller.
+So here you have uh this is your filter.
+And then this will be your interceptor.
+So first filter will run my filter one.
+So I have just here by doing that I just change the order properly?
+Filter one I have changed the order to one and filter two I change the order to two just so that it
+meant it.
+Don't confuse like filter one y second.
+So I've corrected the order here.
+So now when the request to filter one filter two.
+Then here we have interceptor one, interceptor two.
+So now request coming is inside filter one.
+Then it goes inside filter two.
+Right after filter two.
+Uh there is no more filters.
+So it will pass it to one of the servlet and after the servlet.
+So this is your code logic here.
+So after.
+So this is your servlet now servlet before it passed to the controller it will goes to the interceptor
+one.
+Right.
+So inside pre handle of interceptor one.
+Now request goes to interceptor two.
+Now ultimately your code logic, your controller.
+Now the response goes out.
+Right.
+So first interceptor two will get invoked.
+Right.
+So this is all your interceptor.
+So post handle of interceptor two.
+Post handle of interceptor one.
+Then after completion of interceptor two after completion of interceptor one, ultimately filter two
+and ultimately filter one and goes out.
+So you got it.
+Like how the sequence generally maintain.
+What's the difference between filter and interceptor and when to use it?
+See, if somebody says that, hey, you can change the header.
+You can change the request.
+You can change the response.
+You can change it into interceptor.
+Also you can change it into filter also.
+But when to use right.
+Interceptor also has access to request and response.
+Filter also has access to request and response, but the only thing is what specific purpose you are
+using.
+If it is generic, no matter about servlets, different different servlets use it at filter.
+If it is very specific to.
+You can say that the spring framework and very, very specific to your one particular servlet.
+Then go for interceptor.
+Okay I hope this clarifies, but if there is any out we can discuss further and we'll see what question
+can come in.
+I'll try to answer those.
+And if you have any more additional information about this that hey, in this scenario, filter is better
+than interceptor or this I don't consider filter or interceptor is better or not.
+Both are totally different.
+Both are totally different at different places.
+But still, if you have such points, we can further discuss more on that.
+Okay guys.
+Thank you.
+Bye.

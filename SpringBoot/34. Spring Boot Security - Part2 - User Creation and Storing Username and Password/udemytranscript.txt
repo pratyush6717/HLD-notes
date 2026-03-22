@@ -1,0 +1,685 @@
+Hey guys.
+Welcome to Concept and Coding.
+And today we are going to start the part two of Spring Boot Security.
+So in the part one we have already seen about architecture right.
+And we have to start understanding about the authentication method like form login, basic authentication,
+JWT, OAuth.
+So before we start all these authentication method we have to first understand its the first step.
+You can say the user creation right.
+Why?
+Because before we proceed with user authentication and authorization like we have to first create the
+user.
+Right.
+So that's this is the first step.
+We can't skip it right.
+We can't directly jump to the authentication method where we are authorizing user and authenticate user.
+But first we have to create a user.
+right?
+So we have to first understand what is the best way.
+Or you can say that the production level, if you have to create a user how it should be.
+So let's see that.
+Let's start that.
+So yeah the first line says that authentication and authorization of user will happen only after user
+is created.
+So that's where this is we here we are.
+That's why we are uh learning about it.
+So let's see that what will happen when we add below security dependency.
+As we see in the architecture video, we in the architecture video.
+I told you that right.
+We need to add this dependency, uh, for adding the spring boot security filters and all.
+Now let's say that we have added it and if we start our application what would be the behavior?
+What would happen?
+So if you start the application and you will see the logs.
+I have just started the server, nothing else.
+I have added the dependency okay and I have started the server.
+So while starting the server, if you see the logs you will see one thing is using generated security
+password.
+Some password got created.
+And there is one more thing to consider is it says that using in-memory user detail manager.
+What exactly happened here?
+What does it mean?
+So what actually happening here is when we are starting the server user is created automatically.
+Spring boot security automatically create a user for us with default username is user okay.
+And it creates a random password okay.
+It create a random password which get printed here in the logs.
+Okay.
+So each time server is restarted.
+New random password will get generated.
+Each time server is restarted, a new password will get generated.
+And this like you username would always be user and password would be.
+This is like random every time which would get printed here.
+So how if you see this code this is the spring framework code.
+There is a class called Spring properties dot Java.
+Inside that there is a static user class.
+If you see it properly you will see default username is user.
+Password for the default username is Uuid universal unique identifier some random Uuid it take it role
+is empty.
+Okay So this is the first it create that.
+Now after that there is a user detail service auto configuration dot Java.
+There is some configuration class which creates bin.
+So that's one bin is present where is creating an object of in-memory user detail manager.
+Actually what it is doing is this class or this bean.
+It stores this user.
+And the password which we have got, the username is user and the password is some random.
+This one right.
+Somewhere it has to be stored.
+Okay.
+So that's where this bean which it is calling in-memory user detail manager.
+User details manager.
+So it is managing the user details.
+User detail is nothing but a username and password and it is putting in memory.
+So ultimately it will store in some kind of a in memory that okay this is the username and this is the
+password.
+Later on you can fetch it.
+So here if you see this in memory user detail manager what it is doing.
+Is it the parameter it accepts as a security properties.
+This one only.
+Okay.
+From this it will get the user.
+So this is security property dot user this class.
+So it has default username default password.
+Now what it does is it creating an object of in-memory user detail manager.
+And now it is converting from this user.
+It is converting to another user.
+Okay.
+So it is you can say that uh it is doing a mapping.
+So user dot username it put a username it put a password it put a roles and it build it.
+So once it get a in-memory user detail manager so what it will do It will call its constructor.
+Right now here, if you see in memory user detail manager its constructor.
+So it got this user details.
+So this is where it does doing a mapping right.
+Security property dot user.
+It is mapping it to user details.
+User details user details is an interface and its implementation is I think user okay.
+So here in the object constructor of this in-memory user detail manager, it is accepting this parent
+user details.
+Okay.
+And here it is actually creating an object for this one user.
+It is creating a user object this one.
+So with username with password with roles it read out the information from security property dot user
+to this one.
+It fill it and it calls new in-memory user detail manager.
+Ultimately it will call its constructor inside a constructor what it will calling create user.
+Now here if you see create user, how what it is doing it is putting users dot put username.
+And here all the user details.
+And here if you see users this is final.
+So you know that in spring boot each class by default is singleton.
+And this is the final.
+So no matter how many requests would come only one object would be created.
+So they will all share this users map.
+So that's where it is in memory.
+It is storing in memory.
+So whatever the user when you started the server.
+So username which is user and the password this Thus ultimately it gets stored into in-memory inside
+here.
+Okay.
+That's your here.
+You see that in-memory user detail manager who is managing this.
+Okay.
+So one thing is clear right now.
+One thing should come to your mind at this point of time.
+Hey, like random user name or like user and random password, it's okay for testing purpose.
+But again how I can control this so that in production at least we can use it because, uh, let's say
+that I want to add a custom user name, custom user custom password.
+I want to add it.
+So definitely this question would comes to your mind that how can we control the user creation logic
+instead of spring boot creates a default username and password for me.
+Okay, so that's where different approaches come.
+So this is the first approach using Application.properties.
+Again not recommended only for development and testing.
+So in Application.properties you use this spring dot security dot user dot name.
+You give whatever username you want it to give.
+I give my underscore username, then spring dot security, dot user dot password.
+Whatever the password you want to give.
+You can give it here.
+And then spring dot security dot user dot roles.
+What are the roles you wanted to give.
+Give it here.
+So what actually it will do is internally it will use reflection and call set username and set password
+method of security properties and override the default values.
+So in security properties right.
+It has a name user password.
+Random right.
+And it also has getter and setter.
+So ultimately Spring Boot will call those.
+Setter methods.
+And it will override the name password and rolls you through reflection.
+And when you start an application now, you will see that no default username and password is created.
+Here if you see server is started and after that you now you have a user whenever you wanted.
+Uh login.
+This is the username you can use.
+This is the password you can use.
+But again this is just for development purpose.
+It is not recommended at all to use it production.
+But okay.
+Second thing is now again, before we move to the second part, what?
+What?
+Give us a more curious that we have to go to second.
+Like first question again comes to me, is that okay?
+What if I want to create more than one user?
+Then how to do it?
+Okay, yeah, we can do that.
+But through application dot properties only one you we can create.
+But if you have to create more than one there is a second way also we can use.
+But with this one we can.
+You can say that we will get lot more information.
+We will understand like how actually it's internal working also Up by creating the custom in-memory
+user detail manager bin.
+So currently if you see.
+The default behavior first.
+Here what happen is.
+Security property dot user object is created which has default user and password.
+Okay then it tried to.
+Create an object of.
+Internal memory user detail manager.
+And when it creates a object of it, it accepts the user detail.
+The user which has username password roles and ultimately it put into the cache okay.
+And in the 2.1 it put into cache.
+Okay.
+So now here, if you see that if we have to create more than one user.
+So here if you see one thing, the in-memory user detail manager can accept more than one users.
+So can we.
+Can we take the responsibility of creating a.
+Object of internal or not internal in memory.
+This is in memory.
+Can we take the responsibility of creating an object of in-memory user detail manager?
+If yes, we can create an object of it.
+Like instead of this we can create and we can pass as many user we want it, okay.
+We know that the user, it accepts the user details so we can create as many users we wanted.
+That's what I am going to do now.
+So here if you see just to showcase that in memory user detail manager it's a child of user detail manager
+which is again a child of user detail service.
+Okay.
+So here I am writing one configuration.
+We have already know how to write it.
+We have already seen that in previous lectures.
+I am creating one bean.
+Now I am creating.
+And bean of user detail service.
+User detail service.
+Why?
+Because I don't want to put exact in memory user detail manager.
+You can do it.
+But generally it's always recommended that use the parent one.
+Okay.
+So in memory user detail manager is a child of user detail manager which again is a child of user detail
+service.
+So that's where I am using this.
+And we know that in memory user detail manager class.
+Right.
+Write it.
+Accept multiple user details.
+You see that three dots here.
+So we can pass multiple users to it.
+Okay.
+And that's what I am doing it.
+So first I am creating one user details.
+Okay I pass the username password roles and build it.
+Similarly second and I am now taking the responsibility of creating its object because I want it in
+memory, right?
+Now here I am creating a specific object, right?
+This is just an interface.
+We can't create an object of it.
+This is the concrete class.
+We can create an object of it.
+So here I am creating an in-memory user detail and passing more than one object.
+So now it will create two users in the map okay one with my underscore username one another is my underscore
+username to an object where has complete information about this users.
+Okay.
+But again so it's like a chain like of asking questions.
+Now you have seen this.
+If you notice one thing in the password, I have written no OP and then given my password, my password
+one.
+And here for the second user I written no OP and then give the password 1234.
+What does this no op mean, why I use it and what different values it can take.
+Okay.
+So now let's see that the no op means that no encoding, no hashing in this in memory or wherever the
+data like currently we are storing in memory.
+Let's say that if you want to store in DB, no matter what would be the storage point.
+No OP means that the password is not even encoded, not even hashed.
+It is like in a plain text.
+Plain text.
+No hashing happened.
+No encoding happened.
+Nothing.
+Okay, so here the default format for storing the password default.
+I am saying the default format for storing the password is like this id like this id and your encoded
+password.
+Here above I uses no OP.
+So this become my ID and your encoded password.
+So no OP means that not even encoded not even hash.
+So just plain text.
+So 01234.
+Is my password okay?
+But apart from no OP, we can also use if you want to do a one way hashing.
+Very secure.
+We can use Bcrypt.
+Or if you want to use Sha256 algorithm you can use that also.
+Okay so there are multiple you can say that hashing algorithms present which we can use it okay.
+So now what how exactly this work.
+We also need to understand right.
+We know that okay the default format for storing the password anywhere is this.
+But how why how come is this working.
+Like why why I need to put before my password.
+Okay.
+So see the flow.
+Understand the flow I will tell you example.
+But first read this three lines.
+What would happen During, let's say, user password storing step, we are storing the, let's say in
+a in memory or DB.
+We are storing the user detail username and the object complete object where it has username password,
+role everything.
+We want to store user password without any encoding or hashing.
+Then we know that we have to use this ID no op and we have to store like this no OP 123 for plain password.
+Now what would happen during.
+So let's say that I have stored it just for a one moment.
+Assume that I have stored like this in a DB or in memory.
+Now during authentication process, what will happen during authentic.
+Now this is stored in your DB.
+Now you are trying to authenticate user.
+User is providing its username.
+My username is username underscore one.
+My password is 1234.
+User will not pass no OP right.
+It will just say that plain.
+My password is 1234.
+So during authentication process what would happen?
+Step one it will spring boot framework fetch the user password from in memory.
+Based on this username it will let's say check its in memory or DB it know that okay this is the username.
+It will fetch out the object where it has a password.
+Let's say password is stored like this.
+We have stored like this.
+Second it now has to compare what the user has provided to us 123, four and what we have already stored.
+Correct.
+So it goes for the comparing logic.
+But before comparing, the third step is it will first read out what is the id.
+So here it is.
+Say that no OP.
+Now Spring boot knows that okay no OP means that whatever the.
+password is stored.
+It is not even encrypted, not even hashed.
+So it has to directly compare what is coming from user directly coming.
+What is user is sending.
+But let's say that for a second.
+If in memory or db, it is this bcrypt.
+And let's say that a, b, C12, three some in the hash form it has stored.
+Now user is passing 1234.
+So how the spring framework knows that.
+How to compare this two.
+So what it will do is first it will read out this ID.
+Now it will uh separate this one.
+One is Bcrypt and now it has ABC12, three.
+Now it knows that okay, the password which I have stored in my DB or in in-memory is hashed form and
+it is hashed via Bcrypt algorithm.
+Now what it will do is that whatever the password, which user is passing.
+It will also hash it using Bcrypt and whatever the output comes, then only it will compare it.
+Okay, so that's how.
+The ID is stored.
+Or you can say that that's how the format for storing the password is like this.
+Okay.
+So this is the step now here if you see in the password encoder.
+This is the default password encoder delegating password encoder.
+This is the default.
+Its work is to delegate to other password encoder based on ID.
+Okay, so we have different, uh, password encoder, like bcrypt.
+No, OP there could be other 256 password encoder different.
+But the first, if you are not using directly like hey I want use this if you are not telling specifically
+what it will do is spring security framework.
+First pass this to delegate password encoder.
+This password encoder work is that whatever the password we have stored it.
+First try to look for the ID and based on that ID it will delegate to a appropriate encoder.
+Okay.
+So that's why I am passing the password like this here.
+I hope that's clear.
+But again it's a chain right of a question.
+Let's say if you want to store the hash part password.
+Then how you would do that?
+Just see that again.
+I am creating a bean okay.
+Bean of user detail service.
+This is an interface.
+Ultimately, I'm creating an object of a concrete class in memory user detail manager.
+I am passing it at one user details object.
+I am creating it.
+Username.
+Password.
+Role and building it.
+Now here if you see the password, I am how I am storing it as Bcrypt.
+First I have added the id and then using this encoder and I'm encoding it my plain password.
+Okay.
+And ultimately in DB it will be stored in a hashed format.
+Now even if user passes 1234 spring security framework will take out it will goes to delegating password
+encoder first.
+Okay.
+And delegating password encoder will, uh, take out this ID.
+It will know that.
+Okay.
+Uh, this is the password encoder which I have used.
+And then ultimately it will pass to that particular encoder to do a, uh, like whatever the user has.
+Password.
+Right.
+One two, three, four.
+It will first do encoding using this and then ultimately match it.
+Because this is hash, right.
+One way.
+It can't just uh, change again back to like what what I provided my password underscore one.
+It's a one way, uh, you can say the hashing is one way, whatever the like a, b c x y z .21, two
+three.
+So it's a one way, uh, hashing.
+So whatever the user passed, only that can again be hashed.
+And then compare those two hash.
+Okay.
+So just here see an example that I have shown an example I am giving username one and I am giving the
+password.
+The password I am giving.
+Like this okay so here if you see username and the password plain password I am giving.
+But still I am able to authenticate and properly able to access the API.
+Why?
+Because even though I have stored in the DB in the hashed form, why?
+I told you right it first hash this also.
+Okay, but by which algorithm that delegating password encoder will decide based on the id and it will
+pass it.
+So first whatever the password which I am passing, it will hash it and then match it.
+And if it get matched I will get access.
+Now again, one question should comes to your mind.
+Hey, if you don't want to store Bcrypt or any other hashing algo in front of password, this doesn't
+look good.
+Like if somebody is checking my DB or in memory, if a password like it says that bcrypt and then some
+password know of some password or something Sha256 some password I don't want to store in that way.
+Like is there any way we can do that?
+Yes, we can do that.
+So currently I told you that by default spring boot use delegating password encoder because spring doesn't
+know which password encoder to use.
+Okay.
+Whatever the password you have used while defining it will go to that encoder.
+But if you specify the one encoder to spring security, it will directly goes to that encoder itself,
+it won't goes to delegation, so we don't want to store it.
+So that's what I am doing it.
+So in the same configuration now I just added one more bin for password encoder okay I am just creating
+this is an interface password encoder is an interface.
+I am just saying that hey whenever password encoder is used, always create an object of Bcrypt password
+encoder.
+I always need bcrypt.
+And if you see now when I'm creating a user, I created a username.
+Now the password I am don't need to put at the rate bcrypt.
+It's not required because whenever any encoding or hashing is required, or whenever the user will enter
+a password, 123, four automatically request will goes to the password encoder no matter what it will
+get hashed and then only it will get compare.
+Okay, because I have specifically mentioned I am using this password encoder.
+Got the difference?
+But again one question comes to your mind that okay, I got it.
+How I can create multiple users in my system okay.
+And uh various password encoder and the flow.
+But still this is not recommended for production like in production.
+I can't have this, uh, default username and password.
+Okay.
+And also in production, I can't store the details in in memory.
+I have to store in DB, right.
+First thing is I have to store it in DB and in DB my password should be hashed properly.
+Correct.
+And it should be dynamic.
+I should not have stored static username and password.
+That's where the third approach.
+Or you can say the third way of creating a user comes in and which is recommended for production.
+Okay, based on my understanding.
+So if you if you understand this basic flow.
+This one, what we are doing, then it's very easy to write a code for this one.
+The one we are going to see.
+Uh DB approach.
+Just see here that what I am doing.
+The first is I am creating my own entity because now I want to store a DB, I want to take a control
+like what the data should go into my DB.
+So I am creating one entity user auth entity dot Entity Java okay.
+It's an entity.
+The table name I have given as user underscore auth and I have making it as a child of user detail.
+Why?
+I would tell you, but for the first step just say that I have created an entity okay.
+Where I have like id username password roles.
+Okay.
+So this four columns I required okay.
+There are certain here if you see overwrite comes in that is because we have I am implementing this
+user detail interface.
+Now you can ask me that.
+Hey okay I understand that we want to store the username and password in db.
+For that we are creating a table.
+But why we have to implement this user details.
+What is the requirement for that one.
+So before that one, let me tell you that what happened.
+First step is user created.
+Okay.
+When the user is created let's say in DB or in memory, we have user name and we have password okay.
+That's the first step.
+Second step is authentication where we are using let's say form or basic or JWT.
+So now all these authentication method, what we do is we have to fetch.
+The first step is fetch the user.
+We have to fetch the user.
+Right.
+And this user we have to fetch is like spring framework goes and fetch.
+So it will goes and fetch, whether it's a DB or in memory.
+Wherever the user we are storing it, it has to fetch the user.
+Okay.
+And once it is passed the user, the return type of this is user details.
+Okay.
+And the same thing if you see it.
+Here in memory where we are storing it we are storing it.
+The user.
+The user is nothing on object of user details okay.
+So here it's that's why.
+So we have to be consistent what we actually wanted to store in our DB also.
+Right.
+So that's why it becomes easy that we have a we don't have to do mapping like what we are getting and
+what spring boot required.
+I can directly use user auth entity.
+I don't have to do a mapping.
+Like whatever the data I am getting from user auth entity, I have to map it to user data.
+Now since user auth entity I make it as a child of user detail.
+Okay, so during framework spring framework wherever it is required user details.
+Right.
+If I am returning user auth entity it will work and you will understand soon.
+But for this is what I have written here because during authentication different method security framework
+try to fetch the user and return the object of user detail only if you don't implement it.
+If you don't implement it, then we have to do the mapping from user entity to user detail.
+I will show you the place where we have to do the mapping also.
+Okay.
+So now here, if you see that we have to override all these things, that is account not expired?
+Is account not logged credential not expired.
+Currently I have default return.
+True.
+Yes.
+Not expired.
+Not logged.
+Everything is good, but in production we have to give a specific implementation.
+Maybe you will need to require more columns.
+Also let's say account not expired.
+Your company logic would be that account not expired logic based should be based on date okay or current
+date.
+Password is stored okay and it should not.
+If it is more than 90 days then it is like let's say I have to say expired.
+So you might be storing date also.
+And here you will write a comparing logic between current date and the date the password is stored.
+And see if it is more than 90 days.
+You return password expired true.
+Or if it is not expired, return false.
+Something like that.
+I hope you got it.
+So this All these methods returns.
+Or you can say that.
+You can implement this logic based on the custom logic which you want or custom requirement.
+You can add more columns based on that.
+You can write a logic on this is account is logged or not credential expired or not like this.
+But the one thing is we have to create an entity like what all columns we required in a DB.
+And that's where what I have created it.
+And I have created a child of user details which I have told you why.
+The second is created a repository for this entity.
+We have to create a repository again, we have already seen this JPA repository and I have written one
+method find by username.
+You already know that in the previous video in the JPA, I have already told you how this worked.
+Spring boot would automatically create a query for me because find by its sees that right?
+So it will automatically create a Select query for me where it will put username equals to this.
+So I have written find by username.
+Now here if you see the third I have to I have written one service class user auth entity service class.
+And now here if you see notice also I have implemented it user detail service.
+You might ask again why.
+Again?
+If you see the flow during user creation you don't need it.
+User creation you don't need it.
+In user creation we store in DB or in memory username password.
+But during authentication it is required.
+In future it might require during authentication.
+Spring framework first try to fetch the user From.
+Or in memory.
+For in memory it knows how to fetch it.
+But for DB it don't know how to fetch it.
+Which table it I have to fetch it from.
+So we have created the table and we have written that.
+Okay, uh, in this service class I am writing this method which ultimately fetch the detail.
+But how?
+Spring framework knows that like I have to use this method.
+So that's where I am implementing user detail service.
+You know right.
+User detail service.
+Then we have user detail manager and then we have in-memory user detail manager.
+So we have seen that right user detail service which is the parent interface.
+And then we have user detail manager.
+And at the bottom we have in-memory user detail manager.
+So now I am creating that Hey, I am creating one more service which is user auth and user auth, entity
+service or user auth service something I am creating this class.
+Okay.
+And whenever you have to fetch the user you don't have to go to in memory.
+You can come to me user auth entitymanager.
+That's why I have created a child of User Detail manager.
+So I have keep it in parallel to in memory.
+Okay.
+And it has to override this method so that spring framework because Spring framework already calling
+this one load user by user name.
+So now ultimately since we have implemented this method will get invoked.
+So now load user by username.
+And uh we know that how to fetch it.
+We have our repository.
+We will use it repository.
+And we call find by username and we will return it now here if you see that I what I am returning user
+auth entity.
+I am not returning user details.
+Okay.
+I am not returning.
+So here if you see.
+In memory user detail manager okay.
+So there would be um just go to here.
+This is the parent interface.
+I am implementing this load user by user name.
+What is the return type?
+User details okay.
+And this is what Spring Frameworks invokes it to fetch the username during authentication.
+I'm saying during authentication not during storing.
+During authentication it first has to fetch the data from DB or in memory.
+Right.
+So it will call this.
+Now the return type is user detail.
+If I have not implemented this.
+If I have not done this Then would I be able to return just user or entity?
+No.
+Then first I have to do mapping.
+What I would receive as a user auth entity to user details object and then returns user details.
+But since I have created as a child implements user details.
+That's why I am directly returning this and it is acceptable now.
+Okay.
+So what?
+Till now, what we have done is we have created a table where we are going to store the username password.
+We have created a repository and we are creating a service class.
+Okay.
+Because Springboot during authentication might not know how to fetch from the DB, it knows how to fetch
+from in-memory.
+But for DB don't know how to fetch it.
+So we are telling we are writing implementing this load by username, we are fetching it from which
+table we have to fetch and we are returning it.
+All good.
+Now we can just write controller.
+Last step.
+So now here if you see I am writing this slash auth slash register API.
+Okay.
+User can give username password.
+Now what I am doing is before even storing into the DB before I am calling this service dot save class.
+Save method.
+This I am hashing the password so I am using password encoder dot encode user details dot get password.
+So what it will do is it will encode whatever the user is sending me the plain password right.
+So I'm getting that plain password and encode it.
+Okay.
+Like whatever the algorithm which we will decide.
+And using that algorithm, it will now update the password here in the same object.
+And then ultimately I'm going to store it okay.
+And which encoder we have to use.
+We can tell into our spring security configuration.
+I have told that I want to use Bcrypt password encoder.
+So it will use that encoder and encode my password and override whatever the plain password user is
+passing.
+And then I will save it.
+Right now one last question should have comes to you that okay, Shreyansh this API auth and register
+at this API, we are saying that user can dynamically add their username And password.
+Okay.
+And we will store it in DB.
+We will store it into DB.
+Okay.
+But how user would be able to invoke it by default in spring security, each and every API is authenticated.
+Means for each API you have to provide a username and password.
+But this is the first step itself where we are creating the username password itself.
+We don't have username password.
+Yes to authenticate it.
+So what to do.
+We have to bypass the authentication for this API.
+So in the same if you see.
+There is a security filter chain.
+I will come into more depth when we start the authentication methods okay.
+So different security filter chain comes.
+So we will override.
+So now here if you see I am saying that request any request which matches this slash or slash register
+permit it don't do any authentication apart from any request authenticated.
+So what ultimately I am doing is I am bypassing.
+Or you can say that skipping this API slash or slash register, right.
+No authentication would be executed for it.
+Apart from it.
+For rest of the API's authentication is required.
+And this is industry standard.
+Okay.
+So when this API is got invoked username would be stored.
+Let's say you one password would be stored in the Bcrypt format.
+Let's say XYZ123 something roles would be stored.
+What would be given like this and some ID okay.
+And during when authentication happens any authentication happens.
+Spring framework we will see the flow.
+But the spring framework first has to fetch this username.
+Right.
+We have provided it like spring frameworks.
+We have provided like overrided this user details service.
+So ultimately this method would get invoked.
+This method will goes to user auth entity repository.
+It knows that how to fetch it from user auth entity from this okay.
+And it will return it.
+Simple.
+Okay.
+So I hope this is clear.
+And uh we can see that also.
+Let's see.
+So in this one I have skipped the auth register part.
+I am starting the server.
+Okay.
+Let's say that I am trying to login but there is no user present currently.
+Let's say UU1123.
+Does any such user exist?
+No.
+So we are creating like you.
+One.
+Two.
+Three.
+Let's say this is the same username password I wanted to create.
+First I send it like user registered successfully.
+I am no authentication required for auth register API.
+Now I am providing here again you 1123 sign in.
+Now I am able to login.
+Okay so and if you check the db in db you can see that the password is stored like this.
+See dollar two a and all this thing how in the Bcrypt encoding hash manner it is stored.
+But I hope user creation process is clear.
+And even if somebody asks like uh, what's the recommended way to create a user in, uh, production,
+I think we now have the answer also.
+Okay, guys, any doubt we can discuss more?
+But thank you very much.
+Bye.

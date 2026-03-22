@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7.estimation</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="back_of_envelope_estimation.html" class="btn">View Notes</a>
+    <h1>7.estimation</h1>
+    <pre>
+Hey guys.
+Welcome to concept encoding.
+This is Shreyansh.
+So I have got a message from an engineer that in an LD round the question has been asked is MVC design
+pattern.
+And that's where he got a little bit not able to answer that.
+So today I'm going to cover the MVC design pattern.
+But here I would tell you that we have solved so many question like snake and ladder, parking lot,
+elevator split wise bookmyshow, etc. in all we have used this MVC right?
+But generally I considered MVC as an architecture rather than a design pattern.
+That's where I haven't specifically mentioned that this is the design pattern, right?
+But still, if an interview interviewer asked you that MVC design pattern or let's say design snake
+and ladder using MVC, so don't get confused that hey, we have solved Design Snake and later in LD.
+But now what does it mean using MVC?
+Okay, so I'll tell you what actually MVC is.
+And then we don't have to worry.
+Don't worry much about this.
+So MVC contains three parts.
+First is model.
+Second is your view and third is controller.
+So model view controller.
+That's what MVC stands for.
+So all the latest framework like spring boot in Java that follows MVC.
+Similarly for Python I think the major framework is Django right.
+So that also follows MVC.
+So this is very popular for certain reason I will tell you the advantage and disadvantage of it.
+But first understand what is it.
+Okay.
+So now here if you see that how this three Parts connect to each other, and this is generally an architecture
+of your application.
+How your application should look like.
+Okay so here first we have view right.
+So here let's make it like this.
+You have view then you have controller.
+Then you have model.
+Okay.
+So view interact with controller.
+Controller interacts with model.
+Through model you can interact with your DB.
+And your clients generally interact with your view.
+Okay.
+So generally this is how your whole application architecture looks like.
+So this is generally your front end application.
+Front end app.
+Right.
+So all the front end like button form where user can enter or give command right.
+So it can do with the view.
+Controller.
+So controller what happen is it's a mediator between view and model right.
+So what it does it it accept the user request.
+Interpreted.
+Or you can say that perform certain business logic.
+Right.
+And then give command to the model.
+So view gives commands to the controller that hey I want this data.
+Now controller is something which accepts the user request.
+Perform certain business logic.
+Hey are you there are a lot of business logic like validate and other business logic.
+So all this happens at the controller layer right.
+And then it gives a command to the model that fetch me this.
+Update this right.
+So your model now you know that it holds the data part like entities right.
+So this is generally your brain.
+Actually you can say that the major brain of your this is this all.
+So this is generally if you remember that all the questions which I have solved I create let's say car
+parking lot, I create a car entity like this is a generally a Pojo class car.
+Let's say if you are solving a split wise question expense.
+So these are all entities, right?
+Which are nothing but a Pojo.
+Dumb classes I refer them as dumb classes.
+Right.
+So they are dumb right here.
+View is also considered as a dumb.
+It doesn't hold any logic.
+This also doesn't hold any logic.
+Controller is the one which controls everything.
+So it holds all the business logic.
+Or you can say that it's a brain of your total application, right?
+And whatever you wanted it computes, interpret it and then give the command to the model.
+Similarly, whatever the output comes from the model something has to be modified.
+Something has to be updated on the output which we get from model.
+It does that and ultimately gives to the viewer.
+And then what view will do is simply render it to the client.
+Doesn't put anything logic here.
+So it no logic should be here.
+No logic should be here.
+So this is the layer.
+All the logic should be present.
+Okay.
+So now No when in an interview, if any questions comes like hey, design snake and ladder using MVC,
+what you should do so you should not worry.
+We are already following this.
+If you see that right, we create entities like.
+So this would be our model.
+Right.
+So model contains your entities or Pojos right.
+So here in the snake and ladder what would be the entities like.
+Like your board.
+Your board class.
+Right.
+So this is just one example.
+Right.
+And what does other things model can have is it can also have other logic like which DB to connect to,
+which DB to connect to.
+There might be couple of DBS right.
+And for this Whenever you want to change update this entity.
+You might have to connect to a specific DB.
+So all those data related logic right is reside in the model.
+Then we have controller.
+Right.
+So controller controls this.
+So all business logic that update board.
+For each board or insert something in the board.
+Right.
+And all the logics will be part of controller.
+Right.
+So all the you can say that the operations which user we are exposing to the users, that user you can
+these are the facilities we are providing you.
+So that controller provide that interface, right?
+So if anything update board functionality we have provided the controls comes over here.
+It do perform certain logic right.
+And based on that logic it might give a command to the board that update.
+Right.
+And then ultimately this actually stores the data into the DB.
+Right.
+So let's say you have this is the entity.
+And then we have certain that DB service.
+So this actually stores the data in DB right.
+For this entity.
+But in NLD we generally do not store the data into DB.
+So for our LD part the scope is still this entities or this Pojo classes.
+This project classes is considered as model and the controller of this entities are known as the controller,
+as generally give the name controller only where I put all the business logic right, which control
+this entities and ultimately comes is your view right in the view classes?
+Generally this is your front end where we have load the form buttons and all.
+But here if you see that in the spring boot, I would say that this is place where the the controller
+returns like something JSON, right?
+You can say that the response, the response of the controller is generally you can consider as a view
+because this is ultimately actually been shown to the user.
+What is the advantage?
+We are getting it.
+So I'll tell you that see in many companies big companies you will find this thing happening.
+So I will tell you that this is our controller and this is model view is generally front end.
+So I'm a back end engineer.
+I will tell you mostly how the controller and model.
+So this is separate component.
+This is let's say component component.
+And this is let's say some x y z service.
+So all the controller we have a separate repo for the model.
+We have a separate repo.
+Now generally when we say that what we can do is that in this model we will have all the Pojo classes.
+Or you can say that entities classes right.
+We can have the logic to which DB to connect to which DB to connect to, right and expose the interface
+which controller can use.
+So let's say I have expose an intercept, let's say expose this API that slash get slash insert Right.
+And this controller has the dependency of this repo.
+Right.
+And based on this it can invoke that particular interface of the model.
+What it will do is now it will know that which DB it connect to and then run the query.
+It run the DB query to update the db actually.
+So all your DB queries right.
+And the connections to the DB logic all connect to the model.
+All the let's say your API, Rest APIs Rest API right.
+So this is the rest API is the your interface which view or your front end uses it to connect to the
+controller.
+And all other business logic will reside at the controller.
+So controller has the dependency of model right?
+So it can invoke it.
+Now what is the advantage?
+The advantage is that since these are the different components let's say you have to let's say there
+is certain change in the model.
+So let's say today you are using relational DB.
+Tomorrow you change it to some other DB right.
+Let's say Cassandra or let's say some other DB like let's say Postgres.
+So you might need to change your SQL queries or something right.
+So it will only impact model component.
+It will not impact your controller.
+So controller will still work as it is.
+It has to just invoke this get for this entity.
+Now all the query and all related changes will happen on this model.
+So you only have to test this specific.
+So easy to maintain easy to test right.
+So we have decoupled components.
+So loose coupling.
+You can say that loose coupling We have between controller and model.
+Generally your model is lightweight.
+So testing unit, test casing feet if anything required deployment time.
+Everything takes very less time.
+Controller is generally heavy.
+There are a lot of Rest APIs, a lot of business logic, configuration, caching.
+All logic happens here controller.
+So testing and all is also takes too much time.
+So with this MVC you are decoupled or tight coupling.
+You have removed it from your code right.
+Model can scale on its own.
+Controller can scale on its own.
+Similarly the view frontend can scale on its own.
+Frontend is not dependent on controller and model.
+It can scale on its own.
+But there is disadvantage also that you have to manage all three components now, right?
+So this is not generally advised to use.
+MVC is not advised to use for small application only for mid or big application.
+Generally, MVC is used for very small application.
+This is not required.
+You can have in one repo you can have.
+All right.
+So maintenance cost is also there as you have three components.
+Then you have to manage all three components separately.
+So there is some ten maintenance cost will come with it right.
+Certain complexity increases okay.
+So I think hope it is clear that in an LD round if something is asked MVC, any question using MVC or
+directly, they asked MVC design pattern.
+It's very easy right?
+Just remember this flow.
+This is an architecture actually not an exact design pattern.
+This is an architecture, remember?
+Okay guys thank you.
+Any doubt any question.
+Let me know.
+We can discuss more in the comment section.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

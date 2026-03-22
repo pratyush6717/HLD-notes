@@ -1,0 +1,624 @@
+Now this is very important bitwise operators okay.
+So it works on bit level right.
+It works on bit.
+That is one and zero.
+And it is very fast right.
+Because processor directly support this one and zero.
+So this is very fast.
+So these are 12344 type of bit operators bit shift operators I have kept it differently.
+So bitwise operator we have bitwise and bitwise or xor and not.
+So let me first explain you this how and in the bitwise will work.
+So here in the bitwise.
+And which is this the same 10011011.
+Similarly for bitwise or.
+I will take an example 011 will take bitwise XOR which is your this 10011011 okay.
+So bitwise n when both are one one, then only it will return one.
+For rest of the one, it will return zero.
+If one zero it will return zero.
+If both are one, it will return one.
+Similar to like what we have seen previously right in the bitwise Or, any of one or any.
+If any of the bit value is one, it will return one.
+Both are so there is one missing right zero zero.
+Here we have also 0000 will return zero only.
+So zero zero here will return zero only and here it will return one.
+In XOR what will happen is Zero zero return zero.
+If both are same, then it will return zero.
+If one is up and one is down, like one is one and one is zero, it will return one.
+One one bit is zero and another bit is one.
+It will return one, right.
+So this is repetitive 1001 and one one.
+Both are same.
+It will return zero okay.
+So in XOR what we do is if both are same then it will return zero.
+If one bit is one and another bit is zero different.
+In this case it will return one.
+Right.
+And there is something called which is.
+You will find it very very interesting which is bitwise not I will explain you bitwise not as a separate
+after this one because this will uh might confuse you a bit.
+So bitwise not.
+I will explain you first.
+Let's see this 13A equals four b equals to six.
+Now we are doing a and b.
+So you know that in bitwise how we have stored the value 1248 1632 like this 64 like this.
+So four four would be written as 0010.
+Like this.
+Let's say I have a four bit like this.
+Uh, so this is your four.
+How your six would be represented.
+Four plus 21100.
+Now what we are doing is we are doing.
+And between them so zero zero is 001 is 011 is 100 is zero.
+Right.
+So what is this value four.
+Okay.
+Now similarly we are doing R.
+So now let's say if you are doing an R between this we are doing an R between this.
+So 00001 is 111 is 100 is zero.
+So what is this value.
+Four and two is bit set right.
+So it is four plus two six.
+Okay now let's do XOR.
+Simple right.
+Bitwise operators.
+Now let's do xor in XOR.
+What we have seen is if both are same then it's zero.
+Otherwise it's
+A10000111100.
+So what value is set two two.
+Okay so these three are simple.
+Now let's say that bit not let's understand this very, very importantly because it will solve many
+of your bit twice little bit issues which comes in.
+So generally this what not will do is bitwise not.
+Bitwise not.
+What it will do is if you have one zero it will change it to 1 to 0 zero.
+It will change it to one.
+It looks simple right.
+One is changed to zero.
+Zero is changed to one.
+Now let's say I am doing my A is what.
+So now let me first remove this to make a space.
+Then I'll explain you this one just a second.
+Okay.
+So let's start this one bit was not.
+Okay.
+So what was the a?
+A is for what I am trying to do is bitwise not of this one.
+So I am doing this.
+So now let's see what will happen.
+How this minus five has come.
+So four would be like how it would be in the bitwise one, two, four, eight, 16, 3264, 128.
+Like this.
+It goes right.
+So four is your 0010.
+So see this is plus four right.
+This is not minus four correct.
+This is what value it has plus four okay.
+So now plus four always has this at last is a sign bit.
+You already know this right.
+You might have worked with the bit the last bit.
+This is known as most significant bits and this is known as least significant bit right.
+So the left most bit is known as most significant bit.
+Then the right most bit is known as least significant bit.
+And why it is known as most significant bit.
+Because this will tell you whether a number is a positive or a negative, because this is a sign bit.
+This is used as a sign bit okay.
+Remember that the most significant bit is used as a sign bit.
+So when a number is negative, the most significant is one.
+When the number is positive the most significant bit is zero.
+Okay.
+So I think this is the basic which we uh have for the software engineering part.
+So but just wanted to remind you that this is what we have right in the bitwise the most significant
+bit, if it is one means it's a negative number.
+If it is zero means it's a positive number.
+Now why we are all discussing for this bitwise not.
+Now let's understand this.
+So what?
+The value of a is plus four like four.
+So it's 0010.
+I am not writing it as 001.
+Right.
+Because now the most significant would be your one which is says the negative.
+No.
+So for it we are denoting plus four.
+Right.
+So it would be like this okay.
+So generally integer would be let's say 32 bit.
+So it would be more.
+But I'm saying that let's say it's the four bits.
+So we will denote it like this.
+Now we are doing not of this.
+When we are doing not of this, we know that what it will do is it will change 0 to 1, 1 to 0.
+So 0 to 1, 0 to 1, 1 to 0, 0 to 1 okay.
+So I will get this number.
+So now what is this value.
+What is this value.
+We have to compute this right before computing this.
+I'll also tell you that generally not is have this formula minus n plus one where n is the this here
+what is the value which we are doing.
+So minus four plus one.
+So it should be minus five.
+So this should be minus five as per the formula for the complement for this are bitwise not right but
+how.
+So now let's see this 1248.
+So here we have 1101.
+So I want to find out the decimal number right.
+So two zero into two raised to power one into two raised to power two into two.
+Raised to power minus three.
+Remember that why I am doing minus three?
+Because in Java there is nothing like a integer is a signed.
+It's a sign.
+There is nothing in C++ you might have worked like signed unsigned integer, right?
+But in Java there is nothing like an unsigned in the integer part.
+So integer can have your positive values.
+It can also have your negative values.
+So it's a sign.
+So in the bits representation of this integer value the most significant bit is one right.
+It is one.
+And it's an integer which is assigned.
+So it has to be taken as a negative.
+Because I told you one means -0 means most significant zero is means positive.
+Okay.
+So that's why we have to take it negative.
+So what it comes minus eight plus zero into zero.
+Plus two plus one into two.
+Raised to power zero one.
+So it would be your minus eight plus three minus five.
+That's what our formula gives to us also.
+Okay so either you can use directly formula.
+If somebody asks you right how this, uh value comes right.
+You can compute this like this way.
+Okay.
+Just do a complement and then you can find out the decimal value.
+But remember in the Java integer is a sign.
+So if the most significant is one you have to use the minus one.
+So it's not 012 not three.
+It would be minus three.
+Okay.
+So that is the bitwise not.
+And also one more thing is you can you can ask me right.
+Hey like how do we identify that minus one.
+Is this only 1055.
+So minus.
+So let's say I have a equals to five.
+I want to compute it's minus five.
+How we can compute it.
+Because when we compute minus five it should be like this only 1011.
+So that we can validate that.
+Yes minus five is actually 1011 only.
+How we can do that.
+So you know that to get a negative value we have to do second complement.
+We have to find two complement right.
+So let's do that.
+So this one I have already told you how minus five comes in.
+And using this formula.
+Also you can use it.
+But how we can confirm minus five.
+Is actually this what we have come up with 1011.
+So now we have to find out the second complement.
+So for this 512485 would be your 10104 plus 0415101010101.
+So first we have to find out the first complement.
+First complement is just switching the 1 to 0 0 to 1.
+So I have finding the first complement one become zero zero.
+Become one one become zero zero become one.
+Second complement is adding plus one to it.
+Right.
+So 1010 in the first complement plus 11101 right.
+This is your minus five.
+So to find out a any number negative we have to find out the second complement.
+So for five when we found out the second complement what we get 1011 which is equivalent to this 11011.
+So and when we compute it with this decimal we got minus five.
+So all our computations fits well.
+So you got it right whenever you are doing a bitwise not right, you are changing the bit 0 to 1, 1
+to 0 and make sure that there is a chance that your positive number can become a negative.
+Because integer.
+In Java there is nothing like an unsigned.
+Unsigned means all positive.
+There is nothing.
+Integer can also store negative values, so it's a high chance that it might even make your positive
+number to a negative.
+And what negative number?
+Either you can use this formula or you can derive it like this.
+The last most significant bit you have to.
+If it is one you have to use a negative okay.
+So bitwise Not is also clear right.
+So this is.
+Now let's do this one.
+So I think this is clear right.
+Bitwise and or not and or XOR and not right.
+So you can ask that hey this can bitwise not also can be a unary two.
+So because it is also used with a single operand like so A not so used with a single operand.
+So it can be come under unary two.
+Now let's do a bitwise shift operator.
+What does bitwise shift operator do is it is used to shift the bits of a number left to right okay left
+or right.
+So there are three types left shift right shift unsigned right shift.
+But there is nothing like unsigned left shift.
+I'll tell you why okay.
+So but first let's see this and I'll tell you like how I always keep them.
+Remember that.
+Which one is left shift which one is right shift because it's sometimes confusing okay.
+So just remember this part is.
+See where the arrow pointing to arrow pointing to a go left.
+Right.
+So this is the pointed area.
+Just see that where it goes.
+So it says that left so means it's a left shift.
+And you whatever the bits we will do we will do left to our left.
+Similarly for right just see the pointed area.
+Don't have to remember this.
+Which one left.
+Just see where the arrows are pointing to.
+Hey go right.
+So it's a right shift, right?
+And we have to shift the bits to the right hand side for example.
+Right a equals to four in bits.
+How you will represent it.
+00100 okay.
+Now I am doing left shift means how much.
+How much.
+Left shift a left shift one one time I have to left shift.
+So means what we have to do is This is your right hand side.
+This is your left hand side.
+So you have to shift the bit by one.
+You have to shift the bit by one.
+Right.
+So here this zero will come at this place.
+So this is currently empty.
+This zero will come at this place.
+This one come at this place.
+Right.
+And this zero come at this place.
+This zero will get ultimately get discarded right now here in the left shift, the least significant
+bit will always be filled with zero.
+Always be filled with zero.
+Right.
+So now your number will become like this.
+1248.
+So it will become eight.
+So it's simply like a multiplication, you are shifting one to the left hand side.
+So we have one, two, four, eight, 16, 32.
+Right?
+So if you are shifting one to the left means you are just multiplying by two, four to the eight, eight
+to the 16.
+So it was four.
+You shift one to the left, it become double eight.
+Now I am doing, let's say two times.
+Shift A is four.
+I am doing two times shift.
+So I was a was four.
+I am shifting here bringing one to here and then again bringing one to here.
+So it will become two time shift.
+So four to the eight, eight to the 16 right and the left most significant bit.
+And whatever the the places it got empty it will switch it with zero.
+Right.
+And that's why one of the reason is there is nothing like.
+Unsigned left Shift.
+Okay.
+Why?
+Because I told you in a bit.
+Only the MSB most significant bit is important.
+Which define whether it's a sign or it's, uh, whether define a sign bit, whether it's a positive
+or negative.
+The least significant bit has no generally, uh, value that whether it would 1 or 0.
+If it is one, it's a positive negative.
+So this is that's why it is known as least significant bit this.
+That's why no most significant bit because it tells because it tells the sign okay.
+So whenever we do a left shift the whatever the we move okay.
+If it is one we move one to the next one.
+But here we will always replace it with zero, right?
+For example, you have one.
+How one will be represented 1000.
+You are doing left shift by let's say two.
+This is a a left shift by two.
+So first it will move to here.
+So it will become one right.
+This zero goes here.
+This zero will get discarded here it will replace with zero.
+Then it will two times right.
+It will do one more time.
+So it will bring one here.
+This zero will become here.
+This zero will go here, this will get discarded and this will get filled up with always zero.
+So it would be in two times right.
+It should be four.
+So that's why there is nothing like a unsigned kind of thing.
+But in the right shift we have this two.
+Right.
+I'll also tell you this part.
+So now the same example A equals to four right a equals to.
+Let's use this space A equals to 2486 ten.
+So 40000 okay.
+So now in this case what will happen is we are doing a right shift by one.
+So now arrow is pointing to the right hand side.
+Means we have to move the value to the right okay.
+So this will goes like a discarded.
+So this will get discarded.
+This will go here this will go here.
+This will go here.
+So 010
+this will become zero.
+And what value we will put here in the MSB most significant bit, what we will put we will use this.
+Right.
+We will use this one.
+So because this is known as your signed signed right shift.
+So whatever the value you have.
+So I was shifting plus four right.
+So it was zero.
+So you have to put zero here.
+If it is one over here let's say your value is uh something like for y five what we find out minus five.
+What was that 1011.
+Right.
+1011.
+We computed uh, 1011 minus five.
+Okay.
+So now you are doing it's, uh, let's say this is your a, a right shift by one.
+So this will get discarded.
+This will get here, here, here.
+So this will get discarded at this place.
+This value will come at this place.
+This value will come one.
+So now what will put here.
+Okay.
+So we will put the most significant bit here because this is your signed right shift.
+So it is one.
+So it we will always put one also.
+Right.
+So it will become 1101.
+Okay.
+But there is something called unsigned.
+Unsigned.
+Right.
+Shift.
+Now unsigned right shift.
+What it will do is it will no matter whether you have you are shifting this minus five.
+Right.
+So it will become 101.
+And this will become empty no matter if it is a 1 or 0, no matter unsigned right shift will always
+fill it with zero.
+Okay?
+That's the only difference.
+Okay, so you got it right.
+What is the difference between left shift right shift and in the left shift.
+There is nothing like a unsigned part.
+Right signed unsigned doesn't matter because the change will happen in the least significant bit and
+in the right shift there is one.
+Are your signed right shift and unsigned right shift?
+Okay.
+And when you go to the left you are doing kind of a multiplied by two.
+When you are going to the right you are kind of dividing by two.
+You are decreasing by 2 to 2.
+Okay.
+So do practice this.
+These two are very, very important.
+Now there is something.
+One more operator is known as ternary operator.
+It mimics the if else condition right.
+So let's see this example.
+So let's say this is the value a equals to four b equals.
+To find you need to find out the maximum value.
+How you will do you will do if a greater than B Let's say your max value would be a else.
+Max value would be B, right?
+So we'll do compare.
+If a greater than b yes, then this block will get executed.
+Else if A is less than B then this block will get executed.
+So ternary operator just mimic this if else part how it has this operator.
+So it has this condition over here.
+Condition.
+This condition if condition.
+Question mark.
+Like if this is true then this is the expression one.
+It will return.
+Else.
+Else part is denoted by this colon.
+Else expression two will get executed.
+So now the same thing which I have done in if else right.
+Just see this with ternary operator usage a equals to four, B equals to five.
+I have to find out the maximum.
+So this is the condition first a greater than b for greater than five.
+False.
+It will return false.
+So this will evaluate true or false.
+So it is false.
+So false means this part will get executed.
+So what it will do is it will return this b value to it.
+Right.
+This will get executed.
+So it will.
+So B is like five.
+So five will get assigned to max value.
+Right.
+If if you have written like b greater than a b greater than a five.
+Greater than four.
+Yes.
+True.
+Yes it is true.
+Then which one will get executed?
+This one.
+Before.
+Before this colon.
+So we should have been returning B over here.
+The maximum one.
+So it will get returned.
+Okay.
+So and we print the value.
+The max value will come as five.
+So this is very very equivalent to if else condition.
+And very very straightforward.
+So this value will get assigned to which one is get true.
+So this is just nothing but an expression.
+Expression can have more than one operands also.
+Right.
+And zero or more operators also.
+Okay.
+So this is known as ternary operator.
+And the last operator which we have is called type comparison operator.
+This is the operator instance of.
+So it is used to do the type check whether the particular object is of certain class or not okay.
+It can sometime can also be shown under relational operator because it returns true or false only and
+between two operand only.
+So I will show you how to use it.
+So type comparison instance of operator.
+So take this example first.
+So I have created one parent class and I have created this two childs child class one from this parent
+class.
+Child class two from this parent class okay.
+So now let's say this is the this thing.
+So now I am creating one object.
+This object has child two object.
+So now what I am trying to do is here check this System.out.println.
+Does this object instance of this is the keyword operator instance of child class two right?
+Yes, it will return true.
+Right.
+Because this is a type comparison, it will check that this object is of this class type or not?
+This object or not?
+But if I do object instance of child class one.
+No, because this object is part of child class two, so it will return false, right?
+Similarly, I can do so this.
+Take this example.
+I have created one child class one object.
+This object.
+Right.
+And now I am checking.
+Hey this child object which I have created.
+Is it instance of parent class.
+It will return true because even for the child you can.
+It's a kind of a parent only, right?
+It is of the same.
+So this will return true.
+This child object is instance of parent class right?
+Similarly, if you have a string val you can say that hey Val is an instance of string or not, it will
+return true.
+But where this instance of very frequently used.
+One is this where you have a parent child, right.
+And you have to define whether this particular object, which you are getting because parent can hold
+an object of any child.
+So sometimes you have to find out it is of which child.
+And another is when you get an object into this one.
+So now here, if you see that object, we know that it's a parent of all the classes.
+So I can create an object like I have created a random class object, I have created a class name like
+random class created objects, put it under object.
+Now I am doing hey, this unknown object is an instance of child class two.
+This.
+It will return false no?
+So that's where it keeps it handy.
+Where you you receiving an object of this class type object and then you want it to identify that,
+hey, whether I am getting this or which one?
+Okay.
+Got it.
+So these are all the operators.
+And now we let we have to see one more important part is the precedence.
+Right.
+So all this operator.
+So this is high priority.
+And this is the.
+Low priority.
+So high priority.
+Operator.
+So you know that in an expression expression contain multiple operators also.
+So which operator to execute first, for example five plus two into three.
+What would be the value like.
+What would be the value.
+So how do we determine because that's where the operator precedence comes in.
+So we go with this high priority to low priority okay.
+So you go through this table right.
+Uh sometimes it's very difficult to remember, like, what is the priority?
+So always keep this operators in handy with you.
+Like, so that whenever you want it to look out, you can check it out, right?
+So here, if you see that the multiplication priority is much higher than the plus one.
+So plus is your where this multiplication is this.
+So this multiplicative higher priority than additive.
+So multiplication will happen first right.
+So it will happen like five plus three six.
+And then the plus will happen.
+Okay.
+Now there sometimes will happen is let's say five into two divided by two.
+So now here if you see that the into and divide into and divide are at same level same precedence.
+Now which one to execute first?
+Which one to execute first?
+That's where associativity comes into the picture.
+So associativity tells.
+If two operators have the same precedence, then it's evaluated based on associativity.
+Okay, so what is the multiplicative associativity?
+It's associativity is left to right.
+Okay.
+So it will move from left to right.
+So this first it found multiply.
+So it will compute this ten divided by two.
+And then it will move forward.
+That's a divide ten divided by two five is the answer.
+Okay.
+So that's what associativity is.
+Associative tells.
+If two operators have the same precedent then which one to do the first right.
+Then it's evaluated based on its associativity left to right or right to left right.
+Similarly, assignment has right to left.
+Let's say a equals two b equals to c.
+So it's assignment associativity is right to left.
+So right to left right to left right.
+So that's why.
+So C value is assigned to B first.
+Then b value is assigned to a.
+Okay.
+So this is generally the operator precedence.
+And uh just wanted to highlight one interview or one not one interview question like so one very very
+simple.
+Uh, this question like, uh, how do you identify that?
+Just let's say I have integer A equals to four.
+I'll give you one and I'll give you a one task.
+Also, let's say I have put a plus.
+Let's say I do plus plus.
+Then I will do prefix.
+Uh, let's say I do it here plus and let's say I do multiplication and I will do minus minus a and then
+do plus a minus minus.
+Okay.
+So let's say I have this one.
+So if you have to compute this one how you will compute it.
+So here if you see that the first step would be.
+Replace the.
+Operand with value.
+Okay.
+So first a we have to change it to the value.
+So let's change it.
+A is four plus.
+So this is your postfix.
+I told you right.
+First it will return its value and then will increment.
+So this would be for a value has become five plus increment.
+First a value and then return.
+So five.
+It will increment six into minus minus a.
+So first it's a prefix.
+So, so it will decrement first.
+It will become five.
+Plus a minus minus.
+So first it will return and then decrement.
+So what is the value five.
+And then it will decrement four okay.
+So what is that.
+Four plus four plus six into five plus five.
+Right now you know right what to do.
+So what we have to do is the precedence which is the first precedence.
+This.
+So four plus four plus 30 plus five.
+So it would be uh 35 plus 843.
+So 43 is your answer here okay.
+So you can also try it out.
+And if you print the value of a a value would get printed as four.
+Okay.
+So I'll give you one.
+Can you, uh, give me an answer of S if and x equals to two.
+Okay.
+Then what would be the output for this.
+Let's say I'm printing z equals to plus plus x plus plus x divided by x plus plus minus one.
+Okay.
+This close this close.
+So what iterates value z value is what plus plus x x equals to two plus plus x x plus plus minus one.
+So what is its value.
+Ping me in the comment section.
+Okay so guys this is we have an operator.
+This sixth and seven is very very important right.
+So practice it.
+Any doubt any question please feel free to ping me in the comment section.
+Okay team.
+Bye.

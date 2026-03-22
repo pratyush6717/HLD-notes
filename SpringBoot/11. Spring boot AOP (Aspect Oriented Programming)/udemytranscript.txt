@@ -1,0 +1,1051 @@
+Hey guys.
+Welcome to Concept and Coding.
+This is Shreyansh.
+And today in Spring Boot we are going to complete this spring AOP.
+So I'm taking it Marc let's start with aspect oriented programming which is AOP.
+And that is being used by many other topics which we are going to cover like transactional.
+Okay.
+That's why I wanted to cover it before.
+So in simple term, if you want to explain AOP, we can say that it helps to intercept the method invocation.
+Right.
+And we can perform some tasks before and after the method.
+Okay.
+So what AOP says that hey you allow it, allow us to focus on business logic by handling boilerplate
+and repetitive code like logging, transaction management, etc..
+What I mean to say here is let's say you want to have a certain business logic like this is your current
+business logic, but many times there are certain piece of code which we have to write.
+Let's say you have to keep logging certain things.
+You have to keep logging after your business logic runs and also transaction.
+You have to start transaction, you have to end the transaction.
+And if some issue comes you have to roll back.
+Okay.
+So there are few things which is apart from your business logic that is known as boilerplate means which
+you have to do.
+And these are repetitive means it is not just for one, one class or one method.
+If you have 100 methods which required logging, you have to do the same thing.
+If you have 100 method which require transactional property, you have to start and end the transaction.
+Rollback all these things.
+So these are repetitive code in your business repo.
+So that's where AOP says that, hey, you focus on business logic.
+This boilerplate and repetitive code.
+I will take care of it so you don't need to handle.
+Put it over here.
+You can remove logging and transaction rollback.
+All you have is now your business logic.
+And somehow this logging transaction management AOP will take care of it.
+How we will see that.
+So aspect.
+So when we say that aspect oriented programming what is aspect means.
+Aspect is a module which handles this repetitive and boiler code.
+So I told you right.
+This repetitive and boiler code like logging and all transaction commands and all these are repetitive
+and boiler code.
+So all this logic can go to a particular place that we call generally an aspect.
+So what does it helps.
+It helps in achieving the reusability and maintainability of the code.
+Definitely.
+So now in this aspect, let's say we have put logging.
+Now if even at 100 places you want to put the log right.
+You don't have to write the same logic again and again at 100 places.
+Uh, in your main core business place, you don't even have to write it.
+Aopp will automatically take care of putting the logging either you want, before or after, or both.
+Right.
+So all the hundred places can use this code, right?
+So it helps in achieving the reusability and maintainability of the code.
+So only one place is where it has to maintain.
+And any changes made it here.
+All hundred places will get impacted with that.
+So maintainability is easy.
+So dependency.
+So before we start using AOP.
+This depend this dependency.
+We have to add into our Pom dot XML.
+So you can add this dependency in your pom.
+Okay.
+Spring.
+Hyphen boot.
+Hyphen starter.
+Hyphen AOP.
+Okay.
+This is very very simple example when I am showing you the demo like what exactly it does.
+But don't worry about this.
+Uh, whatever you see here, right at the right aspect at the right before, don't worry about it at
+all.
+It just want to show you that when I told you it helps to intercept the method.
+What exactly it is.
+So now let's say that this is one of my class.
+Now in this class, this is a rest controller class where I have exposed an rest API like path.
+This fetch employee slash API slash fetch employee I have exposed like this.
+Now here, if you see that I am just returning item fetch.
+So this is my business logic.
+This is my business logic.
+But I wanted something before it return.
+Before this method get executed, I have to perform certain tasks.
+So what happen is I have here.
+If you see, you won't see anything.
+But this is one aspect I created in that I have written one method.
+Don't worry about all these things.
+How this I have written one method which does something, let's say logging.
+Consider this as it is logging.
+Consider this system dot println is at I am logging, so I am just logging that.
+Hey, I am inside this before method aspect.
+Okay, now I started the application.
+So here if you see application started properly, now I am hitting the request that in the localhost.
+I am hitting this API fetch employee.
+Now.
+Before the invocation of this before the execution of this method, what would happen is this before
+method will get invoked.
+So this will logging will happen inside before method aspect.
+So here if you see it will first print inside before method aspect.
+After this it will return the item fetch item.
+After this it will return the item fetch.
+Okay, so this is what I mean to say when I say that AOP helps you to intercept the method, right?
+So before this method get invoked, it intercepted it.
+It performs certain tasks.
+Right.
+And then it calls the method.
+Then this method works happen.
+And if there is something after you have to do.
+so.
+There is.
+You can also perform certain task after this method execution also.
+Now the main thing what exactly how it is happen, how this interception happen, how this interception
+internally works.
+Right.
+So now we all have to understand that part.
+Now let's slowly goes to each and every part of it.
+Okay.
+If you don't understand in a single shot please check it again.
+I will try to go slow because this is lot of things going to come into this.
+Okay.
+So first thing first the aspect class where we are going to write our boiler code, right.
+We have to annotate that class with at the rate aspect.
+So this aspect has certain purpose.
+So spring boot.
+Get to know that okay, this logging aspect because this is at the right component when you start an
+application.
+Right.
+Spring boot scans.
+So when spring Boot find this hey this is this class is annotated with at the right aspect.
+Then Spring Boot knows that okay.
+What does it contain it.
+It contains certain methods which might require interception.
+Right.
+Which might need to be get executed before certain method or after certain method.
+So now here, if you see that the first part is your pointcut.
+So this annotation here, if you see this before this method, I have put this at the right before and
+there is certain expression.
+So this expression this expression.
+This expression is known as Pointcut.
+What pointcut is it's an expression which tell where an advice should be applied.
+Advice is what advice is this method actually?
+This method plus.
+This.
+Before or after.
+Okay.
+So this pointcut what happen is it matches.
+It do some matching logic that okay this class this class and inside this class this method okay.
+Some matching happened okay.
+For this method I have to do some interception.
+Means before this method actually get invoked I have to run this whether before or after.
+This will tell whether before I have to run or after I have to run.
+Okay.
+But how to find out which method we have to run this code, whether before or after it is tailed by
+pointcut.
+How to identify that particular class or particular method where we have to run this piece of code is
+tell by pointcut.
+So now let's go through this expression one by one.
+There are okay.
+So now we are going to this pointcut we are going deep into this Pointcut now.
+So Pointcut definition.
+Now you already know it's an expression which tell where an advice should be applied.
+Okay.
+This is what actually is an advice.
+What actually the code has to run before the method and after the method.
+But this is what Pointcut actually tells which for which method this has to be done.
+So type of Pointcut.
+So first is execution.
+So here if you see that in the execution what it says that matches a particular method in a particular
+class.
+It matches a particular method in a particular class.
+So with this execution here, if you see that we have to give expression like this.
+So this expression has certain part.
+The first part is your.
+Access modifier whether it's public private protected.
+What right.
+And this is optional.
+This is optional means even if you remove it doesn't matter.
+It will check for all.
+It will check for private public protected all okay.
+So this is optional.
+And this is your access modifier.
+The second part this is your return type method.
+Return type.
+Okay, so whatever the return type of your method, you will write here.
+And this is not like an optional you can skip it.
+You have to provide it.
+Okay.
+And the third part is your the path for your method.
+So this is your package com dot concept and coding dot learning Springboot.
+Right.
+This is your package.
+This is the class name.
+And inside this class name this is a method.
+So the full method the class path has been given com dot dot dot dot method name fetch employee okay.
+And this method doesn't have any parameter.
+So that's why it is empty.
+Otherwise.
+Inside this we can provide the parameters whether it takes a string int some object and all.
+So but here in our example in this case if you see This fetch employee.
+This has no arguments, so that's why I have kept it empty also.
+Okay.
+So here.
+So this one.
+You got it right.
+Execution.
+What execution?
+It is always focus on whenever you are using this type of pointcut execution.
+It always focus on try to match a particular method in a particular class.
+Right.
+And you have to give this way.
+Okay.
+Now there are a wild card which we can use.
+So there are two type of wild card whether using star or dot dot.
+Okay.
+So let's see that if we want to use a wild card how we can do it.
+So let's say that we want to use a star.
+So star means it matches any single item.
+lighter.
+Now lets.
+So now lets say this is the class.
+Now I want to use this wild card.
+How to use any wild card like matches any single item.
+Now let's say I'm writing an execution means this type of Pointcut means I have to point to a specific
+method where this method has to be run right.
+So matching this is the matching logic.
+So first I use star.
+So now here if you see that I have removed this because this is optional.
+This is not even required.
+If you don't write it it will check for public private protected all type of access modifier.
+So I started with this return type.
+So return type instead of string.
+Now I give asterisk.
+So no matter string or int or any object doesn't matter.
+So this is one wildcard.
+Now I provide the total class for for my method employee.
+Then this method name that before uh, the uh.
+For this method I have to do some interception.
+And this doesn't accept any argument.
+So I have kept it empty.
+Okay.
+So this what would happen is.
+So now Spring Boot will match this pointcut expression with this method.
+Right.
+And it able to identify that okay, for this method I have to run this advice run this method.
+Now whether before or after we will come to that later.
+But at least now it filter out that okay this is this method is matched with this Pointcut.
+Okay.
+Now the second matches any method with single parameter string.
+So now here, if you see that I am trying to do an execution means again one direct particular method
+we have to point out star started with the star space.
+So means this is the return type.
+Whatever the return type could be string integer doesn't matter.
+Com dot concept encoding.
+Dot learning spring boot dot employee.
+So this is still I have provided a particular class.
+Now what is the method dot star.
+Now doesn't matter whether fetch employee or you can say that int uh some update employee.
+Update employee.
+So this star means any method any method name.
+Now I haven't provided any specific method name I provided star means any method name return type.
+Also, I have used the star so it doesn't matter whether a string or int.
+So currently till now matching is happening.
+Now in the parameter I have given a string.
+So means method should have taken a string.
+So let's say one argument is a string val.
+So now the matching will not happen for this because okay return type matching because this is a star
+wild card.
+So this is okay fetch method okay.
+Because this is method is a star.
+Any method name could be there.
+But matching is like the method should have argument one.
+One argument should be string.
+Does it have any argument?
+No.
+This method has any argument.
+Yes.
+So this got matched with this.
+This point could get matched to this method.
+So now whenever somebody try to invoke this method this will run either before or after.
+We will see later One more example of execution which I want to give.
+So I'm running an execution now string.
+Specifically, now I am giving the return type should be string.
+This should be the method specific.
+I have provided the exact path to this method and also return type I have given is star.
+Star means single should get match, right?
+I told you star match any single item.
+So even though there.
+So this doesn't take any method, any argument, this fetch employee doesn't take any argument.
+So it will not match because it is expecting one argument either a string, either it either object
+doesn't matter.
+But when we have put a star means at least one should be there, so this matching will not happen.
+Okay, so now you understand.
+Okay, so now you understand this.
+Star.
+Wild card.
+Asterisk.
+Wild card.
+Now I'll tell you about the second wild card.
+Dot.
+So it matches zero or more item means zero or more.
+So first example, which I am giving you.
+What is this?
+It matches the fetch employee method that takes zero or more parameter.
+So read this.
+Execution means I have to provide one specific method.
+Matching return type is string.
+This is the classpath exactly for the particular method.
+So this is my package.
+This is my class and this is my method name.
+Okay.
+So till now I have provided fully.
+Now here.
+If you see that in the arguments I have put dot, dot means either this fetch employee have zero argument
+or more than like more than zero like or more item.
+It will get matched.
+So now in this case this got matched with that.
+Right.
+So let me copy it here so that it would be easy.
+So now here, if you see that even the fetch employee has zero arguments, it will get match because
+dot dot means zero or more.
+Now see the second example of this one I am running.
+An execution means a specific class method.
+I have to provide execution string.
+This is a return type.
+Com dot concept encoding dot dot.
+Now here dot dot means any package any sub package right.
+And ultimately this is the method name I have provided.
+So now com dot concept encoding dot like whatever the package sub package would be in any package sub
+package and whatever the classes it has if any method name is fetch employee within this concept encoding
+package and its sub package.
+If any method has fetch employee matching should have happened with that.
+Okay.
+Now there is one more thing I want to show that execution string.
+This is a return type.
+Com dot concept encoding.
+Dot dot means concept encoding.
+And this package.
+And inside this any other package is required.
+So it will look for all this package and all other sub packages.
+Right.
+All the classes inside that all the classes inside this sub packages also.
+And which method I have put a star like doesn't matter.
+So all the methods inside the Package and sub packages of this.
+This match point card should get match.
+Okay.
+So execution.
+Execution.
+Now you know this.
+Now let's say second type of point card is within.
+Now within.
+So what within says that matches all method within any class or package.
+How?
+Now let's say I want to run all the methods for within a class.
+We can do it through execution.
+Also, I told you right through execution.
+Also we can run this way, but there is a simpler way with the within also.
+So here, here if you say within.
+So this is another type of point card.
+In this within there is nothing like a return type because we are not specifically pointing to a method.
+Now we are giving here either the class path or the package path.
+Com dot concept and coding.
+Dot learning.
+Spring boot dot employee.
+So I have provided a particular class.
+So all the methods within a within this class.
+This pointcut will get match right.
+If this employee if this employee class has four methods right.
+So this Pointcut will match for all four okay.
+So no matter if you are calling this method then also this matching will happen.
+And whatever the advice we have to run like below this, whatever the method we will write, it will
+get run.
+Now if you want to run on a package, we can say that within com dot concept and coding learning spring
+boot dot dot Right and stress no matter any class now learning spring boot package or below sub packages.
+Any class which is present inside this package and sub packages for that.
+This pointcut will get match within Pointcut.
+There is one Pointcut called at the rate within.
+So whenever we use at the rate right.
+So at the rate within means here we have to provide an annotation.
+We don't have to provide a class path of a particular class.
+We have to provide an annotation okay.
+Matches any method in a class right.
+Which has this annotation.
+So within you already know that within works on a class level right.
+So when we use at the rate within means any class which this annotation which has this annotation,
+this pointcut will match.
+Okay.
+So here if you see this example, I have written one simple class rest controller where this is one
+method which has exposed this API slash fetch employee.
+Now this fetch employee is just calling one utility class employee util I have auto added employee helper
+method.
+Certain helper method.
+Now this employee util class I have put at the service.
+Okay.
+And this is one method employee helper method.
+So this will print this.
+And after that it will return item fetch.
+So very very simple.
+This two classes are very very simple.
+It's just my business logic I have used.
+Now I have put this aspect class where I want to do something before a particular method invoke.
+So I have put at the rate within okay.
+Within means targeting to a specific class.
+But at the rate is like I have to provide the annotation here.
+I have put this service annotation path.
+Okay.
+So now what is Springboot will know that okay.
+Any class which has this annotation right.
+All its method this match will happen.
+I have invoked this API fetch employee.
+Now when this API is invoked, what would happen is currently any aspect match.
+currently any any pointcut match with this?
+No.
+So currently at the rate within is any class which has service annotation.
+This class employee has service annotation.
+No.
+So there is no matching happen.
+Now it proceed and it calls employee util employee helper method.
+Now it is trying to invoke this.
+Now Springboot say that okay, this method before I invoke this method, is there anything I have to
+do now?
+It will see that okay, there is some aspect present at the rate within the class.
+Any class which has this annotation at the rate service.
+Okay, this class has this annotation okay means this got match up.
+This Pointcut will get match up means this method has to be run before or after.
+So currently we are telling before.
+So before this method execution.
+This will run inside before method aspect.
+So it will print inside before method aspect.
+And after that it will go inside this.
+And it print employee helper method call.
+Employee helper method call.
+And after that it will put item fetch to the UI.
+Okay you got at the rate within.
+So within is deal with the classes.
+All the methods within a classes.
+But when we have put at the rate means it has, we have to give annotation all classes which has this
+annotations.
+Okay.
+Now another type of Pointcut is at annotation.
+Now this deals with the method matches any method that is annotated with given annotation.
+Okay so Here, see this one?
+I have written one aspect class put at the right aspect right.
+This is also have to use at the rate at the right component because this has to be otherwise Springboot
+will not manage it.
+So we have to use at the right component also because this is also a bean object is required.
+So I am using the Pointcut type is at the annotation.
+What does add that annotation is.
+So we are using at the right means right.
+We have to provide some annotation path.
+So what annotation path I have given get mapping this annotation path I have provided.
+Okay.
+So what annotation is that matches any method that is annotated with given annotation okay.
+So now what would happen is I invoke this method when I invoke this method fetch employee spring boot.
+Before running this method, it sees that hey any aspect is Practice which is getting match any point
+card which is matching it will see that okay, at the rate annotation is there, which says that any
+method which has get mapping annotation.
+Yes, it has get mapping annotation.
+This method has get mapping annotation means this has to be done before or after.
+Currently I'm telling it at the rate before.
+If I want to run, I can tell at the rate after if I want to run after this method.
+So currently I'm telling is at the rate before, so means it will run first inside before method aspect,
+and then it will go inside this and return this item fetch.
+So you got it at annotation.
+Then there is something called arcs matches any method with particular argument.
+So now here if you see this is another Pointcut type where this is like a r g s r.
+And inside this like you want to give like any method which takes this type of argument a string comma.
+And so first is a string, second is int.
+So here if you see this r string comma int I have given as a pointcut expression okay.
+So at the right aspect is there in this class component.
+And this is the method.
+Like any method which got match with this, this method has to be run before its execution.
+So now what I am doing is here.
+I am calling this API.
+Now I am calling this API.
+So here if you see currently this this got match.
+No it has argument string comma and does it taking any argument.
+No.
+So no matching happened.
+So it will go inside.
+It will run this the statement employee util employee helper method and it passing two parameters.
+So it is trying to invoke this method.
+So this method when spring boot try to execute this method it will check.
+Hey any Pointcut matches happen.
+So it will say that okay there is a Pointcut which says that argument which takes a string comma and
+any method which takes the string command.
+Yes, this is applicable for this.
+It got matched with this point guard means this has to be run and before.
+So this will print first inside before method aspect.
+Then it will go inside this employer helper method call.
+And after that it will return this.
+Got it arcs.
+Right.
+Okay.
+So now one question can comes to that.
+Okay.
+Hey what if instead of string int if we have object how we give.
+So we can give like args and give the proper class path of that class till class level like any object
+of this class.
+Com dot concept encoding dot learning Springboot dot employee.
+Right?
+So it will match to any method that accept a reference for this class.
+And there is something called at the rate args.
+Now whenever at the rate comes before this at the rate means we have to provide the path for the annotation.
+Okay, so how to read this is matches any method with particular parameter.
+And that parameter class is annotated with particular annotation.
+Now here when I give talks.
+And this is the annotation service.
+So what I am looking for is here.
+If you see at the rate talks and I have given the path for service annotation.
+So what happen is it will look for any method.
+Any method.
+That accept one.
+That accept any argument.
+Okay.
+And that argument class right has this annotation service because see args is deal with the argument.
+We don't have to worry about the method name and all any method.
+But the argument which you are passing does that argument has this.
+That class has this annotation.
+So here the argument is employed.
+Now let's say this in.
+So this is one method which is ultimately getting invoked let's say.
+And this method has argument employed now.
+Now this employee Dao class had this annotation at the rate service.
+So this got matched up.
+Okay.
+So args deals with the argument.
+And at the rate args says that the argument which you are getting the class type does this has this
+annotation.
+If yes then only do the matching with this.
+So this method has employee Dao.
+And this employee Dao has at the service which got matched this with annotation.
+So this is a match for this Pointcut.
+Okay.
+This is the seventh type of Pointcut which we can use.
+Matches any method on a particular instance of a class.
+Okay so here at the rate aspect.
+So this is the class where we are writing all the pointcuts.
+So here I am using target.
+So target is your one type of pointcut expression Pointcut type.
+So target.
+Now here what we have to give we have to give a till class level path.
+So this is my class.
+Now whenever an instance of this class is used to call any method, this will get matched.
+So just see this example in this class.
+Very very simple class employee Rest controller expose.
+This API does this mapping.
+Now I am calling this method.
+Okay fetch employee.
+It is running this employee util dot employee helper method.
+So now it will see that hey any pointcut match happen.
+So here target means says that in the target.
+What is the class I have given employee util whenever this instance of this class.
+So this is an instance of this class is used to invoke a particular method for that method.
+This got matched up.
+So is it clear.
+And there is one more.
+Uh, the target flavor of this is like we can even provide an interface also, instead of direct class.
+Instead of direct class, we can provide an interface.
+So now here, if you see that this is the class structure I have created.
+Okay.
+The controller class.
+This controller class has dependent on employee interface.
+So I have created one employee interface.
+This employee interface has two child temp employee Pirma employee permanent employee.
+So this has two type of employees okay.
+So you know already that we have to use qualifiers properly.
+Because if you have to use we have to tell Which dependency we it has to be put inside this employee
+object.
+Okay.
+And I am using that employee object by calling the method.
+If you see this aspect, I am writing a point guard for the type target.
+And what I have given.
+Till interface level.
+I have given this interface name.
+So what this interface name is that any child classes for this interface.
+Like if it is an instance of temp employee or if it is an instance of permanent employee, doesn't matter
+because this is an interface I have given, right?
+So no matter whatever the child instance it has, this is applicable.
+So now here, if you see that I am calling fetch employee method employee on a temporary employee object
+because I have put a qualifier temp employee.
+So it's I'm creating an object of this.
+So even though you are creating an object of this temporary employee, this this pointcut will get matched
+because this is an interface.
+So for all its child instances also this is valid.
+So it will run this before calling this method.
+So I'm at use at the right before.
+So means it will run first this inside before method.
+And then it will go inside.
+Fetch employee method of a temporary.
+Okay.
+So only point to say is that even if you use interface instead of direct class.
+Now with interface, no matter how many child classes are there of this interface for that instance
+of those child classes this will get true.
+This will get match.
+Okay.
+Now we can also one more thing is we can also combine two pointcut.
+cut.
+So we have seen a multiple point cut right.
+Which one execution within at the rate within arcs at the rate arcs target and at the rate annotation.
+Right.
+So we have seen multiple annotation multiple point cuts.
+We can combine them.
+Also we can use together also using and and or Boolean and Boolean all.
+So here if you see that this is one example which I am giving.
+I am writing one aspect class.
+Put at the rate aspect okay, this is the method, but this is my pointcut expression.
+So first is execution.
+Execution means pointing to a particular method.
+Return type is anything.
+This is the package, right?
+So this is my class dot any method.
+In this class, any method, any return type and it do not accept any argument.
+Okay, but now here if you see that I have combined it with another pointcut, now I am adding and n
+means it's an end.
+Both should get true.
+Then only this will get match up and this will should run at the rate within within this deal with till
+class level.
+So I have provided.
+Ah, but I have used at the rate so means annotation path.
+I have to given so annotation path I have given this Rest controller.
+So any class which has this Rest controller annotation okay.
+So this is one.
+And this is like similarly I have written for or.
+Now let's see that if I call this method, if I call this what would happen.
+So now this you have invoked this now Spring Boot will say that, hey, this method got this method
+got matched with any aspect.
+So first execution let's see this first any return type okay.
+Good.
+Com dot concept encoding dot learning spring boot dot employee controller.
+Yes.
+This is within this package.
+And the class name any method name okay.
+And this method doesn't accept any argument.
+Yes this got match.
+So this is true.
+This got matched now.
+And.
+Any class which should have this Rest controller.
+Yes this class has Rest controller.
+So this both get true means this is got matched with for this method.
+And this should run.
+And this should run either before or after I have put it before.
+So it will run inside before end.
+Method aspect.
+Inside before end.
+Method.
+Accept okay.
+so this is run and there is another.
+So it will try to match it with this also star.
+So this got match up exactly same.
+So this is true.
+Or we should have at the rate component within means this class has at the rate component.
+No this doesn't has at the rate component.
+Uh so this will get false.
+But since this is or anyone should get true.
+So this is also true.
+So this is this method also has to be run but it before right.
+So this will also get print inside before or method.
+So now after this it will return item fetch.
+There is one uh one more thing called named Pointcut.
+So in the name point part, what we have seen this before is we have used at the rate before, and here
+we are used to give the Pointcut expression so we can name that expression.
+So here this is the way of giving.
+So I'm using at the rate point card and give the expression.
+So we are telling the spring boot that this is one point cut.
+Okay.
+Just provide a method name which should be empty.
+We don't have to write anything inside it.
+The purpose of this is that okay, we are just giving the name of this point.
+Cut to this one, this method name.
+Now this method name.
+Custom point.
+Custom point cut name is now is the name for this expression okay.
+So now instead of using this full expression again and again at multiple places, let's say you can
+just use custom point cut name like this.
+So this is how I used it at the rate before.
+Now here if you see I have given custom point cut name this method.
+Now it will automatically use change it with this expression complete, the bigger part is completed.
+Pointcut.
+Now the advice I think while we were covering the Pointcut you already know this.
+It's an action which is taken either before or after or around the method execution.
+So we have seen this example right?
+We have currently learning this Pointcut expression.
+Now the Pointcut we are done.
+Now the something is advice.
+So this yellow part yellow part is known as advice.
+So once this pointcut got matched with any particular method after that this has to be run.
+This is known as advice.
+This advice has to be run either before, after or around.
+Before is we have already seen after is self explanatory that okay, after that method invocation you
+have to run this advice.
+But what is around?
+Around, as the name says, that it surrounds the method execution before and after both.
+And it's very little very minor.
+Different from the before and after.
+So now let's check this.
+This is the pointcut expression I have given.
+I think now you can read this expression.
+This is an execution which has to match with a particular method return type.
+This is still class level path and any method.
+Okay.
+So in the employee util any method, any return type which doesn't take any argument, this should get
+matched up.
+Okay.
+So say that this employee util class any any method because this is a star any return type and which
+doesn't take any argument.
+So this should get matched with this expression.
+Now once this is matched mass.
+This advice has to be run before, after or around.
+I have till around.
+Around means it is possible that we can run something before and after.
+Now see till now what we are using is at the rate before or at the rate after there.
+What we have to do is we have to just write what we have to.
+Run before or after.
+Okay.
+So now in the at the rate before when we use at the rate before, what generally happen is it will simply
+execute this.
+And internally.
+Internally it will call the method invoke the method if you are using at the rate after, it will internally
+first call the method and then execute this advice.
+But in case of at the rate around, we have to call the method.
+So in the around we have to use this joint point.
+Preceding joint point right.
+So here in this case do whatever you have to do before.
+The method use this joint point and call proceed method.
+You have to call proceed method which will actually invoke your method.
+And then you can do certain tasks after it.
+So before then you invoke the actual method and do some after work.
+So as the around says that it surrounds the method execution before and after.
+If you need to perform any task, you can do it.
+Then actually you have to invoke this method like this, right?
+It will take care of calling your method.
+And if you have to do after tasks, you can do this here.
+So at the rate around is also very powerful advice which we can use.
+Now you can ask me, right.
+Hey Sharon, how this at the rate proceed is actually calling the method.
+I will tell you how internally it invokes also.
+But first thing is that where we are is understanding what around us.
+Okay, joint point is nothing but the point where we are actually invoking the method, your actual
+method that generally in spring, spring boot AOP, we call joint point.
+Joint point, it's generally considered a point where actual method invocation happen.
+That's it.
+So now we have seen lot of information.
+Now one thing might be bugging you as of today.
+By now few question we all should have how this interception works I, I understood what is point guard?
+What is advice rite?
+Different types of point guard.
+I know different type of advice.
+Before, after around I know I got it.
+Uh, the matching happen with the point guard.
+And, uh, if the matching happen before that actual method, this advice will run.
+So either before this advice will run in that method or after method, this advice will run or around
+it.
+But how this how this linking interception is working.
+And what if you have thousands of point cut?
+What if you have thousands of point cut?
+So whenever I am particularly invoking a method, I am particularly invoking a method.
+So if I have thousands of point cut, it is doing matching with all the point cards one by one by one.
+Will it not causing a problem and latency right.
+So this question might be bugging you very much.
+How this becomes so powerful tool.
+If this is, like, too much complicated, right?
+So now let's understand how AOP internally works.
+I'll try to explain it in very simple manner.
+This is a very huge internally code base.
+But I will explain you in very simple method which will help you to link everything.
+Okay.
+So be with me.
+So first when an application startup happen okay I will also show you from the code also.
+But first let's understand theoretically what is the step.
+And then we'll show from the code.
+When you start an application you know that spring boot looks for the beans.
+So here in the first step it looks for at the right aspect annotation classes.
+So this is the first.
+Now once the it found this classes.
+Now it knows that it this class contain Pointcut expression.
+So the second step what does it do?
+Is it parse the Pointcut expression parse means it simplifies those expression, save it in a particular
+data structure so that it would be easy to do a matching.
+It will do a parse the pointcut expression and stored in an efficient data structure or cache.
+After parsing.
+The third step is.
+It look for at the rate component, at the rate service, at the rate controller, etc..
+Annotation classes.
+Now at this point, once it is started looking for at the rate component at the rate service, all this
+type of another beans it check if it is eligible for interception or not based on the pointcut expression.
+Need not need not to be an exact method level, but at least it knows that yes, this class is valid
+for interception, right?
+So for each class it check it is eligible for interception or not based on the Pointcut expression.
+And if yes, it creates a proxy out of it, right?
+If yes, it create a proxy class either using JDK dynamic proxy or lib code generation library proxy.
+Right.
+So if you are writing this class employee util this is your class.
+It has one method called let's say.
+Which does something right.
+And during aspect and pointcut it matches that.
+And during.
+Pointcut it fetches it.
+It checks that it is eligible for interception.
+Right.
+If you have used, uh, dot dot stress.
+Now, any class inside a package sub package.
+So definitely this will come into the.
+That, uh, interception.
+Right.
+Because.
+Any class inside this let's say concept encoding package and sub packages and this is inside that package
+only.
+So definitely it comes into this radar.
+So what it will do is it will create a proxy of it either using JDK dynamic proxy or CGI lib proxy.
+So now there is one employee util sum at the rate sum 54321.
+Some random proxy classes made right.
+And what it does it, it will create a child class of it.
+Now this becomes your parent and this will create one child class okay.
+And it will override this method at the rate public void fetch, and it will generate some.
+So glib and dynamic is like it will generate some code.
+Now it will generate some code which will call certain spring framework.
+So don't worry about this.
+What what code is there.
+But I'll tell you that understand this five step first.
+First is look for at the aspect classes.
+Parse the pointcut expression.
+Store it in an efficient manner.
+Now look for all the other annotation classes.
+Now check if those classes are eligible for interception based on the Pointcut expression.
+If yes, then create a proxy of those classes using this tool.
+You might be here when to use JDK Dynamic Proxy and when to use Glib.
+So generally is like if your if your if your class is already a child of interface let's say employee
+Util.
+Implement this interface.
+Let's say employee implements employee means there is.
+This class is already a child of any interface.
+Then JDK dynamic proxy is used.
+Okay, if this class is not a child of any any interface, then CG live is used.
+Because this CG live has the capability to create a subclass of a particular class.
+JDK dynamic proxy just can create a new class and use just implement interface.
+So it's automatically a child of this one.
+But CG lib is like when your class is not a child of any class, then CG is used.
+It can create a subclass.
+Okay, now let's see that Okay.
+First, I am starting the application.
+I am starting the application now sharing the code.
+So here, if you see that I have created one aspect, some logging aspect and I have one before advice
+and after advice.
+And this is the pointcut expression which I have given right.
+Very very simple Pointcut expression I have given execution which matches with employee util class.
+Any method, any return type, right?
+The same.
+So in the before method I am just printing inside before method aspect and after method I am printing
+inside after method aspect.
+So this is very simple aspect I have created.
+Now here if you see that I am starting the application now.
+So now I am starting the application now.
+Here.
+Now.
+Now here.
+If you see the first control goes to where the first control goes to Pointcut parser.
+So what this actually does is that it will parse your expression.
+Okay.
+So this is the first parse the Pointcut expression.
+It will goes to your Pointcut parser class.
+And here if you see all your Pointcut expression it will resolve it into some simpler, understandable
+and efficient data structure.
+After parsing, the control goes to to wrap if necessary.
+So here in this, say.
+Now the second is this one.
+The second control goes to in this class auto proxy creator wrap if necessary.
+So here in this what happens is.
+It will check.
+It will.
+Now it is going through all the beans at the rate component.
+At the rate service, at the rate rest controller.
+Now it is checking.
+Hey does it required interception?
+If yes then it is creating a proxy of it.
+It is creating a proxy of it.
+Right.
+If it if this class required if this bin required interception it creates a proxy of it.
+Now if you go now I am proceeding further now proxy which creates stood either JDK dynamic or lib.
+So this is the third part right.
+So this one I haven't taken a screenshot but the proxy here you can see in the code itself either here
+if you see that JDK dynamic AOP proxy or if in target class dot it is interface, there is no interface
+at all.
+It goes for Clib AOP proxy.
+Okay, so till now what we have done is.
+And after this I am running again.
+So currently my class employee util doesn't have any interface.
+So it goes for Clib.
+And here if you see that application startup happens successfully okay.
+So till now before application startup it's clear what it is doing.
+It pass the pointer.
+Now after that when it is creating the bean during application startup for each class, if it required
+interception, it create a proxy.
+So which proxy?
+Either JDK proxy or uses Clib based proxy, but it uses any one of proxy and create a proxy class.
+Now for at this point of time there is something called employee util at the rate some random number.
+Now this is my proxy class, which is now a child of employee util and it has overridden that method.
+Whatever the method, it had overrided it, which required interception and now it has written some
+code over there.
+Generate code.
+Now I am invoking the request which need advice to be run.
+Now I am invoking this API.
+So controller.
+Now I am invoking this method at this point.
+Now what will happen.
+So here if you see.
+Now let's see I am invoking a method.
+So now here I am hitting okay.
+So now what would happen here at this time.
+We'll see that it it would have come here and then call employee util dot fetch employee method.
+Now if I go inside side.
+Now it will check.
+At the point of application startup for this employee util because this is applicable for interception.
+There is one proxy class created for this employee util proxy.
+Right.
+So internally that proxy class might have invoked not this class invoked.
+That proxy class got invoked because here if you see that my aspect it matches, it matches with this
+employee util right.
+It matches with this.
+So this class required interception.
+And during application startup employee util at the rate something a proxy class have created.
+So that proxy class have created.
+We can't put debugger point in that proxy class because that is dynamically on the fly.
+That proxy class is created, and in that proxy class what it does it it invoke your Intercept method
+inside Clib EOP proxy.
+So here if you see inside Clib, it will invoke this intercept method.
+Why Clib?
+Because employee util is not a child class of any.
+So that's why Clib proxy have used at this point of time.
+At this point of time, this.
+So this proxy might have been used.
+So that's why that employee util at the rate some proxy class have got invoked and it has called this
+intercept method.
+Now see this what this intercept method is doing.
+There you will see that it is creating a chain of advice right.
+So now let's say that this method which we have to invoke there are let's say five pointcut which are
+matched.
+So there is a list of pointcuts or advice now which has to be run for this.
+Some could be before, some could be after, or some could be around, which has to be run.
+But this five got matched with that particular method.
+Okay, so now I have created a chain, not I.
+The JDK library I have has created a chain.
+Now what would happen is that it is calling dot proceed method.
+So this proceed method goes to this reflection method.
+Invocation.
+This proceed.
+So now here if you see that it has counter.
+So now let's say it has to run five advice right.
+So it will go 54321.
+And after all the advice method invocation has happened.
+Okay.
+But there could be some before.
+There could be some after.
+So how it is handling this I will tell you.
+So currently index is, uh, zero.
+No, index is not zero.
+What happen is it will go inside this else part.
+Okay.
+So now let's say we have two advice, right?
+I showed you we have before and after here in the code I have showed you the, uh, aspect which I have
+written.
+One is before and one is after, which matches this.
+Okay.
+So in the chain I have two counter is two.
+Right.
+So now so starting with I think it's starting with plus plus.
+So it is starting with zero one right.
+Then it is matching if the counter reaches to the end.
+So first let's say before is coming.
+So now what before is coming.
+What it is done is it is invoking.
+So for before there is a it will invoke a method.
+So first.
+So first call When it is calling interceptor method interceptor.
+Right.
+So before it will call method before advice interceptor.
+So this invoke will get invoke.
+And here it will say that it will run the advice first.
+Advice dot before it is running the advice first okay.
+So this advice is running before so it will print inside before method expect now.
+So this has printed inside before method except at this point.
+At this point now again it called dot proceed am I dot proceed method invocation dot proceed.
+So it goes back to this method.
+Now again the counter has already reached to the plus plus so it become one.
+Now again it hasn't reached to the end.
+So what happen is it goes to the else part.
+Now again this again calls invoke.
+But now for the after one it will call third this interceptor aspect J after advice, because now the
+advice is after.
+So it will call this interceptor call this invoke method.
+Now after is like after the method advice should run.
+So that's why here it say that it calls the back.
+So now it is doing kind of a recursion.
+If you know recursion you can easily understand this.
+It calls the proceed again.
+Hey, you proceed further and once that proceed happen, then come back and run this advice after.
+Okay.
+So now it goes up.
+Proceed.
+Fourth, it again goes to this proceed now control plus plus it already reached two.
+So now this become equals.
+Now here if you see that it is invoking the join point I already told that joint point is a point where
+the actual method invocation happens.
+Now it is actually invoking the method.
+So now it is invoking.
+So currently this after advice it is will run.
+Currently it is in this part.
+So currently this is running.
+And when this is running invoke joint point.
+So fifth step this method invocation will happen.
+So this method invocation actually happens means.
+This employee util this will print fetching.
+Employee details will get printed.
+So it will print.
+Fetching employee details.
+So this fifth is also completed when this is completed and it returns.
+So it returns from where it comes.
+So it comes from this.
+So after that it will run.
+So this will return.
+Now invoke advice after one.
+So now after advice will run right.
+So this is your actually the sixth after advice.
+So after advice will run means this is the after inside after method aspect.
+Inside after method aspect.
+So this will get printed like this.
+So this is your actual method which you wanted.
+But see before and after advice run and how I told you right.
+So here if you see that currently if I debug it.
+So currently it is running inside reflective method invocation.
+So first it is running before.
+So it will come under your.
+Method before advice interceptor.
+So once it has printed the advice by now and then it call proceed.
+Then again, this method has been invoked.
+Now it will go to, uh after.
+Now in the after, it will first call.
+Proceed.
+And then it comes to this method.
+So it will again goes to that method.
+Now it will now it will call this actual method.
+Now it will call the actual method here.
+Now it says that uh, actual method has been invoked inside the employee util.
+Now after actual method it will go again.
+Back to the advice.
+Uh, finally part where the advice will run and finally it will print.
+If you see the console before employee and after.
+If any doubt, we can discuss further and, uh, I hope you will like it.
+Please do share it with your friends who really confuse with the proxy and the AOP part.
+Thank you, thank you.
+Bye.

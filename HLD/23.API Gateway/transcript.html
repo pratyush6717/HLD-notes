@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>23.API Gateway</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="api_gateway_notes.html" class="btn">View Notes</a>
+    <h1>23.API Gateway</h1>
+    <pre>
+Hey guys.
+Welcome to Concept Encoding.
+And this is Shreyansh.
+And today we are going to do the low level design of payment gateway.
+So today in this one I will try to show you uh the requirement clarification of the payment gateway
+sequencing diagram, the class diagram and also the coding part.
+Right.
+I will also I will also show you the code okay.
+So this is a very very important interview question.
+But the scope is too big.
+So the very important part is to define the scope right.
+So for example so you everybody already know right.
+What is payment gateway.
+So if just in if you don't know very short payment gateway act as a mediator between the user and financial
+institution and helps to transfer the money.
+That's all okay.
+So when an interview you get this question.
+You the very first part you have to do is define the scope.
+So there are let's say there are many use cases.
+So this two cases I have listed down here to show that how the scope increases.
+So first is peer to peer when user one is making a payment to user two.
+Another is peer to merchant.
+When you goes to any e-commerce site, purchase something and do a checkout, and while doing a checkout
+you make a payment.
+Select a particular payment gateway.
+So that is peer to merchant.
+So now when let's say that if you don't define a scope and you also included this peer to merchant,
+then you also have to take care of refund processing multi-tenancy, which is very, very big topic
+in itself.
+Okay.
+So for today let's define the scope that okay we are going to focus on peer to peer okay.
+So with that being said we have to first clarify the requirement.
+So let's say that if I am getting this question and what things I want to clarify is that let's say
+that I open an app.
+So I'm thinking that what user can do user can be added, a new user can be added, updated or deleted.
+Right.
+So this operation can be done.
+Second thing is let's say if user is already present into a system, it can add more instruments or
+it can update an instrument or it can remove an instrument itself.
+So when I say an instrument, instrument is either your bank card through which you can fund a transaction
+or in which you will receive the payment.
+Okay.
+So you know, right in your payment, let's say me shreyansh in the wallet I can add multiple instrument.
+My bank one, bank two, my card one.
+So I have two banks and one card.
+Now I have three instruments present.
+Now if I want to make a payment to anybody else.
+Some user two I can choose like okay, this ₹100 I want to fund from which particular instrument.
+So okay, so when I say an instrument now you know that it's either your like either bank card balance.
+So what through which you can do fund or in which you can get or receive money.
+What all things we can do, we can what we can do is we can make a payment user one to user two payment
+we can do.
+And what all things when you do from user one to user two, what are the things included?
+One thing is searching of a user.
+Let's say that user one wants to make a payments to user two.
+So let's say I'm searching user two either through email ID or phone number.
+Right.
+So I need a search functionality.
+And after that uh, I need to select the amount.
+Um, like, um, I want to transfer ₹100, ₹10 award.
+And the funding instrument that I told you.
+Like from which instrument?
+I have to fund this amount.
+Right.
+And what ultimately we have to do is we have to pass this information to processor.
+As I told you, that payment gateway is a mediator.
+Okay.
+So it passes the information to financial institution through processor.
+So payment gateway interact with processor.
+Processor further interact with the card network which further interact with the banks and all financial
+institution.
+So for payment gateway it interact with the processor.
+So all this your bank information the payment gateway pass it to the processor okay.
+So when we open an app uh this all things can be done.
+What else.
+It is possible in the scope notification whether you add, update or delete something user or instrument.
+A notification should be received, so notification should be built out.
+Okay.
+Another things which I can think of is user should be able to see the transaction history.
+So if I make a ten payments and later on when I want to see, I should be able to see my transaction
+history okay.
+So this is the first step which through which I wanted to clarify my requirements, uh, from the with
+the interviewer and also want to understand the flow better also.
+Okay.
+Now for the peer to peer at least I have a little understanding that, okay.
+What all things can be done in an app.
+Now using this, uh, basic requirement, what I did second part is I tried to find out the main entities
+involved in the above flow.
+So the main entity, I mean to say the main objects, so there can be more objects, but that when we
+slowly build out we will get to know.
+But at least main main men should not should get uncovered by that time now.
+So first main is user can be added.
+So definitely first is user second.
+Um we talked about instrument can be added deleted.
+So definitely instrument is one entity we have to create.
+Another is make payment.
+So payment is nothing but a transaction.
+You are doing one transaction.
+So transaction transaction history I'm thinking can be a one entity notifications.
+So notification we have to build out like so notification and processor.
+So these are the main entities which we can think of from the above requirement gathering.
+So till now we are good right.
+So this is just a start.
+Like how this big question we can slowly start from very basics okay.
+So now to further understand the dependencies between each of this entity I want I created a sequence
+diagram for one happy flow.
+Let's say user making a payment from user one to user two.
+So what is the flow?
+So just to understand like how they are interrelated with each other.
+So what I did is I tried to create one sequence diagram.
+So with this sequence diagram it will help you to identify the dependency between these objects.
+Which object is dependent on other.
+Okay so user.
+So I think that I created one user service which takes care of user creation addition deletion.
+There is something called instrument bank card add.
+So I call it as an instrument service which takes care of creation of banks, cards and all.
+Then we have transaction transaction history.
+So I created one transaction service which I think can handle all the transaction related, uh, operations
+in transaction history and everything, so this should take care of it.
+Then we have processor and notification.
+So we have a processor and we have a notification service.
+Now how they are interacting with each other this main entities.
+So now let's say from the app I want to make user one makes payments to user two.
+So first user one should exist into the system.
+So I'm adding add user right.
+So first I am adding a first user one.
+So what it will do is user service will create the user create one user id and return.
+Then I'm creating user two.
+I'm calling add user API might be.
+So it will create some user two.
+So it will create user two id and return.
+So now two users got created into the system.
+So now so currently app is only interacting with user service.
+Now I want to add instrument to this users.
+So I am calling from the app.
+I am calling ad bank, let's say which is called by user one, right.
+And it goes to the instrument service.
+So what it will do is it will create let's say bank by user one.
+Right.
+So it will associate this bank to this user.
+Then I am calling again ad bank and which is called by what user two.
+So it will create another bank but it will associate it with user two.
+So I am creating another bank and it will associate it with user two.
+Okay.
+So we have created an instruments also for this uh two users.
+Now I want to make a payment.
+Now let's say that user one wants to make a payments to user two of ₹10.
+What all the sequence can happen.
+So first let's say user one comes to an app.
+It will first search get user details, maybe through email ID, email ID or phone number.
+It will try to find out the user two details.
+So now let's say that it able to find the user two through email ID okay.
+Once it is able to find out a user two ID, what it will do is what user one has to do is that whatever
+the amount it has to transfer, it has to select from which instrument may be.
+Currently we have added only one, but there could be more.
+So it is calling.
+Instrument service and getting the.
+All the instruments.
+So now what would happen is while making a payment we will show to the user that hey you have bank one,
+bank two.
+This card one card two.
+Now user can select hey fund this through this bank two.
+So that's why.
+So this second part is like user should be able to fetch the instrument so that it can select from which
+it want to fund the transaction.
+And then third one is make payment.
+It will invoke the make payment.
+And it will goes to the transaction service.
+Right.
+So transaction service will get right.
+Send it to the sender.
+Credit to this receiver ID right.
+Like this is user one.
+Or instead of sender receiver let's say that debit user one.
+Credit user two.
+It will also get amount right.
+And also it will get debit instrument ID right.
+But one thing is you never select credit like you only select that.
+Hey I want to transfer ₹10 right.
+And I will, I will I will make a payment through this instrument let's say bank and but you never select
+that.
+Hey for user to transfer here from the payment gateway?
+No.
+So what generally happen is transaction when it received to the transaction service it what it will
+do is it will call.
+Instrument service.
+Right.
+So it will see that hey user two is what is the default instrument present.
+So sometime in the payment gateway you can set preferred instrument right.
+I said hey if anybody is transferring money to me this is my preferred instrument.
+Uh, do a withdrawal in this one okay.
+So transaction service, what it can do is it can call instrument service.
+It can call instrument service and see that okay.
+In which one I have to deposit.
+Like I have to do credit into which which instrument ID right.
+So what it will do is it will take the user to where it has to receive the money.
+Now it will check here.
+What is the preferred instrument set by this user?
+If preferred is not set.
+It will check what is the default right or if default is not there sometime.
+What happened is that depending upon, uh, the logic, it will say that hey, what is the latest instrument
+you added?
+And it will pick one or randomly it will pick any one, any instrument.
+Okay.
+So this all instruments comes into the, uh to the transaction service.
+So transaction service definitely need to call instrument service to fetch the instrument detail because
+it need to pass to the processor because it need to pass this information to processor.
+Processor need let's say if it is a bank processor need ifSc code, bank account number, and rest of
+the details it needed to process the transaction right?
+With just ID it is not possible.
+So when transaction service is getting an ID and this credit to this instruction ID debit from this
+instruction ID what it will do is it will call this instrument service fetch the details like ifSc and
+all for the particular instrument and then process it to a forward it to a processor.
+Now processor processor will take it forward to a network and decide whether it is success or failure.
+We will store the transaction, we will create the transaction, whether it's a success or failure or
+whatever.
+Right.
+And ultimately we will send the notification.
+We will send the notification to the user.
+Okay.
+So this is my understanding of the very, very simple when a user do a payment okay.
+See sometimes interviewer can ask you a follow up question that hey here in this sequence diagram.
+You are saying that transaction service is calling processor.
+It's kind of a real time, right?
+But you know that in the real world the bank can take up to 3 to 5 days.
+So sometimes you happen is you your money has been debited but credit doesn't happen.
+It might take a couple of hours or maybe one day, two day or anything.
+But Bank says that, hey, we take 3 to 5 days, so it is possible, right?
+So these things can be enhanced.
+So this is just like we for the interview purpose.
+We are saying that transaction service is calling processor real time but we can enhance it.
+If interviewer put this question that we can make use of async operation.
+So we will invoke the processor just to validate.
+Validate what?
+Hey, user one has sufficient money to fund this transaction.
+So what will happen is the user one is chosen, right?
+Hey, this is the debit from I have to do.
+So we will pass this to processor.
+And this can be real time that hey this user has balance or not.
+If user has a balance, reserve some balance to it okay.
+And also we can think that user two where the disbursement has to go that is valid or not.
+Is it blocked or is it like uh like uh like closed.
+Uh disbursement is not possible.
+So those kind of validation can be done real time.
+If this two are okay then we can do is we can make an async operation to a processor.
+And we can say that, hey, debit from user one credit to user two.
+Currently it's in pending state okay.
+Now what would happen is that, uh, maybe after couple of hours or whenever, like one day.
+Two day.
+Processor.
+Come back.
+Right.
+Processor, come back and call the transaction service that.
+Hey, this is an update.
+And that time we will use that and update transaction either success or failure.
+Right.
+When the processor comes back we can update whether it's a success or denied whatever the reason is.
+Okay, so this is just a follow up question that if interviewer put a follow up question, that why
+we have to wait on a real time if what if it takes time.
+So then you can tell this part async operation that we will do validation from processor in real time.
+And after that, once processor validated right then we will make an async call.
+And then we will put the transition into pending and after uh like once the processor processes it and
+get the response, we will change it to success or failure.
+Okay, so with this sequence diagram now we can easily make a class diagram.
+So I will show you the class diagram.
+And also in parallel I will also show you the coding.
+Okay let's see one by one.
+Okay.
+So let's start with the user first okay.
+So first is I created a user entity.
+Okay.
+So this is our user entity.
+So user entity I have put that it has user ID name email.
+You can add more like a user phone number or something if you want.
+But I have kept this three and the getter and setter.
+So this is the respective.
+User entity.
+So user ID name, email and the getter and setter.
+Okay, now there is something called user service.
+This one.
+So now what this user service do is that there can be many users in a system.
+So it maintains a list of users.
+So see here in the NLD we don't have DB.
+We have to do everything in memory.
+So currently so user service is taking this responsibility that if there are more than one user it is
+maintaining the list here.
+Right.
+So it will add user.
+It will add user and it will also fetch user get user and it will update this list.
+So I'll show you the respective user service.
+So here in the user service I have made one static list of user.
+Now it has two operation, one is ad user, another is get user.
+So see in the ad user I am getting the user.
+Do you know write already do what it is used for.
+So let me tell you once.
+So this is the request comes from outside.
+This is your application.
+This is your ultimately DB values let's say user.
+So here in the DB you have something called let's say user ID email right.
+And when the request is coming it's coming generally as a like uh so what generally happen is it comes
+in like a user which your client understands.
+Right.
+They don't.
+So this your DB value should never go out okay.
+So everything comes like user do.
+So user do is nothing but a Pojo which mostly has similar fields like user id.
+I am calling it as let's say uuid email.
+I am calling it as a mail, so you can say that it's just a mapping.
+But what it helps is that this is your actually all client understand.
+So even in future you change certain your column name or certain this one your all the client.
+So maybe let's say you are 100 clients so those clients will not get impacted.
+Okay.
+So user is something you can say that which ultimately your client understands right.
+And it also helps that uh your DB column names and generally uh which is information which is you can
+say that very, very specific to your you can map it to the user, do what and only tell what client
+want to know.
+Okay.
+So here coming back to this one coding.
+Add user.
+So in the add user I am getting a user.
+Do so here from this user.
+Do I am creating a user?
+So I created a user.
+Now I am creating one user id randomly I'm generating some id, I'm adding it to the list.
+I'm adding it to the list right.
+And ultimately I am sending again back the user.
+Right.
+So it again send back the user.
+And then another method I have is get user.
+So get user is like you get a user ID.
+Now from this list you just filter out a specific user, convert it to a user do and return it.
+Okay.
+So this is clear.
+This is clear right.
+So and this user service here if you see it has it has a relationship with the user entity.
+Now there is something called user controller.
+So user controller is nothing.
+But you can say that the front facing for this user service where it will just like add user, get user
+at expose.
+You can say that the API's that outside they can everybody can call this one right.
+So it's a controller which exposes the APIs.
+Generally you can say that right.
+And ultimately this controller just pass the information to service and the service will now take care
+of it.
+It will do have a business logic service add user.
+It will do certain validation and all.
+Then ultimately it will create it and insert into to the list.
+Okay.
+So this three is okay right?
+User do have also showed you that it is the same kind of ID first name mail.
+So here in the user entity I'm calling it user ID name email Okay.
+So this is what my all client understands.
+Okay.
+So now user is fine.
+And you know that in the payment gateway I told you that this app has to interact with this user service.
+So payment gateway has has a dependency on this user controller.
+It has a dependency on this user controller okay.
+So user controller is fine.
+Now let's move to here instrument controller.
+Right.
+This is very very important.
+So let's do from here.
+Okay so I told you that instrument can be bank can be card in future.
+It can be let's say balance or it can be many other things.
+Right.
+It keep on adding.
+We don't know how many instruments are possible today.
+right?
+So it should be easily extensible.
+So here what I have done is I have created an instrument class.
+I have created an abstract class.
+So generally no matter if any new instrument gets added so it has instrument ID it belongs to which
+user.
+So here I do not have full user only user ID for mapping.
+So this instrument is belongs to which user.
+So I have a user ID instrument type whether it's a bank.
+So here instrument type is an enum.
+Instrument type is an enum.
+Whether it's a bank card or in future you can add it also like a balance.
+So you can add it like what is this instrument type.
+Okay.
+Now these are the common.
+So I have created like is the relationship.
+So bank I have created one bank instrument child class card instrument as a child class.
+So it will hold information specific to bank only.
+This class will hold information specific to card only.
+So for bank I need bank account number ifSc code.
+But let's say for card I need card number CVC number.
+Or maybe let's say expiry date or more.
+So you can add it here.
+Okay.
+So this way if in future if you are adding balance it's specific fields.
+You can add it here.
+Okay.
+So this is the first and I'll show you the entity part.
+Now let's go to instrument.
+So first is here instrument.
+So here this three are common instrument ID user id instrument type.
+Instrument type is currently bank and card.
+Now this instrument has two bank instrument card instrument bank instrument I have put only two bank
+account number ifSc.
+You can add more if required.
+Card instrument.
+I have put only two card number and CVV number.
+You can add getters and setters also.
+Okay, so till here we are clear.
+What else?
+Now I told you that one user, one user can have multiple instruments.
+I can have bank one bank two bank three card one card two.
+I can have as much as instrument I want.
+So I created one instrument service.
+Right.
+So I have one instrument service.
+And in that one I created one map for this user.
+What are the list of instruments?
+Since we don't have DB we have to handle in memory.
+So instrument service is taking care of doing this one.
+So it's a static right?
+So that no matter how many objects created or only a single, it belongs to a class.
+So it is keeping this mapping.
+User ID.
+This user has list of instruments.
+Okay.
+And also here I have also created as a child bank service.
+Card service.
+Why?
+See, I want a single responsibility in a solid principle.
+We have something called single responsibility.
+So now let's say that user wants to add an instrument.
+There are so many.
+Bank specific logic can be present into an instrument.
+Like if user want to add a card, there can be so many card specific logic validation can be present.
+So we can't have just one common method for adding a bank or adding a card.
+So what I did is that the instrument service I created an abstract class.
+I make one bank service card service and in future if there are more instruments we can add it.
+So this add instrument, get instrument.
+This specific classes are implementing now add instrument.
+Now bank can have a specific logic to create bank.
+Now get instrument bank specific logic to fetch the instrument there.
+I'm telling you there this is where mostly I'm what?
+I would say that things get complicated, right?
+In a single if in a single method, you are trying to handle all the instruments, like it's gonna break
+your solid principle.
+And if there is a chance that interviewer will catch you there.
+So here we have to adhere to the single responsibility part.
+We have to divide this instrument service to bank service card service.
+And the add instrument is like they can now they do a very specific logic for them.
+Similarly for get instrument they can do a very specific logic to them.
+Okay.
+So this one I can show you here.
+So here we have instrument service.
+So instrument service.
+As I told you it's an abstract class.
+It has this static I have kept it where it is user versus list of instrument.
+Because one user can have a like so many instruments.
+So it is taking the responsibility of handling in memory.
+Now user service is kind of like bank service card service right.
+So add instrument and get instrument by user ID.
+Let's say you can add more methods.
+Get instrument by ID right.
+So let's say add instrument.
+So let's say you want to add bank.
+So it will it will goes to the bank service.
+So here if you see that here the bank is specific logic I have written to create a bank.
+So now from whatever the input which is coming from the instrument do now I want to create bank.
+Right.
+So I, I am only reading the fields which I am interested for creating a bank, right?
+So I can also do validate that the important fields for creating a bank are present or not.
+So I am creating this bank instrument adding into this map.
+Right.
+Uh, if if user is empty, like then I'm creating one user for this one.
+If user doesn't have first time user adding a instrument, so that list would be empty, right?
+So we are creating a new array list and then ultimately adding the bank to a particular user.
+Right.
+So this is just like in memory handling of the instruments.
+And ultimately we are returning the instrument due back right.
+What our client understands.
+Similarly for get users like uh I want all the instruments which a particular user has.
+So let's say I created this method.
+I pass the user id from this map.
+From this map user id, I will get a list of instruments, I will get a list of instruments, and that
+ultimately I will do a mapping to a do and send it list of instrument do so.
+Similarly, if you see that you can do a specific for card also.
+So now here if you see that the validation.
+So this is card specific logic here.
+So validations and everything is specific.
+You can add it here okay.
+So you got the purpose of bank service and card service.
+Why it is very very important.
+Then here I have created one factory.
+Right.
+So this factory purpose is to select particular whether I need to do a bank operation or card operation.
+Which one.
+So this is which generally helps.
+So and then we have a instrument controller.
+So what instrument controller has is instrument controller has dependency on this factory.
+So instrument controller expose a method right.
+Add instrument and it will get instrument do get instrument.
+And it will like okay this is the instrument I want to fetch.
+So now here if you see that instrument controller things are very generic.
+Add instrument.
+You can add bank.
+Also you can add card.
+Also we don't know like only it has like instrument duo.
+Instrument duo have already told you it has all the information for a particular instrument right.
+Instrument ID, user id type, bank account number, ifSc code, CVC number, everything it has and
+when it particular reach to a bank, they can read it whatever the field they want it to read from there.
+So now what it will do is controller.
+It will call this instrument service factory and pass the instrument type which is present into this
+instrument.
+Do hey this is the type is bang.
+Now this factory will check okay.
+It is a bank.
+So it will create this object.
+If it is a card it will create this object and it will return this object to this one controller.
+Now controller can call just add instrument to a particular.
+So it will call either bank service or card service.
+Let me show you instrument controller.
+So instrument controller has a dependency on factory okay.
+So during add instrument.
+So this is the let's say that API is interface exposed or API exposed by the controller add instrument.
+So I am getting just instrument do like what user wanted to insert.
+Now from this I'm calling this factory and passing from this duo and passing the instrument type and
+this factory.
+What it will do is when it gets the instrument type, it will check.
+Okay.
+If it is a bank, return the bank service.
+If it is a card, return a card service.
+Now, once it will get the particular service it will call the add instrument.
+So it will call either add of bank service or card service right.
+So here if you see that what we have done is that when from uh like a very, very generic method is
+making use of factory and from that instrument type, it is now going to a very, very specific instrument
+layer where it will handle this properly in future.
+Any changes required into the card service, no changes would be required in the bank service, balance
+service or any future services which you have.
+Right.
+So this is our instrument controller.
+Okay.
+And then we have is like transaction controller.
+Okay.
+So instrument controller also we know now the flow.
+I will tell you one flow.
+But for now just understand what all the things which we have done.
+So now here if you see that for the transaction controller transaction controller let's go from start.
+So payment gateway.
+So this is the payment app right.
+So it has to call the transaction service.
+So it has to call.
+So that's why I put transaction controller here at the app.
+So now transaction controller has exposed the method like make payment or get transaction history.
+So again it will get transaction do transaction.
+Do I have already told you that it is nothing but a duo.
+Like whatever the transaction entity present, we will create.
+Its similar representation is duo, which is like our client understand.
+So transaction controller is going to call your service.
+So it has a relationship here.
+Transaction service.
+Now what it will do transaction service.
+It will provide you the implementation mostly of make payment right.
+So what it will do is that it will do validation.
+Right.
+And I told you that it it has to invoke the instrument controller also.
+So here in the transaction duo you will get certain like say this is the debit transaction ID.
+So you have to fetch the details of this transaction because you have to pass it to processor.
+So you have to now call.
+So now here if you see I am calling Instrument controller, right?
+So during make payment you will call the instrument controller, fetch the detail and you can also pass
+it to processor later on.
+And once processor says success or failure you can create a transaction and putting it in status whether
+it's a success pending or failed.
+Right.
+So I have kept three status success pending denied.
+Okay.
+So here transaction has transaction id amount sender user id receiver user id debit instrument id credit
+instrument ID.
+So ultimately this transaction will get stored.
+And since one user can have many transaction so the transaction service is taken care of doing in memory
+storage based upon the user ID to this list of transaction.
+So that when from the controller, if anybody asks hey, get the transaction history of this user from
+this user it can directly take out.
+So let me show you the transaction.
+So here if you see that this is the transaction controller, it has the dependency on transaction service.
+Make payment method is invoked.
+So when the make payment method is invoked it got transaction do.
+So transaction do has everything sender id receiver id debit from where from where the debit has to
+be done amount right.
+And then it will call the service.
+Now when the service will call it will do validate that specific fields are present or not.
+Then it calls the instrument and it will fetch the sender ID details like hey this is the sender user
+and this is the debit transaction.
+Fetch me all its instrument.
+Fetch me this instrument from where the user wants to debit the fund.
+So now I have instrument do.
+So here I have ifSc code bank account number which I ultimately send it to the processor.
+Similarly, I can make use of instrument controller to see that hey, if user two has any default or
+I can randomly pick any instrument for the user to write.
+Uh, but for here.
+In this example, I have just assumed that in the request transaction due itself, credit instrument
+ID is coming.
+So I'm just loading that from the instrument controller that okay, get it and pass it to the processor
+for processing it.
+Now based upon the response you can add the logic, but based on the response you can create a transaction.
+I am just hard coding it to the success.
+You are creating a transaction ID and storing all the details and making the transaction success pending
+or denied based upon the processor response And ultimately here we are making a history.
+So the same transaction I am storing it against user one the sender.
+Sender.
+User and also the receiver.
+The same transaction because this same transaction should reflect into both.
+So I am adding into both right.
+So this is into the transaction services and having this map user list of transaction.
+Okay.
+So here if you see that this is all the classes which get involved into this one.
+And here if you see now if I run one flow.
+So what I've done is in the payment gateway I am running just one flow that add user one.
+I am first adding a user one okay, added the user one I'm calling controller add user two adding a
+calling the controller added now user one.
+User two added now I'm adding a bank to a user one so I in the instrument do I am passing bank account
+number bank type for which user it has to be associated, ifSc code, some random and then calling the
+instrument controller and adding this bank.
+Similarly add card to user two.
+So for user two I'm adding a card.
+So same instrument do.
+But now I am setting card related information card number instrument type is card CVV expiry days.
+You can send which user it belongs to and calling the instrument controller.
+And it will do add instrument right.
+So now when you do add instrument right.
+So controller will use make use of factory instrument type.
+So it was card right.
+So it will return card service.
+Now ultimately this goes to a card service and it will create a card instrument mint and add into this
+user list.
+Right.
+So we have added users.
+We have added instruments to the user.
+Now we are making a payment.
+Now while making a payment I created a transaction due that hey this is the amount I need to transfer.
+This is the center user ID, this is the receiver user ID, second user.
+This is the debit instrument where the debit has to be done.
+This is where the credit has to be done.
+So credit has to be done to the user.
+To debit is happen from user one this bank instrument ID right.
+And now I am calling the make payment.
+So when it is going to make payment it ultimately uh fetching the details, processing the payment.
+It will store this details right.
+It will create one transaction ID for us and store this history in both.
+Okay, so once the payment is done now it just you can do get and see that all informations are properly
+there or not.
+So I'm doing get all instruments or user one.
+So only one should come which is bank get all instruments of user two.
+One should come.
+That is your card.
+Get all transaction history for which user user one.
+So you will get uh history for this one right.
+So if you run it you will see this details.
+So let me run it.
+So here is the result.
+So here first is two user added.
+After that we added a bank to user one.
+Right.
+So we are printing bank instrument created for user one.
+So bank instrument created for user one.
+What is the bank ID 73.
+Right.
+Then we added a card to user two.
+So card instrument created for user two.
+So this is the card created for user two ID of the instrument is 54.
+Then we did a payment right after that.
+What we are doing is we are fetching all the instruments for user one.
+So we are calling instrument controller, get all instrument passing the user ID.
+So we should get only one instrument that is bank which id is 73.
+So user user instrument ID which we got is 73.
+User ID which was created was 84.
+And instrument type we got is bank right for.
+Similarly for user two we should get card.
+So user two instrument ID is 54, user ID for the user two was 17 and the instrument type was card.
+Because we have created card only right after that the payment which we have done, we wanted to see
+a transaction history.
+Right.
+So I am now seeing a transaction history right.
+So I am calling transaction controller get transaction history for the user ID user detail one, which
+is for 73.
+So for 73 it is fetching user one transaction ID.
+So this is the transaction ID created for what amount?
+₹10.
+And who is the receiver transaction dot receiver ID who is the receiver.
+The user two was 54 right now user was 17.
+This was bank card ID right.
+This is the user 217.
+So here transaction got also stored.
+So even I can fetch the.
+I can fetch the history for the user two also.
+So user two details.
+Right.
+Because the same details we are storing for user two also.
+So for user two, user two transaction ID again it would be same 63 should have come same amount and
+receiver is also the same in that case.
+Get me the sender.
+Who is the sender?
+Sender should be 73 here.
+So let's run it again.
+So transaction ID is again 56.
+Amount is ten.
+So here sender.
+So this is sender right I have corrected here.
+So sender is 96.
+So user one send a payment to user two okay.
+So this is the payment gateway.
+My understanding that generally how it should be done.
+But if you still have any doubt right please go through it again slowly because it's a very very big
+design.
+So please go it slowly.
+Go through this class diagram again right.
+I will share the notes for this class diagram.
+And I will publish this code to the git lab.
+Right.
+So we can discuss more if you have any doubts with it.
+Okay guys.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>50. Java 15 - Text Blocks</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>50. Java 15 - Text Blocks</h1>
+    <pre>
+Hey guys and welcome back to the channel.
+And today in Java we are going to cover Text block.
+It's a Java 15 feature.
+But before we understand more about it we need to understand the problem why it has been introduced
+first okay so let's start without wasting any time.
+So following are the two common use cases for using multi-line string in Java code okay.
+So first use case is the SQL query.
+I think if we are working this is something which we have all encountered.
+We have to write an SQL query to access the table and all.
+And generally our SQL queries in Java code is like this in a multi line.
+It's a multi line string.
+Similarly if you are writing test cases okay.
+So you might have used this also second use case.
+So this is a JSON.
+But we have to compare.
+So generally in test case what generally happened is we provide an input and we get the output and we
+have to validate the output.
+Hey, is this output is what I what is expected or not?
+And many times the output is in JSON string.
+So we have to validate okay whatever the JSON I am getting, is this expected or not.
+So we have to match it up.
+Okay, so many times we have to write the expected JSON in the J unit okay.
+Or maybe you are not in j unit.
+If you are writing a functional test case in that it is definitely required okay.
+So now here if you see these are the two common use cases in Java where we have to write the multiline
+string.
+But the disadvantage of this is it is difficult to read.
+Why?
+Because due to so many special characters.
+So we have a new line characters here.
+If you see we have a new line characters.
+Then you have to have a escape character.
+So now here, if you see, uh, in the JSON string, I need this double quote name double quotes.
+So to have this double quotes I need to have escape it.
+Okay.
+So that's why we have a escape character.
+Then we have a string concatenation because it's a multiline right.
+So we have to concatenate the string.
+Because of this it becomes very difficult to read.
+Another is it is error prone.
+So here if you see this JSON string do you identify any issue?
+I intentionally miss the comma here okay.
+But see with this so many special characters I couldn't able able to identify if something is missing
+or not.
+So it's an error prone okay.
+So generally here if you see that comma should be present here.
+But here I missed it.
+But see it's very difficult to identify.
+It is hard to maintain for sure as small change required editing multiple line carefully.
+Okay, so if you have to change something here, let's say you have to be very careful that okay, this
+escape character should not be removed or it should be in this place only.
+So it's tough if you are making or editing something big.
+Okay, not good for copy paste for sure.
+You can't copy.
+You can't copy this JSON string and paste it somewhere or use it somewhere.
+So many times what happens is in the DB we have a DB tool where we can run the query.
+You can't simply copy this query and paste it here and run it.
+You have to take care of removing this special characters okay.
+So these are a problems which exist with multi line string and that's where the text block comes.
+So it's a solution for all of this which is finalized in Java 15.
+So it's preview is available in I think 13 and 14.
+Uh but it's finalized in 15.
+So we have to only use it.
+I would say that when it is standardized.
+So it is standardized in Java 15.
+So it's a multiline string literal used to make writing and reading multiline text easier.
+So here if you see this is the literal.
+So three double quotes.
+So when we are using three times double quote and whatever we will write in between.
+Now see it is very very clear, easy to read and easy to write.
+You can directly copy the string and paste it okay.
+So it start and end with three double quotes.
+Okay.
+Now let's see the same two example with the text block.
+So this was the our SQL query which was very very difficult to read.
+Now with the text block I have used three double quotes start and end.
+And between it just write multiline string.
+Whatever you want to write.
+It will automatically take care of adding this new line, okay.
+And whatever it escaping and all, it will take care of it.
+Similarly for JSON string here, if you see now it's very clear starting and ending with three double
+quotes and in between your multiline string.
+So here, if you see I am not putting any, uh, new line character, I am not using string concatenation,
+I am not using escape characters.
+So everything is handled by the text block itself.
+Clear.
+So internally text block is compiled into regular string object only.
+So you can say that it is just a sugar coating.
+So this text block is just a sugar coating internally.
+When we complete the compilation of it ultimately we get this only.
+Okay.
+So here if you see this is one I have written.
+Okay.
+So starting and ending with three double quotes.
+And between it I have written the JSON string okay.
+Like normal.
+Now if I compile it the dot class file you will see after compilation you will see the same thing.
+The usual one okay.
+So it has newline character.
+It has escape character okay.
+So everything is same what it used to be.
+So that's why it is just a sugar coating just for reading and writing better.
+But internally it's a regular string object only.
+And we will see that that all methods which are applicable on string is also applicable here also.
+So no difference in that.
+We will see that.
+But one thing I want to clarify that yes, after compilation both looks same, but during compilation
+it follows certain rules.
+So we need to follow those rules.
+If we have certain like say uh you have to manually you have some manual requirement, okay.
+Then you have to follow those rules.
+Otherwise it will you can say that compile it with the default, uh whatever it has because C multiple
+rules.
+It has, it has to uh, remove White space from front and back.
+This is just one example.
+So what are the by default rule it follows?
+Okay I will remove it.
+So it will remove it.
+And then after that you will get this dot class file after following those rules.
+But if you have but it provides this text text block, provide us the control that hey you can change
+this rule also.
+So for changing the rule we have to first understand the rules.
+Okay.
+So first rule is with the opening delimiter.
+After opening delimiter this three double quotes, text or content is not allowed on the same line.
+So here if you see this is correct way.
+So three quotes.
+So means it's a starting delimiter.
+You can say that starting opening delimiter.
+Now my text or whatever the content is starting from the next line, not from the same line.
+Okay, so this is wrong.
+So here, if you see, I tried my content to be on the same line here with the opening delimiter and
+it says illegal text block start missing newline after opening quotes.
+So this is the first rule after opening delimiter content is not allowed on the same line.
+A question might have come why?
+So why?
+Why this rule exists?
+C compiler tried to remove the indentation.
+Indentation is means like number of spaces before the text.
+Okay, this rules makes the compiler job easy.
+It can easily determine how many whitespace need to be removed.
+So understand with this example.
+Now let's say that this rule doesn't exist.
+For now, we are just assuming that this rule does not exist.
+So here, if you see that my opening delimiter, this one three double quotes and after that my content
+start.
+Hello.
+And after that, in the second line I have certain spaces, let's say for space I have present one,
+two, three, four.
+And after that I have world word.
+Now compiler is confused.
+Now how many spaces I need to remove here I have zero space and here in the next line I have four space.
+So how many front spaces I need to remove 0 or 4.
+Similarly, with this rule exists, it says that okay, after the opening delimiter, the text or content
+start from the next line.
+Now all the content all your text is now from this.
+Okay.
+So this is the starting delimiter.
+Now with every new line you have your content correct.
+Now it can easily determine what is the minimum number of whitespaces it need to remove before the text.
+Okay, so it will remove this from every line.
+So you can say that this is one rule which exists to make the compiler job easy.
+The second rule is indentation.
+All whitespaces before the leftmost text or content is removed.
+Indentation you means like leading whitespace.
+Now we know that compiler remove the white space in front of your text.
+The leading white space.
+But how many in how many white spaces from the front?
+It removes the it has a rule for that also.
+So here if you see that all white spaces before the left most text or content is removed.
+So this is important.
+Leftmost text or content.
+Now what.
+Which one is the left most text or content.
+So now see this with example.
+So three double quotes start and from the next line my content is starting.
+So this is my content till here till it is not closing.
+We can say that it is our content.
+Okay.
+Now which one is the leftmost text.
+So here if you see this one.
+Okay so this is my leftmost content present right.
+So in compiler use compiler find out what is the leftmost text or content.
+Okay.
+And before that it remove all the spaces all leading white spaces before the leftmost content is removed.
+Okay, and any white space after this leftmost content is preserved.
+So I intentionally, uh, this closing bracket I have keep it, uh, very front so that you can see
+that this space, the front will be removed and after this leftmost, whatever the space is there white
+space, this will get preserved.
+Okay.
+So this rule is also clear.
+The third rule is trailing white space.
+So we understand what what's the rule with the leading white space which is known as indentation.
+Now for the trailing white space by default all trailing whitespace are removed okay.
+So here if you see this is one example.
+Now after this comma I have some white space added.
+So if you compile it you will see that this is removed.
+There is no white space.
+But if you want to preserve it, we have to use this character at the end.
+So now I am using the.
+You can see that the trailing white space, which I have to preserve, I have to use this character.
+So these are all the white space.
+I don't want to get it removed.
+So that's why I use this special character.
+And when you compile it you will see this space is preserved.
+Now after comma this white space is preserved.
+So trailing white space, if you have to preserve you have to use this.
+Then another rule is with a continuation character by default in text block.
+For each new line, a new line character is adding in the compiled string.
+Okay, So I already showed you that this is line one.
+This is line two.
+When you see the dot class file it is already has that line one.
+It has backslash n, it is a new line character added.
+And then it has line two.
+So this is the default behavior for each line.
+It automatically add a new line character.
+But what if you want this in continuation line one.
+Line two.
+Even though in the text block you want to write this in a separate line or sometime take another example
+is you have a very big URL.
+Okay, you have a very, very big URL.
+And it is better that instead of like have in a single line, you divide it into multiple lines.
+Okay?
+And if you are using three double quotes text block, then with new line it will automatically add new
+line character.
+And then this will break what your intention is.
+You want only a single line.
+but with the text block you can't use it, because with each line it will create a special character
+which is not intended.
+So there is a way.
+So if you want to have a string continuation, you can use a continuation character.
+This one at the end.
+Okay.
+So now here if you see this is a single line even though it looks like a multiple lines.
+Okay.
+So here if you compile it you know that it will, it will print like this slash n slash and slash n
+here it will print slash and here it will print slash n.
+And here it will print slash n.
+Because for each line it will print a slash n character.
+But if you are using a continuation character here at the end okay.
+Now here, if you see this is a single line, even though it looks like multiple line okay.
+So at the end I haven't put it.
+So that's why it put slash n.
+Got it.
+So these are certain rules.
+Very simple.
+Now, I already told you that this text block is nothing but a normal string.
+So whatever the methods which we can apply on a string, we can also apply here also.
+So this is a text block.
+Okay.
+I am just applying dot to uppercase like a normal string like whatever the method.
+So here if you see these are all methods which we can apply on string.
+Similarly we can apply over the text block also.
+So this is my text block.
+Another example is name.
+You can use the uh like a variable which we can fill it through formatted like here I have used a percentage
+s country percentage s and dot formatted this method.
+I am using dot formatted and I can fill this data.
+So I will go here in the first one.
+In the second it will go here.
+So ultimately you will get name Shreyansh country India okay.
+So we can use this also.
+So like a normal string we can use it okay.
+So this is very very simple test block.
+But yes many engineers get confused with the rules.
+Rules are very easy if you understood it once and just practice it once.
+And then it is very, very easy to use in your code and it would be really clear when you will read
+it or also while writing it would be very easy.
+Okay, so I would say that start using it instead of this, uh, using special characters like how we
+used to do previously.
+So okay, so it already a standardized feature, start using it into the production code.
+No worries, it will get approved.
+Okay, guys.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

@@ -1,0 +1,545 @@
+Hey guys.
+Welcome to concept Encoding.
+This is Shreyansh.
+And today in the part two of Transaction management in the Spring Boot we are going to see a lot about
+transaction manager and different ways you can create a transaction like declarative and programmatic.
+Right.
+So till now in the part one you have already seen when we use at the transaction, at the transaction
+annotation, what happened in the back.
+Right.
+How the framework actually invoke an interceptor and what that interceptor actually does.
+Okay.
+So we actually pretty much now familiar with at the transactional, its purpose.
+Now let's go a little bit more deep okay.
+So I want to explain you first the hierarchy of transaction manager okay.
+So now here in the hierarchy of transaction manager this is the first the top layer interface.
+That is transaction manager Okay.
+So this is generally an empty interface.
+There is nothing inside it.
+So this is the second which is very important interface which we have is platform transaction manager.
+Right.
+This is again an interface which has this three methods get transaction commit and rollback.
+Right now if you just go a little bit up right.
+And if you see the interceptor what interceptor does is first create transaction internally.
+It might be doing get transaction only okay.
+Then it do complete inside this complete this is under catch right.
+So this is a rollback flow.
+So it might be calling its this rollback method.
+And after everything successful when it try to commit it actually internally invoking commit method.
+So this is actually the interface which has this three methods Thirds.
+Now based upon what type of, uh, your like whether you are using JPA, whether you are using JDBC
+or let's say if you are using hibernate.
+So there would be different implementation of this, but it enforce all the transaction manager that
+this three methods you have to implement it okay.
+So all these three methods are present here.
+But still it's an interface.
+Somebody has to implement it and provide the implementation.
+So let's see that.
+What is that.
+The third part.
+The third one is Abstract platform manager.
+Right.
+So it provide the default implementation of this.
+All these three methods.
+Right.
+So mostly uh there are different managers right.
+Data source manager hibernate JPA, JTA right.
+And JDBC.
+So mostly Firstly, their logics of are this get transaction, commit rollback is same.
+So this parent class, this abstract class parent class has provided some default implementation.
+And this concrete classes anything specific they have to override it.
+They are overriding it in their respective classes right.
+So this is the third class abstract platform transaction manager which is an abstract class okay.
+Which is a child of platform transaction manager.
+And it provide an implementation for all these three methods.
+Now at the fourth layer, what we have is different type of transaction managers.
+As I already told you, we can have many right JDBC you know right.
+With JDBC you can talk with relational database but you have to write a queries insert query.
+You have to manually write the query.
+Similarly JPA Java persistence API.
+So with this one, what you can have is you can create entity which can map with the table.
+Right.
+And most of the Crud operation, you don't even have to write a query itself.
+You don't have to write insert.
+You don't have to write select.
+So some are some things got simplified with the JPA.
+Then again hibernate is also a type of JPA, but it's totally different framework.
+So hibernate is also one of the transaction manager okay.
+And then there is something called JTA which is Java transaction API which is specifically used in the
+distributed transaction.
+So you remember we have something called two phase commit right.
+So this Java transaction API, JTA is getting involved when we have to manage distributed transaction.
+But if in a local transaction if you are managing you can pick anything right JDBC hibernate JPA But
+again, currently I am.
+All it depends upon which database you are using.
+If you are using relational database this works fine.
+You can talk with relational database with anything JDBC data source hibernate JPA right?
+But let's say if you are dealing with NoSQL then you have to change your library at the initial itself.
+I told you, right.
+Uh, once you change the library, you will get more transaction managers, which can take care which
+can talk to NoSQL database.
+Okay.
+But the underlying concept would be same, right?
+These transaction managers helps you to talk to a database and helps to manage the transaction.
+Right.
+Okay.
+Now this things is clear that what is the hierarchy of transaction manager okay.
+So now we'll see the type of transaction management.
+So there are two types declarative and programmatic.
+Declarative.
+We have already seen where we are using annotation.
+So when we are using ad rate transactional means it's a declarative approach we are using.
+So transaction management through annotation.
+When we use declarative approach Springboot hides lot of things from us, right?
+So based on the underlying data source, whether you are using a relational database or non-relational
+database, right.
+Springboot will automatically choose a appropriate transaction manager for us, right?
+In most of the cases, you will see that Springboot will choose JPA Transaction Manager.
+So many things got hidden from us when we just use at the transaction.
+Okay, so here if you can see.
+now here, you can ask right here if I have to use, if I have to use at the rate transactional.
+But I have to tell Spring Boot which transaction manager has to be chosen.
+Right.
+I don't want to work with JPA.
+I have to specifically use JDBC Transaction manager where I have to right specifically insert query,
+right specific Select query.
+Or let's say that you are working with hibernate.
+You have to tell Spring Boot that hey, choose hibernate.
+Don't by default pick JPA.
+So now you have to tell Spring Boot which one to choose how you will tell.
+Then here Appconfig will come into the picture you already know in the previous.
+If you are following the series that Appconfig class you can create with annotation at the rate configuration
+where we can create a bean.
+Okay, so there we can create a bean of platform transaction manager.
+Which one?
+This one.
+Because this is a parent interface.
+Now you can create an object of anyone, right.
+So now let's say that if you have to tell a spring boot that, hey, you have to work with data source
+transaction manager.
+You just create a new data source transaction manager like this.
+This is we will see into the next topic where we have to connect to a database.
+Right.
+Data source.
+So we have to provide username password link URL.
+So that is just the way of connection to a DB.
+We have to get access right.
+So but the main part which I want to tell you that if you don't want a spring to automatically choose
+which transaction manager you have to work with, you can specifically tell by creating a bean of a
+platform transaction manager and create an object of whatever you have to work with.
+Whatever you are building a project that's a Hibernate.
+You can create Hibernate transaction manager.
+Now when you will run right and you will put at the transactional, you can provide a transaction manager
+like this.
+Now what would happen is spring boot will when it see at transactional.
+And the value is like transaction manager equals to this.
+So what will do is spring boot will try to find a bean with name user transaction manager.
+So this is the name by default when you create a bean.
+And if you don't provide a name here by default this method name would be considered as a name.
+If you want some specific name, you can I think provide name equals to something here.
+And that name you can give here.
+But since I haven't given any name here in the bean, so the method name would be considered as a name.
+Okay.
+So this is one declarative way of using the transaction.
+There is another way called programmatic okay.
+Programmatic means as the name says, you have to program, right.
+You have to write the transaction management logic in your code manually.
+So transaction management through code it is flexible but difficult to maintain.
+Definitely difficult to maintain because if at 100 places you are you have to use transaction.
+So you have to write your own code.
+But why.
+It's flexible where exactly you might need it.
+So let's consider this use case where this programmatic might help you.
+So now let's say I have this method update user in this this three operation happening.
+First is update db.
+So let's say some initial Set of DB operation, and after once this initial set of DB operations are
+success, I need to make some external API call and after this external API call I have to update my
+DB again.
+So you can say that it's a final set of DB operations.
+So three operations, first is update db, then external API call, then again update db something.
+Okay, now if you have put at the rate transactional at top of this method, it will cause an issue.
+Why?
+Okay, just pause it.
+Think for an answer why it will cause an issue.
+It will cause an issue because external API call is involved here.
+Now this external API call.
+Let's say you are integration with third party or some other uh component which is taking some time,
+which is uh, taking, let's say, three, four seconds to return you back.
+Right.
+So now you are holding your DB connections for that time and at the time of peak traffic, where you
+have to open a large number of DB connections to update it, right.
+This external API call could be a bottleneck because this is generally external.
+API calls are the time taking, uh uh process.
+And because of this, your DB connection is in hold for that amount of time.
+It will not complete.
+Okay.
+So we and let's say that you the best way you can do is try to remove it.
+But what I'm trying to say is that let's say that you have this kind of dependency one, two, three.
+You cannot remove it.
+You have to keep them together.
+In that case, you can't use transaction.
+It will choke your system during a peak hours.
+So in that case programmatic can help you.
+Okay.
+So this is I'm telling you the approach one of programmatic where you are manually writing it everything.
+So this is I'm telling you the approach one how you how we can write it.
+So in the approach one so let's say this is the method name uh update user programmatic I have just
+let's say that any method you want to update DB right.
+So first from this manager or hierarchy, you already know that you need a one transaction manager object
+because this only has get transaction commit rollback.
+So you need this object.
+And for getting an object you have to because this is an interface you can create an object of it.
+You have to create an object of only concrete class.
+So first step is very very clear that this is the first step you have to get an object of.
+Platform transaction manager Which object right, which object you want.
+So in App.config, as we discussed, you can tell, hey create a bean of this platform transaction manager,
+let's say new data data source transaction manager I want to use.
+So during application startup a bean would be created for this one.
+Now you can use this right.
+Either you can use auto wired here and you don't need constructor injection.
+If you don't want to put at the auto wire you can use constructor injection.
+Constructor injection.
+So this user transaction manager object will get a reference of this bean data source transaction manager.
+So first step is clear.
+We got a platform transaction manager object.
+Now programmatically we have to create transaction.
+So first step is get transaction.
+We get the transaction.
+Now what happens is transaction is created.
+Some transaction name would be given, right?
+And other information would be provided.
+I will tell you what all information we can give, but it will during this one.
+If we haven't provided anything by default, it will.
+Spring boot will automatically choose a particular name for a transaction and other details, but your
+transaction would start.
+So now once the transaction is created, now you can perform your task right.
+So now you can run queries, update queries, whatever you wanted.
+And once everything is successful we can use the transaction manager and call commit.
+It will commit it.
+If there is any issue, we will catch it and use the transaction manager and call the rollback okay.
+So this is we are handling manually right.
+Programmatic.
+This is the approach one where we are writing everything.
+So this is one way of handling the programmatic.
+There is another, better way.
+So I would say that this is the better way.
+Of handling the programmatic.
+So here in this case write this all get transaction commit rollback still be part of your code right.
+So this is your only business logic but this is still part of your code.
+So here Springboot says that hey you can use transaction template.
+So transaction template which we can use.
+So here in the transaction template consider it just as a wrapper.
+Right.
+So all this methods right.
+Get transaction commit and rollback.
+It just wrapped inside it.
+We'll see how.
+Now this is the approach too.
+So now here, what we are doing is we have to first create an object of transaction template.
+Okay.
+Now let's see that here I again goes to the App.config at the configuration.
+Now here I am creating a bean of transaction template transaction template.
+Okay.
+Now when I'm creating a transaction template bean I have to provide the.
+One of the transaction manager.
+Like what transaction manager you have to use okay.
+So let's say that I have already created a bean platform transaction manager.
+Right.
+For I am using new data source transaction manager.
+Right.
+So here I am providing this only.
+So when I'm creating a transaction template there we can provide what transaction manager you have to
+use.
+Okay.
+Using that old self you would be able to.
+So now you can put at the rate auto wired here itself.
+You don't need constructor injection for this.
+Or if you don't want to put at that auto wire constructor injection you can use it.
+Now what would happen is uh, spring would look for this transaction template bean.
+If it found it, it will assign a reference to this.
+So now this is the first you have to create an object of transaction template here.
+Now here, if you see in the transaction template there is a method called execute.
+Now in the execute what is the.
+Parameter.
+It accept is transaction callback which is a functional interface.
+I have already explained what how to how do you handle functional interface and lambda expression in
+my Java uh, playlist?
+So here I consider that you already know what is function interface and how to write a lambda expression.
+So transaction callback.
+Here we have a method called do in transaction.
+So what exactly we have to pass here is the method your business logic which you want to run.
+What template is that.
+So it is provided a template.
+So template generally we can say that the blueprint.
+So what it does is it will get transaction.
+Then it will have your callback callback function whatever.
+So this is actually your business logic.
+This is your business logic like your insert queries update queries whatever the you want to update.
+And then there is a commit and rollback if required.
+Right.
+So it will catch it and rollback back it.
+Something.
+But you got it right.
+So this template, this transaction template has provided us a blueprint.
+They get transaction.
+Now we can tell get a transaction of this transaction manager.
+After that we will pass the callback function that where we have actually our business logic.
+So this will run it.
+After that it will do commit and rollback.
+Okay.
+So now the same thing which I am going to do.
+First I have created an object of this transaction template.
+Now I am calling the execute method.
+Now in the execute method this is the callback function.
+You have to pass.
+So here I am creating my callback function and I have already shown you this is a functional interface.
+So I am using a lambda expression to pass my business logic here as a function okay.
+So here if you see I am passing my business logic, insert query, update, query, whatever I wanted
+to update into this method I passed here.
+Right.
+And then I pass this into this execute method.
+It will first get transaction right.
+When it do get transaction this is the transaction manager it is using which we are telling right.
+This transaction manager it is using.
+So it will invoke proper get transaction method.
+After that here it is doing do n transaction means ultimately it is calling our business logic.
+Right.
+So the same thing we it has done get transaction.
+Then our business logic is running.
+After that.
+If any issue happen it is doing rollback or if any uh everything is success.
+It does commit.
+So it just little a cleaner approach of doing this.
+But this is also one way of doing a programmatic transaction handling by using transaction template.
+So.
+I hope this two parts, declarative and programmatic is clear.
+Now there is one very, very important part is we have to understand this propagation.
+So what uh propagation means is when we try to create a new transaction, right.
+When we try to create a new transaction, it first check the propagation value set.
+Now based on that propagation only it will create a transaction okay.
+It will get clear to you once we go through.
+All right.
+So now let's see this.
+And when you will read this line again, it would be very much clear to you.
+Now suppose that you already have a transaction.
+You already have a transaction.
+Method one you are doing something, something, something.
+Now you are internally invoking method two.
+Now this method two is also is at the rate transaction.
+So internally for this method one when you have put at the transaction there internally it might have
+done get transaction right.
+The interceptor would have intercepted it.
+And interceptor have done this.
+Transaction if necessary.
+See this condition if necessary.
+Okay.
+So internally it might have done get transaction only.
+And here when the method two is invoked there also we have put at the rate transaction means internally
+it also try to get a transaction.
+Okay.
+So this is inside this and this get transaction.
+So it is inside this.
+And it is try to a get transaction.
+So this is for method two.
+This is for method one okay.
+Now see the question comes in the interview also.
+And it should comes to you also.
+Hey when method one is invoked we try to take one transaction and transaction let's say created transaction
+one.
+Now all the operations are happening within a particular transaction.
+Now method two invoke.
+Now method two also does get transaction.
+right.
+And this method two also has certain logic.
+So now this method two logic would be a part of this transaction.
+One or new transaction would be created and it would be part of that one.
+So what what would happen.
+That's where the propagation comes into the picture.
+So let's go through one by one and it will help you to understand better.
+The first propagation is required.
+And this is also a default.
+So whenever we have put at the transaction we haven't provided what is the propagation.
+So by default what is the propagation it has chosen.
+Required propagation not required.
+If you have to provide specifically you can do like at the rate transactional propagation equals to
+this required.
+And if you even if you don't write it by default, the propagation is required only.
+So what this requires is that if parent transaction present right.
+So let's say that transaction one is already present.
+This is for method one.
+Now for method two it is it want it it want to create a new transaction.
+So method two want to create a new transaction.
+We have put that transaction here right.
+So whether method two can can create a new transaction or not.
+If parent transaction present use the same one.
+Right.
+So it will not create any new transaction.
+No it will use the same transaction.
+Else create new one.
+If there is no parent transaction present then only it will create a new one.
+Okay.
+So let's see that with an example.
+It will clarify you.
+So now when I start the server and let's say that I am hitting an API.
+So what happened?
+So here if you see it will invoke this method one.
+This method one is under transaction.
+So let's see these two values.
+What it is is transaction active true.
+Yes this is active because already it is inside a transaction.
+And what is the current transaction name.
+It has a spring boot has given to us.
+It is this.
+Com concept and coding learning spring boot this method one.
+So it has given the complete class path uh the method class path as a name itself okay.
+So one transaction is created.
+Now it has doing some operations and internally it called method two which is again a transaction okay.
+Which is of required type.
+Okay.
+Just, uh, in the System.out.println, it is uh, I have printing required new, but consider it as
+a required because we have changed it for understanding.
+So now method two got invoked.
+Now during method two got invoked at the rate transaction.
+It will try to do get transaction internally interceptor.
+But the propagation it will check in the propagation.
+It will check whether it has to create a new transaction or not.
+Required.
+Required says that if parent transaction exists, use that one.
+Don't create a new transaction.
+So is actual transaction active?
+Yes.
+This method is also running inside a transaction.
+That's why it said true.
+What is the name of that transaction inside which this method is running?
+If you see the same method one the same as the parent one, right?
+It didn't create a new one.
+So required is clear.
+Required new.
+Required new says that if parent transaction present, suspend the parent transaction for a while,
+suspend doesn't means that it has been aborted.
+No, aborted and suspend.
+Both are different things.
+So there it will suspend the parent transaction for a while.
+Then what it will do is it will create a new transaction for this method two and it will perform its
+operation in a new transaction.
+And once that new transaction is committed or rollback whatever, after that it will resume the transaction.
+So this is like if parent transaction present if parent transaction doesn't present, it will create
+a new transaction and execute the method.
+So let's see that now here from the method one I am calling method two.
+Now change it to required new Okay, now let's start the server again.
+The API again.
+Okay, now let's see what's happening.
+So first method one is it is it inside the transaction?
+Yes.
+What is the method name.
+Put a current transaction name.
+Some current transaction name.
+It would put right.
+Method one complete.
+Now it is doing some initial DB operation.
+It has printed.
+Now it is calling method two.
+Now method two is also under transactional but required new.
+So what it will do is it will suspend the parent transaction for a while.
+Now parent transaction is is in wait state.
+Now this method to create a new transaction.
+So this method two is running inside a transaction.
+Yes.
+What is the transaction name inside which it is running.
+Now here, if you see this name is different than this one.
+Okay.
+And once it is finished committed, then it will resume the parent one.
+So now the parent one some final DB operation, it will get printed.
+Okay.
+So you got it required new means you always need a new transaction.
+If parent already has you will stop it.
+Then create a new one.
+Once finished then resume the parent.
+Then we have supports.
+Support means that if parent transaction present, use it, else execute the method without any transaction.
+You don't need any transaction for the method two right?
+So here in the method two, when you do like hey support supports.
+So if parent transaction added it will use it.
+If parent transaction doesn't exist, it it will not create any transaction at all for this method to
+it will not create any transaction not supported.
+If parent transaction present, suspend the present transaction.
+Execute the method without any transaction and once without any transaction, this method is completed.
+Then resume the parent transaction.
+If parent transaction doesn't exist itself, execute without any transaction.
+So this not supported means that no matter if parent transaction exist or not, it will execute the
+method without any transaction.
+Only then we have something called mandatory.
+Mandatory says that if if parent transaction present, use it, otherwise throw exception.
+So this mandatory is like parent transaction should be present.
+So there you can use like mandatory.
+Which says that parent transaction should be present.
+So from where this method gets invoked it should also be inside a transaction.
+It never creates a new transaction.
+Otherwise it will throw exception.
+Then there is something called never right.
+Uh, so it's uh you can change it to never.
+So what says that if parent transaction are present, it will throw exception, right?
+Else execute the method without any transaction.
+Never says that parent also should not have any transaction from where it is getting invoked, right?
+If it is present, it will throw exception, otherwise it will execute the method without any transaction.
+So these are the different ways of propagation.
+And you already know that when you are using a declarative way, you are using add the transaction.
+How you can provide the propagation, right?
+You can provide the propagation like this.
+Now we can check all this logic if else which I am telling you, it should be present into this.
+What was the transaction interceptor.
+So this was the class right transaction interceptor.
+Inside that method create transaction if necessary.
+Yeah.
+So this create transaction if necessary calls this method get transaction.
+So what it is doing is existing transaction if it is an existing transaction how to handle it.
+So it will check propagation.
+Never if propagation never throw an exception right propagation not supported like propagation required
+new.
+If propagation is required new then it will suspend the parent one and then it start a new transaction
+so everything is is already doing it right.
+The spring framework does the same thing, right?
+It just like we can double check our understanding through the code.
+Now you can ask me, right.
+Okay.
+Uh, we got it.
+Like how we can pass the propagation, uh, through declarative.
+But what about programmatic way of how in the programmatic way we can assign this propagation approach
+one where we are writing everything?
+So what is the first step?
+The first step is getting an object of platform transaction manager.
+Then how you will get an object.
+You can there would be a one app.config in the inside an App.config.
+You can create a bean of platform transaction manager and whatever the transaction manager you can create
+a new of that.
+Okay.
+So now here what happens is now you have the object.
+Now you have to call get transaction.
+Now when you're doing get transaction right.
+If you remember earlier we passed null here.
+Now we are passing transaction definition.
+So I have created a object of transaction definition right.
+And I have set two things.
+One is name.
+I told you right earlier, if you don't provide any name, Springboot will give the random name or uh,
+by any name to a transaction.
+But if you want a specific name to be chosen for transaction, you can put into a definition and the
+propagation which you want.
+I want propagation required so you can put it and pass into the definition.
+Okay.
+So very simple.
+Now in the approach to where we are using transaction template, how we can pass the propagation is.
+So the first step is very, very clear that we have to create an object of a transaction template and
+how we can create an object of transaction template in the App.config configuration.
+We have to create a transaction template object which has the transaction manager as a parameter.
+What transaction manager we wanted.
+But after that itself, instead of returning from here, we can also set here this template.
+This is the propagation behavior I wanted whether required, not required, never mandatory etc. and
+any name you have to want to give a transaction.
+You can also set a name and then return.
+Now exactly the same thing which we have done before.
+Okay, so I hope this declarative and programmatic is clear.
+In the next part I will tell you about the isolation level in deep.
+Okay guys.
+Thank you.
+Bye.

@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>43. RestClient - Communication between Microservices</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>43. RestClient - Communication between Microservices</h1>
+    <pre>
+Welcome to concept and Coding.
+And today we are going to start with Rest clients.
+And we will understand it in depth.
+But this is the prerequisite video video Rest template.
+If you have any doubt regarding with this topic because that's where we have created the fundamentals.
+Right.
+So first have a look at this.
+Then understanding Rest client would be little easy okay.
+So if you remember in the previous video we know what are the limitations of Rest template.
+So one of the biggest you can say that the limitation is so many overloaded methods.
+It is very difficult to remember and maintain.
+And that's what one of the advantage of Rest clients is that we are going to avoid these overloaded
+methods.
+But let's see what are the other alternatives of Rest templates.
+So we can say that there are two alternative.
+One is web client, another is rest line.
+So here if you see the web client is asynchronous, non-blocking in nature means client.
+Do not wait for the response from the server before continuing.
+So this is used in reactive programming.
+Generally when we will learn about spring web flux, I will cover web client into that one.
+But generally we are covering synchronous communication right.
+So Rest client is a synchronous blocking in nature like like a Rest template.
+So means client wait for the response from the server before continuing okay.
+And it is introduced in Spring framework six plus and Spring Boot three plus okay.
+So you can say that this is a modern fluent based API that is more readable and easy to maintain.
+Okay.
+And this is more frequently used than Rest template.
+We will see why.
+Okay.
+Now we have used one word fluent based API.
+What is that?
+Very, very important.
+We need to understand this.
+Then only we would be able to get how restaurant actually works.
+Otherwise we might have to do lot of remembering thing like okay, now which method I have to use.
+Okay.
+So let's start with first very basic example.
+Let's say that if order service has to invoke product service, what has to be done in rest line okay.
+Then we will see that like okay once it is done how exactly it is working.
+So we have a order service which is running on localhost 8081.
+And the product service, I am running it on port 8082.
+Now this is the first part in the App.config.
+I am creating an object of Rest client.
+So I am creating rest client dot create.
+Internally it is calling rest client builder dot build.
+So internally it does this.
+Or you can even itself call Rest client or Builder.build.
+Okay.
+So this will create you a new object of Rest client.
+It will give you a new object of Rest client.
+Okay.
+So that is the first step we have done.
+Get an object of the rest client.
+So in the second I have written very simple controller like we have seen in the rest template also.
+Okay so I have written one API slash order slash id and this is my get method.
+So here I am using this Rest client object which is created okay.
+So I'm auto wiring it here.
+Rest line.
+Now see this rest line dot get dot URL which the exact URL which I want to hit which I want to invoke.
+Dot retrieve dot body.
+This is the body I wanted for my response string dot class.
+So that's why I'm retrieving it in string only.
+And here if you see I'm just printing out system dot dot print ln response from product API, which
+is called from order service and whatever the response this is sending is this one.
+And output is order called successful.
+Now when I hit in the postman okay I call this slash order slash one.
+Slash order slash one.
+So order call is successful.
+And in the logs it should print this response from product API call from order service.
+And this is what I got from the.
+Product service.
+What?
+It returns a string.
+So here if you see this is the template which we are going to use for all different operations like
+post put delete.
+But here if you see its structure it's fluent.
+So what is fluent.
+Now you can ask one question.
+Hey you are saying fluent.
+This is fluent API.
+What exactly fluent API means?
+So see understand this one.
+Fluent API means fluent API means chaining of methods.
+Chaining of methods.
+So what generally happen is you have method one.
+Method one.
+It is returning an object.
+It is returning an object which Opens up different set of method.
+Let's say method two.
+Method three.
+Method four.
+Okay, so first you call method one.
+Method one returns you an object which has this methods.
+You can now call any of this method okay.
+Now this method might return you different object which opens up different set of methods.
+So what we are doing is we are doing chaining from method one.
+We got some object.
+Which opens up different set of methods.
+So I have from method one I reach to method four.
+From method four I reach to method six.
+From method six I reach to some method eight, something like that.
+So there is a chaining of method Okay.
+So that's what we are doing here.
+We are doing a chaining of method.
+So these methods like dot get dot uri dot retrieve dot body.
+They might not be present into just one class.
+Okay.
+Let's say this is class one.
+This is class two.
+This is class three.
+This is class four.
+So all these methods could be present into different different classes itself.
+But the chaining is happening.
+When I did dot get it returned me some object right.
+Different different class object which has this URI method.
+This dot uri might return me some object of totally different class which has this retrieve.
+Now this retrieve again in turn, return me an object which has totally different, which belongs to
+totally different class, this object and which has the body method.
+So you got it.
+I am doing a method chaining, and this method might be present in two different different methods.
+Okay.
+So that is known as fluent API.
+I will show you how we are achieving this so that we don't have to, uh, up this thing that okay,
+first I have to use get then I have to use URI.
+Then I have to use retrieve.
+Now, what is the purpose of using retrieve?
+Why?
+I have to keep body at last.
+Right.
+Because sequence matters, right?
+In the chaining.
+Because when we are saying chaining the chain should not break, the chain should not break.
+If I directly call this method m2 of class two, it returning me an object of, let's say this object,
+it returned me an object of this class.
+So I can only goes to now class three.
+Only I can now move back to class one.
+This method one so chain will get break okay.
+So sequence method matters in the chaining of methods and in the fluent API.
+Okay.
+And this is just an example for Get.
+No matter we are going to use post put delete.
+We have.
+We are going to follow the same template.
+We don't have to remember different different method overloaded methods which is there in the rest template.
+Okay so that's what I told you.
+What does fluent API means?
+Fluent API means chaining of method calls each call.
+Each method call returns an object of next step okay that expose next set of operations.
+I have already explained what when we say when I say fluent API, what exactly it means.
+So now our next doubt is how this chaining works in Rest client so that we understand better How this
+dot get dot url dot header dot.
+After that retrieve then dot body will work.
+How it's working like this sequence is right, but I don't have to remember it right.
+So how to grabs the like base so that we don't have to remember that okay.
+Can I use header before URI or what have you or I can use after retrieve.
+Is it possible.
+Does chaining break or not.
+So let's see this class diagrams.
+So this class diagram you can say that this is the start of chain.
+First this is the start of chain rest line.
+So in the first step we are already creating a object of rest client.
+Right.
+Once we get the object of rest line then we have different methods that we can invoke.
+Get, post, put, delete.
+Okay then this is the second.
+So here if you see these are many interfaces URI spec which expose methods related to setting the URI.
+Either you can give me string or you can create a URI builder itself and then return me the URI.
+Okay, then you have one interface for request header spec, which has various method to set the headers
+and cookies.
+Then we have one interface which is child of both URI spec.
+So it extends URI spec and Request header spec.
+Similarly we have one interface for body.
+So during post and put we need to set the content type content length body right.
+So this interface expose those methods.
+Then there is an interface which is a child of both like request header URI.
+It's a child of request header URI and the request body spec.
+And then there is one implementation method default request body URL spec.
+So it it's an implementation of this which ultimately provide implementation for all of these abstract
+methods.
+It all it provide implementation for all of this.
+So you can say that this is ultimately the request.
+No matter whether if you are creating get then also this object has to be created.
+If you are building post or put or delete, no matter what operation you are doing, we have to create
+an object of this and forget we might have to fill up some operation for post.
+We might have to fill up some fields like I need to fill up the body.
+So now the only thing is how to fill up this.
+But one thing is second step is we have to create an object of this.
+But we have to do chaining.
+Like first I have to set URI, then I can set headers.
+Then I can set body.
+Then what next.
+Okay so request build up.
+And also if you see this is the third part where we have something called response spec okay.
+Response spec actually knows how to handle the response.
+So once we get a response from the server we have to do it's mapping.
+Like I have to map whatever the object I am getting, I have to map it to string or I have mapped,
+I have to map it to this object.
+Okay.
+And also if there is an exception How to do an exception handling like if the status is for access,
+how?
+What to do if status is five, what to do.
+So this interface response spec has support us like on status.
+So this is used for exception handling.
+Okay.
+And here if you see it has a method like two entity two body which ultimately helps in like uh calling
+the execute method.
+Or you can say that actual internally it actually invoke the method which is responsible for creating
+TCP connection, sending HTTP requests, getting the response.
+Okay.
+And after that, this interface and this concrete class itself Help us.
+In what?
+Once the response we get back.
+How to handle the response, we'll see that.
+But this is a very high level.
+I am telling you, these are the classes which we are going to use in our get put post operation.
+But now we just need to see how the chaining works.
+Okay.
+So first thing first you need to know a little bit about generic class and wildcard and Java which I
+have already covered in the Java series.
+Okay.
+So here if you see there are lot of generic types we are using, we are using wildcard, we are using
+generic types.
+Right.
+So you should not get confused that what exactly and how it is working.
+So now let's start with the get operation.
+So here the first thing which we are doing is creating an object of rest line.
+So either you can do dot create or you can do dot builder dot build right.
+Okay.
+So internally create also does the same thing only.
+Okay.
+So objective here is first get an object of Rest client.
+Now once we get an object of rest line what I am doing now see the chaining.
+The first I am calling dot get method.
+So here if you go into the rest client interface okay.
+When you invoke a get it creates an object of this class default request body URL spec.
+So as I told you that ultimately we have to create an object of this because it has all the fields which
+is required to make a TCP connection to send HTTP request and the response also how to handle the response.
+So ultimately this object we have to create.
+So during get it creates an object of default request body URI spec and set it HTTP method to get.
+Okay.
+And what is the return type.
+It is returning.
+It is returning request header URI specs.
+The next object.
+Okay so I am creating an object of this.
+See.
+So this object it's a child of request body URI spec which is again a child of request header URI spec
+which is I am returning.
+So it's a valid return type, even though I'm creating an object of this and returning this.
+But the return type I can write this okay.
+Because this is the parent of this one.
+So from the get I am done.
+This returns me an object of request header URI URL.
+Okay, so now I am here.
+From this I have.
+See this is a child of two interfaces means I can invoke from here I can invoke the method of this interface
+and this interface.
+Okay.
+So now next set of operations got open.
+So currently I am going and invoking dot URI.
+So also see the how sequencing matter.
+The chain should not break okay I will also show you one of the flow where the chain breaks also.
+So from here request header uri spec I decided to invoke the URI method okay okay.
+Since this URI interface, which one is the implementation?
+The same one.
+We have already created an object in the uh.
+Step one.
+So this URI, it will fill up this URI.
+right.
+So I invoke this method uri and pass the string.
+So internally it will create a URI object of this using some URI builder and set this field into this
+object.
+Now what?
+Its return type.
+Its return type is this.
+Any child or even this class itself.
+So S extends.
+So what does it mean S extends.
+And let's say class name.
+So this means that the return type or here what the type here is the type here could be any either this
+class this class name a let's say any class which is child of this class name A or this itself.
+So either this class name A itself or any child of it.
+So child one, child two.
+Child three.
+So here I can get either class name A or C, one child one or child two or child three.
+All are valid.
+Okay.
+That's what because I am bounding the limit of the type.
+What I can get here in the URI spec.
+What I can get here, either I can get this type or its child type.
+So either I can get this type request header spec or its any of its child.
+Okay, so now since I don't know what child it is because request header spec which is this request
+header spec.
+It has many child.
+So this is child one.
+This is child two.
+This is child three.
+It could be many childs right.
+I don't know specifically which child it is corresponding to Do because here I am sending wild card.
+So I do not know because the same wild card is passed to here.
+Same wild card is passed to here.
+So I do not know which child I am referring to.
+So it uses by default the parent.
+Okay, so now I dot url return me an object of the next.
+Class or interface which is request header spec.
+So S is now request header spec.
+So now I am calling accept method.
+So it is calling the accept method on this interface.
+And it has its implementation might be provided here.
+Accept implementation would be there.
+So it might be setting some header.
+Okay.
+Now what is the return type of this s here itself.
+So S extends request header spec.
+Again the same thing.
+The type could be request header respect the same class it is now calling to its same itself or its
+any of its child.
+But since we don't know what child it is either child one, child two.
+Child three the by default it is pointing to itself.
+Request header.
+Respect.
+So for the except method return type its itself.
+Okay, so you are getting an object, but that object is the same same class itself.
+Now here I am calling more methods like dot header.
+So I am also able to set the header.
+So I'm calling invoking a method which is present in now the same class.
+So this header also return type is S which is again it's of same type same class type.
+Okay.
+So from header I also get a return object which is again of same type.
+So I'm able to call the method retrieve, which is also present into the same class.
+So retrieve is also present here in this itself.
+So I invoke retrieve.
+Now the when I call retrieve its return type is different.
+Now means it is returning me an object of some different class.
+Okay.
+So what it does.
+So retrieve creates an object of this response aspect.
+So default response spec is an implementation of this.
+So it create an object and return me this.
+So I'm getting an object of response spec now.
+So I'm getting an object of response spec means I am getting a new object which has different set of
+methods.
+Now I can call methods which are present into the objects which this retrieve has returned.
+So I got a response spec object.
+So from there I called the body.
+So I called the body.
+So its implementation is present here.
+So this body internally calls the method which actually does the work of creating a TCP connection and
+sending this.
+So here it invokes the exchange method.
+And exchange method is again present into this header spec.
+Okay.
+So it is calling this one.
+Okay.
+So the reason why we come from request header respect to this response spec.
+Because in the body before we calling this exchange method which actually handles create a TCP connection
+send the request get the response.
+We are passing this functional interface implementation here.
+Like how to.
+How to do the mapping of response.
+How to handle the exception.
+We provide the implementation of this functional interface and then call this.
+And this here it provide an implementation of exchange where ultimately it goes at and create a TCP
+connection.
+Send a request and get a response.
+So here if you see the flow become complete.
+But I will also show you like if we don't follow the sequence how the flow breaks okay.
+Don't worry about first of all don't worry about if you don't understand response spec clearly, if
+you don't understand how this connection is happening, how this exchange works currently, I want you
+to focus on the flow.
+How this understand fluent API.
+What is fluent API.
+So even though we are calling this sequence of methods how exactly it moves from one class to different
+class, then another to different class.
+Okay, so chaining of methods which are present into different different classes.
+Okay.
+So see can a flow be broken if you don't follow a sequence.
+Let's see that.
+I create an object of the rest line.
+I do rest line dot get when I did a get.
+You know that what happened.
+It will create me an object of this and it will set the HTTP method.
+Get and return me an object of request header URL specs, which is a valid even though I am returning
+this object, because this is ultimately a child of this only.
+So it's a valid return type.
+So now I got an object.
+So I am here now.
+So from this I have an option to call URI or this methods because this class is a child of both.
+It's a child of both.
+So now, instead of calling Uri, I decided to call the accept.
+So now I am calling this accept.
+So what?
+Accept will do.
+Accept.
+Set the header.
+It's inside a header.
+It will set.
+Accept application slash JSON header and value.
+Okay.
+But what it's return type.
+Return type is S which is either request header spec which is the same class or any of its child.
+Since we don't know which child it is.
+Child one.
+Child two.
+Child three because currently it is coming as from here, it is coming as question mark wildcard and
+the same we have passed here.
+Okay, so it is coming as a wildcard, but we know that either it's a request header respect or any
+of its child.
+But since we don't know the exact child it's always safe to treat it as the same parent only.
+Okay, so it is now returning an object of itself.
+Request header spec.
+So this returning an object of the same request header spec.
+So now can you call URL now.
+No because this is a total different interface which has this URI method.
+And it is now not present into request header spec.
+Now the chain is broken.
+You can't set the URI so means your you can't even send the request.
+URI is not itself set.
+So you have to follow a proper sequence that are from method one.
+I goes to method two.
+From method two I goes to method three like this.
+And the chain complete.
+Got it.
+So similarly, let's see a post.
+And while we reached till the delete right.
+This whole diagram will get clear to you for sure.
+Okay, so first thing first, creating an object of Rest client.
+Now first thing I am doing is calling post.
+So now Rest client has post method.
+The same post will do.
+Creating an object of this and sending the http method to post and it returns this object.
+Default request.
+So here what is the return type request body URI spec.
+Is it valid?
+So this default request body URI is a child of request body URI spec Request.body URI spec we are sending.
+So it's a valid.
+So I am sending.
+It's this it's parent only.
+Okay so I created an object of this but return type I put it as this.
+And it's a valid because it's a parent of this one.
+Okay.
+So now I reached till this point.
+From this point it's a child of.
+So this is its parent one.
+This is parent two interfaces.
+Right.
+So I can invoke methods which is here invoke method which is here and which is again a child of this
+class.
+And this class.
+So means from this point I can invoke any method.
+Either you or I either accept header, retrieve, exchange body, any method because this class is a
+child of all.
+So what I did I call the URI because chaining matters.
+I don't want to break the chain.
+If I call accept, I can't move back to URI because nobody is returning me an object of URI spec again.
+So that's why from here I call the URI.
+So URI will set me the URL and what its return type.
+Now understand that what would be the return type.
+So here if you see it is a child of request header URI spec.
+And what is the type it is passing request body spec okay.
+So now this will translate to request body spec which is this one okay.
+And is it fulfilling this either either parent request or respect or any of its child.
+So here this is parent or any of its child.
+So this is its child.
+This is child.
+So I'm putting one of its child only.
+Request body spec is child of this only.
+So it's a valid one okay.
+And in the URI spec I'm passing this what I'm getting.
+So here itself this get translated to request body spec.
+And ultimately this S itself is request body spec object.
+So means I reached till this point now.
+Sorry.
+So now in the URI, return me an object of request body spec which has its own methods to set the body.
+Okay.
+Set the body.
+Set the content type, content length.
+It has many methods.
+So now we can invoke that.
+And also we can invoke its parent.
+We can also invoke its parent accept header retrieve.
+So I am calling the its parent method.
+Except I am calling its parent method accept.
+So it will set the header.
+But what would be its return type.
+Its return type is S.
+So here if you see this request body spec extends the parent and pass.
+What is the type.
+that's itself.
+So this type is translate to request body spec itself.
+And this S itself.
+S get translated to this request.
+Body spec means this class itself.
+So means this return type is this object itself.
+So I will reach to this point itself again.
+So after accept I got an object of request body spec class itself.
+From there I decided again to call the parent, which it returned.
+Return me an S which is again object of request body spec itself.
+Then I call the body method which is present inside this.
+Sorry, which which is present inside this.
+I set the body because during post operation, let's say I want to create a new operation.
+I set the body okay and it returns me same object.
+Now from there I call the retrieve because still I can call the parent node, right?
+So I call the retrieve.
+So I reached till this point now.
+So from retrieve what it will do is it will get me an object of default response spec.
+It will create me an object of this which is used to, uh, to handle the response.
+And it returns me this response spec.
+So now this returned me an object of different class response spec.
+And then I call the two entity of that one.
+So I call the response spec two entity.
+So two entity.
+If you see that it will internally invoke the exchange method which is present inside this header itself.
+And this exchange implementation is present here in its implementation.
+And all the request is already properly filled up headers and all so it knows how to make a connection.
+But it is coming from here, as I already told you, that we call this exchange method.
+But in the exchange function we tell this is a lambda expression.
+We pass the functionality, how to handle response, how to handle status or exception handling.
+And do I need to close the connection response connection or not?
+True.
+False.
+So that info come from this and your flow get completes.
+So at this point of time internally it calls this exchange method which create TCP connection, send
+request, get response do mapping and give us the response.
+Similarly delete.
+So you can go through delete by yourself right.
+But now you will get the flow.
+What?
+Till this point, my aim is that you understand what is fluent API and how Rest client adhere to this
+framework of fluent API from one method to another, which belongs to different class, and these are
+the classes involved in the rest API.
+Delete is also very same like first goes to delete.
+It creates an object of this.
+Then it will return header url spec.
+So I come here.
+Then I call uri from URI.
+It would be like so it's a question mark right.
+So I don't know which exact child.
+So I can't go to this or this.
+So that's why I go to its parent.
+So it called retrieve it.
+Get me an object of response from response.
+I ultimately invoke this two bodyless entity because in delete you don't receive body and send body
+okay.
+Then ultimately internally it invokes this exchange method and I pass the.
+This functional interface expression here itself.
+So we will see that.
+But I hope the fluent API is clear.
+If anybody asks you in future is Rest API is fluent.
+Yes.
+How?
+Now I believe you should be able to tell how what classes are involved and how these classes are actually
+linked together to make the rest API fluent.
+Sorry if I stretched a bit, but it is very important to understand the fluent API.
+Now let's go and see exception handling.
+So now I am very going, very specific going inside this response spec.
+Okay so see this one I am creating a controller.
+So I have written I want to do a get call dot get I specify the URI, the endpoint which I want to hit
+when I call dot retrieve.
+Now we know that when we call retrieve, we get an object of response spec.
+Okay.
+So it creates.
+So we have a constructor.
+In this constructor it set this object request header spec.
+Because from here itself we are invoking from request header spec.
+If you remember the diagram from request header spec itself we are calling the retrieve.
+Okay.
+So it has the reference.
+So this gets set.
+Okay.
+But now I got an object of the response spec.
+Now till now nothing happened.
+So the even though the name said retrieve I am not retrieving the response.
+I am not hitting the client or server.
+I am not getting the actual response.
+It is just giving me the response object.
+That's all.
+Nothing much till now.
+Response object means this response spec object.
+Now I am filling it up.
+First I am telling it on status.
+I am telling it that once you get a response in future, how you should handle the exception.
+So I am calling its on status method and it has a response error handler which has this.
+So response error handler is a functional interface which has.
+This method has error.
+It has only one abstract method has error which accept response.
+So I am providing its lambda expression response.
+If response is for access means some invalid input request, then I am just saying my custom exception.
+Throw this Else if if response is five xx something wrong at the server side itself there.
+Okay, so it's an internal server or null.
+Uh just put internal server error.
+Okay.
+We do not know what exception come.
+Okay.
+Otherwise return false has error.
+No.
+No error.
+Okay.
+So this implementation.
+So this implementation I passed into this handler.
+And now this when this on status get invoked after retrieve I get an object of response spec.
+From this response spec I called on status.
+So it update the status handler this field.
+Okay, so with this info, whatever the info I provided here that if for access this implementation,
+this implementation ultimately gets set into this status handler, okay.
+And after that it will return me an object.
+So what object on status is returning?
+On status is returning where it is on status is returning me.
+The same response is back itself.
+So I am whatever the object which I am getting.
+It is like body is itself the same.
+So I'm getting the response object itself.
+Then I invoke the body.
+Now in the body, if you see what happened, just see little bit more concentration here.
+So in body I tell whatever the response I get I need to map to a string.
+Okay.
+So now here if you see the body in the body what exactly happens is it calls execute and extract which
+internally call this exchange method.
+But what I am passing here I am passing it this.
+When I called exchange it has it required this exchange function, this exchange function I am providing
+here.
+Actually it is the framework which is providing request response read body.
+Okay.
+How you should once you get a response how you should handle it.
+So here if you see this read body has like message converter like whatever the first you handle the
+status handler we have already had set the status handler right.
+If status is for access, throw this exception.
+If it is five access, throw this exception.
+Else false move ahead and after that it will go.
+And whatever the response I get it will convert to its this type string dot class.
+It will do map mapping.
+It will do mapping to this.
+So all this logic I provided into this lambda expression.
+This function.
+Okay.
+So once now at this point of time I will call tcp http request.
+And once I get the response ultimately then it will execute this function.
+We'll see that.
+Okay.
+So on status is used for handling the exception.
+And this is where how we can handle the exception.
+So if you want full control over response building.
+So someone says that hey why I have to call from here.
+Why I have to do retrieve why my control first go to here and from again I have to come to this okay.
+Why I since when I am in this method.
+Okay, I added the except I added the header instead of calling retrieve canine directly called exchange
+and I will provide my implementation that how the response should be handled.
+Yeah you can do that.
+That's what I am doing it here.
+So I did the get it returned me an object.
+From there, I call the Uri.
+Uri returned me an object.
+From there I called the dot exchange itself.
+Okay, because after Uri I reached to this point.
+I reached to this point.
+After I reached to this point.
+From there, I directly called exchange.
+I don't call retrieve now because retrieve only helps me in providing this implementation, right?
+This implementation, this implementation.
+Okay, retrieve only help me getting this implementation.
+So I am providing my, uh, since this is the function interface, I'm providing my implementation here.
+So request response if response is for do this.
+If it is five, do this else.
+This is how you should map the response which once means you will get from the server.
+So whatever the response dot get body.
+I am currently doing mapping to string.
+I'm reading I'm from the stream.
+I am copying it to string object.
+Okay, now you don't need this response spec.
+Now you don't need response spec methods.
+You don't want on status.
+You don't want body.
+You don't want to entity.
+You don't want anything because you have already passed the.
+Exchange function like how you should handle the response.
+Okay.
+Now let's see a little bit insight into the exchange method.
+So once we call the exchange, either by directly us or this response, it's pack itself internally
+when we call dot body or dot to entity internally it call exchange method of this one it called exchange
+method of this one.
+Right.
+So let's see its implementation.
+So this is the implementation of exchange.
+So this is the first step where it create a request okay.
+This is the place where it actually creates a object of.
+HTTP client.
+And remember that in Rest client this HTTP client is different than in HTTP 1.1 okay this is different
+object I will show you.
+So this is the first.
+So here if you see second is calling execute.
+This is where internally it calls create TCP connection send request get response.
+And once you get the response we have to do the mapping.
+So here it is calling exchange function dot exchange.
+So we are running the exchange function.
+So what are the functions we are passing here.
+Right.
+We saw that this exchange function this one this is exchange function okay.
+And here.
+We are passing this exchange function.
+If you are using this response spec which tells us how to map the response and how to handle the exception.
+So this is running at the third step.
+Once you get the response it will run the exchange function.
+So first it is calling the create request, which it returns, which it calls this default factory,
+which is JDK client.
+HTTP request factory.
+This is in the rest line.
+This is the default.
+It will create an object of HTTP client.
+Again, this HTTP client is different than what we used in HTTP one HTTP 1.1 version.
+This HTTP client is present inside this package.
+Java dot net dot http and this HTTP client supports takes care of everything TCP connection caching
+your sending request response right?
+It takes care of everything.
+Also, this HTTP client has support for HTTP version 1.1 and HTTP ATP version two.
+Remember that Rest template can only handle 1.0 and 1.1.
+It can handle till two.
+If you remember, HTTP version two can send client server can send multiple concurrent request HTTP
+request and the server can concurrently send the response.
+But in 1.1 it's always like request response request response.
+So if you want HTTP version two, you have to use the Rest client because this latest HTTP client object
+provides support for that.
+Okay.
+So it creates an object of HTTP client returns it okay.
+After that it will call the execute method.
+This execute method internally calls the sender.
+Okay, so we have already created an object of HTTP client.
+So using that it calls the send a sync.
+Even though it's a sender sing it's not actually Rest.
+Client is a synchronous.
+So it actually wait for the response.
+It here it do wait it wait for it to finish.
+So I told you this HTTP client internally takes care of connection caching support, provide support,
+sending requests, getting the response and ultimately it give us the response.
+Now once we get the response it calls the third exchange function.
+Exchange function.
+You know that which now know how to handle the response.
+So here we have created one exchange function.
+How if error comes how to handle it.
+If this exception occur throw this exception.
+If this exception comes throw this error.
+So otherwise how to map the body either in a string or either map to some different object.
+So all this logic present inside this here, which now executed at this point of time.
+Okay, so this is the high level flow for it.
+Now one more thing is if you see interceptor work is also very simple into the rest line.
+So I have an order service product service.
+Now if I have to add an interceptor first what I have did is I have created an interceptor my custom
+request interceptor and implement the client HTTP request interceptor.
+You have to implement this one.
+Now you have to provide an implementation of this method.
+So what I have to do is whatever the request I have, I am fetching its header.
+Now I am adding certain more data, so I'm intercepting the request and adding appending some value.
+So I have appended one header and proceed the execution now.
+Okay, so it provide me all the methods I have to just say that okay I have intercepted it, I have
+done whatever.
+Now you go ahead and execute.
+Okay.
+So that's the first thing we have to do.
+And in the second while creating a Rest client instance.
+Right.
+We can call dot builder dot build.
+So there we can set the interceptor.
+So this is our interceptor which we have created.
+So I have created an object of my interceptor here.
+And I have set it here.
+So while creating an object of Rest client we can set an interceptor.
+And that's all.
+So this is as it is what we have written before.
+I have a rest line client.
+I did dot get dot url dot retrieve two entity and that's all.
+Ultimately, if you see when the control comes here, invoke it.
+It has the header X custom header.
+My value whatever I have intercepted and set.
+Okay.
+And if the question coming to your mind that at what place in this uh, so we have an exchange right.
+We have seen step one, step two, step three.
+In what exact place this interception catch.
+So if you see when we do execute this is the place where we call TCP connection.
+Send the request receive the response.
+So before calling this method the interceptor will get invoked.
+So before this method interceptor get invoked.
+And after that we just uh Are here.
+Interceptor got invoked.
+We did whatever we have to do on request.
+After that, we have to call execute so that it can move ahead.
+Okay.
+So this is all about rest line.
+To be honest, I can understand here it is not that simple.
+If you are going in deep I can even stick to one level higher.
+I don't even I really thought multiple times should I go into this flow.
+Because this is not simple to understand.
+There are so many jargons, generic types and all using so it making the flow a little difficult.
+I was not able to decide whether I should go or not in depth this much, or I just cover that.
+What is fluent API and this methods which are available.
+But I took a chance that if I'm able to explain this clearly or not.
+I tried a lot to create a better example and this diagram with flow.
+I took a chance that if I can explain this complicated flow with ease.
+So please have a look one more time you will get understand about properly what is fluent API.
+How this flow chaining happens works right?
+If you want to handle the exception handling, how you can do that right?
+Exception handling is also very simple okay.
+This response is back.
+What is its use right.
+How it's helping us in the mapping response mapping and exception handling.
+So all these things you will try with your hand right.
+You will get it clear.
+If you get any doubt please feel free to comment and we can discuss further.
+Right.
+Okay guys.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

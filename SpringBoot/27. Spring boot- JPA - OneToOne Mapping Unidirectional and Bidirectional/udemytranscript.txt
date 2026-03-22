@@ -1,0 +1,960 @@
+Happy New Year and welcome to Concept and Coding.
+This is Shreyansh.
+And today in Spring Boot we are going to do very important topic like you can call it association types
+or mappings like 1 to 1 mapping, one to many many to many etc..
+So let's start without wasting any time with 1 to 1 unidirectional okay, so one entity, let's say
+A references only one instance of another entity, okay.
+But reference exists only in one direction that is from parent to child okay.
+That's why 1 to 1 unidirectional only one sided direction.
+So for example user one user can have only one address.
+So here we can have a reference.
+User can have a reference of address.
+And it is like only one sided from user.
+You can get the address details but from address you can't get the user detail.
+No.
+So reference only exists at the one side from user to address, and there is 1 to 1, one user, one
+address.
+That's all.
+So similar kind of example I have shown here.
+So I have created one entity with the table name like user underscore detail.
+Okay.
+So this is my entity user details.
+It has certain fields like primary key ID name phone.
+And I also wanted to have a reference of user address.
+Okay.
+So user address I have created another entity but I wanted to store it a reference like a foreign key.
+So that's why I use it at the rate 1 to 1 annotation.
+Cascade equals to cascade type dot all.
+So don't worry about this cascade type.
+We will discuss in depth.
+But first focus on this at the rate 1 to 1 annotation.
+So what this add the rate 1 to 1 annotation is doing is inside this user detail.
+Or you can say that user underscore detail Detailed table.
+It creates one foreign key.
+Okay.
+And that foreign key is like this ID user address ID okay.
+So from user details you can access user address.
+But it's only one way.
+That's why it is known as 1 to 1 unidirectional okay.
+So user address has certain like what is the street city state, country, pin code and some unique
+ID which I called a primary key.
+Okay.
+And it's a generation Typekit identity.
+You already know that automatically it will increment.
+Okay.
+So this is how a table look like in the user detailed table.
+You will see that all these columns will be there.
+So ID name phone apart from that one foreign key okay.
+And uh it would be user address.
+So by default see I, we haven't given any name for this uh, foreign key.
+Right?
+So hibernate will create like field name whatever the field name underscore id so user underscore address
+underscore id it will create.
+So this was the foreign key and foreign key of this thing okay.
+For the user address okay.
+This ID is equivalent to user underscore address underscore ID.
+And this is a foreign key in this table user underscore detail table okay.
+So by default hibernate choose the foreign key name as underscore name underscore ID.
+So I already told you if you don't give any name here of this uh reference how this user underscore
+address underscore ID came and it chooses the primary key of another table.
+So here also if you see I only tell hey 1 to 1 mapping and this entity so it automatically chooses the
+primary key.
+Okay, as the reference for a foreign key here in this table.
+But if you need a more control over it, we can use add the join column annotation.
+Okay.
+You don't want hibernate to choose the name for you.
+And also you don't want like uh, you want to specifically mention by yourself what key you want to
+create as a foreign key.
+Okay.
+So what you can do is you can use here like 1 to 1 cascade type.
+Don't worry about it.
+So but 1 to 1 annotation.
+So this will tell that in this entity or in this table user underscore details table there will be one
+foreign key of this entity.
+Now what is the name of that foreign key.
+So now we are specifically mentioning at the right joint column, what is the name I want address underscore
+ID okay to be shown in the table.
+So here if you see address underscore ID is coming not user underscore address underscore ID.
+Also I am here specifically mentioning that what primary key column what foreign key column is pointing
+to in the other entity.
+So ID so it is specifically I am mentioning this one.
+But here you can have one question that, hey, what about the composite key when we have more than
+uh, two columns then how hibernate by default will choose that what to provide then it will not work.
+By default you have to provide using at the join column that in case of composite key.
+So I will show you how.
+Okay.
+So the same question comes to our mind.
+What about the composite key?
+How to reference it?
+We need to use add the join columns.
+Okay, so from the previous video you already know how to create a composite key.
+So now let's say in the user address entity okay I want these two columns Street and PINCode to be considered
+as a composite key.
+Let's say for example these two combinedly is a unique field.
+Okay.
+So I am using this approach at the rate embeddable.
+So I created a new class user address composite key.
+And I added all the fields which together creating a composite key.
+Okay.
+Now in the user address I am using at the rate embedded ID and using the creating an object of this.
+Right.
+And this is the I'm calling it as an ID and all the other fields of the user address.
+Okay.
+So user address would look like.
+Like a normal city country Pin code, state street, all the fields like street, street, pin code,
+city, state, country.
+And you can check that it is considered as a inside this your address.
+This table address.
+This is your composite key.
+Okay.
+Now we have a composite key.
+Now I want to create 1 to 1 unidirectional mapping okay.
+So from user detail.
+So I'm creating an another entity user details.
+It has certain its own field like primary key name phone.
+Now I want to create a foreign key.
+Or you can say that it should have a reference to user address okay.
+But now it has composite key how I would create it okay.
+So first of all I have added like defined the field user address this one.
+Now I have annotated with at the rate 1 to 1.
+This will tell that to the JPA that this would.
+This table contains a foreign key.
+Okay.
+Uh, for this entity.
+Now what what should be the name and what should be the column?
+Or you can say that the ID this foreign key points to.
+So I am using at the join columns.
+Okay.
+In case of composite key we have to provide all the IDs.
+Composite IDs here let's say.
+Now this is an array right.
+So inside join columns like this you have to provide all the composite keys like at the join column
+name equals to I give address underscore street reference column name street this one.
+And another at the join column address pin code.
+This is the name which I wanted okay.
+And what is the reference column name pin code.
+This one.
+So all the fields of the composite key I need to mention like this.
+By default hibernate don't know or JPA don't know what key it has to use.
+In case of composite key, you have to specifically mention like this.
+So now here if you see the user underscore detailed table how it gonna look like ID this one name phone.
+It has name phone and then address underscore street and address underscore pincode address underscore
+street and address underscore pin code so address in the user detail table address pin code and street.
+This is a foreign key Okay.
+And what columns it pointing to?
+This pin code is pointing to this one, and this street is pointing to this one.
+Okay.
+This is what we pointed.
+Okay.
+Now, before we proceed further with other mappings like 1 to 1 bidirectional, many to one, there
+are few things which we have to see.
+Like what is cascade type?
+Now we have seen that when we are providing a mapping like at the rate 1 to 1 cascade equals to cascade
+type dot all what it is man like why we are using this.
+What's the purpose of it.
+So let's see that what all values it can take.
+First cascade type.
+So cascade type can have six values all persist merge remove refresh and detach.
+So without cascade type any operation on parent do not affect child entity.
+Managing child entities explicitly can be error prone.
+So consider this.
+You have a parent entity.
+And it has one child entity.
+I can say that the life of a child here depends on the parent.
+Or you can say that existence of a child entity depends on a parent entity.
+If parent entity is destroyed, child entity should also get destroyed.
+Okay.
+If parent entity is created, child entity is also be created if parent entity updated if required.
+If there is any update child entity should also get updated.
+Okay, so we can say that whenever a use case where child entity exists and depend upon the parent entity,
+this casket type can help us with that in managing it if they are not like if they are independent,
+like if you are deleting parent but child entity is not deleted, say it could be an error prone right?
+When we are saying one time that child entity existing is depend on parent only for example school and
+rooms.
+So here room existing is on school.
+If school destroyed, room is also destroyed.
+Right?
+So there is no way where like school is finished.
+Then you have still have school rooms available.
+So just a use case.
+So cascade help in managing that any operation on parent.
+Right.
+So this is without cascade type with cascade type any operation or parent effect child entity also.
+So let's say that first cascade type is persist as the name clearly says that persist means inserting.
+So inserting the user entity user.
+Here it is our parent.
+So inserting the parent entity automatically possesses associated user address entity data which is
+you can say that child.
+So if you are inserting the parent entity automatically its associated child entity get inserted to.
+So here in this use case here if you see.
+Very basic 1 to 1 unidirectional only I have a user details.
+Uh so it has certain fields.
+I am creating a foreign key here, 1 to 1 annotation.
+And I'm just specifically wanted to give the name.
+So at the join column address ID as a foreign key name and what column it should point to other entities.
+This ID okay.
+Now here I have given cascade equals to cascade type dot persist Okay.
+So means whenever you are inserting this table, user address will also get inserted its child because
+this is its child right user address.
+So that will also get inserted.
+So now here if you see very simple example this is one controller class of a user details okay.
+So I am inserting just calling the save user.
+So this is the service class and service class ultimately calling repository.
+Nothing difference like we have already seen this before.
+So now here I am trying to do an insert.
+So I'm calling a post API, this post API.
+And I'm passing this body.
+So in this body it is accepting user details.
+So this user details it is accepting so name phone.
+So here I'm providing name phone.
+And here inside this user address Object.
+Street.
+City.
+State.
+Country.
+PINCode.
+I have provided the body.
+Now when I invoke this okay, it ultimately calls save.
+Okay.
+Now what's the response I got here?
+If you see the response, I got an ID okay.
+And here inside this user address I also got the ID like this I am getting a response.
+So means a row has been created in the user detail table and also in the user address table.
+Also see.
+Bangalore Karnataka 123.
+So see all data got created in both the table.
+So that's what.
+Why?
+Because of persist.
+Even though I am calling a save on user details, but still it goes ahead and updated its child entity
+two.
+That's why Cascade type dot persist does.
+Similarly, cascade type dot merge works on the update.
+Updating the user entity automatically updates its associated child user address entity.
+So, for example, let's first see what happens if we use only persist cascade type and try to update
+it.
+Okay, I'm not using merge for now.
+Only persist.
+So this is the controller class.
+This is the post.
+This is the put okay.
+And the user details.
+It will call the update.
+And here it's a very simple right.
+Uh first based on the ID I will see if data is present.
+If data is present I will update it with this new object which is coming.
+Okay.
+So here you might be saying that hey for insert.
+Also we are calling save and for update.
+Also we are calling save as I already.
+If you can recall from the previous video I have already mentioned that in this user patch in the body
+you will also pass ID field, right?
+Or whatever the primary key.
+So internally it has the logic that if it's not a new entity means ID primary key is present instead
+of inserting it goes for updation.
+So that's logic is internally there.
+And I have already explained that one.
+Okay.
+So this is very basic class which we already know.
+Now what exactly we wanted to test here is first we are trying to do an insert operation.
+So insert operation is very very similar like what we were doing.
+We are trying to this is my body and I'm trying to insert name phone number of the user.
+And also I'm providing the user address object.
+So as you can see properly got inserted ID here got created.
+And also for the user address.
+It got created.
+Properly created.
+Okay.
+So till now we know that persist helps that cascade type persist.
+But now what happen if I do merge?
+Second.
+Now I'm trying to do update.
+So here if you see now I'm calling a put API.
+Okay.
+I'm trying to update this one.
+User one.
+This one.
+Now here if you see this is the object I am passing okay.
+So I am also passing ID because so that it can internally go for update operation not insert.
+So for id one the name I am updating to XYZ underscore updated.
+But also if you see user address, I am also change the city from Bangalore to Bengaluru.
+I change it.
+But now here if you see the response what happening?
+The name got properly updated but in the user address the city got changed.
+No.
+It didn't.
+Why?
+Because of this.
+Persist.
+Okay.
+So persist.
+Only take care of insertion.
+But we have to use for updation.
+We have to use merge because for updation, it will make sure that any update happening on user entity,
+if there is any update happening on the child entity, that should automatically get updated too.
+So now if I change it that yes, persist also wanted and merge also I wanted.
+So like this you can give at the rate 1 to 1 on this user detail and in the cascade equals to.
+In this kind of an array you can provide all whatever the cascade we wanted.
+So let's say I wanted persistent merge.
+Okay.
+Now what happen is so insert properly happen now in update I am again trying the same two things I'm
+trying to update.
+One is in the user and one is under the user address.
+Now here if you see both get updated properly.
+So it's name city name also changed and the user name also got changed here in the user detail table.
+Okay so Cascade happened properly from parent to child.
+Similarly I think by now you can already know that what remove would be doing deleting the user entity
+automatically delete its associated user address.
+Or you can say that child entity.
+So here I am creating one delete mapping.
+Okay whatever the ID comes I am just calling this service to delete it, that's all.
+I am calling 1 to 1 mapping here in the user details, which has which is a foreign key holding a foreign
+key.
+And here I am also appending remove I want persist I want merge and I also want remove capability.
+So let's say that I first do an insert properly inserted.
+Now if I am doing delete operation here, if you see I am calling delete operation this I am creating
+its 204.
+No content properly got deleted because I am returning this.
+No content so properly got deleted.
+And if you check the table there is no row.
+Okay, so even though I am calling delete operation on user detail parent here, if you see I am calling
+delete user okay from id, I am calling delete by id on user details repository, but again still it
+able to delete the user address table also because of cascade type remove.
+Similarly there are two more cascade type refresh and detach which is less frequently used.
+Okay.
+Both are very less frequently used.
+But let me again tell you, uh, just for reference purpose, but hardly.
+We use it.
+So here, if you notice, right.
+Whenever internally we call save.
+You already know about entity manager.
+I have already explained entity manager in depth during first level caching.
+Right.
+So entity manager has multiple method like persist okay.
+So even though let's say that from user repository, when you are calling dot save internally save what
+it is using is Entity manager object only and it's called persist method.
+Similarly, Entity Manager has multiple method and one of the method is called refresh.
+Okay, so what refresh does is you know that entity manager holds persistence context persistence context
+help in first level caching okay.
+So when you invoke this refresh method.
+It bypasses the persistence context and Entitymanager directly query the DB.
+That's what it is.
+Use refresh.
+Okay, so here if you see when you do cascade type refresh what we what we have to do here, when we
+use cascade type dot refresh, we tell JPA to not only read parent entity from DB, but its associated
+child entity too.
+Okay.
+So see in this case okay, this is user detail parent and this is user address.
+This is a foreign key.
+I'm creating 1 to 1.
+But cascade type I'm putting refresh.
+What does it mean that internally whenever let's say hibernate generally we never do entity manager
+dot refresh okay I've never seen such use case But let's say in some point of time, hibernate wanted
+to directly hit DB instead of first level caching, and internally it might be calling refresh for on
+user detail entity because it want user detail to read directly from DB, not from persistence context.
+So this cascade type refresh makes sure that even the user address is directly read from DB, not from
+the persistence context.
+So you got that point.
+So this is to generally refresh method is to bypass the persistence context.
+First level caching.
+And this cascade type makes sure that you bypass for your child associated child tables also.
+Similarly Cascade Typekit detach entity manager has one more method called detach like persist like
+refresh.
+Similarly detach.
+You know that I have already explained in the previous videos the life cycle life cycle of an entity
+who manage it.
+You can know that like persistence, context like holds the lifecycle of an entity till the entity is
+in persistence context, it holds its lifecycle like any update insertion, deletion, updation.
+Okay.
+But if you want to detach it, okay means JPA is not managing the lifecycle.
+Now if you want to detach it, you call the detach method okay.
+So when we use Cascade Typekit detach we tell JPA to not only detach parent entity but its associated
+child entities too.
+Okay, that's what only its purpose.
+Generally we never use this cascade type, but just for reference.
+Also we never use detached method.
+Also internally hibernate might be using it like for what purpose?
+We don't know when, but let's say in any use case it want to because to save the memory or whatever
+the use case, it want to remove the object or entity from the persistence context, it don't want to
+manage it.
+Okay.
+So what it do is it do detach.
+And this time make sure that you detach its child entities to.
+Okay.
+And the last one is that casket type dot all.
+So instead of using like in an array or comma casket type dot refresh comma we can simply use casket
+type dot all means.
+We want all the casket type capability persist merge remove refresh and detach okay.
+Okay.
+So one question should have come to your mind by now.
+We saw insert update remove operation okay cascade type okay.
+When insert is happening because of this cascade type child table.
+Also get inserted when update is happening on parent because of the cascade type merge child table.
+Also get updated similarly for remove on the parent cascade type child got also removed.
+But what about get?
+We haven't discussed it.
+So during Get means reading the entity, so does child entities always get loaded with parent entity?
+Because if you are trying to fetch parent entity like user details does, user address will always get
+loaded.
+Answer is yes, or we can or we cannot.
+It depends what our use case.
+So there are two type of loading.
+Eager loading and lazy loading.
+So eager loading means associated entity like child entity is loaded immediately along with the parent.
+Whenever you do a get call on the parent child entity is also loaded immediately.
+And if you see for 1 to 1 and many to one, this is the default mapping.
+So here if you see 1 to 1 annotation what is the fetch default type is eager.
+Similarly for many to one, if you see it's a functional interface, what is the fetch type?
+Default is eager.
+Similarly for lazy loading means associated entities not loaded immediately, Only loaded when explicitly
+accessed, like when we call.
+Let's say for example, I am calling user detail get user address.
+So here I am trying to access it.
+So it make another Select query.
+Okay.
+So here if you see it is default for one to many and many to many.
+Like for if you see one to many, what is the default fetch type?
+Lazy.
+Similarly for many to many, what is the default fetch type is again lazy.
+So in short, if you are using eager loading and you are querying the parent entity, generally whatever
+the select query it will make select, it will make with left join.
+Okay, you are like select your parent entity left join your child entity always.
+But if you are using lazy loading.
+So first it will do only select query on parent entity.
+Okay.
+And now on demand.
+If your code internally doing trying to access the child entity here user address my child right.
+If your parent is trying to access the child then it make another Select query with left join okay with
+parent and your child.
+Then it make another left another select query with left join.
+It fetch the data and then return okay.
+And another things comes to mind that hey why for 1 to 1 it's uh fetch type is eager why for many to
+one fetch type is eager and why many to many and one to many.
+It's lazy.
+So see, this is my understanding.
+Whenever like 1 to 1, many to one means this parent have only one child.
+only one child.
+So JPA do an assumption that since there is only one child entity, so possibly it might be required
+while accessing parent.
+And since it's a one, so it might not be a much impact on the performance.
+But when we have like one to many, many to many means many child's, how many we don't know do we do
+do parent required all the child's okay.
+So here JPA don't know that.
+So that's why it uses default lazy based on the demand.
+It might load it sometime based on the demand.
+If I do a left join, maybe I will just filter out whatever the child rows I wanted.
+Maybe not.
+If there are so many things I just only want two child's, I can fetch those with the query.
+Okay.
+So we can control this behavior.
+Yes, we can control like if I want.
+So currently this is the default.
+But what if I want to control that.
+Yes.
+For 1 to 1 also I want lazy.
+For one to many also I want eager.
+Like I want to control.
+On my way.
+Can we do that?
+Yes, we can do that easily.
+So here, if you see this is the entity, very basic entity like what we are seeing parent right.
+User details.
+My parent this is its fields.
+This is the foreign key which I am creating.
+Okay.
+This is the name of the foreign key.
+And this is the column for in this entity which is going to be associated.
+And here I am using 1 to 1 cascade equals to all you already know.
+Now here I am putting fetch equals to fetch type dot lazy.
+So even for 1 to 1 default is eager.
+Now I am overriding it with lazy.
+So now this fetch type, I am overriding it.
+Fetch field.
+I'm overriding it.
+Okay, so now if we can try testing this code, let's try testing this code.
+First do an insert operation.
+So here I am calling a post operation on the user.
+So it got properly inserted okay so I have provided name phone number for the user and also the address.
+Now here if you see user detail also get properly populated I got the id.
+Similarly user address details also got properly populated.
+I got the id okay, so insert happened properly.
+Both the tables got inserted.
+User detail table and user address table both got populated.
+Now I am doing a get operation.
+Okay I am trying this API, get API and I am trying to fetch this user which is created.
+This user which is created.
+Now what?
+My expectation is first, my expectation is that only this data will come.
+ID name and phone.
+This user address won't come because I have put lazy and I had nowhere in the code.
+I am here just I am doing find by in the get call.
+I am just doing find by ID and nowhere in the code I am doing like user dot user address so it should
+not get loaded.
+So what output I am seeing internal error failure.
+Now this is question why am in why failure?
+So here what happening is.
+Get operation failed because of loading user address lazily.
+Now since we are put a lazy lazy on the user address right foreign key part.
+So during response building.
+So it has properly during get call it has properly created the select query.
+It has properly made the select query okay and it fetch only the user details.
+It has fetch only the user details.
+Now it is creating a response.
+Now this response doesn't have user data, user address data and during response serialization Jackson
+got failed it.
+Don't know how to serialize this data user address since that it is missing.
+Okay, so here if you see serialization got failed which is by Jackson.
+Okay, so Jackson doesn't know how to serialize the data like because user address data is not even
+present and you know that why it is not present because we have specifically mentioned lazy.
+So that's why it might have internally hit a Select query.
+Select query on parent table that is user underscore detail table so it doesn't make a left join and
+user address details is not even fetched.
+So in this case user data user address data is missing.
+So during serialization Jackson failed it.
+Don't know how to serialize it.
+So how to fix it?
+So before we fix it, one thing should come to a man then.
+Hey, how for insert?
+It worked.
+Why?
+There is no serialization during insert so during insert.
+Also when I try to insert in the response I get user plus user address.
+Also how come now because user address I have put lazy, I have put lazy.
+Then how come this response has come in the insert?
+So now remember that during insert operation, what we are doing is we are first creating an object.
+We are having entity, user detail entity and user address entity, both the entity we put into persistence
+context.
+And then we inserted into DB.
+Okay.
+Now while constructing a response it try to fetch the user detail and user address entity does it has
+to query the DB.
+No, because both the objects are in memory in the persistence context, in the same call, see, in
+the same insert call, we first insert it into the persistent context, then into the db user address
+table.
+Both got inserted.
+Now in the same insert same entity manager.
+We are using same entity manager and during the response it try to fetch both the object so it will
+return from persistence context only.
+That's why it didn't fail during sterilization, because user address is entities also filled up properly.
+But in case of when I make a Get call it is creating a new entity manager.
+So this and this persistent context is not accessible for the new entity manager.
+So persistent contact doesn't have this to user detail and user address.
+So try to access from DB and in the DB.
+Because of this lazy it make only select query on the user detail table.
+User address is not even left.
+Join with it.
+So that's why during response creation of the get call, Jackson doesn't know how to serialize the user
+address object, this one how to serialize it and that's why it failed.
+Okay, so now let's see that how to resolve it.
+So one way is that use JSON ignore.
+So in this my foreign key right.
+This is my foreign key.
+Here I put JSON ignore so JSON ignore.
+What it will do is that Jackson will not even put it into the response.
+It will simply ignore it.
+Okay, so now here I have used this.
+So even if you see that now during the get call I am getting only user details.
+This user address is totally missed even though it is missing because of lazy.
+Okay.
+There is no serialization issue because Jason Jackson saw that a JSON ignore is there, so I don't need
+to serialize itself, but it will remove the user address field totally for both lazy and eager.
+Also, even if you change it to eager, then also you won't get the user address now because we are
+specifically telling Jackson to ignore this.
+Now what shall we do?
+So another thing we can do is using the DTO data transfer object.
+This to me looks more clean and recommended approach.
+So see those who don't know what DTO write data transfer object.
+So here see this is your controller.
+See this.
+Okay.
+This is your service class.
+And let's say this is your repository.
+And ultimately this is your entity.
+And this entity looks exactly to your DB.
+So till now whenever any response goes out from DB to repository to service to controller.
+So we are returning this entity only.
+Okay.
+And this entity is equivalent to our DB tables.
+Generally returning the entity itself is not recommended.
+Why?
+Because let's say that in your table you have.
+Columns like say a, b c, d e okay.
+And you have this.
+You don't want outer world to know exactly what is your column name and what.
+All fields are present.
+You only want to return what client expected.
+You want client to see.
+I only want this three columns to see.
+This two is for always for my internal purpose D and E.
+I don't want it to go outside when.
+And also I don't want a, B, c exact my columns name to be seen outside.
+So what I can do is I can create a DTO.
+Let's say this is entity A so I can create a DTO, let's say entity A, DTO.
+So here I can put only those fields which I want.
+Let's say for a I want to call like say proxy A for B, I can say proxy B some different name.
+So that outer world doesn't know what column name I have okay.
+And here if you see D, D and E I don't want outer world to see.
+So I don't have D and E into my DTO.
+So here now from repository to service and before controller goes out to the entity it do mapping.
+Mapping from your entity to DTO.
+You fill the DTO, you create a DTO object and you fill the entity.
+You fill these values and then ultimately return the DTO.
+So outer wall only aware of the dtos.
+Okay.
+So that's where I'm saying we can make use of DTO to avoid this serialization issue.
+Okay now you can say that.
+Hey how?
+So now let's say that I created this DTO user DTO.
+And I said that these are all the fields which I wanted to go out ID, user ID, user name, phone number
+and only address.
+Okay.
+Now here, if you see that my dto I want address right.
+So now in the constructor I am setting this.
+So here I'm just printing System.out.println.
+Going to query user address here now.
+So user address user detail dot get user address.
+So now you are making sure that since you need address.
+Here you are invoking the user address specifically.
+So by our understanding, we know that at this point of time a query select query would be make with
+the left join and user address data would be fetch.
+Okay.
+And after that this got filled up.
+And once got filled up not equals to null.
+Then whatever the I wanted to only send the street address.
+Depending what you want, you can fill it up.
+Okay.
+So here, if you see that this makes sure that you are aware of what you are doing.
+You are not relying on Jackson that to catch the issue.
+So now you are aware that okay in the response I need to send the address, even though whether I would
+be using lazy or eagerly, I don't know.
+I am checking if the get user is address is not equals to null, then I'm setting it as.
+Otherwise I will put it null.
+So any some value would be present in my DTO.
+Okay.
+And ultimately this DTO will go out.
+And even though it's a lazy you know that at this point of time a query would be made and it will always
+get filled up.
+Okay.
+So here, if you see that this is my parent entity, user detail everything same 1 to 1 I am using fetch
+type lazy.
+Okay.
+And this is my foreign key.
+Okay.
+And I have created just one method here.
+Like whatever the user details would be present.
+If I call two DTO method, it will ultimately creating a new DTO object which I created for this one
+class.
+It's called its constructor and pass the this entity.
+And from this one I am doing actually a mapping.
+So this mapping I told you right from entity to DTO.
+That's all I'm doing from the entity.
+I'm just filling whatever I needed.
+And in the controller.
+In the controller.
+During get call first I am doing find by ID so it find by ID ultimately it will return me the user detail
+from that user detail object I am calling to DTO.
+So this one.
+So this DTO will create a DTO object and whatever the object is coming in the entity, it will pass
+this to here.
+And from this I will fill up whatever I required.
+Now see the behavior calling a get call on user one.
+Okay so here if you see output I am getting is ID name phone address.
+This is my DTO which I created.
+ID name phone and address and address called filled up.
+Yes, even though I created it.
+Lazy.
+Why?
+Let's see that.
+See the behavior?
+So first I have done an insertion.
+Right.
+So here I haven't shown the insertion, but that is same.
+So it inserted into user detail and also in the user address.
+So I have the data both present.
+Now I am calling this get call one with the lazy user detail is marked lazy.
+So here if you see select query is made.
+So from I am getting a name id phone address id from this.
+So here if you see no no left join is made on user table user address table plane select query on the
+parent.
+Okay so user address data will not be fetched at this point of time.
+So it will ultimately return it.
+Now find by ID done select query made.
+Now we're calling to DTO.
+So two DTO it will go.
+It will create a user DTO object.
+Now I am filling whatever I wanted.
+Now it will print going to query user address here now.
+So now here it printed going to query user data here now.
+So here if you see at this point of time I am trying to say that user detail get user address.
+So because it was lazy, now I am trying to reference it.
+So now one more Select query would be made.
+So here if you see one more select query would be made.
+Okay.
+So now it is fetching the user address data for this foreign key like so.
+Now it will fetch the user address data.
+And put it.
+Now it gets addressed would be filled up.
+Okay.
+So you got the behavior.
+Like how we can avoid the serialization issue in the DTO is much safer.
+I would say that because you are totally aware that if you need the child, then you have to call like
+this so that, uh, it make one select query.
+If you don't need it, don't add it so it will not even try to.
+You will not even try to add it.
+And ultimately during the DTO, uh, serialization, no issue will come.
+So means you are creating or updating the fields of your DTO.
+So either would be null or some value would be present.
+Okay, so now till now what we have seen is 1 to 1 unidirectional.
+And with this unidirectional, I have already told you what is cascade type?
+Okay.
+And also.
+I have showed you the different like, uh.
+Different behavior.
+Like eager loading and the lazy loading.
+Now let's see.
+1 to 1 bidirectional.
+So till now, what we have seen is 1 to 1 unidirectional means you have one parent entity.
+It has a foreign key which is a child entity.
+And this foreign key on this ID primary key on this table primary key.
+And you can only access in one direction parent entity to child entity and there is no way to backtrack.
+So in 1 to 1 bidirectional, you can also travel backward from child to parent.
+But remember table structure do not even change.
+Both entities hold reference to each other.
+Means user detail has reference to user address.
+User address also has a reference to user details.
+User address also has reference to user details, but that doesn't mean that this is also also has a
+foreign key of this.
+No.
+In the bidirectional the this the child right?
+The child also has a reference to your parent, but only in object, not in db.
+So DB structure would still be the same.
+Only one foreign key into the parent entity.
+Okay.
+But in the object we also hold a reference from child to parent.
+I will show you how.
+So in the bidirectional there is a concept called owner side.
+And the inverse side.
+Owner side is generally known as your.
+Parent side which holds the foreign key.
+Inverse size is generally known as your child entity okay.
+So owner side holds the foreign key relationship in a table.
+If you see our previous example like similarly I have created a user detailed entity table.
+These are its field.
+Now I want a user address as a foreign key.
+Like before I have created at the rate 1 to 1 annotation cascade type all.
+You already know what it will do.
+And specifically I don't rely on hibernate, so I'm just telling hey, this is the name I want for my
+foreign key and this is the column on this user address entity.
+This is the foreign key selected okay.
+Now this is till now I have done one sided like unidirectional but in the bidirectional in this entity
+user address entity okay.
+It is all its field.
+Now this is also holds a reference of user details.
+It is holding a reference of user details.
+But one difference you will see that here is in the 1 to 1 annotation like here.
+We can also use it here.
+But here I'm telling that hey map by Map it to this user address.
+Okay.
+Map it to this user address.
+So now in this case what would happen is from user user address.
+Also you can access user details like in inverse direction reverse direction.
+And also it will not create any foreign key like in this table even though we are using 1 to 1.
+Why?
+Because of this map by field.
+This makes sure that only in object Java object right?
+During your code you can do a back like backtrack to your parent.
+Okay.
+So we will see an example.
+It will get clear.
+So here first of all look at the table.
+The table will look exactly the same from user detail, all its field and only one foreign key address
+ID, which we give okay.
+And in the user address you have all its field.
+There is nothing like a user address underscore ID showed up now nothing okay because of the map by.
+So what would happen.
+But since we have the backward capability how we can utilize it?
+Let's see that I am creating a controller and service class for the user address, because I want to
+test the backward capability.
+Now if you work on this user address, can I go in the backward direction?
+Okay.
+Even though you my user address doesn't hold any reference of the user detail how it would be doing
+it.
+So here I have created one simple controller okay, for the user address I am creating a a get API and
+user address id and this is my service class user address service.
+So this is the object name we can create user address service.
+Okay so this would be user address service object name.
+Uh this is just a field name.
+Uh class object is properly for the user address service only.
+So it will invoke this and ultimately it will call find by ID.
+So this is very basic but I created for user address.
+Now let's check the behavior.
+First I am calling an insert operation like before using user detail controller API like the parent
+one which I showed earlier.
+So I am calling this post API and my user detail object and the user address.
+Okay, uh, row got properly inserted into the table.
+Okay.
+Data is inserted into user address table and in the user detail table.
+All fine.
+Now I am doing a get API call on user address.
+What is your expectation at this point of time?
+My expectation is that since I am calling on user address.
+Okay.
+What it will do is when it will fetch it.
+It will fetch ID street, city, state, country, pin code.
+Since I have used map by user detail, it will create one query to fetch its detail also.
+Okay.
+So I would have a user address detail also plus user details.
+Let's see that.
+Will that.
+So now here if you see oops what it is.
+You have user address, id, street, city, state, country.
+Also user detail what we were expecting but again what happening again.
+User address again.
+User detail again user address.
+Some infinite recursion happen.
+What happened?
+This is not the expectation.
+Why it going infinite?
+It should have.
+Stop, right.
+See I'll tell you what happened when we hit a get query here okay.
+As expected.
+First it make a Select query with left join from user address to user detail on the here from the user
+address.
+What is the column address ID right uh id and in the user underscore detail table address underscore
+id.
+So it created this select query and it is trying to.
+Okay.
+It is trying to fetch the.
+Where is that?
+Yeah, it is trying to fetch the user detail backward from the user.
+It is trying to fetch the user details by putting a left join.
+Left join on this address ID and this id okay so it is doing correctly.
+But then why it goes to the infinite recursion loop.
+So what exactly happen is during response construction Jackson is doing serialization.
+You know that.
+So during serialization what happen is Jackson starts serializing user address after user address is
+serialized.
+Okay.
+User address is has like street city state country pin code.
+After that it see that okay it encounter user details object user detail.
+So now it has to serialize user detail.
+So it starts serializing it.
+User detail has ID what name and phone.
+After that it find in the user detail.
+Also because of bidirectional here if you see because of bidirectional user detail also has reference
+of user address.
+So Jackson again goes to user address.
+Now again it goes to serialize street city state again.
+Then again it's a user detail.
+Then again it goes to this one it again parsing serializing it.
+So that's why it goes here in the infinite recursion.
+So first it properly fetching user address.
+Then it was serializing the user detail.
+After that it find out user address.
+Then again it started parsing serializing it while parsing user address.
+Again, find user detail and goes on.
+And then ultimately it failed.
+So infinite recursion issue is something which we have to handle if we are going with bidirectional
+mapping.
+Very important.
+Okay.
+So how we can handle this.
+So there are two ways.
+One is by using at the rate JSON manage reference and JSON back reference annotation.
+So JSON manage reference annotation.
+We should use only in owing entity.
+There is no hard and fast rule, but it's recommended that you use this only on the owning entity owner
+parent which holds a foreign key relationship.
+It tells explicitly JSON to go ahead and serialize the child entity.
+Similarly like.
+User detail.
+In the user detail, it has name, phone number and also user address.
+So here if I use at the rate JSON manage reference, I am allowing that.
+Hey Jackson you go ahead and serialize it.
+Okay.
+Similarly JSON back reference is used on the child entity.
+It tell explicitly to not serialize the parent entity.
+See this example.
+Same thing.
+Bidirectional.
+This is my parent.
+Okay.
+I am holding a foreign key.
+I am putting at the rate column.
+Okay.
+This is and I'm putting at the rate JSON manage reference means explicitly telling JSON.
+Hey you can go ahead and serialize it whenever you are serializing user details.
+And whenever you find user address you can serialize it.
+Similarly, in the child entity okay I have this fields and then use a detail.
+It has a back reference right.
+User detail.
+And this is just a mapping not table.
+It's a bidirectional I am putting map by.
+So no foreign key would be created.
+So it just map by by user address this field.
+Okay so here I have put at the JSON back reference means hey whenever you find this do not serialize
+it.
+So now if you call a API on the parent first I am calling on the parent.
+Just see that user one not user underscore hyphen address.
+So if you call on the parent so parent this would be hit.
+So in response you will also get this because you are allowing it to serialize it.
+So you saw in the response user address also.
+But if you make a get call on the child user hyphen address so means you will find this data.
+And after that it identify this, then you have told it.
+Hey, Jason.
+Back reference means don't go.
+Don't go and serialize it.
+So here if you see you don't see user detail itself.
+But here you can say that hey, when I go from child to parent I also want here user detailed data only,
+but without recursion, without infinite recursion.
+How we can do that?
+Yes, we can do that with JSON identity info.
+So here in this case, for every object we try to give some unique ID and Jackson will utilize it to
+make sure that it's already serialized before or not.
+So here, if you see I am not using any back reference or manage reference very.
+This is similar to what my by 1 to 1 bidirectional.
+So here I have put at the rate 1 to 1.
+This hold my foreign key.
+This is my child.
+And here I am putting map by to this user address.
+Okay so now in this I am not putting any back reference.
+So but this is I am using at the entity level JSON entity identity info annotation.
+So here we have providing the property and the field generally we provide is which is unique.
+So here in this user detail what field is unique is this.
+So generally I provide this.
+You can provide any other field but it should be unique because this you can say that Jackson internally
+use it to make sure that hey this with this ID user detail is already constructed serialized or not.
+Okay.
+So there is something to break the infinite recursion.
+Similarly for user address, I want certain unique value for the property.
+So here also I have a id.
+This is my unique, so I use it here.
+If there is any something like address underscore id you can put address underscore ID but it should
+be unique.
+Now if you make a Get call.
+So now let's say I am making a get call on the parent first this one.
+So here I got properly first parent detail and then user address child details.
+Similarly if I call the address uh child from child I am doing a get call.
+Do I get a parent now?
+First I get a child.
+And now here, if you see that it found that hey I have a child or parent reference backtrack also so
+it will make uh it will able to properly get its detail also.
+But only one time.
+No infinite recursion.
+Why?
+Because of this unique value.
+Now, Jackson knows that this one is already passed one time, so I don't have to go.
+Keep on going doing that.
+So stop the recursion.
+Something like that.
+Okay, so you got it right.
+How this bidirectional is handled in 1 to 1 bidirectional using map by.
+Okay.
+And whenever you are making a query it's making a query by left join select query and left join on this
+ID and this address ID here.
+Okay so in the next part we will see one to many many to one and many to many.
+And in the last part we will see custom queries, criteria queries and pagination and sorting.
+After that our JPA would be totally completed.
+Okay guys, if you have any doubt let me know.
+We can discuss further by.

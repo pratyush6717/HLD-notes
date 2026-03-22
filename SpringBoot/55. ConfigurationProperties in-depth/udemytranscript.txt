@@ -1,0 +1,1239 @@
+Welcome back to the channel.
+
+And today we will see that how configuration property is useful for us.
+
+So but let's first see the problem.
+
+Then we will come back to this topic.
+
+So let's first see what the issue with the add the rate value annotation.
+
+We have already covered this right.
+
+So at the rate value is good for injecting a single property.
+
+But it becomes problematic as configuration grows.
+
+So we know that we have certain properties in application dot property file okay.
+
+And with add the rate value we can inject that property into our Java code okay.
+
+How like this.
+
+Let's say I have a class Dbconnection okay.
+
+And I have this field string username.
+
+So they're in Application.properties there would be one config like app dot username, okay, and whatever
+
+the value would be, so that I am injecting from my property file to this field like this.
+
+Okay, so we have already covered this.
+
+So we have to use this annotation at the rate value.
+
+And then we have to use this placeholder and the property name what we have to inject okay.
+
+Now the problem is that if there are let's say a group of configuration which you have to use, then
+
+it's always 1 to 1 mapping.
+
+So if you have to inject ten values, you have to do ten times at the rate value at the rate value at
+
+the rate value.
+
+Likewise.
+
+Okay.
+
+So one thing is it's too much duplication of add value annotation or duplication in the sense is not
+
+like uh, same configuration.
+
+I mean, you have to use a lot of this annotation.
+
+Let's say if you know you are working in a big tech organization, definitely you know that 100,000
+
+like these are very, very commonly faced challenge in these tech companies.
+
+Like configuration continuously grows and lot of things are configuration driven itself.
+
+Okay.
+
+So we have a huge number of configuration.
+
+Now if you have to do 1 to 1 mapping, just see how many times or how many places we have to use this
+
+annotation okay.
+
+So that is the first problem.
+
+The second problem is there is no way to validate validate in the sense like I want to say that hey,
+
+okay, this password which is coming from the application dot property, it should be present.
+
+It should be greater than ten and less than 25 in size.
+
+There is no way to validate or put restriction and top of it.
+
+Okay, so once you have got the value from the application dot properties.
+
+After that, you have to manually do the validation that whatever the value I receive, it's valid or
+
+not.
+
+Okay.
+
+So consider this two major problem which at the root value has.
+
+And now at the rate configuration properties comes into the picture.
+
+Okay.
+
+So now it would be easy to understand why at the rate configuration properties is very popular among
+
+industry.
+
+Okay.
+
+So it maps configuration from Application.properties into Java object.
+
+This is important not to a one field to a Java object.
+
+Okay.
+
+So it makes our configuration is structured, reusable and validated.
+
+How?
+
+Once you have the Java object, you can reuse it.
+
+You can pass it to different classes.
+
+Correct.
+
+You can have validation on top of it.
+
+How?
+
+I will also tell you.
+
+Okay.
+
+So validation is very easy through annotations.
+
+Okay.
+
+And it's now a structured.
+
+We have a proper Java like you can group together particular let's say these are my uh invoice configuration.
+
+These are my sales configuration.
+
+So you can group in a Java object like configuration depend upon certain logical grouping you can do.
+
+Okay.
+
+So we can create some structured configuration uh, which can be validated which can be reused.
+
+So now see this example application dot properties.
+
+So here I have certain configuration like user dot name, certain name, user dot user dot active.
+
+So now how can I use it.
+
+So now see this we have to create one Java class.
+
+Okay.
+
+So let's say I created one user configuration because I want to group all the configuration related
+
+to user into one class okay.
+
+Into one object.
+
+So I created a class user configuration I annotated with at the root component.
+
+So I am telling that hey spring you create an object for this.
+
+Okay.
+
+Now I am also adding the annotation at the configuration properties okay.
+
+So whenever you add this annotation there is something called configuration binding.
+
+So its task is to bind between application dot properties and your Java object.
+
+Okay.
+
+So it helps in binding.
+
+Okay.
+
+So now I am adding this annotation at the rate configuration properties.
+
+And I give the prefix any property start with user.
+
+So any property start with user is fall under this.
+
+So it's like user dot stress.
+
+So it will catch all.
+
+And it will try to map each application dot property into this field.
+
+Now.
+
+Okay.
+
+So now this is clear.
+
+Now I have to create a field.
+
+So one is like name.
+
+So I created the exact same name okay.
+
+So generally okay there is certain relaxation.
+
+Let's say here you have is hyphen enabled something like this.
+
+So you can here create is enabled camel case.
+
+Okay.
+
+So these are allowed okay.
+
+You won't face any problem that if you have used underscore here or hyphen here you you can't use like
+
+how you will use here.
+
+You also have to use underscore here.
+
+No okay.
+
+So if you use a camel case properly it would be able to do proper mapping.
+
+But I would always recommend that try to make a same name.
+
+So same name so that the mapping would be like we are 100% sure okay.
+
+Because see this mapping is not controlled by us.
+
+It is done by configuration binding.
+
+So it might be possible that uh, it not able to bind certain property.
+
+Okay.
+
+So now here, if you see that I keep the same name.
+
+So this name would get bind to this one.
+
+This age will get bind to this field and this active get bind to this boolean okay.
+
+So now what will happen when you start an application when you start an application?
+
+Let's say we have annotated with at the rate component.
+
+So means spring will create an empty bean.
+
+First it will create an empty bean.
+
+We have already discussed the life cycle of a bean in the starting of the series, if you recall it.
+
+Okay, so first spring create an empty bean because using default constructor.
+
+Now once empty bean is created, now okay.
+
+And now the configuration binding during application startup only I'm saying configuration binding.
+
+What it will do is it will try to fill up these values.
+
+So during empty bean these all have default values.
+
+Name would be let's say null age would be zero.
+
+active would be false.
+
+These are all default values.
+
+Same.
+
+Okay.
+
+Now configuration binding would bind.
+
+Would read the application or property.
+
+Okay.
+
+And try to do the binding.
+
+Okay.
+
+Try to fill up this value.
+
+Using what.
+
+Using setter method.
+
+Okay.
+
+So we need to have a getter and setter okay.
+
+Configuration binding.
+
+Is you gonna use setter method to fill up these values using application dot properties.
+
+Okay.
+
+Since we have already done at the rate component, bean was already present.
+
+But it's an empty bean means all it has default values and configuration binding.
+
+Now calling setter method to update these values through application dot properties.
+
+Okay.
+
+Now whatever the user configuration class you have created or been you have created, you can simply
+
+inject it into whichever class you want.
+
+Okay.
+
+And use like a normal Java object like I am using user configuration dot get h get name is active and
+
+here you can see that I am able to print it.
+
+Okay, so this is how simple it is now.
+
+Also you can see that you can properly like group the configurations logical grouping.
+
+You can do you can reuse it okay.
+
+You don't have to create another class for you reusing it again and again once you have created it.
+
+Now you can auto wired it anywhere in the code base you want okay.
+
+One more advantage of this is that you can handle nested complex configuration nested complex.
+
+Now here if you see the first thing this is simple.
+
+We have already seen that.
+
+Now see this to what I am doing here is user dot.
+
+So this would be handled by my this configuration.
+
+Okay here I have put at the right configuration properties prefix equals to user.
+
+So this configuration or this class configuration binding would be used to handle all user dot stress.
+
+Because this is the prefix user.
+
+Okay.
+
+So for now any configuration starting with user dot configuration binding going to use this class.
+
+Now here if you see I have address dot city address dot country.
+
+So means we can create address as an object.
+
+And these two can be field inside it.
+
+So that's where I have done.
+
+Okay.
+
+So here what I have done is I have created address config one nested class.
+
+Okay.
+
+Within this user configuration.
+
+Within this class there is a nested class we are creating and okay, I gave a name address config and
+
+it has two fields city and country.
+
+So I have the same naming I have used.
+
+So okay, it's getter and setter and getter and setter of all this one okay.
+
+And one thing is that I have specifically made it static a static nested class you can think of like
+
+why static?
+
+Why not non-static?
+
+If you remember in the Java series we have already covered this nested class.
+
+Okay.
+
+So nested class can be of static non-static okay.
+
+So why specifically here we have to use static.
+
+So the thing is how spring manages the bean.
+
+So see this flow.
+
+With that you will get an answer generally like why static.
+
+We have to create okay.
+
+In this case whenever we are trying to do configuration binding only in case I'm telling you, whenever
+
+we are trying to do configuration binding.
+
+Okay.
+
+Um, in this case we always create a static nested class.
+
+Reason is first string creates user configuration bean because it at the rate component.
+
+So user will create this empty bean.
+
+Okay.
+
+Now it will see a field address configuration.
+
+Okay.
+
+So it now this let's see this.
+
+Okay.
+
+Now what it will do once it's create an empty bean.
+
+After that I'm saying empty bean is created.
+
+Now configuration binder got invoked.
+
+Now it is using the setter methods to uh set name age active from the application dot properties.
+
+Okay.
+
+Now binder sees that, uh address dot config.
+
+Now it has to Update the field of this.
+
+Okay.
+
+Now what it will do is it uses internally reflection and try to initiate the type address config using
+
+the default no arg constructor.
+
+So internally binding calls the.
+
+So it has to create an object of first address config.
+
+It has to create an object of this and after that it uses it calls it setter method.
+
+Okay.
+
+And to create an object of it it call the default constructor.
+
+Default constructor okay.
+
+Now understand that when you are not defining it static, let's say it is non-static.
+
+What if you can recall from the from our Java series?
+
+If you are following that whenever we create a nest uh, nested class and it's a non-static.
+
+What is the default constructor?
+
+Default constructor generally is your address config and it takes a parameter of your.
+
+Parent class.
+
+User configuration.
+
+Let's say you see.
+
+So this is the default constructor which generally added even though I haven't written this constructor
+
+internally.
+
+The default constructor it add is this not the default constructor with no argument?
+
+This don't get added for the nested class for non-static, this is the default constructor added, and
+
+if you can recall, we used to call it that hey, user configuration object dot new and then your address
+
+config like this okay, so internally it always pass the reference of your parent object to here okay.
+
+So one thing we are clear that when we are using non-static then default constructor which get added
+
+is which.
+
+Take a reference of the parent object.
+
+Okay, but the binder reflection.
+
+Try to invoke the no arg constructor.
+
+Now if there is.
+
+If this is non-static, no arg means constructor, which do not take any argument that doesn't even
+
+exist, so it will not work.
+
+Your binding will fail.
+
+Your binding will fail.
+
+Your binder will fail.
+
+So that's why we have make it static.
+
+So when you make it static means it is not associated with your parent class.
+
+Okay.
+
+And then the default constructor which got added is the no arg constructor.
+
+Okay.
+
+So your address config and the constructor which don't take any argument that will get added.
+
+Okay.
+
+And that's all here.
+
+Binder able to work.
+
+So that's why it is always created a static nested object.
+
+Okay.
+
+So yeah.
+
+Now come back to this one.
+
+Let's say I have a user inside this address dot user dot address dot country.
+
+So what I did is I created address as an object and all later one it's a field inside a address.
+
+Okay.
+
+And since this is inside the user I created a nested static nested class okay.
+
+And you can easily use it like there is like no problem at all.
+
+Like how we are going to create an object.
+
+Simple.
+
+In that way you can use it.
+
+So this is one way of handling the nested complex configuration.
+
+Now we can also handle the configuration as list.
+
+Okay, see this one.
+
+Now we have already seen this one.
+
+The simple one.
+
+Object one.
+
+So this is object.
+
+This is simple direct mapping.
+
+Now this is we are telling you the list okay.
+
+So list.
+
+I am telling you the two flavor list of string.
+
+List of object.
+
+So let's see first the list of string.
+
+So let's say your configuration looks like this.
+
+User dot role zero admin user dot roles one editor.
+
+Likewise you have this.
+
+So the same at the red component I want spring to create an object at the red configuration properties
+
+and prefix user.
+
+So all the anything is starting with user dot ultimately comes to this class.
+
+Okay so name age active.
+
+And this one we have already seen okay.
+
+So this is its static nested class.
+
+We have already seen.
+
+Now this is the last one.
+
+So what's the field name roles.
+
+Okay.
+
+And what values generally putting a string.
+
+Okay.
+
+So simply I put list of string and I put its getter and setter method.
+
+Okay.
+
+It will automatically bind zero one in the same order to this one.
+
+Similarly here if you see user.
+
+Now here I have codes zero dot name code zero enrolled.
+
+True.
+
+Similarly I have codes one dot name course one dot enroll.
+
+Okay so now here if you see course you can visualize like course is an object which has name and enroll
+
+fields.
+
+And we have zero one.
+
+So two objects of it.
+
+Okay.
+
+So it's an array of course.
+
+So it's an array of object Okay.
+
+So this is the example.
+
+So now here if you see the list of codes now again the course would be static nested class.
+
+So static nested class here in this one.
+
+Okay.
+
+So it is inside a user.
+
+And I already told you why it need to be static.
+
+Okay.
+
+So now what two fields it has name and enroll.
+
+So I have the same field name name and enroll its getter and setter and ultimately the getter and setter
+
+for this one.
+
+So it will be able to do proper mapping.
+
+So here here I am using it.
+
+User configuration dot get roles get zero get one.
+
+It would be the same order.
+
+You will get admin editor.
+
+Similarly courses I am printing get codes, get zero its name and the get one get name.
+
+So Java spring boot the same order.
+
+Okay, so we can also bind the list in application dot properties to a list in Java object.
+
+Similarly configuration as map.
+
+Now here if you see see this one.
+
+So we have already seen different uh here again this is just to remind this is simple direct mapping.
+
+This is object.
+
+This is your list.
+
+And now we are seeing the map.
+
+So now see this one user dot preference dot theme user dot preference dot user dot preference dot timezone.
+
+Let's say your requirement is you want to store in a map is like theme dark language Ian.
+
+So it's a string comma string.
+
+Let's say you want to store like this Then even this, this.
+
+Now you can say that here.
+
+Can you see that can with any other way.
+
+Can you handle it without even map.
+
+So here if you see user dot.
+
+So this class gonna this prefix class gonna handle it okay.
+
+Now you see that preference dot theme preference dot language preference dot time zone.
+
+You can say that hey I can create an object of preferences.
+
+And these are all fields within a preference.
+
+That's what we did for the object.
+
+Yes you can do that also okay.
+
+And if you want you can also handle through a map.
+
+So this preference become your map name.
+
+So here I created a map string comma string and preferences.
+
+This become my map field name.
+
+And this is key this value key value key value okay.
+
+So now here if you see just getter and setter now it will bind like this.
+
+Become your key.
+
+This is value.
+
+This is key.
+
+This is value.
+
+This is key.
+
+This is value.
+
+That is also possible.
+
+But if you want to use as an object, create a nested class and static nested class and create a preference
+
+as an object.
+
+That is also possible like what we did for the address.
+
+Okay.
+
+But alternatively you can also create a key like this.
+
+So this is your map field name and this is your become your key value.
+
+And this is how I am able to use it.
+
+So this is my map right.
+
+Get preference.
+
+Get key name theme okay.
+
+So it works similarly map of an object.
+
+So this is here.
+
+If you see it's a map string comma string.
+
+So we can also extend it to the map of an object.
+
+So see this is an example User dot okay, so anything is starting with user going to ultimately to the
+
+user configuration because that's the prefix.
+
+So that's till now we are clear.
+
+Now here if you see what the configuration look like locations dot home dot city locations dot home
+
+dot country location dot office dot location dot office dot country.
+
+Okay, so what do you see here.
+
+So here if you see this location.
+
+Can be our map field name okay so I created first thing is map field name okay.
+
+Now here if you see this becomes my like string home office.
+
+So my map is like.
+
+Home.
+
+And now I am creating an object which has city, country, city, country.
+
+Okay, then I have a key office.
+
+Then I have, let's say this is an object office dot city office dot country.
+
+So I have an object which has this city country.
+
+Okay.
+
+So this is just like you can also handle through an object.
+
+But I want to handle through a map.
+
+So like this we can do that.
+
+So this become my map.
+
+Whatever the map I am going to create its field name.
+
+Then these become my key.
+
+And internally this become like an object which has this values.
+
+So this is how I did it.
+
+Like map string comma address config.
+
+So here I already have an address config right from previous one.
+
+Okay I already have a static nested class.
+
+So address config has this city and country.
+
+That's why I use the same field, city and country.
+
+Okay, so I am creating a map of string comma address config.
+
+So string gonna be this one either home or either office okay.
+
+And address config has this city country okay.
+
+And this location is the my field name.
+
+That's all the getter and setter.
+
+Now it will properly bind it.
+
+So it will look for the map which has this name.
+
+So it found this okay.
+
+Then it will store the key.
+
+This become your key home.
+
+So it will create one home.
+
+And then this city home dot city home dot country.
+
+So this city and country it will see that okay address config is the object.
+
+So it will get this object, bind this city and country and store it here.
+
+So we can even create complex map objects also, and you can simply use it like this.
+
+Normal.
+
+How Java object is used to access the values.
+
+Okay, you are able to get the location.
+
+Okay, so till now it's clear that we can map even the complex configurations in our Java objects.
+
+Either it's a list list of object map, map of object, normal object direct values, everything.
+
+We can do that.
+
+Now.
+
+Another advantage is the validations.
+
+Spring boot automatically validate fields after binding before the app fully starts.
+
+So one thing is you have to add this dependency spring boot starter validation because this will add
+
+enable certain annotations which we are going to use.
+
+So first thing is we need to add at the rate validated annotation on top of our at the rate configuration
+
+property class.
+
+Okay.
+
+And also remember that whenever any validation fail, application will not even start itself.
+
+So see this example.
+
+Now this is very simple one I created at the rate component.
+
+I want spring to create a bean at.
+
+The rate configuration property means after the empty bean is created by spring configuration, binding
+
+will start its work and it will bind all the configuration starting with user to its fields.
+
+Now I also put validated means all the annotations which I am going to add now that need to be validated.
+
+Okay, so now here, if you see I have put at the rate not blank message and I give the messages name
+
+must not be empty on the top of this name.
+
+So now here, if you see what I'm trying to do, is adding a validation okay.
+
+Whatever the value.
+
+So first sequence is empty.
+
+Been second is binding like binding is your property to object.
+
+And the third is validation okay.
+
+So validate what it will validate.
+
+It will validate the value of these fields whatever the annotation we have to use okay.
+
+Let's say that for the age I have used the annotation at the rate min value equals to one.
+
+So means the minimum value of the age should be one.
+
+Okay.
+
+And for the testing purpose in application dot properties I have put zero okay.
+
+So when you start an application itself it says that failed age cannot be zero.
+
+Whatever the message you have given.
+
+Okay, your validation fails.
+
+So see how easy it is to validate the values which are coming from application.properties.
+
+Okay.
+
+And there are so many validations which we can use like at the rate not null.
+
+You can use like this value cannot be null.
+
+Not blank means not null.
+
+Not empty okay.
+
+So here like are not empty.
+
+You can use it on top of list and map that it should have certain values at the rate min minimum value
+
+at the rate max.
+
+If you want to define what's the maximum value positive or you can use positive or zero.
+
+It's like greater than zero.
+
+Greater than equals to zero.
+
+Similarly at the rate negative.
+
+At the rate negative or zero less than zero or less than equals to zero okay.
+
+So there are different regexes.
+
+If you see that these are nothing but like hibernate if you, uh, have seen the hibernate validations.
+
+Right.
+
+It is very similar to that one internally.
+
+Actually, it used that only.
+
+Okay.
+
+So if you are familiar with hibernate we have seen the hibernate validations also previously okay.
+
+So it's very similar to that one only.
+
+Now last thing would be like one question comes to your mind okay.
+
+One doubt.
+
+What we are saying is currently till our sequences we are creating an empty bean.
+
+Why?
+
+Because we have used at the rate component.
+
+This is very important.
+
+So see the sequence and then see the answer also.
+
+The second thing is we are saying configuration binding configuration binding.
+
+What it will do is it will use the setter method.
+
+And invoke the setter method to update update the fields using application dot properties.
+
+Now what if I have to make my configuration class immutable?
+
+Okay, generally this is the how the interviewer asks the interview question.
+
+Generally that how you can make your configuration properties class immutable.
+
+Okay, because let's say you have given an answer through at the rate component one, then definitely
+
+the sequence is going to be like this.
+
+First been would be created, and after that configuration binding has to invoke the setter method to
+
+update the values.
+
+And whenever you have a setter method, definitely it's not an immutable class.
+
+Immutable class means once you have defined the value, it cannot be changed.
+
+Okay, but if this is the how we are doing this currently, it is definitely not immutable.
+
+Why?
+
+First, during empty bin, let's say age is zero.
+
+Then during configuration binding it calls the setter method it update it with the whatever the property
+
+value it has.
+
+Let's say I have defined 27.
+
+So you are changing it.
+
+Definitely.
+
+It's not an immutable.
+
+So now the question of the ask question intention is how you can make this configuration class immutable
+
+generally, which is very important.
+
+Once you read the configuration from the properties it should not be changed by anyone.
+
+So this is very, very important.
+
+And this is how actually it's used in the industry.
+
+It should be immutable.
+
+So answer is constructor binding okay.
+
+So see this how we can do that.
+
+Very very simple okay.
+
+But very minor.
+
+You can say that uh observation here what we are doing.
+
+So first I created earlier the class name was user configuration.
+
+I just changed the name to immutable user configuration.
+
+Nothing.
+
+Same thing.
+
+Okay, now here I make the all the fields final.
+
+Now constructor binding as the name says.
+
+So we're gonna be using constructor when the object is first time object is going to get created at
+
+the time of creation of the object itself I am going to initialize this.
+
+So immutable user configuration I'm creating a constructor and all the fields.
+
+Okay.
+
+And that gonna initialize at the time of object creation itself okay.
+
+So it's not first like you are going to create an empty bin or no.
+
+Whenever somebody has to create an object it has to pass this value.
+
+And at the time of object creation itself these values would be set.
+
+Okay.
+
+So this is gonna be the thing.
+
+And then here I have only getter methods no setter method.
+
+Now see what things we needed.
+
+One thing you notice that there is no at the rate component, I removed it.
+
+Why?
+
+Because as soon as you put at the rate component means you are telling spring that, hey, you manage
+
+the creation of an object.
+
+Okay?
+
+And when spring going to manage the creation of an object.
+
+Spring doesn't know how to or what value I need to provide here.
+
+What value I need to provide here, what name I need to provide here, what age I need to provide,
+
+what active I need to provide here.
+
+Okay.
+
+So spring or you can say that spring IOC Inversion of control doesn't know how to invoke this constructor.
+
+What value I need to pass.
+
+So at the rate component that's why I removed it okay.
+
+And I gave this responsibility to configuration Binding itself.
+
+Okay.
+
+Earlier configuration binding sees that.
+
+Hey.
+
+Okay.
+
+Whatever the user configuration I have, its object is already present.
+
+Yes.
+
+Object is already present.
+
+Yes.
+
+Then call the setter method to update the values.
+
+Now we just need to tell that hey, you also have to take the responsibility of creation the object
+
+also.
+
+Okay.
+
+And that's we do by like this.
+
+In our main class application class, we have to tell at the rate configuration properties scan.
+
+So whenever you add this configuration, whenever you add this annotation at the configuration properties
+
+scan what we are telling to the configuration binding that hey, I am giving the responsibility to you
+
+to create an object for this configuration class property class also.
+
+Okay, so I am not relying on a spring.
+
+I am giving the responsibility to configuration binding itself that you create an object.
+
+Okay.
+
+And when it scan for it so it knows.
+
+So it first read application dot properties.
+
+Okay.
+
+And then when it find this object find this class it need to invoke its constructor.
+
+It will do the binding okay.
+
+What value is that.
+
+It has to pass.
+
+Now it knows because it has read from application dot properties.
+
+Okay.
+
+So at the time of creation of a new object this value would be set okay.
+
+And there are no setters.
+
+And these are final.
+
+So now our class is immutable.
+
+So these this is the only change know at the rate component.
+
+You only got.
+
+Why.
+
+Because spring doesn't know what value I need to pass okay.
+
+So that's why spring won't be able to create an object of it.
+
+So that's why we.
+
+I have removed it at that component.
+
+I don't want to give you the responsibility.
+
+And who knows what value to pass is configuration binding because it reads the application property.
+
+So this is how we tell okay at the configuration properties can on top of your main class application
+
+class.
+
+Okay.
+
+But you might be thinking hey earlier why it's not an issue earlier.
+
+Whatever.
+
+We are doing it when it is not immutable.
+
+See earlier it's not an issue because even though we have used at the rate component okay there we have
+
+default constructor, default constructor which is no our constructor.
+
+So our spring inversion of control can create an empty bean.
+
+Create an empty bean by calling a no arg constructor.
+
+So that's why at the rate component was working properly, it able to create an object through calling
+
+the default constructor.
+
+Okay.
+
+And then configuration binding calling setter method to update it.
+
+But here in the immutable, since we don't have setter method okay.
+
+And we don't have this default constructor.
+
+No.
+
+Or constructor okay.
+
+So that's why at the right component will not work.
+
+And that's where configuration bindings comes into the picture.
+
+Okay.
+
+And here if you see it worked properly our immutable objects work properly.
+
+And also there is no difference in the validation of the field like how we used to validate the field.
+
+Like at the rate minimum, uh, at the rate not null like in uh, non-mutable class, like similarly
+
+in for the mutable.
+
+Also, it's the same thing you can use above the field itself.
+
+Okay.
+
+I hope this is clear at the rate configuration properties.
+
+If there is any doubt, let me know.
+
+We can discuss further in the comment section.
+
+Okay guys.
+
+Bye.

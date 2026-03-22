@@ -1,0 +1,395 @@
+Hey guys.
+Welcome to Concept and Coding.
+This is Shreyansh.
+And today in Spring Boot I will be covering Hateoas RESTful APIs.
+Yeah weird name right.
+And even if you see its full form, like its full form says that hypermedia as the engine of application
+state, we are right.
+So before we start, if you search over the internet and you will see that, hey, is it still popular?
+You will see many feedback which says that nowadays companies are not using it.
+It has so many disadvantages.
+Don't use it.
+But I would say that.
+Hey guys, welcome to reality!
+Hateoas is being used in very big product companies today also, right?
+And I will not only tell you what how not to use it, but also tell how to use it, what advantage it
+adds.
+It tells the client what the next action you can perform after a particular step.
+Let's understand this with this example.
+So here in this simple example, let's say that I have reached to this step using a post API slash ad
+user.
+I am able to add a user, but with.
+Currently it's unverified.
+Now what's the next step?
+I can do the next step.
+I, after adding a user I can do is I can make a get call and get the details of this user.
+I can even delete this that also I can do or I can even verify this user.
+Right.
+So verify again has different ways.
+So you can say that after verifying uh there are different ways to verify one is through SMS.
+So when I say that SMS verify start, let's say that you get some Pin code and which you might have
+to enter through, which you will finish it.
+So different API for start, Different API for finished.
+Similarly, for email verify start where you will get a email has been sent to user that hey, this
+is the code, now you have to push it somewhere.
+So you will actually finishing your email verify.
+So this is a small use case which I have come up with.
+And I will tell you why it is important to understand when we will see when not to use and when to use
+it.
+But you get it right when I say that, it tells the client what's the next action you can perform after
+particular step.
+So this is one step.
+And what is the next action after adding a user, either you can do a get call.
+Either you can delete it or either you can verify it.
+These are the next action you can do.
+Okay.
+And we will see more details.
+But let's see that how the response looks like.
+So now let's say that I am using a post API to add a user.
+Now the response of it.
+If you are not using a hateoas link, how it gonna look like?
+So this is the response you will get when you add a particular user.
+You got a user ID okay, this ID is representing a unique ID in your DB through which you can fetch
+the details.
+So we return a user ID and let's say name.
+And currently what is the verified status.
+Let's say it's unverified.
+But what if I want to use Hateoas link Hateoas RESTful API.
+So in this case with Hateoas link, this is how the response generally looks like.
+We send the user id same name, verify status unverified, but see this is so links inside links we
+send what all the next step you can do.
+So it's an array.
+You can even have more like this.
+So all the actions which can be done after this current state what all the next things you can do,
+you can put it into the links.
+So here I have just for example I have added one link where it says that relation is self the URI and
+what is the type.
+So this is nothing but a HTTP method for this URI.
+Whether it's a get call, post call, patch call, delete call.
+So we can add that URI is the what is the next URI.
+It can be invoked.
+Right.
+And what is the relation of this API with this current state?
+Okay.
+So currently I put self means this API will return you the details of this only.
+It's generally a get call.
+Self is always a de facto.
+You can say that even if I don't write get right and if it is relation is self, it's a de facto.
+It's like a get call for this one.
+If you have to fetch the details of this user ID, generally self represent that only that it's a Get
+call.
+Okay.
+But still we will see more details about it.
+But for now what I wanted to show you without at your link generally what how the response look like
+and with hateoas how the response generally looks like.
+So this is what actually important here we provide what all the next action can be taken after this
+step.
+How to do that?
+I will tell you.
+But before understanding how to do this, let's understand when to use and why to use.
+Very important.
+Right?
+So there are two major purpose of using Hateoas link.
+Right.
+And the two major purpose we want to use is to achieve loose coupling and API discovery.
+So when I say that loose coupling is loose coupling between your client and server application.
+And when I say that API discovery, what I mean is that let's say at server there are hundreds of APIs.
+So client should not have like difficult time to understand like okay where this API is gonna be used,
+where this API gonna be used.
+What should be the API for this?
+So in the links itself you are getting your API showed that hey, invoke this API, you can invoke this
+API after this one.
+You can invoke all this this API after this.
+Okay.
+So that's what I mean.
+Say API discovery even though client not need to have like okay what all the different APIs are available
+server hey tell me no it's not required.
+Even server in the links itself can tell these are the five APIs now eligible after this particular
+step.
+Now client can use those.
+Now to achieve above server provide the next set of APIs action in the response itself.
+Right.
+Which client can take so that client have less business logic around APIs.
+Which API to invoke.
+When to invoke.
+How to invoke.
+But remember, adding all the next set of action can make our API response bloat up and has several
+disadvantages.
+Before telling you the disadvantage, let's see this response.
+Now let's say that I showed you this example right?
+Now let's say that when the user has been added through post API this slash add user.
+Now in the response I am sending the next actions link.
+What can be performed?
+So I can do get call delete call verify call something something something.
+Now if I add all the links like this.
+So after post let's say post add user call.
+Now if my response looks like this.
+Hey, in the link I am providing, hey, you can invoke get call.
+You can invoke delete.
+So type I have put delete.
+This is the API URI and the relation I have put is that.
+Hey this is the relation of this API.
+After the this next step is to remove it.
+Okay so I have put remove.
+Then you can also update it.
+So for example I have just put hey you can use this API.
+It's a patch and relation is you updation.
+You can do verify.
+You can either you can do verify start or verify finish depend because till verify is not finished it
+is still in unverified.
+So both are eligible.
+Verify start is also an eligible operation.
+Verify finish is also an eligible operation because currently status is unverified.
+So now here if you see one thing, if we keep on adding next set of operation, this is just a very
+basic use case I have taken.
+And now here if you see one, two, three, four, five links I have added now in a big industries after
+a particular step, there are so many things is possible.
+If you keep on adding all the next set of operations, it gonna blow your API response, right?
+And that's where everywhere we say that never use it, never use it.
+Because if you use it heavily, if you keep on putting the next set of action ultimately not recommended
+at all, right.
+Why?
+Because it will increase the complexity as server side.
+Why?
+It will increase the complexity as server side.
+Because see all these links are dynamic.
+It's not static links based upon the current state.
+I am determining what all what all steps are applicable.
+So I'm creating those links dynamically.
+Right for you might be some other ID getting created for me, some other ID getting created.
+So it's all dynamic.
+So at if you are at step one this three actions is getting into the link.
+If you are at step two, only these two links are getting created.
+So these are dynamically at server side.
+So means you are increasing the complexity at server side.
+And also when you are adding this business logic you are increasing the payload size also.
+And ultimately it nothing it will impact your latency too.
+So never ever add all the possible next set of action.
+Just like that.
+Never ever do that.
+Hey this this is all 1020 actions are possible.
+Do that.
+No.
+So now you can ask me, right.
+Hey if I, if I can't add all next set of action, then what next set of action I can add?
+I'll tell you.
+But with this example, first let's see this go back to again.
+So we have to do proper analysis.
+Need to be done.
+What actually will help us to achieve loose coupling.
+Now see this diagram again.
+So just in one minute I will walk you through this diagram again.
+What I am trying to achieve.
+So I have added a user through post API which user is in currently unverified state.
+You can do a get call, you can do delete it and even you can verify for verify you can do through SMS
+or through email.
+And in both the way you first have to do this API start SMS.
+Verify start and then SMS.
+Verify.
+Finished email.
+email verify.
+Email.
+Verify.
+Finish.
+Okay, after this, your user will get verified.
+But let's say this is the diagram which I have done.
+So now let's understand this.
+So here if you see that.
+Let's forget that we are not using let's say that we are not using it for a moment.
+Let's say we are not using it.
+So how your response gonna look like after this post?
+Add user call how your response gonna look like.
+So you are adding a user ID your name.
+What is the current uh verify status?
+It is unverified okay.
+But also let's say that the server also do has the knowledge that okay for this country Verify type
+should be SMS.
+So that, uh, client should initiate a SMS.
+Verify start.
+So currently verify type is SMS and verify state is currently not yet started.
+SMS is not yet started.
+So means it has to first start if it is already started.
+Means you can only do finish now.
+So this is a very basic response.
+Let's say that the server is sending to the client.
+Currently user is unverified.
+User can verify using type SMS and currently the verify state is not yet started.
+So now see what the client logic look like.
+See, I am not a client side uh, engineer.
+So definitely this code is not valid for client, but the logic should be, I think the same if the
+client has to code this way.
+So what client will should do to get user verified.
+So client will check this response.
+Hey, if verify status is unverified, yes it is reading from the response unverified go to the next
+step.
+What is the verify type?
+If it is SMS or email.
+If it okay it is SMS.
+Go inside.
+This does verify status has been started.
+Oh it's not yet started.
+If it is not yet started means I have to call this API sms verify start.
+If the verify status let's say started.
+Then I have to invoke SMS verify finish API.
+And if it is an email the same thing if verify state is not yet started, I have to call this API email
+verify start.
+If verify status started I have to call email verify finish.
+So now here if you see this, generally the client code should be present to initiate a verify for the
+user.
+Now I see that there is a lot tight coupling between client and server.
+Client needs some info before it can decide which API verify API to invoke now client here.
+If you see lot of business logic why client has this business logic here.
+If it is unverified, whether through SMS or email, if SMS, whether it has been started or not started.
+If not started, invoke this API if it started, invoke this API.
+So this is I call it very tight coupling.
+And this is just a one use case.
+If there are hundred of use case, imagine the client code.
+Now let's say that comes into the picture.
+I can make this tight couple code into a loose couple through Hateoas link.
+Now let's say that this is the response I will send.
+What is the user ID name?
+Verify status and verified.
+But now here.
+If you see that I am not sending SMS or not yet started at server side itself, I will compute all this
+thing.
+And in the link I will just simply provide.
+Hey, this is the next you should do you.
+You can do.
+This is the URI, this is the post call and the relation is that this is a verify link.
+You can do verify.
+So here if you see I am just telling invoke this api sms verify finish.
+Now internally server itself has determined that okay, it is unverified and I have already started.
+I started the SMS verification so next can be done is finish only.
+Okay, so I have just provided the next link, only this one I haven't doesn't provided all the links,
+only this.
+Now how the client code gonna look like if verify status is unverified?
+Yes it is unverified.
+Use the link which is given in the iOS.
+Just use this link and invoke.
+Just invoke it.
+Now client doesn't need to know whether I can, uh, do it through SMS or email, whether SMS is started
+or not started.
+If it is already started, I need to invoke this finish.
+All this logic is now goes to the server right now here.
+If you see that client is now we can say that the client and server is loosely coupled and all this
+logic, right?
+This is actually business logic.
+This should be present at server.
+Like what's the next thing is eligible.
+So you got it.
+When to use it.
+How how.
+With this example we have from a tight coupled between client and server how we have achieved the loose
+coupling.
+So this is how I believe it should be Hateoas link should be used.
+We should not put unnecessarily the next links.
+Otherwise it's gonna be difficult.
+Hell to manage this APIs.
+So very cautiously we have to add a link.
+Yes.
+If you don't add it, there would be a tight couple.
+If you add it.
+Yes.
+We are achieving loose coupling.
+Okay, so this is one example If you understand it now, I will tell you how we can add this link.
+So one thing is we have to add a dependency.
+So this is in the dependency you have to put in to the Pom org dot spring, spring framework, dot boot,
+spring boot starter and whatever the latest version you can use it.
+Okay so now here if you see this is the rest controller and this is the post add user call.
+So whenever a user is getting added this API will get invoked.
+So here I am just getting a response.
+Just see that this user response has all this thing user id name verify state this thing itself user
+id name, verify state and for links.
+What I have done is.
+I have created a new class Hateoas links, and in that I have put the list of links.
+Okay, and I have provided one add link where the link can be added.
+So this link right this link object, it is coming from that spring boot, the dependency which we have
+added.
+So this dependency this link object is coming.
+So why I have.
+So why in this I haven't added that list of link.
+Because see we could have 2050 APIs and in 50 APIs we might have to add a link.
+So we can't.
+So it's better that we create one class and that we put a list of link and in the response whichever
+required it can extend it automatically.
+Add link.
+This links will be also part of this one.
+Okay.
+So now when the API got invoked.
+Now let's say that user dot get user.
+Uh, or you can say that instead of get user.
+Let's say that.
+Add user would happen and this is the response you got.
+Okay.
+Now in this response already these fields are filled up user ID name and verify status.
+Now we had we have to add the links.
+So here how to add a link.
+So there are two ways I will tell you.
+The one way is through web MVC link builder.
+So what we can do is dot link to user controller dot class.
+This class slash what is the next URI right.
+So user controller class.
+What it will do is let's say this class has slash API slash.
+So that would be used.
+So slash API slash would get added.
+Then this method.
+Write SMS.
+Verify.
+Hyphen.
+Finish this.
+Get added.
+Slash the dynamic user ID slash.
+Let's say 123456.
+This.
+From this user response I am reading this user id.
+What is the relation?
+It's the URI which I am adding.
+It is to verify.
+So this is the relation.
+It's a verify link and it is a post type the same which ultimately it's going to be show like this right.
+And you can add into your response response dot add link add this link.
+So this is the user response right in this.
+Since this is a child of this link you can call add link also.
+And this one link get added.
+If you have to add more link you can keep on adding more link dot add link.
+One more you can create, you can add it.
+But I would always say you that add cautiously.
+So this is one way to add and another way to add is like link off.
+This link object is the same.
+The dependency which we have added link dot off.
+And you can provide the URI itself, whatever the slash API slash this.
+This is all a string.
+You have made a URI.
+Then what is the relation and what is with type.
+And you can add this link.
+So both the ways whichever you find it's easy.
+And uh either through slash slash or either directly simply in one string, we can add it in to our
+response.
+Okay.
+And this is how it gonna get added.
+So it's an array we have added as an array list.
+Right.
+So it's an array.
+And we have added only one link which is verify relation type is post.
+And this is the verify link.
+Okay.
+So this is based on our business logic.
+Based on business logic we determine what URI to add.
+It's not static.
+So I hope this is clear.
+If there is an argument comes that why you are using it?
+What advantage are you gonna add?
+Loose coupling is the big advantage.
+And maybe you can come up with your own example.
+But this is the example which I come up with.
+Where through verify.
+I have showed you how the tight coupling looks like and how we can achieve the loose coupling with the
+link.
+But if you have more doubts, let's discuss in the comment section.
+And.
+But I hope this video would be useful.
+But this is.
+This topic is generally known as Hateoas RESTful APIs.
+Okay guys.
+Thank you.
+Bye.

@@ -1,0 +1,243 @@
+Okay.
+So now let's start with the specification API.
+So in the criteria API there are two major issues.
+One is code duplicity okay.
+And another is there are lot of code boilerplate.
+Let me explain.
+You like code duplicity how it is.
+So if you see this your criteria API which we are writing, we are writing here.
+Predicate.
+Right.
+We are creating a predicate.
+It is nothing but a condition in the Where clause.
+It is possible that same condition can be present at multiple methods multiple classes.
+So the same predicate is reused at multiple, not reused like duplicated at multiple places okay.
+So that is one of the issue with the criteria API there.
+Like there are lot of duplicate code can be present in the form of this predicates.
+The same conditions can be present at multiple methods.
+Okay.
+And currently I have only one predicate.
+But let's say that this method itself, let's say I have five predicate.
+And those five predicates might be used in different 50 or hundreds of methods different.
+So there are a lot of code duplicate.
+So the first challenge which resolves by specification API is code duplicity.
+The second challenge is which I told code boilerplate.
+If you again see your code of the criteria API, you will see so many like criteria.
+You have to create criteria builder.
+You have to create criteria query.
+You have to add it into from clause.
+You have to add it into the Where clause, you have added into the like typed query pagination and then
+ultimately run it.
+So this is all known as boiler code, which like all your business logic, is that what are the conditions
+which you want to add, like from which table you want to fetch the data.
+Do you want any join or not.
+And what are the where clauses?
+That's all you are interested in.
+But which objects do we create?
+Criteria builder criteria query how to set it.
+That is not your business logic right?
+So this is known as code boilerplate.
+Extra code you have to write to make your functionality run.
+So with specification API that is also removed.
+We'll go one by one.
+Let's see that how the code duplicity can be removed from specification API.
+So if you see the specification interface this specification interface has only one abstract method
+which is two predicate.
+It has another method, but it has its implementation.
+So this functional interface or interface, which has only one abstract method, is generally known
+as functional interface.
+Okay.
+So we have to provide an implementation for this.
+Let's see that it would get clear how we have to use the two predicate method to remove the code.
+Duplicity.
+Publicity.
+The first step is we have to create a new class user specification class.
+And in this class we have to write a method like.
+Each method is generally considered as one condition.
+One predicate.
+Okay, if you have ten predicate which you are thinking to add in your like query, you can write for
+this entity user user detail entity.
+You can write all the predicates here.
+So my one condition is like one predicate.
+Here is phone equals to like whatever the phone number comes.
+So I have written like equals phone.
+You can give anything whatever the phone number is coming.
+And here like the same thing which we were doing in criteria API.
+Right.
+CB dot equals like root is like whatever your first table name the phone and the phone number.
+This will ultimately return your predicate.
+Okay.
+And I am using a lambda expression like if you don't know how to use a lambda expression and functional
+interface, how they are tied up together.
+So at the top you will get a link in the like.
+I have covered in depth about the functional interface Lambda expression.
+If you have any doubt with this one how it is working, kindly have a look at once.
+Otherwise you will find little bit difficult like how it is actually working.
+So the first step which we have done is we have created a class and each method we have provided a lambda
+expression.
+And in this lambda expression like it is expecting whatever the abstract method is, it would accept
+this three parameter.
+And once the three parameter is accepted, it has to do this.
+So here I am doing nothing but a equals condition.
+What we were doing in criteria API.
+Now how to use it.
+Now in the service class let's say similarly what we are doing in criteria API first created an object
+of criteria builder, second, created a criteria query and each row will look like this.
+Like I am getting all the row, all the fields of this table.
+I have added a from clause.
+This is my first table like from this table this is considered as route.
+Select all the columns of this route table.
+Now the for the predicate.
+Now you see that I remove that predicate from here and I'm just invoking a method.
+So here I have first user specification dot equals phone number.
+So I am so this since this is static I am directly using class dot equals phone and whatever the phone
+number which is coming.
+So I got this specification.
+Now I will use this to call the two predicate method this one and this predicate method.
+Except this three parameter user route.
+Whatever the first table criteria and the criteria builder.
+Okay.
+With that this function will get implemented because it's a lambda expression we have provided for it
+specification two predicate.
+So it will now return me the predicate and it will come here again.
+If you are not sure how this is working.
+Kindly have a look at the function interface and lambda expression once Linq might be coming at top
+right.
+Now here if you see that if there are more methods, which are you want to use the same predicate.
+Now they don't have to write it on.
+They just invoke it.
+Okay.
+And rest of everything is same like how we are using in criteria API.
+So one thing we have resolved is code duplicity, right?
+By removing the predicate from the method to a separate method in a separate class.
+And that method can be used by different methods from different places in the code.
+Okay.
+So we are use nothing but a specification API okay.
+It's a abstract method two predicate and implementation we have provided in a separate class itself.
+Okay.
+So very very straightforward.
+The second problem which we have is with the code boilerplate.
+Again I told you that there are so many things which we have to create an object just to write it,
+which is considered as a code boilerplate.
+So with this specification we can remove it by using JPA specification executor.
+So JPA specification specification executor has multiple methods which we can use like find one, find
+all exist.
+And if you open any one of the method and see its implementation, you will see that it is doing everything
+for us.
+So here it's I'm showing you the framework code find all get query.
+So if you go inside this it is creating a criteria builder.
+It is creating a criteria query.
+Then it is creating a from clause.
+It is creating a predicate.
+It is creating a Where clause.
+Ultimately it is doing get result right.
+Everything it is doing.
+So all we have to tell like from each table if there is a join.
+Join with what?
+What?
+All the predicates.
+I have to add it into the query.
+That's all.
+And everything.
+Object creation is done by it.
+So how to use it?
+So there this is the step.
+So first is in the repository we have to extend JPA specification executor.
+It will still be empty.
+Now since we have extend our repository class with repository interface with JPA specification executor.
+This internally has all these methods.
+We can use it directly.
+So we don't have to like implement it anything.
+This is first thing.
+Second thing create a new class.
+Write all the predicate which you have to write.
+We have created all the methods or predicates.
+Now one thing you have to understand one thing that specification is generally for predicate predicate
+conditions only.
+Okay.
+So here you can say that this is a kind of hack Where I am writing a joint address, where I have updated
+my route with the join, what we were doing.
+But I am returning null.
+I don't want any conditions here.
+Okay, so we can do that and I don't want any condition but I have updated.
+Do a join here.
+Okay, so that is how you can extend the functionality.
+Okay.
+If in future you want to do join and then you can reuse this method.
+Now in this method of specification you see that it is look very simpler than what criteria API looks
+like.
+So I am calling user detailed repository find all and passing the specification which I am creating
+here.
+So I want like specification dot where.
+Okay now I am just telling like you create an object, you fetch whatever you want to fetch the data
+from tables.
+Now I am just giving you the conditions predicates where this is your first predicate join address.
+So in join address are we doing anything?
+No.
+We are returning null with no condition.
+But we have extended the join functionality with the root.
+Okay, so where the first predicate where we have done the joining.
+Okay then I am doing an and operation with the second predicate equals phone.
+This is my second.
+And then I am doing and like name aa this one added third.
+So I got one specification that I am passing to result.
+So now here if you see the code.
+Okay I am doing find all and I'm passing this result.
+How it will work.
+So see this one.
+First go inside where it has properly checked if it is null.
+Don't do anything, okay.
+Don't do anything.
+Then the second is end.
+Now end has this logic properly that it has to resolve the left predicate and the right predicate,
+so it can go in recursion also.
+Okay.
+After resolving it then it will goes to the another end.
+Then it will goes to first this predicate and that predicate left and right.
+The framework will create an object.
+It will create an and criteria builder criteria query like everything it will create.
+Okay.
+So here this predicate right here it will ultimately get resolved through your this methods whatever
+the predicates you are writing.
+And since we are doing this end right and predicate and all so it automatically resolve like solve left,
+solve right, solve left, solve right.
+So this ultimately would be get called to resolve like equals, like name and all those things, it
+will get invoked properly.
+Okay, so try to debug it, try to implement it.
+Then you will realize that like okay specification API is nothing different than criteria API.
+It just like solving this two functionality.
+If you compare with the criteria API here, if you see lot of boilerplate and duplicacy has been removed,
+now we are just doing this and it is very easy to understand specification dot where.
+Condition one.
+Condition two.
+Condition three.
+Yeah.
+One challenge is there that if you want to do join and all there is no direct method available.
+So that's why we are currently doing hack here that whatever the route will come we are updating it
+but no predicates right?
+No condition I want to add.
+Or you can do also that one equals to one something.
+Generally we don't do that.
+Uh cb dot conjunction CB dot congestion is the method which do one equals to one.
+Generally we don't say that, just pass null.
+JPA framework will take care that it won't do anything for it.
+Okay.
+But generally specification is for predicates conditions only.
+Right.
+Condition as much as you can.
+Okay.
+And you just pass the condition specification to your find all.
+It will replace all the predicates uh, internally, but it will always be like here if you see always
+like select all the rows.
+Right.
+Will return like if it is not a page get return list.
+If it is a pageable it will return up a specific page.
+If you are clear with the function interface and lambda expression, again this becomes very very simple
+to use specification API.
+Okay.
+If you have any doubt let me know.
+We can discuss further.
+Uh, but I think with this one JPA is totally complete.
+Okay guys.
+Thank you.
+Bye.

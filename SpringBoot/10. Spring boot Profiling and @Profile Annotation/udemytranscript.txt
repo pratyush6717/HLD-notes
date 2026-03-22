@@ -1,0 +1,486 @@
+Hey guys.
+Welcome to Concept and Coding.
+This is Shreyansh.
+And today we will see about add the rate profile annotation.
+Very very important right.
+And you will find certain new stuff in this that what is profiling okay.
+But before we start profile in the previous topic I have told you about at the rate conditional on property
+annotation.
+Right.
+So you already know that what's conditional on property.
+If you haven't seen just check it out because they are interconnected.
+How?
+I will tell you.
+So in just one quick recap, at the rate conditional on property, what does it say is that bean is
+created conditionally means a bean can be created or not.
+Okay, so how we can control whether a bean is, uh, required or not.
+So through this annotation here we in the Application.properties Is we provide this configuration SQL
+connection dot enabled and this value get match up.
+If it is equal then only been will get created.
+Otherwise been will not get created.
+Okay.
+And I have asked this question okay.
+If you have two application, if you have two application and one common code base, how you will make
+sure that bin is only created for one application, not for other.
+Okay, so most of the answers were at the rate conditional on property, which is expected one.
+And also many engineers also said that we can also achieve through at the rate profile annotation.
+And we will use at the rate profile annotation.
+Okay.
+So today I will touch up this point because this is very important to understand Stand the proper use
+of profile.
+So yes, you can achieve the same functionality through at the right profile annotation, but technically
+at the rate profile is intended for environment separation rather than application specific bin creation.
+What does it mean?
+Like don't worry, I will get in depth of this right?
+So we will understand the profile better.
+But for now you need to see that yes with profile also this is possible to do.
+A bin can be created only for one application and for other.
+This bin will not be created itself.
+But this is not the.
+You can say that technically it's not correct, but it can be done.
+And we will come to this question again at last, once we understand the at the right profile annotation.
+Okay, let's deep dive into the accurate profile annotation to understand it better.
+Consider this scenario that you have a DB and you are running certain code in your local machine.
+So some some says local machine, some says dev development.
+Okay, so username and password which you are using to connect to a database might be certain different.
+So it's like dev username dev password.
+But if the same code you are running on a stage machine or in a QA environment, right.
+So maybe the username and the password might be different to connect to a database okay.
+And similarly the same code if you are running in live or production, the username and password might
+be different than your local machine.
+And then state machine.
+Right.
+So username and password might be different to connect to a database.
+So we have different type of environments when we work the same code.
+Okay.
+When it refers to a particular configuration.
+So here the configuration is username and password.
+So when I'm running into my local system I might I might don't have to give anything I have configured
+like username and password should be empty in QA.
+It should be like some certain dummy username password.
+We can put same username, same password, but in stage or in production it should be a valid username.
+Valid password.
+Okay so the same code but the configuration is different based upon the environment which you are working,
+how you will.
+And generally one more thing this username and password is just one example.
+There are so many other configurations which are different for different environments.
+Okay, so Dave and live production.
+So there are so many things like URL and port number.
+So maybe when you're connecting to certain your this is your app, you're connecting to some other application,
+some other application dependent application.
+So maybe the URL you are connecting and the port number you are connecting might be different.
+So port number here is 45613.
+In QA it might be same 45613.
+But in live it is different 65121.
+What I'm trying to say is that the URL and port number can be another configuration, which can be different
+based on the environment.
+So there are other parameters like connection timeout request timeout values.
+These also differs based upon different environment.
+Okay.
+So your live resources your live machine has too much resource.
+Your development machine, your local machine is not that capable compared to the live machines.
+Similarly, QA machines might be better than dev but not better than the production.
+So the connection timeout value might be you.
+You might you might need connection.
+Uh, time in millisecond might be here.
+You want 1000 milliseconds for connection in QA you might need 500.
+But in live you require only let's say 50 milliseconds.
+So these value also differs based upon environment.
+Similarly throttle value retry values.
+You might want more retries in dev than in QA than in live okay.
+So username and password is just one example.
+What I want to say.
+In short there are so many different parameters, different configuration which you need different for
+different environments.
+So how you will achieve it, how you will do it because we put the configurations in application dot
+properties file.
+But how to handle different environment configuration.
+So these are the configuration but it's different for dev.
+These are the configuration different from QA.
+Similarly for live different configurations.
+But till now we have seen only okay there is only one file Application.properties.
+How in this single file we will put all three different configuration.
+Okay.
+That's where the profiling comes into the picture.
+Okay.
+I'm not telling you about at the rate profile annotation.
+Now first you need to understand profiling to understand the profile annotation okay.
+So at the rate profiling comes into the picture at this point of time.
+So what does profiling means in Spring Boot.
+So we have a file called application dot properties.
+Okay.
+So we can I told you that we can have different environments in Spring Boot.
+You can say that we can have different profiles okay.
+Like and you can have multiple application dot properties like this application hyphen your profile
+one dot properties application hyphen profile two dot properties.
+Similarly like different environments you have different profiles you have.
+So what I told you that the profile in Spring Boot is nothing but equivalent to your environment.
+So if you have application hyphen dev dot properties.
+So this property will contain all the configuration which you required only for dev.
+So you have another for QA, right.
+For stress testing.
+So application hyphen QA dot properties.
+This will all the configuration which you require for your QA.
+Similarly for your let's say hyphen live dot properties application hyphen live dot properties.
+Okay.
+So we can have multiple applications profiles based upon the environments you have.
+Okay.
+So see this part.
+See this example.
+So I have application dot properties in that I have provided a username and password and certain default
+values.
+And I have created multiple profiles.
+Right.
+And you know when I say profiles means multiple environment specific application dot properties.
+So application hyphen dev dot properties.
+So this is my profile one.
+So there if you say username and password is Dave.
+Username Dave password.
+Similarly I created second profile application dot properties and it's username password is different
+SCPs username password.
+Similarly for life I have a configuration inside application hyphen prod dot properties and username
+password is prod username prod password okay so now this under uh consider this code very very simple
+code a simple class with at the rate component annotation means it is getting managed by Spring Boot.
+I have two parameters which are annotated with at the rate value means this value is getting filled
+up from this configuration.
+Application.properties configuration.
+Okay, so this field is getting filled from username Spring Boot will search this name into a application.properties
+file.
+Similarly, the password is getting filled from same as the rate value means application.properties
+file, and after the post construct means when the bean is constructed, I am just printing this value.
+What is the username?
+What is the password?
+Very very simple.
+You already know it because we have already seen these examples.
+Now when I run the application, what would happen when you run the application?
+Spring boot will find this at the root component.
+And since it is singleton means it is eligible for eager initialization.
+So spring boot will create a bean out of it and will try to.
+Then once bean is created, it will try to resolve this dependencies.
+So it will try to fill up this username and password.
+So it will look application.properties.
+Now there are multiple application dot properties present.
+Which one to pick.
+It will see that hey any profile is set.
+Do have we set any profile still yet.
+Nothing.
+We just have created multiple properties files but we haven't set.
+Currently we are working on which profile so which one it will pick this default one.
+So Application.properties considered is as your default.
+If you haven't set any profile that.
+Hey, I am working on this Dave, I'm working on this QA or I am working on this prod production, then
+Spring Boot will pick this default okay.
+And it will try to see that hey username is present here.
+Yes.
+So it will fill this default username in this similarly password.
+It will fill default password here and it will proceed further.
+So now here if you see when the starting the application what is the username it got printed.
+The default username.
+Default password.
+Okay.
+So because till now we haven't set the profile.
+Okay.
+So now we have seen this.
+Now you can ask me hey how to set the profile.
+Then if I want to pick let's say I am working in QA, I want to set this profile on.
+And I wanted this configuration to pick up actually to connect to my database how to do that.
+So what we have to do is we have to use this configuration spring dot profile dot active.
+We have to set this configuration.
+So how generally we do this in Application.properties right.
+Which is generally you can say the default one.
+You can put this configuration spring dot profiles dot active and whatever the profile which you wanted.
+So this is the profiles, right?
+Either Dave whatever you can give any name development local anything but the same name you have to
+provide here.
+So Dave QA or prod.
+So these are the profile.
+So whichever profile you wanted Spring Boot to pick you can provide in this configuration.
+So here now what I have given is in this application dot properties this profile I have set to QA okay.
+And the same example.
+Nothing changed in this class.
+Nothing changed in this all three.
+Now when I started the application you will see that Spring boot has set the profile what the profile
+is set to QA.
+Okay.
+So when you start a spring boot application what happens is the spring boot application.
+Look for this configuration and see that, hey any specific profile I need to set If yes, if if it
+find this, then what it will do is you will see this message that this is the profile is got set.
+So QA.
+So now Springboot internally will look for application hyphen QA dot properties.
+So it found this.
+So now it will use this okay.
+So now consider this as a parent child.
+So if username is present here username is present here.
+This will get now prioritized okay.
+If let's say some some configuration x y z is present here but it is not present here.
+Right.
+And your code is referring to that.
+Hey look for x y, z.
+And even though we have set the profile to QA, the XYZ is not here.
+So but it's there in the parent.
+It will use this.
+So you got it.
+What I'm trying to say is that consider this as a parent configuration.
+This is as a child configuration.
+If value is present in both the child one will get priority.
+Otherwise, if value is not present child but present into the parent, the parent one will be used
+okay.
+And if it is not there in the parent, and if it is there in the child, child one will be used.
+And if it is present in both the child one will get priority.
+Okay, so now here when I run the application you will see that.
+Yeah.
+Spring boot had set the profile QA because of this.
+And while getting when Spring Boot encountered this class with the added component, it will try to
+fill up this value.
+Now it will see that okay username and password is present into application dot properties and also
+its profile QA application dot underscore QA dot properties.
+So it will give priority to this one.
+So QA username and password will get filled up here.
+Got it.
+So spring dot profiles.
+Dot active is the one which tells spring Boot that which specific profile you are working at, right.
+So which configuration you have to pick either this either this or either this.
+Now you can ask one question that hey okay it's good that in application dot properties we can provide
+like we can give by default that hey by default every every time day only.
+But dynamically I want to change.
+Let's say my I am going to start my application in live.
+I don't want to change it to here like uh, production every time.
+And all right.
+So by default I have given that it should be working as a dev, but how to set this dynamically.
+So this is how generally done.
+So there are two ways I will tell you two ways how it's done currently in live applications.
+So ultimately what we have to do is during application startup, we have to tell Spring Boot and set
+this configuration.
+They spring boot.
+Uh this is the configuration we have set.
+Use that specific environment.
+How to tell that.
+So currently when you when this is started this is started through intelligent intelligence.
+You get run option right.
+So IntelliJ when you just click on button run right.
+Ultimately internally it's running the command only.
+So this is the actual command to run the spring boot.
+So Maven spring boot colon run.
+So this actually starts the spring boot application okay.
+Like similarly how it is starting the similar way if you run this this much Maven spring boot colon
+run.
+So this will start your spring boot application.
+Now we want to give in a runtime dynamically that which environment you are currently working at.
+So we can give like this.
+So hyphen D means you are setting and during you are setting some environment variable write your settings
+of ten properties.
+So hyphen D now spring hyphen boot dot run dot profiles.
+So means during run application startup spring boot dot run.
+So this is you are running a spring boot right.
+So spring boot dot run dot profiles you set to prod okay.
+So what it internally it will do is it will set this spring dot profiles dot active to prod.
+Even though you have application.properties you have given dev.
+But if you are setting it dynamically in the environment, this will get more priority.
+okay.
+If you don't give it, then it will use the default one which you have given in the application dot
+properties.
+If you provided this one, then this will your ultimate priority.
+This will be given the first priority.
+Okay, so whenever you are running an application in live or QA, right.
+So you can run using this and provide whether which environment you are working, whether in QA, prod,
+dev, whatever.
+Okay.
+There is another way that in in if you're working, you might check your company's pom.xml file.
+You will see something called profiles.
+The same thing which we are setting right this spring.
+Hyphen boot, dot run, dot profile.
+The same thing we can set through.
+We can add this configuration into Maven.
+So these are the different profiles I have added into Pom.xml.
+So first profile is I have given name local.
+This ID is unique so you can give anything.
+So I have given local.
+And the property in this one is a spring hyphen boot dot run dot profile.
+The same thing this one.
+So dev I want to set into this when this is chosen.
+So this is the second profile which I have given a name production.
+So whenever this ID is chosen what is the profile I want to set prod.
+And the third profile I have set is that which I have given a name stage.
+When this ID is chosen, what is the profile?
+I want to set QA okay.
+Now during Maven spring boot application command Maven Spring boot run all we have to tell that which
+configuration to pick.
+I have just tell hyphen p.
+Hyphen p means you have to pick a particular profile from a maven.
+Pom.xml.
+Which one?
+Production one.
+So production one this id.
+So what it will do is it will set this property hyphen spring boot, dot run, dot profile prod.
+This is just different way of doing what we are doing here.
+So here we have done the same thing but without pom.xml.
+So that's why we have to set the complete configuration here.
+Otherwise in the pom.xml you can set this values only during application startup.
+You can tell that okay which one to pick either this either this or this.
+And the same thing the same configuration will get set with this value.
+So both are doing the same thing but one through Pom.xml and another is without pom.xml.
+Whichever you like.
+Generally this are in the applications live application.
+This is mostly preferred like.
+It's clear that write the command is generally clear that you want to run it like for a production,
+for stage, for local, because you give proper naming.
+Okay.
+So here if you see that when I run this command Maven spring boot run hyphen D is spring boot run profiles
+prod even though it's whatever it is present here.
+What happen is spring dot profile is set to prod and when you run it you will see prod username prod,
+password.
+Okay.
+Profile is set to prod.
+So do you understand now what profiling is, right?
+You understand now?
+Profiling is right.
+What profiling is.
+We have different environments.
+And for different environments we have different configurations.
+Those are environments in spring boot generally known as profiles.
+So we have to choose a particular profile when running the application.
+If you don't choose default one will be chosen.
+If you have to choose specifically, you have to set the spring profiles dot active configuration.
+Okay.
+Now with that being said, now let's see what is at the profile annotation.
+Then I understand the profiling, but what is at the profile annotation.
+So using the profile annotation we can tell Spring boot to create a bean only when particular profile
+is set.
+Now here in this just see an example I'll tell you with this example again in the Application.properties
+username.
+Password.
+What is the profile asset QA.
+Similarly, dev qa prod is files are present but profile is set to this.
+Now here if you see that I have created two classes.
+One is MySQL connection.
+This is a at the root component managed by Spring Boot.
+And I have put the profile is at the profile annotation prod.
+Similarly there is another class called NoSQL at the root component.
+And what is the profile I have said dev.
+Now as per the definition, what it says that it tells spring boot to create bean only when a particular
+profile is set.
+So now when you started an application Maven Spring Boot run, either through IntelliJ or you run this
+command, both are the same thing.
+What it what it will happen.
+So first during application startup, it will set its profile to QA okay.
+It will set its profile to QA because spring Dot profiles dot active is set to QA.
+Now it will find this class with at the root component.
+And since it is single turn can be eagerly initialized it will.
+Spring boot will try to create its bean, but then it identify at the root profile annotation and it
+says that hey, I have to create only its bean when this profile is set prod.
+But currently what is the profile is set QA so you can say that it's a string matching.
+So is prod equals to equals to QA like strings.
+Dot equals like something you can do right.
+So is it matching prod and QA matching.
+No.
+So this profile will this bean will not be created.
+Then spring boot will find NoSQL connection class.
+And let's see that.
+Hey, can I create a bin of this?
+Okay, I have to create it's bin only when dev profile is set.
+So what is the profile set currently QA.
+They are not matching.
+So this bin will also not get created.
+So here if you see when I started the application this two are not getting printed.
+So these are not created.
+Bin is not created.
+Now I am just uh with the same example right.
+Even though in the application dot properties QA is present, but while running the application I am
+dynamically setting that hey, set the profile to prod.
+And when I run the application here, here if you see what profile is set prod.
+Now during uh bin initialization it will find this MySQL connection.
+It will find the profile.
+Hey okay I have to create the bin only when prod this profile is set.
+So prod it's gonna match with this period.
+It's match, right?
+So here, if you see my SQL prod username prod password is set.
+Okay.
+Because of this configuration prod configuration spring boot will try to pick the name which you have
+given right prod.
+So application hyphen prod dot properties.
+So it found this also.
+So username password is set this.
+And also because of this at the rate profile it matches that this is matching with the profile or not.
+If it match then only been will get created.
+No SQL here if you see that it's set to dev, but our profile is prod so it don't match.
+So my NoSQL is been is not even created.
+Okay so you got it that at the rate profile annotation what it does is It tells Spring Boot to create
+a bean only when specific specific profile is set.
+Okay, so there is one more thing I want to tell that don't get confused with this that we can also
+set multiple profiles at a time.
+So here if you see that spring dot profiles dot active prod underscore q.
+So this is doesn't make sense.
+You can't work in two environment at the same time.
+You can't work in prod and QA at the same time.
+Okay.
+But you can provide comma separated prod underscore.
+So what would happen is whatever the last you have that would be picked actually.
+Okay.
+So spring dot profiles dot active.
+So which which application properties would be used.
+QA one the last one.
+But this comma separated is mostly helpful in at the rate Profile because multiple profiles are set.
+So here if you see I have given prod underscore QA.
+So this class when the spring will try to create a bean it will set that profile prod.
+Yes it is set for this class.
+No SQL connection.
+What is the profile QA.
+Yes this is also set.
+So both will get created.
+So here if you see both will get created because both profiles are set.
+But which application dot properties.
+It will pick the last one QA.
+So it will pick QA QA username password for both QA username for MySQL QA username for NoSQL also okay.
+So you can give comma separated.
+So only one application dot properties would be picked.
+Only the last one.
+But the since but the profiles will set to all uh all these profiles will get set which might help in
+this annotation.
+Okay.
+So now let's come back to the previous question, which I asked starting you have two application.
+You have two application and one common code base.
+How you will make sure that bin is only created for one application, not for another.
+So that is like this is a common code base.
+Okay.
+In this one I have given a profile app one.
+Okay.
+Now this is application one.
+In application one, application dot properties I have set spring dot profiles, dot active app one
+and in application do I have set spring dot profiles dot Active app two.
+So during this application startup what is the profile will set F1.
+And for this one during application startup profiles got set to app two.
+Now during when spring find this and it try to create a bin.
+It will say that hey if this profile is set F1 so only for this bean would get created here.
+AP2 doesn't so bean will not get created for this.
+So yes, we can achieve it.
+But see again this is not environment.
+Your F1 is not environment.
+Okay.
+Your app two is not environment.
+Environment is like development environment stage environment live production environment.
+Even though we are able to achieve the this part right.
+Conditionally creation of bean.
+But making use of profile to achieve this is something.
+If I am the peer reviewer, I will not accept it because the purpose of profiling is different.
+You might understand that because I have told you what is profiling before even tell you at the profile
+annotation.
+What's the actual purpose of this?
+Profiling different environments.
+So when you're setting this F1.
+So I am, uh, specifically that you have like application hyphen F1 dot properties.
+That doesn't make sense because in every application you can either have application dot properties
+and different environment like dev QA production.
+So this doesn't make sense to have this.
+So this create confusion.
+Hey what is this.
+Is this like profile is generally everybody understand as an environment right.
+So use at the rate conditional on property rather than using profile for conditional creation of bin.
+Okay.
+So while telling you at the rate profile annotation I have told you that why this is the correct answer.
+Why this is not.
+Even though we can achieve the same, but still.
+I want to hear you on the comment section.
+What do you think?
+And if there is anything we can discuss more.
+Thank you guys.
+Bye.

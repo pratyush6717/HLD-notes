@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>36. Spring Boot Security - Part4 - Basic Authentication</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>36. Spring Boot Security - Part4 - Basic Authentication</h1>
+    <pre>
+Hey guys.
+Shan this side.
+Welcome to Concept and Coding.
+And today in this spring security video we are going to discuss the next authentication method which
+is basic authentication.
+So till now we have seen the form login authentication method and which was a stateful authentication
+method.
+And this one is stateless authentication method.
+So stateless authentication means server do not maintain the user authentication state.
+No session is maintained by the server.
+Okay.
+So why it's called Basic as from the name it is clear.
+It is basic like very very simple.
+In this client has to pass the username and password with every request with every request.
+If you are accessing the resources 100 times, you have to pass the username and password with each
+and every request, right.
+And we have to pass this in the authorization header.
+So this is the form in the authorization header.
+We have to form pass like this.
+It goes like this in your request header.
+So first one is basic which tells us it is a basic authentication method we are using.
+Then your username colon the password which is base64 encoded.
+So remember that it is always in an encoded form not encrypted form.
+Right.
+So if anybody intercepts your request they can easily decode your username and password.
+That's why we call it like always use it on Https.
+Never use it over HTTP basic authentication.
+Never use it basic authentication over HTTP.
+Because in the header we pass username and password and that is only encoded from not encrypted form.
+So now we know very basic about this authentication method.
+Let's go step by step.
+Okay.
+So first thing first we have to create a user.
+And we have already seen in the video number 34 like how to create a username and a user and password.
+Dynamic users we can create right.
+We can even create a user in DB or in memory.
+We have already seen all possible ways to create a user.
+Okay, so I am using for testing purpose.
+I am creating one user and I have hardcoded that username is user, password is pass and I have provided
+a role admin okay so I have.
+So when I will start my server, one user will get created and by default it will go into in memory.
+It would be stored in in memory not in DB.
+So if you have any doubt with this how user is created, how username password is stored, what is the
+industry standard?
+I would say that uh, please go through this video.
+You will get to know that.
+So first thing first we have to create a user.
+Now, if any time you are hitting a request, let's say I am hitting one get request.
+Okay.
+Here, if you see slash API slash users in this, there is something called authorization in that I
+have.
+What is the auth type I have choose basic auth.
+When I click on the basic auth I get an option to provide a username and password.
+So I have provided my username user and password is pass.
+Okay this one.
+Now when I hit it right in the header it goes like this.
+Basic.
+Base64 of your username colon password.
+So this is your base64 encoded form of your username and password.
+It goes like this okay.
+So your username and password goes into the header authorization header.
+So this is the authorization field inside an header.
+And this is how it goes.
+Okay.
+So if you open the basic authentication filter.
+Okay.
+Now when you hit it right when you click on uh send, when you click on send the control will come to
+the basic authentication filter.
+There you can check this the request try to fetch from the header authorization header.
+It will try to fetch.
+And there it will decode it.
+And once it decoded you can see that this was your header.
+And after decoding it you can see your username and password.
+It is easy very easy to decode.
+If it is not encrypted then you can know that if anybody got your, uh encoded form, they can decode
+it.
+It is nothing but a base64 only.
+Okay, so this is how generally it send in the request and you have to pass it in each and every request.
+Okay.
+So one question comes to our mind that, hey, why we need to send the username and password in authorization
+header only.
+Why not?
+I can't pass it in request body or query parameter or any other way.
+Like why only header?
+So these are the three possible reasons in my view.
+First thing is standard we have to follow one standard.
+Let's say if we don't follow any standard, one client can pass you into a request body.
+Another client pass you in query parameter.
+Another client pass you in header.
+So it would be very difficult to deal with different clients.
+Okay.
+So there is an RFC 7617 HTTP standardization there.
+It mentions that all the credentials has to be passed in header only.
+And it is important for universally accepted standard across APIs and client so that no matter what
+clients what APIs, if you have to pass the credential, you have to pass it into header.
+So that's a standard so that you can write frameworks on top of it.
+Okay.
+The second thing is security.
+There are many web servers which log the request body and even the query parameters.
+Okay.
+And that is not safe because they might be logging it for debugging or analytics purpose.
+What if your username and password got logged inside that.
+Right.
+And you know that sometimes the logging tools which we use in a company, it belongs to a third party.
+It's not yours.
+Okay.
+So this is a security breach.
+But generally headers are not logged.
+We never log headers.
+Right.
+So it reduces the risk of exposure.
+Okay.
+So security is one another big reason why header is chosen that yes we can pass username and password
+inside an header.
+And the third one is support for all HTTP requests in my view.
+If you see that post and put yes, we have a request body and we can pass it.
+But what about the get generally get do not have body.
+So generally if we have a header then it can support whether the API is get put post whether the API
+accept body query parameter or not.
+So header would always be there.
+So it to maintain a consistency.
+Also this required.
+So this is my reason like why I think that authorization header is preferred for the username and password.
+Okay if that is clear.
+Now let's understand little bit more about basic authentication and its flow.
+So before I start I would highly recommend you to go through this form based authentication.
+Why?
+Because if you remember from this video form based authentication, there are two part at one part where
+user provide a username password and the session got created.
+And second is where user pass the session in the request itself and then where it is got authenticated.
+So here in the basic authentication it's a combination of both.
+So from first part yes username and password we are providing but we are not creating session in the
+second like there is no second call.
+There is nothing like a second request.
+So in the one itself like one we have the username password.
+Then we have like uh authenticate and do authorization.
+Authorization part.
+So in the second step session plus authorization happened.
+Right.
+So in the one part itself of the basic authentication user pass the username password.
+But we don't create a session.
+And then in the same request we do the authorization.
+That's all.
+Rest of the flow is same as form based.
+So go through that.
+Then it would be like a piece of cake to understand this.
+So here let's say that you are hitting an API slash API slash users, and in the request and header
+you are passing username and password.
+Okay.
+So one of the security filter chain get invoked.
+Now what would happen.
+So when we are using basic authentication the first filter which get invoked is basic authentication
+filter.
+This is the filter which will get invoked what the first thing it will do.
+I already told you it will decode the authorization header.
+I have already told you in the code also.
+So this is the first thing it do.
+It decode it.
+Okay.
+So it decode the authorization header.
+Now we have here username and password.
+Plain username.
+Password.
+Now the step is same as the form.
+It create and pass the authentication object to Authentication manager.
+This authentication object currently holds username.
+This password, nothing else.
+So it has this username.
+It has this password, nothing else.
+Authentication is currently false.
+And no more information.
+Okay.
+After this, authentication manager will delegate the request to Dao authentication manager provider.
+Okay.
+What Dao will do.
+So we have the password coming right.
+So first it has to hash it.
+So it will call the password encoder.
+It will call the password encoder and hash the incoming raw password.
+And after that what it will do is it will fetch the user detail based on the username from the DB.
+We have created the user details right at the time of application startup user password role.
+So there is already a user created so that need to be fetched.
+So in the fifth point it will fetch those details from user detail service whether from in-memory or
+DB.
+Once we get it, it will validate the incoming username and password with the same or stored username
+password.
+Once matched properly, it will update the authentication object.
+So now same like previously username password.
+Yes authenticated is true.
+Roles updated to admin.
+Okay.
+And it will return back to the basic authentication filter.
+Okay.
+Now what it will do at ninth step it will save this authentication object which is coming this into
+a security context.
+And put the security concept inside a security context folder.
+This folder it will put inside this.
+So this folder is accessible across till controller also okay.
+So we can say that now the complete lifecycle of a request this security context would now be available
+okay.
+If in future you want to fetch whether user is authenticated what it is role.
+You can easily do that.
+Okay.
+So now in the basic authentication filter itself we have done everything.
+We have matched the username password with the stored one and then put it into the security context
+holder.
+The authenticated object.
+Now this is the second filter get invoked is authorization filter.
+It is also exactly the same as uh what we have done in the form based login okay.
+So it goes to the authorization filter where it says that okay user is authenticated, but user has
+the permission to access the resource or not.
+So that only we validated it.
+Okay.
+So what we need to implement it.
+The flow is very very simple.
+Okay.
+After that one the control proceed further.
+The dispatcher servlet.
+If there is interceptor then it will get invoked.
+Otherwise controller right.
+Very very simple.
+And each and every time request is passed, sparse.
+It follows the same thing because for each and every request, username and password is coming.
+So what we need to implement it first thing is same thing.
+We need dependency security.
+And if you want to.
+So this is not required.
+So you remember that in form based login we use this because we wanted to store the session into the
+DB.
+Now here is no session at all.
+So we don't need this dependency.
+So only security is required.
+Second thing is in application.properties if you want to create username password hard coded then it
+is required.
+Otherwise dynamically you already know that in the previous video we have already discussed how to create
+a dynamic, but I am creating a hard coded one.
+So in I have created one user.
+Now see this one.
+This is class is required.
+So from the previous form login video, you know that.
+What is the default authentication method for spring boot.
+It is form based login.
+So we have to override this security filter chain.
+And we tell that, hey, the authentication which we have to follow is HTTP basic, not HTTP form.
+So we are now overriding the default one.
+So we are telling to springboot that your default is HTTP form which is form authentication.
+But we are following HTTP basic which is basic authentication.
+That is first thing.
+Second thing is this is stateless.
+So I have specifically mentioned that session creation policy already seen in the previous video.
+What is this.
+So this is stateless in form based.
+It is if required if session is required created.
+But basic authentication it is stateless.
+Session is never created.
+And each and every time you have to pass the username password.
+So it is I have specifically mentioned it is stateless.
+Third thing CSRF.
+I need to disable it because from the first attack with demo video.
+Right before we started security, I had already told you that CSR is required mainly where the session
+is maintained.
+So for the stateless, CSR is not even required.
+What is CSR attack?
+How to protect it?
+We have already seen, uh, before we started the spring uh, security videos.
+Right.
+So you can also follow that one.
+So why I have disabled it?
+Because this is a stateless and CSF is not a valid for the stateless, uh, authentication.
+It is only valid for where session is maintained.
+Stateful okay.
+And here if you see that I have put request matcher, any API which matches like this should have a
+role like user.
+So I am doing like an authorization filter here.
+Just similarly like what we did in the previous video.
+So what would happen is when the authentication happened, happen.
+The request will go there.
+It will check.
+User is trying to access an API.
+API slash users.
+Okay.
+This is the API user is trying to hit.
+So this API is required.
+Any role?
+Yes.
+User role required.
+So user role this is required.
+But what is the role user has.
+User has role admin.
+So it is not matching.
+So it will throw forbidden error.
+Forbidden.
+So if matches let's say user.
+And here also it is user then it will pass it and let it go.
+Okay so I have here just to show that for this API I need a role user okay.
+And that's all.
+That's all you needed it to implement the basic authentication.
+Everything is handled by framework.
+All we have to tell is that which we have to override this spring security filter chain.
+And just tell Spring Boot what we want.
+Okay.
+Very simple, right?
+But why it is not used?
+Why?
+What are the disadvantages of basic authentication?
+Now you can say that hey this is stateless right?
+It is good.
+But what are the disadvantages.
+Why it is not popular.
+So see these are the three main reasons which I think it is not very popular is one thing.
+Credentials are sent in every request.
+Right.
+So that is one of the biggest thing is like if HTTP is not enforced then it can be intercepted and decoded
+it.
+We have already shown you right.
+It's encoded not encrypted.
+So one is security reasons right.
+And once the credentials are compromised there is no way you can do it.
+Only you have to change the credentials.
+That's the only thing right.
+There is nothing like a session.
+You invalidate the session or token.
+You invalidate the token.
+Nothing.
+You have to change the password, nothing else.
+Another thing is like it is not very feasible that like user experience is bad.
+Like for each and every request, you have to validate.
+Authenticate yourself like username, password again and again.
+And this makes it not suitable for large scale application.
+Why?
+Because it is an extra overhead for.
+First thing is your request size increases.
+Even though with some bytes.
+But it will because of you have to pass the authorization header, your username, your password.
+Then you have to encode it and then you have to add it to your request.
+So some bytes will get added to your already the request.
+So it will increase the request size and extra work.
+Like first it has to decode then hashing of the incoming password, then fetch username and password
+from db existing one and then comparing it.
+So all this thing has to be done again and again and again.
+Okay.
+If your application is accepting 1 billion requests per day so 1 billion times it has to be done.
+Okay.
+And the follow up is DB lookup.
+So now you are passing username password.
+So for this username we have to fetch it from the DB.
+Also like what is the username and password is stored.
+Then only we do compare right.
+So DB lookup is also has to be done which increase the latency also.
+So that's because of all this issues this is not very popular okay.
+So even though it is a stateless it's not popular.
+And that's where comes JWT into the picture okay.
+And that's what we will do next okay guys.
+So any doubt please feel free to comment.
+We can discuss further but this one is the very basic one.
+If you already see in the form one, then most of the flow is very simple.
+So it's uh, self descriptive, like the description itself from uh diagram itself.
+It will get clear to you.
+But still, if there is any doubt, we can discuss further.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

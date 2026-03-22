@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>39. What is OAuth 2.0- Explained</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>39. What is OAuth 2.0- Explained</h1>
+    <pre>
+Welcome to Concept and Coding.
+And this is Shreyansh.
+And today we are going to do OAuth 2.0.
+Okay.
+So let's start it without wasting any time OAuth stands for open authorization.
+So it's an authorization framework.
+It enables secure third party access to user protected data.
+Now let's understand this two points with this flow.
+So this is user.
+Let's say this user is already signed in to his Gmail account.
+This is his Gmail account.
+And user is already logged in right.
+User is already logged in.
+So this is it has it's protected data.
+So this user it has its complete profile right.
+It's set up all there into the Gmail account.
+Now it want to log in to any other Website.
+Let's say that certain x, y, z website it want to log in here.
+It want to log in here.
+So you might be seeing that there.
+We do get an option that right sign in using Gmail you get different options.
+So now let's say if user use this sign in using Gmail what it is trying to do is it is authorizing this
+third party.
+So XYZ website is a third party, right.
+And it is authorizing this third party.
+Hey, you go ahead, use my protected data from the Gmail.
+I am authenticating you.
+Right.
+So Gmail will provide the information which is required to this third party.
+And after that you would be able to log in to this XYZ website.
+And you will see that.
+You will see that.
+Hey.
+Welcome user.
+So it automatically get your username and everything from the Gmail.
+So there are four important roles.
+Or you can say that actors involved in it.
+This process in this process four actors involved.
+First one is resource owner.
+Who is this resource owner in this flow?
+This guy is the resource owner.
+So now let's say that I am the person who has this Gmail account Shreyansh.
+I am already signed in over here.
+And this guy is me.
+Shreyansh.
+So who is the resource owner here?
+This this me Shreyansh is the resource owner.
+Then second one is client.
+Who is the client?
+The client is one which initiate the request.
+So in this case, let's say I want to I want to access Facebook.
+And here I am clicking that sign in using Gmail.
+So now in this case Gmail.
+Facebook is the one which wanted my protected data, right?
+So who is the client here?
+This third one is Authorization server.
+So now let's say that Gmail.
+So there would be another you can say that Gmail authorization server.
+So generally sometimes you will see that even in Gmail itself one one service itself taking two roles.
+It is also doing authorization uh part also and also the resource like it hosts the resources.
+Right.
+So but for simplification and in most of the cases generally these are two different components.
+Right.
+So there would be one Gmail authorization server, which takes care of authorizing.
+Right.
+So this is the third component.
+And the fourth is resource hosting server.
+So I am the resource owner.
+And where is my all the resource present currently in the Gmail.
+In Gmail knows about me everything.
+My date of birth, my name, my email ID right, all my data is present into Gmail, right?
+And Gmail is hosting it.
+So this is the hosting server.
+My resource are present into Gmail and this is the server which is hosting my protected data.
+So here in this case Gmail is your resource hosting server.
+So you got this four resources.
+You have to be very clear because we are going to see the flow using this only.
+So now these are the four actors involved in it.
+And we will see a flow using this for actors now.
+But before starting the flow, I will tell you there are five mechanism to get the token.
+Or you can say that to get to authorize a client.
+So one very very important and popular is authorization code grant.
+Right.
+This one will also cover this.
+But these are just normally not you can say that encouraged.
+But this is the important part.
+Authorization code grant right and refresh token grant is also used.
+But we will cover all right.
+So you will get to know that.
+But it's a mechanism used by client to obtain access token.
+You will get to know about access token and all.
+So don't worry about it.
+And now let's see a flow of authorization code.
+Grant this one I am telling you the flow of for this.
+So these are the four clients Resource Owner client, Gmail Authorization server, and Gmail Resource
+server.
+Right.
+The use cases that I am the resource owner, I want to log into Instagram.
+And I am already logged into my Gmail.
+So Gmail has known about my name, age, date of birth, email id address.
+So Gmail I have all the data Instagram wanted to use this to help me to sign in.
+And Gmail also has its authorization server.
+So now what's the flow?
+So I am telling you about authorization code grant now first.
+So now first Instagram has to do a registration with authorization server.
+So it has to do register.
+So if Instagram has to show an icon here that says sign in using Gmail.
+Sign in using Gmail.
+So first it has to register to this authorization server.
+And this Gmail authorization server will return two things client ID and client secret.
+Right.
+So now Gmail authorization server knows about this Instagram.
+Right.
+So this is your client ID.
+This is your client secret, which only authorization server and only client should know this secret.
+Okay.
+So first client has done its registration and got its client ID and secret.
+Now user want to log in to an Insta.
+So I am the resource owner.
+Let's say I come to.
+I'm the resource owner.
+I want to log into Instagram and I instead of putting my username password, I clicked on sign in using
+Gmail.
+I am already have a Gmail account.
+I have all the information there and I chose this option that hey sign in using Gmail.
+Now what client will do?
+Client will redirect me to authorization server.
+Gmail authorization server.
+So it will redirect me to the authorization server where I have to authenticate myself.
+I if I am not logged in to Gmail, I have to provide my username ID of the Gmail and I have to authenticate,
+right.
+And also provide the consent.
+So you might have seen that you are Gmail would might show you you are providing this this this permission
+to Instagram.
+Are you okay with it.
+And you have to provide yes.
+Provide it.
+So you are providing nothing but a consent okay.
+Once you provide the consent authorization server, will goes to the instance and provides the authorization
+code.
+One code will be given, which is known as authorization code.
+Now, using this authorization code, Insta again call the authorization server and ask for the token.
+Hey, give me the token now.
+Now what would happen is when you ask for a token or Gmail authorization server will provide you two
+things.
+Access token and refresh token.
+Right.
+So access token is a short lived maybe let's say 10 minutes or 15 minutes.
+Right.
+But if it is expired you can use refresh token, which is a generally long lived token.
+Right.
+To get a new access token we will come that in later.
+But currently you have to understand the flow.
+So what happen is when Instagram asks for token using the authorization code, authorization server
+will provide two token access token and refresh token.
+Okay.
+Now using this access token, Instagram will go to this Gmail resource server where my data is hosted
+name, age, address, wherever.
+Right.
+And it says that, hey, this is the access token.
+Give me this data.
+Now what it will do is this Gmail resource server what it will do.
+It will go call the authorization server and say, hey, validate this token.
+I got this token.
+Is it valid or not.
+This authorization server validate this right and return whether it's a valid or invalid right.
+If it is invalid, it will discard the request.
+If it is valid, then it will provide information whatever it is asked.
+Let's say your profile.
+So your name age email ID would be shared to Instagram.
+And after that it would sign in.
+You successful, right?
+If you are if your token is not valid and you are not authorized, it might certain for XX might be
+401 for unauthorized right.
+So this is generally the flow for this authorization code grant.
+So now let's see the request and response for each flow.
+But please note right.
+Please follow the official documentation like the exact API names or more parameters.
+This API names which I have taken.
+This is just for like to help you better clarify, right?
+This might not be an exact API names, right?
+So that is just I want to say that hey, follow a proper Rfc's right?
+Rfc's are generally you can say that official documentation for OAuth, you will see different versions
+for explaining different different parts, but I'm explaining the APIs and response by taking some sample
+API name.
+Right?
+Which makes sense in the context.
+Okay.
+Now first registration process.
+So what is the first step?
+Instagram.
+The client has to register itself to the authorization server.
+So it has to do the registration.
+Okay.
+So this is the register.
+So this is the post API register.
+And what it says that hey this is the client name let's say my my app name.
+So here it might be passing let's say Instagram Instagram.
+And it will pass the redirect URI.
+So it three three URIs.
+You can give max three URIs you can give where you want redirect to happen.
+Right.
+So so it's generally the callback.
+So if you see many times this Gmail has to redirect right at many places.
+In many places it has to redirect.
+So.
+You can define three redirect URIs during registration itself.
+So what is the response.
+In response you will get two things client ID and client secret.
+Okay.
+So registration process clear this client ID and client secret.
+Client secret is very very confidential information which is only known by client and authorization
+server right.
+It is generally used to authenticate the client.
+Let's say in this case Instagram.
+Two authorization server.
+Okay.
+Authorization.
+This is done.
+Okay.
+This is done.
+Now the second is when the owner, let's say in this case I clicked on sign in using Gmail on Instagram.
+What it will has to do is it will has to redirect me to the authorization server.
+So how it does.
+It invoke this Instagram now going to invoke this API authorize okay.
+And what all the parameter it passed while this API first send that response type which is code.
+So what this response type means this field specify that the desired response type from the authorization
+server.
+I want you to send me authorization code in the response.
+That's what it specifies.
+Or you can say that tell the authorization server what is the expectation of the client.
+Here.
+Response type should be some code authorization code.
+It will pass its client ID the client ID got in the first step.
+It will pass the redirect URI where the callback should have happened.
+But if you see that redirect URI is optional if it is not present, then which redirect URI should be
+used?
+Authorization server will use any one of the URIs which are defined during at the time of registration.
+Okay, so redirect URI is optional.
+If provided, it should match with one of the URI provided during registration.
+In registration, you can provide three URIs.
+Right.
+And during this fetching the authorization code part, if you redirect URI if you are passing then it
+should be one of the redirect URI which you have defined at the time of registration.
+Right.
+If not provided, one will be picked from the list during the registration which you have given.
+Okay.
+Then there comes the scope.
+So scope is like Instagram.
+Want to access what all information from your Gmail?
+So it is a space kind of thing.
+So let's say I want email access your profile access or certain address access.
+So there might be different different scopes right.
+So these are space separated.
+And you can tell like hey I want the scope for all this data right.
+So whatever the data which you wanted to access this client, your client, it will add it here in the
+scope.
+And the last comes the state.
+So state is some random value like SJ 111 some random value.
+It helps in protecting CSRF.
+Uh attack.
+I'll tell you how, but first understand this API right.
+So.
+Instagram has now.
+Redirect owner to the authorization server.
+Right.
+It has called this API authorize and pass this data.
+Now what response it will get right.
+So user will do the authentication there in the Gmail side.
+If it is not login it might have to provide username password login to the Gmail.
+And then Gmail will show you a consent.
+Hey shreyansh like Instagram?
+Want to access your email profile and address?
+Are you providing the consent for it?
+If I click yes, then what it will do is it will redirect now from the Gmail authorization server.
+It will take me to the redirect API which I have provided here.
+If I haven't provided there, it would be picked from the one which has been defined in the at the time
+of registration and in the.
+It will pass me some authorization code here and the state.
+Right.
+So now at this time when I am authenticated and provide the consent authorization server calls the redirect
+URI, the callback URI, and pass the authorization code.
+Right now Instagram got the authorization code.
+Now.
+But you can ask me, right?
+Hey.
+Authorization code.
+Got it.
+I understood what is the purpose of this state in the request.
+In the request, I am setting this state, let's say some random value SJ 111.
+And in the response authorization server also returning me the same SJ 111.
+What is the purpose?
+So see state is recommended.
+It's not mandatory but it's it is recommended it prevents CSRF attack.
+So now let's understand this.
+I'll tell you this attack right.
+So what happen is let's say there is an attacker and this is me owner Shreyansh.
+I am trying to add let's say Instagram.
+Right.
+And this is the attacker and it has Gmail authorization server.
+Okay.
+So now let's say attacker has call at the rate authorized API.
+And in return it got the.
+Authorization code.
+It has got the authorization code right.
+This part whatever the authorization code here.
+Now this authorization code attacker has saved it.
+It didn't use it.
+You can use authorization code only once.
+An attacker didn't use it.
+Now, let's say that I am the legitimate owner and this is the legitimate client.
+I am trying to log in to this using Gmail, right?
+So in the Gmail authorization server I have called the.
+Authorize request.
+This request I have sent this.
+Now I am waiting for this response where I will get my authorization code right.
+But let's say that if this attacker put its authorization code and they said, hey, this is the response,
+right?
+If it send its response code to me now, Instagram might say that hey, okay, I have I am already waiting.
+I have already hit the authorize and I'm waiting for Gmail authorization server to send me the authorization
+code.
+But what happen is in mid attacker intercepted the request and it send you its own authorization code.
+Now Instagram will say that.
+Yes I got the authorization code.
+Now using this authorization code what it will do is it will request for token and Gmail will provides
+the token.
+Okay.
+Now you got the authorization code for the attacker.
+Now Instagram will pass this authorization code attacker authorization code and ask for token.
+Hey provide me token.
+Now Gmail will provide you the token.
+But this token is generated from what attacker authorization code, not the Instagram which it wanted.
+Now ultimately using this token, it will get.
+It will call the Gmail now.
+And hey, give me the details of this token which I get.
+Now to whom details it will send mine or attacker.
+It will send the attacker one.
+It will send the attacker one because this authorization code is related to the attacker.
+So ultimately what I do is I will get sign in to Instagram using attacker.
+Just see about an app where you login using Gmail of an attacker, and there you upload certain files
+where it will upload to.
+Let's say you want to upload certain to drive Google drive where it will get upload to.
+It will get uploaded to attacker one attacker Google drive.
+Right.
+So this is the CSRF attack cross-site request forgery right.
+So this is how uh state comes into the picture where it protects the legitimate client.
+How so?
+Now here, if you see that attacker and this is the Gmail attacker, call the authorized API and it
+will get its, uh, code.
+Authorization code.
+Now attacker saves it.
+Now I am the one which is trying to log in to Instagram.
+So Shreyansh wanted to log in to Instagram using Gmail.
+So it Instagram made request to authorization server, call this authorized API authorize.
+I have set this state some random unique value which is very difficult to guess, right?
+So I have set said also the state, let's say a state.
+I have said SJ111 right.
+Let's say some unique value which is very difficult to understand, difficult to generate or guess.
+Now let's say attacker somehow pass me its response.
+Hey, this is the response your authorization code.
+Right.
+So attacker tried to send me its authorization code.
+Right.
+And in the state it might be passing some random number in the state.
+But now what I will do is that I will compare the response which I am getting the authorization code
+and its state.
+So I will compare the state, the one which I sent SJ 111, and the authorization code which I am getting.
+Also it has a state, so is it equal?
+If state is not present I will discard this request Us if a state is present, but it is not matching
+with what I have sent, then also I have discarded this because it is not might be.
+It's a CSRF attack because this response is not for the one which I have sent, the one authorized request
+which I have sent.
+I have set the state as 111, and when the Gmail authorization server returns me the authorization code,
+it will also pass this state same as 111.
+Then I will compare.
+Hey, I got the authorization code.
+This state matches with what I sent.
+If it matches, I will accept this authorization code.
+So you got it.
+What is the purpose of the state?
+Now, using this authorization code, what client will do is it will try to fetch the token.
+So now there is another Post token API.
+So it will put a grant type as authorization code because we are doing the first one authorization code
+grant.
+So the grand type is authorization code.
+What is the code you got?
+So authorization code.
+Then the first step we got in the response right.
+Which server side authorization code.
+So we pass it that the redirect URI.
+It's an optional.
+If you don't pass the redirect URI the one will be choose from the registration at the time of registration
+which you have defined the client ID and client secret.
+So now here, if you see that in this step the client secret is used, the client has to authenticate
+itself that I am authenticated one.
+And this secret is the confidential which clients get during the registration okay.
+Because using this token you can access protected data.
+So client is also need to authenticate itself.
+So grant type the grant code which you get in the previous tab, the client ID client secret right.
+And in the response what you get is you got access token through which you can access the protected
+data.
+It is a short lived token.
+Expires in 3600.
+This is in seconds generally.
+So it's like 33 seconds is one hour.
+Right.
+So it will expired in one hour.
+You can change it.
+This is just an example.
+Right.
+So generally it's a short live like.
+Expires in let's say 15 minutes 30 minutes or whatever.
+And token type is bearer.
+What does bearer means adds.
+It tells the client that you should pass this token in the authorization header whenever you want to
+access the protected data.
+And one thing you will get is refresh token.
+Refresh token means.
+So if your access token expires, you can generate a new token using this refresh token.
+Right?
+I will show you the refresh token part also.
+Now this token value right.
+Access token which you get either it can be a JWT token or a plain string itself, right?
+So JWT.
+I will explain maybe in the next topic.
+What are the format of JWT, what all information it can have.
+But this token you can either be plain string or JWT token itself.
+Okay, now you got now the client Instagram got the access token.
+Now what it will do now it will call the Gmail whatever the endpoint and get your data right.
+Whatever the in the scope it has got the token or code for.
+So now for all that scope, email address, whatever the scope would be, it can fetch the data and
+using that it will help you to sign in.
+But now let's say that your token got expired.
+So what you have you have to renew it.
+So how you will renew it using refresh token.
+And.
+this refresh token is your another grant type, right.
+So this authorization grant type is nothing.
+It's a mechanism to obtain the access token.
+So using grant type refresh grant type you can get the access token.
+So this is how it is.
+So I am calling the token again grant type is now refresh token right.
+And I will pass the refresh token value here in this refresh token whichever I got right redirect URI
+optional.
+If you don't provide it, one will be used from the registration time which you have provided the client
+ID and the client secret.
+So this is the response.
+You will get a new access token right.
+And the new refresh token.
+Right.
+So if this expires you can generate a new token using this new refresh token Likewise.
+So this complete flow is clear.
+This complete flow API request and response is clear.
+This is for authorization code grant.
+This is very important.
+So now there is another grant type is called implicit grant.
+This is generally not recommended to use.
+Generally authorization code grant is the one which is highly used.
+But still it is better to discuss about this.
+So here in the authorization code grant type what used to happen.
+Instagram and Gmail authorization server.
+It will ask for first authorize.
+Hey give me and it will get code.
+And then using this code it will get the token.
+So in the implicit there is no there is no two process.
+You get the token in the one process itself.
+So in the authorize The response type is token earlier in the authorization code.
+Grant.
+What is the response type code?
+Hey, I wanted the expectation of the client is from the authorization server that I want code.
+Authorization code in this expectation is token response type it is expecting is token.
+You have to provide the client ID right?
+Whatever the client ID you have to provide the redirect URIs optional scope and state.
+Right.
+So here in the response you will directly get access token value right in the whatever the redirect
+URI, you will provide it right here.
+Here in this URI itself you will get the access token information.
+There is no refresh token in implicit grant.
+Why?
+Because there is nothing like a like there is no two steps here.
+It's just like an authorized during the authorized itself.
+You can ask a new token.
+Then there is something called resource owner password credentials grant.
+Right.
+Resource owner password credentials grant.
+Now in this here, if you see in the token API.
+In the token API what happen is grant type I will choose password right.
+This is the grant type.
+So there is no authorized API.
+So here in this case there is no authorization code.
+No authorization call.
+So here I am providing the resource owner.
+I am providing my Gmail username.
+My Gmail password client is passing Instagram is passing its client ID secret.
+The grant type it has chosen is the password.
+Like this is the grant type for this one and the scope which it wanted to access.
+So in the authorization code grant type here we are passing the code.
+Right.
+And for how to get that code using authorize.
+But here I don't need code actually I am passing my username password itself.
+So that's why there is no need for authorize API itself.
+It is directly calling this token API.
+Right.
+So I think this token API is post right.
+We can double check.
+So I am directly calling this token API and passing my username password itself.
+Right.
+Client id secret and all the scope which I wanted to access.
+And in the response it will return me the access token refresh token also.
+Right.
+And using if this get expires using refresh token I can renew it and during renew using refresh token
+you don't need to pass the username password.
+So grant type is let's say refresh token right.
+You can pass client ID client secret and also the refresh token.
+You can pass this one.
+So you don't need to provide username password at the time of refresh token usage of refresh token to
+get a new access.
+Okay.
+And the last one is credential client credential grant.
+So in this case generally what this scenario is like when resource owner is self is the client.
+So generally earlier it was a scenario like this right Shreyansh Instagram and then Gmail.
+So here resource owner is different.
+Client is different.
+But in this client credential grant client is also this resource owner is also this.
+So whatever the data it is trying to access from let's say Gmail whatever authorization server.
+The client is itself is the resource owner.
+In that case, client credentials grant is used.
+Right.
+So it is calling the token.
+It's passing is client ID client secret and the grant type it says that client credentials.
+Right.
+And the scope and the response it will get is access token.
+Again there is no refresh token required in this because it's just like if you want if this got expired,
+you want to generate a new call the token pass your client ID secret.
+You will get new, right?
+It's easy.
+You don't have to pass any username, password or any code with the same request you can get generate
+a new token.
+So there is no need for authorization call itself and also there is no refresh token also.
+Okay guys thank you and I for any questions ping me.
+We can discuss more.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

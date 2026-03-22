@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30.RateLimiterAlgo</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="fault_tolerance_rate_limiter_notes.html" class="btn">View Notes</a>
+    <h1>30.RateLimiterAlgo</h1>
+    <pre>
+Other side.
+Welcome back to the channel.
+And today in microservices topic we are going to do how to build a fault tolerant microservice right.
+So let's start without wasting any time.
+So when anybody says that what is fault tolerant microservice, we mean to say that a service which
+continues to work even when downstream system fails.
+Okay.
+So instead of crashing or cascading failure, it should handle the failure gracefully.
+So what?
+In short, you have a system build up with multiple microservices.
+Even if some of the microservices are down and your microservices are depend on them, you should not
+crash.
+You should handle the failure gracefully.
+Okay, then we can say that it's a fault tolerant microservice.
+Okay.
+Why it is required.
+You will get more clarity with this, uh, example like why it is required.
+So see, as in microservices, different services communicate over the network.
+We all know this.
+And it's possible that one service unavailability could bring down the whole system.
+See this example.
+Consider that this system is not fault tolerant.
+How a one service can bring down the whole system.
+In a normal scenario, let's say there could be multiple microservices, which I'm calling as a client,
+right?
+So let's say some other client or microservices is calling order component.
+Order is calling product products.
+Give the response and order in return gives the response to the client.
+This is a normal flow.
+Now let's say a buggy code has been introduced in the product and the product service becomes too slow.
+This product becomes too slow.
+Each API is now taking let's say says 60s, right?
+60s is too much.
+In distributed system.
+Right.
+Say product service become too slow and taking 60s to respond.
+If proper fault tolerant is not applied, then a call from order service will hang for 60s.
+Now the order service which is calling the product service right now it has to wait for 60s.
+What if there is a sudden burst of requests coming from client?
+Then all the requests will wait for 60s.
+Right.
+Just see this example.
+Now a sudden burst coming from a microservice to a order component order in return.
+Calling the product and product is currently going too slow.
+So all the threads are now waiting.
+Okay.
+All the threads are now waiting.
+Now, what eventually will happen is service will run out of thread and start rejecting the request
+order.
+You know that there is a concept of thread pool.
+We have already covered that in depth.
+So ultimately when all the threads are waiting, the thread will ultimately will get finished, all
+threads will get finished, and there you will reach a point when you will start declining the request.
+And this becomes a cascade failure to all your client and microservices also.
+And also one more thing is even the product component will not get a normal situation because the.
+You can say that the situation of a product service will keep on deteriorating because more and more
+load is coming to the product.
+So even though issue is at product, the failure got cascaded to order and may be because of order has
+stopped.
+Even order can get slow, order component can get slow or if it's thread is all done, it will start
+rejecting the request.
+This failure can cascade to other components also.
+So that is known as cascading failure.
+And now you can see that how a one service can bring down the whole component whole system.
+So that's why we need fault tolerant.
+That's why we need to build a fault tolerant microservice.
+So if you are building a order, it need to be fault tolerant that even if product goes down or product
+goes slow, I should not like its failure, should not get cascaded to me and I should not get crashed
+to okay.
+So here comes our resilience for framework.
+So resilience for J is a combination of mechanism like rate limiter, bulkhead time limiter, circuit
+breaker and retry.
+So these five are the combinations.
+Or you can say that the mechanism which resilience for J provides It, which helps to develop a microservice
+as fault tolerant.
+And one more thing.
+I would say that we will go one by one in a recommended logical ordering.
+So you might say what is the ordering issue like.
+We can we can apply anything in in whichever order.
+But see this is the logical order rate limiter first, then bulkhead, then time limiter, then circuit
+breaker and then retry.
+Right.
+Why?
+Because there is a reason.
+Like let's say that if you are applying right, uh, for example rate limiter should always be applied
+before retry.
+Now let's say you are applying first retry and then rate limiter.
+This mechanism you are applying in your system like this.
+So does that make sense to you.
+Just think what if rate limiter is that it.
+Whenever an access traffic comes Arms, right?
+It blocks some of the traffic.
+Now, if you do the retry mechanism first means you are unnecessarily wasting your computation in retrying
+on those traffic that ultimately will get blocked by the rate limiter.
+Okay, so there is no point of retrying those traffic which ultimately get blocked.
+So that's where rate limiter should be first and retry should be second in this sense.
+So that's why if when you are applying all the five mechanism in your system, logical ordering should
+be present.
+That's what there is no hard and fast rule.
+But this is you can say that uh, de facto, which generally should be followed like this should be
+the order.
+Okay.
+So let's start with our first mechanism, which is rate limiter.
+Very, very important from interview perspective.
+Even when you are building the services, also in the product based system like that also is very important.
+So rate limiter is what it controls.
+The number of requests allowed to a microservice in a given time window.
+Let's say that in this time window a particular time window, limited time window let's say five second
+ten second, whatever, how much request can go through.
+So in short it protect our system from sudden traffic spike like a DDoS attack.
+Okay, so there are multiple mechanisms or algorithms in rate limiter before even we goes to the implementation,
+let's quickly see what are all the algorithm.
+So there are most commonly five algorithm fixed window counter sliding log sliding window counter which
+again has two flavors token bucket and leaky bucket.
+So quickly in five ten minutes we will try to go through each so that uh, when we see the implementation,
+we will at least get to know what rate limiter actually does internally.
+So fixed window counter.
+Let's see the first fixed window counter.
+It is very very simple.
+It counts how many requests happens in fixed window.
+If the count crossed the limit then reject the request.
+For example, let's say this is the time period I am currently putting in two seconds.
+Uh, actually, in coding it could be nanoseconds.
+Okay.
+But for simplicity, for understanding purpose, let's consider that this is the time period that every
+request can come at.
+Seconds 0123456.
+Like this.
+Now we have put a limit five that at in a particular fixed window.
+If only five requests are allowed, if more than five comes rejected okay, so limit is five and window
+fixed window size I have given 10s.
+So now here, if you see this is window one.
+This is window one 0 to 10.
+This is window 210 to 20.
+Okay.
+Similarly window three would be 20 to 30.
+Like this.
+Now in each window maximum count maximum request allowed is only five.
+So now let's say one request is comes at one second, then here, then here, then here then here.
+Total five requests.
+So all five are allowed because limit is five for this window.
+And currently it's within a limit.
+Now here if you see in window 212345.
+So these five are allowed because limit is five.
+As soon as the sixth request comes.
+So in this window 10 to 20 second only five requests.
+But this six is not allowed.
+It is crossing the limit.
+So that's why it is Rejected.
+Okay, if any more requests will come that is also rejected.
+Because in this fixed window already five request has come.
+Now in the next window again new request can come till it's don't reach its limit.
+Limit is five.
+Very simple right?
+But there is a disadvantage.
+Disadvantage is that.
+What if this is window one.
+This is window two.
+What if all the five requests comes at the last of this window one.
+And all the requests in the next window comes at the start of its window?
+Now here, if you see in one second ten request has come.
+Okay.
+So that is possible.
+So if traffic comes at edge then there is a chance of sudden spike.
+Okay.
+So this is one of the disadvantage in uh you can say that fixed window counter because it's a window
+fixed window and you are just counting, like, okay, this many requests are allowed.
+Now the request can comes spread across the window or it can come like this.
+But if it comes like this, then if you see in one second ten requests, your system is able to accept
+which it might not be able to handle it.
+Okay.
+Then there is something called sliding lock.
+Also, again, very simple, but with a very familiar data structures which we use sliding window.
+Right.
+So it is very very similar to that one.
+For each accepted request it is stored.
+The exact timestamp for each request comes in it.
+First check how many requests happen in x seconds window size.
+So there is a window slide slider window.
+You can say that we put that okay.
+10s 20s whatever.
+So that would be its size.
+Okay.
+If number of requests reached the limit, it will reject the request.
+We will see that with an example.
+So here if you see window size I have put 10s.
+So this is my the slider size.
+So my slider size is ten second.
+And in this slider size ten second maximum limit is five maximum five requests I should accept it.
+Not more than that.
+Now for each accepted request it store the exact timestamp.
+Now let's say that first request is coming at this point.
+So let's say time is started with ten 0000.
+So this is ten 0002 two seconds.
+First request is came windows slider window is still this only okay.
+Then second request comes at this ten .00.05.
+So it is logging the timestamp.
+Third request comes at this 10.0007 accepted because limit is five and only three is there, and then
+fourth request come at ten 00099.
+Second okay, all four are accepted.
+Now let's say that the time reached till here okay.
+So our window size is ten.
+So it has to slide.
+So now window slides to 10s okay.
+So now this is our current window.
+Now current window is let's say we are assuming that time period is in seconds.
+So it is moving second by second.
+So earlier window was started from ten zero zero.
+Now it's ten 000 1 to 11.
+So this is my window size now.
+So it will only consider requests within this window.
+So in this window till now how many requests are there.
+One, two, three, four till nine.
+It comes right.
+Now let's say at 11 another request is coming.
+Will it be able to accept it?
+So currently in this window only four limit is five.
+So yes it will accept it.
+Okay.
+Now let's say that now window moves again.
+Now let's say that when the time reached till here.
+So window has to slide.
+So window now slides to this ten 000022 1210 zero zero 12.
+Now this is my window.
+Now I will check if a request is coming.
+New request is coming.
+Does this window has how many requests?
+123.
+Four.
+Five.
+Already five is there which is already reached our limit in the window.
+Now you are trying to accept a new request which is in a window, so it will reject it.
+Okay.
+So very simple right?
+It just slides and it just keeps track of the accepted request timestamp.
+Now here, if you see that one, you can say that one of the disadvantage of this also that one thing
+is you already know that it has to manage the timestamp, okay.
+Which is you require a memory for that, right?
+More request means you have to store their timestamp.
+Another problem is that now let's say that windows slides again window time reached till here.
+Okay.
+So window has to slide.
+So it slide one second again.
+So now our time is this 032 13.
+Now here if you see that any timestamp of a request which we recorded which is now you can say that
+out of the window it has to be clean up.
+Right.
+So that is your extra task which you have to do because you only need to consider the timestamp which
+are present inside a window.
+all the timestamps which are beyond the beyond or before the window.
+It has to be cleaned up.
+So that is disadvantage.
+Extra overhead of cleanup.
+And you need more memory to store the time frame.
+Okay.
+So very very sliding window kind of uh solution which is just like based on timestamp.
+Now we have our third is sliding window counter.
+Okay.
+So it has two flavors.
+Both flavors are simple.
+So first flavor is sliding window counter with sub windows.
+So understand that is that main window is divided into equal size sub windows.
+Keep track of the number of requests in each sub window to decide if requests need to be rejected or
+not.
+It considered only the active subwindows.
+Main window slides over time.
+Don't worry about this.
+Now we will understand this.
+Four lines with an example and it will get clearly.
+So one thing is we have something called main window.
+So let's say window size is 10s which ultimately gonna slide.
+Okay so we have ten second window.
+Then we have sub window of two seconds.
+So this is our main window.
+This yellow one.
+Yellow bucket is our main window of ten second.
+Okay then we have sub windows of two two seconds.
+So means this main window is divided into two two seconds.
+Sub windows 0 to 2, 2 to 4, 4 to 6, 6 to 8 and 8 to 10.
+These are sub windows okay.
+And limit is five in a particular window.
+In a particular window.
+Max is five requests we can accept.
+Okay.
+Now what it will do.
+Let's see that how it.
+So till now it is clear right.
+One we have main window.
+Another is the main window is subdivided into sub windows.
+Now for any new request let's say multiple requests are coming.
+So request comes at here.
+Limit is five.
+It is one.
+Limit is five.
+Only two limit is five.
+Only three limit is five.
+Only four.
+So till now it accept.
+Now let's say that a new request is coming at this nine second.
+So it will sum up the requests in all active Subwindows.
+All active Subwindows.
+So here the ultimately window size is main window size is 10s.
+So currently we are at here at this nine.
+So it's some window.
+Is this one.
+This is one sub window 8 to 10.
+So it has to count how many number of requests comes into this window plus this window.
+Because it has to sum up the sub windows of 10s because main window is 10s.
+Okay.
+So it has to sum this up.
+So ultimately you can say that it all sub window task is to manage how many requests coming in their
+window.
+Sub window okay.
+So ultimately all the sub windows which are present into the main window it will just sum it up okay.
+So here at the ninth second.
+So what are the sub windows.
+This one 0 to 2 2 to 4, 4 to 6 6 to 8 and 8 to 10.
+So total zero to 10s.
+So this is your main window inside this main window These are the five subwindows.
+Each subwindow is maintaining how many requests comes in their window.
+Subwindows.
+Okay, so we just sum it up in 0 to 2 second Subwindow.
+Only one request comes.
+So it has maintaining that 2 to 4 only one request came.
+It is maintaining that 4 to 6 only one request came 6 to 8 only one.
+And in 8 to 10 currently zero.
+So how many requests till now?
+Four.
+And the limit is five.
+So request is allowed at nine.
+Okay.
+It will get more clear.
+We'll say that.
+Now let's say time has reached till this point.
+Time has reached till this point.
+Now window has to move.
+The main window has to move.
+So how much it will move now?
+Will it move by one one second?
+No it will here.
+In this it will move by window size two seconds.
+So two second it will move.
+Okay.
+So now you see that where the subwindow also comes into the.
+So Subwindow has two part.
+One is maintain the count of requests within that window particular window.
+Also is that the main window?
+Slides.
+Or you can say that jump according to subwindow size.
+So Subwindows two second.
+So when the time reached till this cross this main window size.
+So main window is ten second right now.
+Time reached till here.
+So it has to move.
+So how much it will move.
+It will move by one window size.
+So now our size is this 2 to 12.
+Earlier it was 0 to 10.
+Now it is 2 to 12.
+Okay.
+So here Some windows would be now this one.
+These are the active sub.
+Windows 2 to 4 one 4 to 6 is the second.
+6 to 8 is your third.
+8 to 10 is your fourth.
+10 to 12 is your fifth.
+So these are the five sub windows of 2 to 2 seconds okay.
+And these are the active.
+This one is not active now because this is now before the or you can say that the expired sub window
+okay.
+So now when at 11th request is coming.
+So it has to consider all the active sub windows.
+So this active one of the sub window is 10 to 12 10 to 12.
+So 2 to 4, 4 to 6 628 8 to 10 10 to 12.
+So all the sub windows present into this main sub window.
+Main window.
+It will only consider that and each sub window maintain how many requests comes into that period.
+Okay.
+So they will provide that.
+And ultimately it takes the count and it will.
+Don't consider the expired subwindow.
+Okay.
+So simple this one.
+So what are the disadvantages.
+First is more complex than fixed window logic.
+Like you have to maintain a subwindows and for each subwindows you have to maintain the count of requests
+okay.
+And when the window slides it has to jump according to the subwindows.
+So that is one thing.
+Second thing is it also required more memory because you have to maintain a subwindow kind of information.
+So another flavor of this is which is little bit simple is sliding window counter with waited window.
+Okay.
+So this is actually a combination of fixed window plus sliding lock concept.
+So in fixed window, what we have is let's say fixed window is of ten, second window is of ten second.
+So we have a fixed 0 to 10, 10 to 20 20 to 30.
+Like this.
+We have fixed windows okay.
+Like this is yellow green.
+So these are fixed windows and sliding lock.
+So inside this there we will have a sliding window also of a similar size 10s.
+So ten second ten second.
+We have a window right.
+Slider window is also ten second.
+So this slider window can slide.
+And when it slide some part of it might be into the previous window.
+Or another part would be into the current window.
+You can say that.
+So here if you see that the window one has 0 to 10 second and another window window two window one.
+Window one is 0 to 10.
+Window two is 10 to 20.
+And this slider window has 80% currently into window one and 20% into window two.
+So it is possible.
+Okay, so here we have given a weight.
+Now it simplifies our previous uh where we are doing with sliding window with sub windows.
+Right.
+It simplifies some task for us that we don't have to maintain the sub windows.
+We don't have to maintain the sub windows like fixed window.
+We maintain that okay.
+In this window 0 to 10 0 to 10.
+How many requests comes.
+Let's say five let's say for whatever.
+So just maintain a total request not sub window type okay.
+So see this example.
+Let's say our limit is five okay.
+In us in a particular slide window maximum five requests we can entertain.
+So currently our time is 0 to 10.
+Our current time is 0 to 10.
+Okay.
+So now let's say that the our window slider window is also currently here.
+Zero to turn all 100% slider window is in the fixed window one okay.
+Now request is coming at fifth.
+All 100% inside this only then 6789.
+So 123455 request comes totally.
+It is within a limit of five of slider window okay.
+So all are accepted okay.
+So total request count in a fixed window is five currently because see here in 0 to 10 it just maintain
+how many requests come.
+So total five.
+Total five.
+Request accepted.
+Now you will get clarified like how it works.
+Now let's say time reached till this point okay means time reached into the second window now.
+Window two.
+So this slider has to move internally.
+So now slider has moved till one to.
+Now the window is slider.
+Window is 1 to 11.
+Earlier it was 0 to 10.
+Now it moved by one second.
+1 to 11.
+So if you see that the slider 90% is in window one and currently 10% is in window two.
+So it need to see how many traffic how many requests are accepted within this window.
+Slider window.
+So now just see that it very very basic mathematics only.
+So it just find total request.
+Total request equals to current.
+Fixed window request count plus.
+So means whatever in the current window.
+This is the current window, right?
+This is the current window.
+How many total requests are present into that?
+How many total requests?
+We have accepted currently?
+Zero plus.
+Because see here we have just moved right 90%.
+So how many percentage currently we have here is 90% 90% of total request which are entertained into
+this window one 0 to 10.
+So total five because we are only 90%.
+Our window slider window is into the window one, fixed window one.
+Right.
+So only whatever the total request we have, we only consider this 90% okay.
+So let's say it comes out to be a 90% of five is 4.5.
+So let's say if we just do ceil round off.
+So it would be considered as a five only.
+So five is our limit for a slider window.
+So we don't allow a request.
+So we don't allow request here.
+No.
+Simple.
+Now you will see that uh disadvantage also plus with another example here also.
+Now the request reached till here.
+Okay.
+Currently slider window at 0 to 11.
+Right 0 to 11.
+Now time reached till here between 11 to 12.
+So means slider has to move.
+So now let's say slider has moved.
+Now it become 2 to 12.
+This is my slider window now.
+So how much it is in 80%.
+So 80% is in window one and 20% now is in window two.
+So how many total requests.
+Now, let's say any new request is coming.
+Should I accept it or reject it?
+It has to do first calculate that how many total requests it has present into this slider window.
+So current request count.
+Okay.
+Uh, you can say that the current window.
+Current window.
+What is the request count.
+So currently in 10 to 12.
+Window to 10 to 12 zero requests plus 80% of.
+So currently 80% of our window slider window is into the window one.
+Right.
+So 80% of what are the total number of requests was five.
+So it just said 80% of five which is four.
+So four is less than five because five is our limit of a window slider window.
+So it will accept it.
+It will accept it.
+But now you see that this is the disadvantage itself okay.
+But because now in this slider?
+2 to 12.
+How many requests came?
+One.
+Two.
+Three.
+Four.
+Five.
+Six.
+It become more than five.
+Why?
+Because it do not maintain subwindows.
+It just compute total requests in a fixed window size.
+So what if all the requests present into here at end of the fixed window?
+So what happen is our slider will keep on moving.
+And when the slider keep on moving its percentage present into the fixed window keep on reducing.
+And when this number you are keep on reducing then only this ultimately will get increased.
+So currently here if you see that there is a chance like 80% when you compute for this, it gives you
+four.
+It is not accurate info.
+So there is a chance that you might entertain more requests than the limit.
+Okay, so 80% of total requests.
+So it accepted 80% of total request is four.
+So it assumed that these requests are spread throughout the window which is actually not the case.
+What if all the requests are end of this.
+And if you are doing 80% then it might give you four.
+But that's not the true.
+Okay, so this is one of the disadvantage of the weighted window.
+I hope it is clear with this diagram like how the window slides, uh, within a fixed windows.
+Then we have token bucket.
+Token bucket is very, very simplified versions.
+And uh, what happened is we have a kind assume it like we have a bucket and we place the limited tokens
+inside it.
+Each request consume one token if there is no token left, request is denied and there is also a refiller
+which adds the token in bucket at regular time interval.
+If bucket capacity is full and cannot hold more token, token overflow will happen and token will be
+rejected.
+So understand with this is that this is one bucket which has capacity of four token.
+So 12344 tokens are present.
+There is a refiller which task is to add one token every six seconds.
+Okay.
+So now let's say that at 123, four five second five requests comes up.
+So first four because we have four tokens right.
+So first request take one token.
+Accepted accepted accepted accepted.
+Now all four tokens are used.
+Okay.
+Now fifth request.
+Come.
+Any token left.
+No.
+So it is rejected.
+Now at sixth second, a refiller adds one token, So Refiller added one token into the bucket because
+we have configured it.
+Add one token every six seconds.
+So at six seconds one token is added.
+Now if any request comes, it will use it and accept it.
+Very very simple.
+So disadvantage is that a quick burst is possible if token capacity is not set properly.
+What if I have put a token that in a bucket I have capacity equals to 1000 I.
+Without doing proper computation, I give random capacity then means that much token can get accumulated.
+And what if in a one second it's a sudden request comes all 1000, so all 1000 will get accepted.
+So there is a chance of burst traffic.
+Okay.
+Because whatever the amount of tokens present, that much concurrent request can be accepted.
+So you have to consider this token capacity properly.
+Okay.
+Another is leaky bucket.
+Leaky bucket is considered as like requests are queued and accepted at fixed rate.
+If queue is full, incoming request will overflow.
+So let's say you have an incoming request.
+Okay bucket.
+Or you can say that a queue which is keep on accumulating the request.
+Okay.
+And the queues are accepted at a very constant or very fixed rate.
+So consider this with the flow diagram a request comes if queue is full.
+If this queue is full then it will send denied and it will send http 4 to 9.
+Too many requests can't even accept.
+If queue has some space then it will add the request at the end of the queue and from the queue Our
+system will keep accept the request in a very constant rate.
+Very, very constant rate.
+So very simple.
+But disadvantage is your latency will increase because requests might have to wait in queue for its
+turn.
+So request which is present here.
+It has to wait for the previous request to finish and to be accepted.
+And your queue is become a bottleneck.
+So site size should be set properly.
+If the size of the queue is very small, you would be denying lot many requests.
+If the size is too big, your latency will increase a lot.
+Okay.
+And also memory.
+You need it right?
+So these are various algorithms of rate limiter.
+I hope with this examples it will be clear.
+Just go through this example one more time slowly and read those texts like the definition which I have
+written like this.
+Right.
+You read it, you will get clarified little better.
+Okay.
+    </pre>
+</body>
+</html>

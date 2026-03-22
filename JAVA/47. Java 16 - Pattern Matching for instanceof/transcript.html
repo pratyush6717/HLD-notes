@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>47. Java 16 - Pattern Matching for instanceof</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>47. Java 16 - Pattern Matching for instanceof</h1>
+    <pre>
+They said welcome back.
+And today we will cover the Java 16 feature which is pattern matching for instance, of operator.
+Okay, so we have already covered what is instance of operator.
+If you haven't seen that, kindly check it out.
+It would be helpful.
+So this is how generally we use it.
+Say you have an object and inside that object we can have let's say string whatever.
+And within an if condition we can check.
+Hey is this object is an instance of string.
+If yes, we typecast it to a string, we typecast this object to a string, and after that we use it.
+So with an old way, there is an extra overhead of doing this typecasting.
+So this is now resolved through Java 16 pattern matching feature.
+So in Java 16 it is finalized.
+Maybe you got this in the preview in the previous version but finalized happen in Java 16.
+So how we gonna use it like now.
+Again, the same in the object.
+You can have anything.
+Now, if condition object is instance of string.
+And after that you can give any variable name whichever you want okay.
+So internally what it will do is it will first do the comparison.
+Comparison is that.
+Yeah.
+Is object instance of string or not.
+If this is true then it is automatically do the typecasting.
+So it will automatically do this typecasting like this object is typecast to a string and assign it
+to s, whatever the variable you will give.
+And you can directly use it.
+You don't have to do that.
+It is all happening typecasting happening internally.
+So the scope of this variable, which you have defined, right, it exists inside the block only okay.
+So within this block you can use this outside this block You can't.
+Okay.
+And also compiler ensured the type safety.
+So now let's say that you have multiple hierarchy of if else if.
+So let's say if object instance of string and the variable name if object instance of integer then I
+if else if object instance of user then the variable name you have defined you.
+So compiler ensure type safety like whichever become true.
+Let's say you are here.
+In this case it is a string.
+Object is a string.
+So this instance of string will become true after do after then it will do a typecasting of object to
+string properly.
+Let's say if your object is integer then this condition will get true.
+Object is instance of integer.
+Then it will do a proper typecasting and assign it to I properly integer obj.
+So it ensures the type safety.
+We don't have to worry about that.
+We are doing a type casting correctly or not.
+Okay, like this we can directly use the variable.
+We can also combine it with end operator.
+So here if you see that object instance of integer and then your variable I.
+After this we can use with and operator also okay.
+So you can say that we can add further more restriction or conditions okay.
+So now object is integer.
+Yes.
+Then what is the.
+So this is first condition comparison object is instance of integer true.
+The second comparison.
+The second thing is type casting.
+So what it will happen is this object is now type casted to integer and assign it to I.
+Okay.
+And now you can use it like this I less than ten I greater than whatever the value okay.
+And uh if that condition is true internally, you can use it to.
+Okay.
+So after the assignment after the typecasting happened.
+So this get initialized.
+So first it will become comparison need to be true.
+After that typecasting and initialization happen.
+And then only this works.
+You can't use it like I less than ten first.
+And an object instance of integer I.
+That will not work okay.
+So first this has to be there.
+And after that you can use this.
+But pattern matching does not work in combination with or operator with.
+And it works because it gives a guarantee that I is an integer, but with an Or condition.
+Let's say I am using object instance of integer or object instance of string, and I have also given
+the pattern like uh, uses the pattern matching integer space variable name.
+I similarly object instance of string space variable name.
+So in this case the control.
+In this case this object goes inside this.
+But will you be able to access this I and s no.
+In this pattern matching internally will not work.
+Okay.
+So because there is no guarantee that whether this object is an integer or whether it's a string okay.
+So internally it don't do typecast it just like a normal old fashioned instance of them.
+Even though you are writing here, it would it is of no use internally.
+It is not doing pattern matching.
+Okay.
+Pattern matching can also works with interface.
+So now here, if you see, let's say I have an interface vehicle which has a abstract method drive.
+I have two children, two Wheeler and four Wheeler, and both has overridden the drive method and provide
+their implementation.
+So in without pattern matching in the old way, how we would be using, let's say this is my object
+which contain an instance of two Wheeler.
+So in if condition we would be looking.
+Hey, if this object is instance of two Wheeler, then I would typecast this object to two Wheeler and
+then call the drive method.
+Similarly, if object is instance of four Wheeler, I typecast it to four Wheeler and then you can invoke
+the drive method.
+Generally this is how we do.
+But with pattern matching say object is two Wheeler.
+What we can do is we can do this if object instance of vehicle the parent one.
+We can give the parent one if object instance of vehicle okay and space the object.
+Whatever you want to give internally it will do first comparison.
+Yes object is instance of vehicle.
+So object is currently two Wheeler.
+So our parent vehicle is also can handle the child also.
+So that's why this condition will true.
+Object is instance of vehicle.
+Also both two Wheeler four Wheeler is nothing but an instance of vehicle.
+So that will become true now.
+Second it will do typecasting.
+And while it internally do typecasting it will properly assign.
+So in this case it will properly.
+So it's a object is new two Wheeler.
+Right.
+So it will automatically do a typecasting to a proper child class.
+Proper subclass.
+So when you call this drive method it will print two Wheeler drive implementation properly.
+li.
+Okay.
+If this is like new four Wheeler, and if you call this drive, it will call proper four wheel drive
+implementation properly.
+Okay.
+So there is something called pattern matching.
+With switch.
+So currently we have seen is pattern matching with instance of operator which is available in Java 16.
+Now this there is something called pattern matching with switch okay.
+This is available in Java 21.
+So that's why I will cover it in to the separate video because this functionality is available in a
+total different Java version but very similar.
+Okay.
+So yeah, if there is any doubt in this let me know.
+We can discuss further.
+But yeah, it is very small concept but handy.
+Okay guys.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

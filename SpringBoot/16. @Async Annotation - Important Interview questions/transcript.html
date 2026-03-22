@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16. @Async Annotation - Important Interview questions</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>16. @Async Annotation - Important Interview questions</h1>
+    <pre>
+Hey guys.
+Welcome to Concept and Coding.
+This is Shreyansh.
+And in the Spring Boot series till now we have seen how the async annotation works.
+Uh today I will I want to discuss more on this async annotation.
+I want to cover some important, uh, interview questions also.
+So one of the interview question is that what are the conditions for async annotations to work properly.
+So there are two conditions which I would say that.
+One is that the async annotation where we are using on top of a method, right.
+That method should be in a different class from where it is being called.
+Right.
+So that is one condition.
+And second condition is the method on which this async annotation is used.
+It should be public method.
+Now the question is why.
+So now first let's see this example here.
+In this we have a class user controller right.
+And this is one method Getuser method when this get invoked, it calls an async method test.
+Right.
+So and one thing you will notice that this async method is in the same class in which this caller is
+present.
+And expectation is that this async method will get run in a new thread.
+That is my expectation because I have used async annotation on top of it.
+But will this work as expected?
+No.
+Why?
+Because these are the two conditions which should get fulfilled that this method on which you have used
+async annotation should be in a different class from where it is getting called, and it should be a
+public method.
+Okay.
+So this will not work as expected because okay, you have made this method public, but this is in the
+same class as of this caller, right from where it is getting called.
+It is in the same class.
+Okay.
+so to make it work properly, you have to, uh, make this method into a different class itself.
+So here, if you see the output when I invoke this.
+So get user is run by this thread some this thread name.
+So I'm printing the thread name http nio something.
+And when this method get invoked inside async method test, what is the thread name.
+Same right.
+But your expectation is that okay, new thread will get created, but no new thread is not get created.
+Okay, so we have to have this method in a different class and it should be a public.
+Now you can ask me right.
+Hey why why we have to in this different class.
+See the problem is not here.
+The problem is with the framework.
+So at back end we are using AOP.
+So whenever you are using at the rate a sync annotation AOP get involved right?
+If you have seen the AOP video, you might already know that how AOP works.
+So first step is it do intercept and once it is intercept it calls the proxy.
+And then internally proxy.
+Miles might call your method.
+So to to make this interception work.
+These two conditions is required.
+Interception cannot work on private methods.
+Protected method it only work on public methods.
+And second interception only works when from class one to class two different classes get invoked,
+right?
+If in the same class you are calling a method, interception would not be able.
+Interception is not even in the picture.
+So only when you're calling from like you have one method in class one and you are invoking a method
+two, which is in class two something.
+Then only interception comes into the picture.
+So because of this interception logic, you can say that interception has works only when these two
+conditions are met.
+And because of that, whenever we use annotation these two conditions should be met.
+Okay, so this is one thing very important and it's a very good interview question also.
+Now another interview question is how async and transaction management works together.
+What are the challenges.
+So I will explain you with different three use cases.
+So use case one.
+Let's say that let's understand this use case one.
+So I have a class okay.
+In this class I am calling user service dot update user.
+So it is calling this method.
+And here I have put transactional.
+When I put a transaction, transaction will get created here.
+So now here if you see I am doing some update user status update, first name, user first name, last
+name, whatever.
+Right.
+And here if you see one more thing I am doing is I am calling one more method in a different class.
+I want to do update user balance, but instead of doing it here, I am doing it here in a different
+class and I say that hey, at the rate async, let's do this in an async manner.
+Okay, so see this one again.
+This class is invoking this which has at rate transactional and within the transactional method I am
+invoking a method which is async.
+So what is the problem here?
+The problem here is that whenever you are creating a new thread, it do not carry forward the transactional
+context.
+So transactional context has all the information like okay what is the propagation level.
+Right.
+And whatever the different information you have put into this transactional right.
+Uh, what is the thread pool you are going to use?
+And every information which is there in the context that is not even passed here in the new thread.
+So this code, this code run without any transaction.
+So now let's say that any issue comes in this method all the rollback will happen.
+For this you have updated user status.
+Rollback will happen.
+You have updated first name.
+Rollback will happen right.
+Whatever.
+But here if you are updating the balance amount into this async rollback will not happen.
+This because this is not running in a transaction.
+okay, so transaction context do not transfer from caller thread to a new thread.
+Right.
+So this is use case which should be avoided.
+It will not work by transaction.
+Context is not.
+Carry forward to this async method.
+Use case to understand this use case.
+Now you have this class.
+In this class you are invoking a user method.
+Now on this user method update user method itself, you have both at the transaction at the rate async.
+And you are doing all the operations inside this updating user status, updating first name or whatever,
+whatever the update you want it to do.
+But you have transactional and at the rate annotation together.
+Is there any problem?
+So problem is that use with precaution.
+When I say use with precaution, I mean first thing.
+Okay, a new thread will be created.
+A new thread will be created in which this update user will work.
+Now since also it has added a transaction so means all this code will run in a transaction only.
+Okay.
+So if any issue will happen rollback will happen.
+But why I mentioned that use with precaution it because because of this arcing the transaction context
+will not carry forward.
+Now suppose I have also put at the rate transactional here.
+Right.
+And there are you know that there are different propagation level of transaction supports not supported.
+Right.
+You already know that we have already seen different type of propagation level is there.
+Those will not work as expected.
+Right.
+Because even though you have are Use transactional and because.
+But because of this at the rate async annotation, whatever the transaction context you have set before
+that is of that do not get carry forward at all.
+So this will run in a new transaction.
+Okay.
+So that's why I mentioned in a yellow and put that use with precaution as new thread will be created
+and have transaction management.
+But context is not same as the parent one.
+If parent also has a transaction right.
+And here I am using that okay.
+Propagation is let's say whatever supported right.
+So if parent transaction is there use the same one.
+Now this will not work as expected.
+Right.
+So that's why I say that use with precaution because parent transaction context is not carry forward
+here because of this async annotation.
+This is use case three is the very safe way and most popular way in the industry of using it.
+How?
+So you have a user controller class here.
+If you see that I am calling a method update user.
+Now here, if you see that this update user first I have used an async update user.
+Now what happen is your main thread is free.
+It can proceed further.
+It do not have to wait for update user.
+Now it created a new thread and now update user.
+Now I have called update user in this utility and here I have put at the rate transactional.
+So now everything runs in a transaction.
+Anything fails rollback will happen.
+But what I have make sure that a separate thread is used to do this transactional work and my main thread
+is freed totally.
+So this is the correct way of using and this is the industry standard.
+So whenever any question comes how you will use async annotation with transaction.
+Tell them the issue with first doing this transaction and then async or both together.
+What are the challenges and which one is the correct way of doing it?
+Okay, now another topic is async method return type.
+So to understand this properly, please do check out in the Java playlist this video.
+Future callable and Completable future.
+This already more than one hour video right?
+This video I have already covered this in Java.
+Multithreading.
+Future.
+Callable Completable future.
+It's one video and I have covered in depth, so covering here doesn't make sense because it's a Java
+topic and I have already explained in one hour plus in depth of this.
+So check out the Java playlist.
+You will get better understanding of this future callable and completable future.
+But I will tell you that, uh, how we can use it.
+Like by joining it with the spring boot.
+So it will make more sense.
+So let's say I am using future.
+And just for your information, this future is now deprecated.
+Now, Completable future is mostly used in the industry.
+So here, if you see that.
+The thing is, when you are using an async annotation, we know that it will create a new thread, right?
+So this is your main thread.
+And by async annotation it will create a new thread let's say thread one.
+So if you want to retrieve the output of this thread one, whatever the thread one has one work upon
+if if you want to get an output right, that's where this future and completable future comes into the
+picture, right?
+So now here, if you see that this performed task async Method I have put at the rate a sink.
+Now it it it has to return a string.
+But since it's an a sink, I have wrapped into a future.
+So now this is the caller method.
+So when this method gets invoked I am calling this perform async task.
+A new thread will get invoked which will work and it ultimately return this async result.
+Right?
+This is a future.
+Now in the I can take this result in this one.
+Now maybe it will take let's say uh, 15 seconds to complete.
+It's okay.
+Our main method will just, uh, take a reference of this and continue forward, continue its work.
+Now, whenever you will do that on this future object, uh, which you have result dot get.
+Now, our main thread will wait here till the output is available.
+Now let's say that it is waiting like to get this task completed so it will wait here.
+Now our main thread will wait at this point when we do dot get till this method is not completed and
+once it is completed it will return.
+This dot get will return this string whatever internally.
+Right.
+And you can print it.
+So this is one way of returning from an async method.
+If you have a return type you can use future.
+So this like this is one of the method get.
+There are so many methods like get done is canceled or write and get with the timeout that I have covered
+in the Java video in depth what all functionality you can do.
+So that is out of scope for this video, but this is just to provide how you can use it in this way.
+Similarly Completablefuture, which was introduced in Java eight.
+The similar way you can say that complete completablefuture is just an enhanced version of future.
+So here in this method, now instead of future, I am returning completablefuture the same no code change.
+Here it is invoking it.
+It is just taking a reference of this Completablefuture.
+Now main thread can continue its work without stopping.
+Now at this time when you are doing get it will wait.
+Wait for whom?
+Wait for this method to actually get completed.
+Once it completed, it will get its output.
+This one and you can print it.
+Okay.
+So do check out this video to get a better understanding of Completablefuture.
+Completablefuture is very, very important and it's not like five ten minutes topic.
+You will see an in-depth discussion how the chaining happens in this one supplier saying there are a
+lot of chaining is very good capability of compatible future.
+Do check it out.
+Okay.
+Another important interview question is exception handling.
+Why important?
+I will tell you one interview question here is okay you have an async method which returns void.
+Let's say method one which do not return anything.
+Now since you have used at the async, it is going to run in a different method.
+Now if any exception comes here, how you gonna handle that.
+Because your main method you have already you have invoked this and you have proceed further.
+You have proceed further.
+But if any exception comes into this new thread, how you gonna handle it?
+That is very important.
+Interview question.
+So I'll tell you this one.
+But the first is very simple method which has return type.
+You know how to handle it.
+So whenever you are doing dot get.
+This is the time.
+If there is any exception in this async method, it will throw at this point of time when you do dot
+get.
+So at this point of time you have invoked the you have you have invoked the async method.
+Now main method.
+Proceed further.
+Now if any exception comes only when main method do dot get.
+At this point of time, it will throw an exception and you can catch it and handle it like you want
+it.
+You want to log it, log it, you want to print it, print it or whatever you want.
+You want to throw exception, throw it.
+So this is very, very simple.
+When the method has a return type, we can have a completable future or future reference.
+And using get we can catch it.
+But this is where the interesting things lies method which do not return anything.
+So I have a method which returns white and this is calling this method.
+Now, if any exception comes here, let's say I am trying to do one divided by zero.
+Some exception comes here.
+How this main thread because main thread has just invoked it and proceed further.
+Now how I will handle this exception, how I will do logging or how I will make sure that some exception
+gets thrown.
+So there are two ways to handle it.
+One is use a try catch block inside this async.
+So here if you see you will perform some task.
+Now if any exception comes you will catch it.
+So the catch is within this method itself async method.
+So you will catch this and handle the exception.
+Here.
+You want to log it just log it right.
+But I'll tell you what is the industry uh what is industry follows.
+And I am thinking this is the better way to handle it, rather than putting trycatch into the each and
+every async method.
+So what happens?
+So before I'm telling you this, this see this one is Spring Boot Framework code.
+So Spring Boot has created one class internally simple async uncaught exception handler which implement
+this interface async uncaught exception handler.
+And it has one method handle uncaught exception and it will just log it.
+Unexpected exception occurred invoking async method.
+So now let's say that I have this method async method.
+And it is.
+Let's say I purposely doing this five divided by zero.
+So we know that it's going to throw an exception.
+So now I don't have any trycatch here.
+So what would happen is spring boot, this method, this class get invoked.
+So simple async code exception handler, which is a child of this interface handle uncaught exception
+will get invoked and it will print.
+This unexpected exception occurred.
+Unexpected exception occurred invoking async method.
+And this is the method name.
+And this is the exception which it prints.
+So it prints the complete exception and also the method name.
+But you can say that hey I this is I don't want this I want custom handling.
+I want my custom handling where I might have different logic than just doing this.
+So now you got one hint that if Spring Boot can implement this, why not we and do our custom.
+So that's what the solution is.
+So here we create one class.
+I have created this default async uncaught handler which implement this async uncaught exception handler
+and I have override this method, handle uncaught exception.
+And here I am doing like in default I've just printed.
+You can handle it like you want right?
+So this is the default handling which I wanted when any exception occur in an async thread.
+Okay.
+So this is I created.
+But I need to make sure that my this this class get invoked.
+How you can make sure that.
+So in this app configuration class you just need to implement this async configure.
+And what you have to do is in this method you have to return this object right.
+This async caught exception handler.
+So I have done auto wired and this object, this class.
+So now when you have done auto wired, you know right.
+What Spring Boot will try to do is spring boot will try to see that.
+Hey, if there are any been present for this one.
+So see here I have created one class with at the rate component you can have in this or in this class,
+or in a different class also.
+But here I have at the rate component on this one.
+Right.
+So bean is already created.
+So this will get set here.
+And whenever in the spring boot it will do get sync uncaught exception handler.
+It will return this one.
+So mine will get return.
+So you got this part.
+How you can configure your own custom exception handler in case of.
+Method where return type is void for an async annotation, right?
+Just check this out.
+The flow.
+This is very simple, you just have to override one and this bean will be get initialized here because
+we have done auto and we just have to return it whenever means spring is asking, we are returning this
+one.
+Okay.
+And here if you run this five divided by zero, you will see that in default uncaught exception method
+which I printed, not the spring one.
+So in the spring one I have put empty app.config just for showing that if if you don't handle yourself,
+spring will take care of it.
+Okay, so based upon your business requirement, either go for implementing the default or you can use
+try catch like depending upon your business requirement.
+Okay.
+So these are some important interview questions of the async which I wanted to cover today.
+And we'll see you in the next topic of Spring Boot.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

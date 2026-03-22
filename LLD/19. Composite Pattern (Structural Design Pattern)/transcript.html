@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>19. Composite Pattern (Structural Design Pattern)</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="composite_pattern_notes.html" class="btn">View Notes</a>
+    <h1>19. Composite Pattern (Structural Design Pattern)</h1>
+    <pre>
+Hello.
+Hey guys.
+Welcome to Concept Encoding.
+And today we are going to do a new design pattern which is composite design pattern.
+Right.
+So I will explain you with two questions design file system and design calculator.
+And in both this question I have used this design pattern or examples of pattern is clear that you will
+know when, where and how to apply this design pattern.
+Our interview I am pretty much sure you will not gonna miss it like these type of questions which fall
+under this category.
+Definitely you will be able to solve it.
+So I will not waste much of your time.
+And let's start into the composite design pattern.
+So let's do this right.
+So here in this case what composite design pattern says that.
+Object inside object.
+Right.
+What does it means?
+Right.
+Let's leave this UML for now.
+Right.
+It's design pattern.
+First, let's understand what does object inside object means.
+So you need to understand where the composite design pattern comes into the picture whenever object
+inside object happens.
+For example.
+Consider a tree.
+Right.
+So now consider this tree.
+So whichever problem is creating a tree like structure means it's an object inside object.
+So it's a bigger object than this bigger object has this two object.
+This two object has again some objects like this.
+So it is constructing a tree.
+So any problem which is can be designed like this in a tree will fall under composite design pattern
+a.
+Examples.
+Consider this example let's say employee.
+I will tell you different different example.
+Then we will pick two solutions for it.
+Right employee.
+So employee let's say you have CEO.
+Then CEO will have let's say director.
+And let's say director will have something called manager.
+Manager will have let's say uh, some you can say that, uh, you got it right, uh, engineer or you
+can say that marketing.
+Team inside marketing team, you can have anything else, right?
+So here it might be possible that it is a end product.
+End product means or you can say the end object, which it doesn't have anything beyond it right here
+is leaf.
+Leaf object.
+So means it doesn't have any more child nodes right.
+So it engineer.
+So this manager let's say have only one IT engineer.
+So it has IT engineer but it has a complete marketing team.
+So I'm just trying to give you an example right.
+What about other example.
+Let's say example two consider a delivery box.
+You have a.
+Delivery box.
+Delivery box can inside itself have a product.
+Or it can have inside another box.
+Similarly, the box can still have a product or it can still have a smaller box.
+Right.
+So this is a tree like structure.
+You able to get it.
+So wherever we can construct a problem or break a problem into a tree like structure, you blindly know
+that that it is a composite design pattern can be used.
+Okay.
+So now again I will come to this again with an example when I will tell you with an example.
+Let's first understand the problem.
+What is the problem and how design pattern solves it.
+How composite design pattern solves it right.
+So first let's understand the problem and I will I will make use of this example and see this code already
+I you might know this.
+See this is the link GitLab link.
+And here you can see that inside the low level design folder you will get design pattern composite design
+pattern.
+Go inside this and you will get the solution one, solution two and the problem statement right.
+So let me tell you a problem statement once.
+So consider this example now.
+So the example is I am creating a file system example.
+Let's say you want to design file system right.
+So what does file system has.
+File system can have file or directory.
+Directory itself can have files.
+Or it can also have a smaller or subdirectory.
+Right.
+So it's kind of a you can say that it's a tree.
+But let's say we don't know about the composite design pattern.
+So we know that in a file system we can either have a file direct file or we can have a directory.
+So directory can again contain a file.
+Or it can again contain a directory too.
+So similarly it will again do the same thing right.
+So let's say we want to design a file system.
+So generally how we do it.
+So let's say we have one file class.
+Let's say we wanted to do it.
+How we going to do it right.
+So let's say we have a file class right.
+It has a name.
+And then we will create one directory class.
+And we can say that directory has.
+A list of files or list of directory itself.
+Right.
+So I'm now telling you an example.
+So let's say I have a file.
+So what does file Pilar's name?
+So I have created a simple constructor which will update this name.
+Whatever the file name, I want it to create it.
+Then I wanted to use this.
+I am just implementing this command ls command, you know.
+Right?
+So here in the ls command System.out.println.
+So I am printing the name.
+This is the file name.
+That's a very simple class.
+Similarly directory.
+So now what is the directory name.
+And also the list of objects.
+Now here I have kept a list of object right.
+So I am just first telling you the problem statement.
+So you we know that a directory can contain a file or directory can contain a directory itself.
+Right.
+Another directory.
+So that's why I am creating a list of object.
+So in the constructor whatever the directory name it would be, I am putting it and initializing the
+object lesson.
+Now here in the LHS method, what does it do?
+I am iterating over all the object list.
+So now what can be the object in a directory?
+It can either have a file or either it can have a directory.
+So now I am putting.
+If object is instance of file then I need to do a typecasting.
+Okay.
+Typecast to a file and then call its LHS method.
+If object is an instance of directory, then typecast to the directory and then call its LHS method.
+Right.
+Because we don't know what is the object here.
+Either it could be a file or either it could be a directory.
+Right.
+So this is the problem statement that we have to put if else condition here.
+Instance of instance of or any other if else condition to determine what object I need to typecast into
+and so that I can do a appropriate operation.
+So composite design pattern solve this thing.
+How?
+So it says that.
+You can create an interface.
+Let's say I am creating an interface here file system.
+So my file system is an interface right.
+And here I have a LHS method.
+So there will be two childs.
+What it says that.
+So this is my component is nothing but a file system.
+And what are its two child.
+First is leaf operation.
+What is the leaf operation in our file system a file file.
+Because once you have a file you cannot create a directory inside it.
+Right.
+So our leaf node is a file.
+class and it will implement a RLS method.
+So file system has simple RLS method and the file again the same like what we have before a file, name
+a constructor to set this file name, and normal RLS method, which will just print the file name.
+Now it will have a composite object here composite object.
+Here we say composite object.
+Composite object means which contain again itself.
+So here in our case what is the composite object directory.
+So here if you see the directory now we have a directory name.
+And what is the file system list.
+Now it contain a list of file system.
+You know you notice the difference between the program one and the one which we are saying in the problem
+statement.
+We are having a list of object, right?
+Because they don't have any parent.
+Now we have created an interface file system.
+Right.
+And directory is also a child of file system and normal file is also a child of file system.
+So that's why in the directory I am creating a list of file system.
+So means directory has.
+Directory has file system.
+And it is one to many and it has one to many relation.
+List of file system.
+So in the constructor I just initialize it and in the list method.
+Now see what is the difference in the list method.
+What I am doing I am iterating over the file system list and I directly blindly call ls.
+I don't need to do is instance of file instance of directory.
+Then I need to typecast know if file system, whatever is it a object of file.
+Because this is the parent, right?
+And let's say if it parent object contains an object of this, it will call the LHS of this.
+If it contain an object of directory it will contain the LHS of this.
+Right.
+So I avoided the if else condition right.
+So now when I am running it.
+So let's say this in this one.
+So see I created a directory movie.
+So I have created a directory movie inside the movie.
+What I have done I have created one file border.
+So this is border movie.
+Let's say this is file.
+Then I have created another directory inside the movie directory which is known as comedy movie.
+So here I have comedy movie inside the comedy movie.
+I have created one file.
+I have put into comedy movie director called Hulchul.
+Let's say hul chal we can put more files also, right?
+Or even directory.
+So now.
+Now I am just calling from here.
+I'm just calling ls.
+So now it will call.
+So let's say when I call the ls.
+So this has everything.
+This has the list of this.
+So in the file system I have put border and this one.
+So first it put border and then comedy movie.
+Then once it get a comedy movie which is a directory file system object would be directory.
+And then it called its ls.
+So this method will be called again.
+And then again it will put directory name comedy movie and then it will take out its file system object.
+What is the file system Hulchul.
+And then it called a file system object dot LHS.
+Right.
+So it will call the file name Halcon.
+So you got it.
+This is very simple example.
+We might be using it without unknowingly that it is a fall under composite design pattern.
+And how it is creating a tree.
+You understood.
+So this is nothing but a same what the UML diagram of object inside object or composite design pattern
+is.
+So let me explain you with another example of calculator which we also known as the arithmetic expression.
+Right.
+Let's say we want to solve like two into one plus seven.
+Or it can be more complex.
+So let's say this is the arithmetic expression.
+So let's say if you wanted to build a calculator inside calculator we have arithmetic expression.
+So we can see that.
+Can it fall into the kind of tree like structure.
+So we can say that, right.
+So how we can represent it like it's a two then we have plus here we have one.
+Here we have seven right.
+So this is the tree like structure.
+So definitely we can solve it using composite design pattern.
+How.
+Let me show you this.
+So here what I have done is I have created an arithmetic expression as an interface.
+So here.
+I have created arithmetic expression interface.
+And I have created one method evaluate evaluate method.
+Right.
+So now I have constructed this.
+Now I need to create a leaf.
+What is the leaf node inside an expression.
+The leaf node is nothing but a number right so I have created one class called number.
+Number.
+Class.
+Right.
+So what does number class has number class has value.
+What is the value.
+127 whatever it is right I am using constructor to initialize this value.
+And inside the evaluate method I am just returning the value.
+Right.
+Because it's a leaf node, you can't do anything, it just return the same thing right now.
+What is the composite object.
+So here what does UML say.
+What is the composite object.
+So composite object will have here in this cases expression an expression.
+So this is an expression an expression can have.
+So let's say this is an expression.
+An expression can have a number and it can have another expression, right?
+So here I am using an expression.
+So I have arithmetic expression left expression arithmetic expression right expression.
+So means expression has arithmetic expression.
+So it will have.
+So let's say this is an expression.
+So it will have less left expression.
+It will have right expression right expression left expression right.
+And what operation we have to do multiplication plus.
+So I have just taken an operation as an enum add subtract multiply divide.
+So what operation we have to do I just added here.
+So during the constructor of this expression here the constructor I just said what is the left expression.
+What is the right expression.
+What is the operation you want it to do.
+And inside this evaluate method inside it Evaluate method.
+What I'm doing is what operation you want to do.
+If you wanted to do add, subtract, divide, multiply on the left and right expression, do the same
+thing right and return the value.
+So now let's see the main the driver method.
+So the same thing two into one plus seven which I am trying to do two into one plus seven.
+And this is how it's gonna be.
+So now what I have created first I have created arithmetic expression.
+And this arithmetic expression nothing but a number two.
+So first I have created two.
+Then I have created arithmetic expression one.
+Right.
+So I have created one.
+Then I have created arithmetic expression.
+It is a new number.
+So again a number field.
+So seven.
+Then I'm creating an expression new expression.
+So expression will have left.
+So this is my left number.
+My right is seven.
+This one.
+So this is my right.
+This is my left object.
+This is my right object.
+And what is the operation add.
+So I am passing the add operation.
+Right.
+So this is the first expression.
+Now I am creating one more one more expression.
+So I am passing two.
+So this is the two.
+And what is the right expression?
+The first one which I have created.
+So this is the right expression.
+This is the right expression.
+This is the left expression.
+And what is the operation I wanted to do?
+Multiply.
+Right.
+So this is my parent expression.
+And on the parent expression I am doing evaluate I am calling the evaluate method right when I'm calling
+the evaluate method here what it will do.
+Let's go inside this of the expression.
+So what is the operation?
+It will see multiply because this is what I sent.
+Right.
+So it will see a multiply.
+So it will say left expression dot evaluate.
+What is the left expression.
+It is nothing but a number.
+So dot evaluate will return two and right expression dot evaluate.
+What was the right expression.
+Nothing but an expression itself.
+So it will again do the same thing.
+Expression dot evaluate.
+Expression dot evaluate means it will call the same class evaluate method.
+Now it will just see okay for this one what is the operation add.
+Then the same thing left and right right.
+And for the left it is a number.
+It will return seven.
+For right it is a number.
+It will return seven and it's a plus.
+So it will do plus.
+So it will return eight.
+Right.
+And this evaluate comes here and it will do multiply.
+Just think of a recursion.
+If you are good in recursion, you will definitely get to know what I am doing right now here, right?
+But you get the picture.
+Any problem statement which can be constructed in a tree form, you know that which design pattern will
+be helpful for you, right?
+So this code you can definitely get it the link get link which I will also post it in the description
+section.
+So I will try to cover it in the design pattern.
+This design pattern into the live session, so that if anybody has any doubt and wanted to clarify on
+the call itself, you can use that opportunity to clarify with me, right?
+So maybe in upcoming live session I will try to cover up this, uh uh, this one composite design pattern
+also.
+Okay, guys, I hope you enjoyed it and you able to get it thoroughly.
+And good night.
+Have a good day.
+    </pre>
+</body>
+</html>

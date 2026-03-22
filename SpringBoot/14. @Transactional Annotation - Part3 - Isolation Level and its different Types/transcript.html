@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>14. @Transactional Annotation - Part3 - Isolation Level and its different Types</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>14. @Transactional Annotation - Part3 - Isolation Level and its different Types</h1>
+    <pre>
+Hey guys.
+Welcome to concept Encoding.
+This is Shreyansh.
+And today in the third part of Transaction Management of Spring Boot we are going to cover the isolation
+level.
+And this is very very important topic as part of Hld.
+Also how do you maintain a concurrency and as well in day to day life if you are working?
+So let's start without wasting any time.
+So if I want to define isolation level in one line, I would say that it tells how the changes made
+by one transaction are visible to other transaction running in parallel.
+Right?
+If you have confusion with this line, don't worry, we are going to see a lot of examples which will
+make clear this sentence.
+So if you have to use this isolation, how we can use is that when you are using this annotation at
+the rate transaction, you can use this like isolation equals to isolation.
+Dot read committed.
+There are four types of isolation.
+Read.
+Uncommitted.
+Read.
+Committed.
+Repeatable.
+Committed and serializable.
+So there are four types of isolation level.
+So which type of isolation you have to use.
+You can provide it here.
+Let's say if you are not providing anything here, if you are not providing anything here, what would
+be the default isolation level.
+So C default isolation level depend upon the DB which we are using.
+We can't say that hey default is always read committed or repeatable committed.
+No it depends upon your DB and it might change in future also.
+Okay so let's say all mostly relational database use read committed.
+But it is possible that some of the relational database might use repetitive computing, right?
+So we have to properly read what our DB are using.
+If you are using Postgres or MySQL, you have to read properly that which isolation is the default isolation
+IT support, right.
+Why it is important.
+Too much because of concurrency okay.
+If you are using read uncommitted, it has very high concurrency means so many requests can run in parallel.
+If you are using serializable, the concurrency is very low.
+Very low means very less transaction can run in parallel.
+Now you can ask me that concurrency high is good, right?
+We want as much transaction can run in parallel.
+So we should always use read uncommitted.
+No.
+So see it's always like if there is an advantage, there is a disadvantage also.
+So we have to understand properly in which and when we have to use what.
+That is actually what important is.
+So before I come to read uncommitted, read committed, repetitive, committed or serious serializable.
+Before I come to isolation level, let's first understand these problems.
+There are three problems which actually this isolation level resolved.
+Okay.
+So let's first start with what is dirty read problem.
+So what is dirty read problem.
+Dirty read problem says that transaction A read the uncommitted data of other transaction.
+Okay.
+And if other transaction get rolled back, the uncommitted data which is read by transaction A is known
+as dirty Read.
+Now what?
+Let's see this definition with an example.
+So let's say this is the time.
+This is transaction A.
+This is transaction B and this is let's say a current DB status at time T1.
+Both the transaction started in parallel begin transaction.
+Begin transaction.
+And this is the current state of the DB id one two, three.
+And status of the column status is currently free at time t2 transaction B is updating the row which
+has id one two, three and changing it to booked.
+So DB status is currently 123 and status is booked.
+But at this point of time transaction B has not committed.
+Right.
+It is still in progress.
+Transaction is still in progress.
+It is not yet committed or rollback.
+It is still running okay.
+So this status booked is This change by transition B, but it is not committed.
+This transaction is not committed.
+So at time T3 the transaction a read the row with ID 123.
+So in the dirty read the transactions.
+Also read the uncommitted data.
+So even this status which is changed by transaction B is not committed yet.
+Still it reads it.
+So transaction A is able to read what is the status book.
+Okay.
+Now at time T4.
+Now let's say transaction B some issue has come and does the rollback.
+And now you know when rollback happened all the changes which it has done they again goes back to the
+previous state.
+So it again goes back from to free.
+But the problem here is transaction.
+Hey has read the Uncommitted Changes book, which is now not there into the DB.
+This is known as dirty read transaction.
+A is now suffered from a dirty read problem because it has read a row which has uncommitted data.
+Right.
+So the transaction which is not committed all the changes is also read by other transaction.
+Then it is known as dirty read problem.
+Okay.
+So if this problem is clear let's move to another problem which is called Non-repeatable read problem.
+Okay.
+If suppose transaction A reads the same row several times and there is a chance that it get different
+value than it is known as Non-repeatable read problem.
+Let's understand with an example of what this definition says.
+Let's say this is the transaction A, this is the current DB status at time T1 transaction started,
+and this is the current state of db id one status free at time t2.
+A read call has been made by transaction A for the id one.
+So what is the status is read free okay.
+Now let's say at time T3, some other transaction has happened and changed the status from free to booked
+and also committed the changes so committed also.
+So at time T4, if transaction A again runs the same query, read row id one.
+Trying to read the same row.
+It will not get the same data.
+It will get data got changed.
+Now what is the status getting booked.
+Okay so that's what it is called as non repeatable read.
+Read the same row several times and there is a chance that you get different value.
+So this problem is clear like okay what this problem means that if you read a row multiple times there
+is a chance that whatever the value you were getting before, now it's get changed.
+And how like this is one kind of a use case where this value get changed.
+And the third problem is called the read problem.
+The phantom read problem says that if suppose transaction A executes same query several times, but
+there is a chance that the rows returns are different itself, then it is known as phantom read problem.
+Let's understand this definition with an example.
+Let's say at time t one, the transaction a started the transaction begin transaction and this is the
+current state of the DB.
+Current status is Id1 is status is free ID row ID three is status is booked.
+Currently let's say two rows are there.
+So at time t two transaction A is trying to read a row where ID greater than zero and id less than five.
+So what all rows will come, ID greater than zero and ID less than five.
+So this both the rows will come right.
+So it will read two rows with ID one and three.
+Now let's say at time T3 some other transaction inserted the row with id two and committed also.
+So now let's say that this new this is the new row has been added by some other transaction at time
+T3 and also committed.
+Okay now at time T for the transaction, A is running the same query again.
+Okay, read row with id greater than zero and id less than five.
+Now this time there is a chance that rows returns are different.
+Now three rows are coming ID 123.
+Because all three are satisfying this condition ID greater than zero and id less than five.
+So this is known as phantom read problem when you are getting different rows itself with the same query.
+Let me also tell you about de-blocking because this is also required.
+So there are two types of de-blocking one is shared lock, shared lock and another is exclusive lock.
+So shared locks is also represented by s exclusive lock is also represented by sometime X okay.
+So shared lock is also known as Reed lock, and Exclusive Lock is also known as Right Lock.
+Now.
+Now let's say that I have a DB in which I have one row called.
+Let's say ID is one and status is free.
+Let's say one row is present.
+So what is read lock or shared lock.
+So now let's say that there are two transaction transaction one and transaction two.
+So let's say that if transaction one wants to read this id one it can take shared lock.
+Right?
+I can represent the shared lock with s take on ID one.
+It has taken a shared lock on ID one.
+So currently somebody is taking a shared lock on this one.
+Who?
+Transaction one.
+Now let's say that transaction T2T2 also want to read this row.
+Will it be able to read it?
+Yes, because shared lock can be, as the name says, that can be shared by multiple transaction, but
+only for the reading purpose.
+So transaction two also want to read it.
+It can also put a shared lock and it can read this same row.
+So what shared lock says that more than one transaction can put a shared lock and you can read the value.
+That's all.
+You can only read, but you cannot modify anything.
+You can only read in other way.
+The exclusive lock.
+Let's say you have this ID one and status is free.
+Transaction one and transaction two.
+Now let's say if transaction one has to change something in this row right.
+And it don't want any other transaction should either read or either should write.
+Then it can go for Exclusive lock.
+Exclusive lock on ID one.
+So what exclusive lock has been taken by T1?
+Now let's say that if transaction two want to read or write on ID one, will it be able to do that?
+No, because there is a exclusive lock present.
+Exclusive lock says that once the exclusive lock is taken by any transaction, no other transaction
+would be able to even read or write.
+So that's where it says that if a lock is shared lock, can another shared lock be taken?
+Yes, you can take and you can read the value.
+But if I have a shared lock, can another exclusive lock can be taken?
+No.
+If any transaction has taken a shared lock, let's say transaction one has taken a shared lock, right?
+It has taken a shared lock.
+And if transaction two says that hey, I want exclusive lock on T1, can I take it?
+It will check.
+Hey, somebody has already taken shared lock.
+You can't take exclusive lock.
+Only you can take shared lock.
+You can read it, but you cannot write it till this shared lock is present.
+Now, if a transaction has exclusive lock, right?
+If a transaction has exclusive lock, let's say T1, can another transaction take shared lock on it?
+No.
+When exclusive lock is taken, you can't even read it.
+You can't even write it, so you can't even read it.
+You can't even write it.
+You can't take do exclusive lock also.
+Okay.
+So by this point of time, two types of locking and this three problems if it is clear, then you will
+clearly understand what this isolation actually solves the problem.
+So read uncommitted isolation level solves nothing.
+You will have a dirty read problem.
+You will have non-repeatable problem and you will have phantom read problem.
+Also why you can ask write interviewer can ask why read uncommitted has all three problems because the
+read uncommitted do not even take read law.
+Do not even apply the write lock also.
+So now let's say that if in db I have an id one and the status is free, transaction one and transaction
+two, transaction one reads it.
+It do not put any lock it, just read it write Right.
+And transaction one.
+Transaction two want to write it?
+It can directly go ahead and change it.
+There is no locking at all.
+If there is no locking, there is like whichever transaction one they can change it and the same dirty
+read problem can come.
+Transaction two can change it to booked, which transaction T one can read it.
+And what if transaction two got rollback?
+The same dirty read can come similarly the same non-repeatable read and the phantom read problem.
+Whichever we have discussed above, the same thing can come because no locking has been acquired by
+read uncommitted.
+So the one follow up question, which comes also right then why this isolation level exists.
+When all three problems are present, no locks are acquired.
+Then why do this isolation level exist itself?
+This isolation level is only used when you have only read application.
+If you have an application where the use case is only read, you have a static data and you only read,
+then only this isolation level is useful.
+Otherwise it is of no use.
+Like it's very risky to use this because of all three problems which can come.
+So it has to be used very, very like.
+If you are properly clear that these three problems will not impact your business logic or but, you
+know, right, concurrency would be high, concurrency is very high.
+Why?
+Because there is no locking.
+No, no transaction is stopping at all.
+If they want it, they can get the data.
+If they want to write, they can write it simply right.
+There is no wait time for anybody.
+There is no locking at the DB row.
+But this is risky.
+The another one is read committed.
+So these two are pretty like you can say that mostly used right depending upon the use cases.
+Read committed and repeatable read.
+So read committed solves dirty read dirty.
+Read possible.
+No, it solves this problem.
+So this is solved, but it does not solve non-repeatable read and it do not solve the phantom read problem,
+but only solve dirty read problem.
+So what read committed does is it puts a while reading it.
+Put a shared lock right?
+And as soon as it read it, it releases the lock.
+As soon as that read is done.
+And for the right exclusive lock acquired and keep till the end of the transaction.
+Now let's say that you have.
+Transaction one.
+Transaction two.
+Right now here the same thing.
+If transaction one.
+So let's say this is the ID one and status is free.
+Now transaction one want to read it ID one.
+So what it will do is it will first take a shared log on ID one and it will read the value.
+Let's say read the value status free.
+As soon as it's read it it release the lock.
+So lock has been released.
+So earlier it take a shared lock by transaction one.
+As soon as the read is done, shared lock has been removed.
+Okay, now dirty read problem is solved, right?
+That, uh.
+If it want to write anything, it will take a exclusive lock.
+Now let's say transaction one.
+Want to write on this data.
+So what it will do is it will take exclusive log by T1.
+It will take an exclusive log right on Id1.
+Now let's say it will change the status to booked.
+It will change the status to booked.
+But now here if you see it will release this exclusive log only at the end of the transaction.
+End of transaction.
+End of transaction could be either commit or rollback.
+Only after this only it will release this log.
+So now since it has taken this, if now in let's say this is time one time two at time three.
+Now let's say at time T3, any other transaction wants to read it will transaction two will be able
+to read it.
+No because exclusive log is there.
+So transaction two would not be able to read it.
+So it is safe from the Dirty Read program.
+You can't read it till it is not committed or rollback right?
+But does read uncommitted is not solving the non-repeatable problem.
+No, it it is not solving it.
+Why?
+Because let's say that here it is running this query.
+Now let's say that it is running this query transaction one read ID one.
+And currently what is the status it got.
+Let's say free.
+This is the DB status for now.
+Uh ID equals to one and status is free.
+This is the DB state for now table state.
+So at time Transaction.
+T1 currently has read it.
+Okay, so this is at time one.
+Now at time two because see during read it just take a shared lock and after reading it release the
+lock.
+Also it releases it.
+So now at time t two transaction two can like take an exclusive lock and update it.
+Start begin the transaction let's say update the row and change the ID equals to one to booked.
+Okay so at time T2, some other transaction has taken an exclusive lock here and change its status from
+free to booked.
+Okay.
+And also committed also now the transaction is completed.
+Now at time three again, the transaction one is running the same query, read ID one what status it
+will get now booked right.
+So see the value got changed.
+So that's why the read committed do not solve the non-repeatable read problem.
+And similarly the phantom read problem is also not resolved, right?
+The same thing.
+You can change the same to let's say read query is like a range query, read ID one, read ID one,
+or you can say that read row where ID greater than zero and less than five.
+Read all this rows.
+So first time let's say you get two rows.
+But since this is only reading so it will put a shared lock which will ultimately, after reading,
+get removed, it will release the lock.
+But let's say some other time.
+Time T2 some other transaction has inserted new row.
+Let's say some other transaction.
+Insert new row.
+The same like what we see above the phantom.
+Right.
+Insert new row and it begin and committed the transaction also.
+Right.
+So exclusive lock taken and after committed the transaction two the lock has been shared.
+Lock has been exclusive.
+Lock has been removed.
+Now at time t three the same transaction T1 running the same query read all rows greater than zero and
+less than five.
+Now this time it will get earlier it get two rows.
+Now maybe it possible that it get this row also if it follows within the range.
+So now it might get three rows like what we see above right.
+So No, it does not solve the phantom read problem also.
+Why?
+Because while reading it, it just takes a shared lock, but it releases it as soon as possible.
+Okay, but during writing it, take an exclusive lock and keep it till the end of the transaction.
+So that's why it is able to resolve the dirty read.
+But since the shared lock is released, uh, some other transaction may be after that change, something
+committed properly and the transaction and during running the same query, it might get the different
+data.
+So it do not solve this too.
+Then there is something called repeatable read.
+Repeatable read solves.
+Dirty read.
+Problem solved.
+Also solve the non-repeatable read.
+So these two are solved, but it do not solve this phantom read problem.
+How the repetitive read.
+So during reading it, acquire the shared lock and released only at the end of the transaction.
+Not like just after reading release it know once it taken a shared lock on a particular row, it will
+release only at the end of the transaction.
+Similarly, right once the exclusive lock acquired released only at the end of the transaction.
+So the same you can try are replicating it and understand with the same two transactions.
+I have transaction one and transaction two right at time one.
+Let's say if this is the DB row one and id is one, and the status is free at time one, it has acquired
+a shared lock on ID one.
+So shared lock has been taken by transaction one.
+Now let's say begin transaction.
+Now, this lock will not be released until this transaction is not ended and can be happen through either
+commit or it could be rollback.
+So let's say this is something whenever like let's say whenever whatever the time would be, some I
+whatever the time would be till this time.
+This lock is now not going to remove.
+Okay.
+So other transactions can only read it.
+You can only read it.
+But can any other let's say in mid here in this time mid let's say time T2 can this take an exclusive
+lock and update this one.
+No.
+Because when the shared lock is taken you know that you can't update it.
+Only you can read it.
+So you you you will not get a exclusive lock.
+So no matter how much time you will read the same row I read again here at time T2, you will get the
+same status here.
+Also you got free here also you got free if later on.
+Also you would do read here.
+Also you would get free.
+Okay, so now it's you have resolved the non-repetitive problem by putting a shared log and keep it
+till the end of the transaction.
+No other transition in now between this time can change it, right?
+And also the dirty read also resolved because dirty read dirty read problem.
+It's get resolved by because the lock exclusive lock.
+Now let's say that the same row transaction one.
+Transaction two.
+Now let's say that transaction one wants to update it.
+It take an exclusive lock on row one and wants to change it from free to booked.
+So this will get to booked but here.
+Exclusive lock is taken by T1 and this lock would be kept till the end of the transaction.
+Either committed properly or rollback.
+Now transaction two in mid cannot even take shared lock for reading or cannot even take exclusive lock
+for writing.
+So it cannot even read it.
+So you dirty read problem is also solved till this lock is not removed and it will only get removed
+once it is properly committed or it is rollback properly.
+Okay, but phantom read problem is not resolved.
+How?
+Now here.
+If you see that if you have two rows with ID one and let's say for here you have free here If you have,
+let's say, pending some status.
+This is my DB table.
+This is ID, this is status.
+Okay.
+So now what is happen is let's say transaction one.
+Transaction two at time t one.
+Okay.
+Let's say you have read ID greater than zero and ID less than five.
+So how many rows.
+So you have put a shared lock now shared lock by T one.
+Okay.
+On which row on here.
+If we have put this shared lock here by T one shared lock here by T one.
+Both the rows okay.
+So begin transaction.
+So now this lock will be kept till this transaction is not completed either commit or rollback.
+Now let's say this is at T1.
+And now let's say at time t two another transaction started the begin transaction and take an exclusive
+lock.
+Or you can say that doing a insert with ID equals to two.
+So c one for ID two is not there.
+So some other row has inserted a new row two with id new row is inserted two and some other status let's
+say free because see there is no shared lock on this right.
+Two part.
+So any other transaction can go ahead and insert it and complete this transaction let's say properly
+committed okay.
+Now let's say at time three this transaction T1 runs the same query again read I.
+D greater than zero and id less than five.
+Will it get the same two rows earlier?
+Like it get one.
+And for now it will get one for and two because this query is now satisfying this three.
+So phantom read problem is there still there in this repetitive read.
+The last one is serializable.
+What serializable does is it.
+There is no dirty read problem here.
+There is no non repeatable problem here and there is no phantom read.
+It resolved.
+All solved.
+Solved.
+Solved how the serializable.
+Same as repeatable log read log strategy.
+So it it uses the same strategy during reading it.
+Require it take a shared log and release only at the end of the transaction.
+Exclusive lock is taken while writing and released only at the end of the transaction.
+It does the same thing, but it applies a range lock.
+It applies the range lock.
+Now here, if you see the phantom read problem, I will tell you the same.
+Let's say this.
+We will pick the same thing.
+The two row one and four status is free.
+Some status is pending now in the.
+If you are if you are using the serialization uh, isolation level, if transaction one and transaction
+two are running transaction two, let's say begin the transaction.
+And it is doing this at time one read.
+ID greater than zero and ID less than five.
+So what it will do?
+It will.
+So it is doing reading so means it will put a shared log and it will release only at the end of the
+transaction.
+Correct.
+That's what it is.
+Does like repetitive read.
+But one change is it put a range lock.
+Range lock means all the 0 to 1 two, three, four.
+So it will put a shared lock here by t one shared lock here at time T two uh not T2T1 transaction t
+one put a shared lock on this.
+Also it put a range lock.
+So this is kind of a range lock.
+Range lock means now 1234.
+These all are kind of lock.
+Now let's say at time two some other transaction has started.
+Begin transaction And now wants to take an exclusive lock and insert A with ID equals to two.
+Will it be able to insert it?
+No, this will not be because at second row also range lock is already present here, which is a shared
+lock which no other transaction can insert it in the mid between this one and ID greater than zero and
+five.
+Whatever the rows are satisfying this condition, a shared lock would be put right and it's a range
+lock means anything coming in mid of it.
+Also it will get locked.
+That's how it is solving the phantom read problem, because now no other transaction would be able to
+insert any new data in mid and so that now at time T3, if the same query runs again.
+Read id greater than zero and ID less than five.
+The same two rows will get returned, so there is no new rows will come because another transaction
+won't be able to insert because range lock has been present.
+All all this, all this rows which are satisfying this plus any rows which are coming in mid those are
+get logged.
+You cannot do any insertion in mid.
+But this one thing clarifies you that the concurrency of serializable is very less or very low.
+The concurrency rises, but the risk of certain problems arises like this.
+So during which DB to use and which isolation level to use during transaction, it is very important
+decision.
+Interviewer.
+Might.
+This is very interesting topic for an interviewer that you know which isolation level should use.
+So generally, depending upon the requirement, either repetitive read or repetitive read, committed
+or repetitive committed.
+Out of this two only this is one is required because they give like some yes, concurrency is there,
+but also problem is solved.
+So whenever this question come, ask interviewer that okay, whatever the application we are building
+Non-repeatable read is a problem or not.
+If non-repeatable read is not a problem, right?
+Go for read committed.
+If it is a problem, go for repeatable commit, right?
+So I hope this is clear to you.
+But this uh, if let's say that if you ask me.
+Right.
+Hey, like where this shared lock exclusive lock actually code is present.
+See here in your application you will simply write, read, let's say select query.
+You will write select query, write.
+Select asterisk from your table.
+Where ID equals to one.
+You will write only this query.
+Now, depending upon the isolation level which your DB is using, there is something called DB Transaction
+manager.
+Write.
+With each DB there is some transaction manager.
+So this locking code.
+Okay I am using isolation level.
+I have to use isolation level read.
+So during application you just tell which isolation level to use.
+Hey use read committed, then it will during select query, it will make sure that it will put a shared
+lock and release it as soon as you read it.
+So this taking a lock.
+Releasing the lock.
+Taking a shared lock.
+Releasing the lock is exist into DB transaction manager, which is not like at a at a application layer.
+This is not visible to us.
+It's abstracted.
+Okay, we just simply write insert query update query, but only isolation level is something which
+will tell to the DB transaction manager which ultimately talks to DB, but what locking it should use,
+when to use, when to release.
+This is guided by isolation level, and that's where the.
+If you read the definition again, it tells how the changes made by one transaction are visible to another
+transaction running in parallel.
+I hope this definition makes sense.
+Now with that being said, like the transaction management is a spring boot, I am completed and see
+you soon with the next topic of the Spring Boot by.
+    </pre>
+</body>
+</html>

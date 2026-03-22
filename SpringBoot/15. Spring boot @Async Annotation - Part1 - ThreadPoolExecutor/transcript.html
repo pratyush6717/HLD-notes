@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15. Spring boot @Async Annotation - Part1 - ThreadPoolExecutor</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>15. Spring boot @Async Annotation - Part1 - ThreadPoolExecutor</h1>
+    <pre>
+Hey guys.
+Welcome to Concept and Coding.
+This is Shreyansh.
+And today in the Spring Boot series we are going to cover the async annotation.
+There are lot more things to cover in async annotation and lot more things happen behind it.
+We will see in depth.
+But before I proceed further this three Java topics, I would say that it's a prerequisite.
+If you want to understand the async annotation properly, you should know how to create a thread and
+its life cycle.
+What is thread pool and thread pool executor and what is future callable and completablefuture and how
+it works.
+Okay, so let's start this.
+So here in this first let me in very brief I will tell you about thread pool and thread pool executor.
+And I want to make sure that we are all in same page.
+Right.
+We have the same understanding of the thread pool and thread pool executor, but please check out this
+three videos which are in depth and it is available in Java series, which is a prerequisite to understand
+async annotation.
+Okay, what is Threadpool?
+Threadpool is a collection of threads which are available to perform the submitted tasks.
+Once the task completed, threads get back to the thread pool and wait for the new task to assign.
+Means thread can be reused.
+Okay, so let's understand with this diagram.
+So in so there is something understand is there is something kind of pool in which we have pre-created
+the threads, we have pre-created the threads and available to pick the task.
+Now there is some available and application also involved which is submitting the task.
+So this task gets submitted into this queue first.
+Now any thread which is free in this pool will pick the task from the front of the queue and start processing
+it at once the task is completed, the thread goes back to this pool and now is available to pick any
+other task from the queue.
+Okay, so this thread pool executor involves couple of things.
+Like to understand this, there is something called right minimum pool size.
+Minimum pool size means what should be the minimum number of threads which should be pre-created.
+Maximum pool size.
+What is the maximum number of threads we can create?
+That is the number which says maximum pool size.
+Queue size.
+What should be the length of this queue?
+How many tasks it can accommodate.
+So this size tells this So determining this thing is very a good interview question.
+Also.
+And determining these three things involve lot of consideration like what is your CPU memory and all
+these things which I have explained this in this video thread pool executor in the Java series.
+Okay, so but for understanding this thread pool executor, let's say that minimum pool size is two,
+maximum pool size is four and the queue size is three.
+Just for now.
+And let's understand the behavior so that we all are in the same page that how the thread pool executor
+works.
+So now let's say that you have a queue with size 3012 and you have a pool of two threads thread one,
+thread two, which is currently available minimum pool size.
+So it is free.
+Now let's say task is coming.
+Task one comes.
+So task one goes into the queue and thread one will pick it.
+So task one is now getting processed by thread one.
+So this is now busy.
+Now task two is coming.
+Task two will be put into the queue right?
+And task two will be picked by thread two.
+So thread two will take it and start processing it.
+Now both threads are busy.
+Now let's say they haven't completed it.
+So the pool is currently there is no free threads available.
+Okay, now let's say that task three is coming.
+So task three will go into the queue.
+So currently both this task one and two has already been removed because they have been processing.
+So task three is coming.
+So now here if you see task three is there any thread available which can pick this task.
+Currently no.
+Both the threads thread one and thread two are busy, so task three will wait into the queue.
+Now let's say task four is coming, so task four will go into the back of the queue.
+Is there any thread available which can pick?
+No.
+Both are busy so it will wait into the queue.
+Now task five is coming again.
+It will goes into the back of the queue and it will wait till any thread is free.
+Now task six is coming.
+Now what would happen to the task is is there any thread available?
+No thread.
+Both the threads are busy so minimum pool size.
+Both the threads are busy.
+Is there any available size available space in the queue?
+No queue is full.
+There is no space.
+So what shall we do for the task?
+Six shall we discard it?
+No.
+Then it goes and check the max pool size.
+Hey, what is the max pool size?
+Can I create more thread?
+Yes, Max pool size says that the maximum number of thread in a pool can be four, so currently we have
+only two, so it will create a new thread.
+Uh thread three and now thread three will pick it.
+Task six will get picked by thread three.
+So task is gonna pick thread three and it is not there into the queue.
+Now let's say that task seven is coming.
+Task seven it will say hey any thread available thread.
+So thread three is already processing task six.
+Hey any available thread there in the pool?
+No.
+Any space available in the queue?
+No.
+So shall we discard the task seven.
+It will check what should be the maximum pool size for what is available currently.
+Three we can create one more.
+So it will create new thread thread four and that will Processing task seven thread four.
+Okay, so this is also getting processed.
+Now let's say task eight is coming.
+What would happen to the task eight.
+Is there any new thread or free thread available?
+No.
+Is there any space available in the queue?
+No.
+It will check what is the maximum pool size I can create for?
+So what is the number of thread 1234?
+Already you have reached to the max.
+Now you can't do anything.
+This will get rejected.
+Now let's say that the thread one has processed the task, one completed and it is now available now.
+Thread one is now available into the queue back again.
+So thread one is now available.
+Now it goes back to the pool again.
+So what thread one will do.
+It will check the queue and it will take the front of the queue.
+So task three.
+So task three will get now processed by thread one.
+So now it is now getting processed.
+So this is a very basic understanding of thread pool and thread pool executor, which I have explained
+in depth here.
+And this is the semantics.
+Like this is how we create a thread pool in Java.
+We create a new thread pool executor object, provide a minimum pool size, maximum pool size and what
+should be the queue size?
+There is something called Keepalive time time unit hours which you will get to know in this video itself,
+right?
+But for their simplicity and the basic understanding and just kind of a quick recap, these three things
+are important.
+Minimum pool size, maximum pool size, and queue size, which I have already told you how these three
+plays a crucial role in this task sequencing.
+Okay, now let's start Not understanding how async annotation works.
+So async annotation is used to mark method that should run a synchronously or asynchronously means in
+a new thread.
+So when you start a particular application, let's say so it's always starting in a one.
+Let's say thread one, or sometime we call it as a main thread.
+Right.
+So always one thread will get picked and start your program.
+Now what happens is whenever you have put a certain method as async right?
+We are telling that hey, create a new thread.
+It will create some new thread.
+Let's say thread two and that method will get executed in And by this new thread.
+But our main thread is get now unblocked and will continue processing further.
+Okay, so here let's say we have a sync method.
+So a sync method it will initiate a new thread.
+And that will now continue processing whatever we have task available in that method.
+So it is getting executed by the new thread which is got spawned.
+But the main thread which is running that get unblocked and that will continue processing ahead.
+Okay, so runs in a new thread without blocking the main thread.
+So take this example.
+So here first thing first we have to put this annotation in our main application spring boot application
+where we have put this annotation right at the rate spring boot application.
+So we have to put an annotation right at the rate enable a ussing.
+What is the purpose of this annotation?
+The purpose of this annotation is once you once Spring Boot sees that hey, this annotation is present.
+It will create a bean for Ussing classes which is required for processing the async task.
+There are so many things Ussing interceptors, and there are so many other classes which get involved,
+but they will only get their objects or their beans will get only be created when you will put this
+annotation.
+Otherwise spring unnecessarily will not create an or create a bean for those classes.
+Okay, so whenever we have to use an async functionality for the async annotation, we have to tell
+the spring that hey, create a bean for those async classes also.
+So enable Ussing is the annotation Now I have written one very, very simple method Rest controller.
+Very simple API.
+You already know that it get mapping, get user and very simple method.
+So here I am printing inside get user method whenever we will invoke this API slash API slash get user
+it.
+This will get invoked and it will print inside get user method.
+And I'm printing what is the thread name.
+So generally this is the main thread name right.
+The main thread.
+Now here if you see that I am invoking an another method which is inside user service class and it is
+calling the async method.
+So this is the user service class right user service class managed by spring async method.
+So this is the method which is getting invoked.
+And now this method I have put at the rate async.
+Now once I have put at rate Ursing mean, I am telling spring that hey, this method should get be processed
+by new thread instead of the main thread which is running.
+So this thread is the main thread which which is running.
+Now when this method gets invoked, this thread should be the new thread.
+So this I am just printing the thread name inside async method name.
+And what is the thread name?
+So this should be different than the main thread.
+So if we run this and see the output inside Getuser method.
+This one inside Getuser method.
+So this is like your main thread.
+And here inside async method task one.
+So here the thread name is task one async method.
+What is the thread name?
+Task one.
+So here if you see that these are the two different threads.
+Now if you run continuously.
+So here I am running continuously.
+So I have hit the endpoint.
+Get user.
+Then again I hit the endpoint.
+Get user just to show you that every time you will hit it will create a new thread here.
+Earlier it was created thread one, that thread two, then thread three, then thread four.
+So every time a new thread will get created inside a async method task.
+Task five.
+So this is the thread name it has given new async method 678 right?
+New async method.
+Generally I am printing the thread name.
+So here if you see every time you will hit it will just create a new thread.
+Okay.
+So this is what async annotation does.
+Looks very simple right?
+But not so.
+Now let's come to this question.
+How does this async annotation create a new thread?
+Here.
+When I put an async annotation and whenever a main thread is invoking this, it creates a new thread
+like okay thread created inside async thread.
+Which which thread this thread.
+So it is different than what's the parent thread?
+So how does this async annotation creates a new thread?
+Many places you will find that Springboot uses by default simple async task executor which create new
+thread every time blindly, right?
+So here if you say I have just put at the async nothing else, I haven't provided any thread executor
+like or thread pool executor that this should be the minimum number of pool, maximum number of pool,
+or even pool is present or not.
+I haven't told that so many places you will see.
+They will say that hey, spring boot!
+By default, using simple async task, executor means blindly create a new thread every time it is required.
+I will say this is not a fully correct answer and you might get stuck in a follow up.
+Questions.
+But let's understand like what is the right answer and how this exactly work internally?
+Okay, but before I proceed further here, if you see if you see below the Spring Boot framework code.
+So this is one spring boot internally one some async class here.
+If you see async execution interceptor inside this you will find this code.
+What it say first it will try to identify get default executor.
+If it able to find some default executor when we when I say default executor considered as a thread
+pool executor where you have a minimum pool size.
+Maximum pool size, what should be the queue size?
+Like this.
+So first spring.
+Also try to see hey, can I use any default executor?
+If default executor is null then only it use spring async task.
+Simple async task executor this one.
+But what?
+But in what all scenario it able to find a default executor here.
+If you see this.
+If you see this example above where I have just put at the rate enable async and at that async.
+So it is using task one, task two, task three and task five, task six, task seven, task eight.
+And if you go proceed further, it will again start from task one.
+Task two.
+Task three means there you will see that the question should have come to you if you do debug, right?
+Hey, I am using at the rate ircing and from everywhere else.
+According to their logic, a spring boot should have used simple async task executor, so it should
+have create new thread every time.
+So it should be like eight, nine, ten, 11, 12.
+But after eight why?
+Again it's going back to the one.
+Is there any some kind of thread pool involved.
+So answer lies here and we will see that first spring boot.
+See any default executor it can use if it if the answer is yes it will use that.
+If the answer is no then it will use simple async task executor.
+Now let's see different use cases and we will find our answer.
+Use case one.
+I am creating a simple spring boot application.
+I have just put at the rate.
+Enable async letting.
+Spring boot knows that hey, create a bean for async classes because I am going to use an async operation.
+If you see my app config at the rate configuration, it's empty.
+I haven't provided any kind of functionality or my custom thread pool executor.
+Nothing.
+Now in this class I have put one async method.
+Similarly.
+Like above, I have told.
+I have put at the rate async write and I have one controller which calls this method.
+I have showed you above, right?
+Let's say that that controller is still present there, which invoking this async method.
+Okay, so now what would this what would happen here.
+Now this is exactly the same as the above one.
+How after thread.
+Task eight.
+Again.
+Task one.
+Task two.
+The thread name coming.
+So what would happen?
+So during application startup when you start an application.
+Spring boot sees that no thread pool task executor present.
+So it creates its default thread pool task executor.
+So what spring boot does is it checks.
+Hey does developer or does application define any thread pool executor or thread pool task executor?
+No, we have not provided anything.
+So what spring boot does is spring boot creates its own or creates its default thread pool task executor
+with below configuration.
+Core pool size means minimum pool size eight.
+Maximum pool size is your integer dot max value and the q capacity is again integer dot max value.
+Okay, but this is how it created.
+And that's where we see that when I run it it say 12345678.
+So eight eight threads are available.
+So they picked it right after that.
+When I put again it again started from 123456.
+Right.
+No new thread created.
+But here if you see it has certain disadvantages.
+Also because the max pool size are very big, even the Q size are very big.
+Okay, so it has certain disadvantage.
+And also I will tell uh, before coming to the disadvantage of this, I will tell you that here spring
+boot try to see thread pull task executor.
+So see, there is something called thread pool executor which is Java, plain Java, and there is something
+called thread pool task executor.
+This is spring.
+This is a spring wrapper.
+This is spring wrapper around this.
+Okay.
+So spring boot sees what thread pool task executor.
+This one.
+Okay.
+So here if you see the thread pool task executor is nothing but a spring boot object which is just a
+wrapper around thread pool executor.
+So here if this is the class thread pool task executor.
+If you go inside this internally, what it is doing.
+Creating a plain Java thread pool executor only.
+So it's just a wrapper which again creates a Same thread pool executor.
+Plain Java thread pool executor.
+Okay, so when you provide this kind of code spring boot again check this thread pool task executor.
+If no thread pool task executor present, it will create its own default one with this configuration.
+And this configuration has certain disadvantage which is not recommended.
+All to use.
+First under utilization of thread.
+Under utilization of thread means with fixed mean pool size and unbounded queue.
+I told you the flow.
+What happened?
+The maximum pool size will only come into the picture when the pools this are busy and the queue is
+totally filled.
+But here in this if you see the queue size is too big.
+It's a very rare that this cube will get filled up.
+So means even though your application can afford that.
+Okay, I can create new threads, but still new thread will not get created because the queue is not
+yet filled.
+So that's why I say that the first problem with this underutilization of thread.
+Even though you can afford to create a new thread more than eight, but it won't create because the
+queue is not filled itself because queue size is too big.
+High latency.
+Since the queue size is too big, they will keep on waiting.
+So now let's say that your all the eight threads are busy.
+Thread one to thread eight are busy now any task which are coming.
+Task nine.
+Task ten.
+They will keep on waiting into the queue until queue is not filled up before it.
+A new thread get spawned from the max pool size.
+So here if you see, since the queue capacity is too huge, this task will keep on appending and they
+will keep on waiting for this out of this eight thread only to get free and then they will pick it right.
+We are not creating new threads from the max pool size because queue is not getting filled up, so they
+will keep on waiting into the queue itself.
+So high latency is another problem with this one.
+Thread exhaustion.
+Thread exhaustion is there that see it is very rare.
+Rare in this thread exhaustion.
+But it's possible.
+How come?
+See there is no control.
+Core pool size eight.
+Queue capacity is this and maximum pool size is this.
+Everything is like not infinite, right?
+What if like core pool size eight all thread one to thread eight are busy.
+The queue become filled.
+Completely filled Field 022147483646.
+All the tasks got filled up, let's say.
+And now it will start creating threads from the max till the max pool size is not reached.
+And now let's say that because of some issue it is keep on creating a new threads and this limit is
+also reached.
+Now you are out of thread and your application will crash.
+It's very unlikely here because the size are too big.
+But thread exhaustion is possible because nobody is controlling that where should get stopped and they
+keep on creating the threads till it is finished.
+Another is high memory usage.
+See, each thread needs some memory.
+Now just assume that if you are creating so many threads.
+Now let's say that all eight threads are created.
+Queue is full.
+Now you are trying to create a thread till this max pool size is reached.
+You are creating so many threads and there is a chance that high memory usage.
+Your system will perform.
+Performance will get degrade.
+So there are so many.
+See, these are just for disadvantage if you go further.
+Right.
+There are so many.
+Other disadvantage comes into the picture.
+But these four are very sufficient to say that we should not go with the default thread pool executor
+functionality.
+So we should never use this.
+So use case one.
+We should never use this.
+We just put at the rate, enable a sink and just put at the rate sink.
+No.
+So what should we do.
+Let's see the use case two creating our own custom thread pool task executor.
+Right?
+I am saying task executor means spring one, not the plain Java.
+This is a wrapper which internally will create a plain Java one.
+So here, if you see in the spring boot application I am creating at the rate enable async, it will
+tell Spring boot to initialize classes which is required.
+And this is the method, the same method where I am putting at the async only first.
+First ignore this.
+I'll tell you first, focus only on this one.
+It's exactly the same right at the async I am putting.
+And this async method.
+It's just printing this.
+Now inside this configuration I am providing my own thread pool task executor on thread pool task executor.
+So I am creating a new object of thread pool task executor providing a minimum pool size to maximum
+pool size four and the queue size is three.
+So here you know that in the plain Java I have already told you in plain Java how you can do it in plain
+Java.
+You can do it like this.
+Write new thread pool executor minimum.
+Maximum.
+Like this.
+Right?
+But here in the spring, it's just a wrapper.
+Right.
+So it's a little bit, uh, read like readability is better.
+So I am putting core pool size here.
+You can set the max pool size.
+You can set the queue capacity.
+And even you can give the thread name prefix like I want this thread name prefix, my thread hyphen
+and you can initialize it.
+Now what would happen when I start an application during application startup?
+What is spring boot?
+Say that Spring boot will try to identify if you see this code.
+First step.
+Spring boot will try to identify see any default executor it can use.
+And yes, now here in this case, during application startup, a spring boot sees that thread pool task
+executor bean is already present.
+We because we have created a bean right for this.
+So this bean is already present.
+So spring boot will not create its own thread pool executor.
+It will use over itself.
+So see, even though we haven't tell here which one to use, but still it will use this only.
+Right?
+So during application startup, Spring Boot sees that the thread pool task executor bean is present.
+So this will make it default.
+So either you use it, you will get the same or either if you provide the name which explicitly executor.
+So here the bean I have provided a name.
+So the same name you can give it here.
+So either you specifically mention that.
+Okay I want to use you use my executor then also it will use this only even if you don't use this.
+And if you, even if you just put at the rate it will not use simple async task executor.
+That is wrong.
+It will use over only.
+Why?
+I already told you it.
+First try to see.
+Is there any default?
+Is there any threadpool task executor being present?
+If no spring boot creates its own.
+If it is present, the spring boot use that only.
+So now here, if you see that in both the scenario, whether you use it without name or with name,
+the output would be same.
+Now if you call multiple time.
+So I'm calling multiple times.
+So each time you will see that this is the main thread.
+And when our async method invoke my thread one.
+So here if you see I have given the prefix my third hyphen.
+Second time my thread two.
+So I have.
+What is the minimum pool size?
+I have given two right, and threads are got free.
+As soon as there is nothing high processing I am doing.
+So the third time I am running again this only pig.
+Next time I'm running thread two pig.
+Next time I'm running again thread one pig.
+So here if you see these two threads are able to handle all the tasks and if we have to understand the
+queue and all.
+So let's say that I am putting sleep in the async method.
+So in the async method I purposely added the sleep after putting inside async method, and I have put
+a sleep just to make sure that okay, once the thread pick this, they busy and they are not get free
+and then test it.
+So now what happen is say first time I ran Minimum pool sizes two max is four and the queue size is
+three, right 243.
+Yeah.
+So now here if you see task one come thread one got picked.
+So only one left.
+Second task come thread two got picked.
+So no free threads available in the minimum pool.
+It's now zero.
+Now more task is coming.
+So it is just putting into the queue.
+So here if you see no thread get created.
+So it just putting task three.
+Task four.
+Task five.
+Now here if you see task six is coming what happen is another thread got invoked because maximum is
+four.
+So one more thread comes in.
+A new thread comes into the picture.
+Now that is also free and that is also busy.
+Now another thread is coming.
+Uh, another task is coming.
+Seven.
+All three.
+This two and this three are busy.
+Queue is full again.
+I can create one more.
+So thread four created and task seven is getting processed.
+So this is also busy.
+Now eight is coming.
+Task eight.
+All four threads are busy.
+Queue is full.
+Task is get rejected.
+Okay.
+Task eight got rejected.
+So now here if you see that the thread pool is working like how we want it based upon our analysis,
+what should be good for our system?
+We have come up with this number and now it's working as expected.
+We are not allowing that you can create more threads apart from this number.
+So this is you can say recommended solution.
+Okay.
+And one one answer.
+You have got that even though we are using at the rate ussing, it is not picking simple async task
+executor because first it will check any thread pool task executor bean is present and yes, it is present.
+Now let's understand the use case three.
+Very interesting use case creating our own thread pool executor.
+But the Java one.
+In the previous one we have created a custom thread pool task executor spring one which spring looks
+for.
+But what if we create a Java one here?
+Now here.
+If you see the same thing I have put at the rate enable async.
+And now here I am using at the rate async only.
+But here I am using plain Java plain Java to create a thread pool executor, not thread pool task executor,
+which is for spring.
+I am using plain Java, but I am creating a bean for the executor.
+Now what would happen?
+What would happen if I run this?
+Will it?
+Will this executor be picked?
+No.
+What would happen is I told you during application startup Spring boot sees that.
+Hey, thread pool executor, the Java one bean is present so it do not create its own default or try
+to even look for thread pool task executor itself.
+So spring wrapper one is like a second priority.
+The first priority is that hey, if the Java thread pool executor we have itself defined, if you if
+you use thread pool task executor internally, it will create a Java thread pool executor this command.
+But if we itself have provided the thread pool executor right?
+This executor is now instance of thread pool executor.
+Okay, so since we have provided this spring boot will not even look for this thread pool task executor.
+So now in this case, what would happen is this one the default executor come as null and once it is
+come as null, it will pick simple async task executor.
+Right.
+So that's the you can say that the use case where it only pick simple async thread executor where we
+have provided our own plain Java thread pool executor.
+Right?
+Then spring boot will not even create an instance of thread pool task executor.
+Right.
+And if you are using Ussing, then at this point of time spring will go for simple async task executor.
+Now here, if you see if I run now here.
+If you see the first time application main run it pick simple async task executor one second time 23456789.
+See after eight it just keep on 1011.
+Now it will not go after it again.
+One it will just keep on going.
+If you keep on hitting, it will keep on going.
+Now here the name thread name itself say async simple async task executor because we have provided this
+thread pool executor the plain Java one.
+So what to do?
+We have to provide this.
+We have to here provide a proper name.
+Okay.
+Whenever you have used the plain Java thread pool executor, we have to tell specifically Spring Boot
+that hey, use this executor async and give that executor name.
+Then it will pick your thread one, thread two.
+My thread one.
+My thread two.
+So whatever I am giving.
+Okay, so always remember whenever you are using plain Java executor, your.
+Also you have to specifically provide the name to the async.
+But if you are using spring thread pool thread.
+Thread pool task executor without even providing it will work without even providing it will work like
+this because the code will look for any thread pool task executor present.
+Okay.
+And also, you know that this simple async task executor is not recommended because of the same reason
+thread exhaustion.
+Since blindly creating a new thread with every async request might lead up to thread exhaustion.
+Thread creation overhead.
+Since threads are not reused, thread management, like creation destroying is an additional overhead.
+High memory usage.
+Every thread required some memory.
+Let's say uh, if there are more threads currently running in parallel, they require more memory.
+So your application performance degrades.
+So we should not use like if you are using your plain Java thread pool executor, then you should not
+use add the async.
+Simply, you have to use specifically the name so that this gets picked up.
+Okay.
+I hope this, uh, I know that the answer of this solution, what is the default executor is picked
+up by spring is not that straightforward.
+So with this three use cases, I told you what is the default behavior and what should be the recommended
+solutions to use.
+But let's say that.
+If you see that by this point of time you say that, hey, I don't want all this confusion, man.
+Use case one, use case two, use case three.
+In the use case one, I can use directly at the rate of saying.
+In use case two, I can also use at the rate a sink, and also at the rate a sink with name like some
+name given.
+And in the use case three I all mandatory have to use a sink with name.
+I don't want my developers to get confused right?
+What uh what to follow.
+So there is very another simple way.
+And this is, I would say that mostly industry standard.
+So what it says that I always want to set my executor as default one.
+Right.
+No matter whether if you use a sink or at the rate a sink name doesn't matter.
+Only my executor will get picked up.
+Okay, so there is another way.
+So another way is that during the configuration class App.config implement a sink configure implement
+this class.
+Okay.
+And once you implement this class you have to override this method.
+Get a sink executor.
+Now since you have override this mat get a sink Executor.
+This is now your thread pool executor.
+You can put whether thread pool task executor or you can use thread pool or plain Java thread pool executor.
+You can use anything, right?
+Return type should be executor either you can use plain Java thread pool executor or thread pool task
+executor.
+Whatever the now you wanted, you can use it now.
+What happened with this is that even if you are using an async right always this will get picked up
+so you never have to worry about.
+Hey, I am using plain Java here.
+Now since I am using plain Java, I have to specifically mention the name.
+What is the my thread pool executor name?
+Now that worry goes.
+Now you don't have to worry about whether plain Java or thread pool task executor spring one.
+Now since you have done an override this one.
+Now your method gets invoked to decide which executor to use.
+Since we have overrided this now, the control will come here and this executor will use and that would
+be our default one.
+It will always find an executor.
+Okay.
+And also remember one thing here.
+If you are using this approach very very important since this is not a bean.
+And here we are creating a new object every time since this this is just an override method.
+This is not a bean.
+You know that bean by default is singleton.
+And here we have to take care of that.
+So I have created a private thread pool executor object.
+If thread pool executor is null, then only I am creating an object.
+If object is already present, then return it.
+And I have created this method as synchronized so that if two threads are coming.
+Two requests are coming parallelly.
+They will get only one object for my thread pool executor.
+So only this handling required.
+If you are using this.
+Okay so this is another industry standard.
+So in if you are working in your company you might see this also in like developers are using this right.
+So this is also an acceptable way of working.
+Implement async configure but take care of the singleton here.
+You have to take it manually.
+And.
+But in the above one add since you are using at the rate been been are by default singleton.
+So that is automatically taken care.
+So that is one way where you can avoid like I don't have to give name.
+What is the use case one.
+Use case two use case three.
+You will always use at the rate passing and it will always pick your.
+executor.
+Okay, so this is just an output I showed.
+I am using here Java Java thread pool executor.
+And even though I am using at the rate async, mine got picked up.
+Not simple async task executor.
+Okay, do practice it with your hand.
+And in the part two I will cover that.
+There are some more topics I want to cover in this exception.
+Handling async method return type transaction management with async method.
+And there are some interview questions so that I will cover in the part two part.
+But I hope this is totally clear.
+Like answer is not always straightforward like spring boot uses default simple async task executor.
+No, there is more to it.
+Okay guys, any question?
+Please feel free to ping me in the comment section.
+We can discuss more.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

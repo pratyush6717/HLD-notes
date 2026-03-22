@@ -1,0 +1,499 @@
+Hey guys, welcome to Concept and Coding.
+This is Shreyansh.
+And today we are going to cover a very important topic in Spring Boot.
+That is been so in the previous four topics.
+We have used couple of times that this has been, this has been but we will cover in depth today.
+So in a simple term, if I have to define bean then I call it bean is a Java object which is managed
+by spring container.
+That is IOC inversion of control container.
+Okay.
+So it's no different than Java object but only managed by spring.
+And what is IOC container?
+IOC container contains all the beans which get created and also manage them.
+So creation initialization and complete end to end managing their lifecycle.
+Right.
+That is done by IOC.
+Okay.
+So how to create a bin?
+So there are two ways to create a bin.
+One is through at the rate component annotation and another is through at the rate bin annotation.
+With both ways you can create a bin.
+But there are some specific use cases where you have to use at the rate bin annotation.
+Using this might not help you for those use cases.
+Okay.
+And what are those use cases?
+I will tell you soon.
+So let's first start with at the rate component annotation.
+So at the rate component annotation follows convention over configuration approach.
+What does it mean.
+So check this very simple example which I have created here a very simple class user with username and
+email and its getter and setter.
+Very basic class.
+And I have put at the rate component at top.
+Now this will tell Spring Boot.
+Hey, you have to create its object.
+You have to manage its lifecycle.
+Right.
+So that's the work of the component.
+So component is convention over configuration.
+What does it mean.
+So spring boot when it try to create an object of it it uses some auto configuration like hey if I have
+to create its object, call its default constructor.
+And then using that we can create its object, right?
+Because we are not providing any external configuration.
+That and telling Spring Boot that how you should create an user object.
+No, we haven't provided any configuration at the root component.
+Spring boot automatically use some its auto configure that.
+Okay I will use default constructor to create its object.
+Okay.
+and the rate controller at the rate service all are internally.
+Tell spring to create bin and manage it.
+Because if you see here at the rate controller, if I am putting so at the rate controller also internally
+is nothing but component also right.
+It is also a component.
+Similarly service at the rate repository.
+All are performing some specific tasks.
+Plus also they are component.
+So all telling spring that you have to create an object of it and manage its lifecycle.
+Okay, so this example is very simple right?
+But now consider this example.
+What would happen to this.
+Again same user class.
+But only difference is now I have created one Specific constructor.
+Now you know that when we provide our own constructor, Java will not add default constructor here.
+Now default constructor is not present here.
+Okay.
+So if I put at the rate component means I am telling Spring Boot to create its object.
+Now Spring Boot has its auto configured that okay I have to call its default constructor.
+Now when it will try to create its been when it will try to create its object, will it be able to create?
+No, because there is no default constructor here.
+And spring doesn't know what to pass in the username and email.
+So when you will try to start an application, your application will actually fail that not able to
+create a bean.
+So what to do?
+In this case you have to tell Spring Boot that hey, when you create a user object, Pass this username,
+this email right?
+Then only you would be able to create it because there is no default constructor yet.
+So that's where at the bean annotation can help.
+Right.
+So at the rate bean comes into the picture where we provide the configuration details.
+So like external configuration and tells Springboot to use it while creating a bean.
+So this is how we do it.
+So here if you see that first from the user class I have removed the at the rate component.
+Now it is not needed.
+Okay.
+The same example where there is no default constructor.
+Now see this is how you create a configuration file.
+So first create a class provide any name and use this annotation at the configuration At the rate configuration
+annotation tells the spring boot that hey, in this class you will find certain bin methods, right?
+For that you have to create bin also, right?
+So here we can provide at the bin on a method.
+So you can use any method name.
+So I have given a name like create usr bin because I want to create a user.
+So I just given a name create usr bin.
+You can provide anything.
+Return type is important.
+So okay so return type is user.
+It has to create this object.
+So now here I am telling Spring Boot that how you should create its object.
+So I'm telling create like this new user pass this username default username default email.
+Now what would happen is.
+So whenever a spring try to create an object of this user.
+now it will not use auto configuration.
+Why?
+Because we have provided the external configuration.
+Now suppose let's say you can ask me that.
+Hey, what would happen if I provide at the rate component here also means one way.
+I'm telling uh spring to use auto configuration, but in the external configuration.
+Also, I have provided the bin and telling spring to use this.
+Now let's say there is something called default constructor also here present.
+So which one it will use.
+So first priority will goes to this one.
+You can try it out right.
+Uh so you can create this uh object.
+And after that try printing System.out.println.
+And you can see which one actually is spring boot uses to invoke.
+Right.
+So this should get first priority.
+External configuration because this is what we are providing right.
+And what we want that is first priority to spring boot, not auto configuration.
+Okay, so now you understand like there is certain specific use cases where at the rate bin only can
+help you.
+And this is one of the use case let's say where default constructor is not present.
+Then you have to provide the how to create an object using at the rate bin annotation.
+So also there is one more uh question can come that okay, what if I have multiple at the rate bin methods
+where I'm creating a same user.
+Let's say create user bin one.
+Create user bin two both returning user.
+So what would happen here.
+So generally in this case what generally happen is spring boot goes one by one and create a bin for
+all.
+So in this case two object would get created like bin one, bin two.
+So one get created for this user.
+Also another is another for this user.
+But with this information default username, default email, default username, default email.
+And another is another username and another email.
+Right.
+And both now is gonna manage by IOC.
+Okay.
+So no matter how many times you write it, Spring Boot will create that many objects for it and which
+one to use that we can see later.
+There are something called at the rate qualifiers, right?
+Or at the rate you can provide a name to the bin and tell in your code that, hey, I even there are
+multiple objects I want to use this specific object that we will see different later.
+Okay.
+But first concentrate on that.
+How you can create a bin through at the rate component and through at the rate beam.
+So there are further two questions.
+Again, comes to our mind that okay, I know how to create a bin now, right?
+But how spring boot find these beans.
+Because I have a huge application code base and there are like thousands of files and I have written
+at the rate component at let's say 5060 files.
+And also I have at the rate configuration file, right where I have provided at the rate bin.
+So how actually spring boot able to find these classes where it has to create a bean.
+And another question is at what time these beans get created.
+Right.
+So like as soon as you write it, does it create it like when Java compiles or what at what time is
+beans get created?
+So that is another question which get asked.
+So let's first focus on the first part.
+How spring boot find this bin.
+So there are two ways.
+One is at the root component scan annotation.
+So added component annotation tells the spring boot to look in a specific specified package and sub
+package, and look for all this annotated classes like at the root component, at the root service,
+at the root repository at the root controller.
+As I already told you that these annotations are also nothing but component two, right?
+So Spring Boot will look for all these annotations in the specified package and sub package, and then
+it able to find those beans.
+So let's say this in the in this class spring boot application where we have a main.
+You can write this at the root component scan and provide a base package.
+Now spring boot goes start from this and further sub packages.
+So this plus sub packages and look for this annotations.
+Now even if you don't provide this as in the I think starting video, I also tell you that spring boot
+application also has at the rate components can internally.
+So if we see that spring boot application also has at the rate component scan and it's auto configuration
+is that start from the package where this class is present.
+So it will start from the package where this class is present and goes further.
+Subclasses sub packages.
+Okay.
+So first way is through at the rate component scan.
+And another way is through at the rate configuration.
+So spring boot also looks for hey do you have any at rate configuration class present.
+So it will look for those right.
+And if it found that one then it will use all those at the rate bin which you have defined.
+And just remember one thing at the rate configuration is also a at the rate component.
+Right.
+So we can see that also annotation at the rate.
+Configuration.
+So at the rate configuration is nothing also but component itself.
+So whatever the package you have defined either you have defined or spring boot auto configure has been
+taken.
+So in that package it also looks for configuration class.
+And once it finds the configuration class it uses these beans also.
+So whatever the bean method you have provided it will also collect it and create a bean for those.
+So these are the two ways at the rate component scan and at the rate configuration.
+Spring boot finds the classes for which bean has to be created.
+And the second one is at what time these beans get created, at what time these beans get created.
+So the answer should be like in two ways.
+The first one is eager initialization.
+Eager initialization means at the time we start our application, that only that at that time itself
+beans get created.
+Another answer is lazy.
+Not at the time of application startup, but whenever it is actually needed, only that time it is created.
+So there are two ways.
+Or you can say the two time this beans get created.
+So there are certain thing called scope.
+I will cover it in the next part.
+Like there are different types of scope singleton scope, prototype scope.
+Right.
+So just for now, you need to, uh, understand that.
+What is eagerness?
+So just want to tell you that beans with singleton scopes are eagerly initialized.
+Right?
+So don't worry about.
+Hey, what singleton scope.
+We will cover in depth later, but for now, you have to focus on this eagerness or lazy part.
+Just say that this is just an example that singleton scope beans are eagerly initialized means at the
+time of application startup.
+Similarly, uh, beans with scopes like prototype, they are lazy, lazily initialized, right?
+Means they are initialized when they actually not needed, not at the time of application.
+Or another way is that even though it's a singleton.
+But if you have used specifically tell, uh, Spring Boot that at the lazy means you have to initialize
+it lazily.
+Right.
+So here, if you see that I haven't provided anything at the rate scope where the value is like your
+prototype or singleton, if you haven't provided anything by default it's singleton.
+We will see later in depth.
+But just for this, I haven't provided anything at the scope means by default spring boot do auto configure
+and it will considered as singleton.
+But now specifically I have used this annotation at the lazy and telling Spring boot that hey, don't
+create this object of this at the time of application startup whenever it is required, then only create
+it.
+So these are the two ways through which beans get created.
+You will get better understanding now with this lifecycle of bean, and most of things will get cleared
+because I will tell you with an example also with demo.
+So now here this is the life cycle of a bean.
+So first time when you create and start an application, the when you start an application, what internally
+Spring Boot will do.
+It will also invoke the IOC inversion of control.
+Now IOC what it will do is it will scan for the beans, search for the bean and how it will search for
+the bean.
+Two ways through at the component scan and at the right configuration.
+So it will use this tool and look for all the beans it has to create.
+And after that it will construct the bean.
+Like if it is eagerly has to be initialized it will create it.
+If some beans wanted or required, even though it is lazy, it will invoke it, right?
+So at this third step it will construct the beans which is required.
+Fourth step is Inject dependency into the constructed beans.
+For example, this is an object user and there is another class order.
+Okay, so now let's say that this user has dependency on this order class order object.
+So this user needs this order.
+And let's say this is even lazy initialize or something.
+Now first third step was construct a bean.
+So now let's say that this is singleton means it can be initialized.
+So what it will do is IOC will create an object of it.
+So user object is created.
+User object is created means user bean is created which IOC is managing now fourth step was inject dependency
+into the constructed bean.
+So whatever the bean is constructed now will inject the dependency.
+So this user bean has dependency on order.
+So now what it will do is it will create the order object and inject it here.
+Injected here.
+So this is done at the fourth step.
+Fifth step is that now your bean is fully constructed.
+It was created.
+And after that dependencies also get injected into it.
+Now it is ready to use before it.
+Ready to use.
+If you have to perform any task you can use at that post construct.
+Now ultimately bean is into action.
+You can use it.
+You can use it to call its method.
+You can use it in your application.
+Now finally, bean is about to destroy, and if you have to perform any task before it actually gets
+destroyed, you can write it here.
+And ultimately, bean got destroyed.
+Okay, so we will see it one by one, like step one when you are starting an application.
+Okay.
+So now let's say that when you are starting an application.
+So during I told you that during application startup, what Spring Boot will do it will invoke IOC.
+So here I have taken a logs here.
+So when you start a spring boot application you will see this two lines embedded web application context
+initializing spring embedded web application context initialization completed.
+This is nothing but a IOC.
+This is application context, right?
+This is the implementation of IOC logic.
+What IOC does we say that IOC manage all the beans so that application context does it.
+So now when you start an application here if you can see that it has initialized, IOC and IOC work
+is to first scan the beans through at the rate component scan annotation, it will look for it.
+And also at the rate configuration it will scan all the beans and will try to construct it.
+So at the step one during application startup, the Spring boot invokes IOC container.
+Here application context provide the implementation for IOC.
+Now IOC container make use of add configuration and add component scan to look out for the classes for
+which we need to be created.
+Your.
+Step two is construct the beans right?
+So just see this example.
+I have created a simple class user and just default constructor and just printing initializing user.
+Now here if you see that I have put at the right component means I am telling Spring boot to create
+its object.
+And also you will see that I haven't provided anything at the right scope means by default.
+What would be the scope for this class?
+Singleton?
+If it is singleton, then means it is eligible for eager initialization or eager initialization means
+during application startup itself.
+IOC will create its object, create this beam.
+So here, if you see that I started the server, IOC got invoked when IOC got invoked.
+It does at the right component scan and at the right configuration it is able to find this class.
+Now it will see that creating its object default constructor is called initializing user.
+So it created the bean of this.
+Okay.
+So second step is once you start an application IOC started look for the bean.
+And it will construct the bean of those classes which can be eagerly initialized like singleton.
+So once the bean is created thus the next step would be your bean is created or next step would be dependency
+injection.
+So see this one.
+See this example.
+So I have created a very simple class user and its constructor initializing user.
+System.out.println.
+Right.
+And I have put at.
+The rate component here means the spring has to create its object.
+And also there is no at the rate scope means its singleton applicable for eager initialization.
+And I have put one now dependency that hey user is depend on this order right.
+Now here if you see that I have created an order class.
+Very simple class one constructor default constructor with like initializing order.
+Also I have put at the rate component means spring has to create its object and if you see there is
+no order, scope means this is singleton eligible for eager initialization.
+But now I have specifically put at the rate lazy means I'm telling.
+Spring boot not to create its object at the time of application startup.
+So now what would happen.
+So this is very basic class I have created.
+Now I have started the application.
+When I started the application IOC initialize.
+It will look for the beans.
+It find this bean user bean and it will find this classes user class where at the rate component is
+there it will also find order class at the rate component is there.
+Now it will see that hey your order class is marked as lazy initialized.
+So I don't have to initialize this during application startup.
+Only when it is needed I have to create it.
+So.
+Your IOC will try to create first its object user.
+So it will call initialize user.
+Done.
+Now after the bean is constructed what it will do next step is try to inject the dependency.
+Nancy.
+So now it will look that hey, this annotation at the auto wire.
+So it will with this annotation.
+What spring boot says that hey, is this been already present in container in IOC container does order
+bin is already present.
+If yes it will just inject it and we can use it.
+If no then what would do is IOC will first create order bin means it will first create order object
+right and then inject into this.
+So currently order object is not even constructed right.
+So means IOC will have to now create first order object.
+So means this is required.
+So it will its constructor will get invoked initializing order.
+Now it will inject into it.
+Now the order object which is constructed now.
+It is getting initialized here.
+Okay.
+But if this is not present, if this dependency is not present, let's say this is not present.
+And then you start an application, you will see that okay user is initialized.
+Right.
+And there is no dependency.
+You won't find this.
+Why?
+Because at application startup this is marked as lazy order.
+So it will not be initialized at that time.
+Only when it is needed.
+Since we have put a dependency here in the user means it is needed for the user bean.
+So that's why order object is also initialized.
+Okay, but this step is clear right after the construction of the beam dependency injection happens
+through the help of.
+Auto wire.
+So there is another thing that there are different ways of doing an injection construction.
+Injection setter.
+Injection field injection.
+We will cover each injection in depth in the next part with the scope.
+I will cover this dependency injection also.
+But you already know dependency injection, right?
+Uh, it uses this at the auto wide annotation.
+So first it will check if bean is already present.
+Use it.
+Don't create new bean of this.
+If bean is not found then only spring will create it and inject it.
+So this injection.
+There are three logic which we will see later.
+Okay, now your user object is now fully constructed.
+Now it is ready to use, but before ready to use, if any pre tasks you have to do, you can do through
+at the rate post construct annotation.
+So here very simple user class marked as add component.
+Again like previously it has dependency on order.
+This is a sample based constructor.
+Initializing user.
+But now I have written this class which is marked as at the read post construct.
+And you can give any name and I've just printed that been has been constructed and dependencies has
+been injected to only after that this will get invoked.
+Now if you start the application IOC started.
+IOC able to find this class that it has to create its object and it is singleton eligible for eager
+initialization.
+So it will create initializing user.
+It will call its constructor.
+After that it will inject look for any dependency injection.
+So auto wired it has dependency on order.
+Order been is present let's say no.
+So it will invoke the order.
+So order like Initialising order and will update it.
+Now your bin is ready.
+After that it will invoke at the rate post construct.
+So now it will print this.
+Okay so that's the sequence.
+So you can do any pre-task.
+Like if you want to do any logging you can do it here.
+Or if you want to initialize something you can do it here.
+Like any map HashMap something you want to put, anything some data.
+You can initialize it here before using it.
+Now at fifth step you can say that the bean actually you use start using it.
+So in this step I am talking about uh post construct happen now actually you are actually using the
+bean.
+So you now you have a user object.
+Let's say now you are calling that user object dot some method.
+You are actually using it in your application.
+That's what I mean.
+Use the bean.
+Now once the bean has been constructed also, now it's time for it to get destroyed.
+But before it getting destroyed, you have to do some pre-task like okay, before it actually destroyed.
+I have to release all the resources so you can use this at the rate p destroy annotation.
+So before the bean actually get destroyed, this method will get invoked.
+Let's say you have a DB connection and you before being destroyed you have to make sure that yes, DB
+connection is uh, released.
+No resources.
+Uh hold.
+So you can check it in this.
+So now again if you see that very simple class user no dependencies there.
+Right at the right post construct pre destroy I have written.
+Now when you start an application generally this is the main class which is present into this.
+When you start an application your IOC started.
+Right.
+So this is also you will get a context object IOC application context object.
+right?
+So here I am catching it and specifically closing it, and I am specifically closing it.
+Generally you don't have to close.
+All right.
+So but here for the testing purpose to show you I'm specifically closing it.
+So what would be the flow when I start this application.
+First IOC will start when IOC will start.
+So it's running right.
+When IOC will start it will find this bean.
+It's a singleton eagerly initialize eligible.
+So it will initialize the user.
+Then it will look for any dependency.
+No dependency means now object is fully constructed user.
+Now it will do post construct.
+So post constructor initiated will get printed.
+Now you can uh so this one happened.
+So now your object is ready to use.
+But as soon as it ready to use we are now closing it the next step.
+So now when we are closing the application context means when we are closing the container, All the
+beans which are present inside this will also get destroyed.
+So it will call for speed destroy method on those beans, right?
+In each classes if you have any are pre destroyed.
+So that would get invoked for each bin right.
+In specific classes.
+Beans.
+So now bin is about to destroy and pre destroy method for this user.
+Bean.
+So this will get invoked.
+Bean is about to destroy and destroy method.
+And ultimately your IOC will get closed.
+Okay.
+So we have covered till this all your whole life cycle of a bean is get completed.
+Also.
+I hope that clarifies you a lot.
+At what time being get created what actually bean is.
+And but the next topic we will cover is your dependency injection auto.
+We have already seen what it does but different type of injection we have to see.
+Very important.
+Right.
+Constructor injection.
+Very important.
+We used a lot like in industry.
+And the scope of the been very important too.
+Right.
+So this is one more property which I will cover that qualifier when you have more than one bean for
+a same type that I told you.
+Right.
+If you have more than one bean for this user, user user which which bean to use in your code, you
+bean name and qualifier help you to choose that.
+I want to use this object.
+So this three part I will cover next.
+Okay team, if you have any doubt in this, this is very important topic in the life cycle.
+Part eagerness lazy initialized part right.
+And do try it out with your hands.
+Like uh.
+Then only you will get more questions and then we can discuss further.
+Okay, guys.
+Thank you.
+See you soon.

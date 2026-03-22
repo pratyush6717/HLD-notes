@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16.DatabaseIndexing</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="database_indexing_notes.html" class="btn">View Notes</a>
+    <h1>16.DatabaseIndexing</h1>
+    <pre>
+Uh, today I am going to cover the two phase locking in the Hld series.
+And before this video, you should watch this distributed concurrency video first in this series, right?
+Because in that video I have covered what is optimistic locking and pessimistic locking in depth.
+And two phase locking is nothing but a type of pessimistic locking.
+Two phase locking is widely used in a company, so yes, do check out this video if you don't know what
+is optimistic and pessimistic.
+Locking itself just previous video itself in the series, you will find it.
+Okay, so let's start with the two phase locking.
+So as the name says that two phase.
+So it has phase one and phase two okay.
+So in the phase one generally known as the growing phase.
+And phase two is known as the shrinking phase.
+So like this understand that with this diagram that what is growing face and what is shrinking face?
+So in the phase one, in the growing phase, what transaction can do is transaction can acquire the
+locks.
+Right.
+So transaction can only acquire the locks.
+The amount of number of locks with the time can only increase in the growing phase.
+It cannot release in the growing phase.
+It can only acquire more and more locks to perform a transaction after a time.
+After a time, it move into the second phase, which is known as shrinking phase.
+In the shrinking phase, now only transaction can release the locks it cannot acquire.
+Now no more new locks, only it can release.
+That's why it is two phase.
+Phase one is the transaction request for the lock by the lock manager.
+Okay.
+So transaction can only request for the new locks.
+The lock manager either Grant or denied.
+The lock denied in case if lock is already held by some other transaction.
+Okay, so in the growing phase, transaction can only request new lock, but in the shrinking phase,
+transaction cannot acquire any new locks.
+Transaction is only allowed to release the lock.
+Only allowed to release the lock which is taken previously.
+Okay, so now you understand these two phases right?
+So in the basic so there are three types of two phase locking.
+One is basic, another is conservative.
+And another is strict.
+You can say that strong strict two phase locking which is also known as rigorous locking.
+We will cover all three.
+So in the industry mostly rigorous locking is used.
+Strong, strict two phase locking.
+Okay, but we will understand all this three.
+So first before we understand that.
+So you now you know that what are the two phases.
+Why it's called two phase locking.
+So no matter what type you are learning basic two phase locking conservative or strong strict it has
+to follow this two phase.
+It will have one growing phase.
+In the growing phase, only locks can be acquired.
+Then it will have shrinking phase.
+In the shrinking phase, only previously acquired locks can be released.
+No new lock can be acquired.
+Okay, so now with that understanding, let's check what is basic two phase locking.
+So see this basic two phase locking.
+So let's say this is transaction one.
+This is transaction two.
+And this is the time how it's time grows right.
+So at time zero I have begins the transaction of T1 transaction one.
+So you already know if you have seen the previous video, you already know that.
+What is the meaning of X and what is the meaning of S?
+So x means exclusive locks right?
+It's a exclusive lock and this is shared lock okay.
+So there are two type of lock exclusive lock and shared lock.
+So.
+In the T1I have put an exclusive lock on data A let's say at time T2I have put exclusive lock on data
+B.
+So if you consider this as a graph.
+So currently for the time transaction one t transaction one, currently it's in growing phase because
+I am keep on putting a lock.
+So I have put first x, then I have put another lock on B.
+So I am just keep on taking the locks.
+Then I will perform some work.
+Okay, now after that as soon as I start unlocking the one, even the one unlock I have done means I
+have now moved to the shrinking phase.
+I cannot acquire any more locks.
+So now at time T4 at time T4 it unlock a.
+So now let's say it unlock a and then at time T5 it do unlock B.
+Okay.
+And after that it commit the transaction.
+It finished the transaction.
+So now here if you see that this is your shrinking phase, and in this phase you will not see any new
+locks to be acquired.
+This is growing phase.
+All the locks which it wanted, it has taken.
+Now it is doing some processing.
+And after that it moved to the shrinking phase.
+Okay, so always the graph would be like this locks acquired and then locks released two phase.
+But there would not be like this lock acquired lock release then lock acquired then lock release.
+No.
+So it will always be like phase one.
+Phase two, growing phase, shrinking phase.
+That's all.
+This is not tuple okay.
+Similarly transaction two if you see that okay.
+So transaction one we have seen that it's growing phase and shrinking phase.
+But now let's see that at T four the transaction two when it first unlock a transaction two begins the
+transaction and it put an exclusive lock on.
+Be right it.
+So here, if you see that I have unlocked the be also.
+So the lock on a lock on be has been released.
+Now it has taken a lock on be lock on a and then commit.
+Okay.
+So here if you see that one thing I have not explicitly do done the unlock.
+So sometime you have taken a lock a lock be log A log B.
+And after that instead of unlocking you just did commit.
+So when you did the commit.
+Commit will also like an end of a transaction.
+And when it is an end of a transaction means it will release the lock itself.
+It will directly release the lock.
+All the locks which has it will release.
+So that is also a two phase locking like it's a growing phase.
+But as soon as the end of the transaction reached it, release all the locks.
+So there are two two ways which I showed you like it can even before even completion of the transaction.
+Right?
+It can release the lock in the two phase locking, or it can even at the end, it can just keep on taking.
+And at the end when you do commit, it can release the lock at that time also.
+Okay.
+So this is known as basic two phase locking.
+Basic two phase locking.
+You got it.
+You can release the lock even before committing of the or before ending of the transaction.
+You can release the lock okay.
+But there are two very big issues which are present in the basic two phase locking okay.
+Understand this very carefully because this is very frequently asked that which type of two phase locking
+you will use.
+Okay.
+The problem with basic two phase locking is first is deadlock.
+Understand this with example.
+So this is again a time.
+So now let's say at time zero.
+So I have two transaction A and B are let's say two data.
+A and B okay.
+So transaction one started at t0 at t0 transaction two also started okay.
+Both started in parallel at T1.
+Transaction one has taken a lock on this one.
+So transaction one has put lock here.
+So this is locked by transaction one.
+And at the same time T1.
+This has been locked by T2 transaction two.
+Transaction two has put a lock here on the row B.
+Okay.
+So this is lock.
+Now at t two time two transaction one wants to put a lock here.
+Wants to put a lock here.
+So now if you see that it is following the two phase because it is growing phase so it can acquire more
+lock.
+Now it is waiting for lock to be released by the transaction.
+Two because it want to acquire a lock on B, but B is locked by which transaction the transaction two.
+So it will waiting.
+So it will waiting for this.
+Right.
+It is waiting for transaction two to release the lock and transaction two want to put a lock on transaction
+A and transaction A is who put the lock.
+Transaction one has already put the lock so it is waiting for transaction one.
+So both are now waiting for each other, and both will not be able to complete their growing phase itself.
+So they now they are in a deadlock condition.
+Okay.
+So this is just one example, one use case.
+There could be another use case.
+See here.
+This could be another use case of a deadlock.
+This is one use case and this is another use case.
+So here we have two a and b.
+So let's say even we have only one data in a db.
+Let's say only one.
+Then also deadlock can come how at time zero transaction one and transaction two both started T1.
+Transaction one has put a shared lock.
+You know already right.
+Shared lock.
+Shared log means you can read it, but you cannot write it right in the shared log.
+More than one transaction can read it simultaneously.
+Right.
+But until and unless nobody can either write to it for writing, you have to convert it to exclusive
+log, right?
+And there should not be any other log.
+So now here, if you see that at time T1 it has put a shared lock on it.
+So T1 has put shared lock.
+Similarly at time T1 transaction two has also put a shared lock.
+So transaction two has also put a shared lock.
+So you already know that more than one transaction can put a shared lock.
+Shared lock is for read.
+So they can read this data okay.
+But they can't write it.
+Now transaction at time T2 transaction says that transaction one says that hey I want to update the
+data.
+So I want so for updating or for writing what log it required exclusive log.
+So it want to do conversion of the shared log to exclusive log.
+But will it be able to convert it to exclusive log.
+No.
+Because some other transaction has already put a shared lock until and unless some other transaction
+doesn't release the shared lock, it can't take the exclusive lock.
+So now it sent a request that hey, I want an exclusive lock on a.
+So lock conversion only happen if transaction two read Lock is released, but it will wait now because
+it want to put exclusive lock on a.
+So it will wait.
+Wait for whom?
+Wait for transaction two to release its shared lock, but the same time transaction two also want to
+upgrade to exclusive lock will transaction to able to upgrade to exclusive log by transaction?
+No.
+Because why?
+Because transaction one has shared log.
+So both transaction one and transaction two will not release their shared log.
+And they will wait for each other just to release because they both wanted to upgrade or convert their
+shared log to exclusive log.
+So this is also a deadlock condition.
+Both will wait even on the one data also present.
+Right.
+So this problem happens in the basic tuple right.
+So now what are the prevention strategies for it.
+How to prevent it.
+So first prevention strategy is timeout.
+In this strategy scheduler finds out that transaction is waiting for too long for the lock okay.
+It simply assumes that there might be a deadlock involve this transaction and thus abort it.
+So what happens is, let's say if T1 is waiting for too long for waiting, T1 is waiting for a lock
+and it's wait for long, very long time.
+So there is a scheduler which keeps track of like which transaction is waiting, which transaction is
+currently executing.
+So it will determine that, okay, a particular transaction is waiting too long for the lock means it
+is a chance that there might be a deadlock.
+And what it will do is it will just abort it.
+But this has a disadvantage to what if this transaction, one which wanted a lock which is already acquired
+by T2, right.
+This is a lock which is already acquired by T2.
+And let's say there is no deadlock.
+T2 is just taking too much time for completion And everything is working fine.
+Does T2 is taking too much time for completion?
+But there is no deadlock.
+But even after the timeout happens, scheduler says that hey, you are waiting too long.
+I think you might be in the deadlock so it will abort it even though there is no deadlock, right?
+So that's why it says that scheduler sometime can make mistake, right?
+It is possible that transaction one wait for the log which is acquired by other transaction, which
+is taking just long time to finish.
+Okay.
+So timeout might cause a problem.
+Also it might abort some valid transaction which is not even a deadlock.
+So this is not a correct way.
+Then there is some better option is usage of wait for graph wfg.
+Right.
+It is.
+It is a direct graph.
+So what happen is scheduler create this graph.
+Whenever there will be an edge, there will be an edge from node transaction one to transaction two,
+TI to TJ.
+If transaction one is waiting for transaction two to release some lock.
+So now let's say this is TI I or t1 simplification.
+Let's say t1 is waiting for T2 to release some lock.
+So that's why there is an edge.
+Hey T1 is waiting for T2 transaction two to release a lock.
+Okay, so scheduler will keep on creating this.
+Wait for graph and periodically periodically it will check for the cycle.
+Whenever in this directed graph a cycle is formed means there is a deadlock.
+So also.
+scheduler deletes the edge whenever lock is released by a particular transaction, which causes some
+other transaction to wait.
+So now let's say T2 has released some lock, which is T1 is waiting for it.
+So in that case graph this edge will be removed.
+Okay.
+So understand this.
+Wait for the wait for graph right.
+Let's say here t1 is waiting for T2 to release some log.
+T2 is waiting for T3 to release some log T3 is waiting for T4 to release some log.
+Then similarly T4 is waiting for T5 and T5 again waiting for T1.
+So this cycle is a example of deadlock.
+Now scheduler will periodically check this wfg and try to see hey, if there is any cycle exist.
+If there is any cycle exist there could be a cycle from here.
+There could be so many cycles.
+So it try to see that, hey, if there are any cycle exist or not, if there is any cycle exist means
+that those transactions are stuck in a deadlock.
+When the deadlock is identified, what will do transaction is chosen from the cycle in wfg.
+Wait for graph that need to be aborted.
+Now in this cycle, some transaction has to be aborted to make sure that this cycle get resolved.
+Right cycle get break.
+So whatever the transaction has to be picked, they are known as victim.
+And how scheduler decide which transaction how and how scheduler choose the victim.
+You can say that okay.
+So it just can't blindly pick that okay.
+You get aborted, you get aborted, you get aborted.
+Okay.
+So there are certain algorithms with scheduler has it takes care of lot of things before deciding which
+transaction should be aborted.
+So four things it choose the amount of effort transaction has already put till now.
+If a transaction has done too much time already right then it should be.
+It should not be aborted, right?
+So that one way check the amount of effort required to finish the transaction.
+Another criteria is chosen is like hey, how much time transaction now need to just finish this transaction.
+So the one who required very, uh, has a chance that it will finish soon.
+Why?
+To abort it also.
+That could be another condition.
+The cost of aborting the transaction.
+You know that whenever we abort the transaction, we have to roll back the changes in the DB.
+So cost generally means how many updates already has been done, because that has to be rolled back
+now to the previous state we have to bring in.
+So that cost also need to be analyzed and the number of cycles that contains the transaction.
+Let's say T3, there is another cycle also present that let's say t seven, t eight.
+And that's waiting for him.
+That's another cycle.
+So it is also another thing like if this is present in so many other cycles, then this could be a chance
+that we can pick this as a victim.
+Okay.
+So there are different ways a scheduler things that which transaction to pick as a victim.
+What is the another way to remove the deadlock.
+Another way to remove the deadlock is conservative tuple.
+This is not very frequently used because it cause like I'll tell you its disadvantage because this is
+a very less concurrency.
+So here but how it resolve the deadlock.
+So what it does it it is also known as static two phase locking.
+It avoid the deadlock by requiring each transaction to acquire all the locks at the start of the transaction
+itself.
+So what happens is so when you start a transaction, you have like okay read a, then you can write
+on B, then there you can have multiple read write read write and all.
+You will submit those to scheduler.
+Now scheduler will try to pick the lock at the start itself before even you start executing the actual
+transaction.
+Operation scheduler will try to grant you the locks on all the data which you are about to work in this
+transaction.
+So avoid deadlock by requiring each transaction to acquire all the locks at the start of the transaction
+itself.
+Okay, so what do schedulers try to set all the locks needed by the transaction?
+If the scheduler fails to acquire any lock, none of the lock will be granted to the transaction.
+It will wait.
+So let's say it won't lock on A, B, and C scheduler is able to take a lock on A or lock on B, but
+C has already somebody has acquired it.
+So even so in the conservative tuple that this two locks will also be not be required, the transaction
+will wait.
+It will wait till all three are not get allotted to transaction.
+So understand from this graph.
+So during the start itself.
+During the start itself, all the locks are acquired.
+Whatever you need.
+Then you perform your operation right?
+And after you have completed your operation, and once you start releasing it now, you can't acquire
+anymore.
+You just have to release it as soon as you complete your work.
+Just release.
+Release.
+So release after release, then release.
+So it's a shrinking phase.
+Okay, so deadlock will never gonna happen because whenever any transaction is started means it has
+all the data which it wants.
+All the locks already present.
+So it doesn't has to wait for anybody any other transaction.
+So deadlock cannot happen.
+But one of the disadvantage is it less concurrency is the disadvantage of it.
+Right.
+And there is an extra overhead for the scheduler to know like in advance.
+This transaction required all this read and write operation.
+So this is extra overhead or extra task for scheduler to come in, right?
+But the biggest disadvantage is less concurrency.
+And that's why conservative tuple is mostly not used.
+Okay.
+So there is another the fourth way to identify the deadlock right.
+So this is is like timestamp based deadlock detection.
+So older timestamp means higher priority of the transaction.
+So like t0 t1.
+So let's say this is uh time timestamp.
+Let's say 1234.
+So as the time grows timestamp grows also.
+So it would be let's say uh 1987 right.
+So the older the transaction means lower the timestamp the newer or the latest.
+The transaction which started late means higher the Timestamp.
+So what?
+It says that older timestamp of a transaction means higher priority.
+Higher priority.
+Okay, so now the timestamp based deadlock detection uses this two logic wait and die or wound wait.
+So what it does is in the wait and die.
+Just see that here all transaction wait for the new transaction.
+Okay, so let's say if any new transaction has already acquired the lock, the old transaction will
+wait for it.
+Okay.
+Will wait for it.
+For example here in this case let's say time one time transaction one.
+Transaction two.
+So it began earlier.
+So this is old transaction T1 and higher priority.
+T2 start little late.
+So this is let's say that new transaction right.
+Right.
+So now here, if you see that T2 has already put the lock and now T1 wanted the lock.
+So here in the wait and die all transaction wait for the new transaction.
+So in the wait and T1 will wait right.
+And in the wound wait what happen is wound.
+So wound means just say the name that old give wound to the new transaction and make them abort.
+So in this case now T1 want lock on a which is already acquired by the new transaction.
+Since T1 is old transaction, it has higher precedence.
+So it will give a wound to the new transaction.
+So T2 will get aborted.
+That's what the name wound.
+weight.
+Right.
+So all transaction give wound to the new transaction so it won't weight.
+Okay.
+Just it will just about the new transaction and taken the lock.
+But in the weight.
+Old transaction weight for the new one.
+Okay.
+So why this way also we can resolve the deadlock also.
+So just another example that let's say in this old.
+So this is old.
+It has already acquired the lock.
+This is new which is start late and wanted a lock so wanted a lock on this.
+So now old already has the lock right.
+So now what it will happen is this says that wait and die.
+Wait old transaction wait for the new.
+But new transaction should not wait for the old.
+It would die.
+So now will here in the wait.
+And this new transaction wait for the old.
+No.
+know in the weight and time T two will abort because here only old will wait, not new.
+Similarly wound wait old will give the wound to the new.
+But when the new wanted it will wait.
+So here in the T two will wait.
+Got it.
+So generally this is the first big issue with the deadlock in the basic two phase locking.
+But there are different ways of avoiding the deadlock also.
+Now what is the second issue.
+The second issue is.
+The cascading aborts.
+Very big problem.
+Which generally that's why we avoid usage of basic two phase locking.
+Right.
+So here if you see that consider this example.
+What is cascading abort.
+So transaction one is started.
+So let's say this is a this is B okay.
+Let's say a value has ten B value is also let's say five.
+For example transaction one started.
+Transaction two started.
+Transaction one has taken a lock on a.
+So who has taken a lock T one has put a lock, then it's growing phase is started.
+It also put a lock on x.
+This it t one also has put a lock on B.
+So it's growing phase.
+This is its growing phase.
+Now it updates the value of A.
+Now let's say it changed its value to 11 okay.
+Now it releases this lock.
+Now it's shrinking phase is started.
+So now it releases the lock on a.
+So now lock on A is released.
+Now as soon as the lock has been released.
+But here if you see the transaction is not completed yet.
+As soon as the transaction release the lock, transaction two has taken the lock on a.
+So now T2 has taken a lock on A and read the operation.
+Let's say it do some operation on a value.
+Maybe it read it.
+So what value it read it 11.
+Now what happened is if T2 start working on the value of a which is 11.
+And now let's say t1 got aborted.
+When T1 get aborted, what happens generally is that we have to roll back.
+We have to roll back.
+So earlier it was ten right.
+So it has to be rollback to ten again.
+But here if you see that T2 has already done the reading which is now known as dirty read, I have already
+explained in the previous video this is known as dirty read.
+So there is a problem.
+All dirty read and T2 has to be aborted because of that.
+Also because this 11 value is not a valid one now, right?
+So this has to be aborted too, as it read the dirty value of A that is known as cascading abort because
+it put a lock, change the value, unlock it.
+But the transaction is not yet completed and before it is not even completed, somebody has also read
+it, and once somebody has read it and performs a certain operation and if this get abort, then this
+transaction has to be aborted too, because whatever the value, it has returned to a that is not a
+valid now.
+So you can't perform on a dirty value.
+So transaction two has to be aborted too.
+So that is known as cascading abort.
+Okay.
+So how to avoid this cascading abort.
+So to avoid this cascading abort there is one more technique or approach is called strong strict two
+phase locking which is also known as rigorous two phase locking.
+So in the two phase locking, if you see the graph graph, you will see that it has a growing phase
+where you can gradually acquire the locks.
+But once you acquire the lock right, you cannot release it.
+Like gradually you have to hold the lock until the end of the transaction.
+At the end of the transaction, either abort or commit.
+Then only all the locks will be released.
+So whether it's a exclusive lock or shared lock, it would be released only at the end.
+So in the growing phase, you can grow slowly, but release.
+You have to be done only at the end.
+So it has two problems.
+One is concurrency.
+Yeah, it would be less concurrency.
+compared to the basic one.
+And another problem is deadlock.
+Deadlock is still possible, right?
+In the conservative one, deadlock is not possible, but cascading abort is possible.
+But in the strong strict two phase locking, cascading abort is resolved.
+But deadlock is possible.
+And generally this is widely used rather than conservative because cascading abort is generally not.
+You can say that it's very expensive, right?
+And deadlock.
+Generally we use wfg to prevent the deadlock.
+Okay.
+So these are the different types of like basic basic has both the deadlock cascading abort.
+Then there is uh your conservative two phase locking which avoids the deadlock.
+But cascading abort is there.
+Then we have strong strict two phase locking rigorous two phase locking which of which take care of
+cascading about but has the deadlock.
+Okay.
+And there are different ways to resolve the deadlock.
+That's why I've told all the four approaches.
+So generally.
+Wfg is widely used in the two phase locking.
+So just now see an example of all.
+So here if you see that.
+At transaction one want to send the ₹10 from A to B transaction two sum of a plus B.
+It has to do.
+And let's say this is the initial balance.
+So now let's take an example of basic two phase locking.
+What else.
+So we know that deadlock can come cascading abort can come.
+It happens.
+But what else.
+Now let's see that.
+So begin the transaction.
+It put an lock.
+So it has a B.
+It has ten or what value.
+It has 100 100 100 100.
+So at t one T1 transition has taken a lock.
+Now it has changed it to.
+90.
+Updated the A value.
+Now it has released the lock.
+A lock has been released.
+Value changed to 90 now at T5.
+T2 has taken a shared lock.
+So it has.
+T2 has taken a shared lock.
+Read the value which is 90.
+It has released the lock on a.
+It has released the lock.
+Now at T8 it put a lock on be shared lock on be.
+So T2 has put a shared lock on be read the value of be which is 100.
+So it will do plus 100 unlock the be.
+Release the lock.
+It commits.
+And also what happened is uh XB.
+So now transaction one has put a lock because it has to do.
+Transfer the money right from A to B, so a ₹10 has been deducted.
+Now on B, ₹10 has to be added.
+So it has put an exclusive lock on B transaction one.
+It added the value 100 plus ten so it will become 110.
+Updated the B value, unlock it, remove the lock and commit it.
+So now here if you see that what value transaction B has read 90 plus 101 90.
+But generally it should be 200 only 90 plus 110 generally.
+So this also issue can also comes like this.
+Even though there is no cascading abort happen even though there is no deadlock happen.
+But here if you see that this issue can also come.
+So now understand with the conservative tuple cascading about issue present, we know that.
+But let's see that with one.
+So in the cascading uh conservative it will take all the lock start itself.
+So it will put both the lock here.
+Right.
+And what it will do, it will change it to let's say a, a value has changed it to 90.
+It will perform its operation on the B also it will change it to 110.
+Right.
+And after that now it reached to the shrinking phase.
+In shrinking phase it can go one by one like okay, gradually.
+So it unlock the a so earlier it has the lock on both.
+Now it is unlock it.
+As soon as it unlock it it has taken it.
+Transaction two has taken it.
+Okay.
+So now transaction two also wanted the lock on B but B is already taken by the transaction one.
+So transaction two is still waiting.
+So no locks is granted to it yet.
+Now at T10 transaction one unlock the B also.
+And now here if you see that B and A both will be success.
+So now transaction two has taken the lock on both.
+It will read the value of a and B.
+So it will do A plus B which is 200 and then put Unlock shrinking face okay.
+So here if you see that no cascading of what happened right.
+But actually the values it read it properly.
+But cascading issue can happen.
+I have already told you right.
+But I just wanted to show you that it's growing face initially itself.
+It put all the locks logs and then in shrinking, it can do gradually, it can unlock it.
+Somebody can start or it might can also do some work and then unlock another.
+Similarly, in the strong strict two phase spell, it can do gradually.
+Right.
+So deadlock can happen.
+We know that.
+But still.
+Wait.
+I wanted to show you that it put a lock on a transaction one.
+Now the lock can be put gradually.
+It's not like all the lock you need at the start.
+So it put a lock on a it updated its value to 90, update a value.
+But see that lock is not released till the end.
+XB it put a lock here, change its values to 110.
+So transaction two is waiting for the A itself.
+So it is waiting.
+So now when the transaction will release the lock.
+After commit itself, when it do commit, this lock will get released and then it will get transaction
+to will get the lock on this one.
+And then it will read the value of it and do commit.
+And during the commit it will release.
+So you got it right.
+The in the strong strict two phase which is a rigorous the lock which they acquire keep it till the
+end in conservative lock can be released kind of a gradually.
+They don't have to keep it till the end, but they will take all the lock start itself.
+Okay I hope this is pessimistic.
+Are locking type two phase locking.
+You have cleared what are different type issues right.
+And what are the different ways to resolve those issues?
+Okay.
+Any question, any doubt please feel free to ping in the comment section.
+Thank you.
+    </pre>
+</body>
+</html>

@@ -1,0 +1,623 @@
+Hey guys, welcome to Concept and Coding.
+This is Shreyansh.
+Today in the Spring Boot series we are going to do dependency injection.
+And before we start dependency injection I want to tell that what is the prerequisite for it.
+The prerequisite is that you need to understand the bean and a life cycle.
+Right?
+Which I have covered in the previous video of this right there.
+I explained you the life cycle of a bean so that you would be able to understand where this dependency
+injection actually comes into the picture of a complete life cycle of a bean.
+Right?
+So if that is clear to you, you would be able to call it so many things.
+But if you have not seen this video being a life cycle, like I'm pretty much sure that like, lot of
+doubts are gonna come.
+Okay, so with this base, understanding that you already know the life cycle of a bean, I am proceeding
+further.
+Okay, so before we understand what is dependency injection, let me tell you one problem.
+Like let's see the problem, which it tried to solve.
+So there I created a two very basic class.
+One is user, one is order right.
+User is dependent on order.
+So that's why it is creating a new order instance.
+And it's a constructor in both very simple class.
+So user is creating an instance of an order.
+So do you see any problem with these two classes.
+The one problem which I see is that they are highly coupled, very tightly coupled.
+And because of this tightly coupled two issue will come.
+The first issue is that in future, any change in the order structure will bring the change in the user
+to, for example, in the order class.
+If I am changing it to this, I convert this order class to an order interface.
+And I created so many child classes like online order, offline order.
+Likewise Because of the future requirement of the business.
+I have to expand this.
+I have to restructure this order class now because user class is directly creating an instance of the
+order it will get impact two.
+Now this code will not work because you can't create an object of an interface, so this will break.
+So what you have to do is you have to change the code and create an object of its concrete implementation.
+So for example here online order offline order.
+So you have to create an object of that.
+But yeah so this code will work now.
+So now you are creating an order but now you are creating its concrete implementation okay.
+So this is the first issue that any change in the structure of order your user class will also get impact.
+Like you see now let's say you have done this.
+This will create another issue, right?
+It will break the dependency inversion rule of the solid principle.
+So what D says in the solid principle, the D says in the solid principle that do not depend on concrete
+implementation, rather depend on abstraction.
+So when you are doing this new online order, you are creating an object of an concrete implementation.
+You are actually breaking the dependency inversion rule of solid principle.
+So to fix it, what you have to generally do is you have to depend on its abstraction interface class.
+In this case, right.
+And its dependency should come from the external.
+So let's say that whoever is going to create an object of user, they will pass, whether online or
+offline order that will ultimately get set to here.
+So this is what dependency inversion principle says.
+So in spring boot this dependency inversion can be achieved through dependency injection.
+Okay, so dependency injection solves the above problem.
+So what?
+Dependency injection says that we can make our class independent of dependencies.
+So here in this case user was dependent on order right.
+So we can make independent of dependency.
+So now here if you see that I am not creating any new order or if even in interface I'm not creating
+new online order concrete class nothing.
+Right.
+So there is no tight coupling between user and order now.
+So this order will contain let's say in future you have online order offline order.
+So many thing what actually it will contain that dependency we haven't put into the user class.
+And that responsibility we have given to an external source.
+Like to whom?
+Like spring.
+So spring will resolve this dependency.
+But you have make your classes like very loose couple.
+Okay.
+So how is spring boot generally uh, do dependency injection.
+So you got what dependency injection is.
+Dependency injection is to bring the loose coupling between two classes.
+Or you can say that we can make our class independent of dependencies.
+Okay.
+And what you can always explain with this examples that these are the problems.
+So dependency injection helps to achieve this dependency inversion rule of the solid principle.
+So now in the same class if we rewrite through in spring boot, what we can do is we can create a user
+class and create at the root component means we are telling to the spring that you manage the bean of
+this class.
+We are creating an order class.
+Also put at the rate component means telling a spring to manage the bin of this class.
+Now this user class is dependent on order.
+Now here I am not creating any object, but I have written an auto wired.
+So what?
+This auto wired says that auto wire tells to the spring that hey, first look for a bin of the required
+type.
+If order bin is already present, use that and inject into it.
+Resolve the dependency.
+If not, you will create it and then inject it.
+First create the bin of the order and then inject it.
+So now what you are doing is you are giving the responsibility to external source.
+What is the external source?
+Spring.
+So spring is now using its logic to how to create an instance of this through auto wire.
+Okay.
+So this is, I put it just to so that you can recall that where the dependency injection comes into
+the picture.
+So this injection.
+At the rate auto wire through at the rate auto wire spring, inject the dependency into this field.
+Right.
+So there are three ways to do that.
+One is field injection.
+Another is setter injection.
+And third one is constructor injection.
+Very very important in industry you will mostly see that we are using construction injection.
+But many of them doesn't know why.
+But we know that we have to use construction injection.
+We don't have to use this.
+But why?
+So I will explain you the advantage and disadvantage of each.
+So first is field injection.
+So dependency is set into the fields of the class directly.
+What does it mean.
+So here if you see this is a class I have created a user class put that that component means now spring
+has to create.
+Its been.
+This is just a simple constructor.
+And I have.
+So this user class is dependent on this order class.
+So this order object I needed but I have till now spring you create an instance of this order.
+So this is an order class.
+I have a simple constructor component means spring has to create.
+Its been.
+I have just put lazy from the previous video.
+You might already understand that if we put lazy means during application startup, this object will
+not get created only when it first use, then only it will be created.
+Okay, so I have written it here just for the sake that this logs would like totally get sequenced like
+exactly where it used.
+So I will tell you now what would happen.
+Field injection.
+So now here if you see that on this field I have put this auto wire.
+So this is known as field injection.
+So what now spring will do.
+So you know the sequence right.
+When when you started the application.
+So IOC will get started.
+So IOC will get started right.
+So what IOC will see it will look for all the beans which it has to initiate.
+So it will look for at the rate component uh classes.
+So it found this user and order.
+So it will first create a user user initiated.
+Then it found an order.
+So it will has to invoke it.
+But it says that okay.
+It says that lazy I don't have to invoke it now when it will use I will use it.
+So user is created.
+Now it will see that okay is there any dependency which I have to resolve.
+So it will look for it will use reflection.
+Spring uses reflection to iterate over the fields and resolve the dependency.
+So internally is spring.
+It uses the reflection and iterate over all the fields and see that hey, any field has auto wired on
+it.
+If yes, then spring has to resolve its dependency.
+So now spring find that okay order is the field which I have to resolve for this user.
+Bean.
+So now because of auto wire it first check.
+Hey order bean is already there.
+No we haven't because we have marked lazy.
+That order bean was not initiated.
+So now at this time, spring will initiate the order.
+So it's order object is created.
+And after that, once the order object is created that get injected here.
+So now here we haven't provided at the configuration file.
+Right.
+So spring will might call its default constructor at that configuration.
+I have already explained you in the previous video.
+So what is advantage?
+One advantage is it is very simple and easy to use.
+So if you just see there you are just looking at a code.
+You already get to know that okay this is the class.
+This is the field.
+And okay these are the dependencies I have.
+So it's very very easy to read and understand.
+And it's very simple.
+So what is the disadvantage of this field injection.
+One thing is you cannot marked as immutable.
+So what immutable means you can initialize it once.
+So let's say that a equals to ten and you marked it as immutable final.
+Now once it is initialized, if you try to change its value let's say 30, it says that no you can't
+change it.
+This is just an example.
+I'm telling you that what immutable is means you can initialize it only once, and after that you cannot
+change its value.
+So the disadvantage of field injection is you can't make fields immutable.
+You can't do this.
+You can't put final.
+Let's say that your application has a requirement to make this order immutable.
+Can you do that?
+No.
+You will put null.
+So this this issue will go.
+Now what would happen is, uh, I told you that spring uses reflection.
+And during reflection, it ignores it, whether it's a final or not.
+And ultimately it will inject the dependency.
+So you, when you are ultimately trying to use it, you won't see null.
+You ultimately see that the object instance is injected into it.
+So that breaks immutability because initially you have first initialized it with null.
+Now, as per the immutability, you should not be able to change its value.
+But since we are using reflection and you know that in Java reflection do not honor anything, it breaks
+many principles.
+It do not honor anything.
+So during reflection it doesn't bother final or not.
+It just take read this field and inject the dependency.
+So immutability doesn't work in the case of field injection.
+Second is chances of null pointer exception.
+Now let's say that you are creating a user class and you are creating this objects.
+Everything is proper, right?
+Right.
+You are putting an auto wired on this.
+Now let's say.
+Some piece of the code creating an object like new user.
+This is also valid, right?
+Nothing wrong in that you can always create a new object, right?
+Spring will not force you that you can't use it.
+So let's say that some piece of the code create user create by itself new user.
+Right?
+It will create a new object.
+So when it create a new object default constructor is used.
+So in the default constructor what would be the value of order now null right.
+Because we haven't initialized it anything.
+Now if you try to call this method user process user object dot process.
+So this process will get invoked.
+Now it is trying to use the order order dot process order dot process.
+And it will throw null pointer exception.
+Another issue with the field injection is that during unit testing.
+So you have this class.
+Now you have to mock this order right.
+So now you let's say that what you have to do is you have to mock this user object order object.
+So you have created a mock object of this order.
+Now how you will mock it?
+There is no constructor here or no setter method where you can put this mock object which you have created
+into this because now spring is initially creating it, right?
+You don't have control over it.
+So how you will set this order mock into this class.
+So generally currently today what we are using is Mockito and JUnit which we might be using.
+Right.
+So there we put at mock at the inject mock.
+So what internally it does it it uses also uses reflection.
+So it will iterate over it and it will see that okay if there is any field order.
+Right.
+So what it will do is it will put this order mock into that.
+So this at the mock at that it inject mock notation.
+Does that.
+Then we have called setter injection.
+So setter injection is that dependency is set into the field setter method.
+So it means in the setter method we are putting an auto wired not on the member variable field.
+So here I am not putting auto wired.
+I have just created the field and during this I have created one set method set order dependency.
+Like it accepts the parameter order that this dependency.
+It has to now initialize and put auto wire means that this method should be used by spring to create
+the dependency, inject the dependency into the order.
+Right.
+So what is the advantage?
+Very simple.
+Simple as uh field.
+Right?
+Uh, the same, but only instead of auto wired.
+Here we are putting an auto wired here.
+So what is the advantage.
+Is advantage is that dependency can be changed any time after the object creation.
+It means that for now you have dependency.
+Let's say you have put anything.
+Since it's a setter method, right?
+You can always call this method pass different dependencies here and it can be changed.
+Let's say you have order online order offline order.
+Let's say that some other type of order.
+So let's say you have the privilege now to first set it through online.
+Then first set it through order offline.
+So it says that dependency can be changed any time after the object creation.
+Once the object is fully created, spring might fill the instance, but you also have now leverage that
+you can again call this method and pass whatever you want.
+Maybe if you want to change it.
+Okay, second thing is easy of testing.
+So now in this setter method, in this parameter you can pass your mock object mock order object which
+get set here.
+Now you don't need at the rate inject mocks at the rate mocks which uses internally reflection.
+You can pass it and ultimately it will get set.
+Okay.
+But there again it has some disadvantage.
+One thing is you cannot make field immutable like you can't put final over this.
+Why?
+Because in the setter method you are setting it.
+You cannot feel cannot be marked as final because once user object is created, spring will use the
+reflection to find out.
+Hey, is there any methods which is marked with auto wired?
+It will find it and now spring would be able to initialize it.
+Right.
+So field cannot be marked as final here.
+So you will see that here you will see red line like this.
+Difficulty to read and maintain.
+So it's very difficult to read and maintain that.
+Okay.
+Hey, this somebody created this field.
+Is it managed by spring or not?
+So it has to look for any method that which has auto wired on top of it.
+So this is not readable actually.
+Right.
+And it is very difficult to maintain like okay if somebody has missed this method itself or not.
+So these are the you can say that the disadvantage of the setter injection.
+Then here comes the constructor injection which is heavily used.
+Or you can say that it's the most recommended.
+So dependency get resolved at the time of initiation of the object itself.
+This is the best part.
+It's not like after user object is created, then spring uses reflection and then fill up this in dependencies.
+Inject the dependencies.
+Know at the time you are creating a user object itself.
+This dependencies are also resolved.
+How?
+So let's say that this is the user class marked as at the root component.
+This is my order.
+I haven't put at the rate auto wire here, just a normal order.
+Now this is the constructor.
+Now you know that constructor is used to creating an instance of an object.
+So in this constructor you will pass the order for which dependencies has to be resolved.
+And here I am setting the dependency.
+This dot order equals to order.
+And I put auto wire here.
+So this auto wire ultimately get applied to all the parameters.
+If you have more parameters like this this auto wire get applied to all.
+So now spring would resolve the dependency of all and then initialize it at the time of user object
+creation itself.
+And also one more interesting will tell you that from the spring version 4.3, right?
+When only one constructor is present, then you don't even use auto wired, right?
+That is also works fine.
+It is not mandatory when you have one constructor.
+So here if you see that in this user class I have only one constructor, right?
+So now when the spring initiated right I haven't put auto wired also.
+So even though it will work fine, and if you have more than one constructor, if you have more than
+one constructor, then auto wired usage is mandatory.
+You have.
+So now let's say that I have two dependency on order and invoice.
+So I have created two classes.
+One is invoice, one is order.
+Very basic right at that component I have just to make sure that when they should get invoked, when
+actually they are used.
+So user has this two To dependency.
+So this is my first constructor which resolves this order.
+This is my second constructor which accepts the invoice and putting the invoice.
+Now there are two constructor and I haven't put an auto wire.
+Now this will fail if you start the application been in initiation.
+Exception will come because there is no default constructor.
+And after that it has to use one constructor.
+But there are more than one constructor.
+So spring doesn't know which constructor I should use.
+So it will throw exception that you tell me like which bean to use, which constructor use.
+So you have to tell one auto wire on one of the constructor.
+So now let's say I put on invoice.
+So what would happen first user object will get created.
+So invoice let's say during IOC started they will find Bean of order class for this.
+But since it's marked as lazy, it will not get invoked till it's not used.
+So it found user.
+It will now sees that okay, this is the constructor which I have to use.
+So now here if you see that I am trying to use the invoice.
+So first invoice will get invoke invoice initialized.
+After that it will put here.
+Invoice injection is set after it says that user initialization with only invoice and finish.
+So order is not even touched.
+Okay so you got the constructor injection.
+But now you should ask me that.
+Hey why it is recommended.
+What are the advantages of it.
+So first thing is all mandatory dependencies are created at the time of initialization itself.
+So it makes 100% sure that our object is fully initialized with mandatory dependency.
+Second part is you can make your field immutable.
+So now here, if you see that I can use final and in the constructor you can initialize it.
+Because at the time of initialization creation of this user itself, I am initializing it only for the
+first time.
+After that you won't be able to change it.
+So this is another big advantage of it.
+And with auto wired on the field injection, I already told you you can't use final.
+But with constructor injection you can make your fields immutable.
+You can put final.
+And during object creation itself, you can initialize it for the first time.
+And after that you won't be able to change it.
+Third advantage is fail.
+Fast means that if there is any missing dependency, it will fail early.
+So here, if you see that at this point of time, let's say that I am creating this user class and I
+by mistake.
+Auto wired.
+When you by mistake missed auto wired.
+What would happen is spring will create an object of this user.
+It will call the by default constructor.
+This order object would be null.
+And if somebody is try to access it like let's say order dot something it will call null pointer exception.
+So you are getting to know about this at runtime, not at compile time but with constructor injection.
+Like let's say that even if you missed auto wired here, like even if you missed auto wired on the constructor,
+you know that if for one constructor, spring will automatically resolve it and fill it.
+If you have more than one constructor, let's say, then spring will fail it.
+I told you that it will fail.
+Bean initiation exception that which constructor to use, Right.
+So you have to first put auto wired somewhere, right.
+So it will force you it will fail fast during compile time itself.
+Unit testing become easy that the same as the setter injection, right?
+Like you have an order object.
+You can inject it here in the constructor.
+So I'm creating a new user.
+You can pass the mock object here.
+You don't need at the inject mocks at the mock reflection to set this mock object here in this you can
+pass it here.
+It will get realized.
+So unit testing become little easy.
+So these are all the advantages of constructor injection.
+Now you can ask me that.
+Hey why you haven't told me that.
+What is the disadvantage of constructor injection?
+Because I will tell you that the disadvantage of constructor injection is also I will consider mostly
+as an advantage.
+So one generally one disadvantage of constructor injection is hey, if you have, let's say that 20
+dependencies, your constructor will become huge.
+Let's say object one, object two, object three, object four.
+Like this.
+And you have put auto add here.
+Your constructor parameters will keep on increasing.
+So this is the one of the disadvantage.
+But here if you see that I considered as an advantage because this will keep you a check that hey is
+your code design is good that your parameter you.
+Your class has so many dependencies I think it's a good time.
+You should refactor it.
+So what are the some of the common issues when dealing with dependency injection?
+So two major issue is one is circular and another is your unsatisfied for dependency.
+So let's first see the circular dependency.
+So in the circular dependency what happens is let's say you have a class order.
+You have a class invoice.
+Order is dependent on invoice.
+Invoice is dependent on order.
+So now here if you see that this is a circle circular dependency order is dependent on invoice.
+Invoice is dependent on order.
+Now they are both using auto wired here.
+So when you start an application application will fail to start says that it form a cycle.
+So this is a circular dependency.
+So how do you resolve it.
+The first and the foremost is that we should refactor the code and remove the cycle dependency.
+How.
+There might be some code here.
+Common code which both needed its.
+Take out the common code To a separate class.
+Right.
+And let those classes call those utility class.
+And that will break your circular dependency.
+This is your first priority to do that.
+Let's say that if you are not able to do then the second thing is using at the rate lazy on auto wide
+annotation.
+I have already told you that if you are using at the rate component, if you are using at the rate lazy
+over here over the top of a class, right at the top of the component, you are telling to the spring
+that during my application startup, don't create its object eagerly, only when it is required then
+only created.
+But now let's say that if you are putting an auto lazy on top of auto wired, not at the top of here
+hear what you are telling to the spring.
+So what?
+First spring during application startup it would be able to find at the rate component invoice object
+is initialized.
+So invoice object is created and this order object is not yet initialized.
+So dependency has to be injected.
+Now it will use reflection.
+It will find okay this field auto wired is there.
+But now it will see that it is marked as lazy means I don't have to resolve it.
+Now I can put some proxy here, right?
+That after means when the first time it is used this object, then only I will create the actual object
+and put it here.
+But for this, at this time, it will just create some proxy.
+Uh, and just add it here.
+Right.
+It won't do a proper initiation.
+So with the help of this, add the lazy parameter lazy annotation on top of auto wire.
+we can break the circular dependency.
+So now first consider this you will get lazy annotation batter.
+So now here if you see that order I have marked as lazy right.
+It's a component invoice has at the rate component and very basic.
+So when you start an application what will start IOC started.
+It will look for the At component annotation.
+It will find both.
+It will say that order.
+It is marked as lazy so it will not create its object.
+Now it find an invoice.
+It will say that okay it has to create its object.
+So invoice initiated.
+So here I told you that invoice object initiated.
+Now here if you see that it uses a reflection, now it uses a reflection.
+It will see auto wired on top of it and it will try to resolve it.
+So means now it will create an object of it one order initiated.
+So this is how you know that it works generally.
+Now if I put at the rate lazy here now, what would happen?
+The same thing first time when you started an application like this is lazy, so object will not be
+created for it first.
+So invoice object will created.
+Now this order is not yet initialized, so now it uses reflection it find out okay this is the auto
+wired I have to resolve it now.
+It also finds that at the rate lazy is, there means I don't have to create an object of it now, so
+it will put it some proxy.
+But this order object is not initiated.
+So here if you see that there is no order initialized.
+So you got it right.
+Whatever.
+Like how it breaks the dependency.
+So that's why we are using lazy to resolve the dependency.
+So order is now dependent on invoice.
+Invoice is dependent on order.
+Now at any one of them we put a lazy.
+Right.
+So when you put any one of them, you put lazy.
+You are ultimately breaking the dependency means because here now it will not create order object.
+It will just put some proxy.
+It will not creating order object.
+Similarly, in the kind of a field injection you can use on the setter injection.
+So like this is the setter at the required right.
+Similarly you can put it at the setter also.
+So you can try over the constructor injection also.
+So the first is refactoring.
+Second is add the lazy annotation on the auto wire.
+Third is using post construct.
+So now what you can do is here.
+This is the order class I have put an invoice.
+This order is dependent on invoice.
+So this is an invoice class right.
+And this is dependent on order.
+Now here if you have seen this I haven't put auto wired here.
+I haven't put any constructor injection or setter injection.
+I haven't put anything so I have removed it right now.
+What I do know the sequence been life cycle, right?
+What would happen?
+Let's say that it first able to uh first able to find an order right.
+Or let's say it first able to find out invoice whichever.
+Because it can find anything.
+Right.
+So what would happen is let's say order object would be created, let's say order initialized.
+So order is initialized.
+So currently it know that it has to put an invoice.
+So it will use a reflection because it has to inject the dependency.
+So it has auto invoice.
+So now it will say that hey does invoice bin is already created.
+Not yet.
+So it will invoke it.
+So it will create an invoice component.
+So now here in the invoice Invoice initialize will come, right?
+Invoice initialize will come.
+Now here.
+If you see that I haven't put auto wired here, so means order would by default would be set object
+would by default value is null.
+So here order is null.
+But object creation is successful.
+Now.
+Now this object get initialized over here in this right.
+And with this one it's been constructed also completed now in the post construct.
+You know that post constructor comes into the picture after the dependency injected properly.
+So dependency injection happened on this right now post constructor will come.
+Now here what I am doing is hey, whatever the invoice instance you have, I have exposed one setter
+method here.
+Whatever the order will come, I will put it here, but here if you see I haven't put auto wired means
+I am not letting spring do it.
+I am doing it.
+The the the developer taking the responsibility.
+Application is taking the responsibility to put the dependency.
+So I am creating this invoice object dot set order.
+I am here setting the order.
+Which one?
+This object.
+So this will also get initialized.
+So this is one another hacky way of doing it.
+So why I say hacky because this is generally not recommended.
+All right.
+The first and foremost is using code refactoring.
+All other I considered as as a hack to make your code works because something you cannot change.
+Another issue is unsatisfied dependency.
+So consider the problem first.
+So here if you see that this is my user class, user class is dependent on order.
+Order is an interface which has two child classes.
+Online order.
+Offline order.
+Now.
+If you have put auto wired now, you are telling spring that hey, fill the dependency here.
+Now how would the spring know that?
+Whether I have to fill the dependency with online order object or offline order object?
+Which one?
+So when you start an application it will fail unsatisfied.
+Dependency injection error creating with the name user.
+It not able to construct the bean of a user because it don't know whether to put online or offline order
+object.
+So it has two solution one is using at the rate primary annotation.
+So in one of the online order and offline order in one of the, you can put at marked as one of the
+primary, you can put a primary annotation.
+Primary annotation tells a spring that give it a first priority.
+Use it like so.
+We are providing a like say some input to the spring that whenever you find a multiple like what to
+use because this is also an order, this is also an order.
+Now what to inject into here.
+Use the primary one so it will use the primary one equals to.
+Internally.
+Spring will do new online order.
+It will call this one online order initialize right.
+It will say that if you check its object ultimately it will get online object initialized.
+See I haven't put at the rate lazy here.
+I haven't put at the rate lazy here.
+That's why at the time of application startup this will also get initialized.
+This will also get initialized.
+All three get initialized.
+But when this dependency is injected which one it will get injected.
+This one online order this because this is marked as primary.
+Another is using at the rate qualifier annotation.
+So qualifier annotation means that provider name.
+So application will provide a name.
+So on this Online order.
+I have put at the rate qualifier and give some name online order name something I have given offline
+order.
+I have given one name.
+Offline order name.
+So I have given one qualifier to it.
+Now here in the user class during the order auto wired.
+Now I have used qualifiers.
+Okay.
+Here qualifiers I have give offline order.
+Use offline order if you want to change it.
+Put online order so that object will get created.
+So that also you can use it using the qualifiers annotation.
+Right.
+And application will start properly with this.
+So this is everything about dependency injection at all.
+If you have any doubt ping me in the comment section.
+We can discuss more.
+Thank you.
+Bye.

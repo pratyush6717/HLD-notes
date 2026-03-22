@@ -1,0 +1,493 @@
+Hey guys, and welcome back to the channel.
+And till now, in the fault tolerant microservices we have seen rate limiter bulkhead retry.
+And today we will see a circuit breaker.
+So let's start without wasting any time.
+What does Circuit Breaker says?
+This pattern prevents an application to make repeated calls to downstream service that is likely to
+fail.
+Okay, so we'll come to this line again.
+But see this diagram.
+So let's say our application is order service right.
+And we and this product is a downstream.
+So order is invoking product for.
+Now assume that this product service is unavailable.
+So no matter how many times you call this call will fail.
+Right.
+So product service is down no matter how many times whether you are doing retry of the same call or
+whether you are making a totally different call, it will fail.
+So there is some disadvantages for it.
+The first disadvantage is we put unnecessarily add load to the product service and because of that product
+service might take longer time to recover.
+So see product services already unavailable right.
+It is facing some issue and we are adding more load to it.
+So there is a chance that product service might take little longer time to, uh, come up in the healthy
+state.
+The second is order services unnecessarily wasting its resources, both latency and the thread blocking.
+So just see that if, let's say there are thousands and thousands of calls and product service is unavailable,
+they all will fail.
+So Order service is unnecessarily wasting its resource because there is a latency involved.
+It calls it.
+It waits for the product service to response till timeout, and then only it will send to the client
+that hey, it's a fail some five secs error something.
+Okay.
+So there is definitely increase in latency and you are unnecessarily blocking your thread on this call
+okay.
+So there is no need because even if you wait it, the call is likely going to fail because the product
+service is unavailable.
+But now what is the solution?
+How does Order Service know when to stop the downstream call?
+Like we are saying that hey order don't make unnecessarily call to product because it is unavailable,
+right?
+But how?
+Order knows that when it is unavailable, when it is up and when I have okay if it is unavailable,
+when again I have to restart.
+So something has to instruct this up.
+You can say that knowledge somebody has to put this knowledge to order right.
+Then only order would be able to stop or restart the call.
+So who at that knowledge that is circuit breaker.
+Okay.
+So again revisiting the line which we went ahead in the first place, it prevents an application to
+make repeated calls to downstream service that is likely to fail.
+So see this diagram now.
+So now order service let's say make initial calls.
+And both got failed.
+So now we will put some threshold value that hey if this many calls get failed means there is some issue
+with the product.
+So don't make any further calls to it.
+So now after that, once that threshold limit is reached, we will stop the future call to product.
+So now all future calls.
+There is no hit to the product.
+We will fail the call immediately.
+We will not block the thread.
+We will fail the call immediately.
+Okay?
+And we will wait for some time.
+After that we will check if product service is healthy or not so it will do a trial testing after some
+time.
+Hey, it will send some sample or you can say that the test calls hey is product service is responding
+properly or not.
+If yes then only it will allow future calls to the product.
+Okay, so whatever we have covered here it is can be understand.
+It can be understood through this state diagram.
+So start from here.
+This is the initial state.
+Okay.
+So for any application the best case is closed.
+Closed means that all calls are allowed to downstream service means everything is going good.
+Okay.
+Circuit is closed.
+Means just remember always sometime, many times engineers get confused that hey, circuit is closed.
+Means no calls.
+No.
+So see, consider this as a circuit.
+So when the circuit is closed, then only electricity will flow.
+When the circuit is open, then electricity current will break.
+Understand?
+It is just to remember this.
+So when the circuit is closed, all calls are allowed to downstream service.
+Now if failure limit cross the threshold.
+let's say five failure, six failure, whatever the threshold we will set if that many failures.
+So see, there could be some success, there could be some failure while making a call to downstream.
+But if the failure limit threshold value is crossed, then it moved from closed state to open state.
+Now, open state means no calls allowed to downstream service and fail the call immediately.
+So after this it wait for certain time, which is like you can say that timeout period.
+After that let say it could be ten second, five second, 15 second, that hey, for five second or
+ten second, no call is allowed.
+After that it moved to half open state.
+Half open state says that allow only limited number of test calls to downstream Stream and track their
+success rate.
+Say, I said that.
+Hey!
+Allowed only three calls.
+Allowed only five calls.
+So very limited number of calls.
+We will send it to the downstream and then track their success rate.
+If the success rate is 100% then circuit can be closed again.
+But if the success rate is not 100%.
+The state goes back to open.
+Okay, so whatever we have seen this can be easily represented through this state of circuit breaker.
+Okay.
+And let's see its implementation.
+It's very easy.
+So we have already seen that we don't need a individual dependency of circuit breaker.
+It's all come with the resilience forge itself.
+So we already have that dependency added as part of previous uh retry and all.
+So this pom.xml we need to add this resilience for dependency.
+This is the same no change.
+It's just a controller class to expose an API through which we can invoke this order service method.
+And this is the feign client.
+Like no change.
+It's like we are using Eureka server.
+So that's why I haven't provided any URL.
+Right.
+So that's already we have seen in the previous one.
+So there is no change here.
+Now in the order service we have a method right.
+It is invoking the order service method invoke product API.
+So this is actually where I am invoking the downstream product.
+So now at top of it I have put this circuit breaker.
+So I have given it a name.
+This is the name product service.
+And this is the fallback method.
+So this is the fallback method.
+Remember that this fallback method always get invoked for each failure attempt.
+Okay, so whenever you are not able to invoke this product service, this fallback method gets invoked.
+Okay.
+So this is one thing we have to add a circuit breaker annotation.
+And this is the configuration we have to add in application dot properties.
+So this is very important to understand this configuration uh properly that why we need this many.
+So the first thing is resilience for circuit breaker dot instance.
+This is the name we have given product service.
+Now see the first one is sliding window type and the second one is sliding window size.
+So both are associated.
+So here if you see that when you are choosing the count based as the window type and the size.
+What does it mean is it will track the n number of recent call.
+So here it will track the ten recent calls.
+And based on that it will find out whether there is any failure or not.
+So this is helpful when you are currently in a closed state.
+So when you are in a closed state and means all calls are allowed, and you have to identify whether
+a threshold has been crossed or not.
+Okay.
+So there should be some window on which some request comes which could be success, which could be failure,
+which could be success, which could be failure.
+Right.
+So this window size is this okay.
+So window size is this.
+And I am using count base.
+So count base means ten calls.
+So use the last ten calls okay.
+There.
+Another is time based.
+So it's not called then ten second in ten second.
+What?
+How?
+Whatever the call, it could be ten.
+20.
+100.
+Doesn't matter now.
+It's a time base.
+So it's a time base.
+What is the size?
+Ten second.
+So in ten second, whatever the call is there.
+Right.
+Some call could be success.
+Some call could be failure.
+Now, based on that, we will find out whether the threshold has been crossed or not.
+So first we have to determine the window.
+So this is helping us to determine our window.
+Okay.
+Never get confused it with like uh rate limiter sliding windows and.
+All right it is totally different.
+This is count based means when we are giving a ten so means ten calls.
+Last ten calls.
+We have to consider.
+And based on that we will find out a threshold value okay.
+So first two is clear.
+Then is minimum number of calls.
+So minimum number of calls.
+So see why we required is let's say uh we have only two calls let's say count based.
+And the window size you have given two say suppose or even if you are using time based ten second in
+the ten second you only got two calls.
+And your threshold is let's say 50% of the traffic is fail, then consider it as a failure.
+But here when there is only two calls and what does 50% means?
+Only one.
+Even if there is one failure.
+Now you will consider that hey, product service is down.
+Is it?
+Is it not a false positive, right?
+It's a false alarm.
+Only one request fails.
+It could be because of like, uh, if you retry, it might pass.
+Okay.
+So when the number is very low, then there is a chance that there is a false positive.
+Okay.
+So that's why minimum number of calls says that hey, when this number of calls reach, then only start
+evaluating the failure rate okay.
+So minimum at least this many calls should be present.
+Then only after that start evaluating the failure okay.
+Then another is failure rate threshold.
+This is percentage.
+So circuit moves to open state once the threshold limit reaches.
+So if 50% of the traffic is the failure in a window in this window, in this window, if 50% of the
+traffic failed then it moved from close to open state.
+Then another is wait duration in open state.
+So once the circuit moves to open state, how much time it has to wait, okay.
+Before it moved to half open.
+So ten second, it has to stay in the open state before it moves to half open state.
+Now, once the circuit moves to the half open state then it has to try some calls.
+Okay.
+How many.
+So I have told three calls.
+So permitted number of calls in half.
+Open state three.
+So means it will call three times.
+It will allow three calls to go to the downstream.
+And then it will evaluate the success rate okay.
+So these are all the configurations uh which is important.
+And we will see with an uh output also that would be little bit more clear.
+And also this is also important that by default circuit breaker record, all runtime exception and error
+as a failure if you don't specify anything.
+All runtime exception and error it will track, but if you want this control in your hand, you can
+use this two configuration.
+One is record exception.
+Another is ignore exception.
+So it's a comma separated value.
+You can give that what all the exception.
+You only have to track okay.
+And what all exceptions you have to ignore.
+So this way you can have more control over it.
+Otherwise if you don't give it it will take care of all the runtime exceptions and error.
+Okay, so this is the very minimal code you required for the circuit breaker to work okay.
+Only configurations.
+And this circuit breaker annotation.
+Now with this configuration just check this output okay.
+So we can also run it in the IntelliJ.
+But here we'll show you once.
+Then I will run in IntelliJ.
+So first time I hit.
+So this is the first call I made.
+What I did is order service is calling the product service and the product server.
+I haven't started it.
+So no matter how many times order will try to invoke product, it will always fail.
+So that's the use case I am going to test now with the above configurations.
+So let me zoom it a bit.
+So I made a first hit.
+I try to invoke this endpoint this endpoint.
+So this endpoint it will invoke this method invoke product API.
+Invoke product API will call get product by ID.
+But the product server itself I haven't started it, so definitely it will fail.
+Okay, so it tried first time.
+See it reached till it tried to hit it.
+Tried to find an instance of a product service, but since it is not a load balancer, not able to find
+the instance.
+So first call I made, it got failed and it print this fallback method System.out.println which I am
+printing.
+Now what is the how many is the failure count?
+One.
+What is the minimum count we have sent?
+Minimum call should be five.
+Till that don't even start counting the failure.
+The window size we have is ten.
+Threshold is 50.
+So 50 of a window size means five.
+Failure is the threshold.
+Once the five failure has been reached in a window, it will move to the open state.
+But till now, failure is only one.
+Then I make a second call.
+Second call is also failed.
+Failure count is now two, but minimum is five.
+Window is ten, threshold is five.
+Third call is also failed.
+Again no issues.
+It is still in closed state.
+It is actually hitting try to hit the downstream but failure count is three.
+Minimum call is five, window size is ten.
+Threshold is 50% of window size.
+That is five.
+Fourth call is again it.
+Try to go to the downstream fifth call.
+So now what if you see that fifth call is also failed.
+So here if you see not able to invoke the product service.
+So it also try to hit the downstream fifth.
+Now the failure count is five.
+Now here if you see the minimum call now it is matched.
+So now the minimum call is matched.
+Now it will see.
+Hey in this window minus count based right ten.
+So its threshold was 50%.
+So five failure.
+If there is a five failure then it would be considered as like a threshold cross.
+So my failure count is five and the threshold is five and the window size is ten.
+Okay.
+So in the last within last ten calls.
+So till till now the first five call itself got failed.
+So it's within a window and threshold is crossed.
+So see now it moved from close to open state.
+It change circuit breaker.
+Change the state.
+And here after ten second we have configured that right.
+What is the wait time in the open ten second we have configured that.
+So here if you see after ten second from 20 now after ten second 30 it automatically changed from open
+to half open.
+So how automatically after a specific time it automatically changed from open to half open.
+I will tell you later in this video itself.
+Okay.
+So here if you see like after exactly 10s whatever we have configured, the status changed from open
+to half open.
+Now after that I again.
+So in half open how many permitted calls we have given.
+Three.
+So now I made a first trial call okay.
+So this is the maximum trial call we have set is three.
+So first trial call is also failed.
+But it tried to invoke the load balancer.
+So means it is tried to invoke the downstream.
+The second call also it tried to invoke the downstream but that is also failed.
+The third trial also it got failed where it tried to invoke the downstream.
+But now our limit is reached the third.
+So from half open it will go back to open again because all three failed success rate is zero.
+Okay, so only in case of 100% success rate it moved back to closed.
+Close.
+Okay.
+So it goes from half open to open.
+Because success rate is not 100%.
+So here if you see the we all know that resilience for J uses AOP.
+We till now we have seen.
+So AOP intercept this at the rate circuit breaker uh annotation.
+And it passed to this class circuit breaker state machine dot Java.
+This is a framework which is available in resilience for J.
+So open this class.
+Check it out.
+So this is just one sample method in this class okay.
+So here if you see that depending upon which state you are at.
+So let's say currently I am at closed state okay.
+At closed state you are making one call to downstream and if any error comes so this method gets invoked.
+So for every error every exception it check does it exceed the threshold?
+Okay.
+If it exceeds the threshold, yes.
+And it is closed state.
+Move to open now.
+So if yes, threshold exceeded and it is enclosed then move to open.
+So for every failure it checks this kind of method right.
+And based on particular state it moves to another state.
+So open this class.
+Put a debugger point.
+You can check it out.
+And you will get to know that how it move from one state to another.
+But one question might be coming to you.
+Right?
+Okay.
+For every failure call, we are checking if state need to be changed or not.
+That makes sense, right?
+I make a call, got failed.
+I am tracking what is the threshold value.
+I do computation and if the threshold crossed I change the state from close to open, right?
+And even from half open if I am at half open.
+If the trial all trial, I make a call.
+And based on that, I will evaluate if at all 100% I will go back to closed or half open or open.
+But one open question is when my state is in currently open, then how?
+After a specific weight, let's say ten second, it automatically moves to half open state.
+How?
+How does it change from open to half open.
+Okay.
+So the answer is it uses scheduled thread pool executor.
+So if you see the circuit breaker state machine Java itself the same class there you will find an open
+state method.
+So method for open state.
+So in that you will see.
+Okay so schedule thread pool executor.
+It schedule a task means it will submit a task to a scheduler to this executor.
+And this is the task it submit.
+What is the task it is submitting to.
+Half open state means transition from open to half open.
+After what time?
+This is the delay.
+Wait duration.
+Let's say ten.
+It time unit is in milliseconds.
+Let's say after ten millisecond change from open to half open.
+So this is the task which need to be run after this much time.
+So schedule thread pool executor.
+With the usage of this schedule thread pool executor, we can change or we can perform certain tasks
+after a particular delay.
+And I have already explained the schedule thread pool executor in the Java playlist.
+You can check it out how to use it, but in interview a one level more deep information is useful because
+interviewer can ask okay with the usage of schedule thread pool executor I can perform this task, but
+how this internally works.
+How does schedule thread pool executor works?
+So schedule thread pool executor actually make use of delayed queue.
+So consider this as a queue where whenever we put schedule right.
+So here I am putting dot schedule schedule executor service dot schedule.
+So this task is now handed over to this queue Q which is known as delete.
+Q so the task with the minimum delay is always at the head.
+Minimum delay means the task which will get expired first.
+Like, uh, this task will run after one second.
+This task will run.
+Task two will get run after.
+Uh 10s.
+So you can say that the task which is going to run very next is always at the head.
+Okay.
+So which data structure we can use to implement this delete queue is priority queue.
+We can make use of priority queue and sort based on this minimum delay time.
+Whichever task has the very minimum delay time it should be at the head.
+Because this delay is going to expire early so that this task would be ready to get executed first.
+Okay, so one thing is delete queue.
+Q another thing is we have a worker thread.
+We have a worker thread.
+So whenever the schedule thread pool executor, we are creating an object of this one.
+We also tell how many worker thread we wanted which will work on this executor.
+Okay.
+So now what happens is let's say assume that in this delayed queue this is our task one which has,
+let's say ten second still time remaining before it delay gets expired and the task one is ready to
+get executed.
+Now let's say thread one.
+Look at the head.
+Hey, can I pick this task?
+Are you ready?
+Okay, so each worker thread will look at the head of the delayed queue if the task delay is not yet
+expired.
+So there is still ten second 10s left.
+Okay.
+It should not be executed now.
+Then what?
+This thread will do.
+This thread will go in a block state.
+Okay then thread will wait.
+Go into block state.
+For how much time?
+For the same amount of time.
+So it will check.
+Okay.
+This task will ready after 10s.
+So let me also block for 10s.
+It will go in a wait state for 10s.
+After the 10s the OS wake up the thread OS wake up the thread after this ten second after this.
+So this whatever the delay is remaining right for the same remaining delay time, this thread will go
+into the wait state, block state and OS will wake it up after that much time and after that much time,
+this thread will also be ready.
+This task is also ready to get executed.
+Okay, so this thread now will go and pick the task from the head and start executing it now.
+Other thread will start looking at the next task in the delete queue.
+There could be multiple tasks.
+Task two.
+Task three.
+Task four.
+So now other threads will start looking at the next task which is present into the queue.
+If that task is not yet ready, then thread will again get blocked.
+Okay, so it is possible that multiple threads which are available is looking at the head and all.
+Let's say thread one, thread two, thread three.
+All are looking at this head.
+Task one which has 10s to still delay time is present.
+So multiple thread look that hey, can I pick the task because all threads are available.
+They have to look at the queue to see if any task is present, so that they can pick it up.
+So now this task has still 10s delay time present.
+So what this thread will do.
+This thread can't do anything.
+Okay, so they all goes to wait.
+And I told you that.
+How much time?
+The same amount of time.
+The remaining delay time.
+They will all goes to wait or block state.
+Then OS will invoke it.
+And out of that only one will go and pick this task.
+So you can say that that is your, uh, lock.
+One of the tasks, one of the thread will use the lock and pick this task, and then remaining thread
+will now start looking at the next item present into the delete queue.
+If that task is still not ready, then again those thread will wait for the remaining delay time And
+it will be in the wait state till the task is ready.
+I hope if interviewer asked you about how there is a very similar question.
+Also, you can say that the WhatsApp message, the WhatsApp message get automatically deleted after
+24 hours.
+Let's say how how you will implement it.
+So nothing but this delete queue only.
+Okay, so there are many big companies like you can say that uh delayed queues frameworks are available,
+right?
+And we can easily implement this feature using delete queue.
+So this is very popular interview questions like how you will implement the disappearing message feature
+through delete queue.
+Easy.
+Okay guys.
+So if you have any doubt let me know in the comment section we can discuss further.
+Okay, bye.

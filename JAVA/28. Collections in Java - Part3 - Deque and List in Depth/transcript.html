@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>28. Collections in Java - Part3 - Deque and List in Depth</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>28. Collections in Java - Part3 - Deque and List in Depth</h1>
+    <pre>
+Hey guys, welcome to Concept and Coding.
+This is Shreyansh.
+And today in this video we are going to cover the Dccu and the list.
+Right.
+So we have already completed the priority queue and the queue.
+And today we will cover this GQ array Dccu and all this list and its implementations.
+Okay.
+So before we start guys, uh, please excuse my voice.
+I have a bad cough from last one week, so please bear with me.
+Okay, so let's start today's topic, which is dccu.
+Okay, so you know that we have already covered iterable collections queue and the priority queue.
+And also after priority queue we have also covered comparator versus comparable.
+Right.
+So now here if you see that there is one more interface right which extends the queue, which is known
+as DQ.
+So DQ stands for double ended queue.
+Okay, so we already know that what Q is queue is your first in first out generally.
+Right.
+We have this queue people standing in a line and those whoever comes first it will go out first right.
+So double ended queue is double ended.
+Queue means addition and removal can be done from the both side of the queue.
+So in the normal queue what generally the concept would be is whenever the add will happen, add will
+happen at the last okay.
+And whenever the removal will happen, removal will happen from the front.
+But here in this case double ended queue.
+You can add an item in the start or you can add an item in the back itself.
+Also removal.
+You can remove an item from the start.
+You can remove an item from the back so both sides.
+That's why it is known as double ended queue.
+Okay.
+So let's see this.
+What are the methods which are available in double ended queue interface.
+So methods available in collections.
+So what are the methods which are available is methods which are available in collection queue interface.
+So here if you see that methods which are available in collection queue interface plus dequeue has some
+new methods added.
+So plus methods available in the queue interface.
+So you know that a queue has this method add offer poll remove peek element.
+We have already seen that.
+So that is still available in the dequeue.
+So dequeue has some more methods added.
+So let's see that.
+So one is for insert operation.
+What new method has been added is At first.
+So let's say this is a queue.
+One.
+2345.
+Let's say it has five elements.
+So one operation new method which added in the dequeue is add first.
+So means whatever the elements we wanted to add it will add at the start of the queue.
+Let's say I want to add zero.
+So it will start at the start of the queue.
+Okay.
+So at first will throw exception if the insertion operation fails.
+So it throws an exception.
+There is another method called offer first.
+So this is also the same as at first it will add an element at the start of the queue, but only difference
+is that it will return true false.
+If there is any exception, it does not throw exception.
+It returns true and false.
+Similarly, for insert, we know that double ended queue we can add in.
+Start using these two methods, and we can add it in the back with these two methods at last.
+So you can add an element at the last.
+Let's say I want to add six and it will throw exception if the addition fails.
+And there is one more variant of his offer last, it will also add an element at the last, but it will
+throw true false if the insertion fails.
+Okay, so in the insertion operation, if you see these four new methods are added into the dequeue
+interface.
+Similarly, remove remove also introduced four new methods.
+That is remove.
+First, it will remove an element from the start and if the removal fails, it will throw an exception.
+Let's say if your queue is empty and you try to remove the first element, it will throw an exception.
+The.
+Another variant is poll first, so poll will also remove the element, but if the queue is empty, instead
+of throwing an exception, it will return null.
+It won't throw an exception.
+Similarly, we have removed last and pull last.
+Remove last will throw an exception.
+Poll last will not throw an exception.
+It will return null, and these two methods will help in removing the element from the last.
+Then one more thing is examine.
+Right.
+So get first.
+So this will not.
+So this examine operation will not remove anything.
+It will just return the element get first.
+It will return from the front peak first it will return from the first same.
+But it will not throw an exception.
+If queue is empty it will return null.
+Get first will throw an exception.
+Similarly, for the last get last is the method which will return the last element and if the queue
+is empty, let's say it will throw an exception Peak last is something which will return the same last
+element, but return null if q is, the queue is empty.
+Okay, so here if you see that this 12 methods are newly added into the interface and all the methods
+which are already there in the queue, which is still present.
+Okay.
+So now you can ask, hey, like what happened to the add method because so queue was an interface.
+Dequeue is also an interface if anybody implements it.
+So it will have all this method plus this new methods.
+So what would be the behavior of this old method.
+So add.
+So add will insert in the add first or at last what it would be offer.
+Offer would insert into like offer first or offer last.
+Right.
+So here similarly I'll tell you that what happened in this case is Add.
+Add internally calls.
+Add last offer internally calls.
+Offer last poll internally calls poll first remove internally calls.
+Remove first peak.
+Peak.
+First element.
+So it's a normal behavior if you use the add offer poll the parent one right.
+So it would exhibit the same queue behavior.
+Like if you are inserting anything it will insert at last add an offer will insert at last and any removal
+will remove from the first okay.
+So until and unless if you if you are using this methods, it will work generally as a normal queue.
+But if you want to specifically want to add at a last add at a remove from the last, you can use specific
+methods.
+So now, one thing you should note is that using this method, we can even use DQ to implement the stack.
+Also we are.
+We can implement Q for sure, right?
+We can use this methods and implement the Q at first, uh, at last we can implement the Q plus.
+We can also implement the stack using DQ also.
+So what does stack means.
+Generally stack is element one.
+Then it comes on top of it three four.
+Like this.
+And when the removal happen removal happen from the top last in first out.
+So now in the DQ what we can do is let's say we keep on adding element here.
+Let's say I will always do add first and remove first.
+Let's say so I added let's say uh one.
+So this queue is empty first.
+So I added one.
+Then again I want to add so I can do add.
+First it will add two, then three, then four, then five.
+Like like this 1234.
+Then when the removal I can also do from remove first.
+So it will remove the top one five, then four, then three, then two, then one.
+So I can implement it.
+DQ is as a stack also based upon the methods you can.
+You can use this method and implement it like this.
+So in the DQ actually you have two more methods which is push and pop.
+So push internally calls add first pop internally calls remove first.
+So you can use this method internally.
+It calls this method only at first.
+Remove first and you can get the behavior of a stack.
+Okay.
+So this is the DQ interface.
+Which methods which are exposed in the interface and why it is different from Q.
+Right.
+So one of the implementation of DQ interfaces.
+Array DQ.
+So now let's see the array DQ.
+So array dequeue.
+It's a concrete class right.
+It implements the it implements the DQ right.
+So so it implements the methods which are available in Q and DQ interface.
+So all the methods which we have q and DQ.
+So since these are only the interface only the concrete class can implement this.
+So array DQ has provided the implementation for all.
+Let's see an example of this one.
+So here if you see that I am creating an array DQ okay so I have created an array So it's of integer
+type.
+Okay.
+So now I'm what I'm trying to do is I'm trying to do insertion.
+So I am doing array dequeue.
+So I'm trying to use it as a queue.
+So first I'm trying to use it as a queue.
+So while using it as a queue I can add last.
+So currently queue is empty.
+And last is this only one.
+Then add last five.
+Then it will add last five.
+Then add last ten.
+Okay so this is inserted first, then five, then ten.
+And then while I'm removing it I'm removing from the first.
+So it will remove one first then five then ten.
+So it is used as a queue.
+Similarly I am using it as a stack.
+So I created an array of integer you can create of a string or any other object I created as an integer.
+For example, new array dk and I'm adding at one 510 at first, at first at first, so first one, then
+at first five, then at first ten.
+So it is adding at first and while deletion from the array dk as a stack, I am removing the first.
+So the element which was added at last.
+Later it is removed first.
+So you got it right.
+The same DK can be used as a queue, can use it as a stack and array.
+DK is has all the methods which we have discussed.
+It just provide an implementation.
+Okay.
+So here let's talk about the time complexity here.
+So what is the insertion time complexity of array DK so now you have an array DK.
+If you want to insert an element.
+So insertion can be done at first or insertion can be done at last.
+Okay.
+So if you want to insert an element at first it would be big O of one.
+If you want to insert an element at last it would be again big O of one.
+So when we say that hey amortized.
+Amortized means most of the time.
+Or you can say that the average complexity is O of one, except few cases.
+So when we can say that when the time complexity of insertion is greater than big O of one.
+Now let's say you have a queue and its size is full already, and now you are trying to insert at first
+or last.
+Doesn't matter.
+You are trying to insert any element.
+Let's say I'm trying to insert at last, but this queue is almost full.
+Now internally resize happens now internally what happens is resize resize happen.
+And when resize happen, what it will do is it will create a new queue of double the size.
+Copy the elements here.
+Right and point to this new queue.
+So in some use cases when the like, one of the use case is when the queue is full, it creates a new
+queue copy the element.
+In that case, insertion time complexity is big O of n.
+That's why we say for array dequeue amortized or most of the time.
+Or you can say that the average insertion time complexity is O of one.
+Because this scenario doesn't happen most of the time it will like okay, you have done 1000 insertion.
+After that you might have to do this thing.
+Okay.
+So here if you see that Uh, let's see the array.
+This interface.
+The initial capacity is set as eight.
+Okay.
+And when it grows, let's say this capacity is, uh, full.
+What it will do is it will double the capacity.
+So it has the logic.
+So in every add element.
+So there would be an add add method or any add method, it will first check hey if it is full then it
+will double the capacity.
+So here if you double the capacity, if you see that first it will copy the elements into the new element
+with the greater capacity and then copy the data from the old queue from the new queue only in that
+cases your time complexity is of insertion is big O of N, but on an average most of the time it.
+That's why it is known as amortized complexity is big O of one Deletion is big O of one here.
+Either we delete from the first or last.
+So time complexity is big O of one.
+Only searching is here.
+You can say that big O of one generally.
+So searching here in the sense is the peaking examine operation.
+Either we do get examine get first peek first get last peek last.
+So that is big O of one itself okay.
+And the space complexity is big O of N if you have n elements.
+So you require this much space.
+So this is the time complexity is of your array dequeue okay.
+Now understand one thing like okay we have uh seen the priority queue and the array dequeue okay.
+So now let's see the difference once.
+So array queue is is it thread safe.
+No.
+Array queue is also not thread safe.
+Array dequeue is also not thread safe.
+I'll tell you how we can implement.
+It's a thread safe.
+When I tell thread safe, what does it mean is let's say you have one queue.
+Let's say this is your queue and multiple threads are trying to access it.
+Thread one, thread two, multiple threads are trying to update it.
+Then your queue would might be an inconsistent state.
+Somebody is inserting, somebody is removing, somebody is adding.
+Your queue will be like you can say that inconsistent state.
+So it is not thread safe.
+If you are using any queue in a multi-threaded environment, you should avoid using priority queue array
+dequeue.
+If multiple threads can access the same queue because they are not thread safe.
+Okay, how we can implement the thread safe?
+I will tell you.
+The second part is maintains the insertion order priority queue.
+Does it maintain the insertion order?
+No, because I told you it is based on heap data structure.
+So in heap data structure, either it will have a min heap or max heap.
+So even if you are inserting like two five, if you are implementing max heap.
+So it will be like five two internally it saw it do sorting so it doesn't maintain the insertion order.
+But your array dequeue maintains the insertion order.
+So the way you insert in the queue it will go as it is like this 1234 it maintain the insertion order.
+Okay.
+Priority queue null elements allowed.
+No, you cannot insert null elements inside a priority queue.
+And similarly in the array dequeue you cannot insert null element.
+You can't do uh dot add and put null.
+No that is not allowed.
+Duplicate elements allowed.
+Yes.
+You can add duplicate element in the array.
+Dequeue.
+Yes you can add duplicate elements.
+What is the Threadsafe version of this now priority queue.
+So for the priority queue, the Threadsafe version is priority blocking queue.
+Priority blocking queue.
+So let's say if your queue is being used by multiple threads then you should start using priority blocking
+queue.
+So I'm creating a priority blocking queue here.
+And the same as adding an element.
+And I'm doing a peek.
+So here priority queue.
+If I don't assign anything what it would be.
+Can you answer in the comment section what it would be.
+It would be Minheap.
+And for Maxheap you have to provide a compare here, the comparator or comparable like so you have to
+provide certain comparator for it.
+Similarly for array dequeue it's Threadsafe version is current concurrent linked dequeue.
+So you can use concurrent linked dequeue Right.
+And you can add add first, add last, do whatever the same methods which we have seen into the array
+DK right.
+These all methods, the same methods which we can use, but you can use that.
+It's a it's a threadsafe version of array DK.
+So here we'll see you concurrent linked DK so here I'll show you the concurrent linked DK.
+So it will say that.
+Concurrent insertion removal access operation execute safely across multiple threads.
+Right.
+So it implements DK only.
+So it's a version.
+You can say that uh the thread safe version of array DK.
+You can use it if it your, your queue is being shared by multiple threads okay.
+So array DK is clear right.
+So now let's move to the list.
+So now till now we have covered iterable collections queue priority queue dequeue, array dequeue and
+their concurrent version also.
+Now let's come on another topic which is your list.
+Okay.
+Now let's say what is list.
+When we say that list list you will always say that okay.
+It is an ordered collection of objects in which duplicate values can be stored.
+Then you can ask hey, collection of object is also there into the queue here in the queue also we can
+have collections of objects.
+Then how it is different from the list, right?
+How list is different from the queue because in the queue also we can store the duplicate values.
+So how it is different from the queue?
+Let me tell you.
+How does it different from the Q?
+Q is also a collection of object, but in Q insertion removal access can only happen either at the start
+or end of the q, right.
+So if it is a Q you can add an item at the start.
+You can add an item at the last, you can remove an item from the start, or you can remove an item
+from the last.
+But in the list data can be inserted, removed or accessed from anywhere.
+Anywhere, right?
+So it is based on index 012345.
+Let's say you want to insert at index three.
+So it will insert an item here.
+Also you want to remove an index five.
+It will remove this index.
+So data can be inserted, removed or accessed from anywhere because this is based on a data structure
+And so in data structures.
+Uh, so this is a Java.
+So this is a collection list is a collection.
+But internally what data structure is used is an array.
+So in array you know that it has an index.
+And you can access any element through the index.
+Okay.
+So list uses that array data structure internally and which help us to achieve insertion removal access
+from anywhere.
+So in list user can decide whether to insert or access using index starting from zero.
+So index is starting from 00123456.
+Like this.
+Okay.
+So now let's see the interface of list what all the methods are present inside a list.
+So what.
+All the methods will present all the methods which are present in collection, plus certain new methods
+which are provided by the list.
+Let's see that.
+So methods which is available in collection interface.
+This one, so I have already covered the collection, so I just copy paste it here so that you will
+recall.
+Okay.
+These are the methods which are available in collection.
+So methods available in the collection interface plus new methods defined in the list interface.
+Okay.
+So these were the methods which we have already seen.
+These are the part of the collection interface.
+So this plus new method.
+So these are the new methods in the list interface now.
+So let's see that one collection one you already know that add remove.
+So this is already we have seen an example while we see the collections.
+Right.
+So what are the new methods which are available in the list interface.
+So there are around let's see that the first method is add.
+So in the add if you see that index and element what does it see insert then.
+So let's say this is your array list
+0123456.
+This is your list.
+You want to insert ad at index.
+Let's say for element is your nothing but an object.
+Let's say you want to store an object 100.
+So at fourth index it will add 100.
+So insert the element at the specific position in the list.
+If there is an element present at that position it shifted to the right.
+What does it mean.
+Let's say if this your element is already full.
+This is your element.
+Your list is already full.
+And if you see that hey, add four index four.
+And the element I want to insert is let's say uh -100 now.
+So at index four there is already an element present.
+So what it will do is it will.
+Do like this.
+01234567.
+So.
+Right.
+So at forth it will put the element which you wanted to insert -100 at index four.
+Here I have 123.
+Certain certain value let's say 800.
+Right now at four index I have put -100.
+So now what it will do.
+If there is any element present at that position it will shift to the right.
+So it will shift to the right.
+So 100 will go here 900 will go at this index certain 200 will go at this index.
+So it will put an element on that particular index.
+And whatever the element which are present at this and any subsequent elements, it will move to the
+right.
+Move to the right okay.
+Similarly add all at this index.
+Add another collection.
+So in I have told you in the collection part, right?
+Add all.
+It will just add a collection at the last.
+But here in the list add all is at this index at the all collection.
+So let's say you have collection one let's say list 11234.
+You have list two.
+567801230123.
+Now you are saying that hey, I want to add list to at least one at index two.
+So what I'm doing is add all index two.
+Add this collection list two.
+So what it will do is in the list one.
+It will add one two.
+At index two it will add this elements now 5678.
+So this is your from index to 012.
+From this index, it will insert this collection values and all the subsequent values of this collection,
+and on this index it will be shifted to right.
+So after this eight it would be three and seven okay.
+Replace all.
+So I'll tell you with an example how replace all works.
+Sort sorting.
+So sort will happen like you know already comparator I have already explained in the depth.
+You can sort the list get particular index.
+So it will return the element which is present at that particular index set.
+So what does set this.
+So now you need to understand the difference between add and set.
+When you add an element at an index particular index.
+And if any value is present at that position it shifts to the right okay.
+So hundred was there and at the same position you put -100, so it will put -100, but it shift 100
+to the right.
+But in the set it won't shift it replace.
+So it will change 100 to -100.
+Okay.
+So that is the difference between set and add.
+So we will see that example.
+Also remove it will remove an element from the particular index.
+But it will also shift the subsequent element to the left.
+So if you remove this so there is like one space empty.
+So it will shift the element to the left index of particular object.
+So returns the index of the first occurrence of the specified element in the list.
+As you know, that list can store duplicate items.
+And if you are trying to look for a particular object let's say five, right?
+Then it will find the first occurrence.
+And if it doesn't find that element, it will return minus one.
+Similarly, we have one method last index of.
+So it will the last occurrence of that element.
+So this is the first occurrence.
+Last occurrence.
+Then we have a iterator.
+So here if you remember in the collection we have something called iterator.
+Yeah.
+You remember like here in the iterator there is something called iterator which helps us to iterate.
+Similarly here one more method is exposed in the list is list iterator.
+Okay.
+So in the list iterator.
+So in the iterator it was having this Hasnext next removed.
+So there's list iterator returns an object of list iterator okay.
+So this list iterator method list iterator method which is present into the list interface.
+Returns the object of this list iterator.
+So this list iterator is a child of iterator only.
+So you remember.
+If you can recall the iterator has.
+This method has.
+Next next remove.
+Okay.
+And now list iterator.
+So this is your iterator.
+This is your list iterator.
+So it has this method okay.
+So now list iterator will also have this method has next next plus it is also added new method is like
+has previous previous next index previous index set and add.
+So I'll tell you the crux of this one is so what it helps us is whatever the list you have with the
+iterator methods has next.
+Next it helps you to iterate in forward direction, but list iterator.
+This list iterator expose certain method which help you to iterate in backward direction of the list.
+So it has method like has previous similar to hasnext.
+So like your pointer is here.
+Has previous.
+Does it has any element.
+Yes.
+Then previous it goes to previous section right.
+So it goes like this.
+You can iterate in the opposite direction backward direction.
+So with an example I will explain you how this iterator works right by the examples I will show you.
+But first understand that there is a method in the list interface, which is list iterator method which
+returns an object of list iterator class.
+And this class is nothing but a child of a iterator, which has the method of the iterator which has
+which helps on moving forward direction.
+It also introduced certain methods, which helps us to iterate in the backward direction with an example
+we will see after this when I show you an example.
+List iterator with an index I will tell you the example like what is the use of this one?
+And there is something called sub list.
+So from index to two index from index it is inclusive two index.
+It is exclusive.
+So let's say this is your list.
+01234I have given from indexes let's say uh one two indexes.
+Let's say four.
+So 1 to 4.
+So this four uh from index is inclusive.
+So elements from this and this is exclusive.
+This is not so only this index.
+So fourth index is exclusive.
+So only this element you will get one sub list.
+Two, three and four.
+So this is a sub list.
+You can work on it and remember that whenever you work on it, let's say if you are adding an element
+after this one.
+So ultimately in the main list also this element gets added.
+So if you remove an element from here in the main list also it will get removed.
+So it's just a sub list.
+But any change in sub list will change in the main list also and vice versa.
+Okay, we will see all this methods with an example.
+It will clarify you more.
+So now let's say we have seen what all the methods which are available in list.
+Now we need to see the examples of all this method.
+So I am using with the ArrayList.
+So this is just an interface.
+Somebody has to implement it those methods right.
+So ArrayList is an concrete class which implement the methods of this.
+So I'm showing you the now example of ArrayList and each method working.
+Okay.
+Now let's see this.
+So here.
+In what data structure is based on array.
+I am creating a simple main method.
+I am creating a list one.
+Okay, so in the list one what I am adding is I'm using this method.
+First add index element.
+So now let's say list there would be some initial capacity.
+Let's say 012345678.
+Whenever you create an ArrayList there would be some initial capacity.
+Uh would be.
+So now you are adding an element at index zero element 100.
+so index zero.
+I'm adding 100 index one.
+Adding 200 index three.
+Adding 300 and index two.
+Adding 300.
+Okay.
+This method is clear.
+It should be working like this.
+That at particular index that element is added.
+Now what I am doing is I am creating add all particular index collection.
+See.
+So I'm creating a list too.
+So this was list one.
+Now I am creating a list two.
+012012.
+400 500 600.
+So it has 400 500 600.
+Now what I am doing is I am doing add all list one.
+Add all at what index two.
+So at this index.
+I am adding the list to, so this list will be changed to your list.
+One would be changed to 100.
+012345.
+So zero.
+So at index two I want to insert right.
+So at index two this list two would be added.
+Now 400 500 600.
+And this element would be shifted to right total.
+Right.
+So it would be 300 okay.
+Now let's print this list one.
+Now I'm just printing this list one dot for each.
+I'm just printing this.
+So it should print like this 100 200 100 200 then 400 500 600 and last 300 okay.
+So these two methods clear right now.
+See another method replace all unary operator.
+So here if you see that in the array list I will show you that.
+In the array list there is a method called replace all replace all.
+It has unary operator.
+So this unary operator, if you see that it's a functional interface it's a functional interface.
+So means what we can do at here is what I'm doing here.
+Just see that.
+This list list one dot replace all.
+Now replace all takes what it takes you a functional interface.
+So this functional interface I can use the lambda expression.
+You already know how to use a lambda expression right.
+You already know how to use the lambda expression.
+So for this one, replace all.
+Now I'm passing a lambda expression that.
+For each value of the list.
+For each value of the list 100 200, 400.
+Right.
+What you should do is so here, if you see that replace all, what it will do is it will iterate over
+for loop.
+It will iterate over for loop.
+So means whatever the list you are passing, it will iterate item by item 100, 200, 400, 500, 600,
+300.
+And it will pass to the method of this functional interface.
+So what is the method dot apply.
+So this is the functional interface method.
+It will pass and its implementation.
+We can give it here what it should do okay.
+So here what I have done is for each elements of the list what function I wanted is for each value multiply
+it with minus one.
+Multiply it with minus one.
+So here.
+This replace all internally will iterate over each items of a list and multiply it with minus one.
+So this list one you are changed to like -100, -200, -400, -500, -600, -300.
+And I'm just printing out here.
+After replace all it, just print the negative of the above list.
+If you don't know the functional lambda expression you might face a like how it worked.
+So please check out the functional interface Lambda expression video.
+So here if you see that replace all.
+Generally we did nothing replace all method.
+Iterate internally.
+Iterate over this list and pass calls the method of the functional interface.
+Then we can provide the implementation using Lambda okay replace all.
+Similarly, the sorting is already should be clear to you that when we are calling this method list
+dot sort.
+Sort method is there.
+You can pass the comparator.
+So I am passing the comparator value one value two.
+Value one.
+Value two.
+So can you tell in the comment which sorting I am doing?
+Value one.
+Value two.
+It would be the increasing order sorting right?
+So now I am just printing it again after sorting.
+So if you see that after sorting in increasing order, so it will sort it to the increasing order -600,
+-500 and all.
+Okay.
+So sort method is also very straightforward.
+You can use a comparator.
+We have already discussed.
+That's why we discussed the comparator first so that we know that how the comparator comparator works
+generally.
+Similarly there is one more method get right.
+So you can use the list dot get.
+Let's say you want to see the element which is present at index two.
+Index two.
+What element is present 012 -400.
+So it will return -400.
+Then I'm using set.
+I told you the difference between add and set is set will replace it.
+So at index two I'm calling list one dot set.
+At index two set it to minus four 4000.
+So index two it was 400.
+400.
+It will change it to -4000.
+I'm just printing out each element.
+So here if you see that it changed to 4000.
+Now 400 to 4000.
+This 400 is not move shifted to right.
+It's replaced.
+Okay.
+So you can see that one here.
+Now we can see that is uh, this we have printed now remove.
+So I'm removing an element from the index two.
+So index two was present 4000.
+I am removing it.
+And what will happen is it will move the element left shift.
+Okay.
+So in the left shift.
+So I've removed the element which is present at index two.
+Remove list one dot.
+Remove index two.
+Now I am printing each element.
+So after removing if you see that this element has been removed and 300 200.
+This move to the left shifted left.
+Okay then index off.
+So here index of -200 integer object is.
+So I'm checking list one dot index of -200.
+So in this list where does uh -200 lies in.
+So it's 0123 index three Okay.
+So the first occurrence index of returns, the first occurrence if there are multiple 200 and you want
+the last occurrence.
+So you can use the last occurrence, last uh last occurrence of.
+Right.
+So there was last index of last index of.
+Okay.
+Now let's see the iterator.
+This is very important right.
+So now I am calling list one dot list iterator okay.
+So here let me first tell you the forward direction.
+Then I will tell you how to move the reverse direction.
+So list one dot list iterator.
+So list iterator is generally considered that this is your list currently.
+Uh what's your list currently is uh here -600, -500 300 200.
+So -600.
+-500.
+-300, -200, and -100.
+So this is your current present list.
+And I am first traversing forward direction.
+So list one dot list iterator.
+So it will return the method or object of list iterator.
+Now you know that this list iterator has is a child of iterator class.
+So it also has.
+This method has next next remove right.
+So here during the forward I can use this list iterator.
+So your head would be here currently has next.
+Yes it has certain value.
+So I did dot next.
+So it will return 600 and put the pointer to here return 600.
+Right.
+And now I am doing traversing forward.
+The value was -600.
+So forward here.
+Where is the forward.
+So it returns the forward okay.
+Next index.
+So here if you see that list iterator has one more method called next index.
+So it will tell that index of the next element.
+So 01234.
+What is the index of the next element is one.
+So it will return next index is one previous index.
+So there is one more method which has previous index.
+Previous index.
+What is the element index of the previous element.
+So your current cursor is here.
+So previous index is zero so it will return zero okay.
+So uh similarly I will just forget this method.
+I will tell you why I have added it.
+But just understand iterator.
+Just recall it.
+It's like how usual we used to do it into the iterator I will do next.
+Yes it has value.
+It will do dot next.
+So it will cursor will move to here.
+It will return 500.
+So value is now 500.
+Next index is your two.
+Previous index is your one.
+So 500 next index is two.
+Previous index is one.
+Similarly I will do hash next.
+Yes it has I will do dot next.
+So it will return the this -300.
+And it will move the cursor to the next one.
+So your next index is three.
+Previous index is two.
+And the value it returned was 300.
+Okay now it will say that hey again has next yes value.
+It has.
+So what it will do dot next.
+So it will return 200.
+Now your value is -200.
+Sorry -200.
+And the cursor will come over here.
+Now what is your next index.
+Next index is Four minus four and your previous.
+So let's say this value is -200.
+Your cursor is here.
+Your next index is four.
+Previous is your three.
+Okay.
+Now one thing I did I have put one check if value equals to -200.
+Yes.
+Now value is -200.
+What I am doing is I am adding using this one.
+In the list iterator there is one more method add object.
+So what it will do is it will insert the element immediately before the element that would be returned
+by the next and after the element that would be returned by the previous.
+Okay.
+So what does it mean is.
+So your cursor is currently at present here its next element would be this index -100 and previous would
+be this three right current value.
+It return is this.
+Next is four.
+Previous is three.
+So when I'm doing add so where it would add this element.
+So what it will do is it will add element like this.
+So here.
+01234567 -600 -500 -300 -200.
+Your cursor is at this point currently okay.
+Your next is 100 -100.
+So what it will do is this add -100.
+What it will do is it will put it over here.
+Just just between this what it says that insert the specified element immediately before the element
+that would be returned by the x.
+So what would be the element that would be returned by this only it will return next this.
+So before that.
+So it will add the element before that and after the previous one.
+So after 200.
+So if I do dot previous if I call this method dot previous.
+So what it will return this cursor.
+So this cursor previous is this.
+Next is this.
+And when I am doing add it will add it.
+Just between this it will create one more space between it and add it.
+Okay.
+So here one thing you should notice that now when the next item I will do.
+Okay.
+So here let's say that it okay.
+It was -50 right.
+So here okay.
+In the backward direction I have said -50 okay.
+So let's assume that this is the current list.
+So because we thought that we will do the backward after after uh this one.
+So let's say this is the list -600.
+-500.
+-300
+-200 and -50.
+Because I, I have reached to the first forward direction, we have skipped this two methods where we
+are setting the 50.
+Okay, so but wanted to tell you the first forward direction.
+So this is the current list okay.
+And currently our cursor was here.
+Let's see cursor was here where this is the next.
+This is the previous.
+And when I am doing while iterating when I am doing, add during the iterator.
+Okay, so where it will add, it will add like this 200.
+What I am adding -100 value.
+So -100 -50.
+So it will add before the next element that would be returned and after the previous.
+So between this it will add okay.
+So that's how it will add it in this one.
+Now see this part.
+Now let's say I am going iterator dot has next.
+Yes.
+So it will do next element.
+So what it will return next.
+Because now I have added -100.
+So will it return this.
+No the next element would be -50 only.
+So the next is not impacted.
+So that's why the definition of this says that it Insert the specific element immediately before the
+element that would be returned by the next.
+Before that, and after the element that would be returned by the previous subsequent calls to Net would
+not affect it.
+So just consider this like that.
+So this is your cursor right.
+So it would add it somewhere here.
+-100.
+So your cursor is still whenever you do next it will return -50.
+Only it will not just do -100.
+But if you do previous now previous is now your -100.
+If I do previous now it will return -100, not 200.
+I hope that's clear.
+Okay.
+So this is the very basic forward direction.
+Move with that.
+Now let me tell you how to traverse the backward direction.
+Okay.
+So you should be now clear that the cursor part of it And the backward direction is very, very similar.
+It's the same part, but the previous method like here we have has next next there we have has previous
+previous.
+So before backward direction.
+What was the list.
+Uh traversing backward.
+This was the list okay.
+-600 -500 321.
+So here -600 -500 -300 -200 -100.
+This is the list.
+So now I want to traverse this list backward.
+So now what I have done first.
+So here if you see that list one dot list iterator.
+If I don't pass anything in the constructor where the head would be at start.
+If I want to start the from the backward direction, I want to move this cursor to the back and how
+can I move it to the back internally?
+Give it the size.
+index where you want to start.
+So if you give the total size, the index would be at end.
+Okay.
+But if you want to start from a particular index you can put a particular index also 321 like from where
+you want to start.
+If you want to start from the end, give the size of the list so it will.
+Your cursor would now be at end.
+Okay, so now let's say that my cursor I have put it to the end.
+Now I am doing has previous.
+Yes there is an element has previous dot previous.
+So it would return the previous element which is -100.
+Okay.
+So your previous element is I did dot previous right.
+So now your cursor move to here your cursor move to here.
+So this is your now next.
+This is your now previous.
+So hundred.
+Next index is 401234 and previous is now three.
+Okay, so currently I am doing okay if previous element is equals to equals to -100.
+Yes.
+Previous element or the value I have written was -100.
+What I am doing is I am doing list iterator dot set -50.
+So what does set does?
+Here in the list iterator, replace the last element returned by next or previous with the specified
+element return.
+Replace the last element return.
+What is the last element returned here?
+-100.
+Right, so it will set it to -50.
+Okay, now I am again iterating has previous.
+Yes it has.
+So it will do list iterator dot previous.
+So it will return the element -200 and put the cursor to here.
+Okay.
+So it will return the element -200.
+Your next index is three.
+Previous is two.
+Like this.
+It will go like this.
+It will go.
+And after that I am just printing the list.
+So now what would be the list would be -600, -500, -300, -200.
+And here if you see that -50.
+Okay.
+So I think this method should be clear like of the list iterator methods which are available has previous.
+So this has previous previous is used to helps to iterate into the backward direction.
+If you want to move to the forward direction you can use the iterator methods, which are also present
+into the list iterator.
+Set and add is used if you want to insert an element in the mid right.
+Cool.
+Now let's see.
+Understand the time complexity of the array list.
+So big O of one when inserting the element at the end of an array.
+Okay, so if you want to insert an element.
+So this is just an array right.
+123 you will say that hey add an element at index 0123.
+So three is empty.
+You can simply add it in a big O of one.
+But when the big O of N will come, when the inserting the element at a particular index of an array
+then requires shifting of the value.
+So now let's say you have this array.
+Index 12345 and you want to insert at index three, you want to insert a particular element.
+So you when you add it let's say you add seven here.
+So you do right shifting of all the other element.
+Then it would be big O of n.
+Similarly there is a use case when you have to resize.
+If that is full and you want to insert an element at the end, you can't do it.
+You have to create a new array of bigger size.
+Then copy that 123456 and then add it.
+So again it's a big O of N.
+Okay.
+How much time deletion takes big O of n?
+If you delete any element, you have to do left shift of the remaining subsequent elements.
+That's why it is big O of N.
+How much searching time?
+Big O of one.
+You can do a particular index directly.
+Go to that part.
+But if you have to traverse and find out an element that's big O of N, but if you know the index,
+it can fetch the value in big O of one.
+If space complexity is big O of N, right?
+The same.
+Similarly, like an array.
+So is ArrayList.
+Is thread safe?
+No, this is also not thread safe.
+Can array maintain insertion order?
+Yes.
+The way you insert it, you can also get an item into the same order also.
+It's possible.
+Can null elements allowed into ArrayList?
+Yes, you can add null values.
+Duplicate elements allowed.
+Yes, you can add a duplicate values also.
+But what is the thread?
+Thread safe version.
+The thread safe version of array is copy on write ArrayList.
+Copy on write ArrayList.
+Exactly the same method.
+What we have read into the array, but the name is copy on array.
+This one copy on here.
+If you see that copy on array.
+A thread safe variant of ArrayList in which all mutable Mutative operations at set are implemented by
+making a fresh copy of the underlying array.
+So if multiple threads are working on it, it takes care of it.
+So this is the thread safe version of the array list copy on write array list.
+Okay so this part is also we have completed array list.
+Now let's see linked list.
+So from the diagram it is very clear that linked list implements list and dequeue.
+Can you tell me what two functionalities are linked list will have.
+So since it has implemented the dequeue interface then means it has the capability to add first and
+last, remove first, remove last methods, and it is also a child of a list.
+Interface means it will also do like add.
+Provide me the index.
+There I will add an element remove provide me the index.
+So indexing based and even the first and last it has both the capability.
+So here if you see that in the linked list part data structure which is used is linked list.
+Right.
+The collection name is also the same.
+But don't get confused.
+Data structure is linked list.
+The collection name is linked list also.
+So generally you know that how the linked list data structure is that you have an object, or you can
+say that it has a pointer to the next memory.
+Then it has a pointer to the next memory.
+It has a pointer to the next memory like this.
+So it implement both dequeue DQ and list so IT support DQ method like get first, get last, remove
+first, remove last, etc. and it also support index based operation like get index add index.
+Like this.
+Let's see an example of it.
+Let's say I want to use a linked list as a DQ functionality.
+So here what I am trying to do is that I am doing add last.
+So you have a list I have five.
+Now you want to add last so I can add last.
+Let's say I want to add four.
+Then I can do add last.
+Let's say 300.
+So it is adding 300.
+So earlier it was 200.
+So at last so earlier list is empty.
+So it was 200.
+Pointer would be null.
+Then I am adding at last 300.
+So it will add a pointer of those 300 300 would have the next pointer null.
+Then it would add last 400.
+It will create a node 400, put it null and it will add last.
+Change it to this at first 100 so it will create a node 100.
+Put this pointer to this one.
+Now I am doing get first.
+So get first.
+What it would be 100 only.
+So similarly you can use functionality options also here.
+So here if you see that index is there zero.
+This is one.
+This is two this is three.
+Now what I am doing is I'm creating another list.
+Index zero 100.
+Index one 300.
+So it will for index zero it will point to this index two 400.
+Index two 400.
+So index one it will point to this.
+Now I am saying index one 200.
+So in the index one it will put 200.
+So here what it will do is it will create a node 200.
+Right.
+So index this this is your index one.
+Right.
+So this pointer would be now this this would be pointing to this.
+So your list would be like 100 pointing to 200 200 pointing to 300 300 pointing to 400.
+And there is nothing after that one.
+So 0123.
+So at one I added 200 okay.
+So now I am just doing get.
+Even though it's a linked list I am able to get by index get one.
+So at index one what is the element 200 right.
+And what is the item at index two 300.
+So here if you see that with the linked list I am able to perform both the dequeue operation and list
+operation.
+What is the time complexity?
+First of all, it is faster than ArrayList because why?
+White is faster than ArrayList.
+Because you don't have to do shifting.
+You don't have to do shifting.
+Okay, so when you are inserting at linked list how much time it takes.
+It will.
+If you are inserting at the start or end, it will take big O of one.
+Let's say you have this list.
+If you have to insert at end, you will just create node.
+Add it.
+If you want to start at front you will just create node, add it.
+Done.
+But if you want an insertion at a particular index how it will do.
+So it will.
+Insertion is big O of one.
+Let's say you want to insert between this.
+It will do this and it will change the linking.
+Now instead of this will point to this, this will point to this.
+But since it's a linked list, it has to traverse for the lookup of that index.
+So it will go here then iterate.
+So that's why it say that big O of N plus, big O of N for lookup for the index and zero of one for
+the adding search big O of N, because in linked list you have to traverse from start head pointer pointer
+deletion at start or end big O of one deletion at index zero of n for the lookup for that particular
+index, and zero of one for the removal removal.
+You can just remove the linking and point it, but you have to go to that position right.
+So that it takes big O of N space complexity is big O of N.
+So is it thread safe?
+No linked list is also not thread safe.
+Okay, so here if you see that uh, generally does it maintain the insertion order.
+Yes.
+It maintain the insertion order.
+Null elements allowed.
+Yes.
+Null elements are allowed.
+Duplicate element allows.
+Yes.
+You can even restore the duplicate elements also.
+Okay.
+So now here if you see that right.
+As part of the linked list.
+It has both this functionality array dequeue array list.
+Right.
+But if you see that generally these are not thread safe.
+That's where we have another call this vector which is thread safe.
+Right.
+It is exactly same as array list.
+But only difference is here I will show you vector.
+It is exactly same as array.
+List elements can be accessed via indexed but it is thread safe.
+Array list is not thread safe.
+And to have a thread safe array list you need a copy on write right separately, but for vector it is
+already a thread safe.
+It puts a lock when operation is performed on a vector, so it is less efficient than ArrayList.
+Okay, so here if you see that inside a vector, this is the vector class.
+All the methods, all the methods like add all exactly same as ArrayList.
+No difference right.
+So let's see its any operation.
+Okay.
+Let's say index of it is also synchronized.
+Last index of synchronize.
+Okay.
+Just any any method it has synchronized.
+So it put a lock everywhere.
+So remove element synchronize.
+So whereas add element here so add element.
+So here if you see that it is also synchronized.
+Okay.
+So here we have add operation.
+So add it is also synchronized.
+So all the methods in vector is thread safe means it is synchronized.
+So it put lock and lock unlock internally.
+So that's why it is very less efficient than ArrayList okay.
+And exactly you can create a vector like this vector the same.
+And you can add similarly like ArrayList you can work but this is thread safe.
+So vector is thread safe.
+Yes.
+Maintains insertion order.
+Yes.
+Null element allowed.
+Yes.
+Duplicate element allowed.
+Yes.
+Thread safe version.
+You don't need it itself.
+Is a thread safe?
+Right.
+And if you see that we have something called here.
+Stack.
+Stack is a child of vector.
+Why?
+Because here, if you see that, you can ask me.
+Hey, Shreyansh, with the help of DK itself, we can implement the stack.
+Then why this stack is separately needed?
+So if you remember that DK is not thread safe, but stack is.
+Stack is thread safe.
+Why?
+Because it's a child of vector, right?
+And the same functionality is also brings on each operation.
+It put a synchronized method.
+So it represents a leaf operation.
+Since it extend vector method is also kind of a synchronized right.
+So you can have create a stack like this stack.
+And you can do push.
+You can do pop right.
+The same behavior which you can also achieve through DK.
+But your DK is not thread safe and your stack is.
+So here this is a stack.
+Here it do push inside a push.
+Here it is.
+Synchronized.
+So exactly the same part.
+Exactly the same thing.
+It is doing it.
+Okay, so only difference is stack is thread safe.
+But with the DK, if you do a implement the stack that is not thread safe.
+What is the time complexity of the stack insertion?
+Big O of one.
+It will always add on top in big O of one deletion.
+Always delete from the top big O of one search.
+If you have to search a particular element.
+Big O of n space complexity n, so stack is thread safe.
+Maintains insertion order.
+No, it does not maintain an insertion order.
+If you add one, two, three, and if you want one to go out first, no it won't happen.
+So insertion order maintains.
+But if you see that.
+The way you insert it and the way you get, that's not the same Okay, so that's our stack.
+I would say that it maintain the insertion order.
+You can little bit more elaborate this know the way we stored.
+Yes it maintain the insertion order.
+But if you take out the items from the stack it will not follow the way it is inserted.
+Okay.
+Null element allowed.
+Yes.
+Duplicate element allowed.
+Yes.
+Is it?
+What is the Threadsafe version?
+Not needed.
+The stack itself.
+Is the thread safe?
+Okay, so we have covered array dequeue Linkedlist list ArrayList vector stack okay.
+In the next video I will cover this part and then stream.
+And then we will cover this okay okay guys.
+Thank you.
+Bye.
+Any question any doubt please feel free to comment and write.
+And sorry for the voice.
+Uh thank you guys.
+Bye.
+    </pre>
+</body>
+</html>

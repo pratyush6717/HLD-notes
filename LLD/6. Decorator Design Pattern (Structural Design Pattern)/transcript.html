@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6. Decorator Design Pattern (Structural Design Pattern)</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="decorator_pattern_notes.html" class="btn">View Notes</a>
+    <h1>6. Decorator Design Pattern (Structural Design Pattern)</h1>
+    <pre>
+This site.
+Welcome back to the channel.
+And today we are going to do Decorator pattern.
+So let's understand the use case first so that it would be clear in what all use cases we might have
+to apply decorator pattern.
+So in this example if you see this core base object.
+So whatever the base object you have for example our base pizza like a margherita pizza.
+Right.
+So these are the core.
+And on top of that base object we can add feature okay.
+So now here if you that I have added whatever the object base object I have, I have decorated with
+feature one, you have added new feature okay.
+So similarly now here if you see in this example the base pizza which is Margherita, you can add another
+feature of it like cheese.
+You decorated it with cheese okay.
+Then again you can repeat it.
+Whatever the result which you have got.
+Again you can add another feature on top of it, another feature on top of it, and it goes on.
+Okay, so it has a stacking feature.
+Okay.
+Or sometimes also known as layering effect.
+Okay.
+So the same example let's say you have a base pizza margherita.
+You add another feature on top of it.
+You added cheese.
+And on top of that you added another feature, let's say mushroom.
+Okay.
+So you have now Margherita pizza.
+Then you have added cheese on top of it, then you added mushroom on top of it.
+And similarly you have added another feature.
+Let's say you have added it another paneer and goes on.
+And similarly you can have any combination.
+Let's say you have a base pizza.
+Now you can first decorate it with mushroom and then you can decorate it with cheese.
+And then you can decorate it with, let's say, veggies.
+Then you can decorate it with another thing like, uh, paneer, whatever.
+So in simple term, whenever you find a use case where you have a layering effect or stacking feature,
+okay, that base object, then you have feature one plus feature two plus feature three.
+Likewise, then you should know that it's a hint for applying the decorator pattern.
+Okay, now let's say that we you able to identify that yes, it's a stacking feature like on an object.
+First I have to apply feature one.
+And then whatever the feature one I have got object one.
+With feature one I have to apply feature two.
+And then after that, whatever the feature one, feature two, I have to apply another feature and goes
+on.
+Now you have to implement it, you have to code it.
+But let's say you have to do it without decorator pattern.
+So how you will do it?
+So we will generally do like this.
+We will create one class Margarita which is our let's say base class.
+Okay Margarita.
+Then you will probably write all possible combination okay.
+So one pizza could be margarita plus cheese.
+This is one pizza combination.
+One pizza could be margarita plus paneer plus mushroom margarita plus cheese plus mushroom margarita.
+Plus mushroom margarita plus paneer.
+So this is like all possible combination.
+And also in future one more you can say that feature added.
+Okay let's say veggie then you have all possible combination right.
+Margarita plus paneer plus mushroom plus veggie.
+Another margarita plus cheese plus veggie margarita plus veggie itself.
+Margarita plus paneer plus veggie.
+Okay.
+so you just assume just by adding a one feature, you have to create all possible combinations for that.
+Okay.
+So this is actually called class explosion.
+Okay.
+If we try to design such problem without decorator pattern we would be end up in creating so many classes.
+All possible combination which led to class explosion.
+And that's where decorator pattern comes into the picture.
+Decorator pattern allow you to add new functionality, new functionality to an object dynamically without
+altering the original structure.
+Okay, we will see that.
+How?
+So now here if you see in the decorator pattern.
+So this is considered that in this UML if you see we have a base pizza like so we have created one interface
+based pizza.
+Now there can be many base pizzas like Margherita is one, plain pizza is one, farmhouse can be one.
+Veggie delight could be one.
+Okay, so if there is more, we can simply add new base pizza.
+So this base pizza is nothing but our this core.
+Okay.
+And here, if you see that now we have separated out the toppings and we call it topping decorator.
+So all the decorators.
+So generally we decorate our base pizza with something so that be taken out separately.
+So our whatever the base pizza we can decorate it with cheese mushroom paneer.
+So these are now my decorators okay.
+So I taken out separately.
+So this topping decorator is let's say it's an abstract class okay.
+And then here if you see I have all the decorators here.
+Cheese mushroom paneer.
+And let's say if in future one more comes, let's say veggie.
+I added that also.
+Okay, so this thing is clear.
+So we have this relation clear that all Margarita is a base pizza farmhouse is a base pizza.
+So these are our base pizza.
+Similarly cheese is a decorator, mushroom is a decorator and paneer is a decorator.
+Okay so we have done this one.
+Now here if you see from this diagram let's say you have your base pizza and after that you have decorated
+with a cheese.
+The result is again a pizza only.
+Okay.
+So that the same pizza now you can decorate it with another let's say mushroom.
+That is again a pizza only.
+Okay.
+So here if you see no matter you are decorating the base pizza with something, some feature it remain
+a pizza only.
+So that's why whatever the topping decorator is.
+Also, I made a child of base pizza.
+So topping decorator is a pizza itself, right?
+And also one more thing is this topping decorator has base pizza object.
+Okay.
+We will now see with an example it would be more clear.
+So first I am implementing this base pizza.
+So now here if you see base pizza is an interface and added two methods.
+One is description, another is cost.
+Okay in.
+Maybe you can have more functions depending upon the question which uh interviewer might give you.
+But this is just an example.
+So I have two thing description and cost okay.
+So now here if you see we have multiple base pizzas which are concrete classes.
+So here if you see I have one plane plain pizza which implement this pizza.
+I have farmhouse which implement this pizza.
+So description is just simply it is returning it as a plain pizza.
+It is a farmhouse pizza.
+Nothing else.
+And the cost is how much does it cost?
+200.
+₹300 let's say.
+So we have implemented this part very very simple.
+Now let's add topping decorator.
+So I have created an abstract class.
+Topping decorator implements the base pizza.
+So now this part.
+It is a base pizza itself.
+Okay.
+Now here if you see I also have base pizza object here.
+So it has base pizza also that also we have added it has base pizza.
+And here I have a decorator like where this decorator is like the pizza it accept.
+So here if you see this example you have a base pizza.
+After that you have a cheese.
+Now when you add a new feature, you have to pass this base pizza plus cheese.
+This one you have to pass, right?
+So you have it accept an object of a pizza itself.
+So that's why it's constructor.
+Accept a pizza so that it can add this feature on top of it.
+Okay.
+So now here if you see what are the different toppings we have cheese mushroom.
+And in future you can have more.
+Now see this cheese is a topping decorator.
+Mushroom is a topping decorator.
+Okay.
+Now here in the cheese constructor it just calls like the super parent constructor constructor itself
+and pass the pizza.
+Okay, the same thing.
+Now no difference is that.
+Now No.
+This topic decorator is also a child of base, and the base pizza has this too.
+You can say that abstract method so it can also implement this one.
+Okay.
+It provides the implementation for this one.
+And here if you say what is this get description.
+Get description, it says that whatever the earlier description was says now it says extra cheese.
+Just it added something.
+Similarly the cost the cost earlier it was whatever the cost of the pizza, earlier it was.
+So now let's say that base pizza it cost was 200.
+Let's say plain pizza cost was 200.
+Now you are trying to decorate it with cheese.
+Okay, so when you are creating an object for cheese you pass this object base pizza.
+So we pass this object base pizza okay.
+And now we are implementing it cost that whatever the base pizza cost was, which was 200 plus 20.
+So this is the additional feature I have added.
+Okay.
+Now let's say that you want to decorate it with mushroom.
+So now here if you see that.
+So you have to for decorating with mushroom you have to pass this object.
+You have to pass this object here to the mushroom here okay.
+And then you have to provide uh the override method for this one.
+So you have get description.
+You have like just append whatever you wanted okay.
+And then here if you see the cost, whatever the cost earlier it was okay.
+Pizza plus pizza dot get cost.
+So what is the pizza cost now.
+So this is coming as an input to right.
+Right.
+So it's cost is 200 plus 20.
+So it's 220.
+So it will do 220 plus additional 40 mushroom charges.
+Okay.
+So likewise it goes.
+So advantage is that here.
+If in future a new topic is added you don't need all permutation combination.
+You just need to add it here and that's all.
+Okay.
+So here if you see how it is easy to implement.
+So first let's say I create a plain pizza.
+So I create a base pizza.
+And this I created an object simple plain pizza object.
+Okay.
+So its description and its cost.
+So its cost is 200 okay.
+Pizza one.
+Now here if you see now I'm adding a topping on top of this plain pizza on top of this plain pizza.
+So I'm creating a new cheese topping.
+And I told you that this cheese topping is again is a child of topping decorator, which is which is
+again a child of base pizza.
+so that's why it is again a pizza only base piece only.
+So I am creating a new object of new cheese topping.
+And while creating an object I pass the pizza.
+So what pizza?
+I am passing pizza one okay or not pizza one.
+So let's say new plain pizza.
+I'm creating a new object itself.
+New plain pizza.
+Okay, so on top of new plain pizza I am decorating with cheese topping.
+Okay, so now here if I use the System.out.println pizza two dot get cost what it would be plain pizza.
+Whichever was the pizza get cost is 200.
+I am adding 20 so it will print 220 here.
+Okay.
+Similarly you can play around with it like let's say if you are creating a new base pizza like let's
+say farmhouse.
+So new farmhouse.
+So let's say it's again a pizza.
+So one pizza is created okay.
+Simple okay.
+And even you can decorate more like this.
+You are creating a new mushroom topic.
+Okay, so I am creating a new.
+So let's say go from inside.
+So here you have let's say farmhouse.
+You want to decorate it with cheese and then you want to decorate it with mushroom.
+So go from bottom inside to outside.
+Okay.
+So here I have first created a farm object.
+Okay.
+Which is farm object is inside.
+What.
+This cheese.
+So here I am creating new cheese topping.
+And this farm is inside this cheese topping.
+Okay.
+Now this cheese topping is inside the mushroom.
+So I'm creating new mushroom.
+And this cheese is inside this mushroom.
+So here if you see that it is kind of this stacking behavior.
+You can say that it shows this stacking behavior or layering behavior.
+Okay.
+So now what's the cost?
+It would be so farmhouse was 200.
+So when the new cheese topping.
+So now here if you see that the pizza for is for new mushroom right.
+So now when you call pizza for dot get cost.
+So you have a mushroom.
+Mushroom class.
+So it has a cost method.
+Okay.
+So what does cost method is pizza dot get cost plus 40.
+So pizza dot get cost plus 40.
+Now this pizza dot get cost.
+So what is this pizza.
+New cheese topping.
+So it's a cheese topping.
+Okay.
+So it will call it's get cost method.
+Now cheese topping.
+Get cost method.
+It will call.
+So it again it is a pizza dot.
+get cost plus 20.
+Okay.
+Now what?
+This pizza here is new farmhouse.
+Okay, so it will cost the farmhouse one get cost method.
+So it simply returned 200.
+So this will return 200.
+So ultimately the price would be here 220.
+And here it would be 220 plus 40 which is 260.
+So output would be this one okay.
+So got it.
+So this is a decorator pattern.
+And the very easiest way to understand that if an interviewer give you a use case where we can apply
+is just see if we have certain use case where on top of base object you have to add feature feature
+one.
+And then on top of that you have to add another feature.
+Then on top of that you have to add another feature.
+Likewise okay.
+Okay guys.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

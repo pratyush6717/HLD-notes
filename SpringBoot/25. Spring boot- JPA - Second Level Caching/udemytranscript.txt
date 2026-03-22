@@ -1,0 +1,627 @@
+Hey guys.
+Welcome to Concept and Coding.
+And today in Spring Boot I will be covering the second level caching.
+Very very important very frequently used in the Big Macs.
+Also it's not just like it's a concept, it's used actually in production level codes also.
+So before I start, this is the prerequisite.
+Like if you know the architecture of JPA and the first level of cache, but those who haven't seen the
+first level of cache, I will just give in a couple of minutes, give the quick overview of the first
+level caching.
+So in the first level caching, you already know that these are the basic setup.
+Like we have created one controller where we have post mapping, get mapping.
+We have a service class which talks to the repository.
+In repository we have extend the JPA repository you already know in depth like uh why uh what's the
+API, what are the method IT support.
+And here, if you see that this is one entity which we have created.
+Okay.
+Now in if you can recall from the first level of caching, whenever you make a new request, a new entity
+manager object get created.
+And for each entity manager object or one persistence context which is helpful in the first level of
+caching is happened.
+So that's what I am doing here when I'm making a first HTTP request insert call.
+Okay, so we see a Insert query executed properly.
+Now when I make a second call get call.
+What happened here.
+If you see another Select query happened okay.
+Now here if you see I make another get call.
+Another get call means another new request.
+New request means new entity manager object.
+Okay.
+So here in this case you see another Select query.
+So there is no first level caching is applied here means there is no cache hit happening.
+Why?
+Because whenever any new call happens, a new entity manager object is created.
+And for each entity manager object we have a different persistence context.
+Okay, so that's why you are not able to see any cache hit between here, even though it's the same
+two times I am doing a get call.
+Okay, so every time I make a new request, new object is created and it has its own persistent context.
+It is not aware of this one where this object is present okay.
+So it's not aware of this.
+It is only aware of its persistent context since it is not there.
+It hit the DB.
+It make a new Select query.
+Okay.
+But if if you are using the same get call and same Entitymanager if you are doing first get and then
+second time get, then the first time get it make a DB, call it.
+Put the object here the second time this object same persistence object is used, so it would be cache
+hit same entity.
+Manager object means same persistence context object would be used and the second time since the object
+is present cache, it would happen okay.
+And with every HTTP request new entity manager object was created.
+And that was the reason why we are seeing this behavior okay.
+So this is all about the first level caching.
+I have explained it in depth.
+If you find this little bit in hurry first level caching because we have already covered in depth in
+the previous video.
+Now since we have recalled a bit, now let's move to the second level caching, which is L2 caching.
+Also, many times in industry you will hear engineers are saying, hey, what about L2 caching?
+What data is there in L2 caching?
+Second level caching is known as L2 caching.
+And what generally happen in this is here.
+So till between this persistence context and db.
+Now there is one more layer comes which is your second level caching.
+So whenever any call comes okay Entitymanager object is created.
+It has its own persistence context.
+Now before it looks for db it again another layer.
+So you consider this L1 and this as L2.
+So now it checks second level caching.
+Hey that data is present here or not, data is present here or not.
+So even though you are hitting multiple requests, different requests, different objects, different
+persistence contexts, but they are sharing a same second level caching now.
+So even for this, there is a chance that we are increasing the chance that the cache will increase
+because this is also in memory.
+So this is also fast, but only difference is it is shared among different persistence contexts.
+Okay.
+And then ultimately goes to the DB.
+And whatever the data comes from DB it first go you can say that goes to L2 cache and then L1 cache
+and then out.
+Okay.
+So let's see one happy flow and see what all it takes to enable the second level caching.
+If I want to enable it how we can do it.
+So first thing we have to add the dependencies.
+So we have to add these three dependencies okay.
+Edge cache.
+Hibernate J and J cache API.
+Okay, you can check out the latest version which is applicable for Spring Boot three dot x version,
+which we are using.
+So you can check out the latest version of this, which is uh, applicable for this spring boot version.
+And we can use it.
+But this three dependency, we need it.
+Why we need that.
+I will tell you, but I am just telling you very quick overview.
+We will go one by one each and will tell you.
+But first thing is we required Pom in application dot properties, we have to enable certain configurations
+like second level caching.
+True like we are enable the cache uh second level caching.
+But don't worry about this.
+So this is the second changes we need.
+First you have added dependency.
+Second in application dot properties we have enabled some configuration here in the service layer.
+No change.
+Right.
+It is the basic.
+Like your repository.
+You are just calling the repository.
+Nothing.
+No change.
+Then you have repository.
+No change.
+Okay, then after that you have your entity.
+So in the entity you will see this part.
+At the rate cache.
+Okay.
+So we are it.
+We are just telling the hibernate that do a second level caching for this entity okay.
+Whenever this request comes for this entity or whenever anybody is working on this entity, before touching
+to DB, first check in l2, l2 cache.
+Okay, we will see that.
+What does it mean region and all.
+And here if you see again don't worry about this.
+What's the purpose of each one.
+We one.
+We will go one by one each.
+But here if you see palm application dot properties and this three no change.
+Fourth, no change.
+How we were using only fifth is like you have to put at the rate cash, which is like we are telling
+hibernate that we have to put a second level cash or this entity user details.
+That's all.
+Now here, if you see first step I am doing an insert data is directly inserted into DB.
+No cash insertion or validation happens.
+So I am calling a post operation and data is inserted.
+So first happen.
+Second do I am making a one get call?
+Okay, whatever the data is inserted, I am doing a get call.
+Since this is the first get call cache, miss will happen and DB call will be made.
+So what would be the sequences?
+Get entity manager.
+It will check its persistence context.
+It will check second level caching and then check DB.
+So data is present in two persistence contact.
+No data is present in L2 caching.
+No because during insert.
+Also no data is inserted into L2.
+So it will hit a db and then it will put into L2, put into L1 and then ultimately goes out.
+Okay.
+So this is the second call where if you see that cache miss happened and it make a DB call, and then
+it will also caching data from load.
+So it will also load the data.
+Now the third time I am making a get call.
+Now this time data is present into L2.
+It don't have to goes into db itself okay.
+Okay so this is a new get call means new get call means new entity manager object.
+And since it's a new entity manager object.
+New persistence context.
+So data was present into this one.
+But this is a new request.
+So new persistence context.
+So there is no hit from the first L1.
+But L2 is same for multiple persistence context.
+Now it will check L2 data is present into L2 right from the previous call.
+So it would be cached and no db hit required.
+So here if you see cache hit happened during the second.
+Okay.
+So this is very one functional flow for the second level caching.
+Now let's see why and what all things are required.
+What is the purpose for that.
+So in Pom.xml I told you that we need three dependencies okay.
+So here if you see first one is all dot cache and the version provide the core implementation of second
+level caching.
+So here if you see right there are multiple cache e cache caffeine cache hazelcast okay.
+So which provider you want to use for the second level caching.
+Okay.
+We want to use one.
+I am going with the cache.
+You can also go with the caffeine cache.
+Doesn't matter.
+Okay.
+Because we don't have to go inside the working of this.
+Why?
+I'll tell you now because of this second.
+So this was first and now this is let's say second.
+What is this cache hyphen API.
+So this is like a interface okay.
+It expose all the API, let's say get cache.
+I'm just saying that create cache okay.
+And they provide the implementation for it.
+So we are only interested in invoking the API.
+Okay.
+And this APIs are the interfaces which are implemented by this second level cache providers.
+Okay.
+So that's why we have to bring this dependency also, which says that this is the interface which your
+hibernate code can interact with so that in future if you change from cache to caffeine, your code
+will not impact at all because you are dealing with the interface.
+Who is the provider?
+It can change.
+Okay.
+So this is to bring this API interfaces.
+This dependency is required.
+Now this is the third which is required.
+So this is our hibernate code.
+Now this hibernate has to talk to this API.
+And there are many annotations like at the rate cache like there are like at the rate uh like Concurrency
+strategy.
+Cache concurrency strategy.
+There are so many specific annotation and variable fields we are going to use for caching.
+So those are understand by hibernate J cache.
+So you can consider it as a bridge bridge between hibernate and the J interface APIs.
+Right.
+So it provide a bridge that okay whatever the annotation you are adding specifically for caching this
+understands it and I hibernate knows how to talk with hibernate J okay.
+So that's why the name hibernate Hyphen j cache, so considered as a bridge between Hibernate and Hibernate,
+can't directly knows that when to create or create cache.
+When to call get cache when to call put cache.
+No, but this knows.
+So you can consider this consider as an orchestrator, like based on the value which you are using during
+caching.
+Let's say I am using read write.
+I am using read only what method to call what validations to add.
+It can have it.
+Okay, so considered as a bridge between hibernate and cache which understand how to talk with the cache
+APIs.
+Okay, so these three are required.
+So no matter what you need cache API you need hibernate.
+But here you can instead you can use cache or you can use caffeine or Hazelcast whichever you want based
+upon your need you can change it.
+So first thing is clear, right?
+Why this three dependency in Pom.xml required?
+Now let's understand the application dot properties.
+So this is the first configuration we have to enable.
+By default second level cache is false Okay.
+So we have to enable it to true.
+Okay.
+Once we enable it then only second level cache is start functioning.
+Then only like it will all these things comes into the picture.
+Otherwise no.
+The second is your region region factory class.
+But before understanding the region factory class, we need to first understand what is region.
+Okay.
+So let me tell you.
+In short, like what is region?
+Then I'll tell you why we need to set the factory class.
+So region helps in logical grouping of cached data.
+Logical grouping.
+For each region we can apply different caching strategy like what is the eviction policy like Fifo,
+Fifo, LRU, whatever.
+Okay, uh, last in, first out, first in, first out, least recently used.
+So whatever eviction policy you want to use, You can apply to different region wise time to live for
+the cache data.
+What is the cache size like?
+How many entries you can store in a cache like 1100 200?
+And what is the concurrency strategy?
+Okay, so here if you see an example this is one entity user details.
+And this is I am creating another entity order detail.
+Okay.
+Now here if you see I am enabling at the rate cache annotation.
+So now you know that at the cache this is some cache specific annotation which is aware of aware by
+hibernate J cache.
+It knows what to do.
+And we have also enabled second level caching.
+So it comes into the picture.
+Now here if you see that what region we have given is user detail cache.
+So consider that one region is user detail cache.
+And for order what region I have given is order detail cache.
+All detail cache.
+Okay so here it stores this entity.
+User details.
+User details entity.
+It takes care of order details.
+Entity.
+Multiple entities.
+It can group like which I want to group inside this region.
+And multiple entities which are group want to group inside this region.
+We can give any name of the region.
+Now here if you see either in application dot properties or generally I feel comfortable with each dot
+XML like specific file which we can put in source main resources and provide this configuration.
+Okay, for this catch alias user detail cache means this this region okay.
+This region.
+What is the in memory.
+How many how many entries you want to put?
+What is the TTL for the data which is stored?
+What is the eviction strategy you want to use.
+So no matter how many entities you are grouping together, all this strategy like eviction, TTL and
+your memory would be applicable for this, but may be possible that for the order one you want different,
+you don't want the same.
+So here I have TTL for 60s.
+Here you want TTL for 500 seconds.
+Let's say okay.
+So that's why it's a logical grouping for each region.
+You can provide this one.
+So for order you can give time to live is 200 seconds.
+I want 1000 entries for this one.
+And the strategy is Fifo.
+So region provide you more granular way you can manage your cache okay.
+And the second property says that region factory class.
+Who is going to manage that J region factory.
+So now here, if you see that this hibernate cache also has factory class.
+Okay.
+And also this cache also has factory class.
+If you want to directly work with this like hey you take care of managing all the cache directly, then
+you can directly use cache.
+But I would always say that it's better that if you use hibernate J cache, because in future if you
+change from cache to caffeine, you don't have to change lot of codes because this all work with interfaces
+beneath the provider can change over the time.
+Okay, so here I have used J cache region factory, this one which is present by hibernate JK.
+So this manage everything like Insertion like get cash, create cash.
+It manages the region proper region.
+So for this region, what is the TTL?
+What is the cache eviction policy.
+So it will take care of it.
+But if you want to use directly you can use directly also.
+But that again it comes with like benefit is there.
+You don't have like abstraction you are directly working.
+But you know the disadvantage.
+Also like if future you have to change you might have to change the code also a lot.
+Okay.
+So.
+You can define the factory class which will take care of your management of the cache data.
+Okay.
+The third one is the provider like caching provider.
+So even though we have added the dependency but this like you have added the cache, we need to tell
+the spring boot that which provider I am using just by adding the dependency in Pom uh, in this case
+hibernate.
+JC Zcash doesn't know which provider it has to use.
+So we have to set this configuration that, hey, I want to use Zcash caching provider so that whenever
+it calls get cache, it creates an object for this one.
+And it invokes Zcash.
+So similarly you can uh add differently if you are working with different cache provider okay.
+So these three are important.
+This is just for debug.
+So that whenever we hit a query uh we will something to print out if insert query select query so that
+we can see.
+But this three only is application dot property is important.
+Okay.
+Now let's say different cache concurrency strategy.
+Now here if you see if you have focus on the entity object we have put at the rate cache.
+At the rate cache is like uh hibernate hyphen.
+Uh J cache knows that this is used for second level caching and we have to cache this entity.
+Okay, in the L2 cache.
+But there is something called usage equals to catch concurrency strategy.
+There are four types of concurrency strategy.
+Read only read write non strict read write transactional.
+So which one you want to use depends upon business to business.
+So I'll tell you what is this catch concurrency strategy is.
+Read only.
+Let's go with the first read only.
+But in short, if I give you a definition of catch concurrency strategy, I would say that, uh, this
+will guide how your operation insert, update, delete or impact your cache data.
+Okay.
+So, so that they can work in parallel without, uh, you can say that it's possible that in some business
+use cases, stale data is possible.
+So you select a proper strategy.
+In some business scenario, stale data is not even applicable.
+It should not have happened.
+Then we have to pick up appropriate strategy.
+So concurrency strategy is like how you maintain handle the concurrent request like get update delete
+is coming.
+Then you have the data in the cache in the DB how you want to handle it.
+So let's go ahead with the first one.
+Read only.
+Good for static data.
+Data which do not require any updates.
+Any updates?
+Not even I'm saying less update any update if you try to update an entity, exception will come.
+So see this like here in the request controller I have put another put mapping just to make sure that
+I will also update some data.
+This is service where I am updating with the existing ID.
+I am first fetching the data and then I'm saving it so it will try to update it.
+Repository.
+And here ultimately entity and the entity I am using read only.
+Now first let's say I have done insert okay insert directly put a data into db user detail.
+Let's say then I am doing get.
+When you are do a get first cache miss will happen, then it will hit DB and then it will put the data
+into L2 cache also.
+So user detail let's say one here.
+User detail one here.
+This is your L2 cache and this is your DB.
+Now I am trying to do a put call.
+I am trying to do a put call.
+But here I have put read only this entity user detail entity is read only.
+So now when I call a put request what I got internal error.
+What says that you can't update read only object.
+Okay.
+So here if you see who has this logic hibernate.
+Uh, this 16.5.2 like hibernate just knows that.
+Understand this cache concurrency strategies.
+This one.
+Okay.
+Then we have a read.
+Write.
+Now there are use cases where you have a scenario where multiple reads update delete can happen in parallel
+and you want to manage those.
+So this might be applicable.
+And also it's scenario like where you don't want stale data to be written also.
+So this is better.
+In that case.
+Let's say during read it put a shared lock.
+So other read can also acquire shared lock but no write operation.
+So now let's say that you have L2 cache.
+You have DB, you have user detail one here.
+User detail one here.
+Now get call one is happening.
+Get call two is happening.
+It put a lock internally on the cache but it is not blocking other get calls also.
+So read call can happen multiple read call.
+So they can do a cache.
+At multiple cache.
+It can happen.
+Nobody is stopping anybody.
+But it will not allow any write operation.
+But any write operation comes.
+Let's say put it will stop it okay.
+Because till the lock is present, read call and during update It put kind of a exclusive lock where
+read and write operation are not allowed.
+So here, if you see that whenever any update happen, what happen is understand this scenario.
+What happen is how it handles this.
+This one is simple.
+Whenever you do a insert directly goes to the DB cache.
+Not even comes into the picture.
+L2 cache only comes into the picture once we do a first get call.
+Okay, then you do a get call.
+L2 cache comes into the picture cache miss happen goes to the db, then it load into the L2 cache and
+then kind of uh return it.
+If there is a cache it happen directly return from here.
+No need to go to the DB.
+Now let's say update is happening.
+What it does.
+So now let's say you have a data into L2 cache.
+You have a data into DB one put call.
+Update call is happening.
+You have entity one here.
+Entity one here.
+How it will make sure that how it will update it, how it will make sure that any get call is happening
+in parallel.
+It do not read the stale data.
+So as you know that any update let's say transaction begins first it will do is acquire lock on cache
+it prevent stale data, read from cache.
+No read and write allowed after that.
+So once it has taken the lock, acquired a lock on this entity, what it will do, it will make it invalidate.
+So there is a flag here inside this cache data.
+It make it invalidate okay.
+After that it will update its DB whatever the update required.
+Let's say e1 is changed to E1 hash something.
+If it commit properly okay, then it will update the cache data with the latest data and remove the
+invalidated flag.
+So now while returning, it will update the cache here in the L2.
+Also L1 hash and remove the invalidated flag.
+Now this is also valid.
+And then it will release the lock on the cache.
+Now it will release the lock on the cache.
+But if there is any rollback happen if there is any rollback happen what it will do is it will just
+release the lock on cache.
+It won't remove the invalidated flag.
+Okay.
+So now let's say that L2 cache it was entity one DB entity one during put call it would make it invalidate.
+And while processing some issue happens and it rollback transaction got rollback.
+So it it just remove the lock.
+So it put a lock right.
+It acquired the lock.
+It will just release the lock on the cache but it will not remove this invalidated flag and no updation
+will happen.
+So now, in future, any get call will come as since the lock is released, any get call will come.
+It will see that hey, it is marked as invalidated.
+It will read from the DB and then it will ultimately update the cache again.
+Okay, so this is how internally update logic is written.
+So this is very important.
+Like uh sometimes during rollback.
+See most of always one thing is the cache is sometimes it's a best effort call best effort.
+Some sometimes you are able trying to write it but fails.
+You are trying to update it but fails.
+So we should not fail the transaction itself when transactions are very expensive, right?
+We should not fail the transaction itself that okay, my DB is also updated.
+Everything is done properly but I'm not able to update the cache.
+So let me fail the transaction.
+No.
+So that's why sometimes cache are best effort.
+So now here generally when you invalidate the cache and let's say even if the commit happened properly,
+now you are updating the cache.
+If some failure happened during update okay.
+And it will release the lock.
+Then also it's not an issue because you have already marked as invalidate.
+If it is not update properly happen any future call happen get call it see the invalidate it will do
+a fresh read from DB and later on overwrite the cache data properly.
+So that's why read write is more.
+You can say that generally in kind of a payment industry this is more frequently used.
+So this is one example you can see that I am doing first post insert Insert happen directly inserted
+into DB.
+Then I made a Get call.
+You know that during a get call cache miss will happen.
+It will make a DB call and then it will insert into the cache.
+Load data into the cache.
+Now you are making a put call.
+When you are making a put call, what you do is you will put a lock first, you will put a invalidate,
+then you will hit the DB and after that you will release the lock releasing lock and all are not printing,
+but after that you know that it will update the cache also with the latest data and release the lock.
+And now when you are doing last get call cache has the updated data right.
+So cache hit will happen because updation happened properly and then release lock happened.
+Okay then the second catch concurrency is non strict retry.
+This is you can say that little bit lenient than read write during read.
+No lock is acquired at all right.
+During read it.
+Do not even check whether there is a lock or not it directly.
+Go ahead and retry to read it.
+During update after transaction commits successfully, cache is marked invalidated and no update will
+with the fresh data.
+So consider this one.
+In this scenario it is little bit.
+So the.
+Here the purpose of non strict is that uh try to put a lock for the less time okay.
+So that's where like for read it.
+Remove the lock at all for update.
+During update.
+What happen is transaction begin.
+Then it will not uh acquire or it will.
+Acquire.
+Lock on cache It will not do any update or you can invalidate the cache.
+No, cache is not invalidated.
+Okay.
+And then you can say that it goes ahead and update DB okay.
+And after that if transaction commit success then it will invalidate the cache, invalidate the cache
+and then release the lock.
+Okay.
+So now here if you see that if any transaction rollback happen, if rollback happen it won't do anything.
+It won't even invalidate thing.
+It will just release it simply right.
+Because uh, data is not even like it is not even updating the cache itself.
+So that is not even there.
+So that's not good for heavy read application.
+So if update and read happens in parallel, it's a chance that read operation might get stale data because
+read is not acquiring log lock at all.
+And while update is happening, if read also comes in parallel, maybe during update it might it might
+have updated the DB.
+Okay, but since read is not uh, wait for any log and everything and if it read the data from the cache,
+okay, before this invalidated, it will get the stale data.
+But it's a very small window.
+But there is a chance here in the at the rate cache I have put non restrict read write.
+Okay.
+And also let me put one debugger point in J.
+We know that the factory which we are using is J cache region factory which is present into hibernate.
+Hibernate.
+Hyphen.
+Cache.
+So while during application startup it will create a cache and then ultimately it will goes to we have
+the only one provider.
+So this it will goes to this provider right cache.
+And then we'll see that like I'm starting the server.
+So during application startup server J cache region factory got invoked.
+Right.
+So now it takes care of creating the cache and everything.
+This factory okay.
+It will take care of like creating a cache object okay.
+And invoking a proper API of the uh, you can say that the J cache API interface, which eventually
+implemented by the your cache provider.
+So in that case, uh, here, if you see that this is the interface which is coming from cash cash hyphen
+API.
+Right.
+This is the interface and Cash Manager is providing the implementation.
+Okay.
+So once our server is started now let's perform it.
+First let's do post call.
+So post.
+So post call is success.
+Now let's see the DB.
+What's the data stored in the DB.
+We have a data okay.
+Now.
+And here also we will check it like insert call is made.
+So now we are trying to make a get call in the get call get call is success.
+We got the data here.
+If you see it make a Select query.
+So first one is insert.
+Second one is select.
+And now in the non strict read write.
+What we are saying is when you do a put call.
+Now I am changing.
+From now I am changing the data from SJ to let's say SJ updated.
+If I run this data is changed in the DB.
+Let's say that it's change SJ updated.
+But what would have happened internally inside the cache?
+So since transaction is committed properly, it has updated properly.
+It has also updated the cache invalidated in cache.
+It is not has the latest data.
+It didn't update SJ updated only it marked as invalidated.
+Okay, now if I do a Get call I am able to get updated properly.
+Is it coming from cache or new Select query would be made here.
+If you see that a new Select query is made after update, because update only marked invalidate, it
+will not update the cache itself.
+But if we change this to read write.
+Read write.
+So if you change it to read write, we can see that uh, the we can, uh, double test the same behavior.
+I am running the insert.
+During insert we will see insert call.
+Then during get call we will see a cache miss and then a select query.
+Now it has inserted into the cache.
+Then during put call it has first marked as invalidated.
+Then update the DV after the success transaction success.
+It also have updated the cache also.
+So update happened after that.
+If I do a get call, will I getting a updated data?
+Yes.
+So is it from DB or cache?
+There would not be any select query cache.
+Hit okay.
+So in the read write.
+It also update the cache.
+But in the non restrict it.
+Don't update the cache, it just make it invalidated.
+And the last one is transactional in the transaction is you can say that it's a more restrict.
+So it acquire read lock and also write log update the cache to after transaction commit successfully
+similar to read underscore write like once the transaction commit successfully it update the cache properly.
+Any other read operation during cache log goes directly to DB.
+What does it mean?
+I have an L2 cache.
+You have a DB if you have put in a transactional or cache concurrency.
+Now get call is there.
+Let's say it has entity one, entity one.
+So it put a lock even though it put a lock.
+And now if any get call come it will say that hey it is locked.
+So get will try to fetch from the DB okay.
+And return.
+So in this during read also it act like it act like a hard lock where no other get call is also even
+allowed to read from the L2 cache.
+Go and directly read from the DB.
+If any other write operation comes, it has to wait in queue.
+Okay till the cache till the get lock is not released.
+Okay, you can test it.
+Like, uh, the way we have tested this read write and uh, non strict you can test with this also.
+So debug is a very helpful tool to build this understanding.
+So you can debug this one.

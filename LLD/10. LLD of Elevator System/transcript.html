@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10. LLD of Elevator System</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="#" class="btn">View Notes</a>
+    <h1>10. LLD of Elevator System</h1>
+    <pre>
+On this side.
+Welcome back.
+And today in low level design we are going to design the elevator.
+Okay so let's start without wasting any time.
+The first thing is understanding the functionality of the program.
+Okay.
+Even though we know how elevator works, but still it's better that we list down all the functional
+requirements.
+Okay, so first thing is a building has multiple elevators and multiple floors.
+Okay.
+So yes, we will design this for a building which has multiple floors.
+And also in one floor there could be a multiple elevators.
+Okay.
+So that is our first requirement.
+A user can request an elevator externally using up down button at each floor.
+This is another functionality.
+We all know that each floor we have a button to call the elevator.
+Okay.
+And there are two buttons up and down.
+Like up is like whether you want it to go up or down means you want it to go down or not.
+Okay, based on this direction, one of the elevator.
+Fulfill your request.
+These up down direction button is used to choose the best elevator to serve the request.
+Right.
+So this is very important point because this up and down does not tell the direction of an elevator.
+It just the buttons, external buttons at each floor they have a direction like one button is up and
+another button is down.
+This button is specifically used to choose the best elevator.
+Okay to serve the request.
+Once the best elevator is chosen, then you have to give another request, whether which floor you want
+it to go.
+Okay.
+Very important point.
+Once the elevator is chosen, the floor is added in the particular elevator bucket list.
+Okay.
+Now let's say that you are at first, second, third floor.
+On the third floor.
+User has selected a this button.
+Click on this button.
+Now out of this two elevator one of the elevator would be chosen.
+That okay which gonna fulfill this request.
+This is also one request okay.
+So my algorithm would be like okay user is that currently third floor and wanted to go to Up.
+Who can serve this request first.
+Now let's say that elevator two is the best choice.
+Now once that selection has been done after that we just add hey go to third floor.
+So for elevator perceptive, it just floor direction.
+It doesn't matter for the elevator.
+Okay, so the same thing.
+I told you this up and down direction is just to choose the best elevator out of many.
+Once a particular elevator is chosen.
+Okay, after that, the floor where it has to reach.
+That's the request it has to fulfill.
+So maybe this elevator.
+Elevator two has to reach to second floor.
+Fourth floor.
+Third floor.
+Okay, so this is another floor which it has to reach.
+Okay.
+So this is this will add into its bucket list how it will serve which request, whether it will first
+serve two or 3 or 4.
+That it's its algorithm.
+That's elevator algorithm.
+We will come to that one.
+So that is another thing got cleared.
+A user inside an elevator can also press internal button to select the destination flow.
+So yes, we have an external button at each floor through which elevator can get a request.
+Each elevator also has internal button.
+Okay, so this elevator might have one internal button controller.
+This elevator two might also have an internal button controller.
+Okay.
+That's it.
+As a panel of ten.
+Button 123456.
+Even if somebody press button inside that internal button of a specific elevator.
+Okay.
+So that also generates a request, but only for that specific elevator only.
+Let's say you are inside an elevator two and you press the fourth button.
+So this request will append to this bucket of elevator two only.
+Now here you don't have to do selection that.
+Who will serve this request?
+Internal button request.
+Right.
+It's clear.
+Right.
+So that's what I have written here.
+Request generated from elevator.
+Internal button.
+Should always serve.
+Should always serve by the same elevator.
+Only if elevator two.
+Internal button.
+Internal button of elevator two.
+If request is generated from the internal button of elevator two, it should be fulfilled by elevator
+two only.
+So there is no need to select the best elevator.
+It's always the same elevator.
+Clear elevator should remain idle when no request exists, and wake when the new request arrives.
+So this is like we can discuss with our interviewer whether this they want it or not, or they just
+want to keep on looking like, okay, if any request comes or request comes, request comes, or this
+is generally, uh, interviewer is a follow up question.
+Can you make if there is no request?
+Can we make the elevator idle?
+Go to the sleeve and when a new request comes, it should wake up.
+So how do we implement that also?
+So that's another functional requirement.
+Another requirement is required should be ordered by direction.
+Okay.
+What does that mean is like generally how elevator works is when the elevator is going up.
+Let's say 1234567.
+These are the floors of the building.
+When the elevators are going up, it.
+It fulfill the request in ascending order.
+So it will first fulfill let's say request is in third, then fifth, then seven.
+It will not like first it will fulfill seven, then six, then four.
+It should not be like any randomly I am picking the floors request and fulfilling it.
+So when you are going up, visit floors in ascending order.
+So it should be like one, two, three, four, five, six, seven.
+And when you are going down, it should fulfill the request in descending order.
+So first six, then five, then four, then three.
+If there is any request, but it should be in descending order, it should not be.
+Your elevators should not work like randomly first two, then it going six, then it going three.
+Okay.
+So this is critical.
+You can say that the behavior of an elevator.
+So these are the most functional requirement which we can think of.
+The elevator we know okay.
+So we next step is to identify the objects from this requirement.
+The first thing I have already highlighted the yellow one while listing down this functional requirement.
+So this yellow one I think could be a best possible.
+Like uh, you can say that the choice for an object.
+So here, if you see one is building a building has multiple elevator and multiple floors.
+So building is one object.
+You know that, right?
+What thing can be an object?
+An object is something which has two things.
+Property and behavior.
+Property is nothing but a member.
+Variables.
+You can say that.
+And behavior is nothing but a method.
+If any object we can have certain property and it has a unique behavior or some behavior, it can be
+considered as an object.
+So first object I thought of a building.
+Then we have a floor okay.
+We can have multiple floors.
+So that is one object.
+Then we have elevator.
+It is just a Pojo class right.
+So this elevator is not smart enough to take decision.
+This elevator is just considered this elevator car.
+Generally, we call elevator car.
+Consider this elevator car as a dumb object where?
+Like, if you give it a command.
+Hey, go to second floor.
+It goes to the second floor.
+Hey, go to sixth floor.
+It will go to the sixth floor.
+Okay, so there should be someone who control this elevator.
+And that's where elevator controller comes into the picture.
+So for each elevator, we gonna have a controller.
+It will control this elevator.
+Okay.
+So it will manage the bucket list of requests.
+So let's say this elevator.
+Elevator one elevator one controller.
+So all this request.
+Second floor.
+Third floor.
+Sixth floor.
+Eighth floor.
+10th floor.
+It comes into the bucket of elevator one.
+Now, how to fulfill it?
+In what order?
+Okay.
+First it this has to go to the second floor.
+Then it has to goes to third floor.
+Then it has to go to eighth floor or Ten.
+What's the logic?
+What's the brain behind this sequence would be decided by elevator controller.
+We will see that.
+Okay, so another object which I can think of is external button.
+Each floor has the external button.
+Okay.
+So from this also we get the request.
+Similarly we have internal button.
+Each elevator has one internal button.
+So if you have three elevator then you will have a three internal button.
+Okay.
+So any request generated from this internal button would be fulfilled by this elevator.
+Any requests generated by this internal button would be fulfilled by this elevator.
+Likewise.
+Okay.
+So each elevator has one internal button.
+Each floor has external button.
+Then elevator scheduler.
+So why I thought about it.
+Is that so?
+Here, if you see each floor has the external button up button down button, these are nothing but an
+external button.
+And whenever any request come from the external button, we have to choose the best elevator.
+So now you have, let's say five.
+Sorry.
+When you have a five elevator in a building, a request come from the second floor and the user wanted
+to go up out of this five which one was the best one?
+So who will take the decision?
+Okay.
+What are the algorithms to decide.
+So that's where Elevator scheduler.
+So it maintains the list of controller.
+So it has let's say five elevator.
+So there would be five controllers.
+Each one has their own controller elevator controller.
+So this scheduler has a list of this.
+It has a list of this plus.
+It also has elevation select elevator selection strategy.
+So whether I have to choose the nearest elevator or the least busy elevator, or could be possible even,
+or if there is any different strategy.
+Okay, so that's where Elevator Scheduler comes into the picture.
+And then we have external dispatcher.
+So why external dispatcher is which I think is good choice is that.
+So here each floor has button external button.
+And request come from all the floors.
+All this external button okay.
+And ultimately this will.
+So this is like elevator one controller.
+Elevator two controller.
+Elevator three controller.
+Let's say I have three lifts, so each one have each lift have their controller.
+Now the request is generated by all of this external buttons okay.
+So it's always better to have one mediator that all this request should comes to one place.
+And from this one place, it should goes to a proper elevator wherever it has to go.
+That is first thing.
+Second thing is whenever any request comes from any particular floor.
+Okay, so this external dispatcher, you can say that it act as a bridge between our floor and between
+our controller and whatever the logic, like selection of a particular, uh, elevator, we can keep
+it, keep it here.
+So understand with this diagram.
+So we have three flow.
+Let's say n flow.
+Flow one flow two fluoro n.
+Each floor has external button.
+Now the request can come from all of these floors.
+External button.
+Now they will go to the external dispatcher.
+It will not directly go to a particular controller.
+Okay.
+So it will goes to an external dispatcher.
+What external dispatcher will do.
+First it will choose an elevator using scheduler.
+So we have already think of an elevator scheduler.
+Like out of so many lifts based on a particular algorithm, we have to choose the best lift for a particular
+request okay.
+So this external dispatcher, you can say that act as an orchestrator.
+So it will invoke the scheduler and pass the request okay.
+And this particular specific algorithm will give us one controller.
+And then this will invoke that particular controller.
+Make sense.
+So this is external dispatcher gonna work.
+Similarly we have internal dispatcher.
+So now here this can be designed in a two way.
+One thing is that let's say that we have internal button.
+Internal button is very, very specifically tied up with elevator controller.
+Okay.
+An elevator controller controls a particular lift or elevator.
+So it is also possible that internal button can directly pass the request to elevator controller.
+That is also correct because they are very strictly coupled with each other.
+Internal button request should goes to a particular elevator only okay or other way is that if you want
+to follow the path of an external dispatcher.
+So let's say I have elevator one, elevator two, elevator N.
+Let's say if you have five elevator.
+So each five elevator there would be one button for each one.
+Okay.
+So either each one can pass the request to their own controller or we can have internal dispatcher also.
+That should be fine.
+And it will pass to a specific elevator.
+So internal button will pass.
+Hey this is the request and this is the controller.
+So internal dispatcher will just use the controller and invoke that specific controller method.
+So this is just like a mediator.
+Like if you have to put any logging or validation something you can put here instead of putting at every
+internal button.
+So that's where I say that.
+Like if the request comes from many place and we have certain common logic, if we have to put for all
+instead of duplicate, we can have at a common place through this design.
+Okay.
+but also that is possible that internal button can directly call their own elevator because it is very,
+very tight coupled internal button and elevator controller.
+Okay.
+Otherwise this design is also fine.
+That internal button is passing calling internal dispatcher.
+Hey, this is my request.
+I want to go to the fourth floor.
+This is the controller, so it will pass the controller info also and directly invoke the controller.
+Okay.
+So these are the objects which we have identified.
+Now before moving ahead with creation of a UML, let's first understand these two things elevator selection
+strategy and elevator moving behavior.
+So there are two things why I am saying this.
+So generally in low level design Algorithm.
+We don't have to write.
+That is mostly asked in a DSA rounds.
+Okay, so in low level design we generally deal with classes and objects.
+Okay.
+The most uh implementation algorithm is not required generally in a 45 minute round.
+But if you have a machine coding round which is there for, let's say, 1.5 hour or two hours, then
+there might ask you a full, complete coding.
+And this elevated design is a very, very good question for the machine coding now.
+And it has been asked a lot.
+So that's why I will show you the full coding also.
+And that's why we will discuss this algorithm also.
+Okay.
+So with code we will see.
+Okay.
+So let's say first selection strategy.
+So we have already discussed this part that we have multiple floats.
+Floor one.
+Floor two.
+Floor three.
+Floor four.
+Likewise, each floor has lift buttons which we are calling an external buttons, and we have.
+Let's say three elevators or four five elevators like big building has more elevators also.
+Now a user, by standing here press this from the floor to it.
+Press this up button okay.
+User wanted to go up.
+Now we have to select one scheduler one elevator.
+So that's elevator selection strategy deals with it okay.
+So when external button is pressed when external button is pressed what information we have.
+One is floor.
+At which floor at which user is waiting for the lift and direction where user wanted to go up or down.
+Now, when there are more than one elevator, then we need to select the elevator based on some strategy
+like nearest.
+Okay, let's say this lift is already going up and it's already at uh, let's say uh.
+So this would be like you can say that, uh, I have written the floats in opposite direction, let's
+say floor one.
+Floor two.
+This is for three, floor four okay.
+And request is from the floor third.
+Now lift is going up.
+Now let's say this floor which is present at at two so we can find out that okay nearest.
+So this is the nearest most elevator which can fulfill this request already going up.
+User also wanted to go up and it is uh present at the third floor.
+The current floor which is lift, is at second floor.
+So it can take it because we know that when it is going up, it is fulfilled in increasing order.
+So floor one, floor two, floor three, floor four.
+Likewise, it will fulfill it.
+Okay.
+So it will.
+This elevator is the best choice nearest.
+So that is one algorithm.
+Could be another is least busy.
+Hey, this elevator already has four requests in its bucket.
+This has zero.
+This has two, this has one.
+This is has ten requests.
+So when any new request come.
+Hey, pick the one which has the least, which is like less request in its bucket.
+So we'll see that okay.
+This elevator two has very less request in bucket.
+Pick this one.
+So these are the algorithms which we can implement in our selection strategy.
+Like whenever any request come from the external button.
+External button then which elevator should fulfill the request.
+Okay.
+So this is our selection strategy.
+Now let's see this one.
+So here if you see elevator selection strategy I have created one interface.
+Okay I have created one interface.
+Elevator selection strategy.
+It has one method.
+Select elevator.
+Okay.
+Now see what all things it required.
+It need controllers okay.
+So it has list of controllers.
+Elevator controllers.
+If you have 12345 lift means you have five.
+Elevator controller.
+Also, I told you that this lift or this elevator is not smart.
+This controller make them smart.
+So controller has all this information like how this elevator should behave, it manage its bucket list.
+Okay.
+So this selection strategy has a list of controller okay.
+So it need this list of controller also request flow.
+The request which has come the external request which has come from which flow and the direction where
+the user wanted to go up or down.
+So all information it need is this.
+Now let's go to its implementation.
+Nearest elevator and least busy.
+So here I have one nearest and least busy.
+These are the two implementation.
+So nearest elevator.
+So here if you see what I am doing here is nearest one.
+See I am not saying this is the best algorithm.
+There could be many gaps.
+There could be many validations missing.
+This is just like, uh, fully functional one, but it can be improved.
+Okay, Now you have list of controller.
+You know that at which floor you have to go and also the user direction which it want to go.
+Now in the nearest one what I am doing is so you have five elevator controller, elevator controller
+one from this list right.
+Elevator controller two elevator controller three.
+Elevator controller five.
+So total five.
+Elevator controller.
+Now each one I am checking.
+Hey user wanted to go up.
+Is are you also going up?
+Is elevator control?
+Are you also going up?
+If yes, what is the distance difference between two.
+So the floor user is waiting at is let's say fourth and you are going up and currently you are you are
+serving first floor.
+So means you have three floor difference okay.
+So currently this is our minimum.
+This is the best candidate.
+Now I go to the second one.
+Hey, are you also going up?
+Yes.
+Currently.
+Which floor you are serving?
+Let's say I'm serving currently.
+Second floor.
+So means yes.
+You can also serve this one because it's an ascending right.
+So you can serve this.
+So it is fourth floor.
+You are currently at second floor.
+So you have a two floor difference.
+So minimum floor you have to travel is two.
+So now minimum is this so nearest I am taking out the nearest.
+That's what I am doing here.
+So I am iterating over each controller okay I am taking out the next floor.
+Which elevator is going to stop.
+So currently it's already moving state okay so each elevator has two things current floor.
+And the next stoppage.
+So means see in this bucket let's say currently it has at.
+second floor or let's say fifth floor, then sixth floor, then it has to serve eighth floor like this.
+But current floor, let's say it has a second.
+Okay.
+So this is let's say a scenario why I have two feet on an elevator current floor.
+And next stop.
+So current floor which elevator is at its let's say second.
+And here this is its bucket.
+So now elevator has look at its bucket and decided that okay I am ready to fulfill the next request.
+So it's take out one request and put a next stoppage of minus five okay.
+And it remove this bucket five from the bucket.
+Now elevator is moving.
+It's going up to this next stoppage.
+Now let's say if any four comes you will say that hey current floor at elevator is two.
+And can it fulfill for.
+But actually it's it not.
+It's going up.
+But the next stoppage is five.
+It already had picked the five.
+It already has taken the request for the five.
+Now four is coming late.
+Okay.
+It will only be able to serve when it's now going to move down.
+So now here.
+That's why I am taking next stoppage.
+Once the next stoppage is there means lift isn't moving.
+Instead it will only now stop here.
+It has already taken one request from the bucket.
+It removed that request from the bucket and now it is in running state.
+It will move at that stoppage only.
+Okay, so I am using next floor stoppage.
+Okay.
+So this is the condition for the nearest.
+Is the moving direction of an elevator is equal to the same direction where user wanted to go.
+Okay, let's say user wanted to go up, user wanted to go up.
+And elevator is also going up.
+Yes.
+And okay.
+Here if you see that next floor top is less than equals to request floor here.
+In this case what I am checking is that the lift is below the request because it is going up.
+It will fulfill the request in increasing order.
+So lift currently now going to stop let's say at third floor.
+It's next stoppage is it's next stoppage is third floor.
+And the floor from where the request has come for the up is from the fourth floor.
+So yes, it can fulfill because even the lift is in moving state.
+It's next stoppage would be third floor and the requested the request coming from the fourth floor for
+the up only.
+So yes, this is possible.
+It can fulfill this request.
+Okay.
+Because after three it can fulfill four in ascending order while going up.
+So it can fulfill that one.
+So this is the best candidate.
+Similarly I am checking there is that like if lift is going down, if lift is going down then it should
+only able to handle requests which are below it.
+So if lift next stoppage is let's say three, then if our new request comes from floor one then for
+the down also, then it is like best strategy.
+Nearest lift is going down.
+User also wanted to go down and the next stop is where lift will stop is at third and the request has
+come from the floor one.
+Yeah it should be able to fulfill it because while going down, it fulfill in descending order.
+That's a nine, eight, seven, six.
+Then it will three, then one.
+So in decreasing order.
+Okay, so that's what I am checking if the elevator is going up and the request which has come.
+Okay.
+It is at higher position.
+Yes I am calculating the distance and here I am picking the minimum one okay.
+So this is an algorithm I think we already do DSA questions.
+So this would be very easy for you to grasp okay.
+So what here I am doing is like yes it is the same direction.
+Candidate lift is also going in the same direction where user wanted to go.
+And yes, the request can be fulfilled because when lift is going up, the request coming from the higher
+floor only and when the lift is going down, the request coming from the lower floor only.
+Okay.
+so yes, it is a same direction candidate.
+And now I am checking the distance like okay, next floor stop is where the lift will stop and from
+where the request has come.
+What's the difference.
+So I will always pick the minimum.
+If it is less than the minimum then this is the best controller for me.
+Okay, now let's say that if none of the controller is going in the same direction, let's say elevator
+one is going down.
+Elevator two is also going down.
+But the user has requested for, let's say, up from floor four.
+I want to go up, but both the elevator are moving in opposite direction.
+So what to do.
+So I just added like okay, fallback condition would be like if I am not able to choose the best elevator
+in same direction, see if I can pick the ideal one, okay, if there is any idol.
+If that also if there is no elevator.
+Only two elevator.
+Both are.
+I am not able to.
+Both are not idol.
+Then I am directly picking the first one.
+So that's what I am saying.
+I am not saying this algorithm is the best one for the nearest.
+So you can improve it.
+But this is just an example like first priority I am going giving to the elevator which is going in
+the same direction.
+Okay.
+And can fulfill the request.
+If it is going down, it can fulfill the request below it.
+If it is going up, it can fulfill the request above it.
+Okay.
+So this is my first priority.
+If not, I am trying to pick any idol elevator.
+If there is no idol, pick the first one.
+Okay, you can improve it again.
+I am saying this is not the best, uh, nearest elevator implementation.
+This is just for demo.
+Then second is least busy.
+So here, if you see that least busy, what I am doing is here its implementation.
+We see least busy.
+So each each elevator has a bucket where it keep the request which it need to fulfill.
+Okay.
+Second floor, fourth floor eighth floor, 10th floor.
+It has to go like this.
+So that's where I am.
+Just checking for each controller.
+I have this information for each controller.
+I am just clubbing all the load.
+I will come to this minimum and maximum priority queue.
+I'm just clubbing all the load into present into their bucket list, and I'm just picking the one which
+has the minimum load and picking that controller.
+Okay, so elevator selection strategy done.
+Now let's come to the car elevator car moving behavior.
+So see once an elevator is chosen.
+Once an elevator is chosen, that okay?
+Out of ten, this is my elevator.
+It has to fulfill the request.
+Now, it doesn't have to worry about the direction.
+All it has is which floor I want to go.
+Tell me.
+You tell me which floor I want to go.
+Okay.
+Whether I want to go at fifth floor, then third floor, then seventh floor, then 10th floor, then
+whatever, 20th floor.
+So this is like maintenance.
+So these are all requests for it.
+Okay.
+So if it get five it will goes to the fifth floor.
+If it get four it will go to the fourth floor.
+But to best optimize the elevator or to have a less waiting time for the user, there are generally
+two type of elevator algorithm, generally scan algorithm and algorithm.
+So scan algorithm how it works it elevator start from the start and go till one end.
+Okay.
+Let's say these are the floor.
+Floor one.
+Floor two.
+And this floor 17.
+So elevator starting from the floor one it goes till 17th floor.
+And any request which comes in mid it will fulfill it.
+Let's say while it going up.
+So it is going in up direction for now.
+While it going up let's say two has come so it will fulfill two.
+Now it going up.
+Now let's say that it has come.
+Somebody has to go to eighth floor so it will fulfill it.
+So it is maintaining its bucket list.
+Okay.
+Now somebody has to go 12th so it will fulfill this.
+Once it reached inland now it will reverse its direction.
+Now it will come down and it will come down till then.
+Now any request which is now in this moving direction, it will fulfill that.
+Now let's say request come from 11.
+So it is going down right.
+So it will while going to 11 it will fulfill this now if requests come for six.
+If while going there it will stop here also like this.
+And it will keep going like this.
+So it will move from end to end.
+First it goes up, then it goes down, then it goes up, then it goes down, goes on.
+Then that's where look algorithm comes here is that it is similar to scan but with one change is that
+don't go till end, stop when there is no request.
+So now let's say that it is starting that okay it is going up because request is there for 12th floor.
+So it has to go up okay.
+Because current flow let's say this is current flow at fifth.
+Now request in its bucket request come that from the 12th floor this elevator controller has accepted
+a request for the 12th floor.
+So currently it has fifth position.
+So it has to go to this 12.
+It has to go up now once it has reached till 12, so means it has fulfilled this request.
+It has stopped there.
+Now, if there is no more request, it will stop there.
+Now let's say user inside it gives it a command to go to, let's say uh sixth floor.
+Okay.
+So it accepted from the internal button.
+Right.
+So it will accept it.
+One more request.
+Let's say go to six.
+So currently it has 12th floor.
+It has to go to six.
+So it has to go down.
+So it will go till sixth floor.
+Okay.
+Yes.
+If in while it going to the sixth.
+If there is any request come let's say it is currently at uh 12th.
+It is not yet started for the sixth.
+Okay.
+So six is still into the bucket.
+It has not picked it yet because once it picked, it means it has.
+It is his next stoppage.
+It will in running state it will not stop.
+But if it isn't currently bucket list means it is lift is not yet picked.
+Now if request come that okay I want some body has to stop at ten.
+So now while going down it will first fulfill ten and then it will fulfill six.
+And then it will stop here.
+It will not go till end.
+If there is no more request, it will stop.
+Now let's say if request comes for 14, then it will go here.
+So you got it.
+What it is doing it.
+It is looking ahead.
+After reaching a particular point, it says it.
+Look ahead.
+Is there any more request ahead?
+Then only I will move.
+Otherwise no, I will stop.
+Okay, so that's where the look algorithm is.
+So we can implement this look algorithm using two priority queues.
+One is minimum priority queue.
+Max priority queue.
+So that's where I am showing you.
+So this is the implementation.
+So here understand with this When the lift goes up, it has to fulfill the request in increasing order.
+When the lift goes down, it has to fulfill the request in descending order.
+Okay, so that's where I have maintained two Q minimum priority queue and maximum priority queue.
+This is why it will has to go up direction.
+And this is when it has to go the down direction.
+So it will use this queue accordingly.
+Current elevator direction is idle.
+Currently it is waiting.
+And let's say its current floor is fifth.
+It is waiting.
+Now some user has request destination float two from the second floor.
+So now see why I am not discussing about the direction here.
+Now see the request has been received by Elevator Controller one.
+Let's say I am talking about this elevator controller one now request has received to the elevator controller
+one.
+It has to fulfill a particular floor okay direction.
+It will automatically find out like okay, if flow of lift is at current floor fifth and request come
+from 12, it has to go up.
+If the lift is at 12 floor and request come from floor two, it has to go down that it information.
+It can do what elevator controller maintain is the list task list how it is managing that we are saying
+all is interested in the floor.
+Now the request comes for the floor two okay, now current floor.
+Which elevator has is currently an idle position, but the floor is at fifth means.
+If second is less than current floor.
+If two is less than five, what does it mean?
+Means lift has to go down.
+Okay, so it will be served when going down.
+Current floor is fifth, lift is at fifth and request come is for two.
+So lift has to go down right.
+And for going down I am using max priority queue.
+So I put two here.
+Now another destination come for four.
+So four is you can say that four is less than current floor or four is here.
+If you see that current floor currently lift is not moving.
+So current floor is still five and four is less than five.
+Yes.
+Means lift has to go down.
+So I am pulling putting into the max priority queue only and max priority queue four is always on.
+The maximum will always be on the top.
+Okay, now let's say elevator reached till fourth floor.
+Okay.
+And request is served.
+Or you can say that like elevator has reached the fourth floor, so it has removed the fourth floor
+from the bucket and properly serve.
+The request means now elevator.
+Current floor has been fourth.
+Now the request which it has, this elevator controller which has accepted is six.
+Now current floor is four.
+So elevator has to move up right.
+So for up it has to use the min priority queue.
+So it will put this six into the min priority queue.
+But see that the direction of the elevator is still down because currently it is.
+Using the max priority queue means it is going down and it will go down till there is a request.
+That's what we have seen right here.
+It will go down till there is request.
+Till there is request till there is request.
+As soon as there is no request then it can change for the up.
+Okay.
+So even though our min priority queue has record or request is still our elevated direction is down
+because it is going down from fifth floor.
+It comes to the fourth floor.
+Now it will remove two and it will goes to the second floor.
+Likewise it will do okay.
+So our current floor which is here elevator present is at fourth floor.
+So now request come for fifth elevator is at four.
+Means it has to go up to reach to this floor.
+Right.
+So I put it into the minimum priority queue in min priority queue top always store the minimum okay.
+But still that elevator direction is down because max priority queue is not yet empty.
+Now let's say elevator reached to the second floor and request is served.
+So two is also successfully fulfilled and maximum priority queue is now empty.
+Now here elevator current floor is two.
+Now it will change its direction to up and now it will start consuming this min priority queue.
+From here it will start.
+So it will first fulfill five, then the next it will fulfill six.
+And if there is no further request, it will look for max priority queue trying to go down.
+If both are empty it become idle.
+So that's what I am trying to do here in this elevator controller, this one.
+So understand this I have two priority queue.
+So here I have taken a concurrency.
+You can say that the priority queue which can handle concurrency.
+Why?
+I told you we have multiple floors.
+Floor one, floor two, floor three, floor four.
+For and they have button also.
+So our elevator our elevator controller it's bucket can get a request from any of this one okay.
+And also it has one internal button also.
+So request come from any of this floor okay.
+If this elevator is chosen as based on upon algorithm, least busy or nearest is this elevator is chosen
+means it can accept the request from anyone.
+Okay so multiple there are ways through which request is coming into this queue.
+And it is also removing an addition happen in parallel.
+It is lift is also moving.
+It is serving the request also while new requests are coming to.
+So that's why it is always better to use to do properly handling the concurrency.
+So that's why I am using a priority blocking queue.
+Okay, so up min queue is for the violet going up.
+Minimum priority queue down.
+Max queue.
+It's while it has to go down.
+It is a maximum priority queue.
+Now it has one method.
+Submit request.
+Okay.
+All it interested is the destination flow.
+When somebody is calling.
+This submit request means this lift is chosen.
+Okay.
+Out of this three.
+Lift.
+Elevator one.
+Elevator two.
+Elevator three.
+Each one have their own controller.
+Now if anyone calling submit request means out of this three for a fulfilling this flow request or any
+flow request, this elevator is chosen.
+So all it interested in like okay, which floor I have to serve.
+So okay, that's what I am doing.
+So when it it takes it, expose a submit request method and have a destination flow where I have to
+go and now it NQ request.
+So here I am doing this how it meant, how it insert a record into min priority queue and max priority
+queue.
+So here if you see I am checking if destination floor the floor where user wanted to go the request
+I am accepting right?
+It is accepting.
+Hey, a new request is coming for the fifth floor.
+Where to put.
+Okay, so now it is checking.
+Hey, my next stoppage.
+I told you already about the stoppage, right?
+Difference between current floor and stoppage.
+Current floor means where the elevator currently at second floor.
+Third floor.
+Fourth floor.
+Next stoppage means elevator has already taken, which it is going to fulfill it, so its next stoppage
+would be here.
+So even if you come, elevator is at first floor itself, but it has accepted this request from the
+queue.
+Let's say min priority queue.
+It has removed five and it has accepted it.
+Now its next row would be five.
+You can't say that.
+Hey, current floor of the elevator is one.
+Why can't it fulfill second?
+It can't because it has already accepted five.
+So it will first go to five and while moving up because from first to five it has to go up.
+So it will not fulfill two.
+At this point of time.
+When it goes down, then only it would be fulfilled because even though this is the current floor,
+but it has already accepted this, so it is its next stoppage.
+It has removed this from the bucket and accepted this.
+Okay.
+So that's why I am checking if the destination floor, whatever the new request is coming.
+If it is equals to the next stoppage.
+Anyway, I have to stop there.
+So do nothing already.
+Lyft is going to that floor only if destination floor is greater than the next stoppage.
+So means Lyft is going up.
+Okay, I am checking if the destination floor, which is five, is greater than the next stoppage.
+So next stoppage of Lyft is that next stoppage is three.
+Currently, Lyft is at first and Lyft is already moving.
+Next stoppage is three.
+If the request destination is for greater than then means yes while going up it can be fulfilled so
+it will put into min priority queue.
+Yeah, the next floor where Lyft will come is three.
+And you are.
+You want the Lyft at five?
+Yes.
+It can go up in the same direction.
+It can fulfill an increasing order.
+One, three.
+Let's say then five.
+Else I am putting into down scenario is that let's say request R, next stoppage is three and the request
+come from two.
+So here lift is already even.
+Lift is at first but the next stoppage is three.
+Lift will only stop at three.
+Now.
+If the request is for two it will not stop.
+So that's why it will.
+I have put into Max.
+Once it reached till 515, then it will going, going down.
+It will fulfill the second.
+Got it.
+So that's what I am checking.
+So this is one way of inserting the request into minimum and maximum.
+Okay, so based on the stoppage I am selecting.
+Okay.
+And also you can, uh, do this like if stoppage is at let's say 10th floor.
+So lift stoppage is 10th floor and request request coming for let's say fifth floor.
+So what I am checking request is at 10th floor.
+Destination floor greater than equals to next floor stoppage.
+No destination is your five.
+It is not greater than this.
+So means it has to be put into max.
+It's going down so it will put into down max.
+Q okay, put it into five.
+Okay, so with this scenario, with this if else condition my min queue for up scenario and for Or max
+Q for down scenario is properly handled.
+Okay.
+And very important thing is my next floor stop is because let's say if any bugs comes in your implementation
+that hey, my current floor lift is at one.
+And uh.
+Even though it accepted the floor two, why it didn't stop there?
+Because, uh, we have to while from the queue, we have to first, let's say if you have three, first
+you have to remove first three to fulfill it.
+Right.
+So means it has accepted.
+So it will next stoppage is three.
+So it will not stop at like three.
+It it will move to three.
+And after that it will only fulfill able to fulfill upper than more than three.
+Okay.
+So your lift will behave improperly because first from first it will goes to three.
+And now if you insert two it will go down to two then.
+Okay, so you are up.
+Priority queue will not work like properly if you just look at current flow.
+Okay so next floor stoppage is very important.
+And also what I am doing is I have created one monitor object.
+Okay.
+Just very simple monitor object.
+Whenever any submit request comes in I just notify means if there is any elevator sleeping, wake it
+up, wake up.
+There is a request.
+Okay.
+So this is for submitting the request.
+Now here if you see this is the control elevator we will see that during the implementation.
+But I hope this, uh, min priority queue.
+Max priority queue is clear, Which I wanted to tell you about the look algorithm.
+We can implement this with min priority queue and max priority queue.
+Now let's see the UML.
+If some basic things are our clear that how elevator works, what are the algorithms as elevator selection
+strategy and all.
+Now first thing I am designing elevator, an object which move to a particular direction when asked
+to.
+Simple.
+It's a very dumb object.
+You whichever floor.
+Let's say first it do ten.
+It can.
+If you ask it to go to one, it will go one.
+If you ask it to stop it, sorry, it will stop.
+So that's our elevator car.
+Let's see this object.
+So what I have I have id, I have current floor also I have next stoppage.
+Next stoppage, next floor stoppage.
+Moving direction where the elevator is going up or down or idle, and the door.
+So door has nothing but an it's an enum up, down, or this is the elevator direction.
+Door is this object which has simple door state, which is an enum door open, door closed and it has
+just exposed method.
+Open the door.
+Close the door.
+That's all okay.
+And it has one method move elevator.
+So okay.
+Move elevator is very very simple.
+Like whatever the destination floor I have.
+Like I told you, it's it's not a smart object.
+Whichever floor you will ask it to stop, it will go there.
+So here I have this logic.
+So whatever the destination floor you have asked me to, I change my next stoppages there.
+I just accept it.
+You asked me to move.
+I will move my next stoppages destination floor only.
+Okay.
+And it will.
+Just checking.
+Hey, if my current floor itself is my next floor stoppage itself, just simple.
+Open the door.
+Okay.
+And don't even move.
+Okay.
+Otherwise, it will start from its current floor.
+Okay.
+And close the door first.
+And it is starting from the current floor till the next floor.
+Stoppage, which is nothing but a destination floor.
+Okay.
+And it changes direction to up.
+Why?
+I am saying that if the next floor stoppage is greater than current floor.
+If current floor is current, floor of the lift is two and the next stoppage.
+The destination which you have passed is, let's say ten means it has to go up.
+So that's what I am doing here.
+If the next floor stoppage is greater than current floor means it has to go up.
+It has to do plus one plus one plus one like this.
+Okay.
+So start, start from this floor till the next floor destination do plus one.
+I am just making it sleep so that it it would be easy to our test.
+Otherwise it finish as soon as possible.
+Okay and I am keep updating my current floor.
+So current flow.
+Let's say it is starting from zero.
+So I equals to one.
+So current floor is my one set current floor one I plus one current flow 2345.
+And when it reached till this destination okay let's say float ten.
+So current floor is ten.
+And then it will stop.
+Okay.
+If your destination floor is below the current floor.
+So it will go to the else part.
+So means it has to go down okay.
+So that's why I told you this elevator car itself can find whether it has to go up or go down based
+on its current floor and the destination where you have asked it.
+Okay, so if the destination is set up, it will go up plus one plus one plus one.
+If the destination is down, it will go from here down minus one, minus one, minus one.
+So that's what I am doing.
+Minus, minus.
+Keep setting the current floor, decreasing the current floor with every loop.
+And once it reached till this destination, it will stop.
+It goes out and it will open the door.
+So very very simple move elevator method.
+Okay.
+Uh, based on the current floor.
+And the next stop is next stop is nothing but a destination floor.
+It goes and goes down.
+Goes up or goes down.
+So elevator car is done.
+Then we have this elevator controller, the brain of the elevator car.
+So here elevator controller has elevator car okay.
+That's why it has a relationship.
+I told you it has it.
+Maintain the two queues.
+Min.
+Priority queue.
+Max priority queue.
+This is for up direction.
+This is for down direction.
+Again, this is an algorithm.
+Okay.
+If you can think of some different better algorithm which you need only one priority queue or not even
+a priority queue at all.
+That's an implementation.
+Okay, so while submitting a request currently for now, as per my logic, whatever the destination
+floor this elevator controller is getting, I am deciding based on the next stoppage, based on the
+next stoppage of the elevator, whether I have to put at min, or whether I have to put at max where
+I have to put okay.
+So that's where elevator controller.
+Whenever any submit request comes, I calls NQ request this method and based on the next floor stoppage
+I either put into up and down, we have already seen that it also has one method control elevator,
+which is the runnable.
+This is important.
+So I have created this class implements runnable because I have to create thread.
+So this two elevator need to run in parallel okay so how they will run.
+So that's why I create a run from this.
+I will create two threads so that they both the elevator will start okay.
+In the control elevator.
+See what I am doing?
+I told you we are implementing look algorithm.
+So it will goes to a position let's say going up for now.
+So it will look at up priority queue.
+When it is empty it will stop here.
+It will not go till end.
+This is our end.
+This is start.
+So then it will look for down priority queue.
+So till wherever the down priority queue has the request, it will fulfill there only and then it will
+again look.
+Hey is there any up?
+So alternatively it go and check okay.
+And if both are empty it should stop.
+It should not unnecessarily go to end.
+So that's what I am doing while true okay I am first checking if up priority queue and down priority
+queue is empty for this elevator.
+If there is no request at all, I am just printing it.
+This I am just moving the direction change to the idle okay and it goes to the sleep.
+This elevator goes to sleep if there is no request present and when it will arrive and when it will
+wake up.
+Whenever any new submit request comes, it will put into one of its queue, either up or men are up.
+Priority queue and down priority queue.
+And after that it will notify.
+Okay, so this is just to have a behavior where in our requirement gathering.
+If interviewer has asked that okay do this elevator should remain sleep when no request exit and wake
+when new request arrive because I got from engineer that this has been asked as a requirement.
+So that's why I implemented this.
+You can simply do that.
+Then the both minimum priority queue and maximum priority queue is empty.
+Go to the sleep and elevated direction is idle.
+Okay, now here I am checking first going up.
+So here I am first going up and checking here if you see this one.
+Up min dot is empty.
+So it is while first I'm giving priority to the up direction.
+So here we'll go.
+It goes to the up direction.
+Okay.
+So it is checking the up priority queue.
+Up min.
+Priority queue.
+So it will pick one one floor out of it and ask the elevator to move to that direction.
+Okay.
+Once it is empty, then it will stop here and look for the down.
+If down, Max priority queue is not empty.
+Take one one floor from it and ask the elevator to go to that floor.
+Okay.
+Once it's done, it has to repeat it while true.
+Okay.
+After that, it has to go up, down, and then again go up.
+When both are empty, move.
+Go to the sleep state.
+So elevator controller is clear.
+And in the demo I will show you how.
+We will create two threads and all.
+The third is elevator scheduler.
+So elevator scheduler, I told you that here, if you see it has a list of elevator controller.
+I told you we can have five five elevator.
+And each elevator car has their own controller.
+So we have a list of elevator controller.
+And also out of this controller, whenever any request comes from external, we have to pick one controller
+based on the particular strategy.
+So that's why I have created using a strategy design pattern elevator selection strategy.
+So I have one strategy here okay which is an interface.
+We have already seen that nearest elevator strategy least busy strategy.
+We have already seen that okay.
+And here I am using the interface here.
+So in dynamically we can tell which strategy we want to use okay.
+So here in the elevator scheduler I have one set strategy.
+And the second method I have is assign elevator.
+So how it is choosing it is calling the strategy.
+Strategy dot select elevator.
+Whatever the controller it will give.
+It will also return that.
+Okay.
+So it will just provide a list of controllers.
+Okay.
+And expose the method assign elevator from which we can.
+It will invoke the selection strategy like whichever we have selected, whichever the algorithm we have
+chosen based on that it will pick one controller and return.
+So this is clear till now the this is clear right now button and dispatcher.
+Now we have button.
+External button.
+So here we have external button and internal button.
+Let's first focus on external button.
+External button from the previous discussion I told you that, uh, any request which come from external
+button, we have put a mediator dispatcher.
+Okay.
+So it has a dependency with an external dispatcher.
+Dispatcher.
+What will do is like it will do two things for us.
+First, it has a dependency with scheduler.
+So what it will do is it will call the scheduler first okay.
+So it will call the scheduler first.
+Get a controller okay.
+And using that controller it will invoke the particular controller.
+So that's what I am doing.
+Let's see external button.
+External button has a dispatcher object okay.
+So when we create an external button object right we will put a dispatcher object.
+So whenever any floor.
+Press the button of an external button.
+Okay.
+What it will do is it will submit the request.
+From which floor?
+From external.
+Two things only comes.
+We have already discussed floor where user is present and the direction where user wanted to go.
+So it will call the button is calling the dispatcher okay.
+And pass this floor and direction.
+Now what dispatcher will do?
+Dispatcher has the scheduler right.
+So dispatcher first asks the scheduler, hey, this is the floor okay I have this is the floor from
+where request has come.
+And user wanted to go in this direction.
+Assign me one elevator.
+It will ask the scheduler.
+Now what scheduler will do?
+Scheduler.
+Has a list of controllers, multiple list of controllers, and one strategy, so it will use this strategy
+to pick one controller out of this and return one controller, and that controller dispatcher will use
+to submit the request to an elevator.
+Okay, so that's how it is linked.
+When user press an external button, a press button, the request goes to one of the controller.
+But how it will first goes to dispatcher.
+Dispatcher will ask to the scheduler that, hey, this is the floor and this is the direction.
+Uh, assign one elevator to me.
+Okay.
+So scheduler out of this multiple controller and based on this strategy, pick one controller, give
+it to it, and it will call the elevator submit request.
+Okay.
+Similarly internal button.
+Now internal button.
+One thing is that internal button has controller.
+I told you internal button is very tightly coupled with controller.
+Each controller has one internal button.
+So this button is specifically for this controller whatever the object we will add.
+So either it can directly call elevator controller itself okay.
+Or if we want okay, we can take out an object of an internal dispatcher.
+And we can ask the internal dispatcher to submit the request.
+So you can, uh, consider that internal dispatcher currently here is of no use because we are not logging.
+We don't have any common validation.
+You can simply understand that internal button is directly submitting a request to the elevator controller.
+Okay.
+So this is clear the buttons and the dispatchers now the floor and the building.
+So I have created a floor object.
+So floor has what floor number.
+It has two button up button down button Okay, so it has two external button, one is up button, another
+is down button and it has method up button.
+Press down button.
+So here we'll see.
+So floor floor number.
+External button has one up and external button down.
+Okay.
+So whenever you create a floor it will create like this is the floor number.
+What is the floor number added.
+And it will create two buttons.
+And while creating a two external buttons we have to provide a dispatcher.
+Also because external button has dispatcher.
+So we have to provide the dispatcher also.
+And when a user passes the up button, when user presses the up button, so it will pass the request
+to this external button.
+Right.
+So floor is this floor number okay.
+And direction would be up.
+So this direction would be up when you press the up button that user wanted to go up when user presses
+down button.
+So this is the floor and user direction is down.
+User wanted to go down and based on that elevator button can goes to the dispatcher.
+Dispatcher goes to the scheduler.
+Pick one controller and the controller.
+We can submit the request.
+Make sense.
+So and yes we have a building which has a list of floors.
+That's our total design of an elevator.
+Okay I have shared the PDF link of this and also shared the git.
+You can check out the code.
+Let's see the demo.
+So in the demo what?
+See what I am doing?
+First I am creating an elevator car and their controller.
+So first what we are doing is we are creating this elevator object.
+So I'm creating a new elevator.
+Give it an ID one.
+Okay.
+Currently, direction would be idle by default.
+Direction is, uh.
+We have given an idle.
+So here.
+Elevator car direction is idle.
+Current floor is zero.
+Okay, so ID we have given is one.
+I told you that each elevator car need controller.
+So I am creating a controller for this.
+So I'm creating a new elevator controller.
+And this elevator car I have assigned.
+Similarly I created second lift second elevator and created its controller.
+Also new elevator controller.
+This is handling car two.
+Elevator car two.
+So we have created this.
+We have created this.
+Then I am creating one internal button for each elevator.
+I told you that internal button is tightly coupled with elevator controller.
+For each elevator, there is one internal button, so that's what I am doing.
+Internal button for elevator one.
+So I am creating new internal button.
+And this controller.
+So this one handles controller one and internal button for elevator two handles this controller two.
+So I have two internal buttons okay.
+So this one is also created.
+So this dependency is also fulfilled.
+Now I am creating a scheduler with nearest strategy.
+So I am creating now scheduler object.
+So new elevator scheduler.
+It has a list of controller right.
+So I am passing an array as list controller one.
+Controller two.
+So I have a two controller right for two left.
+So list is updated.
+And strategy I passed this like new nearest elevator strategy.
+So while creating it setting up I have provided that follow the nearest one strategy.
+That is also done.
+Now here I am creating an external dispatcher.
+So I have created a dispatcher object.
+New external dispatcher and pass this scheduler object which we have created to this one.
+So this is also fulfilled and we can create an object of the dispatcher also.
+Now once we have created a dispatcher now I am creating a building and floors.
+So here I am creating new building.
+Total floors I wanted is five and I passed this external dispatcher object.
+So in the building constructor what I am doing is whatever the number of floors, I am creating that
+many floors.
+Okay so floats dot add new floor.
+Okay I'm creating let's say five right.
+So five floats I am creating new floor 12345.
+And each one has this dispatcher.
+So each one.
+So I am creating five floors.
+Floor number 12345 new floors.
+And while creating a each floor up button and down button has reference to this dispatcher okay.
+It has reference to this dispatcher external button.
+Okay.
+So here I am creating an.
+External button up and down.
+So here when the floor.
+New external button.
+New external button an external button need dispatcher.
+And that dispatcher we have already created so that we are passing from the building.
+Right.
+So here building create a five floor.
+And this is the external dispatcher.
+So again it is creating running five time loops creating five floor.
+And here I'm passing the dispatcher and the floor.
+It will create floor number up and down new external button.
+And while creating external button it pass the dispatcher okay.
+So everything is set up now.
+So building done, floor done.
+All thing is done right now I am creating two threads and the what?
+The thread which we are running is this one elevator controller control elevator.
+So this is what we have.
+So I am running it starting the two thread okay controller one and controller two.
+I am giving it a name.
+Elevator one.
+Elevator two start a start.
+So now two threads are running.
+They will make uh, so it has a elevator controller has run method that will got invoked and run method
+is calling control elevator.
+So this will now start running okay.
+While true up currently see we don't have any request.
+So priority queue is empty down.
+Priority queue is empty.
+So elevator would be an idle state and it would go to the sleep for now.
+Okay.
+When we have started it, both the elevator.
+Elevator one.
+Elevator two.
+Both will go.
+Might be sleeping but it is started now.
+Let's submit the request.
+So I am submit the request.
+Like this.
+First, I am making an external call from third floor up.
+That's a five floor we have created, right?
+One.
+Two.
+Three.
+Four.
+Five floor.
+So first request is coming from this third.
+Wanted to go up then external again external call floor five down.
+From this it wants to go down.
+Okay.
+And let's say this is two lift elevator one.
+Elevator two.
+Now from internal elevator one press for has done.
+So there is an internal button let's say so for come from this one okay.
+Then again internal from elevator five comes and then external call floor one down and external call
+flow to up.
+So these are the sequence of requests which we are going to do.
+Okay.
+So this is just to go through what I have done here.
+So to submit a request what I'm doing is from third floor I need to press an up button.
+So building dot get floor third.
+So get floor is just nothing but a method out of five floor.
+It will return me that particular floor.
+Okay so building dot get floor.
+Give me the third floor okay.
+And press its up button.
+When you know that when you press the up button what would happen?
+Press up button.
+We have seen that what it will do up button.
+It will pass the request to the external button floor number and direction up okay.
+So when you press the up button so what it will do is it will call the press button.
+Floor is third.
+Direction you wanted to go is up, which further goes to dispatcher and all.
+We have already seen the flow so.
+And for the testing purpose only, I put A55 millisecond delay so that lift to.
+We get some, uh, not realistic, but at least it's easy to, uh, test it.
+Otherwise it will just one lift itself will complete everything.
+Okay.
+Similarly, our second was like from floor five down.
+So building dot get floor fifth floor presses down button from elevator one itself.
+I need to press the fourth button.
+So internal button of elevator one I am pressing the button four.
+So this request should be handled by the elevator one only internal button press five.
+So this should be handled by elevator one only.
+Then this is two external call from floor one down floor to up.
+So that's the same thing for one down flow to up.
+So the same thing I have coded through this.
+Now we have two floors.
+Okay.
+And here I have like one more internal button.
+So here we have to write it.
+Seven.
+What we are doing is internal button for elevator one.
+One more time.
+We have already have internal for elevator one two times.
+Let's remove this one.
+Okay.
+So let's say that this is the request which we are currently handling.
+Now I am running it.
+Run.
+So see this.
+Let's first focus on elevator one.
+So we will see all this.
+Elevator one one.
+So currently if you see both elevator two and elevator one is idle.
+Idol.
+Okay, so we will also see how this thing goes.
+Elevator one.
+Elevator two.
+So it has its own bucket.
+Min max.
+It has its own bucket.
+Min max something.
+Okay, so currently when we started both the threads.
+So both elevators.
+Min priority queue.
+Max priority queue is empty.
+So that's why they are idle.
+Now the first request come was destination three.
+So who accepted this elevator?
+One.
+Okay.
+This one.
+Just catalog.
+Uh, not catalogs.
+You can say that says, uh, console logs I have added just for the debugging or testing purpose.
+So first request was over this one.
+Right.
+Floor.
+Third press up.
+So who is accepted?
+Elevator one.
+Okay, so elevator based upon our nearest algorithm, which might not be perfect.
+Again, I am saying.
+So this has accepted this.
+So it has currently its current floor is zero.
+Now this is its destination which it has to go.
+So means it has to go up.
+So it will put it to its min third.
+Okay.
+Now it says that serving floor three by elevator one current floor is zero.
+So it removed it.
+Serving means next next stoppage.
+So serving is three.
+So now it started moving up okay so here here if you see elevator current floor is zero going up.
+Elevator current floor is one going up okay.
+While elevator is at current floor one, it accepted two more requests destination floor four accepted
+by one, and destination five accepted by one because they are generated from internal button from elevator
+one itself.
+So it would be accepted by elevator one only.
+So it has now four and five okay.
+And why I am putting into a min priority queue.
+Because see, elevator one is going up and the next stoppage is three.
+Serving is three okay.
+So it can easily handle four and five.
+So elevator one current floor is two going up.
+Elevator one current floor is three going up.
+So now this three is the serving right.
+So it reached till this point.
+So now it will open the door here.
+So where is that elevator one.
+Current floor is three going up opening the elevator door for the elevator one.
+So it has opened the door and this is fulfilled properly.
+So now it's current flow is three.
+Serving or serving floor was also three.
+So now they are same means they have reached to this destination.
+Now it is going that serving floor.
+For now it has take out this four from the minimum priority queue.
+Now our next stoppage is four.
+Thus it is serving now four okay so elevator current floor is three going up okay.
+While it is going up it has also accepted one more request.
+Destination floor two accepted by elevator one okay.
+Now see here.
+Elevator is going up so two it cannot put here.
+Current next stoppage is four okay.
+It can only take if the request is more than this increasing order 567 in the minimum.
+So if it is not in increasing order, it has to put here while going down.
+So two it has put into max.
+When it will go down, it will use that.
+So elevator current flow is for going up.
+And now it has reached till the next stoppage for.
+So it will open the door here.
+So now its current flow is also four.
+And next stoppage was four.
+So it will reach there.
+So it will opening the door at of elevator one.
+Now it removed the next from the minimum.
+So currently it is still not looking.
+Max.
+It is still going up.
+It has more data right.
+So now it remove five.
+So next stoppage or serving is now become five.
+Current flow is four.
+So it has two means go up only okay.
+So elevator current flow is four.
+Going up.
+Elevator current flow is five.
+Going up means it current flow is five.
+So it reached to this next stoppage.
+So it will open the door.
+Now Opening the elevator door of one.
+Okay, now here, if you see it has fulfilled this and minimum priority queue is empty.
+Now it will look at max priority queue two.
+So its current floor is fifth.
+This is current floor.
+Now it will look at this and now it will become its next stoppage.
+Next stoppage or next serving floor is two.
+So it has to go down from 5 to 2.
+Serving floor is two okay and current floor is five.
+So it now moved down elevator one from five.
+Coming down 432 it reached till two.
+And then so two it has to fulfill right.
+So it reached till two.
+Now it will open the door.
+Open the door at the elevator one.
+Okay.
+Now it has accepted any other request here if you see I think.
+Yes.
+Opening the door of an elevator.
+Closing the door of elevator.
+And it started moving to first position.
+So yeah, there is one first position also.
+Right.
+Press down.
+So who has accepted this one?
+I think we missed that serving flow to request request detail.
+So where is the first one.
+So destination 43541.
+So destination floor one is also accepted by elevator one itself.
+Right.
+So it will also get fulfilled here.
+So I think you got it right.
+So it's working as expected.
+Like whatever the algorithm we have implemented here.
+Nearest elevator strategy okay.
+So And based on the look algorithm which we have implemented, it's working as expected.
+So if you have any doubt you can go through this code I will share the git link.
+Okay.
+You can go through it, code it once.
+Change the algorithm if you want.
+Play with the data okay.
+Understand the design okay.
+So many times what happen is it's a we can also have like okay if different classes, different controllers
+or different design you come up with that.
+That's also fine okay.
+So it's not should be like this design is only correct one.
+So there could be gaps in this.
+So come up with different design if you want.
+The main focus should be can we design a scalable one and functional one okay.
+So I hope with this elevated design lot of doubts would get cleared.
+If there is still any, let me know.
+We can discuss into the comment section by.
+    </pre>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>33.circuitbreaker</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="circuit_breaker_notes.html" class="btn">View Notes</a>
+    <h1>33.circuitbreaker</h1>
+    <pre>
+What does Circuit Breaker says?
+This pattern prevents an application to make repeated calls to downstream service that is likely to
+fail.
+Okay, so we'll come to this line again.
+But see this diagram.
+So let's say our application is order service right.
+And we and this product is a downstream.
+So order is invoking product for.
+Now assume that this product service is unavailable.
+So no matter how many times you call, this call will fail.
+Right.
+So product service is down no matter how many times whether you are doing a retry of the same call or
+whether you are making a totally different call, it will fail.
+So there is some disadvantages for it.
+The first disadvantage is we put unnecessarily add load to the product service and because of that product
+service might take longer time to recover.
+So see product services already unavailable, right?
+It is facing some issue and we are adding more load to it.
+So there is a chance that product service might take little longer time to, uh, come up in the healthy
+state.
+The second is order services unnecessarily wasting its resources, both latency and the thread blocking.
+So just see that if, let's say there are thousands and thousands of calls and product service is unavailable,
+they all will fail.
+So order service is unnecessarily wasting its resource because there is a latency involved.
+It calls it.
+It waits for the product service to response till timeout, and then only it will send to the client
+that hey, it's a fail some five x error something.
+Okay.
+So there is definitely increase in latency and you are unnecessarily blocking your thread on this call.
+Okay, so there is no need because even if you waited, the call is likely going to fail because the
+product service is unavailable.
+But now what is the solution?
+How does order Service know when to stop the downstream call?
+Like we are saying that hey order don't make unnecessarily call to product because it is unavailable,
+right?
+But how?
+Order knows that when it is unavailable, when it is up and when I okay if it is unavailable, when
+again I have to restart.
+So something has to instruct this.
+Uh, you can say that knowledge.
+Somebody has to put this knowledge to order, right.
+Then only order would be able to stop or restart the call.
+So who at that knowledge, that is circuit breaker.
+Okay.
+So again, revisiting the line which we went ahead in the first place, it prevents an application to
+make repeated calls to downstream service that is likely to fail.
+So see this diagram now.
+So now order service let's say make initial calls.
+And both got failed.
+So now we will put some threshold value that hey if this many calls get failed means there is some issue
+with the product.
+So don't make any further calls to it.
+So now after that, once that threshold limit is reached, we will stop the future call to product.
+So now all future calls.
+There is no hit to the product.
+We will fail the call immediately.
+We will not block the thread.
+We will fail the call immediately.
+Okay.
+And we will wait for some time.
+After that we will check if product service is healthy or not, so it will do a trial testing.
+After some time, hey, it will send some sample.
+Or you can say that the test calls hey is product service is responding properly or not?
+If yes, then only it will allow future calls to the product.
+Okay, so whatever we have covered here it is can be understand.
+It can be understand through this state diagram.
+So start from here.
+This is the initial state okay.
+So for any application the best case is closed.
+Closed means that all calls are allowed to downstream service means everything is going good okay.
+Circuit is closed.
+Means just remember always sometime many times engineer get confused that hey, circuit is closed.
+means no calls.
+No.
+So see, consider this as a circuit.
+So when the circuit is closed, then only electricity will flow.
+When the circuit is open, then electricity current will break.
+Understand?
+It is just to remember this.
+So when the circuit is closed, all calls are allowed to downstream service.
+Now if failure limit cross the threshold let's say five failure six failure.
+Whatever the threshold we will set if that many failures.
+So see there could be some success.
+There could be some failure while making a call to downstream.
+But if the failure limit threshold value is crossed, then it moved from closed state to open state.
+Now, open state means no calls allowed to downstream service and fail the call immediately.
+So after this it wait for a certain time, which is like you can say that timeout period.
+After that, let's say it could be ten second, five second, 15 second that, hey, for five second
+or ten second, no call is allowed.
+After that it moved to half open state.
+Half open state says that allow only limited number of test calls to downstream and track their success
+rate.
+Say I say that hey allowed only three calls.
+Allowed only five calls.
+So very limited number of calls.
+We will send it to the downstream and then track their success rate.
+If the success rate is 100%, then circuit can be closed again.
+But if the success rate is not 100%.
+The state goes back to open.
+Okay, so whatever we have seen this can be easily represented through this state of circuit breaker.
+    </pre>
+</body>
+</html>

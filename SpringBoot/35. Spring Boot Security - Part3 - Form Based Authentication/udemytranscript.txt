@@ -1,0 +1,871 @@
+Hey guys on this side.
+Welcome to Concept and Coding.
+And today let's start with our first authentication method that is form login authentication.
+So um in the previous video we have already seen how we can create a user dynamically.
+And what is the industry standard.
+So this is the very base of you can say that the authentication method before we I know that we eagerly
+wait that okay, let's why not directly jump to JWT which is very very frequently used nowadays.
+But to understand JWT also, we need to first understand what was previously popular, what were the
+disadvantages, how it was working, and then only while understanding a JWT and OAuth it would give
+us a better sense.
+Okay, what advantage they are adding.
+Okay, so let's not skip this and let's understand this.
+Like it would be a uh, like very good interesting.
+Uh, you would get to know a lot of things.
+In 2015.
+I used to work a lot in this, but now, yes, uh, it may be very used.
+Limited purpose.
+Okay, so let's start without wasting any further time.
+So form login authentication.
+It's a stateful authentication method.
+Stateful means your server is maintaining a state of a client okay.
+Server maintains a user authentication state AKA also known as session.
+So server maintains the session so that user don't have to provide username password every time with
+each request.
+So in this what we have appended, you have a client or let's say that user and you have a server.
+So first time only it provide username and password.
+At this point of time server create a session and stores it.
+Okay.
+Now also send this session back.
+Hey, this is your session now.
+For all the subsequent requests, the client do not provide username and password.
+It just provide the session.
+It just provide the session and server validate the session.
+If it is validate the request has been processed successfully.
+If the session is not valid, whatever the session ID is provided by the client.
+If it is not valid or not found, the request is not entertained.
+Okay, so that's what it means.
+So that user do not have to provide username password with each request for.
+With each request, they provide a session so user enters their credential in an HTML login form.
+This is for the first time on successful authentication.
+A session is created to maintain the user authentication state across different requests.
+Okay, so server is the one who creates a session and stores it.
+Okay.
+And also in the response it send.
+Now with subsequent request, client passes this session ID not username and password.
+Very important it do not pass username and do not pass username and password.
+It only passes the session ID and server validates it with the session ID which is stored internally.
+Okay, so I'll tell you we will see with an example.
+And also see this one why it is important.
+It's it is a default authentication method of spring boot security.
+So if anybody asks you like uh what is the default authentication method.
+Is it JWT.
+No.
+Still, form based authentication is the default authentication method.
+So if you have to use JWT we have to manually tell hey use JWT.
+Otherwise if you don't tell the spring boot, consider it as a form authentication method.
+I will tell you where it is.
+Are defined as like it is a default.
+Also there are default URL of a login and logout.
+So login URL is slash login slash logout.
+So what is this like.
+So the first URL where we have to provide username and password right.
+So it has a default URL is login okay.
+And once your session is created once your session is created okay.
+It is valid for a particular amount of time.
+We will see that.
+But let's say that you have to invalidate the session before that time.
+You can call logout slash logout.
+So these are the default URL which are provided by spring boot.
+For the form based login.
+You can use this.
+When you use this login you can provide username password.
+Your session would be created.
+And if you call logout your session would get invalidated.
+Okay we'll see that.
+So this is the default login logout URL.
+Now one first thing comes to our mind that hey, what is session and when does it create it?
+So this is one basic flow.
+I am showing you this is your client could be your browser and this is your server.
+The first endpoint they hit is login slash login which is also a default one okay.
+With this one they will provide username and password.
+Okay.
+So when this happened what server will do.
+It will create a new HTTP session.
+So this is one object.
+It creates a new object.
+This object is HTTP session object okay.
+It it contains various information like what is the session ID okay when the session was created.
+And its expiry time.
+Okay etc. there are lot more information.
+We will see that.
+So it so it creates a HTTP session and provide one session ID and saves it in the servlet.
+Okay.
+We can also save it in the DB also.
+But by default you can say that it's in memory like it's in the servlet itself.
+Like Tomcat, if you are using Tomcat, it's an insider.
+You can say that Tomcat or you can say the in-memory Ram.
+So this object is stored, created and stored in a servlet also.
+Now once the authentication happens username password authentication happens servlet session object
+is created.
+The response in the response in the return it set the cookie.
+Also in the cookie the session ID it will put the ID this session ID okay.
+So it returns that now your session is now on.
+Okay.
+Currently it is active state.
+Now for any further request from the client.
+Now they are not passing you username.
+Password.
+Okay.
+They might be calling slash users or slash anything.
+Okay.
+They are just passing in the cookie session ID and what is the session ID is the one which was received
+previously.
+Now once it get server get it.
+What it will do is it will search for HTTP session object with the ID this one.
+If there is an active session, it will find it.
+Yes, it fetches it okay.
+If it is found if the HTTP session object is found and if it is valid it is not expired.
+It will fulfill the request.
+It will entertain the request whichever it is coming.
+But if the HTTP session object is not found or it is not valid already expired.
+It will redirect it to login page.
+It will redirect it to the login page.
+Okay.
+So that it has to re authenticate themselves.
+So this is generally known as when we say that session.
+This is known as.
+Yeah a session has been created means it is maintaining the user authentication state.
+Yeah.
+User is still valid.
+Uh any request which comes in.
+Yeah.
+Uh, we can fulfill that request okay.
+So by default, time to live for the HTTP session is 30 minutes.
+So this object which created right HTTP session object by default it is 30 minutes.
+But depends upon uh servlet.
+Right.
+If it is a Tomcat servlet container you are using then it is 30 minutes.
+But I would say that it depends upon the servlet container which one we are using.
+Also we can configure it to.
+If you don't want 30 minutes you want like okay I want only five minutes.
+We can change that also.
+We'll see that.
+And we can also store the HTTP session in DB also.
+So currently I told you that by default it will store in memory.
+Right.
+But we can also make sure that it can store in the DB because it is possible that we have many server
+server one, server two okay.
+If they are storing in memory the session and if this is a client, this is your client.
+If the client request goes here, yeah.
+Session object is present in memory.
+It would be able to fulfill the request.
+But what if the next time client request goes to the server two.
+Now server two don't have the session okay.
+Then it will ask client to Reauthenticate.
+Hey first login.
+Okay, so it would be a bad user experience.
+So generally in that case in DB it has been this session has been stored in DB.
+This session has to be stored in DB so that no matter client request goes to whichever server.
+From there they can query the DB phase, the session whether it's valid or not, and fulfill the request
+based on that.
+Okay, so see this first in application dot properties I am setting server dot servlet dot session dot
+timeout.
+So this is you can change this one I have changed it to one minute okay.
+By default it's 13 minute.
+And I will change it to one minute.
+Now if there is no activity from the user side for one minute, then in one minute this session object
+will get expired.
+Just see what I am saying.
+No activity so only after one minute of inactivity makes the session expired.
+But now let's say it's 1201.
+Okay, now you are expecting that by 1202 my HTTP session will get expired.
+If there is no activity.
+But let's say that user made a request at somewhere in mid.
+Okay, so this expiry time will increase.
+Okay so it required a one minute of inactivity.
+Total inactivity.
+So this would when when it was last used when the last activity happened.
+From there it will again count okay.
+Inactivity of one minute.
+Then only HTTP session will get expired.
+So that's what what I have written.
+If user activity keep on happening, it will keep on authenticating and after one minute session will
+not get expired.
+Internally, what it will do is when I say that it will keep on authenticating Authenticated me internally.
+It will keep on increasing the expiry time.
+Okay.
+And second, I told you that we can store the HTTP session in DB.
+So it's a very, very simple way.
+If you see that we need this dependency, which I told you that uh, in the first architecture video,
+also, I told you, uh, for the spring security, like we can have this session spring session JDBC
+in the pom.xml and in Application.properties.
+We can provide this three configuration.
+This configuration spring dot session dot JDBC dot initialize hyphen schema equals to always means we
+are telling spring boot that hey, you create me the table.
+You create the session table for me.
+I don't want to create table myself.
+You go ahead and create a table.
+So here, if you see Spring Boot will automatically create a table for me.
+Spring underscore session table for me.
+Okay.
+And I have told servlet dot session dot timeout five minutes.
+So after five minutes of inactivity my HTTP session should get expired okay.
+And this will like uh, just tell that we are going to store the in the state of in-memory.
+We are using DB.
+So here if you see that this is the table which Spring boot will create, this is primary ID, this
+is the session ID which was created.
+What when this session created last access time.
+Maximum inactive interval 300 expiry time.
+So based on the last access time it will just keep on add 300 and it will keep updating the expiry time
+okay.
+And this is principal name is nothing but a username.
+So this expiry time will keep on increasing.
+If user keep on sending requests based on the last access time.
+Okay, so here, if you see that my session is now stored into the DB instead of in memory.
+So at this point of time, I hope that at least we are clear.
+What is form login authentication okay.
+And when we are saying it is a stateful authentication means it is maintaining a session.
+And what is session actually.
+Okay.
+So since we are clear with what is session now let's understand that flow diagram of form based authentication
+method.
+Very very important.
+And also by this point of time you get to know that it involves two step.
+First step is login where user provide a username password okay.
+And through that we create a session.
+Second is Request, like accessing the resource.
+Or you can say that request or accessing the resource where whatever the session comes, it will add
+the session.
+And at this point of time, it will validate the session and fulfill the request.
+Okay.
+So now let's understand end to end flow for this form based authentication method.
+And let's see that if we have to implement it what is required.
+Do we need to do anything.
+So first step currently there is no session.
+Active user is login for the first time means session do not exist.
+At this point of time only user exists means and also you already know that in the previous video I
+have already told that how to create user okay dynamically.
+Also for in for testing the form based authentication, I have created a static one, but you know that
+how to create dynamic one but user has to be there.
+So assume that we have already present user.
+We have username password already present user exist.
+Now what the first step user trying to do is calling the API slash login.
+This is the default login page form login page which provide okay, we don't have to code for this one.
+Spring boot automatically provides right?
+Uh, for the form based authentication.
+So when you hit this API it will ask for what is the username.
+What is the password.
+Okay.
+So we already know that.
+What is the username and password.
+We already have seen the previous video I have given I have created.
+This is my user and this is the password.
+And I click sign in.
+So here if you see that username goes password goes and CSRF token goes.
+Okay.
+So now what happened in the back.
+What happens when this submit has happened?
+So now call comes to one of the security filter chain.
+As soon as you click sign in okay this username password comes to this security filter chain.
+Now see understand slowly what would happen.
+This is the chain security filter chain.
+And this is the first filter which will get invoked.
+Username.
+Password authentication filter.
+Okay.
+So now here the flows happen.
+So this is the first step which it will do.
+It will create and pass the authentication object to Authentication Manager.
+So it will create an authentication object.
+Authentication object is nothing but this object username password authentication token.
+It is nothing but a child of authentication class authentication class.
+So it is just a child of it.
+So we are creating an authentication object.
+So it has your principal which is nothing but a username credential right.
+It is protected currently authenticated is false.
+It is not yet authenticated.
+And no other details present only this much username password.
+That's what we are getting currently from the request.
+Now it passed to the authentication manager.
+And we know that in the architecture video.
+I have already told you this authentication manager delegate the request to one of the provider so it
+will delegate it to Dao authentication provider.
+Okay.
+Now what it will do.
+So currently we have username and password coming.
+So this password if you see currently it's not hashed form.
+So it first call password encoder.
+Okay.
+And encode or hash this password whatever the incoming incoming raw password is hashed first okay.
+So that is done.
+After that.
+What it does is it will fetch the user details either from in-memory or DB.
+We have already seen in the previous video.
+What's the logic behind it, how it is done.
+Okay, so it fetch the user detail.
+We have a username right?
+Based on the username it will fetch the user details.
+So user is already created.
+So it will get what is the username.
+What is the stored hashed password.
+What are the roles user has.
+So all this information it will get.
+After that it will do.
+It will validate the incoming username and password okay.
+And this password it has also done the hashed okay.
+So it will validate the incoming username and password With the stored username and password.
+With this, whatever the it was stored in previously user already created, right?
+So whatever the user is already stored, its username and password, and whatever the incoming username
+password, it matches it.
+If it matched then it will update the authentication object.
+What all things it will update.
+It already has the username.
+It already has the password.
+But password it don't add it.
+It just say protected.
+We don't put it now it change.
+If the matching happen then it says that authentication is true.
+Yeah it is authenticated.
+Also the role whatever the role.
+So during the user creation we might have provided the roles which user has.
+We have already seen that.
+So that role also it will put this role is a for this user.
+It has these many roles okay.
+So it will update the authentication Object and it will return this fully authenticated object.
+Return back to this filter.
+Till now, no session is created.
+Okay?
+Only what happen is we have an authentication object which has all this information now which has roles
+authenticated true username.
+And yeah all this information like account is not expired.
+It is unable credentials is not expired.
+All this information is present now.
+What will happen now.
+The next filter it invoked is security context holder.
+Filter what it will do.
+What it will do is it will first create a security context object and put that authentication object
+inside it.
+Okay.
+So now you can say that this security context has all this information actually okay.
+So this security context has all this information.
+And then it will pass this security context object to HTTP session security context repository class.
+What it does, it will create a new HTTP session object.
+A new HTTP session object is created and it stored the security context object inside the HTTP session.
+Okay.
+So this HTTP session has all this information now.
+Okay.
+So you will get to know that when this will be helpful.
+Why it does that.
+So first this authentication object it stores into security context.
+And this security context is passed to this HTTP session security repository.
+It creates a new HTTP session object.
+It could be uh like, stored here in the DB or in memory.
+Okay.
+And this currently it is empty.
+And then later on it, whatever the security context is there, it saves it inside a HTTP session object.
+So HTTP session has, uh, all the info.
+You can say that, uh, like session ID and you can say that all the expiry time, creation time.
+And also it will hold all the, uh, security context info like all this information.
+Okay.
+So I'll show you here if you see.
+Okay.
+I'm just starting a server.
+I'm just showing you I am just doing login.
+So I have already created a default username and password.
+You as e r and password I have created I have in the application dot properties Application.properties
+itself, I have defined the default username and password from the previous video.
+You already know that I have done sign in okay, user is sign in.
+So means when I have done this what would have happened?
+So means it has completed all the flow.
+So now let me check the DB.
+So spring session.
+So this is the session data.
+Session ID creation time last access time maximum inactive expiry time.
+And this there is something called spring session attribute okay.
+So if I see what is the spring security context and this is the serialized data, this is nothing but
+the security context data.
+This one this all data is actually stored in the session.
+Right.
+So this is all part of session data.
+Spring session attributes.
+Okay so HTTP session object is created and the whole session of security context object is stored inside
+HTTP session.
+And it is stored either in memory or DB.
+Okay.
+So till this point it is clear what has exactly happened.
+Now after successful authentication if login endpoint was used.
+If login endpoint was used because you know that after security filter chain it goes request goes to
+dispatcher servlet from dispatcher servlet.
+If there is interceptor it will go there.
+Otherwise it goes to controller means some endpoint has to be invoked right.
+So if you are using hash login endpoint.
+So login is just for spring boot form login authentication.
+If it is used then it will hit the default endpoint like just slash.
+Okay.
+So like this I have first open this URL slash login I have provided my user name, I have provided my
+password, I have clicked on sign in.
+And when I clicked on sign in now everything happened.
+Okay, uh, how it goes and fetches the user existing user it compare whatever the username password
+I have provided, then it, uh, whatever the security uh, context came authentication object it put
+into security context.
+Then it created a HTTP session object.
+Okay.
+And this security context also put into HTTP session.
+And since I am using DB so all the details for the HTTP session right session id expiry creation time,
+and also this uh, this HTTP session has the context right?
+The security context detail that is also stored there in the DB.
+And after that it has to call the controller.
+So it calls the default endpoint.
+This is nothing but a slash.
+So I have created one get mapping of this default endpoint.
+I will just say hello.
+So that's why whenever I click sign in it will always print hello.
+Okay so this first flow is now completed.
+We know that how the first flow has happened.
+Now the session is created and we know that the session is created for currently in our case like if
+we check the DB I showed you right by default is 30 minutes.
+But in DB for this one I have showed you it is for 300 like five minutes.
+Okay, because that's what I have provided into application dot properties five minutes.
+Okay now.
+Yeah.
+Before that again.
+Like if you are not using slash login, if you are using directly slash users.
+So now what would happen is it will try to look for that.
+Okay.
+You are trying to access a record resource.
+Is it already authenticated?
+No.
+So it will redirect me to a login page where I provided a username password.
+The same thing happened in the background HTTP session created properly.
+Okay.
+And all the session details either in memory or DB.
+And after that is done it has to invoke the API.
+So now default API is not invoked because I was trying to access slash user.
+So it will call the same slash users only okay.
+So default is only default endpoint is only get invoked when you are first trying to hit slash login
+okay.
+Now the second point.
+So we have completed till this one.
+Your client and server.
+The client hits server with username password server has created the session.
+HTTP session is created with ID and it has all the session details are also plus security.
+Or you can say that security context data which has authentication authentication details.
+So it has all this data either in DB or in memory.
+And it has returned the uh, this ID session ID in response.
+Till that we are done it is set into the cookies.
+Now after authentication user is invoking any subsequent APIs.
+Let's say I am trying to hit slash users or slash any other resource in the request.
+I am just providing the cookie and this session ID this session ID now what would happen, how it will
+validate it.
+So again the first part is filter chain will come into the picture.
+Now what is what are the filter chains.
+The first filter chain will get invoked is security context holder filter.
+Okay.
+So now this is the.
+So now here if you see.
+Username password authentication filter is now not involved.
+Okay.
+Security context holder filter will get invoked.
+And what it will do it will first pass the request to HTTP session security context repository.
+It will try to fetch the HTTP session based on the session ID in the request.
+Now any subsequent request in the cookie, they are passing the session ID, so it try to fetch the
+HTTP session, whether from in-memory or from DB, it will try to fetch it.
+If HTTP session is not valid or not found.
+Okay, it will redirect it to slash login, but if it is found, what it will do is it will get the
+security context from it.
+You know that right in the HTTP session object.
+What we have put above in the HTTP session object we have stores the security context and security context
+has are nothing but a authentication of data.
+So it fetches the security context from the HTTP session and returns the security context.
+Okay.
+So what it will do is now it will store the security context data.
+You can say that the authentication data generally in one placeholder security context holder okay.
+So this security context holder is available in the complete life cycle of the request.
+Till the point of you can say that, uh, your controller get invoked.
+This security context holder data is present.
+So whatever the security context is coming from the HTTP session, it has all the authentication data.
+It has all the authentication data okay.
+It will just put it into the security context.
+One place holder holder.
+And that is now available throughout the lifecycle of the request.
+So first thing done as soon as the request come it ables to it.
+Go and find the HTTP session and it take out the security context.
+Okay.
+Now it will pass it to the next authorization filter.
+I will also tell you how authorization works, but in the authorization filter it check does user has
+the permission to access the resource or not?
+Let's say that user is trying to hit slash users API.
+Yes, user is authenticated from this jsessionid I am able to find the active HTTP session and it is
+not yet expired.
+I take out the authentication data.
+Okay, so that my complete life cycle in the controller, let's say some flow needed some data.
+They can fetch it, but I have the authentication data.
+But authorization filter is also required.
+Whether this user let's say that this user one has the permission to access the slash users resource
+so that authorization filter validate I will show you how.
+And once it is validated, yes, it has the permission.
+Now the control will goes to dispatcher servlet particular controller.
+Now it will access the request follow the fulfill the request.
+So you got it like this two step.
+So if we just see.
+Now you will say that okay.
+Now I have to implement the form login authentication.
+What I have to do.
+So if you just see we don't have to write a single line of code.
+Everything is handled by a framework itself.
+Everything which I told you like this filter chain everything.
+Uh, like it is fetching the HTTP session write authorization filters.
+Everything is already there in the framework.
+Okay, we don't have to do a single line of code.
+All we have to do is configuration.
+Okay, I will show you.
+And also I told you right.
+It is a default authentication method of spring boot.
+So if you open this class this is a framework class spring boot web security configuration.
+If you see that default security filter chain in this one form login, it has set okay.
+So there are different.
+So it has two default like it has used form login and basic authentication.
+It has set both okay.
+But form login it has setted.
+So we don't that's why we don't need any code even it has set like okay even if you don't tell anything
+by default it will know that yes by default the user might be using form login only.
+So all the the flow which I have told you automatically it will go through that flow only.
+So all I have added is the dependency and the config.
+So dependency is that this is the security dependency.
+We already know that like till now.
+And this dependency is like I want to store my session into the DB, that's all.
+And in the application dot application.properties from the previous video.
+You already know that I have created a username and password like hardcoded one.
+I don't want to get a random password every time.
+Okay, so for in the previous video I've already showed you what are the different ways to create a
+username password.
+Okay.
+And this is the hardcoded one is just for the testing purpose.
+It's not recommended in the live and the live recommendation I've already shown in the previous video.
+So I have created a username password.
+So when the user when during the server application startup time, one user would be created with this
+user and with this password okay.
+And this is the second thing which I have told, like I want to store the session into the DB and I
+want Spring boot to create the tables for me and the session timeout.
+I want five minutes Okay.
+So we can test this one.
+Like if you hit the API slash login API you will provide username and the password.
+Okay.
+Now if you click on the sign in okay.
+So you will see that in the response after the successful authentication like uh in the response set
+cookie you will get a session.
+A session has been sent to you okay.
+And later on any API you will access okay.
+You will see that in the request.
+We are passing that session ID again okay.
+So this is the request.
+We are passing it to the server.
+So we have done nothing.
+All we have added is form and application dot properties.
+And this all has been handled.
+We are able to do all of this stuff.
+Okay, now one thing comes to your mind that, okay, let's say that if I want to change few things
+like I don't want this default login page or default logout page, I want to create mine.
+Mine login page.
+Mine logout page.
+Or I want to relax authentication on few endpoints.
+If you see by default in the framework what it says that no matter any request, you have to be authenticated.
+But let's say that you have like hey, I have certain public APIs.
+I have some public APIs for which authentication is not required.
+I don't want to force the user to authenticate.
+These are public API.
+How can I relax them?
+Simple.
+Write your own security filter chain.
+Very simple right?
+So in my configuration at the right configuration I have created my own configuration.
+So here, if you see that I have said the same thing.
+Any request authenticated but any request matches this.
+Any API, let's say slash users API permit all no need to authenticate it.
+So I am considering this is my public API.
+This is just for example right.
+So let's say that slash user is your public API.
+You don't want any authentication.
+So I just put dot permit all and any other request authenticate.
+And here if you see I have just used form login with defaults.
+So customized what with default.
+So here with default itself login page is your default slash.
+Logout is your default.
+So if you want your custom login page you can change here like dot form login.
+You can change something like form.
+So something form dot login.
+What is your login page?
+Something.
+My login.
+Something like this.
+You can change it whatever you want to do.
+But what I mean to say is that you have to write your own security filter chain.
+Right.
+So now you get to know at this point of time, let's say that if you have to work with JWT, you will
+always see that we have to write this security filter chain because we don't have to use dot form login.
+We have to tell something like hey, something, JWT something because form login is the default one,
+otherwise we have to tell it.
+So now you know that okay.
+Why for in my company we are using form, but we are not writing this bean.
+Why?
+Because it's already the by default one.
+Okay, now form based authentication is clear right?
+But still one thing left is authorization filter.
+And also one more thing I am not going into like we have seen that right.
+By default, the spring creates the table for you that session.
+Session tables.
+The this session tables.
+Right where it gone.
+Yeah.
+Spring underscore session.
+And also there is one more table like spring underscore session attributes something.
+So these two tables it creates where it has all the data present.
+We can also do that.
+We can instead of relying on spring to create table for us we can override and we can create our own
+table.
+I don't want to go into that way because, uh, this is I don't think that it is widely used now, but
+this is to set a fundamental.
+In 20 1516, when I was working, we were writing our own tables and we were managing those table like
+we have more tables and we are managing the session whether to increase the time or not.
+Okay.
+Whether to update this column or not like all this stuff, but I don't want to go in that way.
+Like where we are managing by ourselves.
+Just consider that it is possible.
+Otherwise, if you don't require it, you have the basic need.
+Let the spring manage your tables.
+Spring tables for you and you already know that.
+Why it is required?
+Because you have different servers than you need to store somewhere.
+Otherwise request goes to different server.
+If it is stickiness is not maintained then there you will ask unnecessary user to authenticate.
+Okay.
+Yeah.
+Now let's come back again to authorization filter which is left.
+So as I already told you, that once the user is authenticated, when user is trying to access any resource
+authorization check is mandatory.
+It is done to make sure that user has permission to access it.
+We already seen that By default.
+Spring boot security do not put any restriction.
+Again, do not put any restriction on any resource.
+We have to do it manually.
+Now let's say that you have endpoint slash user users by default.
+If user is authenticated, if user one try to access it authenticated it will access it user two authenticated
+and try to access it.
+It will let it accept it.
+Don't put any restriction by default we have to do it manually.
+That ho hey for user one look for this role whether this should be user role for user two, look for
+this role admin role it should have while accessing this resource.
+So we have to tell that if you don't tell that no restriction, if you are authenticated, go and access
+the resource.
+So authorization has two phases.
+Phase one.
+So phase one is like you know that we have security chain filters.
+Security chain.
+Okay.
+After that security chain.
+Filter chain.
+What is that your dispatcher servlet.
+And then there is your controller ultimately.
+Okay.
+So authorization done at two places.
+First at filter filter level.
+Second at controller level.
+Authorization check as part of security filter.
+That's where our authorization filters comes into the picture.
+Right.
+And the second phase is authorization check after request passes the security filter but reaches the
+controller.
+So request passes the security filter but reached till the controller.
+Now there I am checking that user is has the authority to access the resource or not.
+So we will see this later because currently we are looking at the filter.
+Okay.
+So this one how to do at the controller level authorization.
+We will see later because that is common for form based basic JWT or any other authentication method.
+Because the control now digital controller now there we have to do an authorization.
+So that part is common for all the authentication method.
+But this part security filter this is unique for each one.
+So for form based we know that authorization filter comes into the picture.
+We have already seen that.
+So how it does that.
+So if you look that it's very simple I told you that by default spring boot security do not restrict
+any resource.
+We have to do it manually.
+So I am doing it manually in the security filter chain I am telling any request matches this slash users
+should have the role has role user.
+This is just a string.
+You can give anything okay and internally it append row l role underscore.
+So it append this.
+So ultimately internally it would become role user.
+Like you can give anything.
+It's a string but maintain a like follow some uh proper naming conventions okay.
+So what I am telling is any request matchers like slash users should have the role user.
+Okay.
+So it will authenticate.
+Also, it's not like it will not authenticate.
+Authenticate plus has role also will be checked.
+Also here in the application dot property I have added while creation of a user and password, I have
+also assigned this user a role user.
+Okay.
+We have already seen that like in the dynamic.
+Also how we can while creating a user how we can assign a role.
+So while the application is startup user is created let's say there is some user table.
+User is created with user name password and the role user is created okay.
+And we have mentioned that slash user has the role user.
+It required this.
+Now what would happen now I am manually restricting that any user trying to access this endpoint should
+have this role okay.
+And also I told you no need to add role underscore.
+It will automatically get added.
+Now in not authentication filter it is authorization filter.
+Now in authorization filter it will validate okay before I say anything just a very quick recap.
+When the authorization filter is invoked, what is passed to it?
+Security context folder.
+What security context folder holds security context folder holds security context data which has all
+authenticated data.
+Authentication data has nothing but this this this is authenticated data right.
+So it has all the user role, everything which is there in the DB only from DB it found right.
+It called it fetches the user detail from the DB username password role.
+It has all this data right.
+So.
+Now when authorization filter invoked it will validate okay.
+User is trying to access this user's endpoint.
+And this endpoint required role user role underscore user.
+This because we have tell here.
+And it knows that authorization filter got security context.
+This has authentication data where all the user details is present.
+All the username password role is present.
+So it knows that this user has what role.
+So we have already given this role okay.
+So it will match.
+If it match well and good it will let it go through the controller.
+If not it will pass.
+Forbidden exception.
+Forbidden this one.
+And in Application.properties let's say I am giving that this user has admin role.
+But not.
+But this API required this user role.
+Now let's start the server.
+Let's first user try to.
+Let's first try to user login.
+User pass user is successfully login.
+Now I am trying to login.
+User API endpoint when I hit.
+It says that forbidden 403.
+There is a mismatch in the role and authorization filter is the one which throws the forbidden exception.
+Also, we can give as many roles to a user like more than one.
+Okay, so here if you see request matchers, this API if anybody has.
+Now I am using has any role.
+Now I can provide like a list user admin anything.
+And similarly I have provided here like this by comma separated I can provide as many roles I required.
+Okay, so I hope by this point of time, form login authentication is clear.
+So there are few questions can come sometimes during discussion how to control the session per user.
+Now let's say that I have one user.
+User one.
+It is using browser one and it has created session here.
+Now the same user using browser two or another window created another session incognito mode or another
+session two same user session three.
+What if it creates 1000 of session?
+So we have to control the sessions right per user.
+So we can also control it very simple way.
+There is something called session management.
+In the session management for session we can set the maximum session is one and after that max sessions
+prevent login.
+True.
+So with this two field set like one one time, you are able to do create a session works fine.
+Second time when you are trying to do it will say that maximum session of one user for this principle
+exceeded.
+Okay, so it will try to like with the username.
+It will try to match okay, because with username only it fetches the data from the DB.
+So only one user per session is allowed.
+After that, if it exceed it will throw an exception.
+If you want multiple session for you can just increase this 234 something like that.
+There are also some time ask this what is session creation policy?
+We haven't discussed anything like that right.
+But if you see that dot session management, dot session creation policy is required.
+Even if you don't write this, this is by default added if required.
+So what is this session.
+Creation policies.
+So there are four values it can take if required.
+Always.
+Never.
+Stateless.
+If required means HTTP session is only created when needed.
+And this is the default.
+That's why above we haven't used it.
+What it mean if only required.
+So let's say that I have a public API.
+I have a public API.
+Okay, for that one HTTP session will not be created okay.
+So it only created for which it is required.
+Wherever authentication is required it creates HTTP session for that only.
+But if you change it and use always always then no matter what HTTP session is always created.
+If already HTTP session is present then it will reuse it.
+But no matter whether it's a public API or not, a public API HTTP session would get created.
+Okay.
+But generally for public APIs, authentication is not required.
+So generally you don't require you don't need to maintain the state because because let's say public
+API is hit by uh, millions of times, you don't have to maintain an authentication.
+It's just like informational.
+Okay.
+So that's why if required is generally preferred.
+And it is default.
+You don't need to create a session for each APIs.
+Also for whichever it is not required.
+Never says that.
+Do not create a session.
+Always use if present.
+Okay.
+And stateless is like no session is created at all.
+It is used for stateless application like JWT.
+Okay.
+So this is what session creation policy mean.
+And this is how generally we set.
+And the last question which can come in like what are the disadvantage of form based authentication?
+I think by this point of time you already got it.
+Like first is like as we have discussed in the previous, vulnerable to security issues like CSRF,
+we have already discussed very beginning all the attacks with demo.
+Okay, how the CSR demo session hijacking is possible.
+So form based authentication is vulnerable to it.
+But if you see that by default CSRF is enabled for form based login, you can disable it.
+Also in the security filter chain you can say that CSRF disable, but we should not do this for form
+based authentication.
+Always enable it CSRF right?
+Because it is vulnerable to attack like CSRF, so do not disable it.
+This is just for sample.
+I am showing you.
+You can disable it and session hijacking So you know that the session ID is passed in the cookie.
+So it is very much likely that your session get hijacked.
+It got stolen.
+And using this your session ID, the attacker uses it.
+Your resources access your resources.
+The second is the session management is a big overhead.
+So currently everything we have seen is handle to framework.
+But I told you that when in 2015 and 16 we were working in a company, it was handled all manually like
+because as per the business lot of things in the session, we have to manage according to business need,
+right.
+So generally if it is a very simple business then yeah, you can use framework.
+But definitely as the business grows lot of custom needs required.
+So you have to manage the session yourself.
+So session management is a big overhead.
+You have to have like a session tables, you have to manage its expiry and all this stuff.
+Right.
+And also now in case of distributed system like it would be like a scalability issue for sure.
+And this is the subsequent issue is that database load.
+Now you have in the distributed system let's say you have multiple services.
+Or let's say that even for one service you have multiple instances.
+Definitely you need a DB.
+Then like you can't have a session stored in memory.
+What if, as I told, because nowadays we have load balancer in front of the client, it can pass the
+request to anybody.
+So if earlier session is created here, user says that you are authenticated.
+Now the second time it tries to access the control goes to the second instance.
+Now you say that hey where is the session or and it will say that hey authenticated slash login page
+again.
+So this is a bad user experience.
+Okay.
+So that's why in memory is not used.
+If you have multiple instances, you have to put into DB so that all the instances fetch the session
+from the DB.
+So there are multiple server.
+Then we need to store in the session into db or cache.
+So again memory you require lookup time is required which increases the latency.
+Okay I hope this form login authentication is totally clear right?
+Do practice it with your hand even though it is not very frequently used.
+Nowadays JWT is very popular, but this is the fundamental if our this flow is clear, right?
+All other authentication method, we will get to know that how they are working.
+Why exactly we need those okay.
+And if there is any question feel free to ping in the comment section.
+We'll discuss more.
+See you soon.
+Bye.

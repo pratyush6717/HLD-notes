@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>19. Java Reflection in Depth with Examples</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>19. Java Reflection in Depth with Examples</h1>
+    <pre>
+Hello.
+Hey guys.
+Welcome to Concept encoding.
+And this is Shreyansh.
+So till now in Java we have seen classes interfaces.
+So just after this there is a very good concept called reflection.
+Right.
+So I will tell you when it comes into the picture when you should use it.
+Because we use it very rarely.
+Right.
+But this is a very good interview question and I will tell you why we use it very rarely.
+Also okay.
+But let's first go and understand what is reflection actually and what it is capable of doing it right.
+So now let's start with this okay.
+So first is what is reflection.
+This is used to examine the classes methods fields interface at runtime right.
+What it say used to examine the classes.
+What all the methods it have.
+What all the fields it have.
+So it is used to examine those at runtime when the program is running right.
+And it also provides a capability to change the behavior of the class.
+When we say that, change the behavior of the class.
+What do you mean by change?
+The behavior means you are changing the field values, right?
+How the class behave.
+Right.
+So behavior depend upon the field values.
+So reflection provide you also the capability to change the field values during runtime when the program
+is running right.
+And it helps you to examine examine means okay for this class.
+How many methods are there.
+What all fields are there?
+What is the modifier?
+How many constructors are there?
+So it's like examining self examine.
+So for example what all methods present in the class, what all fields present in the class.
+What is the return type of the method modifier of the class?
+What all interfaces this class has implemented change the value of public and private field of the class.
+We'll see all the examples, but see for a particular class it can know everything.
+Okay, so you at least now you know what is reflection.
+It is used to examine the class.
+And but the question comes is hey how do you reflect of the class.
+How do you reflection of the classes?
+Okay.
+So now let's do this to reflect the class we first need to create an object of class right.
+So there is a class with the name class itself.
+So this is the one class.
+So the name of the class itself is class right.
+So don't get confused when I say class class.
+So the name of the class itself is the class.
+So we have to get an object of this class name as class right.
+So now first, before we understand how to do a reflection of the classes, we first need to get a little
+bit more about the same.
+We have heard this name first time we have completed the classes we have completed the interfaces.
+But this name we haven't heard before like so.
+Let's understand about this class what this class does actually.
+Okay.
+So what is this class.
+Class right.
+So first of all the instance of this class right.
+The instance of this class represent classes during runtime.
+So let's say you have ten classes.
+You have ten classes like one is bird class.
+You have class bird you have class.
+Let's say any other class animal like this.
+You have ten classes for each of this class.
+bird.
+Animal, let's say lion.
+For each of this class, you will get one class associated with this.
+For each one there will be one class also.
+Right?
+And who creates that?
+JVM creates one JVM creates one class object for each and every class which is loaded during runtime.
+So when your Java program is running.
+I told you in the initially that JVM loads the classes as when it required.
+So let's say JVM is trying to use the bird class.
+The code is trying to use the bird class, so JVM loads that class, and when the JVM loads that class,
+JVM also internally creates an object of this.
+Also the class object.
+This one, right?
+So all the classes, whatever the classes you have in your code base, if JVM is using it, it also
+attach one or it also creates one object of this class.
+Right.
+But why?
+Why does it do that?
+This class object, this class object has metadata information about the particular class like its method
+field construction.
+So now you have created, let's say bird.
+It has let's say a certain fields method constructor modifier let's say return type parameter.
+So there are so many things happens in the class constructor has parameters methods as parameter field
+public or private.
+So whenever you create a class and whenever Java JVM is about to use it, and when it loaded it when
+it also creates this class objects.
+Right.
+The object of this class.
+And this has metadata information about your class.
+Okay.
+Get me the methods.
+So it has exposed all the methods get methods.
+So all the methods which you have here, it will return that it get me the fields.
+You will get all the fields which you have defined in this one.
+So it has so many methods.
+So it has all the metadata information about the class which you have.
+JVM has just loaded.
+Right.
+So now how to get this particular class object.
+So now you can question can come is hey I have this class bird right I have this class bird.
+Now JVM might have created one class object of this.
+How I can get that for my class bird, right?
+How to get that class objects?
+Because we are saying that JVM creates one object each and every time the class is loaded.
+Right.
+So how to get that class object so that I can get all the metadata information.
+So there are three ways you can get the class objects.
+First using for name method.
+Assume that we have one class called bird.
+So let's say you have a class bird.
+Okay so you have a class bird.
+Normal.
+Basic.
+Okay.
+Now we wanted its class object.
+How we can get it using for name class dot for name and give the string of the class name which you
+are wanted to expect this objects.
+So class dot for name.
+And what is the name of your class which you wanted first?
+Bird.
+So it will return this class for this bird class.
+So it will get the object of a class.
+It will get the object of a class for getting the metadata information of bird class right now.
+Using this, I can get the metadata information of this bird.
+Okay.
+So for name is one way through which you can get this class object.
+Other way is using dot class.
+So again let's say you have a bird class already there.
+Now you want its class object so that you can fetch its metadata.
+How you can do bird dot class.
+This will also return you its class object.
+Okay.
+Third way is using Getclass method.
+Right?
+So now let's say you have a class bird and you have created its object.
+Now using this object also you can do get class right.
+So using the object Also, you can do getclass and you will get the class object.
+So these are the three ways through which you can now get an object of this class, which actually JVM
+creates.
+Right?
+You do not create.
+Okay.
+Now let's go back to our first question.
+What we started it how to do reflection of classes.
+How to do reflection of classes.
+Okay.
+Now let's go with an example.
+Now things will get little bit more clear to you.
+Let's say this is our basic class.
+Normal class eagle.
+So public class eagle.
+It has one public field breed one private field okay.
+And I have two methods fly which is printing something.
+One is eat.
+It is also printing something okay.
+So this is a very very basic class with one public field one private field and two methods.
+Now let's see how to do a reflection of this class.
+So this is just a main method.
+And now see I am using Eagle dot class.
+So I am using this approach to get the class objects which JVM creates right.
+So I did Eagle dot class.
+This will give me its class object with JVM has created.
+Now see this Eagle class has all the metadata information about this Eagle.
+This one.
+Right?
+So I can do that with this objects of class object I can do eagle class dot get name right.
+So what it will return it will return me the name of the class.
+Right.
+This is an object Eagle class object.
+Eagle class object.
+So this Eagle class object I am doing get name.
+So what name it will do?
+It will return me the name of this class.
+So it name of the class is Eagle.
+Now I see I am getting the modifier.
+Eagle class object Eagle class object dot get modifier right.
+So now what it will do is this class modifier is public so it will return public.
+Okay so see what I have done I have first get an instance of class.
+Get an instance of class for the whatever class which you wanted to reflect, get its class object.
+And then second, using this class object you can fetch its all the metadata information you wanted
+to access.
+Right.
+So here what all methods available.
+So there are all Get methods available.
+No set methods available here in this one.
+Right.
+So here see I can do so.
+There are so many get methods about this class.
+You can fetch so many information Remembering all this Get method is not possible.
+It's like, uh, as soon as you start using it, you will get it.
+So here's a say get fields.
+It will return me all the fields.
+Right?
+Breed can swim here, declared fields.
+I'll tell you what is the difference between get fields and declare fields, right?
+Similarly here, if you see that get name, we have used it.
+Return the name of the class itself.
+Eagle.
+Okay, now see this one?
+So I told you that whenever you get a class object you can do call this get methods.
+And you get an information about multiple things of a class like what are the fields, what are the
+constructors.
+What are the methods.
+Like this.
+Get constructors.
+It will return you list of constructors like get fields, get declared fields.
+It will return you list of fields.
+What all fields you have, right.
+So now here, if you see that this constructor, this fields, these are all present into Java dot lang
+dot reflect package.
+Right.
+Okay.
+So now you know that how to do a reflection of a class.
+Now let's see how to do reflection of method.
+So again this is a very very basic class right.
+The same example with public field one private field and one public method and one private method.
+Now.
+Okay.
+So now first when we want to reflect of a method, the first step is get a reflection of this class.
+How you will get a reflection of this class.
+There are three ways you can use any one way.
+So I am using Eagle dot class right.
+So I'm using Eagle dot class.
+Through this you can get a this instance class instance.
+Now what is the requirement.
+We need to do reflection of a method.
+So from this you can do get methods.
+So I told you that this is one of the method get methods here.
+Get methods.
+So now when you do get methods it will return you a list of method.
+Now remember that this this method which we are using the Get methods.
+This will return just all public methods.
+It will return only it will return all public methods.
+So we have fly.
+We have eat.
+So it will return only all the public one.
+So only fly will get return.
+So I get a list of methods.
+I am iterating over it right.
+And now see on this method I can again fetch all this method metadata.
+So what all this method metadata.
+What is the modifier.
+What is the return type.
+What are all the parameters.
+Right.
+Like this.
+What is the name of this method.
+Right.
+Like this.
+So I am what I am fetching method dot get name.
+What is the name of the method?
+So it will print fly.
+What is the Methodget return type?
+Return type is void method dot.
+Declaring classes in which class this method is declared right, so it will print Eagle.
+Okay, so now I am iterating.
+I am iterating, right?
+So what it will do is it will.
+I told you every class internally is a child class of object.
+And object also has certain methods like wait, notify and all those things.
+So when I did get method, when I did get methods.
+So what it returns is all the public methods of all in its class.
+Plus also in its superclass is the parent class.
+So now here, if you see that after doing this fly only public if private, it didn't show.
+It goes to a parent.
+Parent was object and object what?
+All the public methods are there.
+It will also start printing it like wait, so wait return type is void and this method is defined into
+which one Java.lang dot object.
+Because object internally is a parent of all these classes.
+Okay, so this is how you reflect a method.
+Now you can ask me, right?
+Hey, but what if you wanted to access a private method?
+How we will do that.
+So see this example?
+I am doing it again.
+The first thing is reflect the class dot class.
+Now if you wanted to fetch the methods of this class only, not its parent object.
+No, only this class.
+Only this class.
+Plus all methods, no matter public or private, you can use get declared methods.
+So all public and private methods.
+It will return within Eagle class only, right?
+So now if you iterate and put a method name, it will put fly eat.
+So it will put fly eat.
+And.
+But it didn't go an object and didn't print its weight and all.
+Okay.
+So if you want only this class but all public private so you can use get declared methods.
+Okay.
+And so this is how you do reflection of the methods.
+So now here if you see that in the method itself there are multiple uh you can get methods are available.
+You can use what is the return type of a method in which class this method is defined.
+Is there any default value set for the method?
+Like what is the exception it throws?
+What are the modifiers right.
+So these are so many methods which are available.
+What are the parameter.
+How many parameter parameter count how many parameter this method accepts and all.
+So you can get all this metadata information about a particular method using this uh one methods which
+is available in Java dot lang dot reflect package.
+Okay.
+So now there is one good thing is here in the reflection is so you can say that, uh, the capability
+which you can say is that you can also invoke the method.
+Right.
+So here if you see that okay I can get the method name I can get what is the metadata information about
+a particular method.
+Can I invoke the method from here itself.
+Yes you can.
+You can even invoke the methods also.
+Right.
+And see how we can invoke it.
+So invoking a method using reflection.
+So now see this one a very basic class.
+Very basic class.
+Same eagle right.
+And one method only that one method is fly method.
+And let's say it is accepting certain parameter input parameter a certain parameter with name boolean
+and string.
+And it is just printing right.
+Now through reflection I need to invoke this.
+Right.
+How can I invoke this?
+Okay.
+The first thing first, while doing a reflection you need a class object for this eagle.
+How you can get the class object.
+So now I am using the first method class dot for name, and I have given the name of the class which
+I wanted.
+Let's say Eagle.
+This is a string, right?
+So for this one I got the its equivalent class object with JVM created, right?
+now.
+See, what I am doing is to invoke a class, you need to have its object.
+Right?
+Right.
+And how you can get an object.
+So now you get.
+So now you have a class object.
+Now using that class object you call dot new instance.
+When you call this method right, it internally invokes its constructor and you will get its object
+right.
+So you get the object, the method which we have to fetch.
+We have to fetch the method which we have to invoke.
+So we have got already the instance of this class right?
+The class one.
+Now using this class I am get the method.
+Hey is there any method with name fly and which has a parameter like int dot class boolean dot class
+like boolean string dot class string.
+So what it will do is it will try to fetch this method.
+It will try to fetch this method which matches this name method name.
+And with these parameters integer boolean string.
+So yes it find ones.
+Yes.
+There is a method in this eagle which has this method name as fly and parameters are also matching like
+integer, boolean and string, integer, boolean and string.
+Right.
+So now this method reflection method has this reflection of this method actually.
+Okay.
+So now I can use this fly method which is a reflection of this.
+Right now I am doing that.
+Hey dot invoke.
+Invoke it.
+Right.
+And what I will pass I will pass the object.
+The new.
+The new instance one.
+The real object which actually got created, right.
+And now I am passing the value which I wanted to, let's say integer and passing one inside boolean
+I'm passing true and some string I'm passing.
+Hello.
+So that's how reflection works.
+Means you can even invoke the methods also, right?
+So see, it invokes the method.
+It passes fly parameters.
+And this okay so do try it out.
+Now we'll see the reflection of fields.
+Same thing we can do on the fields also.
+Right.
+So now first thing if you if you want to do a reflection of a field, one thing is clear.
+What the first step you need.
+You need the class instance of this eagle.
+So this is the first thing.
+Right.
+This is the first thing Eagle dot class.
+So I'm using this I'm getting a eagle instance okay.
+Now.
+I wanted to access the fields.
+So this is the second.
+Now the this has exposed a method through which I can fetch the field, get fields.
+Right.
+And when you fetch the fields, what it will do is it will return only public.
+It will return only public fields.
+So I have two fields.
+Breed which is public, can swim which is private.
+So using this method get fields, it will return only public fields.
+Now you can access this field and now fetch this field.
+All this metadata like what is the modifier.
+What is the type of this field.
+What is the name of the field.
+Like this.
+So now printing field dot get name.
+Field dot get type.
+What is the modifier.
+So name is breed.
+Type is a string.
+Modifier is public, okay, but if you want to access the private field you can use get declared field.
+So in the class instance you can call get declared field.
+This will return both public and private.
+Right.
+So name method type and modifier.
+So breed string public and swim boolean private.
+So both this is the public.
+This is the private.
+So both get printed.
+So you can even access the fields also.
+Right.
+So these are all the Get methods supported into this field.
+So once you get a field this one object.
+So within that field object you can call many methods.
+So these are the things you can fetch about a particular field.
+Get me the name.
+Get its modifier.
+What is its type.
+Right.
+So there are so many methods which you can use to fetch the information about a particular field.
+So I told you that with reflection you can even change the value, change the behavior of the class.
+When you say that, change the behavior of a class means you can change the parameters, right?
+Or not parameter the field values.
+So a class has many member variables.
+You can change the value of those member variables also.
+How?
+So now I first I will show you how to set the value of a public field.
+Then I will show you how to set the value of a private field.
+Right.
+So first let's see we have a public field breed right.
+Now let's see how to set its value.
+So first thing is you need an instance of your Eagle class.
+So that's what I am first doing right.
+The second thing is you have to fetch the particular field which you wanted to change its value.
+So from this Eagle class I wanted to get a get declared field.
+with the name breed.
+If there is any field with the name breed, I will get in the field object.
+Okay, and once you get the field object, you can use the set method available, right?
+So field dot set you have to pass here object the instance one.
+So either you can use this or you can either do eagle class dot new instance I think right.
+Write this method inside.
+This will also return you an object of this eagle right.
+So either you can create this with a specific name itself, or you can use this and get an object and
+pass that right and what value you want it to set I wanted to set let's say on the breed Eagle Brown
+breed something.
+Right.
+And now when I am printing this using this object, right?
+Using this object, I am even accessing the public field and what it set the value.
+Eagle brown bit.
+Right.
+So first is get an instance of a eagle class instance.
+Second is get the field which you wanted to set.
+So I wanted to set the breed.
+Let's say if this field is not exist because let's say I do a spelling mistake b r e p something instead
+of d, I put a b so it will throw an exception like no such field exception.
+We will learn about this exception handling maybe in the next session, but just assume that if you
+pass a wrong name, which is or the field name which is not even exist, you will get an exception.
+But if you pass the name and if it is exist, you will get the field.
+And using this field you can set.
+And when you set, you have to pass an object, the object.
+Either you can create it like this.
+Eagle specific how we create.
+Or we can even use a reflection to create an object like eagle class dot new instance.
+You will get an object instance of this.
+Pass it and the value so it will set it, and you can use that object itself to access your public fields.
+You will get it.
+Now let's say how to set the value of a private.
+So we see okay how to set a field for public.
+But will this also work for the private.
+Also if you do the same thing because you know that declared field will return you both public and private.
+So you first create the class eagle class instance.
+Then you fetch the field and now you are trying to setting it the value right.
+This will throw an exception.
+The class main cannot access a member of a class eagle with modifier private.
+This is a private field.
+The main class.
+You know that the private field can only be accessed within a class in which it is defined.
+So can swim is defined in an Eagle class.
+Can swim is defined in an eagle class only.
+Within this class it can be accessed.
+So I tried to access this.
+I tried to access this private field in a main class now.
+So that's why it throws an error.
+So now the question comes is hey then how to access the private field.
+So yes we through reflection you can even access or set the value of the private field also.
+Right.
+And see how there is a hack.
+First is the same.
+Get an class instance for this eagle.
+Whatever the class you wanted the reflection work on.
+Second is Get the field which you wanted to set the value.
+Let's say this is the private field I wanted to set right within this class.
+Now see this thing I am making this.
+This is important for doing the private thing.
+I am making set accessible.
+True.
+So internally it changes kind of a modifier that for this one main.
+Now it is able to access it.
+It is you can say that it is giving its right to change the private value to access the private value.
+So set accessible.
+The field I put set accessible true now means it's internally.
+This main class now will be able to access it.
+And now then I change its value field dot.
+Set the instance of an object this eagle which I created.
+Or you can use the reflection object uh, with like eagle class Dot new instance and whatever the object
+you will get, you can also use that and you can set its value.
+But here, if you see that the main through reflection, you can even access the private field.
+And that is one of the disadvantage of reflection is there is no control now in the code that using
+reflection no like encapsulation we say that encapsulation property or oops, that if you declare it
+private only through the methods, no direct access can be happen, but reflection breaks it.
+So that's one of the thing.
+So now you know that we can change the value of a field also.
+Now one more thing is reflection of constructor which I wanted to show.
+This is very, very important.
+Why this is one is very very important because of Singleton.
+You know that singleton is very important question in an interview.
+Right.
+And this reflection actually breaks singleton.
+So how reflection breaks singleton that I will show you will see through the reflection of constructor.
+So I have this basic class eagle I have a I see I have a private constructor.
+Right.
+And you know, when you have a private constructor means you cannot create its you cannot call it you
+cannot create new eagle.
+You cannot do that.
+You can't create its object.
+Right.
+Okay.
+So it has a private constructor and it has one method.
+Now see what I am doing first step for this class.
+Anything I want to reflect in this class method constructor.
+Anything.
+First step is get the reflection of this glass.
+I did that using this.
+Second step.
+I want to access all the constructor present into this class.
+So I am using the class instance dot get declared constructors right?
+So it will return me all the constructors which is present.
+So it is only one as of now.
+So because of this declared constructor, I will get both public and private one.
+So I'll get the list of constructor.
+Now I am iterating over this constructor, right?
+I am putting constructor dot get modifier.
+What is the modifier private right.
+And so that it will print that okay.
+So it will print that the private one.
+Now see what I can do.
+Also, since this is a private even for this constructor Eagle constructor which is a private eye cam
+changing its set accessible true means you are giving access to this main class to even now X is this
+constructor because it's a private.
+For only private you have to say set accessibility to true and see.
+Now I am calling this constructor.
+Whatever the constructor I have, I am calling dot new instance right?
+And it's creating a new object of it.
+See, I got an eagle object and from Eagle object I created a fly.
+So even though the constructor is private, you cannot create an object of this class.
+There is no way you can call a method this, because this is not a static method and you can't create
+it directly with the class name.
+You can only call this method with an object.
+So since the constructor is private, there is no way you can call this method and see how reflection
+breaks it.
+Reflection.
+First, through this class it take out the constructor and if it sends a private constructor, what
+it does is it change its accessibility.
+Make it true that this can now access the constructor.
+And using this constructor, it calls the new instance method, right?
+And it's get an Eagle object right.
+And it get an Eagle object.
+And using this Eagle object it calls the fly.
+Now here, if you see that that's what it breaks Singleton.
+Because in singleton also we have a private constructor.
+But with reflection you can even access the private constructor and create a new object.
+So through reflection you can break singleton.
+I think you already got your answer that why Reflection is not encouraged to use because it breaks the
+principle of encapsulation itself, right?
+You intend to declare a method private.
+You are able to access it.
+You intend to declare a field private, you are able to access it and even change the value right?
+So there is no control.
+Also, second point reflection is slow.
+Reflection is slow.
+Why?
+It is slow?
+Because in C it's all happening at runtime.
+It makes your program slow if you already know the class, if you have already know the class, you
+can.
+If you can already fetch the method directly, right?
+Uh, this object dot get this method.
+Pass this.
+There is no way.
+There is no need to use reflection and do all this things.
+It first of all increase the complexity of understanding.
+Second, reflection works during runtime so it make your code slow.
+It will try to fetch runtime it try to resolve that okay with the name you have passed.
+It will search.
+Do you have that field present or not?
+So it is slower than if you can access them directly, right?
+So try to avoid reflection as much as possible.
+But if not, if really you wanted to use it, then definitely all this capability reflection has.
+Right?
+But do see that.
+Remember that how through reflection we can create a new object of this one constructor, one very,
+very important part, very very important interview question.
+Also it can break singleton right.
+So generally just to before we go singleton can be saved from the reflection is in the private.
+Because singleton purpose is only one object should be created.
+Right.
+So no one should able to create or call this private constructor and create.
+So there we put that if let's say any instance which you have, if it is not equals to null throw exception
+because if instance is already created, if instance is not created, only one time will get created
+through new but not other.
+So one if condition will can save you from this reflection.
+But yeah, that's a separate thing.
+Will go more in depth.
+Uh, but I wanted to teach you the reflection part.
+Okay, guys, hope that's clear.
+It's a very, very important topic.
+So do practice with your hand.
+Now.
+Any question, any doubt, please comment down.
+I will reach back to you as soon as possible.
+But don't just watch and say that it's done right it right.
+All this, uh, classes, methods, field constructor, private members, uh, and public members.
+Try to access it, change the value, invoke it right with your hand.
+Okay, guys.
+See you soon.
+Bye.
+    </pre>
+</body>
+</html>

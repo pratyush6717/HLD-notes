@@ -1,0 +1,831 @@
+Other side.
+Welcome back to the channel.
+And today in microservices topic we are going to do how to build a fault tolerant microservice right.
+So let's start without wasting any time.
+So when anybody says that what is fault tolerant microservice, we mean to say that a service which
+continues to work even when downstream system fails.
+Okay.
+So instead of crashing or cascading failure, it should handle the failure gracefully.
+So what?
+In short, you have a system build up with multiple microservices, even if some of the microservices
+are down and your microservices are depend on them, you should not crash.
+You should handle the failure gracefully.
+Okay, then we can say that it's a fault tolerant microservice.
+Okay.
+Why it is required.
+You will get more clarity with this, uh, example like why it is required.
+So see, as in microservices, different services communicate over the network.
+We all know this.
+And it's possible that one service unavailability could bring down the whole system.
+See this example.
+Consider that this system is not fault tolerant.
+How a one service can bring down the whole system.
+In a normal scenario, let's say there could be multiple microservices, which I'm calling as a client,
+right?
+So let's say some other client or microservices is calling order component order is calling product
+products.
+Give the response and order in return gives the response to the client.
+This is a normal flow.
+Now let's say a buggy code has been introduced in the product and the product service becomes too slow.
+This product becomes too slow.
+Each API is now taking let's say 60s, right?
+60s is too much in distributed system, right?
+Say product service become too slow and taking 60s to respond.
+If proper fault tolerant is not applied, then a call from order service will hang for 60s.
+Now the order service which is calling the product service right need has to wait for 60s.
+What if there is a sudden burst of requests coming from client?
+Then all the requests will wait for 60s, right?
+Just see this example.
+Now a sudden burst coming from a microservice to a order component order in return.
+Calling the product and product is currently going too slow.
+So all the threads are now waiting.
+Okay, all the threads are now waiting.
+Now what eventually will happen is service will run out of thread and start rejecting the request order.
+You know that there is a concept of thread pool.
+We have already covered that in depth.
+So ultimately when all the threads are waiting, the thread will ultimately will get finished, all
+threads will get finished, and there you will reach a point when you will start declining the request.
+And this becomes a cascade failure to all your client and microservices also.
+And also one more thing is even the product component will not get a normal situation because the.
+You can say that the situation of a product service will keep on deteriorating because more and more
+load is coming to the product.
+So even though the issue is at product, the failure got cascaded to order and may be because of order
+has stopped.
+Even order can get slow, order component can get slow or if it's thread is all done, it will start
+rejecting the request.
+This failure can cascade to other components also.
+So that is known as cascading failure.
+And now you can see that how a one service can bring down the whole component whole system.
+So that's why we need fault tolerant.
+That's why we need to build a fault tolerant microservice.
+So if you are building a order, it need to be fault tolerant that even if product goes down or product
+goes slow, I should not like its failure, should not get cascaded to me and I should not get crashed
+to.
+Okay, so here comes our resilience for framework.
+So resilience for J is a combination of mechanism like rate limiter, bulkhead time limiter, circuit
+breaker and retry.
+So these five are the combinations.
+Or you can say that the mechanism which resilience for J provides which helps to develop a microservice
+as fault tolerant.
+And one more thing.
+I would say that we will go one by one in a recommended logical ordering.
+So you might say what is the ordering issue like.
+We can we can apply anything in in whichever order.
+But see this is the logical order rate limiter first, then bulkhead, then time limiter, then circuit
+breaker and then retry.
+Right.
+Why?
+Because there is a reason.
+Like let's say that if you are applying right, uh, for example rate limiter should always be applied
+before retry.
+Now let's say you are applying first retry and then rate limiter.
+This mechanism you are applying in your system like this.
+So does that make sense to you.
+Just think what if rate limiter is that it.
+Whenever an access traffic comes right it blocks some of the traffic.
+Now, if you do the retry mechanism first means you are unnecessarily wasting your computation in retrying
+on those traffic that ultimately will get blocked by the rate limiter.
+Okay, so there is no point of retrying those traffic which ultimately get blocked.
+So that's where rate limiter should be first and retry should be second in this sense.
+So that's why if when you are applying all the five mechanism in your system, logical ordering should
+be present.
+That's what there is no hard and fast rule.
+But this is you can say that are de facto, which generally should be followed like this should be the
+order.
+Okay.
+So let's start with our first mechanism which is rate limiter.
+Very very important from interview perspective.
+Even when you are building the services, also in the product based system like that's also is very
+important.
+So rate limiter is what it controls.
+The number of requests allowed to a microservice in a given time window.
+Let's say that in this time window a particular time window limited time window let's say five second
+ten second, whatever, how much requests can go through.
+So in short, it protect our system from sudden traffic spike like a DDoS attack.
+Okay, so there are multiple mechanisms or algorithms in rate limiter before even we goes to the implementation,
+let's quickly see what are all the algorithm.
+So there are most commonly five algorithm fixed window counter sliding log sliding window counter which
+again has two flavors token bucket and leaky bucket.
+So quickly in five ten minutes we will try to go through each so that uh, when we see the implementation,
+we will at least get to know what rate limiter actually does internally.
+So fixed window counter.
+Let's see the first fixed window counter.
+It is very very simple.
+It counts how many requests happens in fixed window.
+If the count crossed the limit then reject the request.
+For example, let's say this is the time period I am currently putting in two seconds.
+Uh, actually, in coding it could be nanoseconds.
+Okay, but for simplicity, for understanding purpose, let's consider that this is the time period
+that every request can come at seconds 0123456.
+Like this.
+Now we have put a limit five that at in a particular fixed window.
+If only five requests are allowed, if more than five comes rejected okay, so limit is five and window
+fixed window size I have given 10s.
+So now here if you see this is window one.
+This is window one 0 to 10.
+This is window 210 to 20.
+Okay.
+Similarly window three would be 20 to 30.
+Like this.
+Now in each window maximum count maximum request allowed is only five.
+So now let's say one request is comes at one second, then here, then here, then here then here.
+Total five requests.
+So all five are allowed because limit is five for this window and currently it's within a limit.
+Now here if you see in window 212345.
+So these five are allowed because limit is five.
+As soon as the sixth request comes.
+So in this window 10 to 20 second only five requests.
+But this six is not allowed.
+It is crossing the limit.
+So that's why it is rejected.
+Okay if any more requests will come.
+That is also rejected because in this fixed window already five request has come.
+Now in the next window again new request can come till it's don't reach its limit.
+Limit is five.
+Very simple right?
+But there is a disadvantage.
+Disadvantage is that.
+What if this is window one.
+This is window two.
+What if all the five requests comes at the last of this window one.
+And all the requests in the next window comes at the start of its window?
+Now here, if you see in one second ten request has come.
+Okay.
+So that is possible.
+So if traffic comes at edge then there is a chance of sudden spike.
+Okay.
+So this is one of the disadvantage in uh you can say that fixed window counter because it's a window
+fixed window and you are just counting.
+Like, okay, this many requests are allowed.
+Now the request can comes spread across the window or it can come like this.
+But if it comes like this, then if you see in the one second ten requests, your system is able to
+accept which it might not be able to handle it.
+Okay.
+Then there is something called sliding lock.
+Also, again, very simple, but with a very familiar data structures which we use sliding window.
+Right.
+So it is very very similar to that one.
+For each accepted request it is stored.
+The exact timestamp for each request comes in it.
+First check how many requests happen in x seconds window size.
+So there is a window slide slider window.
+You can say that we put that okay 10s 20s whatever.
+So that would be its size.
+Okay.
+If number of requests reached the limit, it will reject the request.
+We will see that with an example.
+So here if you see window size I have put 10s.
+So this is my the slider size.
+So my slider size is ten second.
+And in this slider size ten second maximum limit is five maximum five requests I should accept it.
+Not more than that.
+Now for each accepted request it store the exact timestamp.
+Now let's say that first request is coming at this point.
+So let's say time is started with ten 0000.
+So this is ten 0002 two seconds.
+First request is came windows slider window is still this only.
+Okay then second request comes at this ten .00.05.
+So it is logging the timestamp.
+Third request comes at this 10.0007 accepted because limit is five and only three is there.
+And then fourth request come at ten 00099.
+Second okay.
+All four are accepted.
+Now let's say that the time reached till here.
+Okay.
+So our window size is ten.
+So it has to slide.
+So now window slides to 10s okay.
+So now this is our current window.
+Now current window is let's say we are assuming that time period is in seconds.
+So it is moving second by second.
+So earlier window was started from ten zero zero.
+Now it's ten 000 1 to 11.
+So this is my window size now.
+So it will only consider requests within this window.
+So in this window till now how many requests are there.
+1234 till nine it cames right.
+Now Let's say at 11, another request is coming.
+Will it be able to accept it?
+So currently in this window only four limit is five.
+So yes, it will accept it.
+Okay.
+Now let's say that now window moves again.
+Now let's say that when the time reached till here.
+So window has to slide.
+So window now slides to this ten 000022 1210 zero zero 12.
+Now this is my window.
+Now I will check if a request is coming.
+New request is coming.
+Does this window has how many requests?
+12345.
+Already five is there which is already reached our limit in the window.
+Now you are trying to accept a new request which is in a window, so it will reject it.
+Okay.
+So very simple right?
+It just slides and it just keep track of the accepted request timestamp.
+Now here, if you see that one, you can say that one of the disadvantage of this also that one thing
+is you already know that it has to manage the timestamp, okay.
+Which is you require a memory for that.
+Write more request means you have to store their timestamp.
+Another problem is that now let's say that windows slides again window time reached till here.
+Okay.
+So window has to slide.
+So it slide one second again.
+So now our time is this 032 13.
+Now here if you see that any timestamp of a request which we recorded which is now you can say that
+out of the window it has to be clean up.
+Right.
+So that is your extra task which you have to do because you only need to consider the timestamp which
+are present inside a window.
+All the timestamp which are beyond the beyond or before the window.
+It has to be cleaned up.
+So that is disadvantage.
+Extra overhead of cleanup and you need more memory to store the time frame.
+Okay.
+So very very sliding window kind of uh solution which is just like based on timestamp.
+Now we have our third is sliding window counter.
+Okay.
+So it has two flavors.
+Both flavors are simple.
+So first flavor is sliding window counter with sub windows.
+So understand that is that main window is divided into equal size sub windows.
+Keep track of the number of requests in each sub window to decide if requests need to be rejected or
+not.
+It considers only the active sub windows.
+Main window slides over time.
+Don't worry about this now.
+We will understand this.
+Four lines with an example and it will get clearly.
+So one thing is we have something called main window.
+So let's say window size is 10s which ultimately gonna slide.
+Okay so we have ten second window.
+Then we have sub window of two seconds.
+So this is our main window.
+This yellow one yellow bucket is our main window of ten second okay.
+Then we have sub windows of two two seconds.
+So means this main window is divided into two two seconds.
+Sub windows 0 to 2, 2 to 4, 4 to 6, 6 to 8 and 8 to 10.
+These are sub windows okay.
+And limit is five in a particular window in a particular window.
+Max is five requests we can accept.
+Okay, now what it will do.
+Let's see that how it.
+So till now it is clear.
+Right.
+One we have main window.
+Another is the main window is subdivided into sub windows.
+Now for any new request let's say multiple requests are coming.
+So request comes at here.
+Limit is five.
+It is one.
+Limit is five.
+Only two limit is five.
+Only three limit is five.
+Only four.
+So till now it accept.
+Now let's say that a new request is coming at this nine second.
+So it will sum up the requests in all active Subwindows.
+All active Subwindows.
+So here the ultimately window size is main window size is 10s.
+So currently we are at here at this nine.
+So it's some window is this one.
+This is one sub window 8 to 10, so it has to count how many number of requests comes into this window
+plus this window, because it has to sum up the sub windows of 10s because main window is 10s.
+Okay.
+So it has to sum this up.
+So ultimately you can say that it all sub window task is to manage how many requests coming in their
+window.
+Sub window okay.
+So ultimately all the sub windows which are present into the main window it will just sum it up okay.
+So here at the ninth second.
+So what are the sub windows.
+This one 0 to 2 2 to 4, 4 to 6 6 to 8 and 8 to 10.
+So total zero to 10s.
+So this is your main window inside this main window these are the five sub windows okay.
+Each subwindow is maintaining how many requests comes in their window.
+Subwindows.
+Okay, so we just sum it up in 0 to 2 second Subwindow.
+Only one request comes, so it has maintaining that 2 to 4 only one request came.
+It is maintaining that 4 to 6 only one request came 6 to 8 only one.
+And in 8 to 10 currently zero.
+So how many requests till now?
+Four.
+And the limit is five.
+So request is allowed at nine.
+Okay.
+It will get more clear which say that.
+Now let's say time has reached till this point.
+Time has reached till this point.
+Now window has to move.
+The main window has to move.
+So how much it will move now?
+Will it move by one one second?
+No it will here in this it will move by window size two seconds.
+So two second it will move okay.
+So now you see that where the subwindow also comes into the.
+So Subwindow has two part.
+One is maintain the count of requests within that window particular window.
+Also is that the main window?
+Slides.
+Or you can say that jump according to sub window size.
+So sub windows two second.
+So when the time reached till this cross this main window size or main window is ten second.
+Right now time is still here.
+So it has to move.
+So how much it will move.
+It will move by one window size.
+So now our size is this 2 to 12.
+Earlier it was 0 to 10.
+Now it is 2 to 12.
+Okay.
+So here sub windows would be now this one.
+These are the active sub windows.
+2 to 4 one.
+4 to 6 is the second.
+6 to 8 is your third.
+8 to 10 is your fourth.
+10 to 12 is your fifth.
+So these are the five sub windows of two two seconds okay.
+And these are the active.
+This one is not active now because this is now before the or you can say that the expired sub window
+okay.
+So now when at 11th request is coming.
+So it has to consider all the active sub window.
+So this active one of the sub window is 10 to 12 10 to 12.
+So 2 to 4, 4 to 6 628 8 to 10 10 to 12.
+So all the sub windows present into this main sub main window.
+It will only consider that.
+And each sub window maintain how many requests comes into that period Okay.
+So they will provide that.
+And ultimately it takes the count and it will.
+Don't consider the expired subwindow.
+Okay.
+So simple this one.
+So what are the disadvantages.
+First is more complex than fixed window logic.
+Like you have to maintain a subwindows.
+And for each subwindows you have to maintain the count of requests.
+Okay.
+And when the window slides it has to jump according to the subwindows.
+So that is one thing.
+Second thing is it also required more memory because you have to maintain a subwindow kind of information.
+So another flavor of this is which is little bit simple is sliding window counter with waited window.
+Okay.
+So this is actually a combination of fixed window plus sliding lock concept.
+So in fixed window what we have is let's say fixed window is of ten.
+Second window is of ten 10s.
+So we have a fixed 0 to 10, 10 to 20, 20 to 30 like this.
+We have fixed windows okay.
+Like this is yellow green.
+So these are fixed windows and sliding lock.
+So inside this there we will have a slider window also of a similar size 10s.
+So ten second ten second.
+We have a window right.
+Slider window is also ten second.
+So this slider window can slide.
+And when it slide some part of it might be into the previous window.
+Or another part would be into the current window.
+You can say that.
+So here if you see that the window one has zero to 10s.
+And another window window two, window one.
+Window one is 0 to 10, window two is 10 to 20.
+And this slider window has 80% currently into window one and 20% into window two.
+So it is possible.
+Okay, so here we have given a weight.
+Now it simplifies our previous uh where we are doing with sliding window with sub windows.
+Right.
+It simplifies some task for us that we don't have to maintain the sub windows.
+We don't have to maintain the sub windows like fixed window.
+We maintain that okay.
+In this window 0 to 10 0 to 10.
+How many requests comes.
+Let's say five let's say for whatever.
+So it just maintain a total request not sub window type okay.
+So see this example.
+Let's say our limit is five okay.
+In us in a particular slide window maximum five requests we can entertain.
+So currently our time is 0 to 10.
+Our current time is 0 to 10 Okay.
+So now let's say that the our window slider window is also currently here.
+Zero to turn all 100% slider window is in the fixed window one okay.
+Now request is coming at fifth.
+All 100% inside this only then 6789.
+So 123455 request comes totally.
+It is within a limit of five of slider window okay.
+So all are accepted okay.
+So total request count in a fixed window is five currently because see here in 0 to 10 it just maintain
+how many requests come.
+So total five.
+Total five.
+Request accepted.
+Now you will get clarified like how it works.
+Now let's say time reached till this point okay means time reached into the second window.
+Now window two.
+So this slider has to move internally.
+So now slider has moved till one to.
+Now the window is slider.
+Window is 1 to 11.
+Earlier it was 0 to 10.
+Now it moved by one second 1 to 11.
+So if you see that the slider 90% is in window one and currently 10% is in window two, so it need to
+see how many traffic how many requests are accepted within this window slider window.
+So now just see that it very very basic mathematics only.
+So it just find total request.
+Total request equals to current.
+Fixed window request count plus.
+So means whatever in the current window.
+This is the current window right.
+This is the current window.
+How many total requests are present into that?
+How many total requests we have accepted?
+Currently zero plus.
+Because see here we have just moved right 90%.
+So how many percentage currently we have here is 90%.
+The 90% of total request which are entertained into this window one 0 to 10.
+So total five because we are only 90% over window slider window is into the window one fixed window
+one.
+Right.
+So only whatever the total request we have, we only consider this 90% okay.
+So let's say it comes out to be a 90% of five is 4.5.
+So let's say if we just do ceil round off.
+So it would be considered as a five only.
+So five is our limit for a slider window.
+So we don't allow a request.
+So we don't allow request here.
+No.
+Simple.
+Now you will see that disadvantage also.
+Plus with another example here also.
+Now the request reached till here okay.
+Currently slider window at 0 to 11 right 0 to 11.
+Now time reached till here between 11 to 12.
+So means slider has to move.
+So now let's say slider has moved.
+Now it become 2 to 12.
+This is my slider window now.
+So how much it is in 80%.
+So 80% is in window one and 20% now is in window two.
+So how many total request.
+Now let's say any new request is coming.
+Should I accept it or reject it.
+It has to do first calculate that how many total requests it has present into the slider window.
+So current request count.
+Okay.
+Uh, you can say that the current window.
+Current window.
+What is the request count.
+So currently in 10 to 12.
+Window to 10 to 12 zero requests plus 80% of.
+So currently 80% of our window slider window is into the window one.
+Right.
+So 80% of what are the total number of requests was five.
+So it just said 80% of five which is four.
+So four is less than five because five is our limit of a window slider window.
+So it will accept it.
+It will accept it.
+But now you see that this is the disadvantage itself okay.
+But because now in this slider 2 to 12, how many requests came.
+123456.
+Six it become more than five.
+Why?
+Because it do not maintain subwindows.
+It just compute total requests in a fixed window size.
+So what if all the requests present into here at end of the fixed window?
+So what happen is our slider will keep on moving.
+And when the slider keep on moving its percentage present into the fixed window keep on reducing.
+And when this number your keep on reducing then only this ultimately will get increase.
+So currently here if you see that there is a chance like 80% when you compute for this, it gives you
+four.
+It is not accurate info.
+So there is a chance that you might entertain more requests than the limit.
+Okay.
+So 80% of total request, so it accepted 80% of total request is for.
+So it assumed that these requests are spread throughout the window, which is actually not the case.
+What if all the requests are end of this?
+And if you are doing 80%, then it might give you four.
+But that's not the true.
+Okay, so this is one of the disadvantage of the weighted window.
+I hope it is clear with this diagram like how the window slides, uh, within a fixed windows.
+Then we have token bucket.
+Token bucket is very, very simplified versions.
+And uh what happen is we have a kind assume it like we have a bucket and we place the limited tokens
+inside it.
+Each request consume one token.
+If there is no token left, request is denied.
+And there is also a refiller which adds the token in bucket at regular time interval.
+If bucket capacity is full and cannot hold more token, token overflow will happen and token will be
+rejected.
+So understand with this is that this is one bucket which has capacity of four token.
+So 12344 tokens are present.
+There is a refiller which task is to add one token every six seconds.
+Okay.
+So now lets say that at 12345 second five requests comes up.
+So first four because we have four tokens right.
+So first request take one token.
+Accepted accepted accepted accepted.
+Now all four tokens are used.
+Okay.
+Now fifth request.
+Come.
+Any token left.
+No.
+So it is rejected.
+Now at sixth second, a refiller adds one token.
+So Refiller added one token into the bucket because we have configured it.
+Add one token every six second.
+So at six second one token is added.
+Now if any request comes, it will use it and accept it.
+Very very simple.
+So disadvantage is that a quick burst is possible if token capacity is not set properly.
+What if I have put a token that in a bucket I have capacity equals to 1000 I.
+Without doing proper computation, I give random capacity.
+Then means that much token can get accumulated.
+And what if in a one second itself sudden request comes all 1000, so all 1000 will get accepted.
+So there is a chance of burst traffic, okay.
+Because whatever the amount of tokens present, that much concurrent request can be accepted.
+So you have to consider this token capacity properly.
+Okay.
+Another is leaky bucket.
+Leaky bucket is considered as like request are queued and accepted at fixed rate.
+If queue is full, incoming request will overflow.
+So let's say you have an incoming request.
+Okay bucket.
+Or you can say that a queue which is keep on accumulating the request.
+Okay.
+And the queues are accepted at a very constant or very fixed rate.
+So consider this with the flow diagram a request comes if queue is full.
+If this queue is full then it will send denied and it will send http 4 to 9.
+Too many requests can't even accept.
+If queue has some space then it will add the request at the end of the queue and from the queue.
+Our system will keep accept the request in a very constant rate.
+Very very constant rate.
+So very simple.
+But disadvantage is your latency will increase because requests might have to wait in queue for its
+turn.
+So request which is present here.
+It has to wait for the previous request to finish and to be accepted.
+And your queue is become a bottleneck.
+So site size should be set properly.
+If the size of the queue is very small, you would be denying lot many requests.
+If the size is too big, your latency will increase a lot.
+Okay.
+And also memory.
+You need it right?
+So these are various algorithms of rate limiter.
+I hope with this examples it will be clear.
+Just go through this example one more time slowly and read those texts like the definition which I have
+written like this.
+Right.
+You read it, you will get clarified little better.
+Okay, so we will.
+Now let's see that how it got implemented in Spring Boot.
+So yeah implementation is spring boot.
+So first thing first we need resilience for j dependency.
+So I have added this dependency.
+This one any stable version you can pick right.
+So this is the dependency I have added in my pom.xml.
+Now rate limiter is just a mechanism inside resilience for J.
+Right.
+So rate limiting framework will also come inside that also all the classes will come with this resilience
+for J itself.
+Now here if you see first thing is as usual no change your controller.
+So controller is now accepting like any API which you hit.
+Just see that I have created a service order service.
+Okay.
+This is my order service.
+So controller is invoking an endpoint here right.
+Invoke product API.
+So it is just invoking Invoke Product API.
+And inside this method I am actually doing invoking the endpoint of a product component okay.
+So here we have order component.
+It is trying to invoke a product component okay.
+So this is the controller.
+And here in this I am just invoking a service and order service.
+And there this method nothing much.
+Second is I am using a faint client.
+Right.
+We have already covered this in depth.
+So I think by this itself you can collect what is happening.
+So I have given one interface for the product line get product by ID.
+Okay, so this is my name.
+I am using Service Discovery.
+This all thing we have covered already in this playlist.
+So it is pretty clear that we are using.
+We can use any client fame, client, Rest template Rest client which will be used to communicate between
+order and product component.
+Okay, so this is also nothing much.
+We have already seen that.
+Now here if you see in the order service the method which we have written which is like ultimately invoking
+this.
+Interface client interface.
+Right.
+Get product by ID.
+This is as usual we are invoking but only this red bucket.
+This is the something which is deferred.
+So here I have annotated this method with at the rate limiter annotation.
+Just give it a name any name to this rate limiter.
+Let's say I have given a product rate limiter because I am invoking a product API.
+So I have given a name product rate limiter and the fallback method.
+So now let's say that multiple requests comes and your rate limiter denied one of the request.
+So this request which got denied how it handled.
+So there is a fallback method.
+So we need to provide.
+So it will ultimately move to that fallback method.
+So what.
+So here I have written that fallback method.
+So the method name is rate limited fallback.
+So rate limited fallback right inside that you can throw exception or like how you wanted the exception.
+You can handle it here.
+Either you can simply throw the exception here or like you wanted to handle it, you can handle it according
+to your business logic.
+So only thing which we required is after dependency.
+Whichever the method where you are actually invoking the end point.
+So this is the method where I am actually invoking the end point.
+You have already seen this in Franklin.
+How to invoke it?
+I am invoking product this.
+But only thing is this is the first thing which we required for this slide annotation.
+We have to put the rate limiter annotation on top of that method.
+Give it any name to this rate limiter.
+Provide a fallback method okay.
+And this fallback method should have a signature similar to your.
+This method original method where you have written the rate limiter return type should be same.
+The parameter it accepts a string, so string it should have a string.
+Also, only thing is, apart from all the similarity apart, the next additional parameter it should
+have is a throwable.
+That's all.
+Apart from that, all the parameters should match with your original method, because if it do not match,
+the framework resilience framework will not be able to identify your fallback method, and it ultimately
+moves to the default fallback method.
+So resilience has some called rate limiter class rate limiter class in that they have something called
+default method.
+Default fallback method.
+So first it will try to look that hey exact signature fallback is present or not means return.
+Whatever the method you have written here, method name.
+That method name is present or not.
+Its signature is same or not.
+Return type should be same parameters string.
+So it also has a string and additionally it can have just throwable okay.
+So that is the first thing which we have to do.
+Very important.
+Like put a rate limiter annotation, provide a fallback method and then in application dot properties
+here if you see we have to provide this configuration.
+So resilience for j by default rate limiter uses token bucket, so it has three properties.
+Limit for period limit refresh period time duration.
+So means your bucket maximum number of token it has is two.
+Maximum number of token it can have is two.
+Okay.
+There is a Refiller.
+After every 10s it will run and insert two token.
+After 10s it will keep on adding two token, but the bucket size is also two the same.
+Whatever the limit for period is the same, it is the same bucket size.
+Also how many token after ten second two only.
+Okay, so let's say that no traffic is come.
+Bucket has already two tokens.
+If after 10s another two token it try to add it will overflow.
+So only two is the maximum capacity.
+If more you will try to add, it will overflow and it doesn't get added to bucket.
+Now let's say that two token were present.
+Three request came.
+So this request one accepted.
+This token request two has used this token.
+Now request 310 second is not yet over.
+So new token hasn't been added.
+So what?
+Request three will done.
+It will get rejected.
+Right.
+So we we can provide a timeout duration.
+Hey, wait for one second before you get rejected.
+If after one second also there is no new token get added, then you can get rejected.
+Okay, so this is the timeout period.
+We can define that any request which are not able to find a token instead of instant rejection, we
+can make it wait for at least one second if in case token might get present.
+Okay, so these are all things we have to do.
+Now, you might be thinking that.
+Hey, Shreyansh how this by putting this rate limiter, we have put this rate limiter right annotation
+how this might have working internally.
+It uses the concept of AOP which in the spring boot playlist itself I have discovered in depth very
+important AOP.
+So it uses the AOP functionality only.
+Or you can say that the complete functionality is via AOP only.
+I won't go in depth of how AOP works because that's where I have discussed in depth various point cuts
+expression.
+Right?
+So everything you will get to know and you know that we have also discussed how we can write our own
+annotation.
+Right.
+We can handle the complete rate limiter through AOP itself.
+No special framework code.
+So what happened is that this rate limiter.
+Like through AOP, it intercepts the request.
+What it does is it first do your rate limiting logic.
+Okay.
+So by default it uses token based algorithm.
+Right.
+So first it will invoke the class which has token bucket implementation.
+And after that from where if it is comes as accepted then it actually proceed.
+You remember from AOP we call proceed.
+So ultimately invoke the endpoint.
+So here ah I will go to this output part again.
+Uh but first see that let's say that uh this will give you a reminder how AOP works.
+I'm not going in depth, but if you remember from that AOP topic, you.
+Let's say I want to write my you say that hey, I want to write my own custom rate limiter.
+I don't want to use token bucket.
+I don't want to use whatever the default it is providing.
+I want to write my own rate limiter.
+So I told you that the rate limiter if you want.
+Different algorithm.
+You have to handle it through AOP completely okay.
+So now let's say that first I have to define an annotation.
+So I have defined a custom rate limiter annotation we have already seen into this spring boot playlist
+how we can define a custom annotation.
+The second part is in the AOP.
+I have told you that we have to write an expect class, right?
+Expect class where we provide this Pointcuts.
+Okay, so now it is listening to this annotation and what it has to do once this annotation is called
+what it has to do, it has to first do a rate limiting logic.
+Now, whatever the algorithm you want, you can put it ultimately ultimately called proceed, which
+ultimately invokes the method.
+Right.
+This is your ultimately method, right on which you have put this annotation at the rate custom rate
+limiter.
+Okay, so before actually calling this get product method, you can say it first call this method or
+implement the custom rate limiting logic.
+And after that it proceed.
+After that it implement this method.
+So this we have already done inside AOP.
+So I won't go into that again.
+So in the Spring Boot playlist you can check out this AOP one.
+So coming back to this now let's say that with rate limiter right we have provided a rate limiter rate
+limiter name fallback method.
+In fallback method Its signature should be same as the original method, return type and parameter.
+Only thing is throwable should be extra.
+How you handle it is totally up to you.
+You want to just log it, log it.
+You want to throw exception.
+You can throw it in the application.properties by default rate.
+Limited uses are again token bucket.
+And these are the parameters which you have set.
+Now according to this one we said that only two tokens are present, and after 10s two more tokens will
+come and any request which not able to find a token should wait for one second before it get rejected.
+So now here, if you see I have started the service now.
+First I hit instantly hit one so it able to call it able to call product API.
+Second time I call it able to get call a product API because it got token, it got token the third time
+I called.
+It says that rate limit exceeded.
+Try again later.
+So this one, it printed out this.
+Okay then I waited for some time to over the ten second so that two more tokens get added.
+So after that I hit again.
+Able to hit.
+So two tokens are consumed again I hit rate limit exceeded.
+Try again later.
+Then I waited 10s and then I hit again.
+So two times it hit properly.
+Two tokens consume and I try to hit no rate limited exceeded.
+So this is a very very simple right.
+So this is what we have done.
+Right.
+So the same configuration just here if you see from postman hit one time you got it two times.
+So see here it waited now.
+So because here is some wait happened right.
+That's why uh so ten second was over.
+So now let's say that let me quickly call one two weighted.
+So after two calls retry.
+Now ten second is over again.
+One two wait.
+Now let's say I'm quickly hitting.
+Keep on hitting.
+123.
+Wait wait wait.
+So till now here if you see two times token used now hit continuously hit.
+So rate limit exceeded because ten second is not yet over.
+Token is not yet added.
+Now if you hit it, it got invoked.
+Okay.
+So you understood right how we can implement the rate limiter okay.
+And this name rate limiter.
+Name product rate limiter.
+This is ultimately useful in the configuration itself.
+Resilience for J dot rate limiter dot instance.
+Because there can be many endpoints on which you have to put this rate limiter.
+Okay.
+So many configuration you have to put.
+So this configuration is for this product rate limiter.
+This is product rate limiter.
+Similarly you can have for some other component let's say sales rate limiter.
+Okay.
+I hope this rate limiter concept is clear.
+And next we will see bulkhead time limiter circuit breaker and retry.
+If any doubt please feel free to, uh ping in the comment section.
+We can discuss further, but I would highly recommend that.
+Please go through one more time.
+I tried to make sure that I don't repeat a lot.
+Same concept.
+Uh, because that's what I get some time in comment that, uh, I go little fast.
+So if you think that I am little fast, I would say that.
+Try to have a look one more time and things will get little clear to you.
+Okay, guys.
+Thank you.
+Bye.

@@ -1,0 +1,176 @@
+Share on this site.
+Welcome back to the channel.
+And today in Java we are going to cover sealed classes and interfaces which has been introduced in Java
+17.
+So before we start let's first understand the problem why this has been introduced.
+So in my view the biggest problem is lack of control in inheritance.
+So consider this example that if you have created an interface shape now do you have a control like
+which class can implement it or not.
+Circle rectangle triangle.
+Or it can be anything which can directly implement shape.
+Similarly, the subclasses of circle can be anything, right?
+We have zero control and it goes on like you have no control over this hierarchy, like where it will
+stop.
+So it is not possible to control the hierarchy.
+Any class can join it by implementing the interface or extending the class.
+Even we did not plan for it Like.
+So let's say that this class I have not even planned.
+But still it came because I have no control.
+I cannot prevent someone from extending the parent class and adding it.
+What if some engineer added it?
+So because of that, whenever you add a code, you add like this.
+Hey, if it is a circle, yes, I can handle it.
+Hey, if this shape is a rectangle, yes, I can handle it.
+And you also have to put else condition that hey, if any unknown child comes of a shape which I don't
+know which I can't handle, then do this default thing.
+Similarly, when you do a switch, you put always default so that okay it's circle I can handle, rectangle
+I can handle, but if there is something which I can't handle then this default should run okay.
+And many times it possible that if you add something in the child, there is some silently breaks in
+the code if you are not handling it properly.
+So that's where to bring the control troll the seed classes and interfaces comes into the picture.
+So consider this example now.
+So now let's say shape.
+We have a shape interface.
+Now we have to put a sealed keyword here seed.
+And the seed is used with permits.
+So what it says that that this interface shape can be subclassed but only by its own permits list.
+Okay.
+What sealed says that yes, you can create a subclass of it, but whatever the classes or interfaces
+you have defined here, those only can directly implement or extend it.
+So now in the permits I have only put circle and rectangle.
+So when you create a class circle implement shape it is allowed.
+When you put class rectangle implement shape.
+This is also allowed.
+But when you try to put like a triangle implement shape, it is not allowed because in the permit list
+it is not there.
+Also, one more thing is that each classes which are defined into the permit list.
+Okay.
+Or you can say that each subclass, each subclass, you have to now choose whether.
+Between final.
+Permit or non sealed.
+So we have to decide between these three.
+So now let's say circle.
+Do I want a further subclass of it.
+No I don't want to allow it.
+This is the end of this branch.
+So I choose final.
+Final means no further subclass of this is allowed okay then the second is non sealed.
+Let's say that I want to open this branch.
+Yeah.
+For this rectangle there can be multiple unknown Childs can come like we don't know.
+There can be many subclasses classes, right?
+I don't want to put some restriction.
+Then you put Non-sealed means this class or interface is open to be extended by any number of childs.
+Okay.
+Similarly there is something called sealed permit again.
+So like if I want to restrict I can use a sealed.
+Then I will put permit only by let's say rectangle colored rectangle or non colored rectangle, something
+like that.
+Then only the subclass of this can be only this colored rectangle and non colored rectangle.
+That's all.
+Not not others are allowed.
+So for any subclass we have to pick one of it.
+So few things we have to consider.
+Permit type should be direct subclass of the sealed interface.
+So now here if you see in the permit I have choose circle and rectangle.
+So one condition says that this circle and rectangle should be a direct child of the shape.
+Okay, this shape is the sealed one, right?
+So whichever interface is sealed and whatever the permit you have used, those should have direct child
+of subclass of this.
+It should not be like this.
+Hey, I have a shape.
+Then I have some different class x, y, z and then I have circle.
+Still, circle is a child of shape, but it's not direct.
+So that's the first condition.
+Like whatever the classes or interface you have mentioned into the permit list, those should be the
+direct of this sealed one.
+Permit type should be either final sealed and non sealed.
+That I told you that whatever it is present here or whatever the child you have present here, you have
+to choose whether you can define it as a final or sealed permit or non sealed.
+One of them.
+You have to choose.
+All permit types should be present future classes or interface not considered.
+Now let's say that while you are designing you say that.
+Okay.
+Circle, rectangle and triangle is also allowed.
+But you have only current implementation present for circle and rectangle.
+But you can't add future.
+Okay.
+Triangle.
+Let me add triangle so that in future I should not add it.
+Okay.
+So it should be allowed.
+No.
+Whatever present classes present today those only.
+So their implementation should be present in simple terms.
+Whatever the classes you are present into the permit list, their implementation should be present.
+So let's understand this with this example.
+Okay.
+Let's say we want to achieve this.
+I have an interface shape and I want to restrict it with this circle polygon and abstract shape.
+So I have created an interface shape and I want to restrict it right.
+So for restriction which one to use.
+Sealed permit.
+So I put a seal I put a permit I want to allow only circle polygon on abstract shape circle polygon
+and abstract shape.
+Okay.
+Now let's move to circle.
+So class circle implement shape.
+So this is allowed because it is direct.
+It's in the permit list.
+And it's a direct child of this sealed one okay.
+Now any further subclass allowed for this circle.
+No.
+So that's why I picked final.
+So I stopped here itself.
+Now no subclasses allowed here after this circle.
+Now polygon.
+Polygon is an interface okay.
+So here if you see in polygon I can have many child as I wanted.
+Okay.
+So further subclass allowed.
+So I don't want to put any restriction here.
+So interface polygon extend shape okay.
+So it's a direct child.
+Now I put non seal means I don't want to put any restriction on this polygon.
+So I open this branch.
+You can see that I can I open this branch.
+So hexagon I can have any mother.
+Other classes also.
+Okay, so we can do that.
+We can open any branch we want.
+And if you want to put a restriction you can put restriction here.
+You can put restriction here like okay further down you don't want further branches.
+You put restriction here okay.
+So that is allowed if you want to restrict let's say hexagon further you put sealed permit.
+Like what.
+All classes are now allowed within hexagon.
+So you can control that only.
+So at any level you can control this like whether you want further child or not or whether you want
+to seal it or not.
+Similarly abstract shape I want to restrict it with only rectangle and triangle.
+These two I want to restrict it.
+So abstract class abstract shape which implements the shape direct child of this one, then I want to
+restrict it.
+Right.
+So I put sealed and permit I only allow rectangle and triangle.
+That's all.
+Only these two are allowed okay.
+So only these two children's will be allowed.
+So I put rectangle which extends the abstract shape.
+So now rectangle is a direct child of this abstract shape sealed one and further child of rectangle
+allowed.
+No.
+So I put final.
+Now triangle extends abstract shape.
+Now triangle I want to allow further subclasses allow I don't want to put I want to open this branch
+also.
+So I put non sealed okay.
+So now you can have any number of childs no problem at all.
+So this is an open branch okay.
+So it's a very simple topic but very useful when you want a control over your hierarchy.
+So if you have any doubt let me know.
+We can discuss further into the comment section.
+Okay guys.
+Thank you.
+Bye.

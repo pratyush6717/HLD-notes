@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>49. Retry Pattern</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>49. Retry Pattern</h1>
+    <pre>
+Hey guys and welcome back to the channel.
+So today we will start with retry.
+And we have already covered rate limiter in part one bulkhead and part two time limiter.
+We are not going to cover.
+We will cover it when we will do reactive programming.
+So let's start without wasting any time.
+And uh, before I start I just want to say that that retry, if in not properly implemented it has more
+disadvantages than advantage.
+We will get to know why.
+So in distributed system call to downstream service might fail because of transient issues.
+Transient issues means that short temporary issue like network issue, timeout, etc. and retry of same
+request after a short delay can get succeed.
+Okay, so one question might comes to you that hey still why we should do retry?
+Why can't user or client can invoke our API again.
+So let's say that this is our client.
+This is our component order.
+And we have an API.
+And we are invoking another API of let's say product component.
+And there is some transient issue while invoking it.
+So what we are saying is so transient issues, if we retry it, it can get succeed.
+So we can do a retry for this invocation.
+So the question is that hey why we need to retry.
+Why can't client again invoke the API so that automatically it will invoke the product API again.
+Why we have to retry ourself.
+So see the answer is for each call lot of heavy processing is done and it's not free of cost, memory,
+time, resources, etc. everything like it's there is some cost incurred.
+So say you have invoked client at first invoke an API.
+90% of the API implementation is completed.
+Task is completed.
+Only 10% is left.
+And then it invoke this product API and the transient issue happen.
+Let's say uh network timeout happen.
+So is it a good idea to dispose of this 90% of the task which is done?
+No.
+Right.
+We if we can just simply retry this, and if it gets succeeded, then only 10% task have to be done.
+Otherwise, if we ask client to retry again, our API hit again, our API again we will do the same
+90% task again.
+So redundant of the work is there, duplicate of the work is there and it will increase our cost and
+it's not free of cost to be honest, right?
+So with above understanding, we know that retry is important, right?
+I think I hope this point will tell you that why retry is important?
+Because we don't want to do the same task again.
+Okay.
+And I'm just saying this is just one client.
+If there are hundred clients for this API and they are all invoking and there are thousands of calls,
+so you are saying that you are doing lot of wasting your, uh, capacity on just duplicate tasks which
+you have already completed.
+So we know that retry is important.
+But now question is when to retry.
+How to retry.
+Very very important question when to retry.
+First of all is do not retry on permanent failures.
+Permanent failures is like no matter how many times you will retry, it will always fail.
+Like for Forex errors, so forex errors generally are in the category of validation error.
+Validation error.
+Validation error means the input request input request which client has passed has is not correct until
+unless client will not change, the input validation error will not remove.
+So if you retry with the same request previously again you will see a validation error.
+So generally these are known as permanent failure.
+For xx.
+Do not retry if operation is non idempotent.
+What does it mean.
+So hydro patency makes sure that if request is retried multiple times duplicate processing will not
+happen.
+So say you have a service A which invokes the create API of service B okay.
+So it has invoked it.
+And while service B writes into its DB, but it takes certain time.
+Okay.
+And here it says that timeout happen and timeout happens.
+So for service A the request has been timeout.
+But service B internally inserted the row into the DB.
+Now since this is a timeout and user has retried.
+So this is a retried again.
+Now here service B insert the row again Id2.
+Earlier it was already inserted Id1.
+Now it is Id2.
+So here.
+This is not my intention.
+My intention was not to create a duplicate row for the same request.
+Okay.
+So we can say that this this API, the API of the service B, this create API is not impotent okay.
+So that's why we say that do not retry if operation is not idempotent.
+Otherwise you will end up in creating duplicate resources.
+So if you don't know how to design APIs, I have already covered it into the high level design playlist.
+Uh, in depth.
+Like what are the challenges, how we can come up with the API design?
+So have a look in case you have a doubt.
+Okay, so but here one thing is we don't have to retry if operation is not repeated.
+The third is that rule of thumb says that retry only on five error.
+What five error says that it is system error.
+Your input request.
+Input request is good.
+Okay, all validation passed, but there is some limitation in system or some issue happen in the system
+because of that error has happened.
+So generally these are considered as retrieval error.
+Okay.
+So it is safe to retry on this because this is first of all system error and also it says that it request
+is not successful.
+Means the previous request five access means request is not successful.
+Okay, so that is also one.
+Give us a you can say that uh relief that yeah previous request is not successful.
+And we can retry as many times so there is no harm okay.
+And five has already know that input request is correct.
+No validation errors.
+But there is some issue with the system.
+So with retry it is possible that it might get resolved.
+So that is one.
+And another thing is retry network uh network error and timeout error.
+We have to retry but only make sure that whatever the API it should support auto patency.
+So this is a retry decision table.
+Like based on HTTP code you can decide whether you have to retry or retry.
+Not so.
+These are not complete lists.
+Just an idea.
+Let's say 200 request is already success.
+You don't have to retry like 400.
+Bad request.
+Unauthorized or forbidden 404 not found.
+So these are you can say that validation error.
+No matter how many times you will retry, you will always get retry failure uh, failure itself.
+Right.
+So you don't have to retry on this.
+So 4 to 9 you can say that one of the exception like 4 to 9 means too many requests.
+So it generally happens when the rate limiting.
+So for that we can do retry with some delay.
+Then we have uh 500 internal server error, 502 bad gateway 503 service unavailable.
+These are like uh, you can say that retry issue like uh service unavailable.
+Maybe it was down.
+And if you retry, it might be up and it request can get succeeded.
+So for all this we can do retry.
+And if there is a network error timeouts you can always retry.
+Yes.
+But make sure that it should be independent.
+Okay.
+So this is just a quick glance that based on HTTP status code, you decide whether the retry can be
+done or not.
+Now how to retry.
+So see this is very important part.
+So let's see first types of retry and when.
+And then we will see how to implement it also.
+So first is fixed interval retry.
+So what does fixed interval retry says that retry after a constant delay.
+So within each retry the delay is constant.
+So say that the attempt total attempt is four.
+So when we say total attempt means original one call plus three retries, so total four.
+Okay, so after original call there has to be a fixed delay.
+Like let's say my fixed delay is two second.
+So it would be like after two second first retry will happen.
+Then it will wait for two second then second retry will happen.
+Then it will wait for two second, then third retry will happen.
+So there is a fixed interval of delay within the retries.
+So let's say this is the original call which happened at two.
+So first retry happen at four.
+Then second retry will six third retry at eight.
+So each one has two two seconds gap same.
+So advantage of this is it is very very simple easy to configure and debug also.
+But this is main disadvantage is that higher chance of retry storm which is also known as thundering
+herd problem.
+Thundering herd problem in, many clients retry at the same time, causing a surge of retry traffic
+and system spent resources on retries instead of handling new requests.
+So understand with this is that.
+Say that you have a load balancer and you have, let's say component service a service a multiple instances
+instance one, instance two, instance three, and load balancer distribute the traffic between the
+instances of service a there are so many clients client one, client N and the traffic is also huge.
+Now let's say that a buggy code has been introduced into the service a and it is.
+Start throwing some exception and if client start doing retry also, since already it's a heavy traffic
+and for that they are all started doing retry at a fixed delay.
+So all are retrying.
+So original request.
+Let's say there are 1000 request original.
+Now after two second delay.
+Retry one will happen.
+Okay.
+So everyone will do retry 1000 requests again after two second delay.
+Retry two.
+They again do a retry okay.
+So these are just retry traffic whatever the normal traffic new request is coming.
+That is different.
+So means your system is now get bombarded with retry traffic.
+And it is possible that while you are only servicing retry traffic, you somehow decline the new request
+which is coming.
+That is also possible.
+Okay, so I if you remember like in the playlist.
+I have already covered Thundering Herd problem like it is one of the frequently asked interview question.
+So if you want to know more about Thundering Herd problem, you can check it out.
+But yeah, this is one of the disadvantage is that if all the clients retry at the same interval, it
+is possible that the retry traffic become huge and it can cause thundering herd problem.
+So fixed interval is clear.
+Then we have exponential backoff.
+So what does exponential backoff says.
+That delay increases exponentially.
+So currently earlier you are delaying at this time.
+Then this time then this time not at fixed rate, not after two seconds.
+This is two second not at fixed.
+So it increases with the time.
+And this is the formula for it.
+So the formula says that you pick some base delay that.
+Yeah.
+Minimum base delay is my 100 millisecond into two raised to power.
+This is the factor.
+You can say that this is also configurable.
+Factor raised to power number of failed retry attempt.
+Okay.
+So consider that total attempt is four means one original call and three retries.
+And my base is 100.
+So the formula says that the first retry will.
+So let's say original call happen at uh zero zero millisecond say so first retry will happen at 100,
+which is our base delay into.
+And the factor which I have given is let's say this factor I have given is two for now two raised to
+power.
+Previous number of failed retry attempt.
+Currently this is the first retry itself.
+So zero retry attempt has failed.
+So currently it is zero.
+So this is first retry happen at.
+So original call happen at zero millisecond.
+First retrieve will happen at 100 millisecond.
+Second retrieve will happen at 100.
+Base into whatever the factor you have told.
+Let's say I have told two raised to power.
+Number of failed retry attempt.
+So till now, only one retry attempt failed.
+So it's one.
+So retry will happen at 200 millisecond third retry will happen at 100 into two.
+Raised to power.
+Number of failed retry attempt two.
+Till now two retry has been done.
+So two ratio of two.
+400 millisecond.
+So now here if you see the delay, time is exponentially increases.
+100 200 400.
+Next you will see 800 like this.
+So advantage is that it reduces the load on downstream service during outage.
+Let's say that this service become.
+This service become down if we increase the delay.
+They also get some breathing time to recover it.
+Unnecessary if you put the load of the retry also plus the original request.
+Also the it might take some more time to recover for the component, and it also helps to avoid thundering
+herd problem to some extent, right?
+Since they are not retrying at a constant time its delays.
+So thundering herd problem.
+You can say that uh, to some extent it reduces, but does it reduce fully?
+No.
+There is still a risk of thundering herd because see, this is the formula.
+What if your base is my base?
+All the clients select the same base and same factor.
+Then they will retry at the same time itself.
+So there is because there is no randomness, right.
+So there is still a chance of thundering herd problem.
+And also if outage period is short, user might wait create some longer time.
+So let's say that this shortage is resolved at 500 milliseconds after 500 milliseconds.
+This outage was resolved, but after 400 milliseconds the delay was 800.
+Only after that it will retry.
+So there is.
+Even though the issue was resolved, it still added some latency.
+Right.
+The outage period is short.
+User might wait longer than needed.
+So this is one of the disadvantage.
+So there is one.
+Another version of it is like exponential backoff plus jitter.
+Jitter means some randomness similar to exponential backoff.
+But add jitter or randomness to delay or to.
+You can say that to avoid retry stomps.
+Now see exponential backoff already.
+Uh, increases the delay time exponentially, right?
+But only thing which missing is randomness.
+So this jitterness helps to retry reduce the retry storms.
+So this is its formula.
+We have to choose a random number.
+Between random between.
+Zero comma.
+Minimum of maximum delay.
+What?
+What is the maximum delay we can have?
+Let's say no exponential.
+Back off.
+So it's not like let's say you have for example I'm just saying you have 100 retry.
+So it's not like it continuously increases the time and all.
+No there should always be limit right after a limit.
+This is the maximum wait time.
+Let's say uh five seconds is the maximum delay time.
+More than that you can't go increase if you more than increase if you're with the formula.
+If it gives you the value of more than five seconds, always use five seconds.
+So this is the max limit.
+So here is the same random.
+You have to choose a random between zero comma minimum of the maximum delay or.
+This is our exponential backoff formula.
+Okay.
+So now we have bring some randomness.
+So again random between zero comma minimum of maximum delay which we can wait comma your exponential
+backoff formula one.
+So between this it.
+Now pick some delay value.
+And now since this is random you can say that uh it spread the retries over time.
+Reduce peak load and thundering herd issue is happening of this issue become very less because of this
+randomness.
+The disadvantage is it's not easy to debug and it's little complex.
+And the last type of retry is custom interval.
+Like you define your own retry logic.
+Hey I want retry to be like 11235 like this.
+Okay.
+So first retry should wait for one one millisecond, then another one millisecond, then two millisecond,
+then three millisecond, then five, then eight.
+Like this.
+So you can define your own custom logic how you want to do a retry.
+That is also possible.
+So we have full control and flexibility.
+But disadvantages you have to maintain you have to maintain it.
+So you have to write the logic.
+You have to maintain it.
+The framework will not help you in this.
+We will see that.
+So first let's see the implementation of fixed interval.
+How you can do that.
+This is same controller.
+Troller.
+This is faint.
+Client interface controller is invoking the order service invoke product API.
+This service is invoking.
+Now here.
+If you see, I have put at the rate retry comp annotation on top of this method.
+One thing remember is always use retry on top of method.
+The logic which you want to retry.
+So I only want to retry this.
+My downstream call.
+Let's say if you have some lot of business logic here, everything will get retry.
+If you have a DB call that will also get retry.
+So please double check.
+Double verify where you are putting this retry.
+What logic are there inside that method because that will get executed.
+Okay, so I have used at the retry annotation give it a name fallback method.
+Like after all the retry got failed.
+Ultimately this fallback method will get invoked.
+Okay.
+Now in the application dot properties here, if you see I have defined the configuration resilience
+for retry instances product service.
+This is the name I have given.
+Maximum attempt is three and resilience for retry instances.
+Product service wait duration is two second.
+So now here if you see that I haven't told which type to use, whether it has to use fixed delay, exponential
+backoff or with Jitterness because by default it is fixed interval by default, which resilience for
+j uses retries fixed interval okay.
+And maximum attempt we have defined is three and wait duration is two seconds.
+So it will wait 2 to 2 two seconds.
+Now you can you can easily test it.
+If you want to test it, you can easily test it that uh, so here in this one I have just put uh try
+catch block.
+And in the catch I have put not able to invoke product API.
+So I'm invoking the product API right.
+I haven't started it server itself, I haven't started server.
+So definitely it will fail.
+Not able to invoke product.
+So I have just put this not able to invoke product.
+And let's see that how many times it will retry it.
+So if you see this what is the configuration.
+We have put three mean one original call and two retry.
+So if you see this first time this is the original call which happened at 2056.
+Not able to invoke.
+Then it wait for two seconds because this is the delay period we have defined into this wait duration
+two seconds.
+So it happened at 2056 12.
+So two second delay first retry happen again failed after that second retry happened at two 5614.
+Again two second delay, fixed interval delay, not able to invoke and all the retries finished.
+And then it says that product service is busy.
+This is our fallback method.
+Make sense.
+And this thing.
+I already told you that this thing you can have multiple milliseconds, seconds, minute.
+You can even go 500 milliseconds.
+So in that also millisecond also you can set the values.
+Now how internally this might be working.
+So see here.
+As we already know Resilience Forge totally relies on AOP.
+And AOP generates the proxy code.
+Right.
+It generates right the code.
+So for this retry what code it might have written.
+So see this is the code it AOP might have written I am not sure, but AOP because generate the code
+during runtime you can't are debugging is difficult on that runtime code generation part.
+But this is the framework which retry uses it.
+So it has multiple parts.
+So consider as three part.
+First part is interval function.
+Second is retry config.
+Third is retry object.
+So retry function is the function where your delay logic resides.
+If you open this class retry interval function you will see so many functions.
+You will see so many methods one is off and you have just wait time.
+So that is for fixed delay.
+Then there is something called exponential back off off.
+So that is for exponential backoff.
+Ah retry.
+So for certain it's already written.
+We don't have to have written this formula by ourself.
+So inside interval function class if you go you will find different methods.
+One method for exponential backoff one method for uh fixed delay.
+One method for jitterness.
+And they have their logic how to compute the delay.
+Next delay.
+So that is first thing.
+So we have to have one interval function method where we write our delay logic.
+Generally this would be we have to implement it only in case we have to write for custom logic.
+But in case if you are using already present one, then we just need to call that which method internally.
+Then second is retry config.
+Like.
+Here we set the configurations like uh attempt attempt number equals to four.
+Then wait time something something.
+So all the configurations generally we will put it here and then is retry object.
+From this config a retry object is created which will be used to do the retry we.
+So if you see that we don't have to do anything we just do this AOP writes the code.
+What I am saying is what AOP how AOP might be doing this or computing this code.
+So now this is the part.
+So first it is creating retry config dot custom.
+It is setting the configuration.
+Let's say max attempt was four.
+That's what we have defined here right in the configuration max attempt 345.
+Like these are the configuration my mean right.
+So you can say max attempt for interval function which interval function you have to call.
+So let's say I am using fixed interval okay.
+So it will call this method.
+Interval function dot off.
+So I have defined delay is two seconds.
+So this method takes interval function dot of two seconds.
+It is in milliseconds.
+Generally it takes okay.
+Then on what.
+All exceptions you have to retry.
+On what all exceptions you have to retry.
+You can add it here also.
+Okay.
+And finally you do build.
+So you got the retry config.
+And from that retry config retry dot off you can create an object of retry.
+Just give whatever the name you wanted to give your retry and this config.
+So it will create an object from this config retry config.
+Okay.
+So first thing is the interval function method which has to be invoked.
+So how AOP knows that which one by default is In the configuration by default is fixed interval, and
+we haven't tell anything explicitly that we want that.
+So by default it take fixed interval one configuration we have already provided.
+What is the max atom and what is the wait time okay.
+And even the retry.
+What on on what on exceptions.
+You want to retry right.
+That also we can define in the config.
+So this is how internally it might be doing it.
+So let's see exponential back off.
+So all same only configuration changes.
+See this code.
+We don't have to write.
+This will return by AOP.
+So this is just for understanding purpose.
+What AOP might be doing it inside.
+So this retry thing nothing changed.
+So we still on whatever method you have to do a retry please double check on that.
+You have to write this annotation.
+The only thing change is that our Configuration.
+So here if you see for exponential backoff these are the configuration we have to give.
+So see if you go into the back of dot Java class this is the formula.
+They have written the same thing what we have written right.
+Initial wait time into whatever the factor two three raised to power.
+Number of failed retry attempt.
+So this is the formula they have written in their back of dot Java class.
+Also this is a framework class.
+You can check it.
+So maximum attempt is four original plus three retry okay wait duration is first second.
+So wait duration.
+This is the initial wait time.
+So one second is my initial wait time.
+Enable exponential backoff.
+True because this is not the default uh strategy for retry.
+Right.
+So that's why I'm explicitly saying hey enable the exponential backoff.
+True.
+What is the factor you want to use?
+Exponential backoff multiplier is two.
+I want two raise to power.
+If you make it three, it would be like three raised to power.
+Okay so this is this factor part.
+So this is your formula gonna be.
+So first retry after let's say original happen at zero.
+Second the first retry will happen at initial is one second.
+So let's say 1000 millisecond into what is the factor.
+We told two raised to power number of failed retry time currently is zero.
+So after first second the first retry will happen, second will happen.
+And after two second third will happen at four second.
+Like this.
+So actually we are going with zero in the formula.
+They have just says that iteration minus one.
+So retry iteration generally.
+So currently it is the first retry.
+So that's why it started with zero.
+No retry has failed failure till now.
+The same thing.
+Different way to understand like how you can remember it.
+So let's analyze the output here.
+If you see that, what is the maximum attempt we have told for means one original and three retry.
+So if you see that original call happen at 21, 2240, then it does the first retry at 21, 2241, one
+second delay.
+After that it do a second retry at 43 two second delay, then the third retry 47 four second delay.
+And since all the attempts finish four attempt finish our fallback method executed.
+Okay, so this is how exponential backoff works.
+And if you see the AOP generated code you actually you can't see if you just try to analyze it again.
+The three part first is interval function.
+We have to tell.
+So internally since we have made this true.
+X enable exponential backoff Backup now.
+AOP might be adding this method of interval function.
+Exponential.
+Not random.
+There is another method.
+So this is we are not using jitter one right.
+So this would be like off exponential backoff.
+There is one more flavor of exponential random backoff which is for the third jitter one.
+Okay.
+But but I think you got it.
+Like based on the what we tell in the configuration explicitly, that method would be invoke.
+So this is the place where the actual delay logic is computed.
+Then retry config where we have like what is the maximum attempt.
+What is the retry on the exceptions you have to do retry.
+And from this config you have to create and retry object.
+This is again just for our understanding.
+You can't debug that code.
+It it is generated by AOP dynamically at runtime.
+Similarly for exponential backoff plus jitter.
+No change.
+You have to use the same annotation at the rate retry.
+No difference in that only differs in the configuration.
+And you know that everything else is exactly same as exponential backoff, but only thing is unable
+randomized.
+Wait.
+That's all.
+Some random thing has been added.
+We just have to enable that.
+Hey use random.
+So now here it will use this random backoff method for computation.
+Okay then we have custom retry.
+Now this is interesting part.
+Now we have to retry right.
+So first thing first we can't use at the retry annotation now because when we use at the retry what
+generally happen is our AOP depends upon configuration to construct the to create a retry object.
+But now since there is no configuration right?
+We can't use this annotation.
+That will not work.
+So one thing is we have to manually create retry object.
+Now our understanding of that will come into this picture.
+So here what I am doing now.
+So here if you see that in the at the right configuration I have written a method custom retry.
+I am creating a bean.
+I'm creating an object of retry.
+So this is we know that AOP might be doing it.
+And the same thing I am doing.
+The first thing is interval function.
+So we have to provide a function method which where the delay computation would be calculated.
+So here is Fibonacci interval.
+So here earlier I what I did is like I have like I want to run it like one one then two, then three
+then five like this.
+So first retry happen at one another.
+Retry happen at one.
+Uh, the third retry happen after two seconds.
+Uh, then three.
+Then like this in Fibonacci way, the delay increases.
+But for simplification purpose you can have all this logic here.
+This is just for demo purpose that different logic you can build.
+But here I am just for simplification purpose.
+I am just returning.
+What is the delay time it return right for each run.
+For each retry we have to compute the delay time right?
+What is the next delay time?
+What is the next delay time.
+So this method returns the duration.
+Like wait for this much second milliseconds.
+Wait for this much duration okay, so let's say that Fibonacci interval.
+You have the logic all here and it returned milliseconds later.
+Let's say it returned this one.
+Two millisecond.
+It has to wait.
+Okay.
+So this generally method do the computation again and return.
+What time.
+Retry.
+What has to let's say if it is third retry.
+If it is third retry.
+So retry one retry two retry three.
+Then it will return two seconds 2000 milliseconds.
+Got it.
+So we have to write this method now.
+And this is what first thing I have done.
+So attempt for each attempt.
+So let's say if you have four attempt for each attempt it compute the duration delay time.
+The second thing is same retry config max attempt.
+You have to now tell it here.
+There is no configuration application.properties you have to tell it here.
+Retry exception.
+What all do you have to do?
+Retry you.
+You don't have to define an application or properties.
+You have to define it here.
+Dot build your config object is created and from that you create a retry object.
+So now we have created the retry object.
+Now we have to use it.
+How to use it now.
+Now in the order service on this product API we can't do annotation right at the retry.
+We can't do that.
+So we have to do this way.
+And that's what internally AOP might be doing that also.
+So first it has created a retry object like this.
+What we have done.
+And then it would have in the similar way it might have done the same way.
+So it auto wired the custom retry object, the retry object which we have created, the bean which we
+have created.
+So here dependency injection will happen.
+Then it has executes supplier.
+Okay.
+So we are wrapping.
+What we are doing is we are wrapping an object.
+So this is I want to retry.
+This is my retry code I am wrapping it inside this retry dot.
+Retry I'm wrapping wrapping it up within this retry.
+Because annotation will not work I have to do it manually.
+So this is my piece of code which I want to retry in case of failure.
+Now I have to manually wrap it inside the custom retry dot execute supplier.
+Okay, now let's say that you have you have invoked it.
+There is a failure.
+So it will automatically retry it okay.
+Because it is inside the retry object right.
+For each retry we have done, attempt right for each retry it.
+Find out the delay.
+It has to wait based on the logic you have written, it will find out what is the delay time it has
+to wait.
+And after waiting for that much time right, it will execute again.
+Based on this configuration, if that exception is retrievable and if attempt is still left, if all
+the attempt is finished, then ultimately this catch block will get invoked.
+All retries failed.
+This is the fallback.
+So by writing this custom retry by ourself, we get to know that what AOP might be doing inside.
+So you can say that this is the exact AOP code which might they have done during runtime.
+First they have created a retry object.
+And then for that retry object they have rapid the method which we have written right at the rate retry
+before they wrap those method inside this custom retry dot Execute supplier.
+Okay.
+And after all retry finish in the cache part it might have run our fallback method.
+And we can check our output also.
+So we have done six attempts right one original five retry.
+So we can say so what is our uh code which have to be retried.
+One is system dot dot dot println calling product service and that time.
+And then actually it's called it.
+So these two things will get thing so original happen at this calling product service.
+And then it will try to call it so it happen at 20 to 3545.
+Then here if you see 47 4950 122 second delay, why two two second delay?
+Because currently I have hard coded it to 2000 millisecond here.
+If you can see I have hard coded it to 2000 milliseconds.
+That's why.
+But if you have written your own interval that if it is a retry one one, retry two again one if it
+is retry three two seconds.
+If it is retry four three retry fifth.
+Like this.
+Then eight.
+Like this.
+It should go, then 13, so then it will change it.
+But for now since I have hardcoded it.
+So for each retry attempt when it tried to compute what is the duration I have to wait, it will always
+return to two seconds itself.
+So that is why it is waited two seconds.
+So 1234566 attempt finished.
+Then it reached to the else part.
+Fallback.
+Here all retries failed.
+This is fallback.
+All retries failed.
+This is fallback.
+I hope got it right because to be honest, at least in this ten years I haven't Return.
+Custom retry.
+Generally, exponential backoff with jitter is sufficient, right?
+With little work on these values.
+But if you have to write it this way, you can write it.
+Or if you have to understand like how this with just putting annotation with just putting this annotation,
+this one how internally everything work by AOP, then it is exactly same as what custom we have written.
+Create an object of retry.
+Define what is the method you have to use interval function for computation and then ultimately wrap
+your method inside this retry object.
+Okay, so let me know if there is any doubt we can discuss further into the comment section, but till
+then, bye.
+    </pre>
+</body>
+</html>

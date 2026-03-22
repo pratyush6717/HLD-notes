@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30. Spring boot- JPA - Native Query and Criteria API</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>30. Spring boot- JPA - Native Query and Criteria API</h1>
+    <pre>
+Hey guys on this side, welcome to concept and coding.
+And let's start without wasting any time.
+So till now we have already seen about Jql.
+Now let's see about Native Query.
+So what is native query?
+Native query is nothing but a plain SQL.
+Queries directly interact with database.
+Thus if in future DB changes code changes.
+Also required means that since now you are writing queries which are DB dependent, right?
+Direct plain SQL queries we are writing.
+So in future let's say you are changing from MySQL to another DB.
+Definitely you have to change the queries too.
+No caching.
+Now we are not using JPA functionality.
+We are directly writing plain queries.
+So no caching like persistent context which we were using like and also no lifecycle management of an
+entity happen.
+So these are some of the you can say that points which has to be considered.
+Now the question might comes to your mind.
+Then hey then why to use over jxl itself.
+So there are certain requirements.
+Like you have to write more complex queries which are like jsonb, like there are like a JSON column
+right in your table and you have to query that today.
+Jxl do not support it.
+You can access it through native query.
+Even there you know that in the jxl everything is related with entity, okay.
+Whatever the columns entity has, you can have either full entity like say user or user dot field one,
+user dot field two.
+But you cannot expect a result which is not there in an entity like count as stress.
+You have to fetch it.
+Can you do with the jxl?
+No, you can't do it.
+Or let's say that even if you have to write a join in which two entities are not related, let's say
+entity one, entity two, they do not have any relation 1 to 1.
+One to many, many to many anything.
+So with the JKL, which is dependent on entity like join is generally complicated.
+Okay, so with native query it's like how you support normally.
+Okay.
+Right.
+You can directly do joining between unrelated entities also.
+That is also possible query efficiency in bulk operation in JKL.
+What happens is IT entities are managed right by JPA.
+Its lifecycle is also managed and also the cache is also updated.
+So it has to keep persistence context updated which is your caching.
+You can say that L1 caching, right?
+So it's a little slower than the native which directly works on the DB, so native queries are little
+faster.
+So depending upon which use case you fall, you have to go for either jpql or native query.
+But these are you can say that certain of the advantages and disadvantages of native query How you can
+write a native query.
+Very, very simple.
+You might have seen how we were writing a query of the jpql at query annotation.
+Right value equals to write a plain SQL query.
+Just also add native query equals to true.
+Okay.
+So now JP understand that this is it has to consider a plain SQL query okay.
+Everything else is same.
+Like how what we see in the jpql the same method way.
+Like whatever the param you have to provide.
+It's like this same only same like jpql no difference.
+Only thing is just provide native query equals to true.
+And now you can use like a plain query.
+One thing just see here that select asterisk from this is now not my entity not my entity Java entity
+user detail.
+It is my actual table name user underscore detail.
+This is my table name where this is the field is now actually my DB field name.
+Okay, maybe in the entity I have something name, but in DB I am saying it is a user underscore name.
+So in the native query, all the things which you are writing a query, just write from the DB perspective.
+Okay, that's the only one point which you have to consider.
+So now one question might have come to your mind by looking at this query.
+Okay.
+Like the same Jpql I have written this method and I have written above the query.
+When I have written select stress how it knows that this stress should be like return type of user detail.
+Okay, because in Jpql we might have written you which like all the entity and it knows that it is an
+entity, so it will automatically mapped it.
+So when all the fields like stress is used okay.
+So internally does the mapping between DB column name and entity field name.
+Right?
+So whenever a stress in the native query stress is used.
+Right.
+So whatever the form you are using right in this user detail repository, it will ultimately do a mapping
+like field by field okay.
+So you will get all the data.
+But what happens when you return the partial field.
+So here if you see now I am returning partial fields.
+Select user name and phone only two fields from user details where name equals to like this native query
+equals to true.
+Now how it will do the mapping to this.
+Because we know that whenever we are using an asterisk like it will do a mapping with this user detail
+itself.
+But what about this?
+What if I use this only two fields?
+Will the JPA will do mapping.
+No.
+If you start try to test it.
+You will get an exception.
+Column user ID not found.
+It will not be able to map.
+Okay, in case you have only particular fields to be returned from the native query, you have to explicitly
+take care of doing the mapping.
+Okay, so that is one extra task is involved.
+Now how we can do the mapping.
+There are two ways.
+One way is using the SQL result set mapping annotation, which is used with at the rate name native
+query annotation.
+They both are used together.
+And the second way I will.
+It's an object array that we will see.
+So let's see the first one.
+Very easy.
+Nothing much.
+Now let's say that I have created one dto all the specific fields which I am expecting in the user query
+which is going to run.
+I have written it here.
+I have a constructor which is accepting the fields and getter setter for this one.
+Okay, so I am expecting only username and phone, that's all.
+Only these two fields.
+So I have written in the DTO.
+Okay, now in your entity class, in your entity user detail entity class, we have to first write native
+named named native query.
+We have already seen right named query in Jpql.
+Right.
+Uh, so there is something called named Native query.
+Okay.
+So first thing is name, just provide any name, whatever you want to give, provide a name to your
+query.
+Second is that write a proper query plain SQL.
+Select only two fields one and two.
+Whatever the fields you are expecting, write a proper plain query.
+Okay, that is the in the query field.
+The third one is result set mapping.
+Whatever the result is coming user name and phone it is getting mapped to what.
+So now here the second part comes into the picture SQL result set mapping.
+So whatever the field output is coming from the above query, we have to now do a mapping.
+And for that we have using SQL result set mapping.
+Its name is I have given user DTO mapping and the same name is used here in the above one.
+So now what happened is here.
+If you see what ultimately I am doing here is I told that hey, whatever the result you are getting
+username and phone, pass it to the user DTO constructor and pass it in this sequence the username first
+second parameter is phone my first parameter username, second is phone.
+Okay, in this sequence it passed.
+So what internally it will do is whatever the query which you are running and the result which you are
+getting okay.
+Then it will invoke this mapping which is annotated with SQL result set mapping okay.
+And here with this syntax okay.
+Constructor result which target class user dto class.
+So it will create an object of this.
+Okay.
+And the value it will pass is this one username and phone.
+First parameter would be username and phone.
+So this is how we are mapping it.
+And this named native query and result set mapping SQL results and mapping is always used above and
+entity above.
+I have used our user detail.
+So now in the user repository you don't have to write like above at the query and the full query name.
+We can do simply at the query and the name.
+Whatever the query name you have to run like we have already seen previously in the named query.
+So I have given this name, run this query, and I have told that it's a native query equals to true.
+So expect it to be a native named native query.
+Expect it to be a named native query.
+Okay so I have just given a name.
+Then this query will run.
+It will do a internal mapping.
+And this mapping would be used where it will create an object of user DTO and whatever the field it
+is coming, it will pass like this.
+So this is first way of doing a mapping when you are not returning all the fields.
+The second way is manual mapping.
+Manual mapping in the sense is that I am writing the same like SQL query before write our native query.
+It's true.
+So like a plain SQL query I am returning username and phone.
+Now here if you see I am not returning user details, I am returning object array.
+So list of object array.
+List of object array.
+In the object array it's of two size.
+First is username comma phone then second also is username comma phone username comma phone.
+Like this it will come.
+So in the service class when you are invoking the repository, this method you are getting a output
+is list of object array.
+You have to do map mapping.
+So here I am doing a mapping.
+So I'm using a stream.
+Okay.
+If you don't know about the stream at the top I am sharing the Java stream where I've already explained
+it properly, so check it if you don't know it.
+But this is simple, right?
+All the result which I'm getting iterate over it.
+Okay, now I'm mapping it.
+I'm creating an object of user DTO.
+First one I am passing as a name and second one I'm passing to the this constructor second parameter
+like this.
+And I'm collecting into a list.
+Okay, ultimately I'm sending the list of user DTO because I'm creating an object of user DTO.
+So this is the way of manual mapping through object array.
+If you don't want to use SQL result set mapping.
+But if you have a scenario where you can directly use stress, then you don't need all this.
+You can directly return the entity.
+JPA will automatically take care of mapping the DB column names to a Entity field name.
+Okay, now there is one more advantage of native queries.
+Dynamic native query in the jpql.
+There is nothing like a dynamic Jpql.
+Okay, we will see that there is a different name.
+There is no like dynamic Jpql.
+There is a different name criteria API, but there is something called dynamic native query.
+How it's used in the dynamic native query.
+Now repository is not into the picture.
+Okay.
+In the service class itself we are using Entity Manager now.
+Okay.
+Now let's say that you have a scenario that okay in my Where clause I have to dynamically put the conditions
+like let's say if user is passing name, then only I have to put a name condition name, let's say equals
+to whatever user is passing.
+If user is not passing name into the parameter, I don't want to add this also.
+So I don't want to fix my query that where.
+Condition one.
+Condition two.
+Condition three.
+Okay.
+Might be in some cases I have only condition two and three.
+In some cases only condition two only in some cases all three.
+So dynamically you have to manage your query.
+How you can do that.
+So here in this one in the service class let's say you have this method okay.
+And let's say whatever you are the input fields are coming into the parameter method parameter.
+So it's a normal string builder.
+So first I am creating a normal string builder okay.
+So here if you see new string builder I have written a plain SQL query.
+I am just appending from user details like db query only.
+I am also doing joining.
+I am also appending where one equals to one.
+This is just a dummy because I can add dynamically more query.
+Let's say if zero is added, at least I have where clause present.
+So one equals to one is why you might be thinking why I am doing this.
+Let's say that if I am not doing this then you have to be like okay, condition one I have to add.
+Then you have to put like first where okay with condition one, then condition, let's say condition
+one is false.
+It's not even like name is not there.
+So condition one I don't have to add.
+Then you have to always take care that okay where is properly set or not okay.
+And if let's say that no condition is matched then okay.
+Where should not even come.
+So with all this, uh, complexity, this, uh, help us like we where one equals to one, right?
+It will automatically save us from this one.
+So.
+Yeah.
+So where one equals to one.
+Now all we have to do is if any more condition added.
+So we just do either and, or or whatever we wanted or if no condition added then also our query is
+perfect Okay.
+So one thing is added now dynamically adding the condition.
+So one thing is let's say that I am passing a username just for demo purpose.
+Username not equals to null and username is not empty means I want to put the condition.
+So I'm putting appending the query builder.
+It's a string right.
+So I'm just adding and username equals to question mark okay.
+So this question mark later has to be filled up okay.
+So what would be the.
+So that's why I'm creating a list of parameters.
+List of parameter will store into a sequence.
+So for each question mark in the list of parameter I am storing that what it has to be filled with.
+So parameter dot add username whatever the username it is coming into this one okay.
+Now let's say you have uh like this.
+If else you have multiple if else.
+So multiple question mark and multiple value.
+You have to add into that.
+You have added into this parameter.
+You have done that.
+After that what you have to do is we have to use an entity manager, create native query and you pass
+this Stringbuilder dot two string.
+What it will do is it will give us a query object.
+Now at this point of time, your Stringbuilder this get converted to this query object which will look
+like this.
+Okay, here still question mark is not yet replaced with this.
+Your actual values.
+Now you have the query.
+Now what is the second thing we have to do is execute it okay.
+So before execution we have to now fill this question mark.
+So generally what it does is in this I am iterating over the list of this parameters okay I am iterating
+over this.
+Each question mark right native query dot set parameter okay.
+Now what it will do is it will start.
+Let's say you have three in your query.
+You have three question mark.
+So it start with like one, two, three position like this.
+So for each question mark because for loop is started with zero.
+Because in the list whatever the parameter starting from zero right.
+But this question mark internally it is JPA considered from like 123 okay.
+So for each question mark we have to put a proper parameter we have to take out from the parameter list
+and fill it up.
+And now once your query is properly built up all you have to do is get result list.
+It will return you a list of result.
+Okay.
+So now here, if you see that I am my.
+Output is like a specific fields which I am querying okay.
+So I am accepting into an object of array.
+Now you can do mapping like okay zero would map to this field.
+One would be mapped to that field that upon us that we can do the mapping and return it.
+But the main point here.
+Dynamic native query I want to tell you that you can even write complex queries which are dynamic in
+nature in the Where clauses.
+So you can write like this.
+But here you have to do lot of work.
+Okay.
+First of all you are creating a stringbuilder.
+Then you are creating a parameter list, right?
+Or then you are taking the responsibility of replacing those parameter lists into a question mark.
+Then you are executing it.
+Then you are doing proper mapping and then return it.
+So that is one thing, but pagination and sorting I will also tell you in the native SQL in both the
+approach with dynamic or with the direct at the query that also.
+But I hope dynamic native query is clear how it is actually used.
+So first way in the dynamic, I would say that dynamic native query way.
+How can you can use an pagination and sorting.
+So see it's very simple like how we are writing a plain SQL the same way we have to write it like nothing.
+No different syntax.
+We have to remember.
+So I have written a proper query which I wanted all the if else condition I have dynamically, I added
+it and properly added into the parameter also in this list.
+Okay, now I have to append like a sorting.
+Let's say I want to sort order by.
+So it's the same query builder.
+It's a string only, right?
+Uh query builder dot append order by like in the same query.
+After all, where clause has been done.
+After all, where I have to do order by whatever the append with descending, it's a normal SQL queries.
+We are just a string builder, it's just appending.
+Okay, so sorting is done after that.
+For pagination in the plain SQL query what we have is limit and offset.
+So the same thing we have to set like query builder Querybuilder.
+Dot append.
+Limit.
+Question mark.
+Offset.
+Question mark.
+Now we have to put it into a parameter list.
+Also.
+Parameter dot add size.
+So this is ultimately your size.
+Okay like in one page how many records.
+And then offset like page number page zero page one page two.
+Like so this would be your offset.
+Okay.
+Now we get a native query.
+We just uh, replace the question mark in the native query with the values which is present into this
+one.
+Okay.
+And then ultimately executed the query.
+Okay.
+So it is as straightforward as it is like nothing.
+But if you talk about pagination in the like how we can do it.
+Like if you are using the query annotation and native query equals to true, it's the same way how we
+were doing in Jpql.
+We have a method page page label parameter which we can append it.
+We don't have to write anywhere here.
+Okay.
+That automatically JPA will do this for append it for us.
+Okay.
+Now in the just request we can just send the page request dot of okay, what is the offset page number
+and the size of a page okay.
+And if you have to sort it you can like this.
+We have already discussed in the JPL before itself.
+So it is same nothing differ.
+And if you see the query it will generate like this.
+It will automatically add offset pagination properly for you.
+So this is one detail like I have a user details okay 1 to 7.
+And if your query is like uh on phone.
+So this is 1234567.
+So we are sort by phone descending.
+So 7654321 and page zero and five.
+So 12345.
+2345.
+So this will come.
+7654321 5 in 1 page.
+So guys, if you think that I'm going a little fast, it's because we have already covered most of the
+things in the previous videos.
+So this page and all we have already seen this query notation.
+We have already seen.
+Nothing much differs in the native query.
+It's just like native query equals to true okay.
+So it's just like a context like how it is actually used.
+Rest everything is same.
+Okay.
+So if you are finding the pace a little bit fast, it's I would highly recommend that.
+Please watch out the previous video that would help you to set up a context like why it's linked with
+the previous video.
+Okay, now one question to you comes to mind.
+Right?
+Hey, we have Jpql, but I feel that native query is much more better, even though it has very much
+DB dependent.
+But at least I can write dynamic queries.
+And this is something which is very important in the industry, right?
+Because we have everything dynamic which like no queries is static.
+So then I think JPL, JPL, we will never use it.
+We will always go with this.
+So.
+It's there but with the name criteria API.
+Okay.
+You know that JPL biggest advantage is that it is managed by JPA.
+And when and when it is managed by JPA, you know that there is a framework which takes care of updating
+the caching, persistence, context and entities lifecycle.
+You don't have to worry about object which one is creating, which one is destroying.
+So everything is properly taken care.
+So with native SQL, everything comes to your bucket.
+You have to handle it and also it is DB independent in once you return in future You change from MySQL
+to something else.
+Nothing got changed.
+Okay, so criteria API comes into the picture where it supports like the same JPA enable like JPA manage
+this.
+It works on entity not on direct DB.
+So it's DB independent.
+Okay.
+And we can write dynamic queries with this.
+So native SQL query support dynamic query building but their database dependent.
+That's why JPA criteria API exists.
+It allow you to build dynamic type safe queries without writing raw SQL.
+Okay.
+You don't have to write a raw SQL where you get a chance that your you are writing right.
+Select asterisk from.
+If you don't know SQL query.
+Let's say you mistake with a you you wanted to write A and D, but you write a MD So there is like not
+a type safe, but here it's a type safe because everything now we are dealing with object.
+So syntax wise it would be like you don't have to worry about that here.
+Everything is a string.
+You are putting a string.
+If there is some mistake you won't get it.
+So that's why I'm saying it's a build a dynamic type.
+Safe queries.
+Sometime some engineer feels that criteria API is very difficult to understand, but I feel it easy
+if you understand it through hierarchy.
+So this is the hierarchy which I have created.
+This will give you a quick glance, like how we can create criteria APIs in a very simple manner.
+So the first is criteria builder.
+This criteria builder is used to create everything okay.
+So first criteria builder we use to create a criteria query.
+This criteria query is nothing but your actual query which you want to write.
+But here we are not writing direct string, we are using it through object.
+So in this criteria query we can do from we can do even join we if we have to like select only specific
+columns we can use multi-select.
+If you have to do all columns we can use select method.
+We have like a where where you can put filters.
+So filters like condition.
+Here it is defined through predicate okay.
+You have like and or not between different conditions you have order group by having.
+So all comes under criteria query.
+You can whatever it's required to build a criteria query.
+You will find different method here.
+Once the query is created okay.
+Now Criteria builder helps you to execute it.
+So after that, once the you got a query, now you have to execute it.
+So here it has something called type query object which executes the above criteria query which you
+have created.
+So this typed query also has multiple fields like get result list.
+It will return you a list of rows like so.
+It's you will accept like a list of something get single result only you will get one object, let's
+say user one object, and also have certain like where you can put a pagination like things set first
+result.
+It's like an offset page number 012 and maximum result in one page.
+What is the limit.
+So if we understand this hierarchy then it would be very very easy to use criteria API to write any
+query.
+Okay, let's see one example I have created one controller class.
+Get user details by phone criteria API.
+So it's a dynamic I am building.
+Like if phone number comes then only add it.
+Okay.
+And whatever the phone number I am sending, use it.
+So this is the get API.
+Now in the service class if you see what I am doing is I am using Entity Manager.
+This is my criteria API where I am doing.
+So I have got a phone number.
+What is the first step in the criteria API?
+We have to create a criteria builder because from that criteria builder itself, we will be creating
+a criteria query and executing that query.
+So we use entity manager.
+From that we do get criteria builder.
+We get now a Criteria builder object.
+First step is completed we created an object of criteria builder.
+Now from this criteria builder we have.
+The second step is to create a criteria query.
+Okay.
+This is the second step.
+Like we have to create a criteria query.
+So now from the criteria builder I am creating a criteria query.
+Okay.
+Now what is this internally.
+Internally what my each row looks like that we can tell.
+Let's say that if you have a query where you are doing a stress means all the objects, all the objects,
+all the fields of a particular entity.
+Okay.
+Then you can do user details dot class.
+If you have like a specific field like field one, field two comma field three, then you can use object
+array okay.
+So whatever your each row looks like you can add it here.
+Okay.
+So currently my here in this demo I am using Select stress for now.
+So for stress is like since this we is we are talking about entity.
+So all entity you it's let's say user detail entity.
+So each row is my user detail okay.
+So now I have created the criteria query.
+Now from this criteria query I have actually have to create everything.
+Let's say select from where order by having so that I have to do so from this criteria query I am doing
+first like from which table.
+So table name we have to give right from which table it has to fetch the record.
+So from this table I have to fetch the record okay.
+So now the first table.
+So it is possible right from table one join let's say table two.
+So this table one which is first one right.
+It is always known as root.
+The first one is also always known as root okay.
+So now I have added the From clause.
+It is here in the root.
+Now I have to also like select either one row or multiple rows whatever.
+So I am using criteria query the same query dot select user okay.
+Select all the fields of this table okay.
+So first I told you that this user represent the first table.
+So criteria query dot select.
+If you have a specific fields you can do criteria query dot multi select and whatever the fields like
+user dot field one comma user dot field two.
+Like this.
+But here I want all the fields.
+That's why I put user and I have used select which is equivalent to select asterisk.
+So okay I have done this I have done this from now I have to use where.
+So criteria query dot where.
+Now I am adding a Where clause.
+Now in this where clause I have to add condition.
+So condition is here predicate.
+So now I am creating a predicate.
+So predicate is created.
+Here is like criteria builder.
+Criteria builder helps in creating a predicate.
+Criteria builder dot equals.
+There are multiple methods I will tell you.
+So I want to like phone number equals to whatever the phone number is coming.
+You can make it dynamic.
+Like if phone number is present then only do this.
+Otherwise don't do it.
+Okay so currently I am just writing like criteria builder dot equals whatever the field name in the
+table you have.
+So my this table user table right.
+The first route table user dot get this is the field.
+Okay.
+This is your entity field name not table DB column name entity field name.
+Maybe in DB it is known as phone underscore number.
+But actually in entity Java it is known as phone okay.
+So I'm using that name.
+So this object user dot get phone comma phone number which is coming from the input parameter.
+So criteria builder dot equals.
+So it is like a condition it is making like for phone equals to the phone number which is coming.
+It is creating a condition.
+And I am using that condition and putting into this Where clause.
+So with this I have also created a Where clause.
+I don't want order by having and also now I my criteria is done.
+So I am using an entity manager create query.
+Now I am creating a query out of it.
+Typed query.
+Okay so I'm creating a typed query out of it.
+Whatever the criteria query comes.
+I generated a query typed query out of it which can be now executed.
+So here JPA might have done some mapping.
+Or you can say that some translation, what we have written and it gives us a typed query.
+Now this query directly can be written run.
+I run get result list means return me more than one.
+This query can return more than one row.
+So that's why I use this and accept it into a list and return.
+So that one is clear.
+Okay, so just see this example I have like select from user details.
+So these are the data present into currently my DB 121 2110 three records 123 okay I am trying to uh
+hit a get API phone number.
+I am passing is 120 in the controller.
+120 I am passing and the same 120 goes here, so ultimately it will.
+It should do.
+Phone number equals to this one.
+So I should only get the list of output where phone number matches to 120.
+So here I will get only this two where 120 matches okay.
+And if you see the query it is select kind of an asterisk.
+All the fields from this is on my route where clause.
+This is the predicate and which is get it there.
+Okay so one question comes to my mind right okay.
+In this predicate generation CB dot equals what all different things we can do.
+So here if you see these all things we can do.
+CB dot equal like whatever the field from the table you want then the value okay.
+So generally any condition is like field equals to something 123 field like.
+So this is the first field name right.
+So and the field name is from your route table.
+So it is checked for equality where phone equals to 123.
+This is your condition.
+Then you have CB dot not equal field.
+And the value it would be like phone not equals to 123.
+Then cb.gt which is greater than like field and the value phone greater than greater than equals to
+LTE.
+Less than less than equals to.
+So these are there in the comparison operator okay.
+Then we have logical operator.
+Logical operator means like cb dot.
+And so like you have something like condition one and condition two.
+So it also has this criteria builder dot and predicate one comma predicate two condition one comma condition
+two.
+So like phone equals to 123.
+And name is like something like this SJ.
+So you have.
+This is my condition predicate one.
+This is my predicate two and we are now just combining it.
+Similarly cb or cb dot not.
+It's not negation.
+So here if you see I am creating predicate one criteria builder dot equals phone this one.
+So it is one condition.
+I am creating another condition.
+Criteria builder not equals name AA.
+This is second.
+I have to now club it.
+So CB dot end I club it and it will become my this predicate.
+And then I use put it into the where clause.
+Similarly string operations you have like CB dot like also you have this one.
+You can use it like field name and how you wanted it CB dot not like.
+So it's very straightforward.
+Like this has all the possible where things which we can have like it has that like cb dot n cb dot
+naught okay.
+So in it's a collection right?
+CB dot n user dot get phone like n you will have like what all the possible values it can come here.
+So value .11.7. you can put anything okay.
+So similarly like you can use it not in.
+So here I will show you one example how to do select multiple fields okay I till now I have shown you
+like select stress one.
+But for the same criteria API you can do this.
+So first step we know we have to create a criteria builder object because this is ultimately used to
+be used to create everything.
+So criteria builder I used it to create a criteria query.
+But here this one is like what each row would look like.
+So my each row would look like object array because field one comma.
+Field two comma field three.
+It could be a string.
+It could be long.
+It could be in something.
+So it's object array then.
+So this is my second part is done.
+Then the third one is like from my table one.
+Table one is known as root generally here.
+So root whatever the table one.
+So criteria query dot from this is my table.
+Then I have to putting a select like whatever the fields.
+So here I am using now criteria query multi select.
+Because I can have not extras I can have multiple fields.
+So from this table user I can have like whatever the fields I wanted to fetch.
+Then I created a predicate which is nothing but a condition.
+And I put into the where clause.
+I created a type query out of this Entitymanager.
+Pass this query and run it.
+Now output will look like object array because this is what I told my.
+Each row would look like this.
+So and result list will return the list not one.
+So list of each row would look like this.
+And I'm doing a mapping in the user DTO like object array.
+Uh, first is string, second is phone.
+And in the new DTO pass like this and return it.
+Very simple.
+Okay.
+And it is also possible to do joining also.
+So nothing much differs.
+So here if you see we have like from table one then you have like join whether inner join left join
+table two okay.
+And here in this we don't need on and something because we it is like a JP.
+It is on entity.
+So it knows that this entity is related with this column.
+So the same thing I created a criteria builder.
+I created a criteria query out of this criteria builder.
+And each row is looks like this.
+Because multi-select I might be doing it.
+My table one from Claus is this user detail.
+So and the first table is known as root here.
+So this is my first table.
+Now I am joining my first table dot join.
+What type of join join type is inner either here you can have also right left right right join and which
+table you want to join.
+User address.
+So here again if you open the user detail entity class okay there would be like at the rate 1 to 1 mapping.
+And the field user address is the another entity there.
+Whatever the field name I have right.
+I use that only I am not using the table name of that user address okay.
+Entity has the relationship.
+So this is the field name in the user details 1 to 1 mapping okay.
+So this route table first table dot join with this user address I want to do inner join.
+So it will like this.
+it will come.
+Join your table one.
+And this would be considered your table two.
+Generally means or I would say that since you are talking entity one, entity two.
+Okay.
+So now from is done this join query is done.
+Now we have to do select.
+Now I have to do multiple right.
+Each row is look like object array.
+So multiple select criteria query dot multi select.
+So one field I want from user route table user dot get name.
+Second from the let's say from address table I want this city only.
+So this is my represent like a second entity join second table.
+So address dot get city then it's a predicate condition you added.
+You create a type query run it.
+Since it's an object array you have to do a mapping and return it.
+That's all.
+Okay.
+So this is as simple as it is, and pagination and sorting is also very much are not that complicated.
+But here one thing is like we have to add it like in the hierarchy.
+If you see we have to use this methods to for pagination.
+So here if you see this is how you can do criteria builder object I created a criteria query.
+Now I want select each row is my complete details.
+Okay so user details I have added from clause.
+There is no join.
+I put select all columns of user detail.
+Select is like all column of this predicate.
+This is my condition where clause I have added into that.
+Now after this where clause I need to do sorting okay.
+So criteria query also has order by so order by.
+Now you have to like uh Which field?
+Okay.
+So whether descending this field should be descending increasing whatever.
+So you can find a field like this user dot get root right user dot get whatever the field and criteria
+builder offers like dot descending, dot increasing.
+So you can use that order by name.
+Descending it will translate to this.
+And for pagination once you get the typed query now type query has this two method.
+That first result which is kind of an offset page number maximum result.
+What is each page gonna look like.
+And ultimate run it.
+So if you understand that hierarchy right criteria query is very simple right.
+All this like uh methods we have to invoke okay.
+So if you see this like exactly same uh descending order and five like one page is five.
+I am sending page zero five.
+    </pre>
+</body>
+</html>

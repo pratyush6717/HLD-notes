@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>42. RestTemplate - Communication between Microservices</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>42. RestTemplate - Communication between Microservices</h1>
+    <pre>
+Hey guys.
+Welcome to Concept Encoding.
+And today in Spring Boot microservice video we are going to set up two microservices.
+And the first thing we will do is communicate with each other.
+Right.
+So let's start without wasting any time.
+So this would be our goal setting up of two microservice order service and product service which would
+be running on different port number.
+Right.
+So order service we will make it run on 8081 and product service 8082.
+And how two microservices can communicate with each other.
+This is our goal, right?
+It's not very simple.
+There are different ways.
+And in spring microservices or spring cloud what is the recommended way of approach.
+So we have to see that.
+So let's start.
+Setup of two microservices.
+The first one is order service.
+As we have already know how to set up a any spring boot project.
+We have already covered so many topics.
+So we know that how to make use of spring initializer.
+So here I am creating one order service.
+Right.
+Just creating with spring web for now.
+Not adding spring cloud, just a spring web for now.
+Similarly, I'm setting up one product service again, very very basic project.
+For now we are starting with scratch, like setting up very basic project itself Spring Web.
+So now I have this two projects now in the order service in its Application.properties.
+I have put a port number 8081 right.
+And when I started it this order service is started on port number 8081.
+Similarly, whatever the project which got which we have downloaded from here, if you open it up and
+change in the Application.properties server dot port 8082.
+And it started so our product service application going to start on 8082.
+Now in our system two applications are running product service and order service on different port number.
+Now when two services are running the first thing we have to do is how they can communicate between
+each other, right.
+This is very very important.
+Like you can say that this is the fundamental of microservice okay.
+And we have to understand it very clearly.
+So there are two different ways synchronous and asynchronous.
+So we are going to start with first synchronous communication.
+So synchronous communication means client wait for the response from server before continuing.
+So now let's say in this case our order service is going to call.
+product service.
+Okay, so at any point of time it will start the synchronous communication.
+So order service will wait for the response of the product service okay.
+So you can say that it's a blocking nature.
+Blocking in nature okay means thread.
+Wait till response is not received.
+So synchronous communication types are Rest template Rest client and fink client.
+So this is very important.
+This is actually which is used in spring cloud okay.
+And you know that whenever we are working with microservices we are ultimately have to use Spring Cloud
+because it has very well integration with all the other tools like load balancer, service discovery,
+Observability, etc..
+Okay, so we have to use a spring cloud.
+And in spring cloud this communication type is used.
+But if you directly jump into the client and understand about it, our base would not be clear.
+So to first set up our base we have to understand Rest template and Rest client okay.
+Which are the you can say that mode of communication between microservices but without spring cloud.
+Without spring cloud okay.
+If you are not using spring cloud means if you are not using Eureka server service discovery and all
+like all the microservices, which we are going to cover in future, if we are not using Spring Cloud
+functionality, then these two are sufficient to communicate between the microservices.
+But as I mentioned, whenever we are, because in future we are going to use Spring Cloud for our microservices,
+and this is the communication we have to use.
+But to understand it better, we have to understand these two.
+Then only our base would be clear how Finland is also working, because internally it might be using
+the same flow only.
+So let's start here.
+In this we see a sample http get request call.
+So this is a very very basic Get request.
+So what request contains get call.
+So here first we have a Get method like HTTP method which is like get post put delete.
+This is my URI.
+This part is my URI right.
+Uh what is the path which you are hitting?
+So in the product service which I am trying to hit here, this is the API actually.
+Okay.
+This is the HTTP protocol.
+So we have different HTTP protocol Two three.
+So these are the protocol version which we are using for the HTTP host, like the target host where
+our product services like.
+So this is the port number URL and port number.
+User agent is nothing but a client or tool which is used to make the request.
+So now let's say I am using curl URL to make or initiate an endpoint.
+If you are using postman.
+So that agent would be written like which tool you are using to actually invoke the request except format
+in which client want response.
+Okay, so if you want a server that hey, return me the response in the application JSON format, then
+you have to add this.
+So this is a very, very basic HTTP request call okay.
+And this is how very very basic HTTP post request call looks like.
+So I'm just telling you that so that we are in a same page.
+Right?
+When we are calling HTTP method, we know what it is when we are saying protocol.
+What protocol URI, what is the URI okay.
+When we are saying target host?
+Because in future we are going to use lot of word host.
+So host means this your URL and port number okay.
+So how does HTTP post request calls look like.
+Again same HTTP method URI protocol your target host agent.
+Except this is all same.
+But what extra.
+So we have content type.
+So in the post we also have a body like request object right.
+What we have to send.
+So this content type tells request body which I am going to send you is JSON okay.
+And the content length tell the number of bytes in the request body.
+What is the length of it?
+Bytes and bytes.
+And then this is the actual body.
+Or you can say that actual data like let's say in the Post request we are generally creating a new object.
+So a new product object which I have just for example.
+So I'm sending the body here.
+So this is how HTTP post requests call look like.
+And let's see how the response call look like a very basic very very important because a lot of things
+we are going to cover which.
+Very very tightly coupled with the response call like Keepalive I will tell you.
+So again here, if you see we have content type because now we are talking from the perspective of response
+like from the server perspective.
+So content type is that tells client to expect JSON response.
+Content length is number of bites and response body.
+Okay.
+This is your response body.
+Like what server is sending in the JSON format.
+Now here if you see these two things very very important connection keep alive and keep alive.
+Timeout equals to five max equals to 50.
+Till now what we know is that.
+HTTP and WebSocket.
+Till now what we know is that HTTP first create a connection right.
+First set up a connection.
+After that it send a request.
+Then it will send a response.
+And after that it terminates the connection.
+But in the WebSocket let's say you have a request like again it build a connection because it's also
+based on TCP.
+So it is built the connection request response.
+But WebSocket is persistent in nature, right?
+Persistence in nature means that connection do not terminate.
+And also it is bidirectional.
+Okay, but what my point here trying to say is that connection is not terminated.
+WebSocket is persistent in nature.
+And what we know is that for HTTP, every time a connection is made after request and response, the
+connection get terminated.
+But this was the behavior of 1.0 HTTP protocol version 1.0.
+In 1.1, the default behavior is this keep alive.
+Connection is keep alive is set.
+What does keep alive means.
+So by default, connection is set to keep alive in HTTP 1.1.
+In HTTP 1.0, by default.
+Connection is set to close whenever connection is set to hear close.
+So what would happen here is this behavior will follow after connection request response and after that
+connection get closed.
+But in 1.1 which is the default is connection is keep alive.
+So what will happen is it will not close the connection.
+As soon as possible you can say that it will not close the connection after response.
+It will close the connection based on this configuration.
+So first is timeout.
+Timeout five means close the TCP connection.
+If it's idle for five, second and max equals to 50 means tell.
+The maximum number of requests can be sent over the same TCP connection.
+So you are saying that now our HTTP protocol is also persistent Means it does not get closed just after
+server.
+Send the response in 1.1.
+Keepalive is set.
+And with that, these two configuration comes into the picture where.
+Timeout.
+Tells that close it if it is idle for this much amount of time.
+And this tells that on a single TCP connection this is the maximum number of requests can be processed.
+Maximum number of requests can be sent over the same TCP connection.
+Okay.
+So this is one flow when keepalive is set.
+So here if you see first three way handshake happen between the client and server.
+This is where TCP connection build up.
+Okay.
+After that client send a HTTP request which I already showed you how the HTTP request looks like.
+Now the client server respond with the HTTP response.
+But here, if you see that connection is not closed, the client may reuse the same TCP connection again,
+because in the response Keep-alive connection is used.
+Okay.
+So till this configuration is fulfilled you can reuse the connection.
+So same TCP connection can be used for multiple HTTP requests.
+And once it is all done either timeout happened or maximum limit reached.
+The four way termination to close the TCP connection happen.
+So TCP termination happen of this connection okay.
+And you know that when the connection is set to close in the response when the connection is set to
+close after response the connection get closed, okay.
+You can't use the same connection again.
+That's the difference.
+So we will see that because our code flows differs when this keepalive is set.
+I will show you how.
+Okay, but by this point of time, we should be clear how our request call looks like, how our post
+request looks like response, and what is the purpose of Keepalive?
+Okay, now let's first see I told you about three, right?
+Rest template.
+Rest client.
+And the feign client.
+So these are all used in spring boot.
+So spring boot you can say that it's a layer or framework which hides certain functionality from us
+which make things little bit easy for us.
+But I will say that, like, what if we try to invoke the Rest endpoint without using this spring boot
+itself first.
+Okay, what if we try to use it with plain Java?
+Because even if we use Rest template, because since it's a spring communication type, it might abstract
+something from us, which we don't know internally.
+It might be using some behavior which is used in plain Java.
+So we first need to understand how if we are not using spring boot, if we want to just communicate
+with two microservice using plain Java, how we can do that?
+Because we ultimately know that spring boot, let's say rest template I'm using internally.
+It might be using that only.
+Okay.
+So that's the first thing we will see.
+So here if you see the order service I am writing one controller I am writing one rest controller.
+This is the end point which I am exposing.
+Similarly for product service I am writing one controller slash product and this is the endpoint.
+Okay, so my purpose is that order service has to invoke this API of the product service, this endpoint
+slash product slash ID.
+And it will simply return this product fetch with ID whatever the id I am just printing for.
+Very very simple just returning.
+Whenever this get method get invoked, simply return this.
+Now from order service I have to invoke this.
+Okay so I have written this method get order okay.
+So whenever this endpoint get invoked from here I am trying to invoke this.
+But now I am using plain Java no spring boot rest template.
+Let's see what all thing we have to do.
+So this is the first thing we have to create a http url connection object okay http url connection object.
+Consider this as an envelope, like where we define what is our HTTP method get what is our content
+type JSON application slash JSON.
+What is the type?
+Timeout right.
+Connection timeout read timeout.
+So this all things we have to specify.
+So consider this as an envelope where we specify what is the URL.
+Also like URL where what exactly has to be invoked okay.
+So provide me the address.
+So all these things has to be first created.
+So how we create we create a first object of URL okay.
+Provide the URL which we have to hit.
+So I provided a URL here okay.
+Now I am opening a connection open connection.
+So at this point of time it is not creating any.
+So this is my client.
+This is my server.
+So when I say that open connection it is not creating an HTTP connection now.
+No.
+So currently it is just creating a http url connection object at this point of time.
+And it set header properly.
+Like if you want to set body, just set the body right and the URL we have set.
+Okay.
+So everything we have set till now the connection timeout timeout connection timeout means now when
+your client is trying to connect with server the first TCP connection while building how much time client
+should wait, how much time within how much time this connection should get built up.
+If it is taking more time then request should get failed and the second one is read timeout.
+Read timeout means after the connection is built up.
+After TCP connection is built up, the client sends a request.
+Now client is.
+I told you it's a blocking nature, right?
+So client is waiting for the response from the server.
+So how much time client can wait for the response okay.
+So that's why read timeout okay.
+How much time client can wait for the response from the server.
+So this is all we can set into this object http url connection object.
+Now this is the second part okay.
+So now we have to create a TCP connection.
+So TCP connection can generally build when out of one of these three things are used either you call
+connect http URL connection or http URL connection dot connect.
+Either this time a TCP connection is built up, TCP connection got built up means three way handshake
+happens or if you call get input stream or get response code which internally calls connect only.
+Okay.
+So it initiate the TCP connection at this point of time.
+So I am directly reading uh doing http url connection dot get input stream.
+So internally it will first do connect for me.
+So it will first create TCP connect.
+Then it will send a request for me because request is also present in http URL connection.
+And that get input stream.
+So it will give me an input stream where response is present.
+So it will also get a response and it will give me an input stream.
+Now from this input stream I have to read the response.
+That's all.
+So now I am reading the response from the input stream and I'm printing.
+Response is.
+Whatever the string which is returned.
+So it return this product fetch with id this.
+So that's what it printed.
+The response is product fetched with ID this one.
+Okay.
+So this is the second part.
+Second part is like we actual TCP connection is made either one of this three.
+And since I am using input stream it automatically do a connection.
+And then internally it send the request get the response and give me the input stream.
+And from that input stream I read the response and parse it like how I want it.
+If I want to parse it as a string, I just use a stringbuilder.
+If you want to parse it as an object, you can create an object and do a proper mapping.
+Once that's done, this is.
+The third part is very, very important.
+See that I am closing the connection.
+Disconnect.
+Okay.
+So here if you see this is the code of the disconnect.
+What it does.
+It says that if input stream is not fully read.
+So whatever the response which you get, if there is some issue with that, some exception you got and
+this input stream is not read properly.
+HTTP client or closed server?
+Close the TCP socket.
+Close the TCP connection.
+So HTTP client.
+So this TCP connection right.
+In in Java the wrapper around this TCP connection is known as HTTP client.
+Okay.
+So we are actually closing it.
+If you go inside this http url connection dot disconnect.
+So internally if it response is not properly read it close the TCP connection.
+If response is properly done it just say finish it.
+Do not close it.
+Why?
+Because I told you that in 1.1, keep alive is set to true.
+Where?
+Here.
+Keep alive is set to true.
+So there.
+What happen is there is something.
+A cache is maintained.
+Okay.
+The cache we have the key and value key is your.
+You can say that.
+Your host URL or port number.
+Okay.
+This is your key URL and port number.
+Okay.
+And value is your HTTP client object HTTP client is wrapper around TCP connection.
+So you can say that this is actually a TCP connection.
+So for one URL and port number you can say that for one target host.
+The TCP client HTTP client object or TCP connection is stored against it.
+So whenever we did this.
+So whenever first we reuse it.
+So whenever we do.
+Dot connect.
+Right.
+So it will not directly just create a new HTTP client object for us.
+Because this is where actually TCP connection is made TCP connection.
+You can say that HTTP client is a wrapper around it.
+So HTTP client object is actually created.
+So when we do dot connect it's not like it blindly creates a new HTTP client object.
+No it first check the cache it first check the cache.
+If cache has this key whatever the this localhost 8082.
+Right.
+This is the host and the URL and the port number.
+Right.
+So if this key is there it will reuse the HTTP client object means it is trying to reuse it and just
+change it to let's say in use flag is set to true.
+In use this.
+This connection is currently in use.
+As soon as we did HTTP finished, we are returning to this cache back again, making it like in use.
+No false.
+Now it is not in use.
+So this HTTP connection stay valid till this configuration.
+As I showed you above this timeout and Max okay.
+And ultimately so here this is the third step I am doing.
+So this is our plain Java.
+Looks like if you want to communicate between two microservices and here if you see that now I am hitting
+this API order one.
+So I'm hitting this API.
+So what it will do is it will try to communicate it.
+So order calls successfully.
+This is the last order call successfully.
+And here I am printing response right in the log System.out.println.
+So here so it calls the product and print what the product.
+Return this product fetch with id one.
+But you can clearly see the disadvantage of above approach too much boilerplate code.
+You have to open a connection.
+You have to set a header.
+You have to read the response.
+You have to close the streams.
+Right.
+So here, if you see that so many things you are doing, you have to understand about http url connection,
+how you setting the headers timeouts, this stream you got right response stream.
+You have to read it.
+You have to make sure that properly stream is closed.
+Right.
+So everything you have to parse the response by yourself, everything you have to handle it.
+So too much boilerplate code response should be handled manually.
+I told you, right?
+You are parsing over the stream and you are parsing how you want it.
+Like I like, I just simply parse the input stream as like I'm just in the stringbuilder I am taking
+it line by line.
+Okay, I'm reading a line and just appending it into the stringbuilder.
+So I want to parse it as a string.
+If you want to parse it or map it to an object, you have to handle it manually.
+How?
+If server is sending JSON, let's say product name some price, then you want to map it to some object.
+Then you have to take care of the mapping properly.
+Now this is not a string right?
+Limited support for advanced feature connection pooling interceptor filters.
+Right.
+So that's some of the disadvantage I would say that for the plain Java concept because is that too much
+boiler code Like too much.
+Like here.
+Just to make one connection.
+See the amount of code you have written.
+Okay, that's where Rest template comes into the picture.
+So this is our first spring based communication type.
+And we know that spring abstract lot of things for us.
+It makes lot of things easy for us.
+Okay.
+So I would say that it's a legacy way to call Rest API in spring application in spring.
+Also it is a legacy because after Rest template Rest client comes into the picture which is the latest
+one.
+So Rest template.
+Sometime when we call Rest template we call it as a legacy way to call rest API in spring application
+in spring application.
+Right.
+So now let's see the same thing.
+The same thing.
+Order service has to communicate the product service.
+If in the rest template I have to do what I have to do, the first thing is We have to create an object
+of the rest template.
+Okay, so in the App.config configuration I am creating a bin of it.
+We already have seen this in depth in previous videos right?
+So in the configuration I am creating one bin and I am creating just new rest template object.
+That's all simple okay this leave it for now.
+This is like or I will come back again.
+But for now like I have used this.
+So either this or this, you can say that I will come to this.
+Here I am setting the timeouts.
+We'll come to that.
+But let's say that I have not.
+I don't want to set timeout for now.
+I want default timeout.
+Whatever connection timeout, read timeout, write the first thing again.
+I just created a simple Rest template object.
+Then what?
+This is the order API.
+I have created the same thing.
+From here I would invoke this product API.
+I have to invoke this.
+So here, if you see whatever the object I have created, I have auto wired it.
+So because of this auto wired object is already there present right.
+So this object would get auto wired here.
+And just I am calling rest template dot get for object pass the URL properly right proper URL, just
+pass it.
+And what how your response looks like.
+So I want my response to be automatically passed in a string.
+And ultimately my response I get in is string itself.
+So what I have done is again I have created an object of Rest template.
+Using that object I invoke get for object method.
+In the get for object method, I pass the URI which I want to invoke and what my response looks like
+either a string or either some object.
+I want to mention it here.
+Whatever the response I'm getting, I want to pass it as string.
+Spring boot will automatically take care of mapping it.
+Whatever the stream's response stream comes in, Spring Boot will automatically map it.
+And ultimately I get a response and I am just printing response from product API called from Order Service.
+Is this one order called successful?
+So now when I hit this API, when I invoke this API order call is successful.
+It reached till here.
+And if you see the logs response from product API called from order service it print the response actual
+it printed this.
+So now here, if you see all the boilerplate code which we have written http url connection URL like
+stream, you have to take care of response parsing all gone with a single line.
+See how easy it become with the rest template?
+So what exactly happened inside rest template?
+We'll see that.
+But here I will show you this.
+Another which we have left.
+So sometime which we want is like I also want I don't want to use the default connection timeout or
+timeout.
+I want to set it so we can set it like this.
+While the same thing during configuration while I'm creating a.
+So here we have to set the factory object.
+This is the factory object.
+So here while creating a new Rest template object we have to set a factory object simple client HTTP
+request factory object.
+Right.
+So this factory.
+ultimately help us to simple client HTTP request factory.
+So as from the name clear client HTTP request factory.
+So this factory ultimately help us to return the object of client HTTP request.
+Right.
+Which ultimately kind of where we can set all our URL, your timeouts your post method.
+Right.
+Ultimately all this.
+So generally http url connection internally also has this request.
+Okay.
+So the same thing.
+So I am creating I am using this simple client HTTP request factory which is a default.
+You can say that here I haven't used new rest template.
+Okay So.
+But how?
+I will get the request object client http request object.
+So internally by default it uses this factory only.
+I will show you the flow.
+By default it uses this factory only and set the default values okay.
+So now if I want to take some control.
+So this is how it does.
+Like I created a factory object and I set the what is the connection timeout.
+What is the read timeout.
+And put this factory okay.
+So these timeouts are in milliseconds.
+So this is just I want to show you here.
+Otherwise if you don't want to set the connection timeout timeout you can directly use just new rest
+template.
+That's all.
+But how this exactly happened how it worked internally I just wrote one line object rest template object,
+get four object and pass the URI.
+And uh, this response type.
+And it worked.
+The connection is made for what happened internally.
+So understand this flow very properly.
+If you understand the plain Java flow this would be like exactly the same thing which it does behind
+the framework.
+So first thing when we call rest template dot get for object what it does it it first invokes create
+request.
+Okay I told you the default is simple HTTP client request factory.
+So it will call a create request method on top of it.
+Okay so the request goes to here.
+Now what it does is it will create an http url connection object okay.
+Earlier in the plain Java we were creating the object http url connection object.
+Now it's got hidden inside this.
+So this factory is creating an object for us http url connection object.
+Now it set request method, connect timeout read timeout whatever.
+Here we have like get connect timeout re timeout whatever.
+Then what it will return is it will return us a simple HTTP request object.
+Set the connection http url connection object inside it and return this object.
+It send me the simple HTTP request in return.
+So this object internally has this http url connection http url connection object.
+This has it.
+Okay.
+And then http url connection.
+You already know that it is a kind of an envelope where we have URI method read timeout connect amount.
+Everything Okay.
+So now rest template again got this request object.
+What it will call is second call execute on this request object.
+This request object it calls execute.
+So this is the class.
+You can go to this class and check this.
+It is exactly the same thing you will find.
+So it will help you more clear.
+You can put some debugger point.
+So now if you go to simple client HTTP request object and go to its execute method, what it will do,
+it will take out the http url connection object which we have created and calls connection dot connect.
+I told you what connection dot connect does is it actually creates the TCP connection.
+So it.
+But one thing I told you, if you got the flow of plain Java connection right properly, it do not blindly
+create an HTTP client which is a wrapper around TCP, is do not blindly create an object of it.
+There is some cash involved in it.
+Keep alive cash.
+I told you in protocol 1.1 HTTP protocol 1.1 keep alive cash is true.
+Set so it first internally invokes this keep alive cash class.
+So this has two methods get and put.
+So first it goes to the Get.
+And check if this URL and port number exist whatever we are trying to hit okay.
+If yes, then means there is already a HTTP client object.
+Or you can say the TCP connection object is present.
+So reuse it because if it's there in the cache means it is still alive, means its timeout is not yet
+happen, or maximum limit is not yet crossed.
+Okay.
+But if it is not there.
+Right.
+So we have to create a new HTTP client object.
+Or you can say that new TCP connection object we have to create, and we have to also put it into the
+cache.
+Okay.
+So first what it will do is it will take out the http url connection object and then invoke the connect
+which actually creates a TCP connection but it do not create blindly it.
+First check the cache.
+Now once you have get the HTTP client object which is present inside a connection, it will call get
+response code.
+I told you that there are three methods like get Inputstream get response code or dot connect.
+So dot connect is used to do a TCP connection and get Inputstream and get response code is like where
+client send the request, get the response okay response stream it got.
+Now it has to do a parsing.
+So after that it invoke get response code means it.
+Now send the request to the server also and wait for the response.
+Okay, so now all the response stream, whatever the response it has got from the client or server.
+It's there all in the connection.
+That stream would be there.
+Okay.
+So it's there and it return.
+It's set inside simple client HTTP response object and set this URL connection.
+This connection which has all this response info right.
+It's set inside this response object and returns.
+So now I am got simple client HTTP response object.
+This has internally http url connection object.
+Now I am doing is handling the response and extract data.
+So here whatever you have defined like what type you wanted response I want to parse the response as
+a string, or let's say some class product class.
+Now it does parsing for us automatic parsing.
+So it still got a stream.
+It read the stream and it will do a parsing.
+So it will use some JSON converters possibly.
+And once that's done it ultimately closed the reading stream.
+Okay.
+But here if you notice it do not close the TCP connection.
+It is not doing uh HTTP client that close or something.
+It not.
+So this is our HTTP client.
+It's not closing it.
+It just closed the stream as soon as the stream is closed.
+What happened is the HTTP client object, which is our TCP connection, right.
+Which is there in the cache.
+Let's say currently it's marked as in use equals to true.
+Now that would be false.
+Now it is not in use.
+It is marked as free.
+now.
+It can be reused again till its configurations are met properly.
+So here, if you see that Rest template does all the things which we were doing it manually in the plain
+Java opening a connection, setting all this timeouts calling dot connect internally does it.
+So calling internally the request sending the request getting the response.
+Parsing it.
+Closing the request stream response stream.
+But it's all replaced with just one line in spring boot get for object.
+This one line this whole frameworks now handling it.
+Okay, so what are some of the other methods which are available in Rest template?
+I told you this get for object right.
+Similarly there is something called get for entity.
+So in get for object, whatever the response type you are sending, it returns the response body as
+an object.
+So here if you see I see product class the return would be product body only.
+It will give me the response body only, not the complete response complete response as status headers
+everything but this returns me get for object return me only the body the response actual data response.
+There is something called get for entity URL and the response type, so it will give me the full response
+entity.
+The same rest template dot get for entity just the your URI.
+Okay, the complete URI and the type which you wanted in the response product dot class.
+But the response type is the complete entity okay.
+So now in the response you can get the status code.
+Also you can get the headers and you can get the body.
+Your body would be of type this this.
+Okay.
+The only difference is that in the first one you get only this body.
+Not status, not headers, anything like that.
+For the post you have to use this method post for object okay.
+So it has your URI the request because in the post you have to pass the request body and the response
+type.
+Very very simple.
+Again, if you see rest template at post for object your URI.
+This is my URI which I want to hit.
+This is the request body which I want to send because I want to create a new product.
+Right?
+So I create a new product.
+I create one object which has this values.
+I send this to the server and my response body would be like this product dot class.
+Okay again post for object means it only the response body would be available to you in the response.
+It would be direct body, but post for entity means full.
+The response type would be response entity.
+From there you can get a body.
+You can get a status code.
+You can read headers.
+So some similarly for put we have a URL and the request.
+So here if you see send put and no response body is expected in the put, you won't get any response
+right because it's only an update.
+So this is let's say URL right rest template dot put URL and the updated product whatever you want to
+update it right here.
+Generally it would have a ID.
+Also this ID this id let's say this is the product which you want to update but there is no return type.
+Similarly for delete you have to just give the URL the URL.
+So here, if you see that you provided the URL and just say that delete and there is no return type.
+Okay.
+So there are two more methods.
+General method which gives you more flexibility.
+One is exchange and another is execute.
+So exchange if you want to customize the HTTP method according to yourself.
+If you want to take control of the header and the body yourself, but want to rely on spring their automatic
+conversion response conversion serialization right, then you can go for exchange.
+Just see an example here.
+I have defined a URL.
+Now I want to take a control of the header.
+So now I am creating a one header object.
+Okay.
+In the header I set the content type.
+If any other header I want to set let's say authorization header and my token I have to set here All
+the header you can set here then body.
+So I have created one.
+Let's say this is the body.
+Some product and name.
+And the price I have set now in the HTTP entity I have set both the body and the header.
+So now I have full control over my header and my body how I want it.
+Right.
+And here I am just calling the exchange.
+So here pass the URL which you want to hit okay.
+Second is HTTP entity object HTTP entity object has two things your body and your header.
+Right.
+So HTTP entity has two things body and header.
+So second is my after HTTP method it's my HTTP entity okay.
+And after that response type in the response which you will get from the server.
+Its body should be automatically converted to this product or class.
+So doing automatic conversion.
+Okay.
+So the exchange returns you the response entity which means you have the complete header access body
+access everything.
+Okay.
+So this is clearly understood right.
+When to use exchange.
+Exchange in simple term.
+Only use when you want control over HTTP method header body but don't want to do conversion response
+conversion serialization and all you want to rely on spring boot.
+Then you can use this.
+There is one more called execute which says that hey, even the serialization conversion also you take
+care of it.
+It's like a plain Java how you use to connect it.
+Generally it's like the same thing.
+We only have to manually do all the things we have to take care of the object like header, body, request,
+response, serialization all need to be handled manually, right?
+So it provides us complete view of the interface request callback interface and response extractor interface.
+So request callback interface if you see it has functional interface.
+So we will use lambda expression.
+But we have access to client HTTP request object.
+So we can modify the request as we want.
+Similarly the request response extractor again it's a functional interface which provide us the access
+to response object.
+Means we can parse the response as we want.
+So this is an example like I have already covered in Java the functional interface and the lambda expression.
+How to use it.
+So you can check in depth there.
+So here I am creating a new Rest template object.
+First my URL.
+Now here.
+If you see what is the.
+I need an object of this request callback and the response extractor.
+So these are functional interface.
+So I am using lambda expression.
+So means here at this point of time I have access to request.
+So what I am doing is request using lambda expression I am writing my functionality here now.
+So in the request I am changing the header.
+I am adding my body which I wanted right?
+And here if you see that I am taking care of serialization now, it's not automatically done.
+So whatever the object I have created product, I have to convert it into a bytes and I have to put
+this, uh, whatever the body which I have written right, bytes input stream and I have to write it
+to this body request body.
+Okay.
+So I am doing taking care of all the serialization and conversion.
+Okay, so this is the request callback.
+Nothing but a functional interface which provide access to client HTTP request object, which where
+we can add header, add our body.
+But also we need to take care of serialization also.
+Similarly the response which comes means response extractor.
+So we have access to the response client HTTP response.
+So here I am using again lambda expression.
+So whatever the response I will get.
+So this is my input stream.
+Whatever the response dot get body stream util dot copy to string I am just copying to string, that's
+all.
+So my body would be like become a string response extractor.
+This one okay.
+And this is ultimately where I am invoking execute.
+So internally it will do dot connect.
+First it will create a TCP connection, and then it will send get response code right, and then have
+this request and header properly set into the HTTP client connection object.
+Okay.
+And then it gets a response.
+And then it will do this.
+It will run this logic.
+Whatever the response it will get it will run.
+Then this logic okay.
+And if you see print it it will print properly okay.
+So in short use exchange again very very important when you only have to worry about headers and body
+but internal one level more depth like serialization right.
+And the conversion you don't have to worry about it.
+You just send like what you wanted.
+It automatically does all the parsing, that's all.
+But when you want full control, like actually execute, right?
+Everybody call internally.
+Execute only.
+Even if you say exchange put post get all internally call execute only internally right.
+So if you want full control then you can use execute.
+And you can use.
+This is one simple example.
+Okay.
+So when execute got invoked it do connect.
+And then it will try to create a HTTP connection object which will give you an HTTP client request has
+this object HTTP client request.
+So then it this is get invoked.
+Now you have the request.
+You update headers and body okay.
+After that it makes get response code.
+Now once it made response code it got a response.
+So after response what it has to do it run this parse like this.
+And ultimately you get a response?
+Okay.
+If you practice this, you will get to know, like, um, very, very easy to understand.
+But what are the limitations of this template?
+Why we call it as legacy or traditional way of communication in spring application.
+So the one of the biggest problem, which I feel is in the rest template, there are so many overloaded
+method.
+So this method which I have covered write, execute, exchange delete put post post for object, get
+for entity, get for object.
+These are.
+You can say that very very few methods I have covered even for get for object you will see three overloaded
+method for get for entity you will find three overloaded methods similarly for this.
+Similarly for this.
+Similarly for this there are so many overloaded method you get confused and which one to use when.
+And also it's very difficult to remember and maintain also.
+So this is one of the biggest challenge.
+Second is this template was built before the concept like retry, circuit breaker etc..
+So yes there is a support present into the rest template, but it's more you can know that more overloaded
+methods are there.
+That's why I tell you that if you want to use a circuit breaker functionality, you will find one overloaded
+method for this.
+For this, because you have to support for all any new feature you have to add.
+Just see that any new feature you have to add, you have to add for all the flavors get post, put,
+delete, exchange.
+So means like you have to keep on adding the overloaded methods for each of the new functionality you
+introduce.
+So it's not user friendly to use and it is not easy to remember.
+Not easy to maintain.
+So that's why Rest template is in maintenance mode.
+No new feature, only bug fixes because nowadays in the HTTP request itself, there are so many new
+new features coming like this functionality, this functionality like filtering, interceptor functionality.
+So means they are not keep on appending new functionalities here now.
+That's where the rest client comes into the picture.
+Okay, so we will cover rest client into the next video.
+But in short it's follow a builder style API.
+Or we can always say that fluent API like there is no overloaded.
+You can say that methods.
+We don't have to remember it just like get put post.
+That's all.
+If you have to do a get get method no matter get for entity, get for object doesn't it provide has
+the complete functionality.
+So very easy to maintain user friendly and more readable code right?
+We will see that how the Fluent and builder style API we have seen.
+Okay.
+And all the latest support it provide an easy integration like interceptor filters.
+Very easy integrations are present right.
+Those integration might be also present with Rest template.
+But it's not like that easy.
+They you there might be like some overloaded method which you have to know and see lot of parameter.
+You have to pass to use that.
+It is possible.
+I'm not saying it's not possible, but it's not easy.
+With Rest client you will see that those things are very, very easy.
+So we'll see you in Rest client video in the next part.
+And we will also come to the main.
+This.
+Spring cloud way of communicating between the microservice client okay.
+So any doubt let me know in the comment section.
+We'll discuss further.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

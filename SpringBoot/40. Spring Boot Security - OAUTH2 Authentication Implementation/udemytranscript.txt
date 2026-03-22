@@ -1,0 +1,797 @@
+On this site.
+Welcome to Concept and Coding.
+And today in this video we will see an OAuth two implementation.
+So if you have not seen the previous video where I have explained about what is OAuth and what are the
+different grant types.
+So I would highly recommend that.
+Kindly have a look at it once before jumping into the implementation.
+Okay, so I will give you a very, very quick recap.
+What is OAuth?
+OAuth stands for Open Authorization Framework.
+It enables a third party access right secure third party access to user protected data.
+We have a different grant types like authorization code grant, implicit grant client credentials.
+And there are two more right which we have already discussed in the previous video.
+So today I will do an implementation in Spring Boot for this authorization code grant flow.
+So before jumping into the implementation, let's have a quick recap of what is authorization code grant
+flow looks like.
+So consider the resource owner, which is us.
+You, me.
+So we have our data, right?
+Where in, let's say in one of the resource server, let's say Gmail.
+We have our data like mail, like some profile picture, Gmail, email ID username like we have and
+mobile number.
+We have our data present into the Gmail.
+And Gmail has one of its authorization server also.
+Okay.
+And this is client or Insta.
+Or you can say that any third party app, third party app which we have to grant access to our data
+but securely, how we can do that?
+We have seen that already so quickly.
+First, this third party app has to register themselves, register itself into the authorization server,
+let's say in this case with the Gmail authorization server, they have to register this third party
+app.
+So Gmail will send them the client ID and secret which this third party app will store it.
+Now what would happen is let's say that I am going and saying that, hey, this third party app, let's
+say I want to sign in, but I want to sign in using Gmail.
+I don't have an account on here.
+The first time I am coming and I'm choosing sign in using Gmail.
+So what it will do is it will redirect me to this authorization server, right?
+This third party app redirect me to the authorization server and it will send the client ID also in
+the request.
+So what authorization server will do?
+It will give me a username password field where the resource owner I have to provide my username my
+password of the Gmail right means I am providing the consent that yes, hey, Gmail, allow this third
+party app to access my this data.
+Okay.
+Once I provide this this authorization server, return the authorization code back in the response using
+this authorization code, this third party app makes another API call to fetch the token right.
+And inside the request it will pass code, client ID, and the secret which it initially got right and
+it requests for the token.
+Once it got this, all the details authorization server, it will return back the token.
+It could be the JWT token possible, right?
+There are different type of token like opaque token JWT token.
+So it might return the token access token.
+And now using this token it will hit the API of this authorization server.
+Let's say Gmail API, right?
+Gmail API.
+Hey, fetch me the details of, let's say mobile number or username and email ID depend upon what the
+third party want access to, right?
+With this JWT or access token, with the OAuth two model, we can access the API and through which we
+can fetch the user details.
+Okay, now it got the token.
+So it has in the request it has to pass the token okay.
+Now once this resource server got the token it will pass it to the authorization server.
+Validate it if it's valid.
+Like if the token is valid it will return the details.
+And based on that it will make sure that sign in is successful okay.
+If it is not valid it will throw an error like failure ultimately.
+So this is a very high level flow which we have seen.
+Now we will implement it.
+But again, before we jump into the implementation, we have to understand what is the difference between
+Oauth2 and Oidc.
+Now you can ask me hey, what is Oidc?
+Why it comes into the picture.
+So again, first the difference is full form is Oauth2 is like open authorization.
+Oidc stands for OpenID connect.
+What is the purpose used for?
+OAuth is used for authorization.
+Meanwhile, Oidc is used for authentication.
+What is the difference?
+See here.
+In this OAuth two we grant secure third party access to user protected data.
+Means third party app.
+Like in this case, uh, we are saying Insta can have access to my, let's say all the Gmail emails.
+My calendar data depends upon what all the APIs are exposed.
+Okay.
+So it can invoke the endpoint passing the token and fetch all my data protected data.
+But Oidc is mainly specified specific for authentication only.
+So it's a layer built on top of Oauth2 only and unable the third party app to verify the identity of
+the user by authentication server.
+Okay, so understand the difference with this here.
+The only difference comes at this part.
+So here it gets the token right.
+Once it gets the token.
+If you are using plain or two you can use this token.
+Pass it to this resource server and you can access whatever data you want.
+Right.
+All the protected data you can access of mine.
+But with the Oidc, whatever the token you will get, generally it is known as ID token, ID token,
+which is again in the form of JWT only.
+But this ID token has all the info which is required for authentication purpose.
+You don't need to call any API and fetch any other data in the Oidc.
+This token itself has all the limited very minimal information which is required just for authentication.
+Okay, this token ID token is not understood by resource server.
+This ID token is specifically for this third party app only that hey, from this token you will get
+a minimal information.
+Through this you can authenticate the user, but this ID token cannot be used to access my protected
+data.
+But with the OAuth two, whatever the token you will get with that, you can pass it to the resource
+server.
+They understand that by passing it to authorization server and then they can you can fetch the protected
+data.
+I hope you got the difference.
+Or two is like for authorization, you can fetch the protected data for Oidc only for authentication.
+Uh, once the token is received by the third party app, they don't generally pass it back to the resource
+server to access more data.
+The token itself has all the information to require to authenticate.
+So token is generated is access token, which is generally opaque or JWT form okay.
+So consider like a GitLab use case.
+Generally they return opaque token.
+Opaque token is not understood by the third party app only it is understood by the authorization server.
+Okay, so use by a third party app to call the resource server APIs to access user protected data.
+Okay, so that's what I told you in the plain or to once the that token is received, either JWT or
+opaque token.
+Okay, so this token is used by the third party app to fetch the to call the APIs through which they
+can fetch the protected data.
+But here in the token generated by Oidc is that ID token which is JWT form only.
+Plus, since it is built on top of OAuth two, it also gets an access token also.
+So it gives us both the capability.
+If you want I can go ahead and call the API also and fetch more information.
+Otherwise this ID token itself is contain all the information for authentication.
+So ID token is a JWT token which is meant for third party app only.
+Remember this?
+I'm emphasizing on this that it is meant for third party app.
+This ID token is not sent End to this resource server.
+It is not sent.
+Once it gets the token, it has the minimal information.
+It has the minimal user info which can be required for authentication.
+Okay, we will see that.
+But first remember the difference.
+So the scope scope is like read write in the plane or two in the plane or two.
+Generally scope is that read write like.
+You can even call post APIs for writing you are reading means you can allowing the third party app to
+call the APIs only get APIs, or you want to call even allowing them to call the write APIs.
+Here it is OpenID scope is OpenID.
+OpenID means it indicates the authorization server that this third party app is only one to authenticate
+user.
+Okay, so there is a scope called OpenID when the ID token is generated by the Authentication Server
+authorization server.
+It will contain very minimal information in the token JWT okay, which is required only for authentication.
+No read write access is given in the token itself.
+Very minimal information is sent.
+Okay, if the difference is clear, let's jump into the implementation.
+So what is the step one?
+Step one is.
+The third party app.
+Now in this case who is the third party app?
+Our spring boot app which we which we are writing.
+So third party app.
+We have to register it so that in the response we can get client ID and secret key.
+So third party app registration to authentication server.
+This is the first step.
+So third party app is our Spring Boot app authorization server.
+Currently we can pick auth zero and GitLab okay.
+So we can register ourselves yourself and get the client ID and the client secret.
+So we'll see that.
+So here if you see if you open the GitLab there you will see application in the settings.
+You will see application inside that application you give the application name I give my Springboot
+app the redirect URI right.
+The redirect URI is that uh here if you see.
+Once the owner authenticate and provide consent, it redirect it calls a redirect URI and passes the
+authorization code in the response.
+So we have to set that redirect URI and the scope which we have to select.
+So I have select the open ID because I am only interested in authentication okay.
+So only also gives read only access to the user profile.
+Right.
+So not much very minimal information grant permission to authenticate with GitLab using OpenID connect.
+So specifically for authentication.
+And once you save the application, you will get client ID and the client secret, which you can copy
+it from here okay.
+Similarly in the OAuth auth zero registration, what we can do is we have to provide the name okay.
+And here we have all the Oidc is I turn it on.
+It also provide what signature algorithm which we have to use.
+I choose Rs 250 Rs 256, which is like a private public key.
+And uh, like in the JWT, whatever the signing algorithm would be.
+So here I am defining that one.
+We have already seen that in the JWT uh, part.
+And ultimately I will get my client ID and the client secret here.
+Okay.
+So we can see here like so here if you see I open the GitLab.
+So now in this part if you go to the settings click on Edit Profile okay.
+So there you will see application.
+If you click on the application you will see this.
+Like you can add an application I can add a new application also where you can give a name redirect
+URI and what is the scope you wanted to select.
+And once you do save application it would be like this.
+It will come like your client ID and the secret.
+Secret is like you can copy it one one time after that, uh, it will remove from here just for safety
+purpose so you can renew the secret.
+Okay, so the old secret would become invalid.
+And the scope I choose is OpenID authenticate only similarly for the auth zero.
+Also, it's the same thing.
+You can open auth zero and you can create add new application.
+And then you can add it like this.
+Okay, so here what I am doing is I am registering myself my application, and I am getting a client
+ID and the client secret.
+Okay.
+So this id what I have to do is I have to store it.
+Okay.
+So in the application dot properties I am saving this details now okay.
+We will come to the Pom.
+But here if you see these are the configuration.
+These are the for the GitLab and this is for the auth zero okay.
+So two authorization servers I am adding.
+So this is my client ID.
+This is my client secret.
+What is the scope.
+Open ID okay.
+What is the grant type I am using authorization code.
+What are the different grant type we have right.
+In OAuth two you can use anything.
+But currently I'm implementing authorization code redirect URI.
+I have set like okay this is the API which are authorization server has to call when they have to return
+me the authorization code.
+So redirect URI authorization URI is something which like I have to invoke.
+So here in this case right.
+See this part.
+So once this part.
+This part this is the URL.
+This is the authorize.
+This is the authorized URL okay.
+And then I when I have to ask for token this is the token URL okay.
+So this is all the URIs I am setting.
+So what is the redirect URI authorization URI.
+What is the token URI.
+What is the URI issue?
+Issuer URI is nothing but like who is your authorization server okay.
+And Jack set URI is something like where is the public key is stored.
+Like whatever the token you will receive, we have to sign.
+We have to verify that token.
+right?
+So in asymmetric encryption, the authorization server use the private key to sign it.
+And we have to verify it using public key.
+So public key has to be read from where that URL okay.
+So these are mostly very very standard URLs.
+Right.
+And mostly here if you see and in the configuration your key this part only change GitLab.
+Now here we have Auth0.
+So if you have any other Gmail so only all the links would be same.
+Only here Gmail would come or whatever their authorization server name would be that would come.
+Okay.
+So these are generally known as registration ID.
+So registration id I have two, one is GitLab and one is auth0 okay.
+And these are the URIs which are present okay.
+These are also very very standard URIs.
+So like whatever the authorization server which you have and then this endpoints remains the same.
+Okay.
+So you will see mostly the endpoints remains the same though not much difference.
+Only your authorization server becomes different.
+After that the endpoints become mostly the same.
+Okay.
+So we have added this two information.
+We have added this to authorization server and we have to add this Pom.xml spring boot starter Oauth2
+client.
+With this dependency all the libraries like which understand this configuration, there are certain
+specific OAuth to filters code that would come to in our project.
+Okay.
+So we required this form.
+We added this application dot properties okay.
+And in the security config dot Java Okay.
+So here in this case if you see that we want or to login, we don't want form.
+We don't want basic.
+We want OAuth to login customize with default.
+Okay.
+So we have added three things palm application dot properties and security config where we have to tell
+the spring boot that we want to go ahead with the or to login.
+And we have just added very, very basic controller not required just like one default page.
+Because here we have said that right customizer with default.
+So once the authentication is successful it will try to hit the default page localhost 8080 and the
+default default page.
+So that's where I just written hello you are logged in and one specific APIs.
+If that one would be hit it will say that fetch the details.
+Fetch the details successfully.
+So very basic controller I have written.
+So till now what we have done is we have just registered our app and based on that registration we have
+set up the application dot properties.
+Pom we have added the award to dependencies security config.
+We have tied to the spring boot that we want to go ahead with the Oauth2 and the basic controllers we
+have written.
+Now let's see.
+Let's try.
+Only notice one thing that I have not created any user in the Spring Boot app.
+User is not there.
+My detail is present into GitLab or auth zero, right?
+But not in the spring boot app.
+So I am starting the application server.
+My application server is started now I am hitting localhost 8080 url since it is like any request we
+have to authenticate.
+It will take me to the default login endpoint.
+Since we are using.
+Or to login and customize with default.
+So with default login pages slash login only.
+Okay.
+So it will take me to the login endpoint.
+So to see you will see this page to login with OAuth two two authorization server first and second.
+First is auth zero.
+Second is GitLab.
+So where this information is coming from, this information which we have set into the application dot
+properties one is GitLab, another is auth zero and the authorization server is this URI gitlab.com.
+And this auth zero generally give us a custom authorization server URI.
+So this URI.
+Okay, now you can choose anything which you wanted to login.
+Right?
+So now let's say that if I choose Auth0, when I click the Auth0, it redirects me to the Auth0 login
+page, right?
+Now you see that I haven't written any code for all this redirection and all it's working now.
+So it automatically when I click here it redirects me to the Auth0 login page.
+Login to this to continue my Spring Boot app.
+And here I have to provide my email address and password.
+Once I did this what what is the next step.
+So first is registration.
+Then it will give me client ID and secret done.
+Then what is the next step like uh I have to call the authorize endpoint.
+So this is the authorize endpoint.
+Once you click here it calls the authorize endpoint.
+It goes to the authorization server.
+Authorization server will show me username password page and it redirect me to the it, redirect me
+with the authorization code, and using that authorization code, I will pass the token endpoint and
+ultimately I will get the token and from there it will use the token.
+Fetch the details and whatever the detail it will get, it will authenticate myself.
+So all this thing happening in behind okay.
+Once I provided the username password it will redirect, URI will get invoked.
+And after this all this thing happening at the behind.
+And ultimately I am get logged in.
+We will see that everything what is happening in behind right.
+If you see I am able to login successfully, if I hit slash user endpoint, I am able to call it.
+So this is the second endpoint, right?
+That is also working properly even though I have mentioned all the requests should be authenticated.
+So how it is working right?
+I have just given palm application dot properties security config.
+All I tell to the spring boot that use OAuth to login with default and rest.
+Everything works out of the box, right?
+With this three things everything works fine.
+So Spring Boot Security Framework provide the complete functionality of OAuth two protocol.
+We don't have to code anything, but here is one twist.
+When I try to access this slash user from the browser, it is working right.
+But the same API when I'm hitting through postman it is asking me to like again login.
+It is not yet logged in.
+Why?
+Why so?
+Because Springboot assumed that auto login would be done on a browser, so by default it creates session
+in browser.
+We it creates a session.
+That's why it is working.
+And here I am not passing any in the cookie.
+What is the session ID.
+So that's why it is asking me to log in again.
+Then you one question comes to your mind hey then OAuth two is stateful.
+Right.
+By default the spring created as a stateful, but we can make it a stateless.
+Also we will see that.
+But first we need to see the stateful.
+What exactly how it is working behind.
+Till now we we don't know how it is working till now.
+All we know is that hey this I have added pom, I have added application dot properties and security
+config.
+That's all It worked out.
+But how?
+Now let's first discover that how part.
+So we have already covered this part.
+Registration part.
+Right.
+This one is clear.
+You can open GitLab add application.
+You can register your app similarly in auth zero.
+Also you can register your app.
+Now what would happen when I clicked when a user clicked on my app?
+So this is now in our third party app.
+This is our Spring boot app.
+So now when a user click on this localhost 8080 login.
+Hey I want to login.
+I have to show this two pages right?
+Two authorization server where user can log in with.
+So what internally happen is.
+So default login page generating filter get invoked.
+Inside that there is a method called generate login HTML.
+So there it has like if it is a OD to login unable we have to show this page and from where this get
+this information.
+So here if you see something like OD 2 or 2 authentication URL to client name.
+So when you start an application right this get filled up from application dot properties okay.
+So this has all the information.
+So it just iterate over it and just show this okay.
+It just show this information.
+So now we know that okay.
+Once I print the once I click on the login URL how I am able to see this.
+Two things okay.
+This filter helps in generating this page.
+Now when a user click on any of the link, what would happen when user click on one of the authorization
+server?
+This endpoint would get invoked or two slash authorization slash registration ID.
+What is the registration ID?
+We have one registration ID is this.
+This is known as registration registration ID.
+I already told GitLab Auth0 or there if you have more.
+These are known as registration ID, so whichever link you click that registration ID would get appended.
+So let's say if I am clicking GitLab.
+So slash two slash authorization slash GitLab this API would get invoked okay.
+So when this endpoint get invoked this filter will catch it or two authorization request redirect filter
+dot Java.
+This filter will is also present into the security framework because of the dependency which we have
+added.
+So now here if you see here we have the authorization Request an authorization request.
+What we have.
+We have the client ID.
+I told you, right.
+The client ID, the third party app in our spring boot.
+The client ID would get there in the request, and then it will redirect to the authorization server.
+Okay.
+The request got now redirected to the authorization server.
+Okay.
+And it invokes this API like whatever the registration ID you have picked, whether uh, GitLab or Auth0,
+depending upon that, it will have this all the URI which it has to invoke.
+And then it invokes the authorization appropriate authorization server.
+Okay.
+Then authorization server.
+If it is GitLab, it will ask you to provide your username password if it auth0 Zero again email ID
+password.
+So you have to authenticate the yourself.
+And also you have to authorize the Spring Boot app that they can access my request.
+So once it is done, once it is done the authorization servers calls a redirect URI which we have set
+during registration.
+We have seen that we have set the redirect URI so it will invoke the redirect URI.
+Okay.
+And in the response here if you see response they have set the code authorization code.
+Okay.
+So which endpoint.
+This endpoint this filter.
+Now catch this OAuth to login authentication filter.
+Dot Java is the one which catch this redirect URI.
+Now what they will do.
+They will first make an authentication object out of this response.
+Okay.
+And then what they are doing is they are calling the authenticate their means, passing it to the authentication
+manager and authentication manager redirect it to authentication provider.
+So since we are using OpenID and what is the token it created OAuth to login authentication token.
+So this is the provider which can handle this Oidc authentication authorization code authentication
+provider dot Java.
+So this provider this authenticate method ultimately for this provider will get caught because this
+can support this token authentication object.
+And also for OpenID scope this will support it.
+So now here if you see it do two things here.
+Till now, I have authorization code.
+Authorization code is there in my.
+This token and token.
+I have already set the authorization code.
+Whatever I have got in the response.
+In the authorization response, I have got the code right.
+So I have set it and pass it to the provider.
+Now what it will do is it is calling invoking the token URI of the authorization server to fetch the
+token access token response.
+Okay.
+And it also has the ID token also from response.
+So whatever the response the response it goes right from this it fetch both access and ID token okay.
+So it fetches the ID token.
+So we are mostly interested in this ID token during authentication.
+We are interested in this ID token which we get from this response of this.
+So we take out the ID token.
+And return back to authentication filter.
+Okay.
+So ultimately here if you see.
+We call the authorize endpoint.
+It returns back with the authorization code.
+And after that I invoke the token URI internally.
+All happening internally we are a user is not even knowing about it.
+Okay.
+So it invoke the token URI endpoint and it return back the ID token.
+Okay.
+Now ID token.
+What I have done is so see in the I have got the ID token.
+This is how ID token.
+If you see that there is something called access token.
+This is not a JWT.
+JWT you remember that has three part okay.
+So part one, part two and part three your header your claim and then your signature part.
+But here, if you see this token has only there is no dot.
+So this is known as opaque token only authorization server.
+Understand what it has.
+We don't know.
+So but for Oidc ID token is is in JWT format.
+If you see this is this is JWT format.
+So here when it tries to do write create token right it parse it.
+So in the parsing you can see the information.
+It has all my information profile username right.
+It has my picture.
+Like all all information it has okay all basic information which is required for authentication.
+It has.
+So this ID token is received at this provider which it return back to filter okay.
+And filter.
+What it does is it stores the token and creates an HTTP session.
+And once the session is created, it return like login successful.
+And if you see in the cookie session is created.
+And that's why when you hit slash users now cookie has the session.
+So it automatically give me an access.
+So if you understand this flow this diagram could also help you a little bit more.
+Clarify it.
+So now user is clicking the login endpoint.
+Okay.
+It will goes to the filter chain.
+From there it will goes to one of the filter.
+First is login.
+So which filter default login page generating filter will get invoked.
+It will return me a list of authorization server which it get from the Application.properties.
+It's just simply return it and shown to the user.
+Now user would be shown two things like auth, auth, oh and GitLab.
+Which one you want to authenticate.
+Now once the user click on one of the server, this is the endpoint get invoked or to authorization
+registration id.
+In this case it would be GitLab.
+Uh the filter chain will get invoked.
+It will pass the request to one of the security filter chain which filter OAuth two authorization request
+redirect filter will get invoked.
+It will redirect the request to the authorization server okay.
+And return to the client.
+But authorization server.
+Uh, now it redirected the user to this.
+So their user has to provide username password.
+Okay.
+But its flow is finished.
+Its flow is return.
+So it has return it.
+It has completed its flow.
+But now user has been redirected to this where it has to provide the username password, let's say GitLab.
+So it would be like a GitLab page.
+Once the user has provided the username page, it will redirect call a redirect URI with the authorization
+code.
+Now which filter catches it or to login authentication filter, it creates an authentication token object
+which is nothing but an authentication object.
+It put authorization code.
+Here it passes to the authorization manager.
+Authorization manager passes it to the authentication provider.
+Which authentication provider understands this token and this scope?
+OpenID is Oidc authorization code authentication provider.
+So this understands it.
+So what it does is it calls the token URI of the authorization server, passes the client ID client
+secret and authorization code.
+Okay.
+So authorization server, return access token, refresh token and ID token in response.
+So it will return the same to the filter.
+Now it will.
+What filter will do.
+See this first filter.
+Store this token information into in-memory Oauth2 authorization client service.
+So we can also instead of storing in memory, we can also store it into the DB.
+We can do that right.
+We can implement this over to client service.
+And we can override and store it into the DB.
+How we have seen we are storing token into the DB.
+Similarly this ID token access token which we are getting from the authorization server, we can store
+it DB, but currently it is storing it in memory.
+And then ultimately it's create an HTTP session and store this session into like whatever the authentication
+object.
+Right.
+Which is coming that is stored into the security context holder and ultimately it passes.
+Call the slash localhost 8080 slash endpoint.
+So it has created an HTTP session.
+So this is the all the flow happened internally.
+And now when you click slash users you are trying to access any API.
+Since the session is created security context holder filter will get invoked.
+It will pass to the HTTP session security context repository.
+It will fetch the session and if the session is active, it will grant an access.
+It will grant an access.
+So here if you see that here, if you see that when the session is set, it might not validate the token
+with each request.
+So session is valid.
+The request has passed through, so it is possible that ID token becomes invalidated, but session is
+still active.
+Possible, right?
+Because now with every request, my session is this filter.
+Get invoked.
+This.
+See that a session is present.
+If session is present, it will access the request.
+It is not taking out my tokens out of this in memory and validating that token.
+Token is valid or not.
+It is not doing that.
+So this makes our OAuth stateful.
+And that's why one of the reason that when postman when I hit it, is not able to access it.
+So how to fix it.
+We can make it stateless.
+Right.
+And we can return the ID token in the response so that the client will pass the token.
+And we will validate the token every time with every request.
+Can we do that with this framework?
+Yes, we can do that very easily.
+So what I will do is that the same flow like, uh, the same flow once the user two endpoint.
+Right.
+Uh, two authorization server, let's say one is GitLab, one is auth zero.
+User has clicked this.
+Okay.
+The same thing.
+My redirect filter would get invoked.
+It will pass this authorization server.
+Authorization server will pass it to authorization code.
+Everything same.
+This will pass.
+This authorization code creates an authentication token.
+Authentication object will pass to authentication manager with two authentication provider.
+It will reach to the Oidc provider which will call the token URI, and ultimately which will return
+me the token ID token.
+And when the control ultimate goes to the filter.
+What?
+The first thing it will do, it will store it into n memory first.
+Second, it will create an HTTP session and store it into the security context folder.
+So in previous part it was doing till here.
+But now since I want to make it stateless, I have to return that ID token in response.
+So this filter is already doing all these things.
+Authentication filter already doing all these things.
+Now I am adding one additional functionality here.
+This is important.
+I am returning the ID token in the response body.
+How I am doing that.
+So here if you open the OAuth to login authentication filter see that OAuth two login authentication
+filter.
+So if we see that uh after authentication it's parent.
+Attempt authentication.
+Something was right.
+Attempt authentication.
+Yeah.
+So after this uh oh.
+To login authentication, filter control will come here.
+What it does is it will create a session which we have seen here.
+So let me zoom it a bit.
+Okay.
+So it will first session strategy.
+So it will create a session.
+We can't change it.
+This framework is already doing that.
+We can't delete that.
+Don't create a session.
+After that it do successful authentication unsuccessful authentication.
+It will create a security context holder strategy security context holder.
+But after that if you see there is one success handler on authentication success.
+So this is this interface.
+So it has uh what it is doing inside this Currently if you see that it hasn't provided the implementation.
+So it is doing some default cleanup tasks.
+So I have implemented my custom success handler and provided on authentication success implementation.
+And in that what I am doing is I am in the response, I am returning the token.
+Okay, so that's what I have just extended one functionality from the same filter.
+There is a method on authentication success.
+So currently it's calling by default one which doing some cleanup.
+So I have just provided an implementation of it and returning the token in the response body.
+So see that first.
+So that's what I have done I have created one custom word to success handler and implemented it authentication
+success handler.
+And then provided an override.
+I have implemented this one.
+So I have already have the authentication object, right?
+This authentication object has all the info.
+Okay.
+So from this auth token I am fetching the ID token information.
+Okay.
+So I'm fetching the ID token information and putting it into the response.
+So this is the first thing I have done to make it stateless okay.
+So I have enhanced this filter override one method.
+So currently on success after authentication it is doing nothing.
+I have just enhanced it provide a custom implementation.
+And in the response added the token ID token.
+Now I started the application.
+And also yeah one more thing.
+In the security config we have to tell that, right?
+You have to use this implementation.
+So in order to login earlier we were doing customize with default.
+Now I am tell that hey the success handler should be this one.
+The main one.
+So custom word to success handler.
+So this is already at the right component.
+So bean object should be created.
+So I have just said that when you initialize it initialize it with this not with the default one.
+Okay.
+And also I make it stateless by default was if required.
+We have already seen that in the previous uh form based login by default is if required.
+So we have specifically make it that make this is stateless.
+This auto login is stateless.
+And this is the success handler which I want to use.
+Okay.
+So now when I started the application after authorization from the authorization server.
+See.
+In response, I got this token.
+Okay.
+And now you can.
+Now only one thing left.
+We have to utilize this token, and we have to validate it before providing us like access to any of
+the API.
+Right.
+So now what we have to do is that now only one task left is client will pass this token with every request
+and we have to verify it.
+Now let's say the client have to use this slash users.
+So in the authorization they have to pass bearer token.
+And this will pass this token.
+So once this token will pass we have to validate this ID token right.
+We have to validate this.
+So how to validate that.
+So for that I have created a new filter.
+So I have created an O auth validation filter extend once per request.
+Filter.
+I've created a filter.
+Now here if you see first I am doing is extracting the JWT from the request.
+So from authorization bearer header I am fetching the token.
+This is id token which I got.
+Now I am created one utility.
+So this is one utility method I have created at the root component.
+So I have created one method.
+Is token valid.
+Give me the token.
+I will validate it.
+So now what I am doing how I am validating it.
+Now see this token is generated by GitLab.
+And let's say that it has use this algorithm to sign it.
+So this is an asymmetric encryption.
+So they might have signed it through private key.
+We need it.
+Public key okay.
+And public key URI we have already sent into the application properties.
+If you just go and recheck our application.properties.
+Once here, if you see that J.W. set URI this URL.
+These are unique for each of the authorization server.
+Okay.
+So this is from where we get the public key through which we have to sign it.
+So the first thing I am doing is I am finding from this token itself who is the issuer.
+Who is the issuer.
+So I'm just finding I am just parsing the token and taken out like who is the issuer, whether git or
+auth0 or something else.
+Once I get who is the token, I am using the framework itself JWT decoder we just put from issuer location,
+we just provide the location.
+It is a gitlab.com.
+It is auth0 something whatever the authorization server.
+Now this framework has the understanding that, uh, it will from the Application.properties J.W. it
+will load the proper authorization, uh, server URI.
+It will fetch the key.
+And from that key it will decode it.
+Our JWT verify it.
+If it is not verified, it will fail it.
+Okay.
+So we are I'm just utilizing the framework.
+You can even write your own.
+You can have the URI, you can read the URI from Application.properties.
+You can call it and verify it.
+But this is the JWT decoder already does that.
+All we have to tell is who is the issuer from that issuer, it will load the URI from Application.properties
+and then decode it for us.
+Okay, so verify and decode for us.
+So what I am doing is here.
+After extracting the token I am validating the token.
+okay.
+And it will internally it will, you know that it will use JC's URI endpoint to fetch the public key
+and it will validate it.
+And once it is validated, I all I am doing is storing the authentication object into the security context
+folder.
+Because without this login is not successful.
+Okay.
+So I just created for the testing purpose I just created username password authentication token.
+I just put like this is a unique username and just put it into the security context folder.
+Yeah authentication is success okay.
+So this is the filter I have created now from the previous video.
+We know that we have to add this filter.
+So that's what I am doing.
+So till now we have seen that we have make it stateless.
+We have added our uh handler which is used to return the token in the response.
+And now I have added this filter Just before this, so we have to specify the place.
+So now once you start the server now and hit this end point slash users and the bearer token provide
+the token.
+You will see that fetch the details successfully.
+So I'm hitting the login endpoint.
+So let's start the server.
+Now I'm hitting the endpoint click on GitLab.
+It is verifying me.
+Now it is asking the username password.
+Once I click it.
+It will call the redirecting right redirect URI.
+And from there in the response I am returning the ID token.
+Use the ID token in the header.
+Pass it, call it.
+You will get fetch the details successfully.
+Okay, so guys, like if you think that it is too much information, please go through it one more time
+slowly with your hands.
+Things will become little bit more clear.
+I try to go in depth as much as possible.
+Uh, to show you what all thing happening in background.
+So see lot of things happening in background only we are just seeing that here.
+What internally happens.
+But lot of things happen like seamlessly.
+We don't even know.
+We just click there and everything happens.
+Right.
+So go through it again slowly and see that how OAuth two implementation works.
+Okay guys.
+Any doubt let me know.
+We will discuss further by.

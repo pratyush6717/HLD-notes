@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>38. Object Pool Design Pattern (Creational Design Pattern)</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="object_pool_pattern_notes.html" class="btn">View Notes</a>
+    <h1>38. Object Pool Design Pattern (Creational Design Pattern)</h1>
+    <pre>
+Hey guys.
+Welcome to Concept and Coding.
+This is Shreyansh.
+And today we are going to cover a new topic in low level design which is object pool design pattern.
+So here if you see I actually I don't have any intention to cover this topic, but it is seems like
+this question is getting asked a lot in interviews.
+I am getting a lot of comments to cover it up.
+Okay, so let's quickly see it because this is very, very simple.
+But I think I found one thing where engineers are making a mistake in this very simple design pattern.
+So I will touch that point also.
+So the category which object pool design pattern belongs to is Creational design pattern.
+What does it says?
+It manages the pool of reusable objects like Dbconnection objects.
+If you are familiar with Java, you already know thread pool in which there is a pool of threads.
+And whenever you need a particular, whenever you need a particular thread you take out from the pool,
+use it.
+And once you use it, you add add it back.
+Okay, so on the similar concept, this object pool design pattern is present.
+So it manages the pool of reusable objects like DB connection which can be reused.
+Okay.
+It borrows from the pool, use it and then return it back to the pool.
+So this is a two line definition which I can come up with for an object pool design pattern.
+Advantage and disadvantage I will come to later.
+Once we understand what exactly it is, then we will come to this point quickly.
+So here we have three points 123.
+So object pool design pattern.
+So we have a pool of what objects.
+So in this sense these objects are nothing but resource.
+Okay.
+So resource is the nothing but an object which need to be managed okay.
+So that is the first is your resource.
+You should have a resource.
+Second thing is resource pool manager.
+So now let's say you have multiple resources.
+There should be some manager which manage those pool.
+So we have second is resource pool manager okay.
+So resource pool manager I told you it borrows from the pool.
+Use it and return it back to the pool.
+So this pool manager handles that capability.
+So it maintains a list of free resources which you can use it.
+It also maintain In what all the resources which are currently in use once they finish their work from
+in use, it moved back to the free list.
+Okay, so free list plus.
+Free list plus in use is your total number of resource in a pool.
+Okay.
+Then you have something called initial pool size.
+How in a initially in a pool how many resources are available and what is the maximum pool size?
+How Max?
+What is the maximum number of objects we can created in a pool?
+Okay, so these are the member variables which is present into resource pool manager.
+And these are the two methods get resource.
+So whenever any one like say any client which is this third point.
+Whenever any client want a particular resource it requests a resourceful manager.
+Get me the resource and what it will do.
+Resource pool manager.
+It will check its pool, which is free, and it says that hey, if there is any free resource present
+in this list, it will assign it and put that into in use.
+And once client is done, it will call release resource right.
+That particular object is removed from in use and move it back to the free list.
+Okay.
+So client is client has a relationship with resource pool manager.
+Resource pool manager has a relationship with the resource okay.
+So this looks very simple right.
+And we can easily code it.
+There is no problem in coding it.
+I will show you the coding.
+But when I show you the coding right there is one mistake with it.
+There is one mistake which many engineers does this during an interview which takes the interview in
+the wrong direction.
+So I am explaining this code, but can you, after looking this code, can you just stop it for one
+minute and tell me in the comment section what is missing in this?
+Right.
+Don't look the answer below or proceed further.
+So just see that this is where the actually the mistakes happen.
+Okay.
+So now generally what happens is now we understand these three things.
+We can easily code this three part.
+So first part is your resource.
+So now we have taken an example of DB connection DB connection is one resource.
+So now here in this I am just making a dummy code.
+Let's say I try to make a MySQL connection and this code is doing nothing but it doing a connection,
+it doing with url username password.
+It connect my application with the DB.
+Okay so this is one my this is one connection.
+It is creating.
+Okay.
+So this is a resource.
+This is a pool manager DB connection pool manager which I am creating.
+So as I told you first I have free connection in pool right?
+It's currently empty.
+Connection currently in use.
+Currently empty.
+Initial pool size right.
+Initial pool size is three maximum.
+We can have a DB connection in a pool is six.
+Okay so now whenever.
+So I have created one constructor.
+So whenever some some client will create an object of this.
+Right.
+What I am doing is I am creating an initial pool size.
+I will iterate this three times initial pool size.
+And in the free connection pool I am adding new db connection, right?
+So I am adding three object object one.
+Object two object three.
+So this is my currently free right and in use is currently empty.
+Okay.
+So now once client create a object of DB connection pool.
+Now in the free list I have three db connection objects.
+Which client can use it.
+Now I have exposed one method public method get db connection.
+If any client wants it, it can call this method get db connection right.
+And when whenever this method is called what I'm doing is I'm checking.
+Hey does free connection pool is empty.
+No, it has certain data.
+It has certain objects.
+If it is, it will remove from the free connection pool.
+Right?
+It will remove it from the last and add it into in use.
+Okay.
+So remove one DB connection and put it in use.
+Okay.
+If this is empty.
+What if this is free, is empty and in use has let's say object one.
+Object two.
+Object three.
+This is in use and free is empty.
+So we will check if free is empty and connection currently in use is less than max pool size.
+Max pool size is six, but connections are currently in use is only three.
+So means we can create new DB connection and put it into free list.
+So here we can create one new DB connection and put it into free object for okay.
+And after that it will remove it and use it if required.
+Okay.
+And one more condition I have added it.
+If this is empty let's say object five is also there.
+Object six is also there and this is empty.
+Free list is empty if free connection pool is empty.
+Yes.
+And how many in use it is greater than equals to max pool size?
+Yes.
+Max pool size is six means all six are used.
+Now you cannot create any more free list.
+So I'm just simply returning null.
+Okay so this is the simple get db connection I have added here.
+But we can improve this method a lot based upon the interview.
+Like what scenario we have been put, what all capabilities this get DB connection can have.
+But this is generally the general de get db connection method.
+Looks gonna look like.
+Okay, now if client completed its work it will call release DB connection.
+Right.
+This is the DB connection it wanted to release.
+Now what we have to do is when we have to release it, we have to remove it from the in use and put
+it into free whatever the object would be.
+So that's what we are doing.
+If DB connection is not equals to null, remove it from the in use.
+Put it back into the free.
+Very very simple class right?
+Whatever we have discussed here we have just coded it.
+Okay.
+And the client here if you see it is very simple like doing the same thing.
+Get DB connection 123456.
+Right.
+So first three it would be able to create because in the initial pool size itself we have three objects
+four, five six.
+It will go inside this creating new connection right.
+Because free connection pool is empty all three are used.
+All three are used now for four, five, six it will go inside this.
+It will add a new Dbconnection.
+Now when I try to do a seventh one.
+So what would happen?
+Is connection currently in use already six are there right?
+We have already created six one, two three, four five, six already created six and all are in currently
+in use.
+So six is your less than max pool size six false.
+It will go into the second part right.
+So three is currently empty.
+Yes.
+Connection currently in use six is greater than equals to your six.
+Yes all six connections are used.
+So it will not allow it will return null right.
+And after that when you do release DB connection like you are trying to release the sixth disk, you
+are trying to release this.
+What it will do is from the pool connection in use, it will remove it and in the free it will add it.
+Added.
+Okay, so you can try.
+Just see this what it is printing.
+But it is very very simple object pool design pattern.
+But there is one problem in this.
+I hope you should have identified this.
+If you don't able to identify that and if you code like this, definitely I can say that the interviewer
+will pinpoint that one.
+The thing is, the object pool design pattern is used with singleton design pattern and required thread
+safety while acquiring and releasing the resource.
+Why?
+So here if you see that if your this class is not singleton class, then your client will create new
+objects.
+So what if I will create another new DB connection pool manager?
+Now I created two times.
+So when I created two times objects.
+So ultimately you now have two objects where you have created free connection three here, three here.
+If I create another new it will create new object which has three more.
+Right.
+So this breaks the purpose for which we are trying to solve.
+So that's why we say that object pool design pattern is always used with singleton design pattern and
+thread safety is must if you are designing it.
+So singleton, you already know that we have already covered this.
+So DB connection pool.
+So here if you see I have now changed it to a singleton.
+So the object for this one I have put private static right.
+So private is it's only be accessible through this class not through outside.
+Static is it belongs to this class not any object.
+And currently instance is null.
+So if client Ain't want to get an object of this class.
+So I have exposed one method get instance right.
+So this is the Getinstance method I have make public and static because you can't create an object of
+it.
+Constructor is private, constructor is private, so you can't create an object of it.
+So that's why I have called the make this method static so that you can call it from a class.
+So now this is double locking I am using it.
+So I'm not explaining this.
+You might already know it through singleton design pattern.
+So now this will make sure that only one object is created for this class.
+Okay.
+So this client, no matter how many times it will call Getinstance get instance, only one object would
+have been created.
+And when you would have created one object, it would have created a pool with just three.
+Okay.
+And so this is the singleton part.
+And the thread safety part is whenever you are doing get connection release connection right.
+That required thread safety.
+So means if multiple threads are trying to get a connection or releasing the connection, this list
+should not get corrupted, right?
+Only one thread at a time should update it.
+So that's why the get db connection I have put synchronized here, right?
+You can also use locking.
+So in Java uh playlist you will see the locking videos.
+But I have for simplicity I've just put a synchronize in the method itself.
+So it will put a lock internally.
+And only one thread can go inside this method.
+And rest of the thing is same, right?
+And similarly in the release db connection to maintain a thread safety I have put a synchronized here.
+Okay.
+So this point is very very important if you are designing an object pool design pattern.
+Without this, if you have just simply coded it in a hurry, I would 100% say that the interviewer will
+take the interview in wrong direction, because this is the crux for this object pool design pattern.
+Now let's come to the advantage and disadvantage.
+So very very visible advantages.
+It reduces the overhead of creating and destroying the frequently required object.
+Because now let's say that Dbconnection is object is very very resource intensive object.
+It creates it takes a let's say a lot of time and it takes a lot of time also.
+Right.
+It's a resource intensive object.
+So if you have already created beforehand certain you are maintaining the pool, you are actually reducing
+the overhead of creating it, destroying it.
+right and also helps in improving the latency.
+So it reduces the latency also and reduces the overhead of creating and destroying frequently required
+object.
+Okay.
+Also is prevent resource exhaustion by managing the number of resource intensive object creation.
+So now let's say that if I am creating one object of this which takes, let's say ten MB, just for
+example, if there is no control how many objects you can create of it, and if you create a large amount
+of objects, you can go out of resource exhaustion, memory exhaustion.
+So you can control it through pool that okay, only 50 objects can be created.
+Only 20 objects can be created.
+Whatever.
+It's just an example.
+So it prevent resource exhaustion by managing the number of resources.
+So these are the top three advantages comes to my mind when I think about object pool design pattern.
+But there are certain disadvantages also.
+One very, very big disadvantage is resource leakage can happen if object is not handled properly and
+not being returned to the pool back, its lost right?
+Some leakage will happen.
+That object would still be active and it's not destroyed.
+But you can't access it.
+You.
+It's a resource leakage happen.
+It didn't add.
+Add it to the pool back.
+Right.
+You require more memory because of managing the pool.
+So now this DB connection pool manager class will also take some memory also.
+Right.
+So that is your needed some extra memory right.
+So that is also one disadvantage.
+Pool management required thread safety which is additional overhead.
+I already told you it it needed singleton plus thread safety.
+So that puts an additional overhead.
+You have to make sure that your the get the get resource and release resource should be thread safe
+adds application complexity because of managing the pool.
+So this adds certain complexity.
+Also if in a big application.
+Definitely the logic inside this also would be pretty complicated also.
+So it brings application complexity.
+So this is something I wanted to cover.
+Object pool design pattern I hope that clarifies it.
+It's a very, very simple design pattern.
+But don't use it without thread safety and singleton without that it is totally incomplete.
+Okay, I hope this will help you in your interview and if you have any doubts, please feel free to
+comment me in the comment section.
+We can discuss further.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

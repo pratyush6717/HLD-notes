@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>26. LLD of Inventory Management System</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="#" class="btn">View Notes</a>
+    <h1>26. LLD of Inventory Management System</h1>
+    <pre>
+Hey guys.
+Welcome to Concept and Coding.
+This is Shreyansh.
+And today in the low level design we are going to do a new question which is design order management
+system.
+And very much related is inventory management system like Zepto.
+So in this roadmap I am making this question as now tick mark.
+So here this is the one today we are going to cover this okay.
+And also team ah I have also uploaded the full code in this GitLab and the description section.
+You can check out this.
+And whatever the UML we will come up with I will put this screenshot over here also.
+Okay okay let's start with this.
+And you already know what are the steps by now.
+So our first step would be to understand the flow.
+Okay.
+So now let's understand the flow.
+So if you have uh you might have used any app where you can order order any product.
+Right.
+E-commerce and all anything.
+So user comes to the system.
+Let's say this is your system.
+User comes to the system or app.
+What it will do is it will first view products.
+It will first check view product.
+What are the products available.
+Or through category it can select the particular product.
+Second it can add product to cart okay.
+Third what it can do is it can place order.
+And fourth is once the order is placed invoice will be generated.
+At this much tax.
+This is the final amount you have to pay and order address like destination address where it has to
+be delivered everything and the final is payment or also known as checkout.
+Finally.
+Okay.
+So this is a very high level step where we can go and order.
+And you can say that very much happy flow.
+This is the very much happy flow.
+User comes.
+View the product.
+Add the product to the cart.
+Place an order.
+Put its address and all.
+Check the amount.
+What is the invoice?
+And make a payment ultimately, right.
+But now as an order management system, you will see that an order will be generated.
+So how to manage those as an inventory management system you have a product.
+So it's a kind of an inventory how you will manage those inventory.
+So that's why I told this question.
+Both the questions are very much interrelated to each other.
+And that's where I will cover the complete flow.
+And you will get the total.
+What how we will handle this okay.
+Now let's start with our objects finding.
+So one is object is user for sure.
+So we have user.
+Another is view product.
+So I think it will have a product right.
+Then we have add product to the cart.
+We will add product to the cart.
+Then we will place an order.
+So we have an order.
+And once the order is generated, like invoice will be created, then the payment and the checkout like
+so the payment would be there.
+Okay.
+Another thing which you have to think is so currently we have only covered one product, but there can
+be many product which is nothing but an inventory.
+Right.
+And you might have also known one thing is each there are multiple warehouses like let's say uh, system
+like Zepto where you can, uh, open an app or order a product.
+So they have multiple warehouses in different, different location.
+Warehouse one, location one.
+Warehouse two.
+Location two.
+Right.
+Different warehouses, different location.
+When a user comes and choose a product, it will be ordered from one warehouse at a particular location.
+If user has chosen three products product one, product two.
+Product three, it will not be like product one will be delivered by warehouse one product two will
+be delivered by warehouse two.
+Product three will be by warehouse three.
+It's not possible.
+So all the products should be from one warehouse.
+So whenever the view product has been done, it should be from one particular warehouse.
+Right.
+So we will have one warehouse also.
+Okay.
+So now with this let's start and we will add more object if we have missed anything.
+Okay.
+So let's start it.
+So first is foremost basic is product.
+So what we have is so each item we have to add in a system.
+And they have an ID.
+And let's say we have given it a name product name.
+You can have add also other information like expiry description and all.
+But one thing you have noticed that I haven't put the amount here price.
+I'll tell you why.
+So once the product I have created, I have created one more.
+Product category.
+This is very, very important.
+Why?
+It is very, very important for.
+First let's see the it's what all information it will have.
+It is.
+Category ID right.
+Uh, let's say certain category name.
+String.
+Category name.
+It will have list of products.
+So it has list of products.
+And it will have a price double price.
+So what I am saying is in this one particular category there would be a multiple items which belongs
+to this category.
+And all have the same price.
+So whenever you go to a system right you see a particular kind of product, right?
+Only one product and you will do plus Plus two.
+Plus three.
+How much items you wanted, right?
+But you never see.
+Like if you have 1000 such products, 1000 such products, you will not see thousands.
+Same product listed here and you are picking the product.
+I want this product, this product, this product.
+No, you would only see only one product.
+This is my product.
+Tell me how much you want it.
+Count six, count seven, count eight, count or two.
+So it's just a count okay.
+So that's why category is helpful in that kind of if any follow up question comes that for a particular
+category based upon size, based upon brand, based upon categories, different, uh, let's say in
+the drink category itself, you can a cold drink, soft drink, uh, hot drink, uh, fruity and all
+kind of different categories you have.
+Right.
+So each category, you can have a list of products and each product will have a same price.
+right?
+So that is the advantage we will get based upon category.
+Okay.
+So now we have a category.
+And the each category has one price.
+Because as when you shop you know that if you just select count for this product I select three counts.
+You know that the price would be same for all the thing.
+Now one more thing is over.
+Comes is inventory.
+Inventory has so many list of this product categories.
+They can have so many categories right.
+They can have grocery category like say uh healthcare categories in that so many products and all.
+So they can have a multiple category.
+And inventory has a list of categories.
+There would be so many categories out of there.
+Right.
+So we can have method here like all Crud operation like uh you can say that add category.
+Add product category.
+Remove product category like this kind of method we can have here.
+Similarly, in product category we can have method like add product to a particular category, remove
+product to a particular category.
+And similarly we have get also.
+Okay.
+So we have one product.
+But there can be more than one product and which we have categorized it in the product category.
+Inventory has list of such product category.
+And who manages this inventory.
+Warehouse.
+Warehouse manages inventory.
+Each warehouse has one inventory.
+So they have.
+They warehouse has inventory.
+Right.
+And also this warehouse also has certain address like this address where it is.
+So it can have method like.
+Add item to inventory.
+Remove item from inventory.
+Kind of this method we have.
+And similarly for address we can maintain one class.
+Which we will have information like uh pin code city state.
+Pin code.
+City.
+State okay.
+So warehouse has address details.
+So now till now, what we have is we have a warehouse.
+Warehouse has an inventory each.
+And so in the inventory there could be a different different categories of products.
+And each category of products has a list of products.
+And uh we can the count either you can create one variable uh int count or I am taking care it by the
+size list size type.
+If the size is zero means there is no item into this category.
+If there is a size, uh, based upon the list size, you can also maintain that.
+So that's why I'm not maintaining any another count variable for it.
+Now, in a system, there can be multiple warehouses, right?
+One with one warehouse, you cannot support everything.
+So you can have a multiple warehouses.
+So that's why we are I created a one warehouse.
+Controller.
+So warehouse controller has.
+A list of.
+Warehouse.
+Warehouse list.
+Right.
+So what?
+All method it can have.
+Add warehouse.
+Remove warehouse.
+One more important thing.
+Warehouse.
+Controller.
+I have kept it.
+I have told you when a user comes.
+All the user product requirements would be satisfied by one of the warehouse.
+It cannot be satisfied by multiple warehouses.
+Right.
+So which out of.
+Let's say I have.
+This system has 100 warehouses in different cities.
+Location.
+Which warehouse need to be used for this particular user?
+So that's why I created one kind of you can say a strategy.
+Which I give it a name.
+Warehouse.
+Selection strategy.
+It has a method called select warehouse.
+Select warehouse.
+And it will return the warehouse which has to be select out of multiple warehouses.
+There can be different.
+Uh, so it is so there could be a different ways algorithm like nearest nearest warehouse selection
+strategy.
+Another could be like, I'm just thinking out loud.
+It could be, let's say, cheapest.
+Warehouse selection strategy depending upon different strategies based upon a user preference.
+Uh, one of the warehouse can be selected and assigned to this user.
+Right.
+So that's why I have created warehouse selection strategy.
+So this has.
+Right.
+And I have can have one more method like select.
+Warehouse okay.
+So which warehouse to use.
+That would be depending upon different algorithms.
+So which algorithm we can have it over here.
+Right.
+And uh which nearest or cheapest which one to use.
+Maybe user preference will might define us.
+Right.
+It can be dynamically.
+right.
+So now you see that we have created our product kind of like an inventory.
+We have like product product category inventory has product category warehouse manage inventory.
+We have many are warehouses.
+So warehouse controller manage those warehouses.
+Right.
+And which warehouse to select.
+We have particular algorithms for it.
+Now let's move into more uh deep.
+Like what.
+Also till now what we have constructed, we have constructed uh product inventory warehouse.
+Now let's create a user.
+So let's say in mid I am creating my system or let's say my app.
+Okay.
+So now I am creating a user here.
+So when a user is first onboarded what it will have is user ID uh string name, user name Okay, so
+there are two things I have added into user mode.
+One is cart.
+Why I have added cart into the user.
+So see I.
+In my opinion the cart is very much related to one user.
+One user can have only one cart.
+If you go to any online purchasing app, you can have only one card.
+You can add it.
+You can remove the item from the cart, but you cannot have two cards for one user, right?
+So each user has one card.
+So cart is very much associated with a user.
+Whenever user enter we assign one card to it.
+Right.
+So that's why I have put a card to this user.
+An order will come to that later.
+So okay so we will define a cart here.
+Okay.
+So what does cart has.
+So now I can add item to a cart.
+So I have put.
+Integer.
+Comma.
+Integer.
+I am creating a map and this map is category id.
+Versus count.
+Category id versus count.
+So what happened is when a user comes to an app, you saw one product.
+You saw one product, let's say a particular brand coding particular brand XYZ cold ring.
+Right.
+You just said like I want three, right?
+So now here what I have done is so this is one category.
+This is one category.
+For this category you need three items.
+You haven't selected products because we haven't showed you like I in my inventory I have 1000 such
+product.
+I haven't chose 1000.
+And which product.
+Now you want it.
+I have shown you a category out of this category you just selected.
+I want three items of this category.
+So that's why in a cart I have this category versus how much you want it.
+So this category ID, this is what it is.
+So for this category how much product he wanted user wanted okay.
+So this is there in the cart.
+And what else you can do.
+Add item to the cart.
+Remove item from the cart.
+What else you can do.
+You can view the cart and you can empty it.
+You can empty the cart.
+Once the order is placed properly, the cart will become empty.
+So user has cart.
+And in a system there can be many users.
+So that's why I have created one user.
+Controller which has list of user users.
+So it has.
+It will add.
+It will take care of add user.
+Remove user.
+Kind of this thing.
+Okay so from the app till now what we have is app has.
+App will have a user controller.
+It will have user.
+Controller you see.
+It will also have warehouse controller.
+Warehouse controller WC.
+So it app has warehouse controller.
+It has okay.
+So from the app from the.
+With the help of warehouse controller, I can control all the inventory.
+Because warehouse controller I can select a particular warehouse.
+From warehouse I can add inventories from inventories.
+I can take care of product.
+So I got a full control with this warehouse controller.
+From the user controller, I got a full controller of the user and the card.
+I can get whichever user I wanted from the user what its card information and all.
+Okay, now.
+Till now, all looks good.
+Now what?
+Things left.
+Now let's see.
+Now the major part is left.
+Now user is constructed.
+Uh, card is constructed.
+Now lets you see that we have what left is order invoice and payment.
+So it's like an order order part.
+And now one more thing is whenever we are talking about order management system means this is something
+which is independent, right?
+It has all the information.
+So now let's say I am creating one order.
+I am creating an.
+Order.
+What does order has.
+So first it has user information.
+This order belongs to which user?
+Let's say I have an address.
+Uh, delivery address.
+This order has to be delivered.
+Where?
+Right.
+Also, it has, like the map, the same integer.
+Comma.
+Integer.
+The same map.
+So whatever information is there in the card, the same information.
+Ultimately the all the product will move from card to order actually.
+So it has category ID versus count.
+This product this order will be fulfilled by which warehouse.
+So it should have warehouse information.
+Warehouse information.
+Which warehouse fulfilled this order right.
+And once this order is generated, this order should also have an any invoice associated with it.
+Invoice and also the payment does order.
+Payment is done or not.
+So it has payment also.
+And also one more thing is order status.
+This might be an enum.
+So now let's see go one by one.
+So order has user.
+This order belongs to which user.
+So it has this information because we are talking about order management system now.
+Right.
+So this order related information has complete information.
+That's why I haven't kept user has list of order.
+No.
+So order has all the information that it belongs to a which user.
+So here you can keep it like list of order IDs.
+So it also have ID order ID so user can maintain just order IDs right order IDs.
+But it doesn't have order itself.
+Right.
+Write.
+With the help of this order IDs, user can take out what all orders I have created in the past or open
+orders also.
+So user has list of order IDs, but order has user order has know about the address delivery address
+it has.
+What are the category, how much count I have to deliver from which warehouse I have to deliver this.
+So it has a warehouse information also.
+So let's say this information.
+So order has warehouse warehouse era.
+So order has.
+So order has warehouse order.
+Also know about invoice right.
+So whenever you create an order and invoice will be created like whatever the product category you have
+what are the count Account and invoice will be generated that this is the total price for this.
+This is the tax amount and all this information.
+So you have total price kind of thing.
+Just understand the total price uh total tax tax amount.
+So all this information you have inside this uh this one similarly order also have payment information
+that uh, payment is uh what is the payment mode.
+So what is the payment mode and all.
+So this is as payment and you can have here like mode.
+What is the payment mode and all these things.
+Okay.
+So let me now show you uh, so this is the high level of this thing.
+Let me have one thing.
+So where is our order?
+Yeah.
+So now here, if you see that we will go into more of invoice and payment.
+Uh, let's first complete the order.
+So now order has user address.
+But in a system there can be many orders.
+Right.
+So we need one order.
+Controller.
+Order controller has list of order.
+It has list of order.
+Okay.
+So uh, and it has certain uh getters method like get order by ID, get order by user.
+Right.
+So these are the information it can and app has order controller also.
+OC order controller.
+Okay.
+So payment you can have payment mode.
+So you can have a payment mode like uh uh UPI credit card cash on payment like this different payment
+mode it has.
+So payment can have Different payment mode.
+Different payment mode.
+Either a payment could be UPI or CC, and all right.
+And order status could be in your enum order status would be your enum like pending, delivered or undelivered.
+Something like this.
+Okay, so now let's see the code of this and you will get and we will run one flow and you will get
+the complete picture of this UML okay.
+So this is the complete picture.
+Let me now show you the flow.
+So first thing product.
+So this is the product which we created right.
+This is the product.
+Let me zoom it.
+Okay.
+So first product I have created product ID and product name.
+Very basic.
+Now.
+The second was we created a product category.
+So here I have a product category I have a category ID, I have created a category ID, category name
+and list of products, list of products and the price okay.
+So all these products will have same price right.
+So these are the same.
+And what are the methods I have.
+Add product remove remove product.
+Right now after this I have inventory.
+Where is inventory inventory.
+Yeah.
+So what does inventory has.
+Inventory has list of products.
+There can be so many products category into my inventory.
+So it is like a list of product category.
+So inventory has product category.
+Now next is warehouse.
+Warehouse has inventory.
+So warehouse has inventory.
+Warehouse has address remove item from inventory.
+Add item to inventory.
+I have exposed it here.
+So warehouse has inventory okay.
+And warehouse has address, location, city, state and all.
+Now we can have many.
+So what next.
+So we have warehouse controller.
+So warehouse controller has list of warehouses.
+There can be many warehouses.
+So warehouse controller has list of warehouses and warehouse selection strategy.
+So I have put one selection strategy where method is select warehouse.
+What all strategy I have currently I have kept only one nearest warehouse selection strategy.
+So certain algorithm which will uh give me the nearest warehouse.
+For now I am directly picking whatever in the front of the list.
+Right.
+So during the warehouse I will get what are the strategy I need to use.
+And based upon that strategy I will click select the warehouse.
+So it would be dynamic.
+Okay.
+So this is done.
+Now let's come to user.
+Let me show you user.
+So I have a user.
+So basic user ID user name.
+Address.
+User has card.
+I told you that user has card right.
+And I am having a list of order IDs.
+So it has order IDs.
+So based upon order order IDs it can order call the order controller if required and get the details
+so we can if wanted we can keep order controller also in the user if required based upon the use case
+okay.
+So there are there can be many users.
+So I have kept one user controller.
+Where is user controller here.
+So here I have created this user controller.
+User controller has list of users.
+You can add user.
+You can remove user.
+You can get a particular user based upon user ID okay now we can see a cart.
+So cart has integer, comma, integer, which is nothing but a category versus count which category,
+how much product you wanted.
+Okay, then you can add item in cart.
+Remove item from cart.
+Empty the cart.
+Get the cart item.
+We view cart.
+Okay, now let's see.
+Order related part.
+We can have one order.
+Let's say what one order.
+Have order has user order has user order.
+Like what is the delivery address?
+What all the product category and the count map.
+Okay.
+From which warehouse?
+We have to fulfill this order its invoice, its payment and order status.
+So let's see first invoice.
+Invoice I have kept very basic.
+What is the total item price.
+Total tax.
+What is the total final price?
+Simple.
+For now I have kept it very static.
+Whatever the product you will choose.
+I kept certain static data, but we can have this on based upon the order you have this information
+right?
+Product category.
+So from product category and how much count you can get the price and compute all those things then
+for this order payment.
+So I have a payment also.
+First of all what is the payment mode.
+So payment mode I have kept only I think two here card payment mode UPI payment mode.
+So it's like make payment.
+So when you click on you make payment.
+So UPI payment mode will followed.
+If you see card payment it will go through card make card payment.
+Right.
+So currently I have uh the make payment I have make true here.
+Both.
+Right.
+So both are true for now.
+So inside the payment payment mode make payment of let's say UPI I have for now I am returning true
+that payment is successful.
+So this payment also is in the order and also order status.
+Order status could be delivered, cancelled, returned undelivered and there can be many orders.
+So that's why I have order controller here also.
+So I have order controller which maintain a list of order.
+I have just this is not required.
+I just added like if you give me a user ID and find out all the orders, I.
+You can create multiple data structures which will help you to do a faster query just otherwise not
+required.
+Okay, it just list of order.
+And now finally our product delivery system app which has user controller.
+So it will have user controller.
+It will get the full control over the user and card.
+It will have warehouse controller.
+With this it will get full control over the how to manage warehouse inventory and particular product,
+and it has order controller through which it will control the particular order, invoice, payment and
+any update it required.
+So this, uh, product delivery, uh, controller has exposed certain interfaces like get warehouse,
+get inventory, add product to the cart.
+But I'll tell you now with a flow.
+So the complete UML I have shown you the code also you can take it.
+But now let's see one complete flow of this one okay.
+So this is the complete flow I am now showing you.
+So first I have done one, uh, kind of uh, fill up the system like I have added a warehouse, add
+warehouse and its inventory.
+So what I have done is I have created one warehouse and I have created two categories of the in the
+inventory.
+One category is like this large cold ring of this brand.
+Another is soap category of this brand.
+The price is 100 and I have added, uh, two products into this first category and I have created one
+soap and put it into this category.
+Okay, so this is the product, my one normal product.
+I have a product ID and the name, and I have put into one of the categories that this belongs to this
+category.
+Right.
+And so I have created my inventory and I have assigned this inventory to one warehouse.
+So I have created one warehouse list.
+Similarly I created a user I created one simple user right username and all.
+So simple I have created one user.
+Now I have assigned this to all my system that this is the warehouse.
+This are the user in the system.
+Now let's run one delivery flow.
+Now let's say user comes to the flow.
+What it will do get the user object let's say from the user ID at takeout the user.
+So our app our this app has user controller right.
+So from user controller it will take out from the user ID it will get the user.
+So I'll get a user.
+Now what this user will do internally we have to assign one warehouse to it so that from the warehouse
+it can select a particular warehouse.
+So from product delivery system I call one more method called Get Warehouse.
+Now it has warehouse controller right.
+So and I have assigned the strategy hey choose nearest warehouse selection strategy.
+It might be depending upon user preference and all.
+But for now I have select that that uh based upon this algorithm select one warehouse and assign to
+this user.
+So it calls the warehouse controller will call the select warehouse and it calls the nearest algorithm
+where nearest selection strategy and get one warehouse.
+Once the warehouse it get it, get all the inventory to show to the user.
+Because this whatever the inventory is present into this warehouse, we will show this.
+So when I call this, uh, get inventory method into this from this warehouse, it calls that warehouse
+dot inventory.
+So this warehouse has all the inventory which is present.
+It will show this because warehouse has inventory, right?
+Warehouse has inventory.
+Okay.
+Now inventory we are displaying to the user.
+Now what it will do is user added the product to the cart.
+So let's say user added one of the category to the product that for this category, this category chosen
+at two count I want two items.
+So what has done is add product into the cart.
+So here what we have is we have user controller.
+So user controller has user user has cart.
+So from the particular user I get the user card.
+And from the cart I add the item into the cart.
+So here if you see that all the specific items adding or removing?
+Is there inside a particular class only?
+So I'm adding an item into the cart, removing the item from the cart in that specific.
+So my main class is more like a orchestrator.
+So it just orchestrating add product to the cart.
+So I got a user.
+So I had a user from the user, I got a cart and call add item this category id product.
+And how much count this two count I wanted to add.
+So it will add into the map this product category id add two count.
+Now the.
+Let's say I have added the product to the cart.
+What I have to do next place order when you click on the place order right.
+So this was the main method right?
+Yeah.
+So add product to the cart.
+Now place order.
+So when I'm placing the order I call this orchestrator place order.
+So from the order controller it will call place order.
+So place order is exposed by this order method.
+Place order.
+So from this order controller, I want to create a new order.
+Like what?
+All the items are present into the cart.
+So from this user I passed into the parameter this user.
+From this user I take out the whatever the cart information and from that cart information I fill the
+information about this order.
+Okay, so I have created a new order here and based on that, I am adding the details into this.
+Uh, all the complete information I am putting.
+I'm creating a new order.
+So here.
+So I'm creating a new order in the object.
+Which order?
+How much is the that from the user cart.
+So see in the order, whatever the product goes, whatever present into the cart.
+So from the user cart I get out all the cart items and put it into its map warehouse.
+I have selected.
+I am the parameter.
+I am passing warehouse and all.
+And then I generated an invoice also for this one.
+So whenever you create an order invoice will.
+I am automatically generated inside.
+Also that invoice will be generated that for this product this much you have to pay.
+And this uh so once it is done then the user can decide okay, I have to checkout or not.
+So once it is do a checkout from the main model.
+Now the fifth step is checkout.
+So from the checkout again in the order method itself I have declared one checkout method.
+So see.
+Now this is thing happened in the checkout.
+So when you are doing a checkout first thing is you have to update the inventory.
+Because this much item we have to reduce.
+Right.
+So I am calling remove item from inventory when you are calling the remove item from inventory.
+So from inventory we are you are passing the map order map like what all the count and category.
+So ultimately the inventory it will call that okay.
+Remove this item from this category.
+So it will pick out a particular category and call remove method.
+And if uh remove those method you can check the logic.
+But what I just wanted to explain, once we do a checkout first we have to update the inventory.
+Then we go for a payment.
+Then we call make payment and the payment method.
+I have chosen the UPI payment mode.
+So it's payment mode will be chosen.
+It will try to call payment and UPI mode will be selected.
+Right.
+So this UPI payment mode will be selected and it will return true okay.
+So like payment is done now once the payment is done, if payment is success we have to empty the cart.
+Empty the cart.
+If payment is filled we have to add item back to the inventory.
+Add item back to the inventory.
+So here I am calling again the warehouse and add item to the inventory.
+Whatever we have reduced, we have to go back.
+There can be many use cases like if payment timeout also.
+Then we have to add item to the inventory.
+And all right so this is the complete flow I have shown you that when what happened when a particular
+product has been selected and order.
+So this is the UML diagram.
+Go through it one more time.
+You will get it easily right.
+Product.
+Product category.
+Inventory.
+Warehouse.
+How they are interrelated to each other and how order management.
+Also you can do order controller order product so they are all interrelated to each other.
+I hope you understood this.
+Check out the code once go through video one more time you will easily get it.
+It's very simple question and the code I have also published into the GitLab.
+You can check out from there and this UML I will upload there.
+Okay guys, any question, any doubt let me know in the comment section.
+I'll reach out to you guys.
+Thank you.
+Bye bye.
+    </pre>
+</body>
+</html>

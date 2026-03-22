@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.SOLID principals</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="solid_principles_notes.html" class="btn">View Notes</a>
+    <h1>2.SOLID principals</h1>
+    <pre>
+Another side.
+Welcome back to the channel.
+And today in LD we will see solid principles.
+So before I start with this topic I will tell you why it is required.
+So see we we know that there are so many design patterns we have and each pattern follow this principle.
+And if you remember, I also told you that the usage of this pattern is not mandatory.
+Let's say in interview you got certain question, okay that hey design parking lot or design XYZ any
+system.
+So it is not mandatory that you should use certain pattern.
+You can come up with the classes, objects, their relationship by your own.
+Okay, that's totally fine.
+But whatever the solution, whatever the classes and relationship which you are coming up.
+Okay.
+That should follow these principles.
+So that's what I am trying to say, that these principles are the guideline.
+You can say that these are the fundamentals.
+No matter if you are using a pattern, that pattern, we know that it's a already tested it's a flexible
+solution to a already.
+You can say that some problem which already exists.
+So we don't have to reinvent the wheel in identifying the same or solving the same problem.
+Again, we can directly use the pattern, but we know that those patterns which are present, they are
+already following those principles.
+And these principles are the one that actually make this design clean, flexible, okay and easy to
+maintain.
+So again, usage of pattern is not mandatory.
+You can come up with your completely new design of your classes and objects.
+But these design whichever you are coming up with should follow this principle.
+Now let's see what are these principle?
+So we have solid which stands for S single responsibility O open closed principle L Liskov substitution
+principle I interface segregation principle.
+Dependency inversion principle okay.
+And this advantage which gives us is that help us to write better code.
+Avoid duplicate code.
+Easy to maintain.
+Easy to understand flexible reduce complexity.
+So if you follow this principle these all advantages we can get.
+Now let's see each principle one by one.
+What is single responsibility principle.
+It states that a class should have only one reason to change, meaning it should have only one responsibility,
+one job.
+And I will also tell you there is one confusion which engineers get that, uh, I will tell you after
+this.
+After once I told you the solution and the solution, then I will tell you that what generally question
+engineers ask.
+Okay, so with single responsibility, we get to know that what definition says that a class should
+have only one responsibility?
+Okay.
+So understand with this example which violates the single responsibility.
+So this is one object as an object marker which we are using it okay.
+And now we sorry.
+So I have an invoice class.
+This invoice class is responsible for doing certain computation okay.
+So this is let's say a business logic to compute the total price.
+It is also responsible for saving the data to DB.
+And also it is responsible for printing the invoice.
+So this class is responsible for so many things.
+Now the problem with the above code is that In future, let's say you have to change the logic of insertion
+into the DB.
+So let's say save to db.
+This is SQL.
+Now in future you want to change it to NoSQL.
+You have to change the code.
+Then let's say today you are printing the invoice.
+Now you have to future you have to change the logic.
+Then you again have to change this class.
+So for each, when there are more responsibilities, then it is possible that this already class which
+is tested and in production and with every change it has to be tested again.
+So there is a higher chance of human error.
+Okay.
+So this violates SRP because if the tax calculation rule change in future we need to modify the invoice
+class.
+If database structure change again we have to modify this class.
+So if there are so many requirements we are putting, then there is a high chance that this class will
+get modified too frequently.
+So here, if you are following the single responsibility, let's see how it can be.
+You can improve.
+This code can be improved.
+Again, this is an object.
+Same thing.
+Nothing new in that one.
+So this I have one class for invoice.
+Now this class is only responsible for my business computation.
+Let's say computing the total price.
+That's it.
+Now I created a separate class invoice.
+Now this class is totally responsible for saving the data to DB.
+And yes, I am accepting the invoice whatever the invoice I have.
+Okay.
+So let's say this class, whatever the data I have that I will use it to save to DB.
+So this is just uh, you can say that internal logic.
+What, what I want you to tell I have a separate class which is now responsible for managing the database
+operation only.
+Similarly, I have invoice printer class.
+Its responsibility is just printing the invoice.
+Okay, so now in future if you want to like change the how we how you are storing the data into the
+DB only this class will get changed.
+This class and this class will be untouched.
+Okay.
+Similarly, in future if printer logic is changed, only this class get impacted.
+This and this again its untouched and you don't need to test it again.
+Okay, so now I will tell you what.
+One question generally comes from an engineer that hey, does it mean that one class can only have one
+method?
+No.
+What I mean to say here is that one class should have only one responsibilities.
+You can say that the logical grouping.
+Ping.
+If we are going to keep only one method in one class, we are going to have like class explosion.
+We have to create so many classes.
+It just like logical grouping we are doing so all methods which are related to computation we can put
+into this class.
+There could be 1020 methods which is related to DB.
+We can put it here okay.
+Similarly for printer, if there are more so we can group logically okay.
+So it's never like one method one class.
+We can have multiple method in one class.
+But those should be logical grouped okay.
+So the benefit you will see that yes single responsibility.
+If there is a change in invoice text calculation only specific class will change similarly for DB.
+Similarly for printer.
+So you can maintain your code better, improve testability and enhance the reusability.
+Say, for example, if anybody used this printer class or logic, they can use it.
+So you can reuse it also because it's in a separate class.
+The second is open closed principle.
+So open closed principle says that a class should be open for extension but closed for modification.
+What does it mean?
+It means that new functionality can be added through inheritance rather than modifying existing code.
+The problem with that is that existing code is already tested and deployed in production.
+Adding modification would introduce additional risk and required additional testing effort.
+So understand with this example.
+So yes we have created invoice Dao right.
+So it is responsible for saving into the DB Okay, it's already tested and it's already live.
+Now let's say that in future I have added one more that save to file.
+Earlier it was saved to DB.
+I have added save to file in future.
+Let's say this one is SQL.
+I have added another class save to NoSQL.
+So another thing comes is that.
+You have to keep modify the class which is already tested.
+Okay.
+And why you have to modify because you are adding a new feature.
+So save to DB it was there.
+Then save to file.
+It's a new feature.
+Then you are modifying the existing class then save to NoSQL DB.
+This is again a new feature, but again you are modifying the existing class.
+So this violating this principle what it says that open for extension but closed for modification.
+So we achieve this with inheritance.
+So we can create invoice Dao interface and we can have multiple child.
+Okay.
+One is DB invoice Dao one is for DB specific logic.
+Another is file specific feature.
+Another is let's say in memory.
+Or then you have future let's say NoSQL depend.
+So whenever new feature is there you can extend it.
+Okay.
+So it's like open for extension okay.
+It is open.
+But let's say in future you are adding NoSQL DB support.
+So you will add a new child class.
+You don't need to modify the existing one which are already tested and in life.
+So that's what we did.
+So invoice Dao now is an interface.
+So database invoice Dao implements this interface and it override this save method and provide its implementation.
+Similarly for file invoice.
+Now it does the same thing.
+Okay.
+So it implements the invoice and provide an implementation for it.
+Safe.
+How it wanted to save the data.
+Okay.
+So you can easily see that now it reduced the risk.
+Reduce the risk of like if you are already changing into already tested code, definitely the risk get
+increased okay of an error, but now it reduced the risk of an error.
+You can better maintain it because now each responsibility is in two different different classes.
+Okay.
+Yeah.
+Flexibility.
+Easy to add new behavior without touching the existing code okay.
+So yeah OCP very important principle.
+Another is Liskov Liskov substitution principle.
+It states that object of superclass should be replaceable with object of subclass without breaking the
+application.
+Okay.
+And also so consider with this scenario.
+So this is class A.
+This is class B it is child of it okay.
+And another is that you have an interface not a child.
+So this is interface.
+And this interface has two child class A class B okay.
+So this is an interface.
+And this interface has two child.
+So this Liskov substitution principle says that let's say today in this scenario if you have in your
+code you have let's say class A object okay.
+So today let's say you have certain the code if you replace this with the class B.
+So what it says that the object of superclass should be replaced with the object of subclass without
+breaking.
+The application means if class B is a subtype of class A, if class B is a subtype of class A, then
+we should be able to replace object of A with B without breaking the behavior of the program.
+Okay, if I change it okay.
+If I start accepting this in class B, its object, then again it should not break the behavior.
+And in this case of the interface where you have multiple child then it should be replaceable.
+So today you are accepting certain data into the class A, and if you change it to class B again it
+should behave properly.
+It should not break the functionality.
+So in simple term, if I have to say we should only extend the capability of a parent class, we should
+never narrow it down.
+Understand with this example.
+Now it would more clarify you.
+Let's say I have an interface bike, so I am using this scenario.
+I have an interface bike and it has multiple abstract method.
+Let's say turn on the engine, turn off engine, accelerate, apply brake and it has two child, one
+is motorcycle which is a bike, and the bicycle again it's a bike.
+So it is implementing this method.
+Turn on the engine.
+It's making the engine on.
+Turn off the engine.
+It is making the engine off.
+Accelerate.
+Speed is increased.
+Apply.
+Brake speed is decreased.
+Now in the bicycle.
+If you notice that turn on the engine, it is throwing an exception.
+Turn off the engine.
+It is throwing an exception because the bicycle do not have engine accelerate.
+Yes, we are increasing the speed of cycle brake.
+We are decreasing the speed of cycle.
+But here, if you see that we are breaking the Liskov substitution principle.
+How?
+Now see this code?
+I have an object.
+Okay.
+Let's say bike object.
+So I have a new motorcycle.
+It's objects.
+Motorcycle object okay so this is bike.
+So everything is working fine.
+Turn on engine, turn off.
+Engine.
+Accelerate.
+Apply.
+Brake.
+Everything is working fine.
+Now I'm replacing this object with bicycle.
+So what?
+LSP principle says that in this scenario.
+Okay, in the interface one, the object, the all the object at same level.
+Generally all the child of this interface, the object should be replaceable without breaking the code.
+So now here, if in this one bike object.
+Now I replace with from motorcycle to bicycle.
+Now if you see that accelerate will work apply brake will work but turn on engine.
+It will throw an exception.
+This is now not working as expected.
+Okay, so the behavior of the code change.
+Because my code expectation is that turn on the engine means it will turn on the engine.
+But here now it is throwing exception.
+Means this is not accepted.
+So means your code is not working properly now.
+So means you can't replace the motorcycle with the bicycle.
+Okay.
+So you got this one.
+Like how the LSP principle is violation here.
+So problem with the above code is that not all bike have engine.
+So let's say if you have an e-bike it doesn't have an engine bicycle.
+It doesn't have an engine.
+So but the base class forces turn on engine method.
+So bicycle throws an exception violating the expected contract.
+Client code cannot safely treat all by subclass uniformly.
+Okay, so our client code cannot treat motorcycle.
+Bicycle like, hey, they will behave in a uniform manner.
+No.
+So that's where LSP principal comes in.
+And it says that.
+See this one?
+Now, here I have divided the interface in a way that all the child classes is only implementing, like
+their feature, like they are.
+You can say that it's not narrowing down what is expected.
+Let's say engine.
+Engine is saying that turn on engine, turn off engine.
+Then you have another bike abstract class.
+Or you can say the interface it has accelerate and apply brake.
+Now motorcycle extends bike and also implements engine because motorcycle can have engine turn on engine
+functionality, turn off engine functionality.
+It also can accelerate and also apply brake.
+So that's why it implemented all four properly.
+But now in the case of bicycle it only extend bike, it only extend bike and it only have this accelerate
+and apply brake.
+Okay.
+So now we have a proper you can say that a design where we are not limiting or we are not breaking the
+contract.
+So now in your client code, if you see I have a motorcycle, I have a bicycle.
+Now the motorcycle can do all this functionality which is required.
+Similarly bicycle can do all the functionality.
+It is required.
+Okay.
+So your code will not break now.
+So that is clear.
+Like how to follow the LSP principle.
+Very simple that always follow the contract.
+Okay, so if an interface or abstract class whatever is has like okay, these are the certain functionality
+which objects should have, then all the child classes generally should have that feature.
+It's not like okay nine has and one doesn't have those features.
+So means our client code now need to have a proper understanding that okay, there might be certain
+cases where these feature will not work.
+So it's not uniform now.
+So LSP says that have a proper interface okay.
+So that your child classes only do what is actually they are meant to do.
+Okay.
+So unnecessary functionality we should not have which they do not even support.
+Okay.
+The third is that interface segregation principle.
+So we have already seen solid, uh, single responsibility.
+Open, closed.
+Liskov.
+So this was the fourth one.
+Interface segregation principle.
+It states that interface should be such that clients should not implement unnecessary functions that
+they do not need.
+Again.
+So here if you see that I have interface restaurant and I have so many methods now I created one class
+waiter.
+Now in this it's a child of this restaurant employee is the relationship.
+So waiter is an restaurant employee.
+Now here if you see that take order.
+Yes it is doing.
+It is its job.
+It provided the proper implementation.
+Serve and drinks.
+Yes, it does that.
+Now here if you see clean the kitchen.
+No, it is throwing an exception.
+It is not its job.
+Prepare food.
+It is not its job to decide.
+Menu.
+It is not its job.
+so we are unnecessary forcing the child class right that are unnecessary.
+Forcing the child class to implement the method that they don't ever need.
+Okay, again, don't get confused that okay, we should never have a method which throws an exception.
+No, it doesn't like that.
+That's why I specifically mentioned you don't ever need.
+So waiter here say that it can never prepare the food or it's the waiter can never decide the menu.
+So these functionality can never be there in the waiter.
+Okay.
+So why unnecessary forcing this child class to implement this method.
+But let's say today certain feature is not there.
+Yes.
+Today you can throw an exception.
+It is possible that in future it the capability increase.
+Then you can have that.
+Okay.
+So it's again so see the design is like how we uh there is no one fixed solution.
+Okay.
+As, as we more discuss there could be multiple solution.
+So what I think that if you are following the ISP, we just need to make sure that the child class which
+certain functionality can never come, then those.
+Then these methods should be avoided.
+Then we should not force this class to provide an implementation for which this feature can never come.
+But if there is a class today, there is not a feature, but it is possible to add a future, uh, add
+a feature in the near future.
+Then it is possible that we might be throwing exception today, but tomorrow we will provide the functionality.
+Okay.
+So clear.
+So now here in this case, how we resolve this is that we created the proper interfaces, like with
+the specific task, let's say chef task.
+So it has its own task what all it has to do waiter task interface.
+It has a specific operation with which it has to do similarly maintenance task what all operation it
+is supposed to do now that we can create a specific child classes.
+Okay.
+And now it you can see that the chef child class of the chef task is now only implement this.
+Similarly waiter is implementing the waiter task and it is only responsible for this.
+So now we are resolving the problem where unnecessarily we are forcing the child class to implement
+the method which it doesn't ever need.
+Okay, now we have created a smaller, more segregated interfaces and the child class will only implement
+that so that they can only provide their implementation what they actually need.
+Cool.
+So what is the benefit which we are getting?
+We prevent the bloating of the classes by having each class implement interface that it uses.
+No force dependency on irrelevant functionality.
+Cleaner.
+More maintainable design code.
+Okay, so here don't get confused with the LSP principle and the ISP.
+Okay, so in the LSP principle, also if you notice that we have divided the interface right.
+But the intention is different.
+So LSP principle more focuses on that from the client side code.
+The functionality we should not decrease it.
+Okay.
+So let's say you have an interface and you have multiple child classes.
+It's more focus is on that.
+They provide some consistent behavior.
+Okay.
+This behavior should be present.
+Yeah behavior could be different but this should be present.
+So LSP principle is more on to that.
+And it is more focused on that.
+That okay.
+If any object don't have consistent behavior take it out and put it into different interface.
+Okay.
+And it's more focus on that.
+Your client code should not break when you switch between these objects okay.
+So object one.
+Object two.
+Object three.
+So even if you switch between this objects which are part of the same interface, your code should not
+break.
+Yeah.
+You may can get different behavior, but your code should not break because you are expecting these
+Functionalities that the contract and LSP is more focused on that.
+Okay.
+If something is not, uh, providing certain behavior, which is the contract here, then take it out,
+okay.
+And here in the interface, segregation is more on that.
+Like the child class, we should not force it that, hey, provide an implementation of it.
+And we know that it's going to never, never have this feature and it's still unnecessary.
+It just says that, okay, I don't support it.
+I don't support it, I don't support it.
+So why unnecessary.
+We are forcing the child class to provide an implementation which it doesn't require.
+So it more focuses on interface part.
+Create an interface small enough or you can say that uh more segregated way.
+Don't club so many operations in one have a proper segregated interface.
+Okay.
+Functionality.
+This functionality, all this, uh, functions related to this particular functionality, let's say
+chef related task.
+All the operations related to this I created on this interface, all the operation related to waiter,
+I put here in this interface likewise.
+So it more focusing on the interface.
+Create a cleaner interfaces.
+Don't blot it with so many operations okay I hope that is clear.
+And the last one is the dependency inversion principle.
+So dependency inversion principle states that high level component should not depend on low level component
+directly.
+Instead they should depend on abstraction considered with this example.
+So here let's say I have an interface keyboard and I have two child classes.
+Wired keyboard.
+Again wired keyboard is a keyboard, and Bluetooth keyboard is a keyboard.
+So these are two children.
+Now see this example which is violating the dependency inversion principle.
+So I have an object map book.
+Now here if you see I am depending.
+So MacBook has via keyboard.
+So now it is totally depend on low level module directly on this wired keyboard.
+So in future if you want to support Bluetooth keyboard would you be able to do it dynamically?
+No.
+You have to change this class.
+So that's what dependency inversion says that hey, you should rely on abstraction rather than low level
+components.
+And how you can do that.
+See that one now in the MacBook I depend on keyboard.
+Keyboard is an interface, so it can hold an object of wire keyboard.
+It can hold an object of Bluetooth keyboard.
+So when creating an object, we can decide what we want it.
+So now let's say that first time I am creating an object MacBook and I provided a keyboard.
+So now MacBook has wire keyboard.
+Now next time I'm creating a MacBook I provided the Bluetooth keyboard object.
+So see that is also supported.
+But previously when we have hard coded the wired keyboard, is it possible to supply the Bluetooth keyboard?
+No, you have already hard coded wire.
+There is no way you can dynamically change it.
+So that's why we have to rely on abstraction interfaces majorly.
+Okay, so I hope this solid principles are clear.
+Practice with your hand and if there is any question, let me know.
+We can discuss further.
+Okay guys.
+Thank you.
+Bye.
+
+
+=== HLD(High Level Design) ===
+    </pre>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>35. Template Method Design Pattern (Behavioral Design Pattern)</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="template_method_pattern_notes.html" class="btn">View Notes</a>
+    <h1>35. Template Method Design Pattern (Behavioral Design Pattern)</h1>
+    <pre>
+Hey guys.
+Welcome to Concept Encoding.
+And this is Shreyansh.
+And in the low level design today we are going to see template method pattern.
+So I'm taking it right.
+So only one pattern would be left after this which is interpreter pattern okay.
+So let's start with our latest topic which is template method design pattern.
+So here the category which this pattern belongs to is the behavioral.
+And you need to understand why it's required and when to use.
+And before I start I will tell you one point that we use this pattern a lot.
+And if you are working you might not know that you are using this pattern.
+But this is very frequently used pattern in the industry.
+Okay.
+So let's read this and then I will tell you that how do you identify that I have to use this pattern
+when you want all classes to follow the specific steps to process the task, but also you need to provide
+the flexibility that each class can have their own logic in that specific steps.
+What does that mean?
+Let's take an example.
+Understand with an example.
+Let's.
+Let me take an a payments uh example.
+So you know that there are two, uh, type of payments.
+One is you when you are making payments to your friend.
+Right.
+So let's say it is paid to friend flow.
+And there is another is when you purchase something online.
+Right.
+So when you purchase something online okay.
+So this is let's say pay to merchant flow.
+So let's say in the payment there are two flows when you pay to your friend.
+When you pay to a merchant.
+Now, no matter whether you are paying to your friend or whether you are paying to a merchant, you
+want all the flows to follow a particular steps.
+So Payment steps which you want to follow is that say validate, validate request after second they
+will debit the money.
+Third should be calculate.
+Let's say I'm just taking an example.
+Calculate fees for the platform.
+And the fourth is credit money.
+Okay.
+So validate if your request whatever it is request is correct or not.
+After yes everything is right then debit the money from this user.
+Charge certain fee.
+The platform should charge certain fee.
+That's how they will earn and then credit the money to the receiver.
+Either your friend or either to the merchant.
+So no matter whether you are paying to a friend or whether you are paying to the merchant, what you
+want is you want these flows to follow this specific steps in an order.
+Now how you will do it generally let's say that.
+So now let's say that I have this payment interface payment, which is an interface.
+And let's say you have send money method.
+Right.
+So here payment I would say that let's say this is the method name.
+Task name is send money.
+So now your one child would be which one pay two friend.
+This would be paid to send flow.
+Another child would be.
+Pay to merchant flow.
+Now they have to override this.
+Send money.
+Right?
+So they will override this.
+Send money and they provide their own implementation.
+It will also override this.
+Send money and provide its implementation.
+Now we want that okay.
+For this send money.
+All this classes should follow this specific steps validate, then debit, then calculate fees and then
+credit money.
+So it can do first validate and then debit and then compute fees and then credit.
+But it is possible that this might not follow this.
+It will do validate.
+It will do.
+First let's say credit and then do debit and then compute fees.
+Who knows.
+Right.
+So but what I'm trying to say is that our requirement is when you want all classes to follow the specific
+steps to process the task.
+Right.
+Then first, this is your first hint when you want all classes to follow a specific step to process
+the task.
+So what is the task here is send money.
+I want to send the money, but I want all classes here.
+All the child classes of this payment, no matter if any future, any more flows comes.
+If anybody is doing send money, they need to process a specific steps.
+What step this is steps right.
+So that is the first hint.
+Second hint is that I also need to provide the flexibility that each class can have their own specific
+logic and specific step.
+So validate request might be pay to friend flow might be doing validation certain differently.
+This might be doing certain differently.
+Calculate fees.
+It do not charge any fees 0% fees.
+So this person is sending ₹100.
+This person is receiving ₹100.
+But pay to merchant is charging let's say 2% fees.
+If person is buying ₹100 thing merchant is getting only ₹98 to rupees.
+Your payment platform get earns.
+So what I'm trying to say is that each flow can have different logic for this step.
+Okay, so you got it.
+How you will identify whether you have to use template pattern.
+When all classes write all child classes, you want them to follow a specific step to process the task,
+and also flexibility that each class can have their own logic in that specific steps.
+Because here if you see that send money right, they are overriding it.
+Right.
+And they will provide the send money capability.
+But it might be possible that it might not follow the specific steps.
+So they are following some sequence.
+They are following some sequence.
+But who will guarantee that they are following the same sequence?
+That's where the template method design pattern comes into the picture.
+So now see this how you can do that.
+The same example, but I have taken it now an abstract class the payment flow I have created an abstract
+and the send money right here in the send money.
+Now I can create it as a template method.
+How I can create it as a template method.
+So here I can provide the steps which need to be followed.
+So let's say that first step is validate request right.
+So this is a one step.
+So I can create one abstract method for this one.
+Validate request.
+Now all child classes can override this and provide the functionality whatever they like right.
+Second step I want debit amount.
+And I have created this abstract method because this is an abstract class right.
+You can have you can create abstract methods also.
+And you can provide a method with the functionality also.
+Okay.
+So the template method is the one where we can provide the functionality.
+And it also defines the order of steps to execute the task.
+So I am defining the order.
+First you have to do validate.
+So here is the validate abstract method.
+Second is debit amount.
+So here is the your abstract method.
+Third, you have to do calculate the fees.
+Here is the abstract method.
+And this fourth one is the credit amount.
+Here is the abstract method.
+Now all child classes like pay to friend flow pay to merchant flow right.
+All the child classes can override this one because they are child of this, right?
+They have to provide the implementation of this.
+Now they can provide their own implementation.
+They can validate it.
+Validate logic for a specific to pay to friend debit amount.
+Logic is specific to pay to friend calculate fee.
+I am not charging anything.
+Credit amount.
+Credit the full amount.
+Similarly pay to merchant have their own logic.
+Now in this method they might charge 2% fees.
+Credit logic is remaining amount only credit debit minus fees and then only it would be credited.
+So what I'm trying to say is that here this abstract methods each child classes can provide their own
+implementation, whatever they want and if there is any common.
+We can create it here and both can use it.
+But this template method here, if you see that it is providing a surety that this send money task like
+and I have created final that no child class can override it.
+So they have to follow this order.
+They can't provide at the rate override send money method.
+No.
+Why?
+Because I have created it final.
+So when I have created it final, no child classes now can override it.
+So this is the only method which would be available in the parent, right?
+No child class can override it.
+They can just use this as it is.
+Okay.
+And validate request.
+So whatever the object it will call the specific object whether paid to friend or pay to merchant.
+So now let's say when I'm creating let's say payment
+My object equals to new.
+I am paying to a friend.
+Let's say pay two friend.
+So I am creating this object.
+Pay to friend.
+Object.
+Right now I am calling obj dot send money.
+Now I am calling obj.
+OBJ object dot send money.
+So now the send money here.
+If you see I haven't overrided it.
+So it will check into this parent one.
+Yes send money is there.
+Now it will follow this okay.
+First one is validate request.
+Now validate request.
+The first priority would be given to here.
+Here it has provided the implementation.
+So this validate request will run.
+Now the second debit money it will run this calculate fee.
+It will run this.
+So now here if you see that I have provided a ordering of this specific task right.
+So this task you can call it as a now template method.
+Right.
+That's why the name template method.
+So this method is generally providing a template for this operation which I'm trying to perform.
+So this is the template was validate debit fees calculation and then credit.
+Now for each this step they can provide their specific implementation.
+So now if you read the definition again when you want all class to follow the specific step to process
+the task and also provide the flexibility that each class can have their own logic in that specific
+step, then only you go for it and that's how you will able to do it.
+Understood.
+This is very, very simple.
+It is nothing.
+But it's a very basic we know already know that abstract class can have the concrete method and also
+the abstract method.
+But it's only the way of thinking that yes, we can use it in such a way.
+Right?
+We can make it final so that no child classes can override it, and we can provide the steps.
+Like what?
+All methods it has to be followed and all those methods only I will create abstract.
+So now they can provide their own implementation.
+Now anybody client is calling it right.
+They can call this specific template method or specific task.
+Then we can provide a guarantee that this steps will be only followed with their specific logic.
+Okay.
+Again I tell you that this is very frequently used in the industry.
+And the example which I have taken, you can see that it's a kind of a real world example.
+I can tell you this is how actually been used in real world.
+So this is a real world example.
+You can say that okay guys.
+Thank you.
+If you have any doubt we can discuss more.
+And only one design pattern left in the LD.
+And I will cover that soon.
+See you.
+Bye.
+    </pre>
+</body>
+</html>

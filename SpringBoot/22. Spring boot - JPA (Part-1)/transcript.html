@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>22. Spring boot - JPA (Part-1)</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>22. Spring boot - JPA (Part-1)</h1>
+    <pre>
+Hey guys on this side welcome to Concept and Coding.
+And today we are going to see the Spring Boot JPA part one.
+And let's start without wasting any time.
+So here if you see that till now whatever we have done it's mostly a part of application logic.
+Now we have reached to a stage where we have to insert data into the database, how we can do that.
+So that's where the JPA, JDBC comes into the picture okay.
+So before even jumping into JPA we have to first understand the complete sequence.
+Right.
+Who who what all components actually get involved into this.
+So here if you see that let's say that you are writing a spring boot application.
+You have an application logic.
+You have written so many beans okay.
+Now what you do is if you have to use JPA, what's the sequence?
+What happen is you interact with the APIs, which is provided by JPL.
+So always remember that JPL is mostly an interface, right?
+It provided a APIs which you can interact with, but it do not provide you the implementation.
+Implementation is provided by another component, let's say in this case hibernate.
+Or if you don't want to use hibernate, there is something like open JPA, right?
+Or there are I think eclipse Linq.
+And so these are different implementation of JPA.
+Okay.
+So your application talks to JPA.
+JPA internally has to be implemented by some other uh component which you decide which you want to use.
+So generally hibernate is the most popular one.
+So hibernate internally talks to or utilize JDBC API.
+So again JDBC is again an interface.
+So hibernate uses its.
+API, its interfaces.
+And then there are specific DB drivers.
+So this DB drivers is nothing but an implementation of this JDBC APIs.
+Okay.
+So for example you are using a MySQL DB.
+Okay.
+You are using a MySQL db.
+Then there would be a specific DB driver for it.
+Okay.
+Let's say it is connector Jay DB driver, which is very very specific for MySQL which knows how to connect
+to MySQL.
+And it provided the implementation of JDBC API.
+Similarly, if you have something called uh Postgres PostgreSQL.
+Okay.
+Then it has its own DB driver.
+It has its own DB driver.
+Okay, so depending upon which DB you are using is specific.
+That's why I written specific DB driver is required.
+Okay, this DB driver is nothing but an implementation of JDBC API's.
+This JDBC right Java database connectivity helps you to connect to a database.
+Okay.
+Through this API you can connect.
+You can query, you can fetch the data.
+Okay.
+But remember JDBC JDBC is nothing but an API interface.
+Actual work is done by drivers itself.
+If you are using MySQL then MySQL drivers know how to fetch the data.
+Okay then this JDBC.
+Now there is something called ORM framework is built up object relational mapping framework.
+So this is nothing but a bridge between Java object and your relational databases.
+Okay.
+So here if you see that in the JDBC and specific DB driver everything we are in the form of SQL right.
+We write queries and we try to connect through db create db or fetch the data insert.
+Everything is in SQL form.
+But here with the ORM framework where this JPA and let's say it's implementation hibernate we are using.
+If this comes into the picture we don't have to your application don't have to directly work with JDBC
+API's.
+You don't have to write SQL queries to insert.
+You can directly work with Java objects itself.
+Okay.
+Through Java objects itself, you can maintain your relational databases.
+So remember JPA, JDBC is just for maintaining relational databases.
+So before going to JPA let's recall JDBC Java database connectivity.
+Okay.
+So here if you see that it provide an interface to make connection with db query db and process the
+result.
+Whatever the data we get out of DB, we also have to process it so it provide an API through which we
+can process it, and implementation is provided by specific DB drivers.
+If you are using MySQL DB then it has its specific drivers right?
+So likewise.
+So here if you see MySQL, if you are using this DB what is the driver connector J.
+And this is the class we have to load for it if you are using Postgres SQL.
+This is the driver and this is the class through which we can load this driver.
+Similarly S2 which is in-memory relational database and its driver is this one.
+H2 database engine.
+And this is the class to load this driver.
+So this driver.
+Now anybody say that what is the driver.
+You know that driver is nothing but an implementation of JDBC API's.
+So this expose jdbc API expose that okay.
+Get me connection uh insert let's say update delete.
+But is it actually doing it.
+No it's just an interface.
+This driver is actually has all the implementation how to get a connection, how to insert it, how
+to update it that from your application wise, you don't have to worry about the specific driver code
+because you are dealing with JDBC API's.
+You do just get connection.
+Your application would do get connection.
+Okay, you do update, let's say and update and you provide it.
+It's provided us the interface.
+Right now it's driver which is Abstracted to us how it actually converted to something, which is understand
+by relational database.
+We don't have to worry about it.
+So you don't worry like okay, if I am using MySQL driver, my code will get changed if I'm using PostgreSQL.
+Lot of code changes would be done.
+No, nothing like this.
+You already got it right.
+Why?
+Because we are dealing.
+We are just invoking that get connection.
+Now this specific driver will take care of getting the connection.
+So if you change from MySQL to Postgres, your code will not change.
+You are still calling get connection.
+Only internal implementation will change and that's okay.
+So you can use anything.
+Okay.
+So let's start very basic using JDBC JDBC without spring boot.
+Let's say that if you are not using spring boot what how you would make a connection.
+What are the challenges.
+What that spring boot resolves, actually.
+And once we know that, then ultimately we move to JPA.
+So see this class first.
+So very basic example I have created one public class database connection as the class name.
+This is used to create a connection database connection.
+So I have created one method called get connection okay.
+And it's returning me the connection object.
+So now here if you see that the first step in getting a connection is to load the driver is to load
+the driver into the JVM.
+So when you do class dot four for name and you provide the driver, this is the class.
+Okay.
+So I am using S2, this one in memory.
+I don't want to install MySQL and started server for testing.
+We can always use S2 And I told you that doesn't matter.
+Like your code will not change at all.
+Either you use MySQL, Postgres or S2.
+Right?
+You are just calling APIs JDBC APIs.
+So the no matter what first step is you have to load the driver.
+So I am using S2.
+So S2 driver.
+If you're using MySQL you have to load the MySQL driver.
+So this is the first step.
+Now once the driver is loaded into the JVM the second step is to establish a connection with DB.
+Okay so here if I am using there is a class called driver manager.
+And you do dot get connection.
+So you pass the URL.
+So now here if you see this URL we are using JDBC.
+Yes.
+What is the db type.
+We are using S2 not MySQL not Postgres.
+I'm using s2.
+Even the S2 has two variant like in memory.
+In memory is like once till your application is running.
+Data is there in the DB as you as soon as your application shut down, data is also gone.
+So it's a transient data.
+So I'm using memory in memory like till my application is up.
+Data is there.
+As soon as my application is shut down uh the data will be lost.
+There is another variant that you can even change it to that to persist the data.
+Even your application, uh, shut down also.
+So.
+But I am using the transient flavor of it.
+And this is the DB name which I want to create.
+So I'm creating a user db.
+So when I do get connection and give the URL, if this db is not there, it will create.
+If it is already there it will do a connection for that one okay.
+And username and password.
+So default username for S2 is SC which is I think system administrator and password is nothing.
+So you need this to get a connection of your database.
+Okay.
+So first is loader driver.
+Second is establish a connection.
+So this is two things are present into my database connection class.
+Now here if you see another class which I have written user Dao class.
+Okay.
+In this Dao the first method I have like creating a table, generally understanding is whenever you
+are running your application database is table is already present.
+But since we are just starting, I have also created one method where I am creating a table also.
+Okay, DB is already created here.
+If not present it will create a db user db.
+So inside this db it will create a table one method.
+Second method I have written create user okay.
+Third is I have written to read a user.
+So three methods I have written.
+So see what happening is like how you can do that.
+So in this one first thing, whenever you have to query, insert, update, delete, create anything.
+First thing you need is get a connection of a database.
+So it creating a new database connection object.
+So it getting an instance of this class and then calling the get connection method it calling this method.
+What this method does is it will load the driver.
+It will get one fresh connection of this database and provide this connection.
+Once you got the connection then you can run the query.
+So I have written one query create table users.
+So I am creating a users table only with two column three.
+Column one is user ID.
+Which is auto incremented.
+Another is username and the third one is age.
+Okay so this is the table I am creating.
+So here whatever the SQL query string you have created, now you just uh with this statement you just
+execute update.
+Okay.
+So it will create your table.
+Also notice that there is if any exception comes, you have to handle the SQL exception.
+And in the final block you have to close the resources.
+You have to close the statement.
+You have to close the connection.
+Similarly create user whenever you have to create one user.
+Okay.
+The first step is get the connection.
+Create a new database connection instance and then call this method.
+It will give you one connection database connection.
+Then you write your SQL query which you want to insert into users username, age and user ID is auto
+incremented already, so no problem in that.
+So these two values I want to dynamically insert.
+So I can use prepared statement.
+Okay.
+So connection dot prepared statement.
+You provide this SQL query.
+And here these two dynamic values would be set the values like set string.
+First one is the string user name.
+So index one provide the user name whatever it is coming.
+The second uh the second question mark is that integer which is uh age.
+So I'm doing set int index is two and the age whatever it is coming.
+And then simply prepared query execute update.
+So this will insert one row okay.
+And similarly you have to catch the SQL exception.
+And in the finally block you have to close the prepared query and the DB connection.
+If you see the third method, read query the read users.
+It is also exactly same.
+So now I think now you are understanding the crux.
+You have to get the connection.
+Then you can use prepared statement and you can use this prepared statement uh to run the SQL query.
+So I run the SQL query select from user.
+So this is the SQL query string.
+So connection dot prepared statement I provided this SQL query.
+So there is no dynamic value.
+So I don't need to set anything.
+I just run prepared query execute query.
+When I run this execute query it will give me a result set.
+Result set is nothing but a list of rows.
+So I am iterating and just concatenating just and printing it.
+Okay, so you have to handle SQL exception and finally you have to close it.
+Resources.
+So this is very, very basic.
+Uh, plain JDBC we are using no spring boot is used here.
+Okay.
+So I will show you running it.
+But what is the problem you are seeing with this.
+So there are so many boiler code we are writing.
+First is driver class loading.
+You have to load the driver right class dot four name.
+Then you have to make a DB connection.
+Now here if you see you are doing a data driver manager dot get connection.
+Hey give me one connection of the database and you are providing the URL username password.
+And this will get you one connection.
+So you have to manually get the database connection.
+Third is exception handling.
+So here if you see what exception you are getting SQL exception This is very high level or abstracted
+exception, I would say.
+So SQL exception can be of anything.
+Uh maybe uh primary key violation duplicate key found.
+You are not able to insert like there are so many different ways through which your query fails, but
+it gives a very high level abstracted error SQL exception.
+So you have to do a lot of uh, kind of if else check.
+Okay.
+If this is the issue then okay.
+Do this.
+So here SQL exception I would say that it's not very clear okay.
+Closing of the DB connection and other objects like statement.
+So here if you see that every time you take out a connection or use a resource, now here you are creating
+a prepared statement executing the query in the finally block.
+You ultimately have to close the DB connection and close the prepared query also, because if you don't
+do that, there is a possibility of memory leak also.
+So as normal JDBC you have to handle the closing of the DB connection also.
+And the last one is manual handling of DB connection pool.
+So here if you see that currently every time somebody is calling new instance dot get connection I am
+creating blindly creating one connection.
+But it is not an ideal way.
+Generally ideal way would be like okay, there should be one pool of JDBC connection.
+Pool in which already I have pre-created few connections.
+Use it once, use it, return it back to the pool.
+So you have to manually add it or handle it.
+DB connection pool.
+Okay with the JDBC.
+So these are the few issues with the plain JDBC.
+But before I jump to spring boot JDBC.
+How it handles it.
+Let's see that.
+So the plain JDBC the same thing.
+I have database connection class first class uh loader.
+We are loading it.
+And then we are establishing a DB connection.
+And in the user Dao we are creating a user table first.
+And then I have also have a create user method and read user method.
+Okay.
+So every time I use it I handle the exception.
+And also in the finally block I close it properly.
+So I have just written the comment here.
+So just to that we have to close it here.
+So let's start the server.
+Okay.
+And here I have a user controller which is like plain JDBC is like get user call plain JDBC.
+So here I am using get user this I am hitting this get API.
+Okay.
+Uh, so this get API just for testing purpose, you can say that don't go with like why in the get why
+we are doing a create and this one.
+So this is just for testing purpose that my control comes here.
+So once the controls will come here.
+So let me put a debugger point.
+That means start in debug mode.
+So here once the control comes here.
+So what happen is I am creating a user object.
+Now I am creating two users x and y.
+So I am creating x and y.
+And then ultimately I am doing read user.
+So in the read user the same thing I told you write first, get an object of the connection and your
+query and you can use prepared query to run this execute query and you can iterate it to print it here.
+So I am Iterated it and return.
+So success is printed.
+And if you see the console log.
+The two rows got printed.
+This is the user ID which is auto incremented one and two.
+This is the user name and this is the age.
+Okay.
+So this is currently in memory.
+Now spring boot helps to remove all this boiler code for us.
+So now let's see using JDBC with spring boot.
+So the first thing you have to do is include the dependency in Pom.xml.
+So this is spring boot starter JDBC.
+Okay so this is for JDBC interfaces and all it will bring.
+And the second dependency you need for this s2 s2 database we are using write in memory one.
+So this is for the database.
+You can replace it with Um, uh, MySQL or Postgres, whichever you like.
+So currently I'm using in-memory S2.
+So I'm, uh, added its dependency.
+Okay.
+So spring Boot provide JDBC template class, which helps to remove all the boiler code which we see
+at top.
+How.
+Now let's see that once you have added the dependency now let's see this example.
+So now here if you see the first I have created one basic Pojo of user user ID user name age and its
+getter and setter.
+Very basic user class.
+Now the second I have created User repository class, I have given a name User Repository class and
+annotated with at the repository.
+It work as at the root component.
+So it will help us to create a bean of user repository and also help us in the scanning of those bean
+like what at the rate component does.
+The second is that at the top in the plain JDBC you see SQL exception comes right.
+But here this repository whenever a spring boot sees that okay it is annotated with at the right repository.
+Any SQL exception comes.
+It gives a granular level of exception.
+Okay we'll see how.
+So after creating this user class Pojo class I am creating a user repository annotated with at the repository.
+And here if you see that I have added a dependency in this one of JDBC template, this is the class
+which I'm talking about which helps us to remove all the boiler code.
+So JDBC template I have auto wired it.
+Okay, so bean will get inserted into it.
+So here I have also have the same methods I have written.
+One is create, one is insert and another is read three method same like above.
+So create table.
+Now here if you see JDBC template execute okay.
+And you can directly write your query in the execute, you can directly write your plain SQL query itself
+in the insert JDBC template dot update you provide your insert query.
+Now if your Insert query is need to be like certain values which need to be dynamically filled, it
+can be added like this.
+There are different methods I will tell you don't go inside like how this update is used.
+I will tell you what are the different ways but currently understand this like you are just calling
+the method JDBC template dot update.
+Put the query and all the values which has to be goes into this field.
+And similarly get users.
+What I am doing is I have written the query.
+I am doing just JDBC template dot query and given the query.
+Now here I am just iterating over the result set.
+I will go later into deep what I am doing it.
+Now the difference you might be seeing that I am not creating DB connection here.
+Okay, I am not written any.
+Finally block where I am closing the DB connection or closing the prepared statement.
+Anything nothing.
+All I am using is just JDBC template execute just for executing the query.
+There is something like update where for more complex queries where you have to dynamically fill the
+values.
+And it also provides for read like query where which is used for fetching the data.
+So this is your second class which you have to create.
+And here if you see the service class which uses this, actually this is more of a helper class.
+I would say that this is your business.
+Logic class okay.
+So this is I have annotated with the red component.
+You can also annotate it with at the red service okay.
+So I have auto wired this user repository okay.
+Now anybody wants to create a table they will invoke this.
+And ultimately it will call user repository create table insert user.
+This will ultimately go and call this method get user ultimately this and call this method.
+It will get the list.
+Currently I'm doing my business.
+Logic is I'm just simply system dot dot dot print and I'm writing and simply return the user.
+Okay, so this class is nothing but a user service class is nothing but which is calling the repository
+class.
+Okay.
+And it is your business logic class.
+Like after fetching the data from the DB, any business logic you have to perform, you can perform
+here at this level.
+And the last is you have to use an application dot properties.
+Now here if you see that we are providing certain properties data source property like I am providing
+the URL.
+So now here if you see at the top plane JDBC, you are providing the you are doing a connection and
+then providing a URL, username password, driver link.
+All you have to do here is in the spring boot is in this application dot properties you provide.
+What is the URL?
+The same thing.
+This is your db.
+I am using memory version of h2 and JDBC the driver username password.
+Okay.
+So now this data source this data source object data source object in spring boot helps with two things.
+One is database connection.
+It creates a connection, returns it, manage it, and also it helps with the connection pooling connection
+pool.
+Okay.
+It manage the connection pool.
+So this data source object.
+So internally spring boot help us to do whatever we were doing.
+Class dot for name.
+Okay then do create a connection.
+And everything is spring boot does it.
+And surprisingly I will tell you spring boot also by default provide us a connection pool.
+Also it is Hikari.
+CP connection pool.
+Hikari.
+Connection pool.
+I will show you the demo.
+But before going, proceed further.
+Is this clear?
+Like how it is helping us resolving it.
+So here if you see driver class loading.
+Are we doing anywhere?
+Driver class loading.
+No, we are not in the spring boot JDBC.
+We are not doing class dot for name and the driver path.
+We are not doing anywhere.
+This is just a business logic class.
+So here if you see we are just directly using repository and application dot properties.
+We are not doing driver class.
+So JDBC template loaded at the time of application startup in driver manager class.
+Let's see that.
+So now let's see the driver manager class.
+And I'm just starting an application.
+So driver manager, what we are saying is JDBC loaded at the time of application startup itself.
+So now I'm starting the application in debug mode.
+Now here if you see during application startup itself it is doing class.forname for us.
+Earlier we used to do in plain JDBC.
+Now it is doing it okay.
+And here if you see that it has the data which we provided all .2. driver in the application dot properties.
+Okay.
+So one thing is driver class loading is now get abstracted from us JDBC template.
+Does it database connection making.
+Now you can ask in this when is the database connection happening happen.
+Whenever we run any particular query through JDBC template like like dot update query.
+At that point of time it try to create a connection.
+Okay.
+So connection making from the either it has to make a new connection, it will create that time or it
+has to take from the pool.
+It will do that time itself.
+Now let's say that insert user I am trying to insert.
+So if you go inside this update, update this method it do execute.
+If you go inside this it do this data source utils get connection okay.
+So if you go inside this it will actually handles like the connection making do get connection from
+the data source okay exception handling.
+So exception.
+In plain JDBC we get very abstracted SQL exception.
+But in JDBC template we get granule error like duplicate key exception query timeout exception.
+So if you go this package all dot spring framework dot Dao package.
+So let's see that package.
+If we see this package Dao or dot spring framework dot Dao package.
+These are the different type of exception it provide cannot acquire lock exception.
+Data access exception.
+Data integrity violation exception.
+Duplicate key exception.
+Empty results exception.
+So there are different type of exceptions can come.
+Query timeout exception.
+So all this JDBC template do mapping internally from.
+Instead of just throwing SQL exception it throws a granular level of exception.
+And through spring boot.
+In the previous video I have already told you how you can handle exception of any particular type okay.
+But you get some granular level exception and uh, you can handle it properly.
+It is not very like abstraction.
+Some SQL exception happen.
+What we don't know.
+Closing of the DB connection and other resources.
+Now again you can ask me like in the spring boot JDBC we are just using JDBC JDBC template to execute
+the query.
+Okay plain query update.
+But where are we closing it again.
+That is handled by your JDBC template itself.
+Now let's go to uh here let's say JDBC template dot update I am trying to insert right.
+If you go inside this.
+In the finally block it.
+Do clean up parameters okay.
+Okay.
+So here it has a proper knowledge that whether I have to close the connection or whether I have to put
+it back into the pool.
+Okay.
+So you don't have to handle it.
+That is also handled by your JDBC itself.
+And the last thing is, hey, what about the DB connection pool?
+Still here?
+I do not see where we are writing the connection pool logic like in a connection pool.
+I have only this are.
+Five JDBC connection pool and only this five would be used.
+Who is doing that?
+So here if you see when you have defined this application dot properties in data source.
+Okay.
+So means you are relying on spring boot that hey you use the data source see data source object.
+Right.
+It helps you to connect to the database and helps to manage connection pool.
+But here we just provided like what is the driver.
+What is the URL username password.
+We didn't tell like what data source we want to use.
+There are different data sources which we can use, but here we haven't told it so.
+Spring boot use.
+By default.
+Hikari Data Source and Hikari Data Source also provide Hikari connection pool.
+So now here if you see Hikari provide default JDBC connection pool that is Hikari CP connection pool
+with minimum and maximum pool size of ten and we can change the configuration in Application.properties.
+So in application dot properties you can put like spring dot data source.
+Hikari maximum pool is ten and the minimum is five by default is 1010.
+So here if you see we can check like how it is making a connection.
+So uh Hikari data source whenever it will do get connection.
+Let's see that.
+Okay.
+So Hikari data source.
+It came.
+So here, if you see Hikari pool, it is using connection timeout.
+Idle timeout.
+Maximum.
+Maximum pool size ten.
+Minimum is ten.
+Okay, so spring boot.
+Actually this Hikari is actually very efficient and it's very fast actually.
+And no matter if you are using SQL, Postgres or S2, Spring boot by default uses this only, this data
+source only.
+But if you want to use any other specific JDBC connection pool, you don't want to use Hikari.
+You don't you you want to use some other one, right?
+Uh, maybe some from Apache or some, uh, something some other JDBC connection pool.
+Then instead of putting into the application dot properties, you don't have to put into application
+dot properties.
+Then you can in your configuration at the right configuration class Appconfig App.config class.
+You can create a beam of data source, and then you can use whichever data source you want.
+Here in this example I am using the same data source only.
+Okay.
+But you can change it to any other JDBC connection pool which is available.
+And you can use it on your own.
+So here driver class name JDBC instead of now Application.properties I am providing the configuration
+for the data source like this JDBC pool username password.
+Like this.
+Okay now here I don't need to provide in the Application.properties.
+Now this data source would be used.
+So currently here I am using Hikari only but you can use any.
+You can replace it with anything.
+Okay.
+And yeah we can show the complete demo here.
+So here if you see that let's see that I am calling this API JDBC DBC okay, first it will do.
+Create table.
+User table is created.
+If it's not then user one is added.
+User two is added and after that what it is doing is we are doing get user.
+So we are using user service dot get user and this get user service layer calls repository.
+It do get users.
+So ultimately what are how many users we created two.
+So I got a list of two users and I am iterating it and printing it.
+So two times it printed and ultimately it returns list of user itself finish.
+So here if you see two users it returns.
+And also I was printing it so two users got printed okay JDBC template in spring boot has couple of
+methods very frequently used method, I will tell you.
+One is update and it takes two parameter, one is SQL string and another is where.
+Where arc variable arguments okay.
+So this update method can be used for insert, update and delete operation.
+So like this insert into user.
+So I have written my SQL query as a string and two dynamic values which I need to insert.
+Okay.
+So this is my string.
+Now I'm using JDBC template dot update your query.
+And second is variable arguments like variable arguments 123 could be anything right.
+So two dynamic right.
+So one is your string.
+Second is your integer.
+This one okay.
+Similarly it can be used for update.
+So this is one method very very commonly used method of JDBC template.
+Another is this one for updating update the same your query and the second is prepared.
+Statement setter says you can say it is also you can use for insert update delete.
+It is just for like more granular level.
+Or you can say that more.
+If your queries are very very complex then prepared statement setter is can be useful.
+The similar first thing is insert query like you can write your string okay, you have to set dynamic
+values.
+Now I am instead of using the previous.
+I am now using prepared statement setter JDBC template dot update.
+The first parameter is your string query.
+Now second is prepared statement setter.
+So here if you see uh JDBC template update string SQL.
+So yeah, this prepared statement setter here, if you see it is a functional interface okay.
+So you can use lambda expression and it has only one method which need to be implemented okay.
+So one method which accept prepared statement.
+So that's why I'm using lambda expression in Java playlist.
+I have already explained it in depth how you can use lambda expression.
+So here I am just providing the implementation for that get values itself that whatever the prepared
+statement set the string, the first one is string username.
+So for the first index it's string second index.
+This one second is integer right.
+So I'm providing h.
+So this is one two.
+This is our indexing 1234.
+Right.
+So this is one this is two.
+Another question mark.
+This would be three.
+So this way you can add it okay.
+So you can use it for insert update delete.
+These are the two ways.
+Similarly, now you have to fetch it right?
+So one is query query method.
+It takes one flavor is it takes two parameter.
+One is string which is your SQL query.
+Second is row mapper.
+Now it is used to fetch get multiple rows.
+You have to fetch multiple rows.
+So now here if you see this query the JDBC template query.
+The first one is your Select query string.
+And the second one is your row mapper.
+So this row mapper is a functional interface which has one method map row which takes two parameters.
+So that's why this two parameters.
+And whenever this method gets invoked this map row this is the implementation should run okay.
+So see that what might be happening inside.
+So in the user repository when I am doing get users.
+Let's see.
+It might be doing query it going inside query are here.
+Execute query.
+After it executed the query it got a result set.
+So result set can be like ten rows 20 rows.
+Then it has to extract data out of it.
+Row mapper.
+Now it is here.
+If you see it is iterating over this each row set each row and calling the map row okay.
+So now this will get executed.
+For each row set there are total five rows.
+Then for each row I am creating a user object and do a mapping like in the row this column row dot get
+user id.
+So I am putting into this user id field.
+It's just a mapping between a column and the object user object.
+So rosette dot get string is like username.
+I am putting into username like this.
+And ultimately it will return a list.
+It will just keep on adding it to the result list and ultimately return this list of user.
+The second flavor is query for list.
+Again, first parameter is a string and second is class.
+The purpose is to get single column of multiple rows single column of multiple rows.
+So here JDBC template dot query for list.
+Provide the query.
+Select user name from users.
+If there are total ten users, you will get username for all the ten users only, so one column.
+Whenever you want to fetch the one specific column for multiple rows, then go ahead use this query
+for list okay.
+So the second parameter is class type.
+So this username is string dot class okay.
+So here if you see query for list and we can search for it here.
+Query for list.
+What it does get single column row mapper.
+So it is a single column.
+Its mapping is based on single column like a single type string.
+Then the third query could be like query for object.
+The first is your SQL query, then arguments and the required type get single row.
+This is used for fetching a single row.
+So JDBC template that query for object.
+The first is your SQL query.
+Select from user where user id equals to.
+It could be dynamic.
+So that's where your second parameter comes into the picture object array.
+So I'm creating an object array only one right in the array.
+So I'm putting like it should be replaced with one.
+If there are more question marks you can just put into arrays, it will sequentially it will update
+the question mark.
+So it will change user ID equals to one with this.
+And the third one is required.
+Type is the object in which this row has to be mapped to.
+So I want to map to the user.
+So internally it will do mapping use make use of getters and setters of user.
+And it will map this each column of this row into this user object.
+And the last is like query for object SQL and required type get only single value.
+It is used for get only single value like JDBC template.
+Get query for object select count from user.
+You do integer dot class.
+So now here if you see it, return only one single value.
+So if you have any requirement where you get only one single value, then you can use this get for object.
+So these are generally different flavors which are JDBC template provides which you can do to insert,
+update delete or fetch the data.
+Okay so but with this I hope that at least this JDBC and this driver part should be properly clear where
+this exactly comes into the picture.
+How you can connect to the DB, what all problems are there in the plain JDBC.
+What Springboot JDBC resolves is and how it resolves it, because then only it's makes sense to understand
+ORM framework and JPA and hibernate.
+Okay.
+So next we will start with the ORM object relational mapping.
+But we'll see you in the part two.
+But if the part one, if you have any doubts let's discuss in the comment section.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

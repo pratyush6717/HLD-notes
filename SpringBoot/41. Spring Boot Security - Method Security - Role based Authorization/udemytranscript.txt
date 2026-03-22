@@ -1,0 +1,424 @@
+Share this.
+Welcome to Concept and Coding.
+And today is the last video of Spring Boot security.
+Right.
+So we have already covered most of the frequently asked and used authentication types.
+And we have also seen one type of authorization which we used to put at the security filter layer itself.
+Okay.
+So today we will do the authorization at the annotation level.
+We will see that.
+So we as I already told you, we have already covered how at security filter layer we can do authorization.
+If you remember this code you know that right?
+In the security config class we used to do like this request matcher.
+This API should have this role okay.
+So this is we used to do at security filter layer.
+But it has certain challenges in large scale application where we used to have hundreds of API.
+You might think, say does any org has hundreds of API?
+Yes.
+Like there are many orgs which has hundreds of APIs.
+In that scenario, managing the roles at security filter might become difficult and cause a scalable
+issue.
+Just consider that you have all the APIs listing in your security filter chain itself, and you are
+providing the roles here.
+So what's the better solution?
+The better solution is that the place where we have defined our endpoint generally that controller can
+be at that point itself, we tell what is the authorization required for it.
+Okay.
+So means at controller layer.
+At controller layer we can define the authorization.
+Okay.
+And that's where our annotations comes into the picture.
+So here if you see this diagram once this is I have taken from our previous authentication.
+So what I wanted to show you here is that once a user is authenticated, let's say user one is getting
+authenticated.
+The authentication the authentication has all the objects.
+Let's say granted authorities like whatever the roles we have defined, everything is present inside
+it, right?
+All the and the same authentication object reaches till your controller level.
+So at controller level we will use this authentication object and do the authorization.
+So see this in the annotation based role based authorization.
+There are two annotations which are primarily used at the rate pre authorized and at the rate post authorize
+pre Pre-authorize means do the authorization before execution of the API logic before execution of the
+API.
+Do the authorization and post authorized means.
+Does authorization after execution of the API.
+So sometimes what happens is you have a business logic.
+Let's say this is your endpoint user endpoint.
+So sometimes you need to execute the code logic.
+And whatever the response you are getting inside that it might have certain data which we have to use.
+And based on that we have to do the authorization logic, authorization logic and then decide do we
+have to allow the user to access this API or not?
+Okay.
+So business logic runs first.
+Authorization happens later in the authorized post, authorized and in Preauthorized authorization logic
+happens first and then only the API get executed.
+So first thing first we will see this annotation based authorization.
+But first we have to create a user.
+So let's create a dynamic user.
+I have already shared this username and password creation video that how you can create a user dynamically.
+So here what I am doing is I am creating one table user login.
+And in that I have id username, password and permission.
+So here it's like what I am trying to do is let's say user is Shreyansh.
+Let me it has a role user.
+It has a role user.
+But I can give I want to give only permission on let's say order API read.
+I want to give this and let's say I want to give order delete request or let's say sales Post something,
+you can say that sales create permission and that's all.
+So here if if you see I want to do this authorization like this, even though my role is user inside
+that also I want to control.
+Yeah.
+Even though you are a user role, but only this thing you can do.
+You can read the orders, you can delete the order, but you can't create it.
+But yeah, you can create sales.
+So that way I want to create.
+So there what I have done is while creating a user I have username I have password role.
+Either it could be user it could be admin.
+And for this role what all the permission user has.
+So I have created is one to many relationship.
+So I have created a user permission.
+It is also has id and name okay.
+So one user can have many permissions like order read, sales read.
+You can say that it's like a more granular level we can give here and here it is little bit at the top
+level.
+User and user has what all granular level permission we can provide here.
+Okay.
+So these two tables I created in and here in the entity Service.
+So this is our entity service.
+In the entity service you already know that we have to implement the user detail service.
+We have to override this load by username.
+And this is to save this is repository.
+And this is the controller through which I have to create a user.
+So this is already we have seen like uh here in this video okay.
+So one thing I will come to this point later, but one thing you notice this part.
+We have also seen that in the previous video.
+But here if you see in the get authorities.
+Okay.
+When you are implementing the user details.
+Right.
+We have to override this method.
+Get authorities okay.
+So this is the same thing here.
+If you see in the authentication object there is something called granted authorities.
+This got filled up from this itself okay.
+This got filled from this itself granted authorities.
+So here if you see I am putting my role and also I am putting all my permission.
+So this list whatever this authentication will go here.
+Right.
+Ultimately in the authentication object this list will have everything let's say role user comma order
+read comma sales create.
+So everything will comes inside this granted authorities of authentication object.
+Okay.
+So that's why in the same granted get authorities in the same list, I am putting my roles and I am
+putting all my permissions also.
+Okay, so that's what I am doing.
+So now let's see.
+Now we should be able to create user okay.
+So here I am hitting this endpoint user login.
+And my username let's say password is let's say 123 role I am giving role user okay.
+And permission I am giving only one permission.
+That is order read okay and user is created.
+Now the user creation part is done.
+We can update our security config file also.
+So in the security config file we have to enable this annotation enable method security pre Pre-post
+unable equals to true okay without enabling this.
+The pre authorized and post authorized annotation would be ignored.
+Okay so in the security config we have to tell that pre post enabled equals to true.
+Then only this annotation would get intercepted okay.
+So currently I am doing basic authentic authentication just for testing.
+You can do with anything this annotation testing with JWT, OAuth or this thing.
+But currently I'm testing for the simplicity basic authentication okay.
+Because our purpose is to do authorization not authentication.
+So yeah, this is the changes we have to do in security config.
+We have to enable the pre post enable to true.
+And for testing purpose I have created two controller one order and one for sales.
+So here if you see this is my one endpoint slash orders.
+Okay.
+Slash API slash orders.
+And this is just I have let's say that all orders have been fetched successfully.
+Okay.
+We can make it dynamic.
+We will hit DB, fetch the data.
+But for now, for simplicity, because this is not our main purpose.
+Our main purpose is this.
+Okay, so I have used the annotation on top of this method in the controller class at the rate Pre-authorize.
+Now here if you see I have used like has role user, I haven't put underscore because inside the has
+role has role.
+This is by default get added.
+Okay.
+So you have to just put has role user.
+What is the role we want to give user and authority.
+I want to give order underscore read okay.
+And similarly for the sales slash API slash sales I have used at the rate pre authorized annotation,
+and I put that no matter whatever the role you have, this has authority.
+You should have this authority.
+Sales underscore read okay.
+And we have already created a user which has both role underscore user and order underscore read permission.
+So this is the place where we have created a user right.
+This user is created.
+What is the role role underscore user.
+And what is the permission it has.
+Order underscore read okay.
+So this is totally qualified for this one order controller because it has the user role and it has order
+underscore.
+Read also for sales it required sales underscore read permission which doesn't have okay.
+So now let's say that I am trying to access an API slash order slash API slash order API.
+Since it's a basic authentication, I am providing the username password as J123.
+This is what I have created a user as username password okay.
+And when I hit it, all orders have been fetched successfully.
+But when I try to access the sales API slash API slash sales, if you see the same username password
+I got forbidden.
+Why?
+Because this required permission sales underscore read which this user doesn't have.
+This user has only order read and user permission.
+Okay, now at one, at this point of time, before proceeding further, you might get one question.
+What is the difference between has role and has authority.
+If you remember, I have already explained that in the part where we have done the authority at the
+authorization, at the security filter layer.
+But again, I will tell at code level it has no difference.
+Okay.
+Only difference is that when you use has role it will append role underscore.
+That's all for authority.
+It do not append anything.
+Whatever you give it will be used like that.
+Okay.
+No difference.
+And everything, whatever the role, whatever the authority you have defined, everything will get append
+into a single list only.
+Okay, I will show you the code.
+Also inside has role also uses the same code.
+Authority calls the same code itself.
+Okay so it just like for us very high level.
+You can use role for high level distinction and authority has authority for the granular level distinction.
+Okay.
+But at the code level, if you go one step down you will see no difference.
+Everything would be inside a list only role.
+Role underscore user and whatever the authority you will define.
+Let's say order, create or sales read everything would be like for this user.
+These are the all the permissions.
+Same thing I have mentioned here.
+Spring boot treats both has role and has authority in a similar way.
+Only difference is that for has role role underscore is appended.
+So see this code.
+If you open this security expression root dot Java it has has authority has authority calls has any
+authority.
+It calls this and has any authority called has any authority name.
+It ultimately calls this method.
+And when you use has role internally it call has any role this and has any role calls the same.
+Ultimately no matter what you use has authority or has role both invokes the same code.
+Only difference is that when you use has role right, it put a default role prefix which is nothing
+but a role underscore.
+But ultimately it would have is that a list of get authority set right.
+It will get a list of get authority set.
+So what would happen is so here if you go while user creation we have given that right get authorities.
+So here I am returning the authorities.
+This authorities will have a role plus this permissions.
+So internally what it does here is.
+It will get in this list.
+It will have everything.
+Role plus authorities.
+Generally both are same.
+So.
+But it has the complete list role underscore admin comma all this thing now it just checked.
+It will iterate that hey does user has this role which is contained in the list or not.
+So now here in this case what generally happened is you put has role user.
+So internally it automatically appended this default prefix.
+So it has put role underscore user.
+Now it will check.
+Does this present inside this list.
+Yes.
+Then it goes to the next one authority order underscore read for order read has authority does not append
+anything.
+So it will directly check the same list or the same list has this order underscore read also.
+If yes, then ultimately return two.
+So you understand that has role, has authority, has no difference.
+Only thing is the prefix get appended into the has role.
+So we don't need to add role underscore.
+It will get automatically added.
+But.
+We generally use has role for high level distinction and has authority for more granular level distinction.
+Okay.
+Now one questions comes to your mind is how this authorization method invokes before invocation of a
+controller method.
+So this is is returning true and false right.
+In the security expression route.
+So has role method get get get invoked.
+Because in the pre authorized annotation I have put has role has authority.
+So these methods are getting invoked.
+So how this get invoked who is taking care of it.
+So remember this diagram.
+So that's where I have also explained in previous videos of this spring boot interceptors.
+Chapters write.
+I have explained about the interceptor.
+So Pre-authorized annotation is intercepted by this class authorization manager before method interceptor.
+Okay, so this intercept, this annotation and how the interception works, how we can create write
+our own interceptors.
+What is the difference between filters and interceptors.
+We have already covered this in depth one interceptor video and the filter versus interceptor.
+You will see how exactly the interceptor works, how we can create our own interceptors.
+We have already seen that.
+Okay.
+So this is one of the interceptors which tracks this annotation.
+So if you remember we have also created one interceptor we which tracks different annotation.
+So similarly this annotation is already there in the spring security framework which track this annotation
+authorization manager before method interceptor.
+Okay.
+So we know that okay.
+This is the in this annotation got intercepted by authorization manager before method interceptor.
+Now what it will do now what it will do is this whatever the string you provide inside this this is
+generally known as spring expression language.
+ESP spring expression language okay.
+So generally what happens is when this interceptor got invoked because of this pre authorized annotation,
+it first read the string from this annotation.
+So it read this string okay.
+So currently it's in a string format.
+Now what it will do is it will pass it to the spell expression parser.
+So there is a parser provided by the Spring Security framework which is spell parser.
+Spell expression parser.
+So what it does is it will convert this string to AST abstract syntax tree.
+So now you will see the tree like this.
+What is the operation.
+And this is the operation end.
+So it's the left operand.
+Right operand.
+Okay so it's children.
+This is children zero.
+This is children one.
+So left operand right operand.
+Okay so here it has end which is operation end.
+So it has this invoke this class which internally does this left operand right operand part the same
+thing.
+So what I'm trying to say that we don't have to write any of this thing.
+It recursively resolve this expression okay.
+So and write its operation end.
+So it invokes this method then it's resolved its left operand.
+Left operand is your this zero part.
+And again if you see this, if you go inside this left operand, again it's a recursive call.
+If there is any other operand let's say or so it will goes to that class that will have left right.
+Likewise.
+And once that is resolved then it will automatically resolve the right operand and the same recursive
+operations happen.
+And ultimately what it does is once it invokes all the method, all the variables references.
+Right.
+Ultimately what it will do is this interceptor validate the result and decide whether to invoke the
+method or not.
+So these are the steps involved once the interceptor is invoked.
+So we can use more logical operation like currently we have used and right like has role and we have
+put and has authority.
+Similarly we can use or we can use not.
+Naught.
+And similarly we have relational operator we can use like this value.
+So generally in the API slash user slash you might have some let's say id.
+So we can also read we can put a authorization logic on this value also okay.
+So value is 15 value not equals to 15.
+I will tell you when this comes into the picture like when it would be helpful for us.
+Just for example let's say I have created this endpoint fetch user details.
+What is this path variable.
+Path variable is id.
+So the same id I used here ID should be this okay.
+Is this pre authorize.
+Post authorize has access to your authentication object okay.
+We can see that.
+So if you open the code you can open that.
+Uh, what was that?
+Authorization manager before?
+Method interceptor.
+Right.
+So this is the attempt.
+Authorization will ultimately get invoked and attempt authorization if you see that it has, like,
+get authentication.
+Right.
+So in the Get authenticated authentication security context holder strategy, which we have put into
+the filter part.
+Okay.
+From there it has the complete authentication object.
+Now based on that uh so it has access to the authentication object.
+So based on that.
+If you want to put any logic we can put like this.
+So here if you remember that let's say I have created one user.
+Let's say RJ password is 123.
+And in db and in db it would be like id one rj username password is one two, three.
+So this ID also comes This.
+This is unique.
+Unique user ID.
+So this ultimately generally called as principal ID.
+Okay.
+So let's say that I want to make sure that whatever the user it is trying to fetch an ID, this should
+be the same user who is authenticated.
+Okay.
+So in basic authentication you are putting your r j and the password 123 right username password for
+basic authentication when hitting any API.
+So first it goes to the filter fetch the authentication object and that authentication object get principal
+authentication.
+It has this let's say id.
+This is the second user username is this password is this.
+Now I want to make sure that this API which is getting it is trying to hit, let's say this user is
+calling an endpoint slash user slash three.
+But this user is unique.
+User ID is two.
+So I should not allow this user to hit the endpoint to fetch the details of some other user.
+So that's why I have put this like, okay, check this.
+Whatever the ID user is trying to fetch in this endpoint is the same as what the principal ID, what
+is this user who is actually authenticated.
+So that way you can also use.
+So post authorize is very very similar.
+So only thing is it does the authorization after execution of the API but before sending the response
+back to the user.
+And what is the interceptor authorization manager after method.
+Interceptor comes into the picture after.
+So we can see this like I have created two users just for testing purpose.
+So I have created a user role password 123.
+And it has role user and order read with the same role and permission I have created be user.
+So in DB it has, uh, a user has unique ID one and B user has unique ID two.
+Okay, now I am creating one controller.
+Let's say read order endpoint slash API slash order.
+So in the pre authorize I have put that user should has role user.
+So here if you see both has role user this is also role user.
+This is also role user and should have authority order read okay.
+So this is a read API.
+Get read API get call orders.
+So they should have order read permission.
+Both have order read okay.
+Now let's come to post authorize later.
+Now what would happen when you hit this endpoint slash API slash order.
+Who is trying to access B user One, two, three.
+It is trying to hit what would happen.
+The first Pre-authorize will interceptor will get invoked.
+It will check does be user has the role user yes.
+Does be user has order underscore read permission.
+Yes.
+Then it will go and execute this.
+So now in this one for hard coded purpose I have created the order DTO and put a user id one.
+Okay.
+And order ID this that this order belongs to user ID one and returning the DTO.
+Now here I have used post authorized annotation.
+So what happened is in this post authorized there is something called return object.
+Return object.
+It could be if you are using a string.
+If you are using any object it internally type casted for us.
+We don't have to do that.
+We only have to use return object.
+So now I am checking that whatever the user who is authenticated and calling the endpoint.
+So here in this be user.
+This be user.
+This unique ID is two.
+So this user should only get its its own order not somebody else order.
+And this order contains for hardcoded purpose.
+I have put that this order belongs to user ID one.
+So now what I am in the post authorize I am checking the return object.
+So this order dto internally typecast for us order dto dot user id dot user id equals to equals to authentication.principal.id.
+So authentication.principal.id for this be user.
+The ID would be this two.
+So this one equals to equals to two.
+No so means this user is trying to access the data of some other user so it return forbidden.
+But if I use the A user, it return me the data.
+Why?
+Because a user principal id is one.
+And here in the hard coded way I put user id one only so they got matched.
+So here, if you see that in the post authorized what I just wanted to tell it access the code and before
+returning to the end user it has intercepted our return object from there.
+Whatever the field, we want to check with the data.
+Okay, we can do that logic and then only it will provide the response to the user okay.
+Okay guys, if you have any doubt let me know.
+We can discuss further more in the comment section.
+Thank you.
+Bye.

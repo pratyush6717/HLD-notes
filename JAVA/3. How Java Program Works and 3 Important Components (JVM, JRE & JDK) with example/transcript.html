@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3. How Java Program Works and 3 Important Components (JVM, JRE & JDK) with example</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
+        .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <h1>3. How Java Program Works and 3 Important Components (JVM, JRE & JDK) with example</h1>
+    <pre>
+Hey guys.
+Welcome to Concept and Coding.
+And in Java Basics to Advanced.
+Today is the second video.
+And here today I am going to cover the Java overview.
+Right.
+So some of the very very important topics which makes the fundamental right.
+So let's start with it without wasting any time okay.
+So let's first start with it.
+What if ask what is Java right.
+If I ask you what is Java then what you should say.
+So we can say that Java is a platform.
+It's a platform independent language and highly popular object oriented programming.
+And you already know what are all the feature object oriented programming as right inheritance, polymorphism,
+encapsulation and uh, what abstraction.
+Right.
+So we have already covered in the first video because we are going to use a lot of terms.
+Oops.
+So you know that one.
+Oops.
+Language has what all capabilities or features.
+So what is Java?
+Java is a platform independent language and a very popular object oriented programming.
+Right.
+And the major advantage the major major advantage of Java is its portability.
+And that's why we call this Voora.
+Right.
+And what does Voora means?
+Voora means write once.
+Run anywhere.
+Okay.
+So what does it mean?
+So let's say you have written a Java program in your mobile, right?
+So this Java program now can be run on a laptop or a desktop or notebooks Box anywhere, right?
+So that's why it is highly portable.
+Language means write once and run anywhere.
+Run anywhere.
+Right.
+So what is Java?
+Java is a platform independent language and popular oops a language.
+And the biggest advantage we call it as a portability, which is wora write once, run anywhere.
+Right.
+So I'll tell you how we get this capability, how Java gets this capability.
+So now we get little bit more deeper.
+So let's check its three main components.
+Three main components.
+The three main components are.
+First is.
+JVM.
+Second is Jar.
+And third is JDK.
+Okay.
+Right.
+So let's first see what is JVM.
+JVM is stand for Java virtual.
+Machine.
+Okay.
+So first of all it's an abstract.
+It's an abstract machine.
+What does abstract mean?
+It means it doesn't exist physically.
+It doesn't exist physically.
+It's a just you can say that kind of a software, but we call it a machine.
+So don't assume that there is certain machine physically.
+No, it's just an abstract machine.
+So now let's discuss this.
+What is the use of JVM?
+So here, uh, if you before you I tell you the usage of JVM, first understand this flow.
+You have a Java program.
+It pass through compiler, It pass through.
+Compiler.
+Then it get what?
+Bytecode.
+This bytecode is passed through JVM.
+JVM convert into.
+Machine code and machine code now can be run read by CPU and we get the output.
+So now if you see that this JVM is very very important because because of this JVM only we get this
+portability.
+We get this portability when we call it a platform independent, right?
+We get it because of what JVM now understand.
+Why?
+Because when Java code is compiled.
+We are not getting machine code directly.
+What we are getting byte code.
+This byte code can be run by JVM, right?
+So let's say so here I would say that VM is it's not platform independent.
+It's a platform dependent.
+C JVM is not platform independent.
+Java program is platform.
+This is platform independent.
+But this JVM is not.
+Or I would say that not platform independent or I would say that platform.
+This is platform dependent.
+Let's say you have Mac OS, then you need a particular JVM if you have window.
+OS, it has its own specification, then you need its compatible JVM, right?
+So JVM is platform dependent in which system you are running, right?
+So it's a platform dependent, right?
+So now when the Java program is compiled right we get bytecode.
+Now bytecode is the input to the JVM right.
+And what JVM does it JVM has JVM has its compiler.
+Right.
+It's called just in time.
+Just in time compiler.
+Just in time.
+Just.
+Just in time compiler.
+So JVM has JIT compiler.
+What it will do is it will take bytecode and convert it to the machine code.
+So now what is the task of JVM?
+Now you know that JVM has first thing.
+It is platform dependent means in which platform you are running.
+So JVM should be very much attached to that one, right?
+Second thing is its input is byte code and output is machine code.
+Now how it is helping the portability now.
+So now if you see that once you have the bytecode, this bytecode is any JVM can read any byte code,
+right.
+So you have written Java program here in mobile phone.
+In mobile phone.
+And you got a byte code.
+Now you can take this byte code and run this into the JVM of certain another system which is Linux,
+let's say or Mac or Windows.
+Any system, right.
+Any JVM you take this bytecode, provide this to the JVM and it would be able to run it.
+So now you see that you have written a Java program on a mobile phone, but you are running on certain
+JVM which is of Linux or Mac, but it enables to run it because JVM understand bytecode, right?
+It able to read it and convert it to machine code.
+So that's why it brings Java portability or platform independent language.
+Java program is platform independent, but JVM is platform dependent.
+So now take this example.
+So I have created a student class right.
+So I'll tell you about this class in uh just after this, uh, once we complete JVM JDK, right.
+I will explain you this proper class.
+We will create one.
+Right.
+But first I wanted to explain you that here.
+If you see that, I tell you that Java program.
+So you have this Java program I tell you that Java program.
+So this is our Java program very small right now.
+So we have the Java program Java program is in.
+What if you see student dot Java.
+So it is like file name dot Java.
+Now let's compile this.
+So how we compile this.
+So we have Java C and we give student dot Java.
+So now here if you see that at before I press enter just see at this site in the source you see only
+student class.
+Right.
+But as soon as I press now enter you will see student dot class came.
+Right.
+So now here if you see that when it pass through compiler, when it pass through compiler it gives us
+the bytecode.
+Bytecode is an file name dot class.
+Right?
+So this is dot class is nothing but a bytecode.
+You can take this bytecode now and run it anywhere.
+Which which machine has JVM.
+Now you can run it this bytecode dot class anywhere which has JVM and you would be able to get the output.
+Okay.
+So you got what is the usage of JVM properly, why JVM makes Java platform independent, right.
+And how the Java program is Java bytecode.
+Bytecode is dot class okay.
+So this is your JVM.
+Now let's talk about JR.
+JR is Java.
+Java runtime.
+Environment.
+So Java Runtime Environment has two things.
+The first thing is it has your JVM and second it has your class libraries.
+So let me explain you this thing now.
+So first it has JVM.
+Second it has your class libraries.
+So you already know about the JVM part.
+Thus now second thing which I wanted to tell you about class libraries.
+So here if you see that the same the same code here.
+So just focus on this class here.
+What I have used here I have used certain libraries math dot absolute.
+So it is coming from this library Java dot lang.
+So these are already created present in Java, right?
+Similarly, let's say I've created an array.
+I sorted it using an existing library.
+Arrays dot sort and I pass it.
+It will sort it.
+So it is present into Java util dot arrays Java util library.
+So there are certain already libraries which are present.
+So like Java dot math.
+Dot util right.
+So there are so many libraries which are present.
+So JRE is a combination of JVM plus libraries.
+So now here if you see that once you have the bytecode right.
+Once you have the bytecode ready now in the JVM.
+So here if you see that in the student dot dot class.
+So it is a bytecode right.
+So now first it will resolve this linking it need to resolve this.
+It need the code right.
+array's dot sort.
+If you go inside it, it has a complete, uh, code.
+Right?
+Which is not aware of us because we are using library already with Java provided.
+But this has to be resolved during runtime, right?
+So what happen is when we say that in JRE, j is what JRE is JVM plus class libraries.
+So in the bytecode we might have we might be using certain libraries.
+So JVM need those libraries which is required.
+So let's say in this code in this student dot class bytecode it might be having a resort math dot absolute.
+But I haven't provided the code.
+So when this bytecode has to be run by JVM it it use this classpath libraries with JRA has right and
+then it will run the complete code.
+So now you can say that if you have only JRA, if you have only JRA, you can run any Java program.
+If you have only JRA, you can run any Java program.
+But you cannot code it right?
+But you cannot code it right.
+Because JRA has class libraries also and it has JVM also, right?
+So if you have a byte code, it can easily run any Java program.
+So any byte code it can run because all the libraries will be resolved for sure.
+Right.
+And one thing is you cannot have only JVM, right?
+You have to have JRE and JVM come as part of JRE.
+You have to have Jerry and JVM come as part of Jerry, right?
+So you got it.
+If you have bytecode and you have JRE, you can definitely able to run it without any issue, right?
+Because JRE has JVM which can work on which can take the bytecode as an input.
+And if any libraries are used inside the code, it can resolve through class libraries because JRE has
+class library class libraries also.
+Right.
+So when.
+That's why we will say that with JRE any bytecode can be run properly, but you cannot write the code
+right.
+So now where we got the third part is JDK.
+Java.
+Development kit.
+With Java development kit you get a programming language like here.
+Now I am writing write system dot out dot println like something whatever the Java code I am writing
+now.
+That is because this feature is present into Java Development kit.
+It has all this language information about it.
+Compiler I did Java C right Java C.
+So this compiler is present into JDK because you know that compiler compiles the Java program into.
+So this is dot Java file.
+And after compilation it will change it to dot class file right.
+So JDK has programming language compiler and debugger.
+You can also debug your code.
+So JDK is equals to j r plus this all these things programming language plus compiler, plus debugger,
+and certain other features.
+Right.
+So if you download JDK you will get JRE also plus all these things.
+And when you have JRE you internally got JVM also plus classpath libraries class libraries.
+Okay.
+And now you already know that jvm jdk j.
+All three are platform dependent.
+Platform dependent right?
+But the Java code which we write once it is converted to bytecode, this is platform independent.
+We can run, we can take it to any system which has JVM and we can run it.
+Or you can say that JRE which has any anything which has JRE, it will able to run it because JRE has
+both JVM plus libraries, because sometime we need libraries also.
+Okay, so now you understand properly, right?
+JVM, jdk, jre what are the differences and why we how they work?
+What like in Java programming how these three things helps, right?
+So that's why we will say that let's download.
+The next step is you have to download JDK.
+Now you know that if you download JDK you will get all.
+You will get JRE.
+Also you will get uh JVM.
+Also because JRE has JVM, you will get all your compiler, programming language and debugger also.
+Okay, now let's see how you can download the JDK.
+Now if you go to Google search for uh, you can search for uh, Java, let's say you want.
+So I think there are still Java 17 are the versions which is present, but you can see what Java version
+you wanted to download.
+Let's say you wanted to add Java eight right.
+You can download any latest version also for sure.
+Right.
+Let's say you wanted to add Java eight download right.
+So you have to go to this Oracle Archive Downloads.
+So go inside this one.
+Here at the this thing you will get windows 6486 Mac OS 64.
+Right.
+So you can download this one and install you can download here and install.
+So I've already done for the Mac OS one I've already downloaded and installed okay.
+So from this one you can download it okay.
+So this is the source of downloading the Java.
+You can download any version okay.
+So once you downloaded it.
+After downloading and installing you can run Java hyphen version to see that.
+Thus you will see that okay, if you do Java eight, Java 15 or Java 17.
+Whichever the latest version, you will see that version.
+Yes, Java is properly installed.
+Okay, so it's a very simple to download from the Oracle itself, download from that Oracle page itself.
+It's an authentic one right.
+Uh, don't download from others.
+So now the next thing after JDK, GR and JVM, the next thing which I wanted to tell you about is about.
+J and J.
+So it will not take much time it just to make sure that in future when you will download somewhere and
+somebody is talking, you will get to know about these terms.
+So don't worry about this term.
+So this JS is nothing but Java The standard edition.
+J e is nothing but a Java.
+Enterprise edition.
+Jwm is nothing but a Java micro, or sometimes people call it Mobile Edition and people.
+I think its name has been changed.
+Now people call it Jakarta EE.
+Okay, so here the currently JSC Java Standard Edition is nothing, but you can say that core Java,
+anything which we are doing right as a developer, you are learning Java, right?
+So JSC is nothing but a core Java.
+Uh, whatever we will do classes, objects, multi-threading and all those things.
+That's all comes in Java and it's nothing but as a part of Java Standard Edition.
+Now here comes the second is J Java Enterprise Edition.
+So J is Java Standard Edition plus certain APIs like uh you can say the transactional API, transactional
+API rollback commit.
+Right.
+All this APIs you will get into Java Enterprise Edition uh servlets JSP, Java server pages.
+So these features you will get into Java Enterprise Edition.
+Right.
+And generally Java Enterprise Edition is used in to for uh, building large scale application like e-commerce
+because you need transactional right rollback commit capabilities.
+Right.
+So and also you need persistence API persistence API.
+Let's say you want to manage relational DB.
+So you need persistent APIs so that are present into G.
+So it's a Java Standard Edition which is core Java plus certain APIs, which features additional benefit.
+Similarly we have Gem, which is nothing but a Java micro Edition or Java mobile edition.
+It provides APIs for mobile applications generally.
+So you can see you will find uh, so very resource constrained, uh app.
+Right.
+Like uh and mobile.
+So there it will help.
+You will find lot of APIs, Java APIs which will be applicable for building mobile applications generally
+running on mobile.
+Right.
+If you are running, uh, this all those features on a mobile then gem edition, you will prefer.
+Okay.
+So see this is just wanted to give you a heads up that uh and anytime you will see okay, you are downloading
+this Java JDK version.
+You will see.
+Jessie J so don't worry about it.
+We are generally working on Jessie Java Standard Edition so you will see like okay Jessie JDK version
+this.
+So it is nothing but a Java Standard Edition, Java Enterprise Edition and Micro Edition Mobile Edition.
+Okay, so this is just for heads up so that you don't get confused with like what is Jessie J and JM?
+Now I want to tell you about the let's write the first Java program.
+Let's write our first Java program and we'll see this.
+Okay I am creating a new I'm creating a new Java class itself.
+Let's say I'm creating an employee employee Java class.
+Right.
+So now here if you see that what is the file name I given employee dot Java.
+So the automatically so generally the class also has the employee as a class name.
+Right.
+So first thing is what?
+First thing is notice file name is equivalent to.
+Class name.
+Whatever the file name you have given, the same class name should be present.
+Right.
+And it should be public.
+A one class can have only one public class A one file.
+You can say that second one file can have only one public class.
+Right.
+Now, before going further now we are going to make a class.
+Right.
+Now let me tell you its structure.
+Right.
+Let's see the class structure now.
+So here the class structure is your.
+So why a class can have variables.
+A class can have methods.
+A class can have constructor.
+A class can have nested.
+Class or inner class.
+So see we will all go in depth in our future videos right.
+You know that like one level deep.
+So we will all go to this one right.
+But generally a class have all these things.
+So I am going to first create a method only with one.
+So here I'm creating one method public static void main args right.
+Now here let's first discuss about this what I have written now.
+No.
+So this is the class generally the class structure.
+So main method.
+Main method is the.
+Starting point of the program right.
+So now let's say you got a byte code.
+You got a byte code.
+So you have a Java program.
+You compiled it.
+You compiled it and you got a byte code.
+Now byte code is read by whom?
+JVM.
+Now what JVM do is JVM calls main method to start running the program, right?
+So that's why we call that main is the starting point of the program.
+Right.
+So JVM calls the main method right.
+And that's why this has public static void main.
+Now let's understand this.
+You know, that main method is the one with JVM calls to start initiating the program.
+Void is nothing but a return type.
+Return type means this method is not returning anything.
+Don't expect any return public is it can be called from.
+Anywhere.
+So generally there are multiple access specifier.
+I won't go in deep like because we have private protected public right default.
+I won't give in deep it because we will going to discuss in the next videos.
+But just understand that public means a program, a method or a variable.
+Anything can be invoked from anywhere, right?
+And this main method has to be invoked by JVM.
+That's why we make it public because JVM has to call it.
+It has to be invoked outside of the package, outside of the directory.
+Right.
+So that's why we make it public and why static.
+Right.
+So again static I won't go in deep because otherwise you will get confused.
+So just understand from this from the first.
+If you have seen the first video where I have, uh, you might have already know about the objects,
+right.
+So now generally if you have to invoke for any class, you have a class and you class A, now you have
+created an object, right?
+Created an object from this class.
+Class A object equals to new a right.
+Generally I will tell you about this how we create an object.
+But understand from this.
+Like for this class, I have created an object.
+And from this object only I can access the method object dot whatever the method name.
+Right?
+But now here.
+Why?
+Static is when you create any method or any variable, static means it is now not a part of an object.
+It is a part of class.
+You can directly access it through the class name.
+You can.
+Instead of creating an object, you can call it.
+Let's say it is a method one something, so you don't need object if it is static.
+If it is static, you can call it by a class name itself a dot method one it will get invoked.
+But if it is not a static then you need an object, and from object itself you will need object dot
+method one.
+Then only it will get invoked.
+Don't worry about static.
+We will go more in deep.
+But you first understand that when we write public static void main, right, you know that main is
+invoked by JVM, right?
+And that's why it is called that the starting point of the program.
+Right.
+Whatever Java code you write hundreds of files and all.
+So from main only it will start.
+Now from here you start calling other class other methods and write your program right.
+But this is the starting point.
+And why?
+Because JVM calls only main.
+And now the second thing is void means it is no return type.
+Public means it has to be open.
+This method is to be open to be called from outside of the package.
+Static means JVM doesn't require to create an object of this class, right?
+Whatever the classes, it can just call by class name, class name, dot, whatever the main method.
+That's why we made it static.
+Okay.
+So that's why public static void main.
+And this is the argument.
+So JVM can pass certain arguments if a user wanted to pass it, we will see later.
+But now let's go more.
+So now here I am writing.
+This is a command line compiler will ignore this.
+So see any any code which has this.
+This is nothing but a comment.
+Also there is one way of also doing this.
+This, this is also a comment.
+And it it can be in multiple lines also.
+Right.
+And I close it.
+So this is also considered as a comment.
+But for this one it has to be for each line.
+You have to give it for each line you have to add this.
+But here starting and anything between this can be considered as a comment.
+Okay, so this is nothing but a comment after you have written the comment.
+Now here.
+What, uh, what happen is let's say I'm creating one variable integer A equals to minus ten.
+Right.
+And now I'm printing system dot out dot println like you can right.
+This is.
+My first program and output of a is plus what would be the output.
+It will print here.
+Right.
+So System.out.println.
+This means it will print this in the console right.
+So it will print this in the console that it will print minus ten.
+This is my first program.
+And output of a is it will print minus ten right.
+So now this is a very simple Java program.
+You have a class name which is name is equivalent to the whatever the file name you have created.
+Then you must have a public static void main, because this is the starting point and this is a comment
+section.
+And whatever the code.
+Now you have to write.
+You have to you can write it here.
+Right now what you will do is we have to first compile this code.
+This is Dot Java.
+As of now.
+Now here, if you see there is nothing like employee dot class because we have to compile it Java C
+we are employee dot Java.
+Now we are compiling it.
+So now it is converted to a byte code right.
+When it is converted to a byte code, now we can take this byte code to any JVM.
+And if we want the JVM to run it we will put Java employee right.
+If you run it, you will see the output of a is minus ten, right.
+So this is here it is.
+I think it is hidden under this one.
+I'll see why it say.
+But here, if you see that it is printing this line, this is my first program.
+And output of a is minus ten.
+Okay.
+So this is our first basic Java program.
+I think you are very much clear.
+You should be clear of bytecode right.
+Dot class files and all those things.
+Now here, if you see that one more thing before going, let's say I change it to 11, I change the
+dot Java.
+Right?
+I changed the dot Java uh, dot Java file and I'm running Java employee again.
+What would be the output output would be again minus ten only because dot class file is not updated
+yet.
+I haven't compiled it again, even though I have changed it and saved it, but I haven't compiled it
+again because JVM reads only bytecode dot class, not dot Java.
+So when I compile it again Java C.
+Employee dot Java.
+When I compile it again and run again Java employee it will print -11 because now bytecode has been
+updated -11.
+Okay guys.
+So I think I hope it is clear the overview right how Java works while Java is now platform independent
+JDK jre JVM how actually Java code is working.
+A small basic thing, right?
+What is the purpose of the main method?
+Because JVM needs it.
+Uh, I have already told you the place from where you can download it, right?
+Download it from Oracle one, right.
+And uh, yeah, that's pretty much today Java Basics overview I hope you enjoyed it.
+We'll see you later.
+Bye.
+    </pre>
+</body>
+</html>

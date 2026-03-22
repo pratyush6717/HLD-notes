@@ -1,0 +1,399 @@
+This site.
+Welcome to concept and coding.
+And in Java we have almost covered everything.
+But there are certain features which has been added into the latest version of Java.
+So from now on I will try to cover those features which has been introduced newly, plus also some features
+which were there in the older version of Java which we have not covered.
+So I would also like to cover those also.
+So I want to start with this Lombok first.
+Right.
+Because this is very popular and highly used in the industry.
+So what is Lombok.
+It's a Java library which help to reduce the boiler code using annotations.
+So during compilation it processes the annotation and inject code into our Java classes.
+So if you talk with any of the engineer who is not working with Java, the first thing they will say
+that, hey, in Java we have to write too much code, unnecessary code.
+Right.
+That is nothing but a boilerplate code.
+Code?
+Apart from business logic.
+So you can say that this project is just an initiative to reduce those boiler code.
+And this Lombok feature is compatible with Java starting from Java six and supports all later version.
+And if you are working in the industry, you might see lot of features in your project.
+So first thing first we have to add the library in our pom.xml.
+So just pick the latest Lombok version and add it in your Pom.xml.
+Now see before I go and tell you what is this just.
+See this example where I am using one of the feature of Lombok.
+But my IntelliJ is showing me the red line.
+Right.
+Means it's some kind of a compilation error.
+It is showing.
+But when I try to run it, it runs properly and printed.
+Hello.
+How come my IntelliJ is showing compilation error?
+But it is working fine.
+It's because Lombok will add the code during compile time.
+I told you, right?
+So Lombok is like we use certain Lombok features annotation and during compilation it adds some code.
+So here what I am trying to do is that I am just using Val.
+I am not using whether it's a string, whether it's an int or what.
+So it determined from the value okay.
+We will see that later.
+So here I am using one of Lombok feature.
+But my IntelliJ.
+But your IDE doesn't know that how to treat this well.
+So that's why it is show compilation error.
+But when you run it during compilation since we are using we have added the Lombok dependency.
+See it.
+So if you see this dot class, file it properly.
+Change well to string right.
+It determined from the value.
+But our ID doesn't know that.
+So for that what we have to do is we have to end the add the Lombok plugin to our ID.
+So if you open your IDE settings, click on the plugins.
+You have to download this Lombok plugin.
+And second thing is that in your build ID settings build execution deployment, there is something called
+annotation processing.
+You have to enable it.
+So these two things, you have to enable it so that your IDE also kind of behave what Lombok is going
+to do during the compile time.
+Now here, if you see that after doing that my ID is not showing any error.
+Okay.
+Because now it is able to see what Lombok is going to do during compilation time.
+How this is going to treat this well.
+My ID is now also aware of that because of this two okay.
+So you have to add the pom.xml.
+Plus not mandatory but would be helpful for you during coding.
+If you add this plugin your ID and enable the annotation processing.
+So with that being said, we are good to understand all the Lombok features.
+So there are so many features.
+So I will cover ten frequently used Lombok features right?
+If you know more there is a proper like list of features available you can go through all right over
+the internet, but I will cover the top ten features used in the industry.
+The first one is well and var.
+So instead of actually writing the type, we can use this as the type of local variable declaration.
+I have marked it at bold local variable only.
+Okay, we will see that type will be informed from the initializer expression.
+So what is the type.
+So currently let's say we are using val some variable name.
+And whatever the expression we will use initialization expression.
+From that it will determine what should be the type of this one okay.
+So that's what this line means.
+And this this one local variable.
+So it can be used only for local variables not for fields.
+Not for parameters.
+Right.
+Only local variables which is inside a block.
+Okay.
+That's what I mentioned in the note.
+Only works for local variable not for fields or parameter.
+So what is the use of val L marks local variable immutable means it will make them final and where is
+just similar, but it do not mark it as final.
+That is the only difference.
+So take this one example.
+So I have created my method.
+Okay.
+In that I have created well a equals to ten.
+Now I am trying to change the value of this a it says that cannot assign a value to final variable.
+Why?
+Because well makes local variable immutable okay.
+Similarly you can use var but it not make it final.
+So you would be able to change its value also okay.
+And here if you see we don't have to worry about like shall I give it any string object whatever it
+will determine from this initialization expression.
+Okay.
+So that was the first feature.
+Second feature was at the rate not non-null.
+So it generates a null check statement and throws null pointer exception if value is null, can be used
+on a parameter of a method or constructor.
+See this example.
+So here I am creating one method and on the parameter I am putting at the rate non null.
+Okay, and I have just put System.out.println.
+This is my Java.
+Now when I compile this my how my dot class looks like.
+So here if you see that my dot class it added this code for me.
+If name.
+Because on this parameter I put non null right.
+So it put a null check if name equals to equals to null, it throws a null pointer exception with a
+message and then else it will put a System.out.println.
+So even though my code looked like this after compilation, the Longbox add new code, right?
+So that's what at the rate non null is used, it is.
+It can be used on a parameter of a method or constructor only.
+The third feature is getter and setters.
+So if you see this right.
+We always have most of our Pojo classes.
+We need to write getters and setters of the fields.
+So there are a better way that we can annotate any field with getter and setter annotation.
+And let Lombok generate the default getter and setter method for us.
+So this is very, very highly used in the industry.
+You will see this a lot.
+So here if you see I have created one Pojo class and these are the fields.
+And on top of them I have put the annotation getter at the setter.
+And here the same at the right getter at the right center.
+Now, if you see the dot class file of this, the Lombok automatically generate for name, it will generate
+the get name and the set name.
+And for committee it will generate the is committee and the set.
+Generally this is the Get and this is generally a set.
+Right.
+So by default generates getter and setter methods are public.
+So here if you see all the getter and setter methods which Lombok generates are public okay.
+But we can also control it.
+How like this.
+So let's say the getter method for name I want a getter method.
+Yes.
+But what is the access level I want private and the setter method.
+What is the access level I want protected?
+Like this.
+You can make sure that what?
+Whether you want to have a private method or protected method or public method.
+Right.
+So now here, if you see the getter for the name is private, the setter for the name is protected for
+the committee member.
+I haven't selected the access level, so by default is public.
+Okay.
+We can also use this annotation at class level two.
+So instead of using at each field, we can use at the class level itself.
+So here if you see this is a class I can use at the class level itself.
+So getter annotation will be applied to all non-static fields right.
+So here in this case I have three fields.
+One is a static.
+So getter field doesn't apply on the static field itself okay.
+And the setter method annotation is applied to all non-static and non final fields okay.
+so for static method also there would be no setter method and for final for final field.
+Also there is no setter method.
+It makes sense right?
+For final fields means you can't change its value, so you don't need its setter method.
+So that's what it says for setter method.
+Even non-static setter method annotation is applied to all non-static and non-final fields only.
+So here if you see it's dot class file you will see I have used or at the class level.
+So for name I will get get name set name for committee members I will get.
+It's kind of a is committee member which is a get and it's set and this is static.
+So for static there is no getter and also for no setter okay.
+And if there is final let's say some variable in some final you will only get its getter.
+No setter right.
+Because Saturn method is not applicable for final fields only getter you will get get method will get
+generated.
+While using annotation at class level, if you want to skip the default generation of any field, we
+can do that by using access level dot none.
+So generally what happens is when you use this annotation at class level, it's like this applied to
+all the fields.
+But you can also control very granular level.
+Let's say that I have used at class level.
+So means at this point of time what it knows that I have to generate the getter and setter for all the
+fields.
+But I can control, let's say, for this field name, I don't want setter method, so I can put at the
+setter access level none.
+I override it.
+So for the name you will got the get, but there is no setter.
+But for committee you get both get and set.
+Okay, so you can use this to make sure that this either setter or getter method is not generated.
+Okay.
+The fourth feature is at the rate two string.
+So it is used to generate the two string method.
+So you might have used in your production code this method which is mostly used for logging right.
+Debugging.
+Many times we need to print what's there in the object, and it is generally mostly used for logging
+and debugging purpose, right?
+But you will see that this method in your code.
+So now we can use this annotation Lombok feature to generate this method for us.
+We don't have to write by ourself.
+So if let's say that on this class It has this two fields.
+Now if I use the annotation at the two string.
+So this is the dot class file.
+What it does is that it generates a two string method for me.
+And what it returns the class name right after that bracket the field name the value comma separated
+another field name and its value bracket close.
+So this is the default way of returning the value of this method.
+Okay.
+But now let's say that hey I have multiple fields.
+For some fields I don't want to insert or print into the logs.
+Right.
+So we can exclude specific fields also.
+So now let's say at the rate two string.
+But committee member you don't want to print into the logs.
+So you can do at the rate two string dot exclude.
+So that will not come.
+Okay.
+Similarly if you want to skip the field name like here it is printing the field name right.
+This is the field name.
+This is the field name you don't want because you know that the size of the locks increase, right?
+Unnecessary.
+So if you don't want the field name, then what you can do is like add the rate to string.
+Include field names equals to false.
+So now here if you see that only value is getting printed no field name okay.
+There is another called explicitly selecting the fields.
+So now let's say that I have put at the rate two string on the class.
+But I have also made that only explicitly included equals to true means only those fields on which I
+have put this at the rate two string dot include, those only will get added or used.
+Okay, so even though I have used at the rate two string at the class level, I have made that only
+explicitly included.
+If it is true then only it would get should be used.
+So we have to use this at the string dot include.
+Okay then next feature we have is that no our constructor required args constructor all our constructor
+from the name.
+It's very clear no args constructor means generate no argument constructor.
+All args constructor means generate constructor with all the fields required args constructor.
+Generate constructor with only final and not fields.
+Now at this point of time, you can.
+Suddenly one question comes to your mind.
+How come in the previously non null we mentioned that it is used only at the parameter and constructor,
+right?
+Not on the fields.
+So I will show you how it's used on the fields, how it is used.
+It is mostly used on constructor only.
+Okay.
+But now I will tell you.
+So see this example.
+So on this class I have used all this annotation.
+Know our constructor.
+All our constructor required a constructor.
+So here if you see I have one name boolean committee member and one non null value.
+So here it says that first it generated a no arg constructor.
+This one.
+Then it generated a all our constructor.
+So all arg mean all three values name, committee member and age.
+Now since age I have put non null right.
+So here if you see generally now it used as a parameter of a constructor right.
+So here it put a null check if A is equals to equal to null throw null pointer exception right.
+Otherwise assign the value.
+Initialize the value right.
+And the third is required our constructor.
+So here if you see required as constructor is only used for final and non null fields.
+So only for this non null age.
+This constructor is created with only age and since age is non null.
+So it puts null check first and then initializes it.
+Right.
+Then next feature which Lombok provide is equals and hashCode annotation.
+I have already explained this equals and hashCode method in this Java HashMap.
+Internal working right.
+What is the contract between equals and hashCode and how internally it works?
+So generally we can use Lombok to create the equals method, a hashCode method for us.
+Okay.
+So by default it uses all non static and non transient fields.
+So see this example on this class I have put this annotation at the equals and hashcode okay.
+And I have also made sure that this committee member I don't want to include it into the equals and
+hashcode method, I want to exclude it right.
+So we can do that.
+The same thing I showed you previously right.
+We can include we can exclude individual values also.
+So I want to exclude it.
+So I added this.
+Now if you see the dot class file generated it created my equals method for me with only this field
+right.
+Statics are skipped.
+And even this one which I excluded that is also skipped, and it is also created a hashCode method for
+me.
+Okay.
+And the code which it generates follow the contract which equals and hashCode method follows.
+So we don't have to worry about that.
+Okay.
+Then there is another feature is called data.
+So data is like you can say that again a shortcut for all this one.
+So it's like plus plus plus plus plus data is equivalent of two string equivalent hashcode getter on
+all fields setter on all non-final fields.
+And it's a required args constructor.
+So here if you see this is my code.
+I have one field name string, one final and one at the rate non-null, and I have just put at the rate
+data.
+And when I compile it, see the amount of code it generated for me, right?
+So what it does, it created one two string method for me.
+So here if you see the two string method is created, the hashcode and equals method is created.
+Okay.
+Now here if you see the getter on all fields so means name age address.
+So get name get age get address.
+Okay.
+The setter on non-final fields right.
+So you will find a setter for name.
+So here you will see setter for name and setter for address.
+And since address is non-null it put a null check first and then initializes it.
+But there is no setter method for the age okay.
+And then required args constructor.
+So required args constructor means constructor for either non-null and final.
+So one constructor for non-null one address and the final variable, right?
+So you can say that at the rate data is just a shortcut for all of this.
+Right.
+And see the lot of code it has generated for us.
+Just our code is just this.
+Similarly, we have add the rate value.
+You can say that it's an immutable version of data.
+So what it does is it made all fields private and final first immutable version.
+So it make it all fields private and final.
+It made class itself made final.
+It can't be subclassed right.
+The setters are not generated.
+Why?
+Because since all fields are made final for final no setter class.
+So no setter methods are generated.
+Two strings and equals and hashCode method generated like data getter on all fields will be generated.
+Now at the rate required as constructor would be applied.
+But since all fields are final.
+Means all fields would be present into the constructor, which is equivalent to.
+Now all last constructor you know write required as constructor only have two kind of.
+Take care of final and final and non null.
+Now since this value makes all fields private and final, so means all the fields would be there in
+the constructor.
+And since all the fields are there in the constructor, it is equivalent to all args constructor.
+So here this is my code and I have put at the right value.
+Now here if you see this is the dot class file.
+It generated lot of code two string equals and hashcode method generated right.
+And the getter method for all It generated the getter method for all.
+And also here, if you see it created a constructor since it made all final private final, right.
+So all final one would be their name age address which is now equivalent to all args constructor.
+Okay one.
+Another feature is builder annotation.
+So in the LED playlist I have told about the builder pattern.
+Right?
+So builder pattern is used for two things.
+One is that we can create object parts by parts.
+Second helps to create object immutable.
+Okay so I have already explained how builder design pattern works.
+So here in Java let's say for this class you have to have a builder pattern.
+All you have to do is this.
+Use this annotation at the right builder.
+If you see dot class, file it.
+Create one builder class for you.
+It creates one builder class for you.
+And here if you see it has like you can set the name, you can set the age and you can create it in
+parts by part.
+The return value is still builder right?
+And later on when you do build then only it creates a ultimate object.
+So that's what we do in the builder pattern.
+So now all this code is generated by this annotation itself.
+So now here all we can do is like test Pojo dot builder right.
+So here is the dot builder.
+It will create a builder object.
+This class which is newly created.
+Now we can set part by part.
+We can set age.
+We can set name okay.
+So age is still return.
+The builder object name, still return the builder object and later on when all created when do call
+build ultimately return the test Pojo object.
+And now once you get the object, can you change it?
+There is no setter value.
+Okay, so here if you see in the test Pojo there is no setter methods.
+So that's why I generally say that builder pattern also helps to achieve immutability.
+We can easily achieve that.
+So if you want to know more about in-depth the builder pattern you can check this video.
+Otherwise, uh, if it is already clear then we can directly use this annotation and our work is done.
+And the last feature which is highly used is the cleanup.
+It ensures that the given resources automatically cleaned up before execution path exit the current
+scope.
+So here if you see this is my Java class I am using an file input stream.
+Want to read some data from the file?
+I am reading it right and here if you see I haven't closed it all, I used it on this input stream I
+just put at the rate clean up.
+Now if you see the dot class file it put try catch finally block for me and in the finally block it
+is closing it.
+So this is taking care of it.
+So any resource which you want to make sure that after the current scope it should get closed, we can
+use at the rate cleanup annotation.
+So these are top ten features of the Lombok.
+There are many which you can go through.
+But if you are going through your live production ready code this ten, you will see very very frequently
+used.
+And if you have doubt with any of this feature, let me know.
+We can discuss further into the comment section.
+Okay guys.
+Thank you.
+Bye.

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>14.Distributedcacheandcachingstrategy</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; line-height: 1.6; padding: 20px; max-width: 900px; margin: auto; color: #0f172a; background-color: #f8fafc; }
+        pre { white-space: pre-wrap; font-family: inherit; font-size: 16px; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
+        .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+    </style>
+</head>
+<body>
+    <a href="../../index.html" class="btn">&larr; Back to Index</a>
+    <a href="caching_notes.html" class="btn">View Notes</a>
+    <h1>14.Distributedcacheandcachingstrategy</h1>
+    <pre>
+Hey guys.
+Welcome to Concept Encoding.
+And this is Shreyansh.
+And today in the high level design topic we are going to do today.
+Yes that is the very important topic that is caching.
+Right.
+So the caching part I have divided into two parts.
+So in the part one I will be covering this part.
+So today I will cover this this part one.
+So here caching strategy and all I will show you with the help of sequence diagram itself.
+So you will never ever forget what are the different strategies available in cache.
+Not in even interviews also.
+Right.
+And then I will tell you what is distributed caching and this cache eviction policies I will cover in
+the part two.
+Okay.
+So this will be the part one and part two.
+So let's start without wasting time.
+Let's understand what is caching.
+So as everybody knows, right?
+Caching is a technique to store frequently used data in a fast access memory, rather than accessing
+data every time from a slow access memory.
+Right.
+So this is a self explanation that caching is a technique where if any data which is used too much frequently.
+Right.
+So you know that, uh, slow access memory could be what, your, uh, hard disk.
+Right.
+Or if you say that your it could be your DB.
+DB access.
+These are slow access memory rather than the fast access memory.
+Could be, you know, right.
+There are different types of, uh, fast access memory like Ram.
+So Ram is much faster than your hard disk and DB right.
+So this is just an example.
+So caching is a technique to store frequently used data in a faster access memory rather than accessing
+every time from the slow access memory.
+That is what actually known as caching.
+Okay, so this makes our system fast.
+Yes, because every time we read the data we are reading from the fast access memory.
+So our operation would be faster.
+So our latency would be very less and our system would be very fast right.
+It also helps to achieve the fault tolerance.
+This is very very important to understand how it helps to achieve fault tolerance.
+And you will get your answer in one of the caching strategy.
+How it helps the fault tolerance that this one right back.
+Okay, so we will cover this in depth like how it helps in achieving the fault tolerance okay.
+So now you know that there are different type of caching present at different layer of the system right.
+So from front end to back end to DB.
+Everywhere you will see that cash is available.
+Uh, I'm not a front end guy, but I am.
+Uh, I know that there is a browser caching available.
+Also that whenever you load a page in the browser also has certain memory where it, uh, stores that
+web pages which are frequently used.
+So same web pages should not be loaded again from the host.
+Right.
+So we have caching at client side.
+And if you know that at CDN also we keep the static data so that over the geographical distributed uh
+users they get the faster content delivery right in load balancer.
+In the previous video, I have already shown you that load balancer also have the cache capability,
+but today I will much more focus on the server side application caching like Reddis, right?
+So this is very, very important which I will cover today.
+Okay.
+Now let's I'm going into that server side application caching, right?
+So here, if you know that, what are the components generally present?
+You have a client, you have a load balancer, you have a server and then you have a DB right.
+So this cache sits behind your server and DB right.
+So let's say if client wants certain information it goes to a load balancer.
+There might be many app servers.
+So one of the app server will get this request from the load balancer.
+Now first App Server tries to read this data right to fetch the data from the cache instead of getting
+it from the DB right.
+So that's where the cache application cache in the server side cache.
+Or you can say that the backend cache.
+Right.
+So you can call it with a different name.
+That's where it comes into the picture.
+So before application directly talks to the DB, it first talks to the cache.
+Hey do you have that data present?
+If yes, give me I will return back.
+If not then app goes and take out the data from the DB.
+Right.
+There are different strategies will come to that soon, but this is where the point where cache sits
+between app and db in the server side.
+Application caching.
+Okay, so now what is distributed caching.
+So before even understanding distributed caching term right you need to understand like let's say if
+you have multiple app.
+App server one.
+App server two.
+App server three.
+Let's say they are using only one cache.
+You have only one cache server which holds the data.
+Write only one CAS server, so you already know the limitation.
+What is the limitation with this?
+So first limitation would be the scalability at a particular point of time.
+You can't scale it right.
+It has limited space.
+Or you can say that limited resources after a particular point of time you cannot scale it more, right.
+The second limitation of this is like a single point of failure.
+If this got fail, then your caching capability gone, right?
+So that's where the distributed caching comes into the picture, right?
+So what happens in the distributed caching is we have a cache pool right.
+And we have lot of cache servers.
+Cache server one.
+Cache server two.
+Cache Server three.
+CAS server four.
+There are so many cache server present into a pool, right?
+And we have a cache client which is known as cache client.
+Right.
+So each app app server uses this cache client right.
+They have this cache client with them.
+And they use this cache line to connect to a particular cache server.
+Right.
+So each app server has its own cache client.
+And using that cache client it will get one of the cache server where it will store the data or read
+the data.
+Now your question should come into your mind that hey, strange how one of the server would be allotted
+to a particular app server.
+How?
+Right.
+So for that it uses.
+Consistent hashing technique.
+And if you have not seen my previous in the high level design from Basics to Advanced playlist, write
+this six number video.
+I have covered the consistent hashing in depth right?
+So please have a look because that will make your fundamental clear like how consistent hashing works.
+Right.
+So I'll just I will just give you here the glimpse right how consistent hashing works.
+But to know in depth please uh have a look at this video.
+Right.
+So you know that in consistent hashing it makes a ring.
+And all this cache servers, right, will be present here on the ring.
+So these are all cache server one.
+Cache server two.
+Cache server three.
+Cache server four.
+CAS server five.
+Right.
+And it When any request.
+So let's say whenever any request comes in of let's say put, I want to put a data into a particular
+cache server, let's say from App Server one.
+Okay.
+So whatever the request comes in.
+So it will get based on the hash right.
+It will get one of the point right.
+And whichever point it will go, it will rotate in a clockwise manner.
+And the first cache server will be allotted to it.
+Right.
+So this is how generally the so it's nothing it's a nothing special about the distributed caching.
+It is actually nothing but a consistent hashing technique right.
+In consistent hashing I called them as a node.
+Right.
+Because it can be any server.
+It can be your DB server, it can be your app server, it can be here.
+In this case it is cache server.
+Now let's come to the major section of this video where we want to know about the different caching
+strategy.
+Right.
+So there are five caching strategy cache aside read through cache right.
+Around cache right through cache.
+And write back or behind cache okay.
+Let's see this one by one.
+And let's see with an example.
+So what is cache aside.
+So let's first read out the definition or this terms.
+Then we'll see with this sequence graph application.
+First check the cache okay.
+So this is your client.
+This is your server or which I'm calling it as an application.
+Okay.
+So application first check the cache.
+If data found in the cache.
+It is called cache.
+Hit means you got the data.
+And data is returned to the client.
+If data is not found in the cache, it is called cache miss and application.
+Then fetch the data from DB, store it in the cache and data is returned to the client.
+Now let's see with this one.
+So now here is the client.
+Client said that hey read any read request any get call.
+Okay.
+Now it goes to the application of our backend server.
+So what it says that first application first read the cache.
+So it this is our first read.
+Get call comes.
+So server will first check.
+Hey cache.
+Do you have the data present.
+Right.
+Then we have an if else condition.
+Whether it could be yes cache has.
+If cache has means it's a cache hit.
+If it's not a if if cache doesn't have the data what it would be it would be cache miss Right.
+So it's an if else condition.
+Let's say cash has the data means it's a cash hit.
+So cash will return it here.
+Right.
+And cash will return it.
+And ultimately it will send the back to the server or client send the response.
+But it is possible that cash doesn't have the data.
+Then what?
+It will do it.
+It will be a cache miss now.
+So this would be our third step.
+Now it become a cache miss.
+Then what it will do is our application or server will fetch the data from the DB.
+Now it will get the data from the DB.
+DB has the data and then it will update our cache.
+Also it will write the data into the cache right.
+So that any further get calls comes so that it become a cache hit.
+Okay.
+There are certain pros and cons of it like so.
+One thing is very clear that it is this approach is good for heavy read.
+So whenever you have an application which is very, very heavy read, then this cache is good for it
+because whenever any Get request comes, we are looking for cache.
+And if cache has the data, it's a cache hit.
+We don't have to go and query the DB, right?
+So this is a good approach when our application is read heavy.
+Okay.
+And the second what is the pro is like let's say if cache goes down this goes down.
+Will it affect us.
+No.
+What it will happen is it will be considered as a cache miss and it fit as a cache miss.
+We will fetch the data from the DB, right?
+But, uh, it is still the request will get success.
+But only thing is, we won't be able to utilize the cache.
+We will not be able to read the cache or write into the cache, right.
+But we can still fulfill our queries from the DB.
+So this is another pro like even cache is down, request will not fail.
+We will fetch the data from the DB.
+And another, uh, you can say that advantage is that the document, the data model which is there in
+the DB.
+So let's say in DB you have a table employee and it has let's say ID then name uh then address okay.
+And then you have another table.
+Uh, you can say that uh salary where it has salary detail or something.
+Something.
+Right.
+So this is your DB okay.
+But what it capability has is in the cache.
+You can have let's say key is your employee ID.
+And the value you can put is like this.
+Any you don't have to have the same structure.
+You can have your own structure that name address salary.
+And inside you can create salary as an object and inside salary object.
+You can have more details, right?
+You.
+Even if there is certain data of which you wanted to put, you can add over here also, right?
+So that's what I'm trying to say is that this cash data structure of storing the data is independent
+of the DB.
+How the DB stores the data, because this application is taking the responsibility of writing into the
+cash application is taking the responsibility of writing into the cash.
+So whatever the data you get from the DB, you can modify it in the way you want it to store in the
+cash, and then you can store it.
+One of the con, you will see that whenever any new request comes in, let's say any.
+So write operation comes in.
+Now here in this cash aside during write operation, are we doing anything?
+Are we doing anything during right operation?
+No.
+Right operation is still writing directly into the DB, right?
+So one thing is that let's say if any write operation comes and it's write some new data into the DB,
+definitely that new data is not there into the cache.
+So any Get call comes for this new data.
+It will try to read from the cache.
+Will it be available.
+No it won't be available.
+It will be a cache miss.
+And then it will fetch from the DB.
+And then it will write into the cache.
+So for new data read there will always be a cache miss first.
+But there is still a problem with this, right?
+So here if you see that there is a chance of inconsistency.
+Now let's say understand this thing how the inconsistency can come.
+So you have a read operation.
+You have a read operation.
+And this is a write operation.
+So now let's say write operation comes, right?
+Let's say this is over my cache.
+This is dot db.
+Okay.
+So now let's say one thing is uh write operation comes is let's say uh, it is putting certain value
+as ten.
+Okay.
+Put it into the DB.
+Fresh.
+Okay.
+Now the Get request comes.
+So it will say that hey do you have this data.
+Just assume that any data employee data anything.
+Okay.
+So it says that hey do you have this employee data.
+No.
+It will go fetch from the DB.
+And then it will insert into the cache and it will let's say put the ten okay.
+Now let's say another request comes into the right.
+Now right is putting let's say 11 of this.
+It is updating.
+It is updating the request.
+So now this DB stores 11 instead of this ten.
+But has this right?
+Make this cache invalidate.
+No, this cache is still valid.
+When any Get request comes, it will check the cache.
+Hey, do you have this employee data?
+It will say yes and it will return ten even though DB has now 11.
+So there is a chance that without appropriate caching is not used during write operation.
+So you have to use certain caching technology or caching strategy at right also.
+Otherwise your read will become inconsistent data between because there is a chance that you have an
+inconsistent data.
+Your DB has latest value and your cache has stale data and your read will get stale data.
+So you got this right.
+How there is a chance of inconsistency between cache and DB.
+So there is very very similar to cache sizes.
+Read through cache.
+This is very very simple.
+Just understand this application.
+First check the cache.
+The same if data is found in the cache, it's called cache hit same.
+Yes, you got the data and the data is returned to the client.
+Exactly same as cache aside.
+Now the third point.
+If data is not found in the cache, what it is, it is cache miss.
+Now, in the cache aside, what we will do is application.
+Take the responsibility to fetch the data and put it into the cache.
+But in the read through cache, the cache itself takes the responsibility to fetch the data from DB
+and store it back to cache, right?
+So here the only difference is that now our application don't have to worry about that.
+Okay, if cache miss I have to fetch the data from DB.
+No.
+So a request comes a Get request comes to our application our application.
+first checked with the cash.
+Hey, do you have the data now?
+Cash.
+Say that cash has the data.
+If it is a hit, then it will return it.
+If it is a miss, it is a false condition.
+If it is a miss.
+This is.
+If it is a miss, then what it will do is now this cash library.
+This is the library.
+Let's say this will take the responsibility to fetch the data from the DB, and whatever the data will
+get from the DB, it will update itself and then it will return to the application.
+An application will return to the client.
+So you got it.
+So earlier fetching the data and updating the cache was taken care by the application of a server.
+But here the whatever the cached library we are using, it takes care of fetching the data from the
+DB and updating itself.
+So pros good approach for read heavy read application.
+The same thing because it is also for the read and whenever read request comes it first check with the
+cache.
+Second, the logic of fetching the data from db and updating the cache is separated from the application.
+If there is a cache.
+So now if for from the server perspective.
+From your application perspective, you don't have to worry about it's cache hit or cache cache miss.
+I have to have a certain unique logic of okay, if it is a cache miss, do this.
+All this logic will be present into inside cache library.
+Whatever the library you are using, uh, you can have added over there that now it will fetch the data
+from the DB and write into the cache.
+Okay, but what is the cons?
+There are con also, it is similar to the cache aside any new data, there will always be a cache miss.
+Second, without any write operation there is a chance of inconsistency between cache and DB.
+Another con is the cash document structure should be same as DB table.
+You can't define your own cash structure now, right?
+Whatever the DB has.
+So let's say DB has this employee table.
+It has 20 fields the similar kind of document.
+Also let's say whatever the employee ID is your key.
+The same kind of deal would be present here with all the 20 fields, the same document.
+Right.
+So it would be now 1 to 1 mapping with your DB table.
+You can't have your own cash document structure kind of thing okay.
+So that is your read through cash.
+Now let's see what is right around cash.
+So this is which will help in both.
+So inconsistency problem I told you right.
+And both are cash aside and read through cash.
+So generally I told you, right.
+They use they have to be used with certain right operation.
+That is what it is right around cash.
+So in right around cash, if we directly write data into the DB, right.
+We don't even touch the cash.
+We write directly into the DB.
+Okay.
+But write it.
+Do not update the cash, uh, document.
+Or you can say the cash data, but what it does is it will make cash invalidate.
+Or you can mark as dirty.
+It will mark it dirty.
+So now let's say any write request comes in okay.
+So write request comes in.
+Let's say uh put write or any patch comes in.
+So what it will do is it will first directly write into the DB.
+So now let's say cash already has value ten Already has ten.
+Same.
+So this is your get call comes.
+It connect with cache.
+Any let's say put or patch or post comes.
+It will connect with directly DB.
+So now any Put request comes that hey change the value of this 10 to 11.
+So it will directly write to db.
+It will directly write to db.
+So it will change it to 11.
+But what it will do is it will invalidate the data to the cache.
+So what it will do is it will also mark this.
+Hey this is now your dirty.
+So there is something called dirty flag.
+So it will make it true.
+Hey this is now dirty.
+Don't read it.
+So during get call it will check.
+Okay.
+Hey.
+This data which I'm about to read.
+Is it dirty or not?
+If it is dirty, means this data has been changed.
+Then it it's.
+It will be treated as a cache miss and it will read from the DB and then put the latest data.
+Okay.
+Okay, so what is the advantage?
+It is again good for heavy read application because this is used with heavy read only.
+Otherwise there is of no use of write around, right?
+It has to be used with read heavy application and it has to be used with certain either read through
+cache or cache aside cache.
+Right?
+Alone.
+This cache strategy is of no use, right?
+It resolves the consistent inconsistency problem between this.
+What is the disadvantage for new data?
+Read.
+There will always be a cache miss.
+The same thing because I am saying you this is just helping the read through cash or cash aside are
+strategy only.
+So whatever the disadvantage it has that cash one.
+It is still the same problem, right?
+Every time get request will come, it will be a cash mess only.
+Right?
+Because new data is not even present.
+Because let's say if new data is coming post and it is something putting new data, it is not even touching
+the cash, right?
+It is not putting that new data here.
+It is just putting it to the DB.
+So forget it will be a mess only.
+And one more thing is if DB is down your right operation will fail.
+So currently your right operation is totally dependent on DB availability.
+If, let's say your DB wherever your data center is it there is a disaster and your DB goes down.
+Will your right operation works?
+No, it will try to right into the DB, but DB is now down.
+It won't be able to write it.
+So your write operation is not fault tolerant.
+Right.
+So currently your is your write is fault tolerant.
+No, your write is not fault tolerant.
+Because when DB is down your write will also fail.
+Okay.
+So this is the disadvantage of this one.
+Now let's say one more write through cache now.
+So what is right through cache.
+So now you are with the name itself.
+It is clear right.
+Passing through something.
+Right through.
+So first thing is first write the data into the cache.
+And then in synchronous manner write data into the DB.
+So now let's say request comes.
+Hey write something.
+Let's say post request something.
+New data.
+Now our application what it will do is it will first write into the cache okay.
+So now cache will always have the latest data.
+Right.
+And after that it will right into the DB.
+So now DB is also have the latest data.
+So now let's say you have cache you have DB right.
+And let's say post request comes let's say put ten.
+Just assuming that okay I need to insert ten.
+So what it will do is it will first insert into cache and then it will insert into DB.
+If any of them insertion got failed you have to throw the exception right.
+So both should pass if db insertion got fail, or if cache insertion got fail you, we have to fail
+the transaction.
+That's why I said in the asynchronous manner we have to write the data into the DB.
+Let's say you have write the data into the cache and in a synchronous in synchronous manner you have
+to write the data into the DB.
+Let's say DB failed.
+You have to now roll back the whatever you have inserted into the cache also.
+So what is the Pro cache and DB always remain consistent.
+Because if success is there, it has to be success.
+If this got fail, it has to be rollback also.
+Right.
+And let's say if cache itself got fail we will fail the write operation itself.
+Second is cache hits.
+Chances increase a lot.
+Now here if you see that even for the new data, even the new data is now present into the cache, right.
+So whenever any new Post request comes in, it added the data into the cache, right?
+The first time it added into the cache, it added into the DB.
+And whenever the Get request comes, it will find the data now.
+So now if you see that what the advantage where we have that for the new data there will always be cache
+miss.
+Now in the write through cache it would be because even for the write operation it insert the data into
+the cache.
+Okay, so but there are certain cons also.
+First thing is alone it is not useful.
+Now let's say you are inserting the data into the cache and the DB.
+Will you be using it alone?
+No.
+You have to read.
+You have to use it with either cache aside or read through cache.
+Then only you will get an advantage of it.
+Otherwise it just like we are adding a latency.
+Earlier we were just writing into the DB, now it right through cache.
+We also have to write into the cache so only latency will get increased.
+If nobody is there to read the data from the cache, what would be the advantage?
+So write through cache alone.
+We can't use it.
+We have to use it either with read through or cache aside.
+Second two phase commit need to be implement means.
+I told you that right?
+Either both should be success or both should be fail.
+It should not be like cash success and DB fail, right?
+Then we can't keep the data into the cache.
+Otherwise it will have the latest data and it will.
+Since DB failed, it has the old data.
+Then it would be an inconsistency issue.
+So we have to implement the two phase commit where like if cache success db success okay.
+If cache success and db fail we have to roll back the cache also, right?
+So either both will success or both will fail.
+That's all.
+That's what two phase commit say.
+So we have to make sure that another thing it is still not fully fault tolerant.
+If DB goes down or cache goes down, what will happen?
+Our write operation will fail.
+If DB goes down, will it be able to write into DB?
+No, if it not be able to write into the DB or write operation will fail.
+And last, you can say that very important write back or behind cache strategy.
+So we first write data into the cache.
+The similar to through we first write data into the cache.
+But when we write data into the db write we will not write into synchronous.
+We will write into asynchronous manner.
+So let's say first client warns us that hey this is my post request.
+Add something new data.
+Now our application will first write into the cache.
+Now let's say our data is present into the cache.
+Now instead of writing data into the DB write I am not dependent on db.
+Now I.
+Let's say I push the data into the queue write and from this queue maybe later I will read it and then
+put the data into the DB in a synchronous manner.
+Right now here, if you see that now I am not no more dependent on DB.
+Let's say even if DB goes down for two hours, I am okay.
+Let's say my cache turnaround time is let's say 24 hours.
+So means till 24 hour DB is down.
+I am able to fulfill the request from the cache because cache has the data.
+And once the db come back from queue, I will read it and write it into DB.
+So it will bring your fault tolerance.
+Now you have certain tolerance level.
+What is the pro good for?
+Write heavy application.
+So one of the advantage you will see right.
+So our write API latency goes down.
+Because earlier what we were doing is from we were writing into the DB right.
+As a normal flow write operation right into DB.
+Now we are not writing into the DB, we are just writing into the cache.
+Writing into a cache is faster than writing into a DB, right?
+And then we are not waiting to write into the DB, we are just publishing a message into the queue.
+Hey, you take care of writing into the DB in a synchronous way.
+Okay, but by the time we have write in data into the cache, we have already sent success response,
+right?
+We just published the message and in the US this will this task will be async manner.
+It might take certain time.
+We don't care.
+As soon as we insert the data into the cache we are good.
+We will send a success.
+The cache hit chance increase a lot.
+Why?
+Because cache always has the updated data.
+Whenever any write post put comes, cache will get updated, so it will always have the latest data.
+So during Get request the it will get the data from the cache itself, the cache itself.
+It has the latest data, gives much better performance when used with write through cache.
+Yeah.
+So this one just I want to add like again using it alone.
+Yeah.
+It is a benefit that even if DB goes down my system would still be up.
+My write request or post request will not go fail.
+There is an advantage, but still the real advantage comes when you will use either with cache aside
+or read through cache because you are inserting the data into the cache, right?
+If somebody can read from it, then you will see that your whole system read also will become much more
+faster.
+So that's why it gives much better performance when used with read through or cache aside cache.
+But there are certain cons of it first.
+So this is not a con.
+So this is a pro.
+Even when DB fails, write operation will still work.
+So this is a pro itself.
+So this is not con This is your pro then con.
+The disadvantage is let's say now just see this.
+You have a cash, you have a DB and that say this is your certain Q.
+So let's say your time to live of data.
+So here you wanted to put ten.
+So cash has the latest data.
+And in Q you have let's say I want to put ten into the DB.
+But DB doesn't have any this data yet.
+And time to live is let's say I have put three hours here in the cash.
+So okay.
+So now Q when Q was trying to put this data into the DB, now let's say DB goes down right?
+So Q will wait, Q will just wait it and it wait for DB to come back.
+Let's say but let's say DB is down for five hours.
+Right.
+So five r DB is down.
+So after three hours what will happen after time to live for this cache is three hours.
+So after three hours this data will be removed from the cache.
+DB is still down because it is down for five hours.
+So after three hours still it is down.
+So DB doesn't have the data.
+All the application which has read this data.
+Let's say if they are trying to do certain operation on top of it.
+Will it work?
+Because now this ten is not available in the cache ten is not available in the DB.
+Right.
+So this is problem can comes certain kind of issue can come.
+So these are the caching strategies which I have wanted to cover in depth and cache eviction policies
+I will cover in the next video of the part two.
+Okay guys, if you have any doubt, feel free to ping me in the comment section or please connect with
+me on LinkedIn.
+Right?
+We can discuss more.
+Okay guys.
+Thank you.
+Bye.
+    </pre>
+</body>
+</html>

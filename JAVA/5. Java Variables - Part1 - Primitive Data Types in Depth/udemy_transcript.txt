@@ -1,0 +1,812 @@
+Hey guys.
+Welcome to Concept Encoding.
+And today I am going to cover variables in the series of Java.
+And this is very very important because I am going to cover so many topics in might be couple of videos.
+Right.
+Uh, but this is you can say that it will create your fundamental right.
+And so many interview questions comes on top of it.
+So we have to cover so many topics, very, very important topics.
+And let's just start without even wasting any time.
+So let's start with what is variable okay.
+Variable is a container which holds a value.
+So you know right.
+Anything container.
+Let's say this is a container which holds a water.
+So similarly in Java variable is nothing but a container which holds a value.
+And how do we declare it.
+We declare in this way data type.
+For example my one of the data type is integer.
+Let's say variable name.
+Variable name is nothing like uh, whatever the container name you want to give, let's say I want to
+give a name where right then the value, what value it will store.
+So integer holds let's say 32 or 50.
+Any any integer variable.
+So here what I have done is I have created a variable of data type end.
+And what value it is storing 32.
+Okay.
+So variable is a container which holds a value.
+So this is a now my container which is holding a variable 32 okay.
+So Java is a static typed language.
+Static type language.
+And it is also strongly strong typed language.
+When somebody asks you hey can you tell me what is Java is a static type language or not?
+Or is Java is a strong type language or not?
+For both.
+The question answer is yes.
+Java is a static type language.
+Java is also a strong type language.
+What does it mean?
+So C static type language means in Java.
+Whenever you create a variable here I have created a variable var you have to define its data type.
+You have to define its data type right.
+So I have to define its data type like here I have created integer right integer where.
+So this is what this is its data type.
+What does data type tells.
+Like what kind of data it will store.
+So here it is.
+Integer tells that it can store integer numbers one, two, three, 4567.
+Like this.
+Right.
+So this is known as static type language because every variable has a data type which tell what kind
+of data it can store.
+Then Java is a strong type language.
+What does a strong type language means?
+Now you have defined a data type integer.
+Now you know that you can assign a value.
+One, two, 300.
+Anything.
+But can you define.
+Can you assign any value?
+No.
+It we can define within a range for each data type.
+We have a range between which we can assign a value to this variable.
+So we have a restriction.
+Or you can say that we have a limit on the value which can be assigned to this.
+We cannot assign like 123456789 ten 1112.
+Such a big number to this.
+So it can only be specified within a range.
+We will see what is the range of let's say integer and different data types.
+But the strong type language means we have a restriction like what value we can assign to this variable.
+Okay.
+So I think you understand uh what is the static type language and what is strong type language okay.
+And this is how we define a variable data type.
+What is the variable name and the value.
+Now let's see some of the naming variable naming convention.
+So this is the variable name right which you are going to use or which you are going to come up with.
+Right.
+Let's say here I have come up with variable.
+So there are certain naming convention which we have to follow in Java.
+First of all variable name is case sensitive.
+So means this.
+And this is different right.
+So variable name is case sensitive int a is different.
+Int a is different right.
+This variable name means this variable name is different.
+Second variable name can be.
+Any legal identifier means it can contain Unicode letters and digits Unicode letters.
+You know right.
+What does Unicode means?
+Universal code.
+Universal code I think can contain all language characters.
+Right?
+All language.
+Maybe different languages we have.
+Right.
+Apart from English.
+So all the different special characters which we have, right?
+It contains those letters also.
+So it can contain all Unicode letters and digits.
+Right.
+Let's say a, b a, let's say dollar underscore.
+So this can be a part of your variable.
+Variable name can start with dollar underscore and letter.
+So let's say I'm creating a variable name of data type integer.
+And what is the variable.
+Name it let's say underscore dollar sign where this is valid underscore where this is valid.
+Where it is valid it is starting with character.
+It is starting with underscore.
+It is starting with dollar.
+All three are correct.
+But let's say nine where this is wrong.
+It cannot start with a digit, but only with this three letters.
+It can start dollar, underscore and letter variables can not be Java reserve words.
+So Java has certain keywords like new to create a new object class to create a class for loop while
+loop, and let's say even the data types integer float character, we will going to see.
+So this Java has reserved it right.
+So we cannot use that as a variable name let's say I.
+So this is a data type integer I cannot use this as a variable name.
+This is a reserved for Java right.
+Even though it is containing letter only.
+But this is a reserved word.
+There are so many reserved words you will like.
+Even if I mentioned here right, you will forget like so.
+As soon as you work with Java, you will automatically know what all the reserved words in Java variable
+name should be all small if it contain only one word.
+Otherwise camel case should be followed.
+What does it mean?
+I mean by here is that say I am creating a int.
+Let's say I'm creating a city name Jaipur.
+So Jaipur is only one, uh, one word, right?
+So I have to keep it one small.
+Everything is small Jaipur.
+And it's an integer data type.
+Let's say I'm assigning two, But let's say it is two words.
+Then I have to follow camel case, let's say integer Jaipur city I have to write.
+So it should be Jaipur city two.
+So it's a camel case.
+So start with the small and whenever the another word going to start make it capital right.
+So this is the standard of giving a variable name for constant variable name.
+It should be defined in capital letter.
+So don't worry about what do you mean by constant variable name.
+Because it is in my list.
+Because this is constant I will define you in in detail, but understand this.
+Keep this in your back of the mind as of now, that whenever we have to define a constant variable name,
+it should be defined in capital letter, right?
+Let's say I am defining a, let's say a static final int.
+And now I'm defining Jaipur.
+So don't worry about this.
+We will discuss in later.
+Right.
+But this makes this variable constant means this value cannot be changed now.
+So whenever we are defining a constant variable, it has to be defined in a capital letter and understand
+that one that this is not the convention naming convention which we follow in Java.
+Okay.
+So now you know what is variable, how to create a variable and what is the naming convention.
+And I think you are clear with the static and strong type language.
+What does it mean.
+Okay.
+Now let's start with types of variable.
+Types of variable.
+So in Java we have two types primitive type and reference and non primitive type.
+So I will cover this in next video right.
+I'll cover this in next video.
+So today in this video I'll most concentrate on primitive types right.
+So there are total eight primitive types with eight primitive types.
+You have a variable character byte, short, int, long, float, double, and boolean.
+Okay.
+So let's go ahead with the first character.
+So character is two bytes right 16 bits character representation of an Ascii value.
+And what is the range.
+Range is this.
+So now let's understand with this one.
+So we have two bytes two byte means eight bits.
+So
+1234567812345678.
+So you know right one byte is of eight bits.
+So it is of two bytes right.
+So what is the range 0 to 6 5535.
+So two raised to power zero two raised to power one two raised to power two.
+Similarly I think this would be two raised to power.
+15 so that will come to this one, right?
+If you add one one, one one all plus it will come to this 65535 0 to 6 5535.
+Is the range right.
+So what does character is character representation of an Ascii value.
+Now now let's see an example of character right.
+So let's say I am defining a one character is where here a right.
+And now you can print where.
+So it will print a.
+Now I am running this code.
+It will simply print what a right.
+If I give 65 you know right in Ascii.
+In Ascii we have this number.
+And what is the character representation.
+Even if you give 65 it will print a capital A, right.
+I think 97 is a small a 97 is small a.
+97 is a small a.
+So here if you see this is how we can define and you can even assign an integer value to it, but it
+will internally take its character representation.
+Right.
+So now if you see the character right now you know that.
+The range of it is this one you like for each number, even if you assign a number, right, 32 or let's
+say 64, 64 is at the rate 65 is A, 66 is B.
+Like this is how Ascii is, right?
+I think first one is zero.
+Is this only 0000.
+So for each number there is a character.
+So that's why range can be 0 to 6 265535.
+That is this one.
+So this is the character representation and this is the character representation.
+And this is the range 0 to 6 553565535 would be f f f f right.
+So the default value is character is this.
+This is the starting null.
+I think this is known as null null not null null.
+This is a default value of character zero right.
+So now you know that how to define a character right.
+Now let's go with the byte.
+So byte is as you know one byte right.
+Only eight bits.
+12345678.
+Right.
+It's a signed second complement.
+I'll come to this now.
+This is very important to understand.
+But first let's see its range.
+What is its range.
+Minus one.
+28.
+Two.
+One.
+27.
+Default value is zero.
+So you know.
+Right.
+Bite.
+Uh.
+So this is all.
+You can say that it is your integral type.
+Integral type means you can assign values like one, two, three, minus four, minus five.
+Like this.
+Right.
+Integer type values you can assign to.
+So I see I told you right in the character.
+Also you can assign the value 35 so its character representation will be printed right.
+Similarly for byte short and long for this you can.
+It's an integral type.
+This is your.
+Fractional or floating type.
+And this is your boolean.
+So we will come to this later.
+But currently we are doing this right.
+So byte is eight bits.
+It's a signed second complement which I am going to tell you now.
+And what is the default value is zero.
+So what is this range?
+-120 to 127.
+So how so?
+See eight eight bits.
+Right.
+One byte, eight bits.
+So 12345678.
+Which is two raised to power zero two.
+Raised to power one two raised to power two two raised to power 3242.
+Raised to 526271248 1632 64 128.
+Right.
+This is two power zero and all these things.
+Right.
+So here what is the maximum value it can have is maximum value.
+It can have is if it is all 111111111.
+So mean 128 plus 64 plus 32 plus 16 plus eight plus four plus two plus one.
+So generally maximum it is 255 right 0 to 255.
+But byte short all this one byte short int long.
+All are signed.
+Second complement.
+Signed means.
+Negative numbers are also allowed.
+So now understand this signed one very very important.
+Lot of confusion happen to the candidates here.
+So understand this properly and any doubts feel free to ping me on comment section.
+I'll reach out soon.
+So now you know that maximum is 0 to 255.
+But it's a sign means partial is negative.
+Partial is positive and that's why its range is -120 to 27.
+Right.
+So 12345678.
+So when it is signed means this bit.
+Last bit if it is zero means it is positive.
+If it is one means it is negative okay.
+So now let's say you have to define let's say three as a negative.
+Let's say.
+Let's see why it is called second complement.
+Signed.
+Second complement.
+Okay.
+So I'm just for simplification.
+Uh, instead of eight bytes I am taking an example of four, uh, eight bits.
+I'm taking an example of four bits.
+Consider it's a four bit.
+Now I want to represent plus three how you will represent.
+So you know right.
+This is 1248.
+So positive three how you will define it.
+1100 right.
+1100 is your positive three how you will define negative three?
+I told you it's a sign right.
+If it is a negative means last one is one then is it like this.
+This is three and this is negative.
+Is it how we define minus three.
+No minus sign this second complement right.
+So how we define is like this.
+So we will take a second complement of this one.
+Let's say positive three is 0011.
+If I want negative three I need to take its second complement.
+So first complement would be one is zero one is zero zero is one zero is one and plus one.
+To get a second complement it's 1011.
+So minus three is represented as this.
+So now if you do plus three minus this your three plus minus three it should come as zero right.
+This is generally how the addition works.
+Right.
+So now if you plus this 0011 and this minus three 1101 it should come zero.
+If you plus it it should come
+011101110111011101.
+I have explained you, for example, write for simplification.
+I am taking a four bits example, so only four bit.
+We will consider the extra.
+We will uh it will lose it.
+Right.
+So let's say if byte is eight bits.
+So if it is coming as nine so ninth bit it will ignore only eight bit it will consider.
+So.
+Similarly for this example I considered four.
+So it will only consider four.
+And if you see that it's zero okay.
+So since it's a sign right so means negative and positive are there.
+That's why -128 to 127.
+Right.
+This is the range eight bit.
+So I think maximum could be 0 to 255.
+But since it's a sign negative is also allowed.
+So that's why it is now divided -128 to 127 which is nothing.
+But if you add it 128 127 it would be 225.
+So that's how the range is.
+So what's the default value of byte is zero?
+Okay.
+So here let's say if I am taking an example here, uh employee I am creating a bite where I am not defining
+anything right.
+I'm just printing here System.out.println.
+Well, right.
+And from the main method I am calling that employee class.
+Don't worry about this.
+This one I will explain you in the non-primitive type.
+I'm creating an employee object and in the object I'm calling the dummy method.
+So in the dummy method what we have a byte variable which if you see that we haven't defined anything
+0 or 1 anything, but we are just printing it.
+So what it will print.
+It should print.
+It's it should print its default value.
+Default value is zero.
+Right.
+See default value is zero.
+Okay.
+So this is one thing.
+And always remember this thing, right.
+This default value is only assigned to.
+Class.
+Member variables.
+And this is let's say I'm defining another local variable right.
+And now if I'm trying to use local variable it shows an error.
+It says that hey assign it assign some value.
+So default value only works with the class member variable.
+So don't worry about it.
+The types or the kinds of variable class local static I will cover this soon, right?
+But always remember that the default values is automatically assigned to the class member variables
+only.
+For others like say local, you have to manually specify the value.
+Let's say seven, right.
+So that you have to define.
+Then only it will take.
+Okay.
+Now let's say short.
+So short is nothing.
+But it's also an integer right.
+But byte is one.
+One byte short is two byte which is 16 bits.
+It's again a signed second complement.
+The range is this.
+So I think uh now you now know right how to compute a range based upon a bit.
+And default value is zero.
+Now let's come to int.
+Int is the same for byte which is a 32 bits again assigned signed two complement which you know what
+does it mean.
+Range is two raised to power 31 to 2 raised to power 31 minus one.
+Right.
+Because it's a signed right.
+So negative values are also allowed.
+Default value is zero right.
+How you define it int variable name.
+And you can define anything 100.
+Right.
+Short is like similarly like short variable assign anything, let's say 200 something byte.
+You have already seen the example.
+Similarly long long is eight bytes, which is 64 bits, right?
+Again, assign second complements means negative numbers are allowed.
+Range is two raised to power minus two raised to power 63.
+Two two raised to power 63 minus one.
+Default value is zero.
+Right.
+And how you define a long.
+It's long.
+You can have like a number let's say 500.
+And you can have l also here.
+Let's say in main class itself.
+Let me have this one long where equals to 100.
+Just define L like this right.
+It means it's a long variable right.
+And System.out.println.
+Just to print it.
+Right.
+Okay.
+So whenever you have to define as a long, just add L after a integer variable, it will be considered
+as a long.
+Okay.
+Now let's come to.
+So now you know that till now here character byte short and long.
+So all are integral type.
+All are integral type means you can assign numbers like -23 plus means 2400.
+Now we are going to discuss float and double which is fractional means we are going to have a non decimal
+numbers right.
+So here if you see that float float is 32 bit IEEE 754 values.
+Double is 64 bit IEEE 754 values.
+They are going to store a fractional value like float variable equals to let's say 63.20.
+So it can contain a decimal number.
+Now similarly it will have double and you have to keep it after it F.
+Similarly here double let's say variable.
+Let's say 63.2 0DD for double here.
+So we have to define like this.
+So now here float and double.
+Both contain a decimal value.
+But remember this is very very important.
+And even the experienced Java developer get confused with this.
+And I know that you engineers are very curious.
+What is IEEE 754?
+So just check out the next video of it.
+I have explained in depth how the float and double works, but let me show you.
+Okay, so here let's say I am taking a float variable one.
+Let's say I'm taking point three F right float.
+Let's say variable 2.1 f.
+Now I want to do a A subtraction, uh, let's say in the variable three, I want to put point three,
+uh, instead of where one minus where two.
+What should be the output here.
+Let's see I'm printing three.
+So expected is point three -0.1.
+It should be 0.2 right.
+What.
+Let's see the output.
+.200002 okay.
+Now what happened.
+Point three I have defined point three variable I have defined point one.
+But when I subtracted both I was expecting point two.
+But why it is showing 0.2000002.
+Similarly will happen for the double.
+Also.
+That's why we always says that we never we never use float and double to encode.
+In your industry.
+Let's say you want you are very, very particular.
+You are very, very particular about decimal.
+You are very particular about decimal.
+Then do not use float.
+Do not use double, instead use big integer.
+So you know right.
+In any company which deals with currency right currency.
+And even if you want to care about decimals like two decimal only right then don't use float.
+Don't use double use big integer.
+Right.
+So this float double.
+And why we need to use big integer.
+So this is the next video you can check just after this one okay.
+So you will get more in depth of this float and double in the next video.
+Now it's a boolean.
+Now let's see.
+Boolean.
+Boolean is your.
+You can say that it just only have two values.
+It's just true and it's false.
+So Boolean is your only two values either true and false.
+Right.
+So here if you see that it is generally known as one bit true or false right.
+So that's very simple Boolean.
+Right.
+You can have it.
+You can define it.
+Boolean variable name true or false.
+And what is the default value.
+Default value is false.
+So all primitive data types are clear character byte short and long.
+So this fives are your integer integral type means you can assign values, right?
+Float and double is your fractional.
+And then you have a boolean which is nothing but a true false non primitive.
+I will cover in a separate video.
+Right now let's discuss.
+So type of variables I have we have covered boolean and this primitive type.
+We have covered reference type.
+We will see in to the next video.
+Floating type just the next video in depth.
+You are going to see this.
+Now let's see the kind of variables the kind of variables.
+And this is important.
+But before this kind of variables let me first go through the types of conversion.
+This is very interesting topic.
+Types of conversion.
+So here so now let's understand the conversion first.
+Now let's do the first automatic conversion which is also known as.
+Widening or Automatic conversion.
+So here you know right byte is your one byte, short is two byte, integer is four byte long is your
+eight byte.
+Similarly your four and double right.
+So from lower data type to higher data type it do automatic conversion.
+Automatic conversion is for example you have integer, you have a variable equals to ten.
+And now you have long it's uh let's say long.
+If I assign where integer one it do automatically conversion.
+Now this even though it's I defined as an integer, but now it is properly assigned because it do.
+Automatic conversion.
+It automatically converted this integer to long.
+Let's say you have.
+For example, I have taken example of byte by byte.
+I have defined a variable x is ten and I have integer.
+Let's say I have defined a variable name as int variable is and c.
+Now I am assigning what value to integer variable x and I'm just printing System.out.println int variable
+int variable.
+So it will print out properly ten.
+Right.
+Why?
+Why there is no issue.
+There is no issue because automatic typecasting happen.
+Automatic widening happen because this is byte is only one byte.
+Integer is four byte.
+So it can properly control or properly take care of its values, right?
+So whenever you go from lower to higher.
+Automatic conversion happens.
+Right?
+Whenever you go from lower to higher, automatic conversion happens.
+Now let's say.
+Downcasting.
+Or explicit casting.
+Similarly, if you go from opposite.
+I'm saying integer variable equals to ten or let's say 128 or let's say ten, for example.
+Then I will tell you then I'm taking a bite byte variable as integer variable.
+Now if you see that it will not work.
+Let me just print the statement byte variable.
+Now if you see that it will not work.
+Why?
+Because now we are coming from longer data type integer.
+As for data type, byte has only one data type.
+When you come from longer data type to shorter data type, then automatic downcasting doesn't happen.
+You have to manually typecast it.
+The typecast is to byte.
+Now if you print it, it will print ten properly.
+Okay, so it will print ten.
+But it has one issue.
+Let's say integer has value 128 you know, right.
+What is the range of byte.
+What is the range of byte?
+Range of byte is -128 to 127.
+So definitely even though you are typecasting it, it will not contain 128.
+Right.
+Because its maximum value it can store is 127 itself.
+So when when you are forcefully typecasting it downcasting it explicit, what it will do is what value
+it will come.
+It will come -128.
+128 -128.
+So see, it has still 127.
+Now you are trying to store 128 and you are saying that, hey, no, I want into the lower data type
+itself.
+So what is the extra after 127 one is extra one 2127 and 128 has only one digit more extra, right?
+So it will again go from kind of a loop from start after 127 it go from this.
+So plus one it will go to -128.
+If it is 129 then after 127 it will go to plus one start from start -128 and then 127.
+So it will print -127.
+So this is one of the you can say that limitation of doing a downcasting which we have to be care when
+we do it.
+Now let's see.
+So now you know what is automatic conversion or downcasting.
+Now let's see promotion during expression.
+Promotion.
+Let's understand with this example.
+Let's say I have a bite a which is 127.
+I have a bite B one.
+I have a bite sum a plus b a plus b.
+I am printing sum.
+So now here, if you see that bite A has 127 value, bite B is one.
+Hey then if I am doing a summation then we know that okay bite range as we already know that okay.
+Bite range is from -128 to 127.
+And we are trying to do 127 plus one.
+So it should be -128 itself right.
+Because we are storing in bite.
+No.
+Because what happened is during an expression when we cross the range from 127 is the range of a byte
+right when we cross its range 127 plus one 128.
+As soon as we cross its range, we become 128.
+What it does it it do internal promotion.
+Internal promotion is let's say now this has been converted to your integer.
+So your byte short all converted to your integer.
+Right.
+Both byte and short converted to your integer.
+So now here 127 plus one is become 128.
+As soon as it reaches the top limit of this here byte, because here both are byte byte right.
+This is also byte.
+So the maximum range it can have is like 128 byte has only one 127 so now 128 reaches this limit, so
+it do promotion to the next byte and shot.
+Both are promoted to integer.
+So now this is known as promoted right.
+So if you want to solve it either you take it into integer and then print it right.
+Otherwise if you want it to byte itself you have to do explicit downcasting to byte.
+Now if you are doing R to typecasting to the byte, then you know that it will become -128 127 plus
+one -128.
+Right?
+Otherwise, if you are, do it only in promotion it will print 128 right?
+It will print 128.
+So this is known as promotion.
+And also one more thing I want to tell you about promotion is in an expression, if one of the data
+type is higher then all this is converted to the higher one.
+So this is integer.
+And let's say this is a double.
+Double where uh let's say 20 d right now I am doing an expression uh integer.
+Let's say sum equals to a plus double where.
+Now here if you see that this is an error because if in an expression this is known as expression,
+you know.
+Right.
+Expression like any uh this a plus b n2 this thing arithmetic expression.
+So any expression this is integer this is double.
+So now which is the larger data type out of this integer.
+And double definitely double right.
+So the whole expression is now type casted to the promoted to double itself.
+So the output which we will get it would be in double only.
+So it cannot be taken into integer.
+If you have to taken into integer, you have to do type casting int, right?
+Otherwise you have to take it into double.
+Right.
+It would be 34 plus 20 and 0.0 something.
+54.0.
+Okay so promotion you are in it.
+And also I have also told you the explicit casting during expression.
+Right.
+Uh, so the if any of the expression has higher data type like integer plus double variable, right.
+The whole expression is type is now internally promoted to double.
+But if you want an integer variable type you have to typecast this one.
+External casting.
+So I think this type of conversion is clear right.
+Widening narrowing promotion.
+And this one.
+Now a wrapper class I will cover in with the Non-primitive primitive type with in that video.
+Now let's comes to the kind of variables.
+Let's take this example.
+I'm defining a variable.
+Let's say I this is member variable.
+I'm taking an integer data type right.
+Then this is a method.
+Inside a method I am taking one.
+Let's say I'm taking another data type as byte local variable.
+This is your local variable.
+Let's say it is storing 100 right?
+Then another is called static.
+Let's say I'm calling a static.
+This is a static variable right.
+And then you have it right.
+Let's say 100 And right.
+So this is a static variable.
+Member variable.
+Local variable.
+And also let's take this example as another wide dummy method.
+Two.
+And now having having a parameters integer let's say a integer b.
+And I'm doing returning something a plus b just dummy method.
+Okay.
+So this is integer parameter.
+So this is you have a method parameter you have here local variable.
+This is your static variable.
+This is your member variable okay.
+And there is one something called constructor variable right.
+Constructor variable.
+Let me also tell you so you know that constructor and all we will come into detail right once we go
+more into that one.
+So constructor has the same name of a class name there also.
+So this is default constructor which has nothing.
+We can also define as constructor with parameter.
+Let's say integer a right.
+And it has parameterized.
+P parameterized constructor.
+So these are the kind of variables.
+So now here if you see that this is known as member variable.
+Member variable.
+Understand what is member variables.
+So let's say first.
+Member variables.
+Member variables is let's say you have a class employee.
+And like you have defined int member variable equals to ten something right.
+Or maybe some other like some variable assign.
+Or if you even do assign you know that for member variable default value is assigned to zero.
+Right now when you create an object of it, employee object one equals to new is the keyword through
+which we can create an object employee.
+I created an object.
+I created another object employee object two equals to new employee.
+I created two object.
+So when two objects are created of an employee which is object one object two.
+So each object has its own copy of member variable its own copy of member Variable its own copy of member
+variable.
+So this object one can work on its member variable.
+It can have any value.
+It can have some other value.
+So they have their own copy of this one.
+So this is known as your member variables right.
+This is known as your instance or member variable.
+Then local local method.
+Local variable is like which you define inside a method.
+Here in this class I have defined a local variable 100.
+So here if you see that this variable is only present inside this method.
+After this method, this is finished after this.
+So let's say somebody calls this method and this local variable is created.
+If you see that once this method is finished, this local variable is also finished.
+Right.
+So that is known as local variable, which are created inside a particular method and its scope is within
+this, within this brackets itself.
+Then there is something called class variable or static variable.
+This is also known as class variable y.
+This is known as class variable because here if you see that if it is normal, not an static, each
+object has its own copy.
+But if it is static, let's say class employee.
+Let's say it is static.
+Integer.
+Uh, let's say variable equals to let's say ten right now here.
+If you see that even if you created two object object one, object two.
+So now this variable.
+Right?
+This is only one copy exists.
+One copy exists of variable equals to ten.
+Both will access to it.
+That's why it is known as class variable.
+And if object one has to access it it will access it via class name employee dot where.
+Similarly employee dot where.
+So it's that's why it is known as class variable or static variable means this variable is related to
+its class.
+This or it is not shared among objects.
+So let's say I have created a static variable which has 100, right?
+And.
+I am creating a student inside this.
+I'll let me create first two objects.
+Employee object one equals to new employee Employee object to new employee.
+So now I've created two objects.
+And if I print.
+Object one dot.
+See here.
+Now this is a static variable.
+Can I access the static variable through object?
+No, I told you already.
+Right.
+It is.
+Static variables are associated with class.
+You cannot access with static.
+Variable is not even there.
+But you can access through employee class name dot static variables.
+So now here if you see that.
+It will print only ten no matter how many objects you created.
+This class, this object static variable object is related to this class.
+That's why it's known as class variable.
+No matter how many objects you created, only one copy exist.
+If you want to any object want to access that access through class name, but each object member variable
+has they have.
+They have their own copy like object one dot member variable.
+Similarly, object two also have their object two also have their member variable.
+Okay, so they have their own member variables, but static variable only has one copy.
+Okay.
+Now let's see.
+Do you know right.
+Member variable static variables.
+Now let's see local variables also you know.
+Now see the method parameter.
+So whenever the method parameter is whenever you create a method you can also pass this variables.
+This is known as method parameters.
+What value it can hold whatever like the caller will have.
+So let's say here in the student class if I am calling, let's say object one dot dummy method two and
+I pass two comma five.
+Two comma five.
+So now here A is assigned with two and b is assigned with five.
+So this is known as method parameter.
+And another is constructor.
+So constructor is let's say when I'm creating an object new employee this c if you see this this is
+an when it is used in while creating a new object.
+So here if you see that it is an default constructor.
+But if I want to assign a value, also pass a value.
+Also I can send ten.
+Then it will call which constructor this one.
+So it is parameterized constructor.
+And here also we can define a variable.
+So these are the different kind of variables which you can tell.
+Member variable.
+Static variable local variables method parameters which is also can have like kind of variables in constructor.
+Also you can set a variable right.
+So focus on this variable first constructor and all.
+We go more deep, right?
+Even in the methods.
+Also, I will have a separate video methods.
+Right?
+In that time I will discuss the constructor, but I wanted to just mention where all this data types
+and variable can come.
+Okay guys.
+So now till now we have covered most of the topics.
+So now this is will come in second video only floating types then reference type wrapper final.
+And this one I will cover in the next part of the variables video.
+Okay guys, I hope uh, I know that this is a long video, but go slowly and I try to cover as much
+depth as I can, right?
+I go through again, if you have any doubt, feel free to ping me and I will cover this hole in the
+next session.
+Thank you.
+Bye.

@@ -1,0 +1,656 @@
+Guys welcome back to the channel.
+And today in microservice topic we are going to cover Load Balancer.
+So let's start without wasting any time.
+So we all know what load balancer is.
+Generally it helps in distributing the traffic to multiple instances of a server.
+Right.
+Which helps in preventing single server from being overloaded with huge traffic.
+This is very, very basic definition of load balancer, which we all know, but things got more interesting
+when we go into its type.
+So generally it's of two type server side load balancer and client side load balancer.
+So in server side load balancer what generally happen is it has centralized load balancer right.
+So here if you see this is your client let's say this is our Spring Boot app.
+This is our Spring Boot app which we have written.
+Now we are calling a dedicated you can say that a server which do the role of load balancing.
+So it has a centralized load balancer.
+Okay.
+So our client do not contain any logic of load balancing.
+Okay.
+So it calls a dedicated load balancer server which does and forward the request to one of the service
+requested service.
+But in the client side load balancer what generally happens is load balancing capability present inside
+the client.
+The caller itself okay.
+So here if you see this is what we are doing today and this is what we have done in the service discovery
+if you remember.
+So this is our spring boot application which we have developed let's say.
+So what it does is it first invokes service discovery.
+Let's say it says that hey give me all the instances of service a now service discovery.
+Return the list of all the possible instances available for the service.
+A now this client holds the logic of the load balancing.
+Either it could be a library or either it written its own logic, but client has the logic.
+Client does the load balancing and pass the request to one of the server.
+Okay, so that's the difference between server side load balancing and client side load balancing.
+And this is what we are going to cover.
+Client side load balancer.
+Server side load balancer when we cover API gateway nginx.
+Right.
+So that time we can cover it okay.
+So client side load balancer is something which we are going to see.
+So the prerequisite is the service discovery.
+Because if you remember in the service discovery when we use fake client right in the client it automatically
+it automatically internally uses load balancer in case of service discovery.
+Okay.
+So we have to know the service discovery before we start with the load balancer.
+So that's a prerequisite.
+You can check in the playlist.
+So let's start with the client side load balancing with Rest template.
+Because if we understand the Rest template then for either Rest client, faint client web client whatever
+you are going to do, the load balancing logic would be same.
+It not going to differ.
+So in service discovery topic previous video, we have seen that after we have set the service discovery
+the rest template, we fetch the list of instances using discovery client object.
+We have already seen that right.
+And then client is manually choosing the instances from the list and invoking the endpoint.
+See if you can recall from the previous video service discovery one.
+So I am showing you an example of rest template, not pink line.
+Okay, so in the rest template, if you remember, we were first creating the object of Rest template
+inside a configuration which we have auto wired it.
+Okay.
+Now here if you see we are using an object of discovery client.
+With discovery client we are fetching the instances of this service product service from Eureka server.
+Hey Eureka server, give me all the instances of this product service.
+Once you get it.
+And here if you see this is we were choosing like you can say that this is a very bad, uh, load balancing
+algorithm.
+We were always picking get zero.
+But this is just an example that, hey, after you get all the instances, we have to have a load balancing
+logic and we have to pick one instance and call it Okay.
+Use that host and port number.
+Okay.
+So if you can recall this one here, we haven't used any load balancing capability.
+Now okay.
+So here we are fetching it.
+We are writing our capability.
+And we are then invoking a particular server.
+So we can use Spring Cloud Load Balancer which is spring cloud load balancer is your client side load
+balancer.
+Okay.
+So spring cloud load balancer.
+There are more client side load balancer like Netflix Reborn which is I think deprecated.
+Now it's deprecated.
+So spring cloud load balancer is something which is frequently used.
+And Istio uh service mesh that is also very frequently used okay.
+So we can use any of the client side load balancer which we want.
+So now here, if you see if we have to use the Spring Cloud load balancer into the above this Rest template,
+what we can do the first thing first we have to add an dependency of the load balancer spring cloud
+load balancer dependency.
+We have to add in our Pom okay.
+Now the second thing is.
+We have to annotate where we are creating an object of Rest template.
+We have to annotate with at the load balancer.
+Why?
+Because this annotation tells the framework that hey, intercept the request, intercept the request
+and call service discovery.
+Get an instance and apply load balancing algorithm.
+So there is something called load balancer interceptor load balancer interceptor.
+So this class will get invoked.
+Okay.
+So this is the purpose of this annotation.
+It tells the framework that add this interceptor.
+Okay.
+We will see that.
+So this is one thing is we have to annotate our Rest template with this annotation.
+Another difference you will see that earlier we were using discovery Discovery client.
+Right now you don't need discovery client itself because this interceptor internally will call service
+discovery fetch and instances do load balancing and call one server.
+Okay.
+So you don't manually need to do that.
+All you have to do that is just provide the name of the service which you have to invoke.
+Okay.
+So I have written into the Application.properties the HTTP product hyphen service.
+Now I am not using, let's say one 92.80 .60.3.
+Hey, call 8082.
+I am not using the hard coded host and port number.
+Right.
+I have just invoked that hey product hyphen service.
+This is the name of the service.
+I have given into the application like here for this order application I have given the name order.
+I order hyphen service.
+Right.
+Similarly for the product service I have given that name.
+So I'm using that name which service you are going to invoke.
+Okay so the same here.
+This is the URL.
+Okay.
+So this HTTP colon product hyphen service.
+And this is the URI relative path which we have to invoke.
+Now this will get resolved by our load balancer.
+Okay.
+So now here if you see lot of things become simpler for us okay.
+We just have added the dependency and just tell through this annotation that Intercept.
+Intercept the request and use load balancer interceptor.
+Now here we don't have to do the calling of the service directory service discovery.
+We don't have to put an algorithm for choosing one of the particular service.
+All internally got handled.
+But the question should comes to you now.
+How what algorithm how we can change it that we are gonna see it.
+Okay.
+So if you face any doubt with the rest template like hey, you are not able to understand this.
+So I would say that like please go through this rest template first.
+Right.
+And I even I have shown the in-depth of this Rest template framework, how the control flows whenever
+we do this one right.
+Get for object in the rest template.
+What exactly happened?
+I have already explained in depth.
+So the thing is, once you put this at the rate load balance annotation.
+So in this framework, I am just assuming that you have already seen the Rest template video and you
+know this how internally it works.
+So in the Rest template flow, when when we used to call the execute method, that's where the interception
+works.
+And that's where first this will get invoked.
+Load balancer interceptor dot Java.
+At this point of time.
+Okay.
+So before execution of this first this interceptor.
+Now get invoked.
+Now here if you see if you debug this interceptor code, you will see this piece of code where it try
+to dose this two thing.
+So first it does load balancer client factory get instance for this service ID.
+What it does it will pick the load balancing algorithm for you.
+It will pick the load balancing algorithm like a round robin Urban or random whatever.
+So it will pick one load balancing algorithm for you first.
+Okay.
+After that it calls load balancer dot choose request.
+So internally it calls service discovery.
+Pick one instance based on the above load balancing algorithm.
+So internally it calls service discovery.
+Get a list of instance.
+And whatever the load balancer algorithm you have got using that it will pick one instance of it.
+Okay.
+So all this code logic is present inside this interceptor.
+Okay.
+So there are different types of algorithms present into load balancing like I have already covered into
+this playlist.
+If you go into the playlist you will see I think around 18th video.
+Like we have discussed a lot of algorithm, round robin, least connection, IP hash, At least response
+time.
+Random.
+So I'm not going to cover what exactly the algorithm does that is already present into the playlist.
+But today our main purpose is to understand that how framework does it.
+Okay, so if you see this line again where it picks the load balancing algorithm, this is very, very
+important.
+We have to understand it better because remember when you are about to code it, I am pretty much sure
+you will face lot of challenge because of this service ID because of the service ID so understand this
+service ID concept properly.
+This gonna help you when you write it right.
+This is I'm from based on my experience.
+I'm telling you lot of engineers get stuck this how it's working.
+Okay.
+So we will look at this a little bit better where this line Choosing the load balancer for us, it will
+choosing the load balancer right for us.
+So one thing question comes to our mind is what is the service ID getting passed.
+Okay.
+And what is its purpose.
+Why and what its purpose.
+So one thing is this service ID is nothing but a client ID, or you can say that client name.
+So here in this case like a product hyphen service is also known as service ID let's say order hyphen
+service.
+This is my application name right at you can say that Eureka server.
+We have used this application names.
+So this are known as service ID okay.
+So each why we are passing this client name or service ID to this load balancer.
+Remember that each load balancer algorithm is attached to a service ID.
+So now let's say that this is your application.
+Just understand that this is your application.
+Now you have a dependency on product.
+You have a dependency on sales.
+You have a dependency on some x, y, z application.
+Okay.
+So I have given its name product hyphen service.
+I have given it a name sales hyphen service.
+Similarly x y z hyphen service some something something.
+So these are the application name.
+Remember that load balancing algorithm is for attached to a specific service.
+So for this service I am using round robin.
+For this service I am attaching it with random.
+For this service I am attaching it with let's say weighted algorithm.
+So whatever the algorithm of a load balancer is attached to a particular service.
+Always.
+Okay.
+So this gonna help us.
+Very.
+This is the main concept actually.
+We will see that when we will override it.
+Right.
+This is where the challenge comes that hey how why this product service is important.
+It is important because whatever the algorithm we are picking load balancing algorithm, it's attached
+to one of the service.
+It's not like I choose a round robin.
+Now it's round robin is for product service also sales service also this also no it's always get attached
+to one of the service okay so we will see that more.
+But at this point of time only this thing keep in at the back of your mind that yes, whatever the load
+balancing algorithm we are picking, it is attached to one of the service.
+Okay.
+So each load balancing algorithm is attached to a service ID.
+Service ID is nothing but a client name like Product Service.
+By default, Spring Cloud Load Balancer picks round robin load balancer.
+So this is the default load balancer algorithm.
+We can change it for a specific service for all the service.
+Also we will see that how.
+But this is by default for all the service okay.
+No matter how many service you add for all the service round robin get attached round robin for product
+service, round robin for sales service, round robin for XYZ service okay, so for each service round
+robin load balancer is the default algorithm is chosen.
+So if we are not going with default algorithm, if you don't want to go with round robin Then we need
+to define for which client or service ID which algorithm we need.
+Again, it's just a different way of saying that each algorithm load balancing algorithm is attached
+to a particular service ID.
+So we have to tell okay you don't want to go with round robin.
+What algorithm you want to choose.
+But for which service?
+We have to tell the both.
+Spring Cloud Load balancer supports only two algorithm round robin and random.
+Okay so here this is the class hierarchy.
+If you see that this is one of the load balancer round robin load balancer.
+And this is the another random load balancer.
+We can if you need more or different you can.
+Create a child class.
+You write a custom load balancer and use it.
+We will see that how we can do that.
+Okay so but by default only two algorithms are present into the spring cloud load balancer round robin
+and random.
+If you want different algorithms like weighted least connection, then we need to write either custom
+or we need to use different, uh, library, maybe Istio with sidecar.
+It has wide variety of algorithms present inside its sidecar.
+Okay.
+So now your requirement is that, hey, we want to use random load balancer.
+I don't want to use round robin.
+We want to use random.
+How we can override it.
+So very very simple.
+Okay.
+This is same like, uh, the configuration I am just creating an object of Rest template.
+And while creating a Rest template object I have annotated with at the load balance so that my load
+balancer, uh, interceptor can catch it.
+And here.
+Exactly same like, uh, no difference Friends while invoking it in the application.properties no difference.
+I have provided the base URL which is this.
+Here I am using the service name.
+Now the difference which comes in that first in your application, let's say this is my order application.
+In the order service application we have to put load balancer client annotation okay.
+In this load balancer client annotation we tell that hey for this service product hyphen service, this
+is the configuration which we have to use okay.
+So this is very very specific for the load balancer okay.
+So now here if you see I have provided a load balancer product client config load balancer product line.
+This is very very specific.
+Just see it right again load balancer client.
+This client is for name is product service.
+So I am writing this config very very specific for this product service.
+Very very specific for this product service.
+Okay.
+So I have written this configuration.
+And now here if you see I am creating reactor load balancer.
+So I am creating from this hierarchy.
+You know that uh all this round robin random these are the hierarchy.
+So it returns the object of this one reactor load balancer okay.
+So I am returning now random load balancer I am returning now random load balancer.
+But slowly understand it.
+What exactly happened.
+So first by first let's start it from here.
+This config this load balancer product line config is different from this normal config class.
+Here I have created this configuration class, right?
+You already understand that when you start an application, when you start an application, what would
+happen is this bean will get created at the time of startup, correct?
+This is different.
+This configuration is lazy.
+This configuration is different.
+Load balancer configuration is different.
+The configuration again I'm saying the configuration which is associated with load balancer client is
+different from the normal config class because normal config class like above where we are creating
+an object of rest template, right?
+Like this.
+This get invokes at application startup only all the beans will get created.
+But this load balancer client config right?
+This load balancer config whatever you will define the config here for the load balancer invokes at
+runtime two.
+So whenever you are going to invoke this right http colon product hyphen service some relative path.
+Whenever you are trying to invoke this endpoint product hyphen service.
+At that point of time, this configuration will invoke also.
+Okay, at that point of time it will decide what is the load balancing algorithm you are picking.
+Why?
+I will tell you the reason for it also when we will go for the global.
+Okay, but remember this.
+This is very important.
+This config differs from the normal config because this configuration load balancer configuration invokes
+at runtime two okay.
+So that is first part.
+The second part is now here.
+If you see when I am creating a random load balancer, this random load balancer constructor takes two
+parameter one is service instance list supplier, another is service ID.
+Okay.
+So now here this is the.
+This will return me an object of service instance list supplier.
+This one.
+So what is the use of this service instance list supplier.
+This object service instance list supplier is actually the one which helps to invoke the service discovery.
+So using this object using this supplier object service instance list supplier using this object we
+invoke the service discovery okay.
+And for what what name what server we have to ask for instance is this one product hyphen service.
+So that's what it gives us.
+A lazy object means it's not called now okay.
+Whenever we call it, whenever we required it, then only it's object will provide it to us.
+So it give us an object lazily.
+That's what generally it does.
+So the first thing it does is it provides an object of the service instance list supplier.
+Using this we will invoke service discovery for which instance?
+This instance product service.
+Now the second is this product service.
+Why we need this.
+I told you each load balancing algorithm here I am picking random load balancer is associated with a
+particular service ID or client name.
+So that's where.
+So this random load balancer is now associated with this service ID.
+Only when you are invoking this product service then only random load balancer is used.
+Otherwise it is not used.
+Okay.
+So again very simple.
+Uh we have to first annotate it with in your application load balancer client annotation.
+We will provide a name for which service which configuration has to look for.
+So product hyphen service go for this configuration.
+Okay then here we have defined that which load balancing algorithm has to be used.
+Okay.
+That's all.
+Okay.
+So this is only will not needed.
+But now the question comes is what if for product service I want algorithm A for order hyphen service
+I want something x y z.
+I'll go and for all I want algorithm B okay.
+What I'm trying to say is that what if you have different different requirement.
+Let's say for service one I want algo a for service two I want algo B.
+But for all of the service.
+Service three.
+Service four service five I want some default algo.
+Default load balancing algo.
+Same for all.
+How we can do that?
+Again.
+Very simple.
+The same thing.
+Now we have one more annotation called load balancer clients.
+Not earlier.
+It was client.
+Client.
+Now we have is clients.
+So the client here has two parts.
+One is default configuration okay.
+And another is inside a value.
+We can provide comma separated different load balancer client.
+So now let's say that one I have provided similarly at the load balancer client for product service.
+This is the configuration.
+Similarly comma separated you can put load balancer client name order hyphen service.
+What is the configuration you want to put.
+Give it.
+Okay.
+So different different configuration we can give for different different service if required.
+Different algorithm.
+Because here I can use random algorithm for order service I can in this configuration I can use some
+different algorithm for rest of the service.
+I want default right.
+So what is the default configuration I want to use.
+Let's say this is the load balancer global conflict class okay.
+So this is the first place where we have to define that for each service one.
+What is the algo algo generally defined in a configuration class.
+So for service one what is the configuration class for service two what is the configuration class and
+default.
+What are the configuration okay.
+So this is the first thing.
+So now here if you see that I will tell you the first the global config.
+This default one right.
+Default one I will tell you.
+So now here if you see this is first part.
+And in this global configuration what we want to do is you recall one part one is each for each product
+or each service ID like a product service order service.
+No matter how many service you have in your application, which you are dependent on or sales service
+like for each one.
+For each one, load balancer algorithm would be mapped.
+What algorithm have to be created?
+Okay.
+So now here if you see that now let's say that for product service I have already defined that go for
+this load balancer product line.
+So this is the first first child client config will load it then the default one.
+So it has an order.
+So first all the child's.
+If there are more child load balancer client that been will get created.
+After that the default one will get created.
+Okay.
+So now let's say that for product service it goes to this particular load balancer product line config.
+Okay there it's we have already seen that how we can attach a particular algorithm to a product service.
+But now let's say for these two I want common algorithm like a default.
+Or even if I have more x, y, z service for all these three my service I need one common algorithm,
+one common algorithm for this one.
+So while defining while defining a new round robin load balancer, I told you that it's attached with
+a particular service ID.
+Now this is dynamic right?
+We have order service.
+We have sales service.
+We have XYZ service.
+We can't hard code it at this place.
+We can't hard code it, right?
+It is dynamic at runtime.
+That is one of the reason.
+If you remember, I told you all the load balancer configuration loads at runtime, like which service
+you are invoking.
+Okay, now let's say that you are invoking order service at runtime.
+So at runtime from the environment it will get a property name.
+So this is will give you the service ID dynamically.
+And now like similarly I can create an object of a round robin load balancer.
+Like whatever the algorithm you want to pick I can create a round robin load balancer algorithm and
+I can put a service ID.
+I don't have to hard code it now.
+Okay.
+So I put a service ID and this is the same here.
+Service ID are used which is used for service discovery that hey use this.
+Call the service discovery for this service ID.
+Okay, now when you are trying to invoke sales service with this dynamic runtime, it will get a context.
+Get this config.
+Invoke this.
+Now this service id would be sales hyphen service.
+Now this algorithm now also attached with this service ID also.
+So for each service id it will have this bean.
+Okay.
+So this is how global configuration we can write.
+Okay.
+Now you can ask that hey why you have put at the rate conditional on missing bean.
+Remember that.
+Here if you see at top.
+We have one global config.
+We have a global global config in which we are dynamically finding out a service id.
+Okay.
+And then we are creating a round.
+Robin load balancer algo and attach that service ID with that.
+And we have one product service also in that configuration we we hard coded IT service ID because it's
+a specific for product service.
+But there we are creating a random load balancer algo.
+So we have to we have to make sure that duplicate product service is not created.
+So at runtime now let's say you are trying to invoke HTTP colon product hyphen service okay.
+At this point of time now we have two configuration, two load balancer configuration, one is global
+and one is specific for product.
+Okay.
+So I told you that the first priority is for the internal one.
+The child one before it goes to the global.
+So first it will get invoked.
+This configuration will get invoked.
+And when this configuration will get invoked it will create a load balancer algorithm and tied with
+the product hyphen service.
+Now after that internal according to the ordering.
+Now global will get invoked.
+Now dynamically.
+If you see that dynamically it will find out it's a product hyphen service.
+And it will try to create a round robin algo.
+So for one service two algo will get attached and you will get an exception runtime exception.
+So to avoid that runtime exception we have to add that.
+And we have to tell that hey, if already a load balancer algorithm is chosen for a particular product
+service ID, don't go inside it.
+That's all.
+Okay.
+This is required in the global because we have a specific configuration for the particular service.
+And we don't want that in the global.
+Also its load balancer get created or get mapped.
+So we have to tell okay.
+Only in case of missing been go inside it.
+If been is already present for that product service don't go.
+Don't go inside it okay.
+So product service already got run and we have already seen that for product service we are using random
+load balancer and we have hard coded it.
+We know that it is specific for product.
+But in the global we can't hard code it right.
+So that's why we are using this environment.
+And you already know that why it's load balancer configs are run at runtime maybe at runtime.
+This is not much helpful because during application startup we know product service is present.
+This is the service.
+But for global this is important because we can't hard code it.
+So at runtime we need to know which service we are trying to invoke.
+And for that service it creates a.
+Load balancer algorithm.
+Okay.
+So now question next come is what if you want to write your own custom load balancer.
+You don't want to use round robin.
+You don't want to use random.
+You want to write your own custom logic.
+So if you understand this hierarchy like these are interfaces reactive load balancer, reactor load
+balancer, reactor service load balancer.
+And these are the concrete classes round robin and random.
+So we have to create a child custom load balancer just inside this okay.
+And we have to provide an implementation of this choose method.
+So that's what I did.
+So here I provide my custom load balancer.
+Created a child of reactor service instance load balancer.
+This one child of this.
+Okay.
+And here I have a constructor.
+The constructor take two part like we have seen like in here.
+If you see like new round robin load balancer it does constructor take two parts.
+One is your service instance list supplier object and another is service ID the same thing, the constructor
+which requires service instance supplier and the service id.
+And we have to provide an implementation of the choose.
+So this is where what it does.
+So this is the first using this object service instance supplier I am doing get if available internally
+it will call service discovery.
+Once you get the instances for each instance okay.
+Like uh you can do an load balancing algorithm if instances are not null.
+So now here instances are present.
+We have to pick one of the instance so we can write custom algorithm here.
+So currently I'm picking only first instance get zero.
+But you can write your custom algorithm.
+Okay so this is the choose method which does this thing okay.
+So round robin you can debug the choose round robin.
+Go to the round robin load balancer class.
+Check its choose so it first does the same thing.
+Get if available which calls the service discovery.
+You get the instances.
+And for those instances you are doing a round robin algorithm performing in random.
+It just called random method.
+Now if you write a custom logic after you get the instances, if you got zero instances, you return
+empty response or throw exception.
+If you got instances, pick one instance based on your algorithm.
+Now, once you have written this.
+Now let's say that for product service I want to use this algorithm.
+How to do that.
+We know right in the first in this application startup we have put load balancer client give name equals
+to product hyphen service and whatever the configuration is this okay.
+In our application order service application and inside the config load balancer product config, we
+can now tell that hey this is the load balancer.
+Use this.
+The first one is we have to runtime during runtime right.
+So we have to provide an object here and the service.
+So you got it right.
+So this is how internally the load balancing happens.
+You can write your custom load balancer you want or by default is round robin.
+You can change it to Two random to a particular service or to all the service.
+The major, major, major problems or difficulty comes into the global only global and per config.
+We only have to understand the importance of service ID because these conflicts runs at runtime when
+you actually from your service, when you are actually invoking product, service or sales service at
+that time, the particular service config get invoked.
+Okay.
+So that is important.
+And you can change the algorithm which you want.
+I have already told you, you can uh, know that if global and specific conflicts are present, you
+make you have to make sure that, uh, duplicate uh, for one product service or one service two algorithm
+is not, uh, created.
+So we have to also handle that.
+So once you understand this Rest template, you can even the client Rest client.
+Is using the same load balancing interceptor only.
+No change at all.
+So if you recall from the Service discovery video, right.
+If you recall for the client service discovery, I told you that we have to add a load balancer also
+because internally Fink Framework does the same thing.
+Okay.
+Because it once you get a multiple instances, it has to pick one instance.
+Right.
+So it uses a load balancer okay.
+So for Fink client we don't have to do anything.
+Whatever the service discovery we have to do.
+It's the same thing right.
+Now.
+See this one like I I'm hoping that you have seen the service discovery video.
+And you can correlate this, like, without service discovery.
+In the feign client, we have to provide the URL.
+But with service discovery we have to only give the name hey, I want only product hyphen service.
+That's all.
+Okay.
+And we just invoke it.
+Now let's say that if you want to change the algorithm you don't want Franklin to use by default.
+You know that internally, if it's using a load balancer it might be using round robin.
+You want that hey I don't want round robin.
+I want some different algorithm.
+How can you even if you are using feign client can you change it now easily same in the application.
+If it is only one client then you can use load balancer.
+Client provide a name service this for this service this configuration have to be used.
+I have written this configuration which will also get invoked at runtime when I'm going to invoke this
+service get product by ID.
+So here I just change the load balancing algorithm.
+New load balance.
+Okay.
+And attach it with this service ID.
+Okay.
+Now if you go inside this load balancer choose method.
+This choose method for that one that internally it will do what you did first call service discovery.
+And then it will randomly pick one of the instance the same thing.
+Okay, so even though everything is abstracted from us in case of pain and even in case of rest template,
+we only have to use this annotation at the load balance and everything is got abstracted under the load
+balancer interceptor.
+It's still better.
+It's better to understand this little framework so that in any scenario, if an interviewer or your
+in company use case come that you have to write your own load balancing logic, or for one of the service,
+you have to change the load balancing capability.
+How you can do that.
+Okay.
+So play with this.
+Okay.
+Play with this config.
+Put a debugger point here that uh System.out.println.
+Put something that I am inside this.
+Run it during application startup.
+So during application startup you will see and at the time of actual invoking the service that time
+also you will see that it will get invoked okay.
+And I already told you again it's a runtime.
+Uh, functionality is very important for the global part because in global this service ID has to be
+run dynamically because during application startup this would be null because we haven't invoked anything.
+So this round robin load balancer algorithm would get tied up to service ID.
+Okay.
+So at runtime when you are calling product service again this got called.
+Okay.
+And that time this service ID is got set.
+And then this round robin is also get mapped to product service.
+Okay.
+And once it is mapped now no matter you call 100 time product service it will not call again.
+Only one time till it's been has to be created.
+Load balancer been okay.
+So hope this, uh, give you a little insight on how Spring Framework handles the load balancing capability.
+And I hope this is something you will find useful.
+If you find it helpful, please, uh, do comment out or if there is doubt, please, uh, put into
+the comment section we can discuss further.
+Thank you.
+Bye.
