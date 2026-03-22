@@ -456,6 +456,23 @@
         color: var(--sp-dark);
         font-weight: 600;
       }
+      .menu-btn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+        background: var(--sp);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 30px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        font-size: 15px;
+        cursor: pointer;
+        font-family: var(--sans);
+      }
       @media (max-width: 800px) {
         .menu-btn {
           display: block;
@@ -478,23 +495,6 @@
         .g3 {
           grid-template-columns: 1fr;
         }
-      }
-      .menu-btn {
-        display: none;
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 100;
-        background: var(--sp);
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 30px;
-        font-weight: 600;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        font-size: 15px;
-        cursor: pointer;
-        font-family: var(--sans);
       }
     </style>
   </head>
@@ -2319,19 +2319,39 @@ dbProps.getPool().getMaxSize();</div>
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
+      function renderNav() {
+        const nav = document.getElementById("nav");
+        let h = "";
+        CATS.forEach((c) => {
+          const filtered = T.filter((t) => t.cat === c);
+          if (filtered.length > 0) {
+            h += `<div class="cat-g">
+              <div class="cat-h">${c}</div>
+              ${filtered
+                .map(
+                  (t) => `<button class="nav-btn" data-id="${t.id}" onclick="show('${t.id}')">
+                <span class="n">${t.num}</span>
+                <span class="t">${t.title}</span>
+              </button>`,
+                )
+                .join("")}
+            </div>`;
+          }
+        });
+        nav.innerHTML = h;
+      }
+
       function search(q) {
         const l = q.toLowerCase();
         document.querySelectorAll(".nav-btn").forEach((b) => {
-          b.style.display = b.textContent.toLowerCase().includes(l)
-            ? ""
-            : "none";
+          const isMatch = b.textContent.toLowerCase().includes(l);
+          b.style.display = isMatch ? "" : "none";
         });
         document.querySelectorAll(".cat-g").forEach((g) => {
-          g.style.display = [...g.querySelectorAll(".nav-btn")].some(
+          const hasVisible = [...g.querySelectorAll(".nav-btn")].some(
             (b) => b.style.display !== "none",
-          )
-            ? ""
-            : "none";
+          );
+          g.style.display = hasVisible ? "" : "none";
         });
       }
 
