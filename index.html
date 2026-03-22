@@ -1,292 +1,1255 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>High-Level Design (HLD) Notes</title>
     <style>
-        :root {
-            --primary-color: #2563eb;
-            --hover-color: #1d4ed8;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-        }
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 2rem 1rem;
-            line-height: 1.5;
+      :root {
+        --primary-color: #2563eb;
+        --hover-color: #1d4ed8;
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+      }
+      body {
+        font-family:
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        margin: 0;
+        padding: 2rem 1rem;
+        line-height: 1.5;
+      }
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: var(--card-bg);
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+      h1 {
+        color: var(--text-main);
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        margin-top: 0;
+      }
+      p.subtitle {
+        text-align: center;
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1rem;
+      }
+      li {
+        margin: 0;
+      }
+      a {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.25rem;
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-main);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease-in-out;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      a:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        transform: translateY(-2px);
+        color: var(--primary-color);
+      }
+      .number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background-color: #eff6ff;
+        color: var(--primary-color);
+        border-radius: 50%;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-right: 1rem;
+        flex-shrink: 0;
+      }
+      @media (max-width: 600px) {
+        ul {
+          grid-template-columns: 1fr;
         }
         .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          padding: 1.5rem;
         }
-        h1 {
-            color: var(--text-main);
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            margin-top: 0;
-        }
-        p.subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1rem;
-        }
-        li {
-            margin: 0;
-        }
-        a {
-            display: flex;
-            align-items: center;
-            padding: 1rem 1.25rem;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease-in-out;
-            height: 100%;
-            box-sizing: border-box;
-        }
-        a:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
-            transform: translateY(-2px);
-            color: var(--primary-color);
-        }
-        .number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            background-color: #eff6ff;
-            color: var(--primary-color);
-            border-radius: 50%;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-right: 1rem;
-            flex-shrink: 0;
-        }
-        @media (max-width: 600px) {
-            ul {
-                grid-template-columns: 1fr;
-            }
-            .container {
-                padding: 1.5rem;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>System Design Notes Directory</h1>
-        <p class="subtitle">Complete Collection of System Design Concepts (HLD & LLD)</p>
-        
-        <h2 style="color: var(--color-text-main); font-size: 1.8rem; border-bottom: 2px solid var(--color-border-tertiary); padding-bottom: 8px; margin-top: 10px; margin-bottom: 20px;">High-Level Design (HLD)</h2>
-        <ul style="margin-bottom: 40px;">
+      <h1>System Design Notes Directory</h1>
+      <p class="subtitle">
+        Complete Collection of System Design Concepts (HLD & LLD)
+      </p>
 
-            <li><a href="HLD/1.Network_Protocol/networking_revision_notes.html"><span class="number">1</span> Network Protocol</a></li>
-            <li><a href="HLD/2.capTheorem/cap_theorem_notes.html"><span class="number">2</span> CAP Theorem</a></li>
-            <li><a href="HLD/3.microservices/microservices_notes.html"><span class="number">3</span> Microservices</a></li>
-            <li><a href="HLD/4.microservicespattern/microservice_patterns_notes.html"><span class="number">4</span> Microservices Pattern</a></li>
-            <li><a href="HLD/5.scaling/scaling_0_to_1m_notes.html"><span class="number">5</span> Scaling (0 to 1M)</a></li>
-            <li><a href="HLD/6.consistent_hashing/consistent_hashing_notes.html"><span class="number">6</span> Consistent Hashing</a></li>
-            <li><a href="HLD/7.estimation/back_of_envelope_estimation.html"><span class="number">7</span> Estimation (Back of Envelope)</a></li>
-            <li><a href="HLD/8.sqlvsnosql/sql_vs_nosql_notes.html"><span class="number">8</span> SQL vs NoSQL</a></li>
-            <li><a href="HLD/9.Idempotent_API/idempotency_notes.html"><span class="number">9</span> Idempotent API</a></li>
-            <li><a href="HLD/10.HighAvailabilitySystem/high_availability_notes.html"><span class="number">10</span> High Availability System</a></li>
-            <li><a href="HLD/11.DistributedMessagingQueue/messaging_queue_kafka_notes.html"><span class="number">11</span> Distributed Messaging Queue (Kafka)</a></li>
-            <li><a href="HLD/12.Proxy vs Reverse Proxy/proxy_server_notes.html"><span class="number">12</span> Proxy vs Reverse Proxy</a></li>
-            <li><a href="HLD/13.LoadBalanceranddifferentalgorithm/load_balancer_notes.html"><span class="number">13</span> Load Balancer &amp; Algorithms</a></li>
-            <li><a href="HLD/14.Distributedcacheandcachingstrategy/caching_notes.html"><span class="number">14</span> Distributed Cache &amp; Strategy</a></li>
-            <li><a href="HLD/15.HandleDistributedTransactions/distributed_transactions_notes.html"><span class="number">15</span> Handle Distributed Transactions</a></li>
-            <li><a href="HLD/16.DatabaseIndexing/database_indexing_notes.html"><span class="number">16</span> Database Indexing</a></li>
-            <li><a href="HLD/17.concurrencycontrolindistributedsystem/concurrency_control_notes.html"><span class="number">17</span> Concurrency Control in Distributed System</a></li>
-            <li><a href="HLD/18.TwoPhaseLocking/two_phase_locking_notes.html"><span class="number">18</span> Two Phase Locking</a></li>
-            <li><a href="HLD/19.OAuth/oauth2_notes.html"><span class="number">19</span> OAuth</a></li>
-            <li><a href="HLD/20.SymmetricandAsymmetricEncryption/cryptography_notes.html"><span class="number">20</span> Symmetric &amp; Asymmetric Encryption</a></li>
-            <li><a href="HLD/21.JWT(jsonWebToken)/jwt_notes.html"><span class="number">21</span> JWT (JSON Web Token)</a></li>
-            <li><a href="HLD/22.ThunderingHerdProblem/thundering_herd_notes.html"><span class="number">22</span> Thundering Herd Problem</a></li>
-            <li><a href="HLD/23.API Gateway/api_gateway_notes.html"><span class="number">23</span> API Gateway</a></li>
-            <li><a href="HLD/24.service mesh/service_mesh_notes.html"><span class="number">24</span> Service Mesh</a></li>
-            <li><a href="HLD/25.HowDNSwork/dns_notes.html"><span class="number">25</span> How DNS Works</a></li>
-            <li><a href="HLD/26. In How many Microservices we should divide Monolithic System/monolith_to_microservices_ddd.html"><span class="number">26</span> Microservices Division (Monolith to Microservices)</a></li>
-            <li><a href="27 Attacks with Demo/web_attacks_security_notes.html"><span class="number">27</span> Attacks with Demo</a></li>
-            <li><a href="HLD/28.DualWriteProblem/dual_write_problem_notes.html"><span class="number">28</span> Dual Write Problem</a></li>
-            <li><a href="HLD/29.service discovery/service_discovery_notes.html"><span class="number">29</span> Service Discovery</a></li>
-            <li><a href="HLD/30.RateLimiterAlgo/fault_tolerance_rate_limiter_notes.html"><span class="number">30</span> Rate Limiter Algo</a></li>
-            <li><a href="HLD/31.BulkheadPattern/rate_limiter_vs_bulkhead.html"><span class="number">31</span> Bulkhead Pattern</a></li>
-            <li><a href="HLD/32.RetryPattern/retry_notes.html"><span class="number">32</span> Retry Pattern</a></li>
-            <li><a href="HLD/33.circuitbreaker/circuit_breaker_notes.html"><span class="number">33</span> Circuit Breaker</a></li>
-        
-        </ul>
+      <h2
+        style="
+          color: var(--color-text-main);
+          font-size: 1.8rem;
+          border-bottom: 2px solid var(--color-border-tertiary);
+          padding-bottom: 8px;
+          margin-top: 10px;
+          margin-bottom: 20px;
+        "
+      >
+        High-Level Design (HLD)
+      </h2>
+      <ul style="margin-bottom: 40px">
+        <li>
+          <a href="HLD/1.Network_Protocol/networking_revision_notes.html"
+            ><span class="number">1</span> Network Protocol</a
+          >
+        </li>
+        <li>
+          <a href="HLD/2.capTheorem/cap_theorem_notes.html"
+            ><span class="number">2</span> CAP Theorem</a
+          >
+        </li>
+        <li>
+          <a href="HLD/3.microservices/microservices_notes.html"
+            ><span class="number">3</span> Microservices</a
+          >
+        </li>
+        <li>
+          <a href="HLD/4.microservicespattern/microservice_patterns_notes.html"
+            ><span class="number">4</span> Microservices Pattern</a
+          >
+        </li>
+        <li>
+          <a href="HLD/5.scaling/scaling_0_to_1m_notes.html"
+            ><span class="number">5</span> Scaling (0 to 1M)</a
+          >
+        </li>
+        <li>
+          <a href="HLD/6.consistent_hashing/consistent_hashing_notes.html"
+            ><span class="number">6</span> Consistent Hashing</a
+          >
+        </li>
+        <li>
+          <a href="HLD/7.estimation/back_of_envelope_estimation.html"
+            ><span class="number">7</span> Estimation (Back of Envelope)</a
+          >
+        </li>
+        <li>
+          <a href="HLD/8.sqlvsnosql/sql_vs_nosql_notes.html"
+            ><span class="number">8</span> SQL vs NoSQL</a
+          >
+        </li>
+        <li>
+          <a href="HLD/9.Idempotent_API/idempotency_notes.html"
+            ><span class="number">9</span> Idempotent API</a
+          >
+        </li>
+        <li>
+          <a href="HLD/10.HighAvailabilitySystem/high_availability_notes.html"
+            ><span class="number">10</span> High Availability System</a
+          >
+        </li>
+        <li>
+          <a
+            href="HLD/11.DistributedMessagingQueue/messaging_queue_kafka_notes.html"
+            ><span class="number">11</span> Distributed Messaging Queue
+            (Kafka)</a
+          >
+        </li>
+        <li>
+          <a href="HLD/12.Proxy vs Reverse Proxy/proxy_server_notes.html"
+            ><span class="number">12</span> Proxy vs Reverse Proxy</a
+          >
+        </li>
+        <li>
+          <a
+            href="HLD/13.LoadBalanceranddifferentalgorithm/load_balancer_notes.html"
+            ><span class="number">13</span> Load Balancer &amp; Algorithms</a
+          >
+        </li>
+        <li>
+          <a href="HLD/14.Distributedcacheandcachingstrategy/caching_notes.html"
+            ><span class="number">14</span> Distributed Cache &amp; Strategy</a
+          >
+        </li>
+        <li>
+          <a
+            href="HLD/15.HandleDistributedTransactions/distributed_transactions_notes.html"
+            ><span class="number">15</span> Handle Distributed Transactions</a
+          >
+        </li>
+        <li>
+          <a href="HLD/16.DatabaseIndexing/database_indexing_notes.html"
+            ><span class="number">16</span> Database Indexing</a
+          >
+        </li>
+        <li>
+          <a
+            href="HLD/17.concurrencycontrolindistributedsystem/concurrency_control_notes.html"
+            ><span class="number">17</span> Concurrency Control in Distributed
+            System</a
+          >
+        </li>
+        <li>
+          <a href="HLD/18.TwoPhaseLocking/two_phase_locking_notes.html"
+            ><span class="number">18</span> Two Phase Locking</a
+          >
+        </li>
+        <li>
+          <a href="HLD/19.OAuth/oauth2_notes.html"
+            ><span class="number">19</span> OAuth</a
+          >
+        </li>
+        <li>
+          <a
+            href="HLD/20.SymmetricandAsymmetricEncryption/cryptography_notes.html"
+            ><span class="number">20</span> Symmetric &amp; Asymmetric
+            Encryption</a
+          >
+        </li>
+        <li>
+          <a href="HLD/21.JWT(jsonWebToken)/jwt_notes.html"
+            ><span class="number">21</span> JWT (JSON Web Token)</a
+          >
+        </li>
+        <li>
+          <a href="HLD/22.ThunderingHerdProblem/thundering_herd_notes.html"
+            ><span class="number">22</span> Thundering Herd Problem</a
+          >
+        </li>
+        <li>
+          <a href="HLD/23.API Gateway/api_gateway_notes.html"
+            ><span class="number">23</span> API Gateway</a
+          >
+        </li>
+        <li>
+          <a href="HLD/24.service mesh/service_mesh_notes.html"
+            ><span class="number">24</span> Service Mesh</a
+          >
+        </li>
+        <li>
+          <a href="HLD/25.HowDNSwork/dns_notes.html"
+            ><span class="number">25</span> How DNS Works</a
+          >
+        </li>
+        <li>
+          <a
+            href="HLD/26. In How many Microservices we should divide Monolithic System/monolith_to_microservices_ddd.html"
+            ><span class="number">26</span> Microservices Division (Monolith to
+            Microservices)</a
+          >
+        </li>
+        <li>
+          <a href="27 Attacks with Demo/web_attacks_security_notes.html"
+            ><span class="number">27</span> Attacks with Demo</a
+          >
+        </li>
+        <li>
+          <a href="HLD/28.DualWriteProblem/dual_write_problem_notes.html"
+            ><span class="number">28</span> Dual Write Problem</a
+          >
+        </li>
+        <li>
+          <a href="HLD/29.service discovery/service_discovery_notes.html"
+            ><span class="number">29</span> Service Discovery</a
+          >
+        </li>
+        <li>
+          <a
+            href="HLD/30.RateLimiterAlgo/fault_tolerance_rate_limiter_notes.html"
+            ><span class="number">30</span> Rate Limiter Algo</a
+          >
+        </li>
+        <li>
+          <a href="HLD/31.BulkheadPattern/rate_limiter_vs_bulkhead.html"
+            ><span class="number">31</span> Bulkhead Pattern</a
+          >
+        </li>
+        <li>
+          <a href="HLD/32.RetryPattern/retry_notes.html"
+            ><span class="number">32</span> Retry Pattern</a
+          >
+        </li>
+        <li>
+          <a href="HLD/33.circuitbreaker/circuit_breaker_notes.html"
+            ><span class="number">33</span> Circuit Breaker</a
+          >
+        </li>
+      </ul>
 
-        <h2 style="color: var(--color-text-main); font-size: 1.8rem; border-bottom: 2px solid var(--color-border-tertiary); padding-bottom: 8px; margin-bottom: 20px;">Low-Level Design (LLD)</h2>
-        <ul>
-            <li><a href="LLD/1.What is LLD/lld_intro_notes.html"><span class="number">1</span> What is LLD</a></li>
-            <li><a href="LLD/2.SOLID principals/solid_principles_notes.html"><span class="number">2</span> SOLID principals</a></li>
-            <li><a href="LLD/3.LSP/lsp_deep_dive.html"><span class="number">3</span> LSP</a></li>
-            <li><a href="LLD/4. Strategy Design Pattern (Behavioral Pattern)/strategy_pattern_notes.html"><span class="number">4</span> Strategy Design Pattern (Behavioral Pattern)</a></li>
-            <li><a href="LLD/5. Observer Pattern (Behavioral Pattern)/observer_pattern_notes.html"><span class="number">5</span> Observer Pattern (Behavioral Pattern)</a></li>
-            <li><a href="LLD/6. Decorator Design Pattern (Structural Design Pattern)/decorator_pattern_notes.html"><span class="number">6</span> Decorator Design Pattern (Structural Design Pattern)</a></li>
-            <li><a href="LLD/7. Factory & Abstract Factory pattern (Creational Design Pattern)/factory_patterns_notes.html"><span class="number">7</span> Factory & Abstract Factory pattern (Creational Design Pattern)</a></li>
-            <li><a href="LLD/12. Chain Of Responsibility Design Pattern (Behavioral Design Pattern)/chain_of_responsibility_notes.html"><span class="number">12</span> Chain Of Responsibility Design Pattern (Behavioral Design Pattern)</a></li>
-            <li><a href="LLD/14. Proxy Design Pattern (Structural Pattern)/proxy_pattern_notes.html"><span class="number">14</span> Proxy Design Pattern (Structural Pattern)</a></li>
-            <li><a href="LLD/16. Null Object Design Pattern (Behavioral Pattern)/null_object_pattern_notes.html"><span class="number">16</span> Null Object Design Pattern (Behavioral Pattern)</a></li>
-            <li><a href="LLD/19. Composite Pattern (Structural Design Pattern)/composite_pattern_notes.html"><span class="number">19</span> Composite Pattern (Structural Design Pattern)</a></li>
-            <li><a href="LLD/20. Adapter Pattern (Structural Design Pattern)/adapter_pattern_notes.html"><span class="number">20</span> Adapter Pattern (Structural Design Pattern)</a></li>
-            <li><a href="LLD/22. Builder Design Pattern (Creational Design Pattern)/builder_pattern_notes.html"><span class="number">22</span> Builder Design Pattern (Creational Design Pattern)</a></li>
-            <li><a href="LLD/24. Facade Design Pattern (Structural Design Pattern)/facade_pattern_notes.html"><span class="number">24</span> Facade Design Pattern (Structural Design Pattern)</a></li>
-            <li><a href="LLD/25. Bridge Design Pattern (Structural Design Pattern)/bridge_pattern_notes.html"><span class="number">25</span> Bridge Design Pattern (Structural Design Pattern)</a></li>
-            <li><a href="LLD/27. Flyweight Design Pattern (Structural Design Pattern)/flyweight_pattern_notes.html"><span class="number">27</span> Flyweight Design Pattern (Structural Design Pattern)</a></li>
-            <li><a href="LLD/28. Command Design Pattern (Behavioral Design Pattern)/command_pattern_notes.html"><span class="number">28</span> Command Design Pattern (Behavioral Design Pattern)</a></li>
-            <li><a href="LLD/29. Iterator Design Pattern (Behavioral Design Pattern)/iterator_pattern_notes.html"><span class="number">29</span> Iterator Design Pattern (Behavioral Design Pattern)</a></li>
-            <li><a href="LLD/30. Mediator Design Pattern (Behavioral Design Pattern)/mediator_pattern_notes.html"><span class="number">30</span> Mediator Design Pattern (Behavioral Design Pattern)</a></li>
-            <li><a href="LLD/32. Visitor Design Pattern (Behavioral Design Pattern)/visitor_pattern_notes.html"><span class="number">32</span> Visitor Design Pattern (Behavioral Design Pattern)</a></li>
-            <li><a href="LLD/33. MVC Design Pattern/mvc_notes.html"><span class="number">33</span> MVC Design Pattern</a></li>
-            <li><a href="LLD/34. Memento Design Pattern (Behavioral Design Pattern)/memento_pattern_notes.html"><span class="number">34</span> Memento Design Pattern (Behavioral Design Pattern)</a></li>
-            <li><a href="LLD/35. Template Method Design Pattern (Behavioral Design Pattern)/template_method_pattern_notes.html"><span class="number">35</span> Template Method Design Pattern (Behavioral Design Pattern)</a></li>
-            <li><a href="LLD/36. Interpreter Pattern (Behavioral Design Pattern)/interpreter_pattern_notes.html"><span class="number">36</span> Interpreter Pattern (Behavioral Design Pattern)</a></li>
-            <li><a href="LLD/38. Object Pool Design Pattern (Creational Design Pattern)/object_pool_pattern_notes.html"><span class="number">38</span> Object Pool Design Pattern (Creational Design Pattern)</a></li>
-        </ul>
+      <h2
+        style="
+          color: var(--color-text-main);
+          font-size: 1.8rem;
+          border-bottom: 2px solid var(--color-border-tertiary);
+          padding-bottom: 8px;
+          margin-bottom: 20px;
+        "
+      >
+        Low-Level Design (LLD)
+      </h2>
+      <ul>
+        <li>
+          <a href="LLD/1.What is LLD/lld_intro_notes.html"
+            ><span class="number">1</span> What is LLD</a
+          >
+        </li>
+        <li>
+          <a href="LLD/2.SOLID principals/solid_principles_notes.html"
+            ><span class="number">2</span> SOLID principals</a
+          >
+        </li>
+        <li>
+          <a href="LLD/3.LSP/lsp_deep_dive.html"
+            ><span class="number">3</span> LSP</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/4. Strategy Design Pattern (Behavioral Pattern)/strategy_pattern_notes.html"
+            ><span class="number">4</span> Strategy Design Pattern (Behavioral
+            Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/5. Observer Pattern (Behavioral Pattern)/observer_pattern_notes.html"
+            ><span class="number">5</span> Observer Pattern (Behavioral
+            Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/6. Decorator Design Pattern (Structural Design Pattern)/decorator_pattern_notes.html"
+            ><span class="number">6</span> Decorator Design Pattern (Structural
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/7. Factory & Abstract Factory pattern (Creational Design Pattern)/factory_patterns_notes.html"
+            ><span class="number">7</span> Factory & Abstract Factory pattern
+            (Creational Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/12. Chain Of Responsibility Design Pattern (Behavioral Design Pattern)/chain_of_responsibility_notes.html"
+            ><span class="number">12</span> Chain Of Responsibility Design
+            Pattern (Behavioral Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/14. Proxy Design Pattern (Structural Pattern)/proxy_pattern_notes.html"
+            ><span class="number">14</span> Proxy Design Pattern (Structural
+            Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/16. Null Object Design Pattern (Behavioral Pattern)/null_object_pattern_notes.html"
+            ><span class="number">16</span> Null Object Design Pattern
+            (Behavioral Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/19. Composite Pattern (Structural Design Pattern)/composite_pattern_notes.html"
+            ><span class="number">19</span> Composite Pattern (Structural Design
+            Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/20. Adapter Pattern (Structural Design Pattern)/adapter_pattern_notes.html"
+            ><span class="number">20</span> Adapter Pattern (Structural Design
+            Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/22. Builder Design Pattern (Creational Design Pattern)/builder_pattern_notes.html"
+            ><span class="number">22</span> Builder Design Pattern (Creational
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/24. Facade Design Pattern (Structural Design Pattern)/facade_pattern_notes.html"
+            ><span class="number">24</span> Facade Design Pattern (Structural
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/25. Bridge Design Pattern (Structural Design Pattern)/bridge_pattern_notes.html"
+            ><span class="number">25</span> Bridge Design Pattern (Structural
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/27. Flyweight Design Pattern (Structural Design Pattern)/flyweight_pattern_notes.html"
+            ><span class="number">27</span> Flyweight Design Pattern (Structural
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/28. Command Design Pattern (Behavioral Design Pattern)/command_pattern_notes.html"
+            ><span class="number">28</span> Command Design Pattern (Behavioral
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/29. Iterator Design Pattern (Behavioral Design Pattern)/iterator_pattern_notes.html"
+            ><span class="number">29</span> Iterator Design Pattern (Behavioral
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/30. Mediator Design Pattern (Behavioral Design Pattern)/mediator_pattern_notes.html"
+            ><span class="number">30</span> Mediator Design Pattern (Behavioral
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/32. Visitor Design Pattern (Behavioral Design Pattern)/visitor_pattern_notes.html"
+            ><span class="number">32</span> Visitor Design Pattern (Behavioral
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a href="LLD/33. MVC Design Pattern/mvc_notes.html"
+            ><span class="number">33</span> MVC Design Pattern</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/34. Memento Design Pattern (Behavioral Design Pattern)/memento_pattern_notes.html"
+            ><span class="number">34</span> Memento Design Pattern (Behavioral
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/35. Template Method Design Pattern (Behavioral Design Pattern)/template_method_pattern_notes.html"
+            ><span class="number">35</span> Template Method Design Pattern
+            (Behavioral Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/36. Interpreter Pattern (Behavioral Design Pattern)/interpreter_pattern_notes.html"
+            ><span class="number">36</span> Interpreter Pattern (Behavioral
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a
+            href="LLD/38. Object Pool Design Pattern (Creational Design Pattern)/object_pool_pattern_notes.html"
+            ><span class="number">38</span> Object Pool Design Pattern
+            (Creational Design Pattern)</a
+          >
+        </li>
+      </ul>
 
-        <h2 style="color: var(--color-text-main); font-size: 1.8rem; border-bottom: 2px solid var(--color-border-tertiary); padding-bottom: 8px; margin-bottom: 20px;">Java</h2>
-        <ul>
-            <li style="grid-column: 1 / -1; margin-bottom: 1rem;"><a href="JAVA/java_udemy_notes.html" style="background-color: #f8fafc; border-color: #cbd5e1; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"><span class="number" style="background-color: #bfdbfe; color: #1e3a8a;">📘</span> <strong>Complete Java Udemy Notes</strong> (Previous Main Notes File)</a></li>
-            <li><a href="JAVA/1. OOPs Concept in Java - 4 Pillars of Object Oriented Programming/transcript.html"><span class="number">1</span> OOPs Concept in Java - 4 Pillars of Object Oriented Programming</a></li>
-            <li><a href="JAVA/2. OOPs Concept in Java - Part2 - 4 Pillars of Object Oriented Programming/transcript.html"><span class="number">2</span> OOPs Concept in Java - Part2 - 4 Pillars of Object Oriented Programming</a></li>
-            <li><a href="JAVA/3. How Java Program Works and 3 Important Components (JVM, JRE & JDK) with example/transcript.html"><span class="number">3</span> How Java Program Works and 3 Important Components (JVM, JRE & JDK) with example</a></li>
-            <li><a href="JAVA/4. Quiz Question - Why only 1 Public Class in JAVA file/transcript.html"><span class="number">4</span> Quiz Question - Why only 1 Public Class in JAVA file</a></li>
-            <li><a href="JAVA/5. Java Variables - Part1 - Primitive Data Types in Depth/transcript.html"><span class="number">5</span> Java Variables - Part1 - Primitive Data Types in Depth</a></li>
-            <li><a href="JAVA/6. How FLOAT and DOUBLE Number Stored in Memory - IEEE 754 Representation/transcript.html"><span class="number">6</span> How FLOAT and DOUBLE Number Stored in Memory - IEEE 754 Representation</a></li>
-            <li><a href="JAVA/7. Java Variables - Part2 - Reference-Non-Primitive Data Types in Depth/transcript.html"><span class="number">7</span> Java Variables - Part2 - Reference-Non-Primitive Data Types in Depth</a></li>
-            <li><a href="JAVA/8. Java Methods - Part1 - Method Definition, System & User Defined Method Type etc/transcript.html"><span class="number">8</span> Java Methods - Part1 - Method Definition, System & User Defined Method Type etc</a></li>
-            <li><a href="JAVA/9. Java Methods - Part2 - Static, Final, Abstract Method Type and Varargs in Java/transcript.html"><span class="number">9</span> Java Methods - Part2 - Static, Final, Abstract Method Type and Varargs in Java</a></li>
-            <li><a href="JAVA/10. Java Constructor in Depth - Different Types of Constructor with Examples/transcript.html"><span class="number">10</span> Java Constructor in Depth - Different Types of Constructor with Examples</a></li>
-            <li><a href="JAVA/11. Java Memory Management and Garbage Collection in Depth/transcript.html"><span class="number">11</span> Java Memory Management and Garbage Collection in Depth</a></li>
-            <li><a href="JAVA/12. Java Classes - Part1 - Nested, Concrete, Abstract, Object, Super & Sub Classes/transcript.html"><span class="number">12</span> Java Classes - Part1 - Nested, Concrete, Abstract, Object, Super & Sub Classes</a></li>
-            <li><a href="JAVA/13. Java Generic Classes - Java Classes in Depth - Part2/transcript.html"><span class="number">13</span> Java Generic Classes - Java Classes in Depth - Part2</a></li>
-            <li><a href="JAVA/14. Java Enum, POJO and Final Classes Explained with Examples - Java Classes - Part3/transcript.html"><span class="number">14</span> Java Enum, POJO and Final Classes Explained with Examples - Java Classes - Part3</a></li>
-            <li><a href="JAVA/15. Java Singleton & Immutable Class Explained with Examples - Java Classes - Part4/transcript.html"><span class="number">15</span> Java Singleton & Immutable Class Explained with Examples - Java Classes - Part4</a></li>
-            <li><a href="JAVA/16. Java Interface in Depth - Part1/transcript.html"><span class="number">16</span> Java Interface in Depth - Part1</a></li>
-            <li><a href="JAVA/17. Default, Static & Private Method in Interface - Java Interface - Part2/transcript.html"><span class="number">17</span> Default, Static & Private Method in Interface - Java Interface - Part2</a></li>
-            <li><a href="JAVA/18. Functional Interface and Lambda Expression - Java8 - Java Interface Part3/transcript.html"><span class="number">18</span> Functional Interface and Lambda Expression - Java8 - Java Interface Part3</a></li>
-            <li><a href="JAVA/19. Java Reflection in Depth with Examples/transcript.html"><span class="number">19</span> Java Reflection in Depth with Examples</a></li>
-            <li><a href="JAVA/20. Java Annotations - Part1 - Deprecated, Override, FunctionalInterface etc/transcript.html"><span class="number">20</span> Java Annotations - Part1 - Deprecated, Override, FunctionalInterface etc</a></li>
-            <li><a href="JAVA/21. Java Annotations - Part2 - Meta-Annotation (Target, Retention, Documented etc.)/transcript.html"><span class="number">21</span> Java Annotations - Part2 - Meta-Annotation (Target, Retention, Documented etc.)</a></li>
-            <li><a href="JAVA/22. Exception Handling in Java with Examples/transcript.html"><span class="number">22</span> Exception Handling in Java with Examples</a></li>
-            <li><a href="JAVA/23. Operators in Java - Part1 - Arithmetic, Relational, Logical, Unary & Assignment/transcript.html"><span class="number">23</span> Operators in Java - Part1 - Arithmetic, Relational, Logical, Unary & Assignment</a></li>
-            <li><a href="JAVA/24. Operators in Java - Part2 - Bitwise, Bitwise Shift, Ternary, TypeCheck Operators/transcript.html"><span class="number">24</span> Operators in Java - Part2 - Bitwise, Bitwise Shift, Ternary, TypeCheck Operators</a></li>
-            <li><a href="JAVA/25. Control Flow Statements - Decision Making, Looping & Branching Statements/transcript.html"><span class="number">25</span> Control Flow Statements - Decision Making, Looping & Branching Statements</a></li>
-            <li><a href="JAVA/26. Collections - Hierarchy - Iterable Interface - Collection vs Collections/transcript.html"><span class="number">26</span> Collections - Hierarchy - Iterable Interface - Collection vs Collections</a></li>
-            <li><a href="JAVA/27. Collections in Java - Part2 - Comparator Vs Comparable - PriorityQueue/transcript.html"><span class="number">27</span> Collections in Java - Part2 - Comparator Vs Comparable - PriorityQueue</a></li>
-            <li><a href="JAVA/28. Collections in Java - Part3 - Deque and List in Depth/transcript.html"><span class="number">28</span> Collections in Java - Part3 - Deque and List in Depth</a></li>
-            <li><a href="JAVA/29. Collections in Java - Part4 - HashMap Internal Working in Java/transcript.html"><span class="number">29</span> Collections in Java - Part4 - HashMap Internal Working in Java</a></li>
-            <li><a href="JAVA/30. Collections in Java - Part5 - LinkedHashMap and TreeMap in depth/transcript.html"><span class="number">30</span> Collections in Java - Part5 - LinkedHashMap and TreeMap in depth</a></li>
-            <li><a href="JAVA/31. Collections in Java - Part6 - SET/transcript.html"><span class="number">31</span> Collections in Java - Part6 - SET</a></li>
-            <li><a href="JAVA/32. Streams in Java8 - Collections in Java - Part7/transcript.html"><span class="number">32</span> Streams in Java8 - Collections in Java - Part7</a></li>
-            <li><a href="JAVA/33. Multithreading and Concurrency - Part1 - Threads, Process and their Memory Model/transcript.html"><span class="number">33</span> Multithreading and Concurrency - Part1 - Threads, Process and their Memory Model</a></li>
-            <li><a href="JAVA/34. Thread Creation, Thread Lifecycle & Inter-Thread Communication - Multithreading/transcript.html"><span class="number">34</span> Thread Creation, Thread Lifecycle & Inter-Thread Communication - Multithreading</a></li>
-            <li><a href="JAVA/35. Thread Joining, Daemon Thread, Thread Priority - Multithreading in Java/transcript.html"><span class="number">35</span> Thread Joining, Daemon Thread, Thread Priority - Multithreading in Java</a></li>
-            <li><a href="JAVA/36. Lock & Condition - Java Multithreading - Reentrant, ReadWrite, Stamped etc/transcript.html"><span class="number">36</span> Lock & Condition - Java Multithreading - Reentrant, ReadWrite, Stamped etc</a></li>
-            <li><a href="JAVA/37. Lock-Free Concurrency - Compare-and-Swap - Atomic and Volatile Variables/transcript.html"><span class="number">37</span> Lock-Free Concurrency - Compare-and-Swap - Atomic and Volatile Variables</a></li>
-            <li><a href="JAVA/38. Thread Pools in Java - ThreadPoolExecutor Framework - Multithreading/transcript.html"><span class="number">38</span> Thread Pools in Java - ThreadPoolExecutor Framework - Multithreading</a></li>
-            <li><a href="JAVA/39. Java8 CompletableFuture - Future & Callable - Multithreading in Java/transcript.html"><span class="number">39</span> Java8 CompletableFuture - Future & Callable - Multithreading in Java</a></li>
-            <li><a href="JAVA/40. ForkJoinPool, WorkStealingPool, FixedThreadPool, CachedThread & SingleThreadPool/transcript.html"><span class="number">40</span> ForkJoinPool, WorkStealingPool, FixedThreadPool, CachedThread & SingleThreadPool</a></li>
-            <li><a href="JAVA/41. Java ScheduledThreadPoolExecutor - Shutdown Vs AwaitTermination - Multithreading/transcript.html"><span class="number">41</span> Java ScheduledThreadPoolExecutor - Shutdown Vs AwaitTermination - Multithreading</a></li>
-            <li><a href="JAVA/42. Java VirtualThreads vs Normal Threads -- ThreadLocal in Java/transcript.html"><span class="number">42</span> Java VirtualThreads vs Normal Threads -- ThreadLocal in Java</a></li>
-            <li><a href="JAVA/43. Project Lombok in Java in depth - Lombok top 10 features/transcript.html"><span class="number">43</span> Project Lombok in Java in depth - Lombok top 10 features</a></li>
-            <li><a href="JAVA/44. Java 21  - SequencedCollection, SequencedSet and SequencedMap/transcript.html"><span class="number">44</span> Java 21  - SequencedCollection, SequencedSet and SequencedMap</a></li>
-            <li><a href="JAVA/45. Java 17 - Sealed Classes and Interfaces/transcript.html"><span class="number">45</span> Java 17 - Sealed Classes and Interfaces</a></li>
-            <li><a href="JAVA/46. Java 14 - Switch Expressions Deep Dive/transcript.html"><span class="number">46</span> Java 14 - Switch Expressions Deep Dive</a></li>
-            <li><a href="JAVA/47. Java 16 - Pattern Matching for instanceof/transcript.html"><span class="number">47</span> Java 16 - Pattern Matching for instanceof</a></li>
-            <li><a href="JAVA/48. Java 21 - Pattern Matching for switch/transcript.html"><span class="number">48</span> Java 21 - Pattern Matching for switch</a></li>
-            <li><a href="JAVA/49. Java 16 - Record class/transcript.html"><span class="number">49</span> Java 16 - Record class</a></li>
-            <li><a href="JAVA/50. Java 15 - Text Blocks/transcript.html"><span class="number">50</span> Java 15 - Text Blocks</a></li>
-            <li><a href="JAVA/51. Java Optional from Java 8 to 11/transcript.html"><span class="number">51</span> Java Optional from Java 8 to 11</a></li>
-        </ul>
+      <h2
+        style="
+          color: var(--color-text-main);
+          font-size: 1.8rem;
+          border-bottom: 2px solid var(--color-border-tertiary);
+          padding-bottom: 8px;
+          margin-bottom: 20px;
+        "
+      >
+        Java
+      </h2>
+      <ul>
+        <li style="grid-column: 1 / -1; margin-bottom: 1rem">
+          <a
+            href="JAVA/java_udemy_notes.html"
+            style="
+              background-color: #f8fafc;
+              border-color: #cbd5e1;
+              box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            "
+            ><span
+              class="number"
+              style="background-color: #bfdbfe; color: #1e3a8a"
+              >📘</span
+            >
+            <strong>Complete Java Udemy Notes</strong> (Previous Main Notes
+            File)</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/1. OOPs Concept in Java - 4 Pillars of Object Oriented Programming/transcript.html"
+            ><span class="number">1</span> OOPs Concept in Java - 4 Pillars of
+            Object Oriented Programming</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/2. OOPs Concept in Java - Part2 - 4 Pillars of Object Oriented Programming/transcript.html"
+            ><span class="number">2</span> OOPs Concept in Java - Part2 - 4
+            Pillars of Object Oriented Programming</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/3. How Java Program Works and 3 Important Components (JVM, JRE & JDK) with example/transcript.html"
+            ><span class="number">3</span> How Java Program Works and 3
+            Important Components (JVM, JRE & JDK) with example</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/4. Quiz Question - Why only 1 Public Class in JAVA file/transcript.html"
+            ><span class="number">4</span> Quiz Question - Why only 1 Public
+            Class in JAVA file</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/5. Java Variables - Part1 - Primitive Data Types in Depth/transcript.html"
+            ><span class="number">5</span> Java Variables - Part1 - Primitive
+            Data Types in Depth</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/6. How FLOAT and DOUBLE Number Stored in Memory - IEEE 754 Representation/transcript.html"
+            ><span class="number">6</span> How FLOAT and DOUBLE Number Stored in
+            Memory - IEEE 754 Representation</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/7. Java Variables - Part2 - Reference-Non-Primitive Data Types in Depth/transcript.html"
+            ><span class="number">7</span> Java Variables - Part2 -
+            Reference-Non-Primitive Data Types in Depth</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/8. Java Methods - Part1 - Method Definition, System & User Defined Method Type etc/transcript.html"
+            ><span class="number">8</span> Java Methods - Part1 - Method
+            Definition, System & User Defined Method Type etc</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/9. Java Methods - Part2 - Static, Final, Abstract Method Type and Varargs in Java/transcript.html"
+            ><span class="number">9</span> Java Methods - Part2 - Static, Final,
+            Abstract Method Type and Varargs in Java</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/10. Java Constructor in Depth - Different Types of Constructor with Examples/transcript.html"
+            ><span class="number">10</span> Java Constructor in Depth -
+            Different Types of Constructor with Examples</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/11. Java Memory Management and Garbage Collection in Depth/transcript.html"
+            ><span class="number">11</span> Java Memory Management and Garbage
+            Collection in Depth</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/12. Java Classes - Part1 - Nested, Concrete, Abstract, Object, Super & Sub Classes/transcript.html"
+            ><span class="number">12</span> Java Classes - Part1 - Nested,
+            Concrete, Abstract, Object, Super & Sub Classes</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/13. Java Generic Classes - Java Classes in Depth - Part2/transcript.html"
+            ><span class="number">13</span> Java Generic Classes - Java Classes
+            in Depth - Part2</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/14. Java Enum, POJO and Final Classes Explained with Examples - Java Classes - Part3/transcript.html"
+            ><span class="number">14</span> Java Enum, POJO and Final Classes
+            Explained with Examples - Java Classes - Part3</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/15. Java Singleton & Immutable Class Explained with Examples - Java Classes - Part4/transcript.html"
+            ><span class="number">15</span> Java Singleton & Immutable Class
+            Explained with Examples - Java Classes - Part4</a
+          >
+        </li>
+        <li>
+          <a href="JAVA/16. Java Interface in Depth - Part1/transcript.html"
+            ><span class="number">16</span> Java Interface in Depth - Part1</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/17. Default, Static & Private Method in Interface - Java Interface - Part2/transcript.html"
+            ><span class="number">17</span> Default, Static & Private Method in
+            Interface - Java Interface - Part2</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/18. Functional Interface and Lambda Expression - Java8 - Java Interface Part3/transcript.html"
+            ><span class="number">18</span> Functional Interface and Lambda
+            Expression - Java8 - Java Interface Part3</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/19. Java Reflection in Depth with Examples/transcript.html"
+            ><span class="number">19</span> Java Reflection in Depth with
+            Examples</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/20. Java Annotations - Part1 - Deprecated, Override, FunctionalInterface etc/transcript.html"
+            ><span class="number">20</span> Java Annotations - Part1 -
+            Deprecated, Override, FunctionalInterface etc</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/21. Java Annotations - Part2 - Meta-Annotation (Target, Retention, Documented etc.)/transcript.html"
+            ><span class="number">21</span> Java Annotations - Part2 -
+            Meta-Annotation (Target, Retention, Documented etc.)</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/22. Exception Handling in Java with Examples/transcript.html"
+            ><span class="number">22</span> Exception Handling in Java with
+            Examples</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/23. Operators in Java - Part1 - Arithmetic, Relational, Logical, Unary & Assignment/transcript.html"
+            ><span class="number">23</span> Operators in Java - Part1 -
+            Arithmetic, Relational, Logical, Unary & Assignment</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/24. Operators in Java - Part2 - Bitwise, Bitwise Shift, Ternary, TypeCheck Operators/transcript.html"
+            ><span class="number">24</span> Operators in Java - Part2 - Bitwise,
+            Bitwise Shift, Ternary, TypeCheck Operators</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/25. Control Flow Statements - Decision Making, Looping & Branching Statements/transcript.html"
+            ><span class="number">25</span> Control Flow Statements - Decision
+            Making, Looping & Branching Statements</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/26. Collections - Hierarchy - Iterable Interface - Collection vs Collections/transcript.html"
+            ><span class="number">26</span> Collections - Hierarchy - Iterable
+            Interface - Collection vs Collections</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/27. Collections in Java - Part2 - Comparator Vs Comparable - PriorityQueue/transcript.html"
+            ><span class="number">27</span> Collections in Java - Part2 -
+            Comparator Vs Comparable - PriorityQueue</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/28. Collections in Java - Part3 - Deque and List in Depth/transcript.html"
+            ><span class="number">28</span> Collections in Java - Part3 - Deque
+            and List in Depth</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/29. Collections in Java - Part4 - HashMap Internal Working in Java/transcript.html"
+            ><span class="number">29</span> Collections in Java - Part4 -
+            HashMap Internal Working in Java</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/30. Collections in Java - Part5 - LinkedHashMap and TreeMap in depth/transcript.html"
+            ><span class="number">30</span> Collections in Java - Part5 -
+            LinkedHashMap and TreeMap in depth</a
+          >
+        </li>
+        <li>
+          <a href="JAVA/31. Collections in Java - Part6 - SET/transcript.html"
+            ><span class="number">31</span> Collections in Java - Part6 - SET</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/32. Streams in Java8 - Collections in Java - Part7/transcript.html"
+            ><span class="number">32</span> Streams in Java8 - Collections in
+            Java - Part7</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/33. Multithreading and Concurrency - Part1 - Threads, Process and their Memory Model/transcript.html"
+            ><span class="number">33</span> Multithreading and Concurrency -
+            Part1 - Threads, Process and their Memory Model</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/34. Thread Creation, Thread Lifecycle & Inter-Thread Communication - Multithreading/transcript.html"
+            ><span class="number">34</span> Thread Creation, Thread Lifecycle &
+            Inter-Thread Communication - Multithreading</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/35. Thread Joining, Daemon Thread, Thread Priority - Multithreading in Java/transcript.html"
+            ><span class="number">35</span> Thread Joining, Daemon Thread,
+            Thread Priority - Multithreading in Java</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/36. Lock & Condition - Java Multithreading - Reentrant, ReadWrite, Stamped etc/transcript.html"
+            ><span class="number">36</span> Lock & Condition - Java
+            Multithreading - Reentrant, ReadWrite, Stamped etc</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/37. Lock-Free Concurrency - Compare-and-Swap - Atomic and Volatile Variables/transcript.html"
+            ><span class="number">37</span> Lock-Free Concurrency -
+            Compare-and-Swap - Atomic and Volatile Variables</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/38. Thread Pools in Java - ThreadPoolExecutor Framework - Multithreading/transcript.html"
+            ><span class="number">38</span> Thread Pools in Java -
+            ThreadPoolExecutor Framework - Multithreading</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/39. Java8 CompletableFuture - Future & Callable - Multithreading in Java/transcript.html"
+            ><span class="number">39</span> Java8 CompletableFuture - Future &
+            Callable - Multithreading in Java</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/40. ForkJoinPool, WorkStealingPool, FixedThreadPool, CachedThread & SingleThreadPool/transcript.html"
+            ><span class="number">40</span> ForkJoinPool, WorkStealingPool,
+            FixedThreadPool, CachedThread & SingleThreadPool</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/41. Java ScheduledThreadPoolExecutor - Shutdown Vs AwaitTermination - Multithreading/transcript.html"
+            ><span class="number">41</span> Java ScheduledThreadPoolExecutor -
+            Shutdown Vs AwaitTermination - Multithreading</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/42. Java VirtualThreads vs Normal Threads -- ThreadLocal in Java/transcript.html"
+            ><span class="number">42</span> Java VirtualThreads vs Normal
+            Threads -- ThreadLocal in Java</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/43. Project Lombok in Java in depth - Lombok top 10 features/transcript.html"
+            ><span class="number">43</span> Project Lombok in Java in depth -
+            Lombok top 10 features</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/44. Java 21  - SequencedCollection, SequencedSet and SequencedMap/transcript.html"
+            ><span class="number">44</span> Java 21 - SequencedCollection,
+            SequencedSet and SequencedMap</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/45. Java 17 - Sealed Classes and Interfaces/transcript.html"
+            ><span class="number">45</span> Java 17 - Sealed Classes and
+            Interfaces</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/46. Java 14 - Switch Expressions Deep Dive/transcript.html"
+            ><span class="number">46</span> Java 14 - Switch Expressions Deep
+            Dive</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/47. Java 16 - Pattern Matching for instanceof/transcript.html"
+            ><span class="number">47</span> Java 16 - Pattern Matching for
+            instanceof</a
+          >
+        </li>
+        <li>
+          <a
+            href="JAVA/48. Java 21 - Pattern Matching for switch/transcript.html"
+            ><span class="number">48</span> Java 21 - Pattern Matching for
+            switch</a
+          >
+        </li>
+        <li>
+          <a href="JAVA/49. Java 16 - Record class/transcript.html"
+            ><span class="number">49</span> Java 16 - Record class</a
+          >
+        </li>
+        <li>
+          <a href="JAVA/50. Java 15 - Text Blocks/transcript.html"
+            ><span class="number">50</span> Java 15 - Text Blocks</a
+          >
+        </li>
+        <li>
+          <a href="JAVA/51. Java Optional from Java 8 to 11/transcript.html"
+            ><span class="number">51</span> Java Optional from Java 8 to 11</a
+          >
+        </li>
+      </ul>
 
-        <h2 style="color: var(--color-text-main); font-size: 1.8rem; border-bottom: 2px solid var(--color-border-tertiary); padding-bottom: 8px; margin-bottom: 20px;">Spring Boot</h2>
-        <ul>
-            <li><a href="SpringBoot/01. Spring boot Introduction/transcript.html"><span class="number">01</span> Spring boot Introduction</a></li>
-            <li><a href="SpringBoot/02. Spring boot Project Setup and Layered Architecture/transcript.html"><span class="number">02</span> Spring boot Project Setup and Layered Architecture</a></li>
-            <li><a href="SpringBoot/03. Maven and its Lifecycle/transcript.html"><span class="number">03</span> Maven and its Lifecycle</a></li>
-            <li><a href="SpringBoot/04. Spring boot Controller Layer Annotations/transcript.html"><span class="number">04</span> Spring boot Controller Layer Annotations</a></li>
-            <li><a href="SpringBoot/05. Spring boot Bean and its Lifecycle - Inversion of Control/transcript.html"><span class="number">05</span> Spring boot Bean and its Lifecycle - Inversion of Control</a></li>
-            <li><a href="SpringBoot/06. Dependency Injection/transcript.html"><span class="number">06</span> Dependency Injection</a></li>
-            <li><a href="SpringBoot/07. Bean Scopes - Singleton, Prototype, Request and Session Bean Scope/transcript.html"><span class="number">07</span> Bean Scopes - Singleton, Prototype, Request and Session Bean Scope</a></li>
-            <li><a href="SpringBoot/08. Spring boot- Dynamically Initialized Beans - Value Annotation/transcript.html"><span class="number">08</span> Spring boot- Dynamically Initialized Beans - Value Annotation</a></li>
-            <li><a href="SpringBoot/09. Spring boot @ConditionalOnProperty Annotation/transcript.html"><span class="number">09</span> Spring boot @ConditionalOnProperty Annotation</a></li>
-            <li><a href="SpringBoot/10. Spring boot Profiling and @Profile Annotation/transcript.html"><span class="number">10</span> Spring boot Profiling and @Profile Annotation</a></li>
-            <li><a href="SpringBoot/11. Spring boot AOP (Aspect Oriented Programming)/transcript.html"><span class="number">11</span> Spring boot AOP (Aspect Oriented Programming)</a></li>
-            <li><a href="SpringBoot/12. Spring boot @Transactional Annotation - Part1/transcript.html"><span class="number">12</span> Spring boot @Transactional Annotation - Part1</a></li>
-            <li><a href="SpringBoot/13. @Transactional Part-2 - Declarative, Programmatic Approach & Propagation Types/transcript.html"><span class="number">13</span> @Transactional Part-2 - Declarative, Programmatic Approach & Propagation Types</a></li>
-            <li><a href="SpringBoot/14. @Transactional Annotation - Part3 - Isolation Level and its different Types/transcript.html"><span class="number">14</span> @Transactional Annotation - Part3 - Isolation Level and its different Types</a></li>
-            <li><a href="SpringBoot/15. Spring boot @Async Annotation - Part1 - ThreadPoolExecutor/transcript.html"><span class="number">15</span> Spring boot @Async Annotation - Part1 - ThreadPoolExecutor</a></li>
-            <li><a href="SpringBoot/16. @Async Annotation - Important Interview questions/transcript.html"><span class="number">16</span> @Async Annotation - Important Interview questions</a></li>
-            <li><a href="SpringBoot/17. Spring boot- Custom Interceptors/transcript.html"><span class="number">17</span> Spring boot- Custom Interceptors</a></li>
-            <li><a href="SpringBoot/18. Spring boot- Filters Vs Interceptors/transcript.html"><span class="number">18</span> Spring boot- Filters Vs Interceptors</a></li>
-            <li><a href="SpringBoot/19. HATEOAS for REST APIs/transcript.html"><span class="number">19</span> HATEOAS for REST APIs</a></li>
-            <li><a href="SpringBoot/20. ResponseEntity & Response Codes - 1xx, 2xx, 3xx, 4xx and 5xx Return Codes/transcript.html"><span class="number">20</span> ResponseEntity & Response Codes - 1xx, 2xx, 3xx, 4xx and 5xx Return Codes</a></li>
-            <li><a href="SpringBoot/21. Spring boot Exception Handling/transcript.html"><span class="number">21</span> Spring boot Exception Handling</a></li>
-            <li><a href="SpringBoot/22. Spring boot - JPA (Part-1)/transcript.html"><span class="number">22</span> Spring boot - JPA (Part-1)</a></li>
-            <li><a href="SpringBoot/23. Spring boot- JPA - JPA Setup, Architecture and Entity Lifecycle/transcript.html"><span class="number">23</span> Spring boot- JPA - JPA Setup, Architecture and Entity Lifecycle</a></li>
-            <li><a href="SpringBoot/24. Spring boot- JPA - First Level Caching/transcript.html"><span class="number">24</span> Spring boot- JPA - First Level Caching</a></li>
-            <li><a href="SpringBoot/25. Spring boot- JPA - Second Level Caching/transcript.html"><span class="number">25</span> Spring boot- JPA - Second Level Caching</a></li>
-            <li><a href="SpringBoot/26. Spring boot- JPA - Map DTO to Table/transcript.html"><span class="number">26</span> Spring boot- JPA - Map DTO to Table</a></li>
-            <li><a href="SpringBoot/27. Spring boot- JPA - OneToOne Mapping Unidirectional and Bidirectional/transcript.html"><span class="number">27</span> Spring boot- JPA - OneToOne Mapping Unidirectional and Bidirectional</a></li>
-            <li><a href="SpringBoot/28. Spring boot- JPA - OneToMany, ManyToOne and ManyToMany/transcript.html"><span class="number">28</span> Spring boot- JPA - OneToMany, ManyToOne and ManyToMany</a></li>
-            <li><a href="SpringBoot/29. Spring boot- JPA - JPQL, Derived Query, N+1 Problem, Joins, Pagination/transcript.html"><span class="number">29</span> Spring boot- JPA - JPQL, Derived Query, N+1 Problem, Joins, Pagination</a></li>
-            <li><a href="SpringBoot/30. Spring boot- JPA - Native Query and Criteria API/transcript.html"><span class="number">30</span> Spring boot- JPA - Native Query and Criteria API</a></li>
-            <li><a href="SpringBoot/31. Spring boot- JPA - Specification API/transcript.html"><span class="number">31</span> Spring boot- JPA - Specification API</a></li>
-            <li><a href="SpringBoot/32. Attacks with Demo - Spring Security - CSRF, CORS, XSS, SQL Injection/transcript.html"><span class="number">32</span> Attacks with Demo - Spring Security - CSRF, CORS, XSS, SQL Injection</a></li>
-            <li><a href="SpringBoot/33. Spring Boot Security - Part1 - Architecture/transcript.html"><span class="number">33</span> Spring Boot Security - Part1 - Architecture</a></li>
-            <li><a href="SpringBoot/34. Spring Boot Security - Part2 - User Creation and Storing Username and Password/transcript.html"><span class="number">34</span> Spring Boot Security - Part2 - User Creation and Storing Username and Password</a></li>
-            <li><a href="SpringBoot/35. Spring Boot Security - Part3 - Form Based Authentication/transcript.html"><span class="number">35</span> Spring Boot Security - Part3 - Form Based Authentication</a></li>
-            <li><a href="SpringBoot/36. Spring Boot Security - Part4 - Basic Authentication/transcript.html"><span class="number">36</span> Spring Boot Security - Part4 - Basic Authentication</a></li>
-            <li><a href="SpringBoot/37. Spring Boot Security - What is JWT and its Structure/transcript.html"><span class="number">37</span> Spring Boot Security - What is JWT and its Structure</a></li>
-            <li><a href="SpringBoot/38. Spring Boot Security - JWT Authentication Implementation/transcript.html"><span class="number">38</span> Spring Boot Security - JWT Authentication Implementation</a></li>
-            <li><a href="SpringBoot/39. What is OAuth 2.0- Explained/transcript.html"><span class="number">39</span> What is OAuth 2.0- Explained</a></li>
-            <li><a href="SpringBoot/40. Spring Boot Security - OAUTH2 Authentication Implementation/transcript.html"><span class="number">40</span> Spring Boot Security - OAUTH2 Authentication Implementation</a></li>
-            <li><a href="SpringBoot/41. Spring Boot Security - Method Security - Role based Authorization/transcript.html"><span class="number">41</span> Spring Boot Security - Method Security - Role based Authorization</a></li>
-            <li><a href="SpringBoot/42. RestTemplate - Communication between Microservices/transcript.html"><span class="number">42</span> RestTemplate - Communication between Microservices</a></li>
-            <li><a href="SpringBoot/43. RestClient - Communication between Microservices/transcript.html"><span class="number">43</span> RestClient - Communication between Microservices</a></li>
-            <li><a href="SpringBoot/44. FeignClient in Spring Boot Microservices - Declarative HTTP Client/transcript.html"><span class="number">44</span> FeignClient in Spring Boot Microservices - Declarative HTTP Client</a></li>
-            <li><a href="SpringBoot/45. Service Discovery and its Implementation/transcript.html"><span class="number">45</span> Service Discovery and its Implementation</a></li>
-            <li><a href="SpringBoot/46. Client Side Load Balancer and its Implementation/transcript.html"><span class="number">46</span> Client Side Load Balancer and its Implementation</a></li>
-            <li><a href="SpringBoot/47. Rate Limiter/transcript.html"><span class="number">47</span> Rate Limiter</a></li>
-            <li><a href="SpringBoot/48. Bulkhead Pattern/transcript.html"><span class="number">48</span> Bulkhead Pattern</a></li>
-            <li><a href="SpringBoot/49. Retry Pattern/transcript.html"><span class="number">49</span> Retry Pattern</a></li>
-            <li><a href="SpringBoot/50. Circuit Breaker/transcript.html"><span class="number">50</span> Circuit Breaker</a></li>
-            <li><a href="SpringBoot/51. ApiGateway in Microservices - Part1 - Routing and Load Balancing/transcript.html"><span class="number">51</span> ApiGateway in Microservices - Part1 - Routing and Load Balancing</a></li>
-            <li><a href="SpringBoot/52. ApiGateway in Microservices - Part2 - Authentication JWT, Circuit Breaker etc/transcript.html"><span class="number">52</span> ApiGateway in Microservices - Part2 - Authentication JWT, Circuit Breaker etc</a></li>
-            <li><a href="SpringBoot/53. Central Configuration/transcript.html"><span class="number">53</span> Central Configuration</a></li>
-            <li><a href="SpringBoot/54. Actuator/transcript.html"><span class="number">54</span> Actuator</a></li>
-            <li><a href="SpringBoot/55. ConfigurationProperties in-depth/transcript.html"><span class="number">55</span> ConfigurationProperties in-depth</a></li>
-        </ul>
+      <h2
+        style="
+          color: var(--color-text-main);
+          font-size: 1.8rem;
+          border-bottom: 2px solid var(--color-border-tertiary);
+          padding-bottom: 8px;
+          margin-bottom: 20px;
+        "
+      >
+        Spring Boot
+      </h2>
+      <ul>
+        <li style="grid-column: 1 / -1; margin-bottom: 1rem">
+          <a
+            href="SpringBoot/springboot_complete_notes.html"
+            style="
+              background-color: #f0fdf4;
+              border-color: #bbf7d0;
+              box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            "
+            ><span
+              class="number"
+              style="background-color: #dcfce7; color: #166534"
+              >🍃</span
+            >
+            <strong>Complete Spring Boot Revision Notes</strong> (All Topics
+            Combined)</a
+          >
+        </li>
 
-
+        <li>
+          <a href="SpringBoot/01. Spring boot Introduction/transcript.html"
+            ><span class="number">01</span> Spring boot Introduction</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/02. Spring boot Project Setup and Layered Architecture/transcript.html"
+            ><span class="number">02</span> Spring boot Project Setup and
+            Layered Architecture</a
+          >
+        </li>
+        <li>
+          <a href="SpringBoot/03. Maven and its Lifecycle/transcript.html"
+            ><span class="number">03</span> Maven and its Lifecycle</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/04. Spring boot Controller Layer Annotations/transcript.html"
+            ><span class="number">04</span> Spring boot Controller Layer
+            Annotations</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/05. Spring boot Bean and its Lifecycle - Inversion of Control/transcript.html"
+            ><span class="number">05</span> Spring boot Bean and its Lifecycle -
+            Inversion of Control</a
+          >
+        </li>
+        <li>
+          <a href="SpringBoot/06. Dependency Injection/transcript.html"
+            ><span class="number">06</span> Dependency Injection</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/07. Bean Scopes - Singleton, Prototype, Request and Session Bean Scope/transcript.html"
+            ><span class="number">07</span> Bean Scopes - Singleton, Prototype,
+            Request and Session Bean Scope</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/08. Spring boot- Dynamically Initialized Beans - Value Annotation/transcript.html"
+            ><span class="number">08</span> Spring boot- Dynamically Initialized
+            Beans - Value Annotation</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/09. Spring boot @ConditionalOnProperty Annotation/transcript.html"
+            ><span class="number">09</span> Spring boot @ConditionalOnProperty
+            Annotation</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/10. Spring boot Profiling and @Profile Annotation/transcript.html"
+            ><span class="number">10</span> Spring boot Profiling and @Profile
+            Annotation</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/11. Spring boot AOP (Aspect Oriented Programming)/transcript.html"
+            ><span class="number">11</span> Spring boot AOP (Aspect Oriented
+            Programming)</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/12. Spring boot @Transactional Annotation - Part1/transcript.html"
+            ><span class="number">12</span> Spring boot @Transactional
+            Annotation - Part1</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/13. @Transactional Part-2 - Declarative, Programmatic Approach & Propagation Types/transcript.html"
+            ><span class="number">13</span> @Transactional Part-2 - Declarative,
+            Programmatic Approach & Propagation Types</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/14. @Transactional Annotation - Part3 - Isolation Level and its different Types/transcript.html"
+            ><span class="number">14</span> @Transactional Annotation - Part3 -
+            Isolation Level and its different Types</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/15. Spring boot @Async Annotation - Part1 - ThreadPoolExecutor/transcript.html"
+            ><span class="number">15</span> Spring boot @Async Annotation -
+            Part1 - ThreadPoolExecutor</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/16. @Async Annotation - Important Interview questions/transcript.html"
+            ><span class="number">16</span> @Async Annotation - Important
+            Interview questions</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/17. Spring boot- Custom Interceptors/transcript.html"
+            ><span class="number">17</span> Spring boot- Custom Interceptors</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/18. Spring boot- Filters Vs Interceptors/transcript.html"
+            ><span class="number">18</span> Spring boot- Filters Vs
+            Interceptors</a
+          >
+        </li>
+        <li>
+          <a href="SpringBoot/19. HATEOAS for REST APIs/transcript.html"
+            ><span class="number">19</span> HATEOAS for REST APIs</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/20. ResponseEntity & Response Codes - 1xx, 2xx, 3xx, 4xx and 5xx Return Codes/transcript.html"
+            ><span class="number">20</span> ResponseEntity & Response Codes -
+            1xx, 2xx, 3xx, 4xx and 5xx Return Codes</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/21. Spring boot Exception Handling/transcript.html"
+            ><span class="number">21</span> Spring boot Exception Handling</a
+          >
+        </li>
+        <li>
+          <a href="SpringBoot/22. Spring boot - JPA (Part-1)/transcript.html"
+            ><span class="number">22</span> Spring boot - JPA (Part-1)</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/23. Spring boot- JPA - JPA Setup, Architecture and Entity Lifecycle/transcript.html"
+            ><span class="number">23</span> Spring boot- JPA - JPA Setup,
+            Architecture and Entity Lifecycle</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/24. Spring boot- JPA - First Level Caching/transcript.html"
+            ><span class="number">24</span> Spring boot- JPA - First Level
+            Caching</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/25. Spring boot- JPA - Second Level Caching/transcript.html"
+            ><span class="number">25</span> Spring boot- JPA - Second Level
+            Caching</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/26. Spring boot- JPA - Map DTO to Table/transcript.html"
+            ><span class="number">26</span> Spring boot- JPA - Map DTO to
+            Table</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/27. Spring boot- JPA - OneToOne Mapping Unidirectional and Bidirectional/transcript.html"
+            ><span class="number">27</span> Spring boot- JPA - OneToOne Mapping
+            Unidirectional and Bidirectional</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/28. Spring boot- JPA - OneToMany, ManyToOne and ManyToMany/transcript.html"
+            ><span class="number">28</span> Spring boot- JPA - OneToMany,
+            ManyToOne and ManyToMany</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/29. Spring boot- JPA - JPQL, Derived Query, N+1 Problem, Joins, Pagination/transcript.html"
+            ><span class="number">29</span> Spring boot- JPA - JPQL, Derived
+            Query, N+1 Problem, Joins, Pagination</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/30. Spring boot- JPA - Native Query and Criteria API/transcript.html"
+            ><span class="number">30</span> Spring boot- JPA - Native Query and
+            Criteria API</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/31. Spring boot- JPA - Specification API/transcript.html"
+            ><span class="number">31</span> Spring boot- JPA - Specification
+            API</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/32. Attacks with Demo - Spring Security - CSRF, CORS, XSS, SQL Injection/transcript.html"
+            ><span class="number">32</span> Attacks with Demo - Spring Security
+            - CSRF, CORS, XSS, SQL Injection</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/33. Spring Boot Security - Part1 - Architecture/transcript.html"
+            ><span class="number">33</span> Spring Boot Security - Part1 -
+            Architecture</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/34. Spring Boot Security - Part2 - User Creation and Storing Username and Password/transcript.html"
+            ><span class="number">34</span> Spring Boot Security - Part2 - User
+            Creation and Storing Username and Password</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/35. Spring Boot Security - Part3 - Form Based Authentication/transcript.html"
+            ><span class="number">35</span> Spring Boot Security - Part3 - Form
+            Based Authentication</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/36. Spring Boot Security - Part4 - Basic Authentication/transcript.html"
+            ><span class="number">36</span> Spring Boot Security - Part4 - Basic
+            Authentication</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/37. Spring Boot Security - What is JWT and its Structure/transcript.html"
+            ><span class="number">37</span> Spring Boot Security - What is JWT
+            and its Structure</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/38. Spring Boot Security - JWT Authentication Implementation/transcript.html"
+            ><span class="number">38</span> Spring Boot Security - JWT
+            Authentication Implementation</a
+          >
+        </li>
+        <li>
+          <a href="SpringBoot/39. What is OAuth 2.0- Explained/transcript.html"
+            ><span class="number">39</span> What is OAuth 2.0- Explained</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/40. Spring Boot Security - OAUTH2 Authentication Implementation/transcript.html"
+            ><span class="number">40</span> Spring Boot Security - OAUTH2
+            Authentication Implementation</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/41. Spring Boot Security - Method Security - Role based Authorization/transcript.html"
+            ><span class="number">41</span> Spring Boot Security - Method
+            Security - Role based Authorization</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/42. RestTemplate - Communication between Microservices/transcript.html"
+            ><span class="number">42</span> RestTemplate - Communication between
+            Microservices</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/43. RestClient - Communication between Microservices/transcript.html"
+            ><span class="number">43</span> RestClient - Communication between
+            Microservices</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/44. FeignClient in Spring Boot Microservices - Declarative HTTP Client/transcript.html"
+            ><span class="number">44</span> FeignClient in Spring Boot
+            Microservices - Declarative HTTP Client</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/45. Service Discovery and its Implementation/transcript.html"
+            ><span class="number">45</span> Service Discovery and its
+            Implementation</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/46. Client Side Load Balancer and its Implementation/transcript.html"
+            ><span class="number">46</span> Client Side Load Balancer and its
+            Implementation</a
+          >
+        </li>
+        <li>
+          <a href="SpringBoot/47. Rate Limiter/transcript.html"
+            ><span class="number">47</span> Rate Limiter</a
+          >
+        </li>
+        <li>
+          <a href="SpringBoot/48. Bulkhead Pattern/transcript.html"
+            ><span class="number">48</span> Bulkhead Pattern</a
+          >
+        </li>
+        <li>
+          <a href="SpringBoot/49. Retry Pattern/transcript.html"
+            ><span class="number">49</span> Retry Pattern</a
+          >
+        </li>
+        <li>
+          <a href="SpringBoot/50. Circuit Breaker/transcript.html"
+            ><span class="number">50</span> Circuit Breaker</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/51. ApiGateway in Microservices - Part1 - Routing and Load Balancing/transcript.html"
+            ><span class="number">51</span> ApiGateway in Microservices - Part1
+            - Routing and Load Balancing</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/52. ApiGateway in Microservices - Part2 - Authentication JWT, Circuit Breaker etc/transcript.html"
+            ><span class="number">52</span> ApiGateway in Microservices - Part2
+            - Authentication JWT, Circuit Breaker etc</a
+          >
+        </li>
+        <li>
+          <a href="SpringBoot/53. Central Configuration/transcript.html"
+            ><span class="number">53</span> Central Configuration</a
+          >
+        </li>
+        <li>
+          <a href="SpringBoot/54. Actuator/transcript.html"
+            ><span class="number">54</span> Actuator</a
+          >
+        </li>
+        <li>
+          <a
+            href="SpringBoot/55. ConfigurationProperties in-depth/transcript.html"
+            ><span class="number">55</span> ConfigurationProperties in-depth</a
+          >
+        </li>
+      </ul>
     </div>
-</body>
+  </body>
 </html>

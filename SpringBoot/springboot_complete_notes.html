@@ -1,0 +1,2310 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spring Boot — Complete Revision Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0e0e0f;
+        --ink2: #3a3a3d;
+        --ink3: #7a7a80;
+        --bg: #f7f6f3;
+        --bg2: #eeecea;
+        --bg3: #e4e2de;
+        --border: #d8d5cf;
+        --border2: #c8c4bc;
+        --sp: #4caf50;
+        --sp-dark: #1b5e20;
+        --sp-bg: #eef7ee;
+        --sp-soft: #b3d8b3;
+        --blue: #1565c0;
+        --blue-bg: #eef4ff;
+        --blue-soft: #bdd0f0;
+        --amber: #e65100;
+        --amber-bg: #fff8ee;
+        --red: #b71c1c;
+        --red-bg: #fff0f0;
+        --purple: #4527a0;
+        --purple-bg: #f1effe;
+        --teal: #00695c;
+        --teal-bg: #eef7f5;
+        --sidebar-w: 268px;
+        --mono: "IBM Plex Mono", monospace;
+        --sans: "Sora", sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--ink);
+        line-height: 1.6;
+        font-size: 14px;
+      }
+      .layout {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        width: var(--sidebar-w);
+        background: #0b0b0c;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        overflow-y: auto;
+        z-index: 20;
+        display: flex;
+        flex-direction: column;
+      }
+      .sidebar::-webkit-scrollbar {
+        width: 4px;
+      }
+      .sidebar::-webkit-scrollbar-thumb {
+        background: #1e3320;
+        border-radius: 2px;
+      }
+      .s-head {
+        padding: 18px 14px 12px;
+        border-bottom: 1px solid #141a15;
+      }
+      .s-logo {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 4px;
+      }
+      .s-icon {
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(135deg, var(--sp-dark), var(--sp));
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: -1px;
+      }
+      .s-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: #f0efe9;
+      }
+      .s-sub {
+        font-size: 10px;
+        color: #3a4a3c;
+        letter-spacing: 0.05em;
+        font-family: var(--mono);
+      }
+      .s-search {
+        padding: 10px 12px;
+        border-bottom: 1px solid #111;
+      }
+      .s-search input {
+        width: 100%;
+        background: #141a15;
+        border: 1px solid #1e2a1f;
+        border-radius: 6px;
+        padding: 6px 10px;
+        font-size: 12px;
+        color: #b8c8b9;
+        font-family: var(--sans);
+        outline: none;
+      }
+      .s-search input:focus {
+        border-color: var(--sp);
+      }
+      .s-nav {
+        flex: 1;
+        padding: 8px 0 20px;
+      }
+      .cat-hdr {
+        padding: 10px 12px 3px;
+        font-size: 9px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #2a3a2c;
+        font-family: var(--mono);
+      }
+      .nav-btn {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 5px 12px;
+        border: none;
+        background: none;
+        font-size: 11px;
+        color: #4a6a4c;
+        cursor: pointer;
+        font-family: var(--sans);
+        transition: all 0.1s;
+        line-height: 1.4;
+        border-left: 2px solid transparent;
+      }
+      .nav-btn:hover {
+        background: #0f1a10;
+        color: #9ab89c;
+        border-left-color: #1e3320;
+      }
+      .nav-btn.active {
+        background: #0f1a10;
+        color: #e8f5e9;
+        border-left-color: var(--sp);
+        font-weight: 500;
+      }
+
+      /* MAIN */
+      .main {
+        margin-left: var(--sidebar-w);
+        padding: 0 36px 80px;
+        max-width: 900px;
+      }
+      .topic {
+        display: none;
+      }
+      .topic.visible {
+        display: block;
+      }
+      .topic-hero {
+        padding: 32px 0 22px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 26px;
+      }
+      .t-num {
+        font-size: 10px;
+        font-weight: 600;
+        font-family: var(--mono);
+        color: var(--sp-dark);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .t-title {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        margin-bottom: 10px;
+      }
+      .t-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+      .pill {
+        display: inline-block;
+        padding: 2px 9px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 500;
+        font-family: var(--mono);
+      }
+      .p-sp {
+        background: var(--sp-bg);
+        color: var(--sp-dark);
+      }
+      .p-blue {
+        background: var(--blue-bg);
+        color: var(--blue);
+      }
+      .p-amber {
+        background: var(--amber-bg);
+        color: var(--amber);
+      }
+      .p-red {
+        background: var(--red-bg);
+        color: var(--red);
+      }
+      .p-purple {
+        background: var(--purple-bg);
+        color: var(--purple);
+      }
+      .p-teal {
+        background: var(--teal-bg);
+        color: var(--teal);
+      }
+
+      /* CONTENT */
+      .callout {
+        background: var(--sp-bg);
+        border-left: 3px solid var(--sp-dark);
+        border-radius: 0 8px 8px 0;
+        padding: 13px 16px;
+        margin-bottom: 18px;
+        font-size: 13px;
+        color: var(--ink2);
+        line-height: 1.65;
+      }
+      .callout.blue {
+        background: var(--blue-bg);
+        border-color: var(--blue);
+      }
+      .callout.amber {
+        background: var(--amber-bg);
+        border-color: var(--amber);
+      }
+      .callout.red {
+        background: var(--red-bg);
+        border-color: var(--red);
+      }
+      .callout.teal {
+        background: var(--teal-bg);
+        border-color: var(--teal);
+      }
+      .callout.purple {
+        background: var(--purple-bg);
+        border-color: var(--purple);
+      }
+      .callout strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      h3.sec {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--ink3);
+        font-family: var(--mono);
+        margin: 24px 0 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid var(--border);
+      }
+      .g2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .g3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .card {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        padding: 13px 15px;
+      }
+      .card.sp {
+        background: var(--sp-bg);
+        border-color: var(--sp-soft);
+      }
+      .card.blue {
+        background: var(--blue-bg);
+        border-color: var(--blue-soft);
+      }
+      .card.amber {
+        background: var(--amber-bg);
+        border-color: #f5c89a;
+      }
+      .card.red {
+        background: var(--red-bg);
+        border-color: #f5b3b3;
+      }
+      .card.teal {
+        background: var(--teal-bg);
+        border-color: #b3d8d3;
+      }
+      .card.purple {
+        background: var(--purple-bg);
+        border-color: #c8bbf0;
+      }
+      .cl {
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        font-family: var(--mono);
+        margin-bottom: 7px;
+      }
+      .cl-sp {
+        color: var(--sp-dark);
+      }
+      .cl-blue {
+        color: var(--blue);
+      }
+      .cl-amber {
+        color: var(--amber);
+      }
+      .cl-red {
+        color: var(--red);
+      }
+      .cl-teal {
+        color: var(--teal);
+      }
+      .cl-purple {
+        color: var(--purple);
+      }
+      .cl-ink3 {
+        color: var(--ink3);
+      }
+      .card p,
+      .card li {
+        font-size: 12.5px;
+        color: var(--ink2);
+        line-height: 1.65;
+      }
+      .card ul {
+        padding-left: 17px;
+      }
+      .card ul li {
+        margin-bottom: 2px;
+      }
+      .tbl {
+        overflow-x: auto;
+        margin-bottom: 16px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12.5px;
+      }
+      thead {
+        background: var(--bg3);
+      }
+      th {
+        text-align: left;
+        padding: 8px 11px;
+        font-weight: 600;
+        font-family: var(--mono);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--ink3);
+        border-bottom: 1px solid var(--border2);
+      }
+      td {
+        padding: 7px 11px;
+        border-bottom: 1px solid var(--border);
+        color: var(--ink2);
+        vertical-align: top;
+        line-height: 1.5;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      td code {
+        font-family: var(--mono);
+        font-size: 11px;
+        background: var(--bg3);
+        padding: 1px 4px;
+        border-radius: 3px;
+      }
+      .code {
+        background: #0b0b0c;
+        color: #c9c4bc;
+        border-radius: 8px;
+        padding: 12px 14px;
+        font-family: var(--mono);
+        font-size: 11.5px;
+        line-height: 1.85;
+        overflow-x: auto;
+        margin-bottom: 14px;
+        white-space: pre;
+      }
+      .code .kw {
+        color: #82aaff;
+      }
+      .code .ann {
+        color: #c792ea;
+      }
+      .code .str {
+        color: #c3e88d;
+      }
+      .code .cm {
+        color: #405040;
+        font-style: italic;
+      }
+      .code .cls {
+        color: #ffcb6b;
+      }
+      .code .num {
+        color: #f78c6c;
+      }
+      .flow {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        padding: 14px 16px;
+        margin-bottom: 16px;
+        font-family: var(--mono);
+        font-size: 11.5px;
+        color: var(--ink2);
+        line-height: 1.9;
+        white-space: pre-wrap;
+      }
+      .flow .hi {
+        color: var(--sp-dark);
+        font-weight: 600;
+      }
+      @media (max-width: 800px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .main {
+          margin-left: 0;
+          padding: 16px;
+        }
+        .g2,
+        .g3 {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <nav class="sidebar">
+        <div class="s-head">
+          <div class="s-logo">
+            <div class="s-icon">SB</div>
+            <div class="s-title">Spring Boot Notes</div>
+          </div>
+          <div class="s-sub">55 topics · Complete revision</div>
+        </div>
+        <div class="s-search">
+          <input
+            type="text"
+            id="si"
+            placeholder="Search topics…"
+            oninput="search(this.value)"
+          />
+        </div>
+        <div class="s-nav" id="nav"></div>
+      </nav>
+      <main class="main" id="mc"></main>
+    </div>
+    <script>
+      const T = [
+        {
+          id: "intro",
+          cat: "Core Concepts",
+          num: "01",
+          title: "Spring Boot Introduction",
+          pills: ["p-sp:Spring Boot", "p-blue:Servlet", "p-amber:Auto-Config"],
+          html: `
+<div class="callout"><strong>Problem solved:</strong> Servlet era (2013-15) required huge XML config, manual server setup, tons of boilerplate. Spring Framework reduced config but was still complex. Spring Boot = <em>convention over configuration</em> — auto-config, embedded server, production-ready.</div>
+<h3 class="sec">Evolution: Servlet → Spring → Spring Boot</h3>
+<div class="tbl"><table>
+<tr><th>Era</th><th>Problem</th><th>Solution</th></tr>
+<tr><td>Servlet</td><td>Manual XML config, deploy WAR to Tomcat, boilerplate</td><td>—</td></tr>
+<tr><td>Spring MVC</td><td>Reduced config but still complex XML/Java config</td><td>DI, AOP, MVC pattern</td></tr>
+<tr><td>Spring Boot</td><td>Zero config setup, embedded server, auto-config</td><td>Convention over configuration</td></tr>
+</table></div>
+<h3 class="sec">Spring Boot Key Features</h3>
+<div class="g2">
+<div class="card sp"><div class="cl cl-sp">Auto Configuration</div><p>Detects dependencies on classpath and auto-configures beans. Add spring-web → auto-configures DispatcherServlet, Jackson, etc.</p></div>
+<div class="card blue"><div class="cl cl-blue">Embedded Server</div><p>Tomcat embedded inside JAR. No WAR deployment needed. java -jar app.jar runs everywhere.</p></div>
+<div class="card sp"><div class="cl cl-sp">Starter Dependencies</div><p>spring-boot-starter-web pulls all required libs. No version conflicts — BOM manages all.</p></div>
+<div class="card amber"><div class="cl cl-amber">Production Ready</div><p>Actuator endpoints: /health, /metrics, /info built-in. No extra setup.</p></div>
+</div>
+<h3 class="sec">Request Flow</h3>
+<div class="flow"><span class="hi">HTTP Request</span> → Servlet Container (Tomcat) → DispatcherServlet → HandlerMapping
+→ Controller → Service → Repository → DB
+← Response ←← ResponseBody / ResponseEntity</div>`,
+        },
+
+        {
+          id: "setup",
+          cat: "Core Concepts",
+          num: "02",
+          title: "Project Setup & Layered Architecture",
+          pills: ["p-sp:Project Setup", "p-blue:MVC Layers"],
+          html: `
+<div class="callout"><strong>Spring Initializr:</strong> start.spring.io → choose language, build tool (Maven/Gradle), Spring Boot version, add dependencies → generate project.</div>
+<h3 class="sec">Layered Architecture (Standard)</h3>
+<div class="tbl"><table>
+<tr><th>Layer</th><th>Annotation</th><th>Responsibility</th></tr>
+<tr><td>Controller</td><td>@RestController</td><td>Handle HTTP request/response. No business logic.</td></tr>
+<tr><td>Service</td><td>@Service</td><td>Business logic. Calls repository layer.</td></tr>
+<tr><td>Repository</td><td>@Repository</td><td>DB interaction. CRUD operations.</td></tr>
+<tr><td>Entity/Model</td><td>@Entity</td><td>Data model. Maps to DB table.</td></tr>
+</table></div>
+<h3 class="sec">JAR vs WAR</h3>
+<div class="g2">
+<div class="card sp"><div class="cl cl-sp">JAR (default)</div><p>Embedded Tomcat. Self-contained. Run with java -jar. Spring Boot's default packaging.</p></div>
+<div class="card blue"><div class="cl cl-blue">WAR</div><p>External servlet container needed. Legacy. Used when deploying to existing Tomcat/JBoss.</p></div>
+</div>
+<div class="code"><span class="ann">@SpringBootApplication</span>  <span class="cm">// = @Configuration + @EnableAutoConfiguration + @ComponentScan</span>
+<span class="kw">public class</span> <span class="cls">MyApp</span> {
+    <span class="kw">public static void</span> main(<span class="cls">String</span>[] args) {
+        <span class="cls">SpringApplication</span>.run(<span class="cls">MyApp</span>.<span class="kw">class</span>, args);
+    }
+}</div>`,
+        },
+
+        {
+          id: "maven",
+          cat: "Core Concepts",
+          num: "03",
+          title: "Maven & Its Lifecycle",
+          pills: ["p-sp:Maven", "p-blue:Build Tool", "p-amber:Lifecycle"],
+          html: `
+<div class="callout"><strong>Maven = project management tool</strong> (not just build). Handles: dependency resolution, build generation, documentation, reporting. Reads pom.xml for instructions.</div>
+<h3 class="sec">Maven Lifecycle Phases (in order)</h3>
+<div class="tbl"><table>
+<tr><th>Phase</th><th>What it does</th></tr>
+<tr><td><code>validate</code></td><td>Check project is correct and all info available</td></tr>
+<tr><td><code>compile</code></td><td>Compile source code</td></tr>
+<tr><td><code>test</code></td><td>Run unit tests (Surefire plugin)</td></tr>
+<tr><td><code>package</code></td><td>Package compiled code into JAR/WAR</td></tr>
+<tr><td><code>verify</code></td><td>Run integration tests</td></tr>
+<tr><td><code>install</code></td><td>Install to local Maven repository (~/.m2)</td></tr>
+<tr><td><code>deploy</code></td><td>Copy final package to remote repository</td></tr>
+</table></div>
+<h3 class="sec">pom.xml Key Sections</h3>
+<div class="g3">
+<div class="card sp"><div class="cl cl-sp">parent</div><p>spring-boot-starter-parent — manages all dependency versions (BOM). No version conflicts.</p></div>
+<div class="card blue"><div class="cl cl-blue">dependencies</div><p>starters = curated set of transitive deps. spring-boot-starter-web, data-jpa, security, test.</p></div>
+<div class="card amber"><div class="cl cl-amber">plugins</div><p>spring-boot-maven-plugin: packages app as executable JAR with embedded Tomcat.</p></div>
+</div>
+<div class="callout amber"><strong>Key commands:</strong> <code>mvn clean install</code> (clean target + build), <code>mvn spring-boot:run</code> (run app), <code>mvn test</code> (tests only), <code>mvn package -DskipTests</code> (build, skip tests).</div>`,
+        },
+
+        {
+          id: "controller",
+          cat: "Core Concepts",
+          num: "04",
+          title: "Controller Layer Annotations",
+          pills: [
+            "p-sp:@RestController",
+            "p-blue:@RequestMapping",
+            "p-amber:HTTP Methods",
+          ],
+          html: `
+<div class="callout"><strong>Controller = entry point for HTTP requests.</strong> DispatcherServlet uses HandlerMapping to find which controller handles each request.</div>
+<h3 class="sec">Key Annotations</h3>
+<div class="tbl"><table>
+<tr><th>Annotation</th><th>Purpose</th></tr>
+<tr><td><code>@Controller</code></td><td>Marks class as controller. Returns View names (for template engines like Thymeleaf).</td></tr>
+<tr><td><code>@RestController</code></td><td>@Controller + @ResponseBody. All methods return JSON/XML directly to response body.</td></tr>
+<tr><td><code>@RequestMapping</code></td><td>Map URL path (class or method level). Supports method, produces, consumes.</td></tr>
+<tr><td><code>@GetMapping</code></td><td>GET requests. Shortcut for @RequestMapping(method=GET).</td></tr>
+<tr><td><code>@PostMapping</code></td><td>POST requests.</td></tr>
+<tr><td><code>@PutMapping</code></td><td>PUT requests (full update).</td></tr>
+<tr><td><code>@PatchMapping</code></td><td>PATCH requests (partial update).</td></tr>
+<tr><td><code>@DeleteMapping</code></td><td>DELETE requests.</td></tr>
+<tr><td><code>@PathVariable</code></td><td>Extract value from URL path: /users/{id}</td></tr>
+<tr><td><code>@RequestParam</code></td><td>Extract query param: /users?name=PK</td></tr>
+<tr><td><code>@RequestBody</code></td><td>Deserialize JSON body to Java object.</td></tr>
+<tr><td><code>@RequestHeader</code></td><td>Extract HTTP header value.</td></tr>
+</table></div>
+<div class="code"><span class="ann">@RestController</span>
+<span class="ann">@RequestMapping</span>(<span class="str">"/api/users"</span>)
+<span class="kw">public class</span> <span class="cls">UserController</span> {
+    <span class="ann">@GetMapping</span>(<span class="str">"/{id}"</span>)
+    <span class="kw">public</span> <span class="cls">User</span> getUser(<span class="ann">@PathVariable</span> <span class="cls">Long</span> id) { ... }
+    
+    <span class="ann">@PostMapping</span>
+    <span class="kw">public</span> <span class="cls">User</span> create(<span class="ann">@RequestBody</span> <span class="cls">User</span> user) { ... }
+}</div>`,
+        },
+
+        {
+          id: "bean",
+          cat: "Core Concepts",
+          num: "05",
+          title: "Bean & Its Lifecycle | IoC Container",
+          pills: ["p-sp:@Bean", "p-blue:@Component", "p-amber:IoC"],
+          html: `
+<div class="callout"><strong>Bean = Java object managed by Spring IoC container.</strong> IoC container creates, wires, and manages lifecycle of all beans. Also called Application Context.</div>
+<h3 class="sec">2 Ways to Create a Bean</h3>
+<div class="g2">
+<div class="card sp"><div class="cl cl-sp">@Component (convention)</div>
+<p>Spring auto-detects during component scan. Uses default constructor. Subtypes: @Service, @Repository, @Controller, @RestController.</p>
+<div class="code" style="margin-top:8px"><span class="ann">@Component</span>
+<span class="kw">public class</span> <span class="cls">UserService</span> { ... }</div></div>
+<div class="card blue"><div class="cl cl-blue">@Bean (explicit)</div>
+<p>Inside @Configuration class. Use when: third-party class (can't add @Component), need custom logic during creation, conditional creation.</p>
+<div class="code" style="margin-top:8px"><span class="ann">@Configuration</span>
+<span class="kw">public class</span> <span class="cls">AppConfig</span> {
+    <span class="ann">@Bean</span>
+    <span class="kw">public</span> <span class="cls">DataSource</span> dataSource() { ... }
+}</div></div>
+</div>
+<h3 class="sec">Bean Lifecycle</h3>
+<div class="flow"><span class="hi">1.</span> Application starts → Component scan finds @Component classes
+<span class="hi">2.</span> IoC container creates bean (calls constructor)
+<span class="hi">3.</span> Dependency Injection (setter/constructor/field injection)
+<span class="hi">4.</span> @PostConstruct method called (init logic)
+<span class="hi">5.</span> Bean is ready — used by application
+<span class="hi">6.</span> On shutdown: @PreDestroy called → bean destroyed</div>
+<div class="callout amber"><strong>@PostConstruct</strong> runs after bean created + DI done. Use for initialization. <strong>@PreDestroy</strong> runs before container destroys bean. Use for cleanup (close connections).</div>`,
+        },
+
+        {
+          id: "di",
+          cat: "Core Concepts",
+          num: "06",
+          title: "Dependency Injection",
+          pills: ["p-sp:@Autowired", "p-blue:DI Types", "p-amber:@Qualifier"],
+          html: `
+<div class="callout"><strong>Problem DI solves:</strong> Tight coupling. If ClassA creates its own dependencies, any change in dependency breaks ClassA. DI = Spring injects dependencies from outside — loose coupling.</div>
+<h3 class="sec">3 Types of Injection</h3>
+<div class="tbl"><table>
+<tr><th>Type</th><th>How</th><th>Preferred?</th><th>Notes</th></tr>
+<tr><td>Constructor Injection</td><td>@Autowired on constructor (optional if single)</td><td>✔ Best</td><td>Immutable, easy to test, mandatory deps clear</td></tr>
+<tr><td>Setter Injection</td><td>@Autowired on setter method</td><td>Optional</td><td>For optional dependencies</td></tr>
+<tr><td>Field Injection</td><td>@Autowired on field</td><td>✗ Avoid</td><td>Hard to test, hides dependencies, DIP violation</td></tr>
+</table></div>
+<div class="code"><span class="cm">// Constructor injection (recommended)</span>
+<span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="cls">UserService</span> {
+    <span class="kw">private final</span> <span class="cls">OrderRepository</span> repo;
+    
+    <span class="kw">public</span> <span class="cls">UserService</span>(<span class="cls">OrderRepository</span> repo) { <span class="cm">// @Autowired optional if single constructor</span>
+        <span class="kw">this</span>.repo = repo;
+    }
+}</div>
+<h3 class="sec">@Qualifier — Resolve Ambiguity</h3>
+<div class="callout amber"><strong>Unsatisfied Dependency:</strong> If interface has multiple @Component implementations (OnlineOrder, OfflineOrder), Spring doesn't know which to inject → fails on startup. Fix: @Qualifier("onlineOrder") to specify which bean, or @Primary on preferred bean.</div>
+<div class="code"><span class="ann">@Autowired</span>
+<span class="ann">@Qualifier</span>(<span class="str">"onlineOrder"</span>)
+<span class="kw">private</span> <span class="cls">Order</span> order;</div>`,
+        },
+
+        {
+          id: "scope",
+          cat: "Core Concepts",
+          num: "07",
+          title: "Bean Scopes",
+          pills: [
+            "p-sp:Singleton",
+            "p-blue:Prototype",
+            "p-amber:Request/Session",
+          ],
+          html: `
+<div class="callout"><strong>Bean scope = how many instances Spring creates.</strong> Default is Singleton — one instance per IoC container.</div>
+<h3 class="sec">5 Scopes</h3>
+<div class="tbl"><table>
+<tr><th>Scope</th><th>Instances</th><th>When to use</th></tr>
+<tr><td>Singleton (default)</td><td>1 per IoC container</td><td>Stateless beans — Services, Repositories</td></tr>
+<tr><td>Prototype</td><td>New instance every time</td><td>Stateful beans, mutable objects</td></tr>
+<tr><td>Request</td><td>1 per HTTP request</td><td>Web only. Request-scoped data</td></tr>
+<tr><td>Session</td><td>1 per HTTP session</td><td>Web only. User session data</td></tr>
+<tr><td>Application</td><td>1 per ServletContext</td><td>Web only. App-wide shared state</td></tr>
+</table></div>
+<div class="callout amber"><strong>Singleton + Prototype issue:</strong> If a Singleton bean has a Prototype dependency, Spring injects Prototype only ONCE (at Singleton creation). Prototype then behaves like Singleton. Fix: use ApplicationContext.getBean() or @Lookup annotation to get fresh prototype each time.</div>
+<div class="code"><span class="ann">@Bean</span>
+<span class="ann">@Scope</span>(<span class="str">"prototype"</span>)        <span class="cm">// or ConfigurableBeanFactory.SCOPE_PROTOTYPE</span>
+<span class="kw">public</span> <span class="cls">Order</span> order() { <span class="kw">return new</span> <span class="cls">Order</span>(); }
+
+<span class="ann">@Bean</span>
+<span class="ann">@Scope</span>(<span class="str">"request"</span>)           <span class="cm">// web scopes</span>
+<span class="kw">public</span> <span class="cls">RequestContext</span> ctx() { ... }</div>`,
+        },
+
+        {
+          id: "value",
+          cat: "Core Concepts",
+          num: "08",
+          title: "@Value Annotation & Dynamic Bean Init",
+          pills: ["p-sp:@Value", "p-blue:Properties", "p-amber:@Qualifier"],
+          html: `
+<div class="callout"><strong>@Value</strong> injects values from application.properties/yml into bean fields at startup. Solves: hardcoding config in code, different values per environment.</div>
+<div class="code"><span class="cm"># application.properties</span>
+app.db.url=jdbc:mysql://localhost/mydb
+app.feature.enabled=true
+
+<span class="cm">// Java</span>
+<span class="ann">@Value</span>(<span class="str">"\${app.db.url}"</span>)
+<span class="kw">private</span> <span class="cls">String</span> dbUrl;
+
+<span class="ann">@Value</span>(<span class="str">"\${app.feature.enabled:false}"</span>) <span class="cm">// default=false if property missing</span>
+<span class="kw">private boolean</span> featureEnabled;</div>
+<h3 class="sec">Dynamic Bean Selection (avoid @Qualifier breaking DIP)</h3>
+<div class="callout amber"><strong>Problem:</strong> @Qualifier("onlineOrder") hardcodes implementation — breaks Dependency Inversion.<br><strong>Solution 1:</strong> @Value + @ConditionalOnProperty to create bean based on config.<br><strong>Solution 2:</strong> @Profile to load different implementations per environment.</div>`,
+        },
+
+        {
+          id: "conditional",
+          cat: "Core Concepts",
+          num: "09",
+          title: "@ConditionalOnProperty Annotation",
+          pills: [
+            "p-sp:Conditional",
+            "p-blue:Beans",
+            "p-amber:Startup Optimization",
+          ],
+          html: `
+<div class="callout"><strong>@ConditionalOnProperty:</strong> Bean only created if specified property exists + has correct value. Prevents unnecessary beans from being created at startup — declutters ApplicationContext.</div>
+<div class="code"><span class="cm"># application.properties</span>
+mysql.connection.enabled=true
+nosql.connection.enabled=false
+
+<span class="cm">// Java</span>
+<span class="ann">@Component</span>
+<span class="ann">@ConditionalOnProperty</span>(name = <span class="str">"mysql.connection.enabled"</span>, havingValue = <span class="str">"true"</span>)
+<span class="kw">public class</span> <span class="cls">MySQLConnection</span> { ... }  <span class="cm">// created ✔</span>
+
+<span class="ann">@Component</span>
+<span class="ann">@ConditionalOnProperty</span>(name = <span class="str">"nosql.connection.enabled"</span>, havingValue = <span class="str">"true"</span>)
+<span class="kw">public class</span> <span class="cls">NoSQLConnection</span> { ... }  <span class="cm">// NOT created ✗</span></div>
+<h3 class="sec">Other @Conditional Variants</h3>
+<div class="g2">
+<div class="card sp"><div class="cl cl-sp">Useful Conditionals</div><ul>
+<li>@ConditionalOnClass — if class exists on classpath</li>
+<li>@ConditionalOnMissingBean — if no bean of type exists</li>
+<li>@ConditionalOnProperty — if property has value</li>
+<li>@ConditionalOnExpression — SpEL expression is true</li>
+</ul></div>
+<div class="card blue"><div class="cl cl-blue">vs @Profile</div><p>@ConditionalOnProperty = fine-grained, any property check. @Profile = environment-level (dev/prod/staging). Use @Profile for environment separation, @ConditionalOnProperty for feature flags.</p></div>
+</div>`,
+        },
+
+        {
+          id: "profile",
+          cat: "Core Concepts",
+          num: "10",
+          title: "Spring Boot Profiling & @Profile",
+          pills: ["p-sp:@Profile", "p-blue:Environments", "p-amber:Config"],
+          html: `
+<div class="callout"><strong>@Profile = environment separation.</strong> Define different beans/configs for dev, staging, prod. Spring loads only the active profile's beans.</div>
+<div class="code"><span class="cm"># application.properties</span>
+spring.profiles.active=dev  <span class="cm"># or prod, staging</span>
+
+<span class="cm"># application-dev.properties  (auto-loaded for dev profile)</span>
+spring.datasource.url=jdbc:h2:mem:devdb
+
+<span class="cm"># application-prod.properties</span>
+spring.datasource.url=jdbc:mysql://prod-server/db
+
+<span class="cm">// Java</span>
+<span class="ann">@Component</span>
+<span class="ann">@Profile</span>(<span class="str">"dev"</span>)
+<span class="kw">public class</span> <span class="cls">MockEmailService</span> <span class="kw">implements</span> <span class="cls">EmailService</span> { ... }
+
+<span class="ann">@Component</span>
+<span class="ann">@Profile</span>(<span class="str">"prod"</span>)
+<span class="kw">public class</span> <span class="cls">RealEmailService</span> <span class="kw">implements</span> <span class="cls">EmailService</span> { ... }</div>
+<div class="callout amber"><strong>Profile vs ConditionalOnProperty:</strong> Profile = intended for environment-level switching (different behaviours per env). ConditionalOnProperty = intended for feature toggles within same environment. Don't use Profile for feature flags — use @ConditionalOnProperty.</div>`,
+        },
+
+        {
+          id: "aop",
+          cat: "Core Concepts",
+          num: "11",
+          title: "AOP — Aspect Oriented Programming",
+          pills: [
+            "p-sp:AOP",
+            "p-blue:@Aspect",
+            "p-amber:Cross-Cutting Concerns",
+          ],
+          html: `
+<div class="callout"><strong>AOP:</strong> Intercept method invocations to run code before/after WITHOUT modifying business logic. Handles cross-cutting concerns: logging, transactions, security, caching.</div>
+<h3 class="sec">Key Terminology</h3>
+<div class="tbl"><table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Aspect</td><td>Class containing cross-cutting logic. Annotated @Aspect.</td></tr>
+<tr><td>Advice</td><td>The actual code to run (Before, After, Around, AfterReturning, AfterThrowing)</td></tr>
+<tr><td>Pointcut</td><td>Expression that matches which methods to intercept</td></tr>
+<tr><td>JoinPoint</td><td>The actual method execution being intercepted</td></tr>
+<tr><td>Weaving</td><td>Process of applying aspect to target object (Spring uses runtime proxy-based weaving)</td></tr>
+</table></div>
+<h3 class="sec">Advice Types</h3>
+<div class="tbl"><table>
+<tr><th>Advice</th><th>When runs</th></tr>
+<tr><td>@Before</td><td>Before method execution</td></tr>
+<tr><td>@After</td><td>After method (regardless of outcome)</td></tr>
+<tr><td>@AfterReturning</td><td>After successful return</td></tr>
+<tr><td>@AfterThrowing</td><td>After exception thrown</td></tr>
+<tr><td>@Around</td><td>Surrounds method — can control whether method executes at all</td></tr>
+</table></div>
+<div class="code"><span class="ann">@Aspect</span>
+<span class="ann">@Component</span>
+<span class="kw">public class</span> <span class="cls">LoggingAspect</span> {
+    <span class="ann">@Around</span>(<span class="str">"execution(* com.app.service.*.*(..))"</span>)
+    <span class="kw">public</span> <span class="cls">Object</span> log(<span class="cls">ProceedingJoinPoint</span> pjp) <span class="kw">throws</span> <span class="cls">Throwable</span> {
+        <span class="cls">System</span>.out.println(<span class="str">"Before: "</span> + pjp.getSignature());
+        <span class="cls">Object</span> result = pjp.proceed(); <span class="cm">// execute actual method</span>
+        <span class="cls">System</span>.out.println(<span class="str">"After: returned "</span> + result);
+        <span class="kw">return</span> result;
+    }
+}</div>
+<div class="callout amber"><strong>How it works:</strong> Spring wraps your bean in a Proxy object. When you call the method, the proxy intercepts, runs advice, then delegates to real bean. @Transactional, Spring Security, @Cacheable — all use AOP internally.</div>`,
+        },
+
+        {
+          id: "tx1",
+          cat: "Transactions",
+          num: "12",
+          title: "@Transactional — Part 1 (ACID & Basics)",
+          pills: ["p-sp:@Transactional", "p-blue:ACID", "p-red:Rollback"],
+          html: `
+<div class="callout"><strong>@Transactional wraps method in a DB transaction.</strong> On exception: rollback. On success: commit. Internally uses AOP — Spring proxy intercepts method, starts/ends transaction.</div>
+<h3 class="sec">ACID Properties</h3>
+<div class="g2">
+<div class="card sp"><div class="cl cl-sp">A — Atomicity</div><p>All operations in transaction succeed or ALL rollback. No partial updates.</p></div>
+<div class="card blue"><div class="cl cl-blue">C — Consistency</div><p>DB moves from one valid state to another. Constraints always satisfied.</p></div>
+<div class="card amber"><div class="cl cl-amber">I — Isolation</div><p>Concurrent transactions don't see each other's partial changes.</p></div>
+<div class="card teal"><div class="cl cl-teal">D — Durability</div><p>Committed data survives crashes. Written to disk.</p></div>
+</div>
+<h3 class="sec">@Transactional Behavior</h3>
+<div class="code"><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="cls">PaymentService</span> {
+    <span class="ann">@Transactional</span>          <span class="cm">// starts transaction, commits on return, rolls back on RuntimeException</span>
+    <span class="kw">public void</span> transfer(<span class="cls">Long</span> from, <span class="cls">Long</span> to, <span class="kw">double</span> amount) {
+        debit(from, amount);     <span class="cm">// if this throws RuntimeException → rollback BOTH</span>
+        credit(to, amount);
+    }
+}</div>
+<div class="callout amber"><strong>Default rollback:</strong> Only on RuntimeException (unchecked). Checked exceptions do NOT trigger rollback by default. Override: <code>@Transactional(rollbackFor = Exception.class)</code></div>`,
+        },
+
+        {
+          id: "tx2",
+          cat: "Transactions",
+          num: "13",
+          title: "@Transactional Part 2 — Propagation Types",
+          pills: ["p-sp:Propagation", "p-blue:Transaction Manager"],
+          html: `
+<div class="callout"><strong>Propagation = what happens when a @Transactional method calls another @Transactional method.</strong> 7 propagation types. Default = REQUIRED.</div>
+<h3 class="sec">Propagation Types</h3>
+<div class="tbl"><table>
+<tr><th>Type</th><th>Behavior</th><th>Use when</th></tr>
+<tr><td>REQUIRED (default)</td><td>Join existing tx. If none, create new.</td><td>Most cases</td></tr>
+<tr><td>REQUIRES_NEW</td><td>Always create new tx. Suspend existing.</td><td>Audit log that must commit even if outer fails</td></tr>
+<tr><td>NESTED</td><td>Nested tx within existing. Savepoint created.</td><td>Partial rollback within a larger tx</td></tr>
+<tr><td>SUPPORTS</td><td>Join if exists, else run without tx</td><td>Read methods that can work either way</td></tr>
+<tr><td>NOT_SUPPORTED</td><td>Suspend existing tx, run without</td><td>Non-transactional operations within a tx</td></tr>
+<tr><td>MANDATORY</td><td>Must have existing tx. Throws if none.</td><td>Internal methods that must be called within tx</td></tr>
+<tr><td>NEVER</td><td>Must NOT have tx. Throws if exists.</td><td>Operations that must never run in tx</td></tr>
+</table></div>
+<h3 class="sec">Declarative vs Programmatic</h3>
+<div class="g2">
+<div class="card sp"><div class="cl cl-sp">Declarative (preferred)</div><p>@Transactional annotation. Clean, less code. Works via AOP proxy.</p></div>
+<div class="card blue"><div class="cl cl-blue">Programmatic</div><p>TransactionTemplate or PlatformTransactionManager. Fine-grained control. Use when annotation-based doesn't work (self-invocation, lambda).</p></div>
+</div>`,
+        },
+
+        {
+          id: "tx3",
+          cat: "Transactions",
+          num: "14",
+          title: "@Transactional Part 3 — Isolation Levels",
+          pills: ["p-sp:Isolation", "p-red:Concurrency Issues"],
+          html: `
+<div class="callout"><strong>Isolation level = how changes by one transaction are visible to parallel transactions.</strong> Higher isolation = fewer concurrency issues but lower performance.</div>
+<h3 class="sec">Concurrency Problems</h3>
+<div class="tbl"><table>
+<tr><th>Problem</th><th>What happens</th></tr>
+<tr><td>Dirty Read</td><td>T2 reads data modified by T1 before T1 commits. T1 rolls back → T2 read phantom data.</td></tr>
+<tr><td>Non-Repeatable Read</td><td>T2 reads same row twice, gets different values (T1 modified in between).</td></tr>
+<tr><td>Phantom Read</td><td>T2 reads set of rows twice, gets different count (T1 inserted/deleted in between).</td></tr>
+</table></div>
+<h3 class="sec">Isolation Levels</h3>
+<div class="tbl"><table>
+<tr><th>Level</th><th>Dirty Read</th><th>Non-Rep Read</th><th>Phantom</th><th>Performance</th></tr>
+<tr><td>READ_UNCOMMITTED</td><td>Possible</td><td>Possible</td><td>Possible</td><td>Highest</td></tr>
+<tr><td>READ_COMMITTED (MySQL default)</td><td>Prevented</td><td>Possible</td><td>Possible</td><td>High</td></tr>
+<tr><td>REPEATABLE_READ</td><td>Prevented</td><td>Prevented</td><td>Possible</td><td>Medium</td></tr>
+<tr><td>SERIALIZABLE</td><td>Prevented</td><td>Prevented</td><td>Prevented</td><td>Lowest</td></tr>
+</table></div>
+<div class="code"><span class="ann">@Transactional</span>(isolation = <span class="cls">Isolation</span>.READ_COMMITTED,
+                propagation = <span class="cls">Propagation</span>.REQUIRED,
+                rollbackFor = <span class="cls">Exception</span>.<span class="kw">class</span>,
+                timeout = <span class="num">30</span>)
+<span class="kw">public void</span> processOrder() { ... }</div>`,
+        },
+
+        {
+          id: "async1",
+          cat: "Async & Concurrency",
+          num: "15",
+          title: "@Async — Part 1 (Thread Pool)",
+          pills: [
+            "p-sp:@Async",
+            "p-blue:ThreadPoolExecutor",
+            "p-amber:Non-Blocking",
+          ],
+          html: `
+<div class="callout"><strong>@Async:</strong> Method runs in a separate thread asynchronously. Caller doesn't wait. Internally uses Spring's TaskExecutor (backed by ThreadPoolExecutor).</div>
+<h3 class="sec">Enable & Configure</h3>
+<div class="code"><span class="ann">@SpringBootApplication</span>
+<span class="ann">@EnableAsync</span>                     <span class="cm">// MUST add this</span>
+<span class="kw">public class</span> <span class="cls">App</span> { ... }
+
+<span class="ann">@Configuration</span>
+<span class="kw">public class</span> <span class="cls">AsyncConfig</span> <span class="kw">implements</span> <span class="cls">AsyncConfigurer</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="cls">Executor</span> getAsyncExecutor() {
+        <span class="cls">ThreadPoolTaskExecutor</span> exec = <span class="kw">new</span> <span class="cls">ThreadPoolTaskExecutor</span>();
+        exec.setCorePoolSize(<span class="num">5</span>);
+        exec.setMaxPoolSize(<span class="num">20</span>);
+        exec.setQueueCapacity(<span class="num">100</span>);
+        exec.setThreadNamePrefix(<span class="str">"async-"</span>);
+        exec.initialize();
+        <span class="kw">return</span> exec;
+    }
+}</div>
+<h3 class="sec">Usage</h3>
+<div class="code"><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="cls">NotificationService</span> {
+    <span class="ann">@Async</span>                         <span class="cm">// runs in separate thread pool thread</span>
+    <span class="kw">public</span> <span class="cls">CompletableFuture</span>&lt;<span class="cls">String</span>&gt; sendEmail(<span class="cls">String</span> to) {
+        <span class="cm">// long running task</span>
+        <span class="kw">return</span> <span class="cls">CompletableFuture</span>.completedFuture(<span class="str">"sent"</span>);
+    }
+}</div>`,
+        },
+
+        {
+          id: "async2",
+          cat: "Async & Concurrency",
+          num: "16",
+          title: "@Async — Interview Questions",
+          pills: ["p-sp:@Async", "p-red:Conditions", "p-amber:Self-Invocation"],
+          html: `
+<div class="callout"><strong>@Async works via Spring AOP proxy.</strong> If conditions not met, method runs synchronously without error — silent failure!</div>
+<h3 class="sec">2 Mandatory Conditions for @Async to Work</h3>
+<div class="g2">
+<div class="card red"><div class="cl cl-red">Condition 1: Different Class</div><p>@Async method must be in a <strong>different class</strong> from the caller. Self-invocation (calling @Async method from same class) bypasses the proxy → runs synchronously.</p></div>
+<div class="card red"><div class="cl cl-red">Condition 2: Public Method</div><p>Method must be <strong>public</strong>. Spring AOP proxy cannot intercept private/protected methods.</p></div>
+</div>
+<div class="callout amber"><strong>Why self-invocation fails:</strong> When UserController calls asyncMethod() internally, it calls <code>this.asyncMethod()</code> — bypasses the Spring proxy. The proxy is only involved when you call through the Spring-managed bean reference.</div>
+<h3 class="sec">Return Types</h3>
+<div class="tbl"><table>
+<tr><th>Return Type</th><th>Behavior</th></tr>
+<tr><td>void</td><td>Fire and forget. Caller cannot get result or know when done.</td></tr>
+<tr><td>Future&lt;T&gt;</td><td>Caller can call future.get() to wait for result (blocking).</td></tr>
+<tr><td>CompletableFuture&lt;T&gt;</td><td>Best. Non-blocking, can chain .thenApply(), .exceptionally().</td></tr>
+</table></div>`,
+        },
+
+        {
+          id: "interceptor",
+          cat: "Web Layer",
+          num: "17",
+          title: "Custom Interceptors",
+          pills: [
+            "p-sp:HandlerInterceptor",
+            "p-blue:Pre/Post",
+            "p-amber:Mediator",
+          ],
+          html: `
+<div class="callout"><strong>Interceptor = mediator invoked before/after controller execution.</strong> Runs AFTER DispatcherServlet, BEFORE/AFTER controller. Use for: auth checks, logging, request modification.</div>
+<h3 class="sec">Creating Custom Interceptor</h3>
+<div class="code"><span class="ann">@Component</span>
+<span class="kw">public class</span> <span class="cls">AuthInterceptor</span> <span class="kw">implements</span> <span class="cls">HandlerInterceptor</span> {
+
+    <span class="ann">@Override</span>
+    <span class="kw">public boolean</span> preHandle(<span class="cls">HttpServletRequest</span> req, <span class="cls">HttpServletResponse</span> res, <span class="cls">Object</span> handler) {
+        <span class="cm">// runs BEFORE controller. Return false to block request.</span>
+        <span class="cls">String</span> token = req.getHeader(<span class="str">"Authorization"</span>);
+        <span class="kw">if</span> (token == <span class="kw">null</span>) { res.setStatus(<span class="num">401</span>); <span class="kw">return false</span>; }
+        <span class="kw">return true</span>;
+    }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> postHandle(...) { <span class="cm">/* after controller, before view */</span> }
+
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> afterCompletion(...) { <span class="cm">/* after response sent. Cleanup. */</span> }
+}
+
+<span class="cm">// Register interceptor:</span>
+<span class="ann">@Configuration</span>
+<span class="kw">public class</span> <span class="cls">WebConfig</span> <span class="kw">implements</span> <span class="cls">WebMvcConfigurer</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">public void</span> addInterceptors(<span class="cls">InterceptorRegistry</span> registry) {
+        registry.addInterceptor(<span class="kw">new</span> <span class="cls">AuthInterceptor</span>())
+                .addPathPatterns(<span class="str">"/api/**"</span>)
+                .excludePathPatterns(<span class="str">"/api/login"</span>);
+    }
+}</div>`,
+        },
+
+        {
+          id: "filter",
+          cat: "Web Layer",
+          num: "18",
+          title: "Filters vs Interceptors",
+          pills: ["p-sp:Filter", "p-blue:Interceptor", "p-amber:Difference"],
+          html: `
+<div class="callout"><strong>Key difference: WHERE they sit in the request pipeline.</strong></div>
+<div class="tbl"><table>
+<tr><th>Feature</th><th>Filter (javax.servlet)</th><th>Interceptor (Spring MVC)</th></tr>
+<tr><td>Runs before</td><td>DispatcherServlet</td><td>Controller (after DispatcherServlet)</td></tr>
+<tr><td>Framework</td><td>Java EE / Servlet API</td><td>Spring MVC specific</td></tr>
+<tr><td>Access to Spring beans</td><td>Limited (not directly)</td><td>Full access</td></tr>
+<tr><td>Handler info</td><td>No — doesn't know which handler</td><td>Yes — knows which controller/method</td></tr>
+<tr><td>Use for</td><td>CORS, logging all requests, security headers, compression</td><td>Auth checks, logging, model modifications</td></tr>
+</table></div>
+<div class="flow"><span class="hi">Request flow:</span>
+Client → Filter1 → Filter2 → DispatcherServlet → Interceptor.preHandle() → Controller → Interceptor.postHandle() → Interceptor.afterCompletion() → Filter2 → Filter1 → Client</div>
+<div class="callout amber"><strong>When to use Filter:</strong> Generic request processing before Spring. CORS headers, request logging, authentication at Servlet level. <br><strong>When to use Interceptor:</strong> Controller-specific logic, Spring-aware operations, model population.</div>`,
+        },
+
+        {
+          id: "hateoas",
+          cat: "Web Layer",
+          num: "19",
+          title: "HATEOAS for REST APIs",
+          pills: ["p-sp:HATEOAS", "p-blue:REST Maturity"],
+          html: `
+<div class="callout"><strong>HATEOAS = Hypermedia As The Engine Of Application State.</strong> Response includes links to available next actions. Client discovers API dynamically. REST level 3 (highest).</div>
+<h3 class="sec">Why HATEOAS</h3>
+<div class="callout blue">Response tells client "what can you do next" after each operation. Client doesn't need to hardcode URLs — discovers from response links. Reduces coupling between client and server.</div>
+<div class="code"><span class="cm">// Response with HATEOAS links:</span>
+{
+  <span class="str">"id"</span>: <span class="num">1</span>,
+  <span class="str">"name"</span>: <span class="str">"PK"</span>,
+  <span class="str">"status"</span>: <span class="str">"UNVERIFIED"</span>,
+  <span class="str">"_links"</span>: {
+    <span class="str">"self"</span>: { <span class="str">"href"</span>: <span class="str">"/users/1"</span> },
+    <span class="str">"verify-sms"</span>: { <span class="str">"href"</span>: <span class="str">"/users/1/verify/sms/start"</span> },
+    <span class="str">"verify-email"</span>: { <span class="str">"href"</span>: <span class="str">"/users/1/verify/email/start"</span> },
+    <span class="str">"delete"</span>: { <span class="str">"href"</span>: <span class="str">"/users/1"</span>, <span class="str">"method"</span>: <span class="str">"DELETE"</span> }
+  }
+}</div>
+<div class="code"><span class="ann">@GetMapping</span>(<span class="str">"/{id}"</span>)
+<span class="kw">public</span> <span class="cls">EntityModel</span>&lt;<span class="cls">User</span>&gt; getUser(<span class="ann">@PathVariable</span> <span class="cls">Long</span> id) {
+    <span class="cls">User</span> user = service.getUser(id);
+    <span class="kw">return</span> <span class="cls">EntityModel</span>.of(user,
+        <span class="cls">WebMvcLinkBuilder</span>.linkTo(methodOn(<span class="cls">UserController</span>.<span class="kw">class</span>).getUser(id)).withSelfRel(),
+        <span class="cls">WebMvcLinkBuilder</span>.linkTo(methodOn(<span class="cls">UserController</span>.<span class="kw">class</span>).deleteUser(id)).withRel(<span class="str">"delete"</span>)
+    );
+}</div>`,
+        },
+
+        {
+          id: "response",
+          cat: "Web Layer",
+          num: "20",
+          title: "ResponseEntity & HTTP Status Codes",
+          pills: ["p-sp:ResponseEntity", "p-blue:HTTP Codes"],
+          html: `
+<div class="callout"><strong>ResponseEntity = full control over response: status code + headers + body.</strong> Response = status code + headers + body.</div>
+<h3 class="sec">HTTP Status Code Groups</h3>
+<div class="tbl"><table>
+<tr><th>Range</th><th>Meaning</th><th>Common codes</th></tr>
+<tr><td>1xx</td><td>Informational</td><td>100 Continue</td></tr>
+<tr><td>2xx</td><td>Success</td><td>200 OK, 201 Created, 204 No Content</td></tr>
+<tr><td>3xx</td><td>Redirection</td><td>301 Moved Permanently, 302 Found, 304 Not Modified</td></tr>
+<tr><td>4xx</td><td>Client Error</td><td>400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable</td></tr>
+<tr><td>5xx</td><td>Server Error</td><td>500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable</td></tr>
+</table></div>
+<div class="code"><span class="cm">// ResponseEntity usage:</span>
+<span class="kw">return</span> <span class="cls">ResponseEntity</span>.ok(user);                      <span class="cm">// 200 OK</span>
+<span class="kw">return</span> <span class="cls">ResponseEntity</span>.status(<span class="cls">HttpStatus</span>.CREATED).body(user); <span class="cm">// 201</span>
+<span class="kw">return</span> <span class="cls">ResponseEntity</span>.noContent().build();                 <span class="cm">// 204</span>
+<span class="kw">return</span> <span class="cls">ResponseEntity</span>.notFound().build();                   <span class="cm">// 404</span>
+<span class="kw">return</span> <span class="cls">ResponseEntity</span>
+    .status(<span class="num">201</span>)
+    .header(<span class="str">"Location"</span>, <span class="str">"/users/"</span> + id)
+    .body(user);</div>`,
+        },
+
+        {
+          id: "exception",
+          cat: "Web Layer",
+          num: "21",
+          title: "Spring Boot Exception Handling",
+          pills: [
+            "p-sp:@ControllerAdvice",
+            "p-blue:@ExceptionHandler",
+            "p-red:Global Handling",
+          ],
+          html: `
+<div class="callout"><strong>Exception handling hierarchy:</strong> DispatcherServlet → HandlerExceptionResolverComposite → 3 resolvers → your handlers.</div>
+<h3 class="sec">3 Key Resolvers</h3>
+<div class="tbl"><table>
+<tr><th>Resolver</th><th>Purpose</th></tr>
+<tr><td>ExceptionHandlerExceptionResolver</td><td>Handles @ExceptionHandler methods (in @ControllerAdvice or controllers)</td></tr>
+<tr><td>ResponseStatusExceptionResolver</td><td>Handles @ResponseStatus annotated exceptions</td></tr>
+<tr><td>DefaultHandlerExceptionResolver</td><td>Handles Spring MVC standard exceptions (404, 405, etc.)</td></tr>
+</table></div>
+<h3 class="sec">Global Exception Handling (Best Practice)</h3>
+<div class="code"><span class="ann">@ControllerAdvice</span>           <span class="cm">// applies to all controllers globally</span>
+<span class="kw">public class</span> <span class="cls">GlobalExceptionHandler</span> {
+
+    <span class="ann">@ExceptionHandler</span>(<span class="cls">UserNotFoundException</span>.<span class="kw">class</span>)
+    <span class="kw">public</span> <span class="cls">ResponseEntity</span>&lt;<span class="cls">ErrorResponse</span>&gt; handleNotFound(<span class="cls">UserNotFoundException</span> e) {
+        <span class="kw">return</span> <span class="cls">ResponseEntity</span>.status(<span class="num">404</span>)
+            .body(<span class="kw">new</span> <span class="cls">ErrorResponse</span>(e.getMessage(), <span class="str">"USER_NOT_FOUND"</span>));
+    }
+
+    <span class="ann">@ExceptionHandler</span>(<span class="cls">Exception</span>.<span class="kw">class</span>)   <span class="cm">// catch-all fallback</span>
+    <span class="kw">public</span> <span class="cls">ResponseEntity</span>&lt;<span class="cls">ErrorResponse</span>&gt; handleAll(<span class="cls">Exception</span> e) {
+        <span class="kw">return</span> <span class="cls">ResponseEntity</span>.internalServerError()
+            .body(<span class="kw">new</span> <span class="cls">ErrorResponse</span>(<span class="str">"Internal error"</span>, <span class="str">"INTERNAL_ERROR"</span>));
+    }
+}</div>
+<div class="callout amber"><strong>@RestControllerAdvice = @ControllerAdvice + @ResponseBody.</strong> Use this for REST APIs — automatically serializes response to JSON.</div>`,
+        },
+
+        {
+          id: "jpa1",
+          cat: "JPA & Database",
+          num: "22",
+          title: "JPA — Part 1 (JDBC vs JPA vs Hibernate)",
+          pills: ["p-sp:JPA", "p-blue:Hibernate", "p-amber:ORM"],
+          html: `
+<div class="callout"><strong>JPA = specification (interface). Hibernate = implementation.</strong> Your code talks to JPA APIs → Hibernate implements them → JDBC drivers talk to DB.</div>
+<h3 class="sec">Technology Stack</h3>
+<div class="flow"><span class="hi">Your App</span> → JPA API (interface) → Hibernate (implementation) → JDBC API (interface) → DB Driver → Database</div>
+<h3 class="sec">JDBC vs JPA</h3>
+<div class="tbl"><table>
+<tr><th>Feature</th><th>JDBC</th><th>JPA/Hibernate</th></tr>
+<tr><td>SQL</td><td>Write SQL manually</td><td>Auto-generates SQL from entities</td></tr>
+<tr><td>Mapping</td><td>Manual ResultSet → Object</td><td>Auto ORM mapping</td></tr>
+<tr><td>Caching</td><td>None</td><td>L1 (session) + L2 (second-level)</td></tr>
+<tr><td>Relationships</td><td>Manual JOINs</td><td>@OneToMany, @ManyToOne annotations</td></tr>
+<tr><td>DB portability</td><td>DB-specific SQL</td><td>JPQL — DB agnostic</td></tr>
+<tr><td>Learning curve</td><td>Low</td><td>Higher</td></tr>
+</table></div>
+<div class="callout amber"><strong>When to use JDBC:</strong> Complex SQL, stored procedures, need full control, performance-critical bulk operations. <strong>When to use JPA:</strong> CRUD-heavy apps, relationships, want automatic schema management.</div>`,
+        },
+
+        {
+          id: "jpa2",
+          cat: "JPA & Database",
+          num: "23",
+          title: "JPA Setup, Architecture & Entity Lifecycle",
+          pills: [
+            "p-sp:@Entity",
+            "p-blue:EntityManager",
+            "p-amber:Persistence Context",
+          ],
+          html: `
+<div class="callout"><strong>Persistence Context = first-level cache. EntityManager manages entities within a transaction.</strong></div>
+<h3 class="sec">Entity States (Lifecycle)</h3>
+<div class="tbl"><table>
+<tr><th>State</th><th>Description</th><th>Trigger</th></tr>
+<tr><td>New/Transient</td><td>Just created with new. Not tracked by EM.</td><td>new Entity()</td></tr>
+<tr><td>Managed/Persistent</td><td>Tracked by EntityManager. Changes auto-synced to DB on commit.</td><td>em.persist(), em.find()</td></tr>
+<tr><td>Detached</td><td>Was managed, no longer tracked. Changes NOT synced.</td><td>em.detach(), session close</td></tr>
+<tr><td>Removed</td><td>Marked for deletion from DB.</td><td>em.remove()</td></tr>
+</table></div>
+<h3 class="sec">Entity Annotations</h3>
+<div class="code"><span class="ann">@Entity</span>
+<span class="ann">@Table</span>(name = <span class="str">"users"</span>)
+<span class="kw">public class</span> <span class="cls">User</span> {
+    <span class="ann">@Id</span>
+    <span class="ann">@GeneratedValue</span>(strategy = <span class="cls">GenerationType</span>.IDENTITY)
+    <span class="kw">private</span> <span class="cls">Long</span> id;
+
+    <span class="ann">@Column</span>(name = <span class="str">"user_name"</span>, nullable = <span class="kw">false</span>, unique = <span class="kw">true</span>)
+    <span class="kw">private</span> <span class="cls">String</span> username;
+
+    <span class="ann">@Transient</span>               <span class="cm">// not persisted to DB</span>
+    <span class="kw">private</span> <span class="cls">String</span> tempField;
+}</div>
+<h3 class="sec">spring.jpa.hibernate.ddl-auto values</h3>
+<div class="tbl"><table>
+<tr><th>Value</th><th>Behavior</th><th>Use in</th></tr>
+<tr><td>none</td><td>Do nothing. Schema managed externally.</td><td>Production ✔</td></tr>
+<tr><td>update</td><td>Create/alter schema. Never drops.</td><td>Development</td></tr>
+<tr><td>validate</td><td>Validate schema matches entity. Fail if mismatch.</td><td>Staging</td></tr>
+<tr><td>create</td><td>Drop + recreate on each startup.</td><td>Testing</td></tr>
+<tr><td>create-drop</td><td>Create on start, drop on stop.</td><td>Testing only</td></tr>
+</table></div>`,
+        },
+
+        {
+          id: "jpa3",
+          cat: "JPA & Database",
+          num: "24",
+          title: "JPA First Level Caching",
+          pills: [
+            "p-sp:L1 Cache",
+            "p-blue:Persistence Context",
+            "p-amber:Per Request",
+          ],
+          html: `
+<div class="callout"><strong>L1 Cache = persistence context cache. Automatic, per EntityManager (= per request). Cannot be disabled.</strong></div>
+<h3 class="sec">How It Works</h3>
+<div class="flow"><span class="hi">Request 1:</span>
+GET /users/1 → new EntityManager created → em.find(1) → cache miss → SELECT from DB → cache User(1)
+em.find(1) again within same request → <strong>cache HIT</strong> → no DB query!
+
+<span class="hi">Request 2 (new request):</span>
+GET /users/1 → <strong>new EntityManager</strong> created → cache empty → SELECT from DB again</div>
+<div class="callout amber"><strong>L1 cache is per-EntityManager (per request).</strong> It doesn't help across requests. That's why Second Level Cache exists.</div>`,
+        },
+
+        {
+          id: "jpa4",
+          cat: "JPA & Database",
+          num: "25",
+          title: "JPA Second Level Caching",
+          pills: ["p-sp:L2 Cache", "p-blue:EHCache", "p-amber:Cross-Request"],
+          html: `
+<div class="callout"><strong>L2 Cache = shared across requests and sessions.</strong> One cache per SessionFactory (application-wide). Must be explicitly configured. Reduces DB hits for frequently read, rarely changed data.</div>
+<h3 class="sec">Setup (EHCache)</h3>
+<div class="code"><span class="cm"># pom.xml</span>
+&lt;dependency&gt;spring-boot-starter-cache&lt;/dependency&gt;
+&lt;dependency&gt;hibernate-ehcache&lt;/dependency&gt;
+
+<span class="cm"># application.properties</span>
+spring.jpa.properties.hibernate.cache.use_second_level_cache=true
+spring.jpa.properties.hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory
+
+<span class="cm">// Entity</span>
+<span class="ann">@Entity</span>
+<span class="ann">@Cache</span>(usage = <span class="cls">CacheConcurrencyStrategy</span>.READ_WRITE)
+<span class="kw">public class</span> <span class="cls">Product</span> { ... }</div>
+<h3 class="sec">Cache Strategies</h3>
+<div class="tbl"><table>
+<tr><th>Strategy</th><th>When to use</th></tr>
+<tr><td>READ_ONLY</td><td>Data never changes. Best performance.</td></tr>
+<tr><td>READ_WRITE</td><td>Data changes occasionally. Handles concurrent updates.</td></tr>
+<tr><td>NONSTRICT_READ_WRITE</td><td>Low chance of concurrent updates. No locking.</td></tr>
+<tr><td>TRANSACTIONAL</td><td>JTA environments. Full transactional cache.</td></tr>
+</table></div>`,
+        },
+
+        {
+          id: "jpa5",
+          cat: "JPA & Database",
+          num: "26",
+          title: "JPA — DTO Mapping & @Column Annotations",
+          pills: ["p-sp:@Entity", "p-blue:DTO", "p-amber:Mapping"],
+          html: `
+<div class="callout"><strong>Never expose Entity directly in API response.</strong> Use DTOs — prevents over-fetching, hides sensitive fields, decouples API from DB schema.</div>
+<h3 class="sec">Common JPA Annotations</h3>
+<div class="tbl"><table>
+<tr><th>Annotation</th><th>Purpose</th></tr>
+<tr><td>@Entity</td><td>Marks class as JPA entity (maps to table)</td></tr>
+<tr><td>@Table(name=)</td><td>Custom table name</td></tr>
+<tr><td>@Id</td><td>Primary key field</td></tr>
+<tr><td>@GeneratedValue</td><td>Auto-generate PK (IDENTITY, SEQUENCE, AUTO, TABLE)</td></tr>
+<tr><td>@Column</td><td>Column config: name, nullable, unique, length</td></tr>
+<tr><td>@Transient</td><td>Not persisted to DB</td></tr>
+<tr><td>@Enumerated(EnumType.STRING)</td><td>Store enum as string (not ordinal)</td></tr>
+<tr><td>@CreationTimestamp</td><td>Auto-set on insert (Hibernate)</td></tr>
+<tr><td>@UpdateTimestamp</td><td>Auto-set on update (Hibernate)</td></tr>
+</table></div>
+<h3 class="sec">ModelMapper / MapStruct for DTO mapping</h3>
+<div class="code"><span class="cm">// ModelMapper</span>
+<span class="cls">ModelMapper</span> mapper = <span class="kw">new</span> <span class="cls">ModelMapper</span>();
+<span class="cls">UserDTO</span> dto = mapper.map(userEntity, <span class="cls">UserDTO</span>.<span class="kw">class</span>);</div>`,
+        },
+
+        {
+          id: "jpa6",
+          cat: "JPA & Database",
+          num: "27",
+          title: "JPA — OneToOne Mapping",
+          pills: [
+            "p-sp:@OneToOne",
+            "p-blue:Unidirectional",
+            "p-amber:Bidirectional",
+          ],
+          html: `
+<div class="callout"><strong>OneToOne: one entity references exactly one instance of another.</strong> Unidirectional = one side has reference. Bidirectional = both sides have reference (one is owner, other uses mappedBy).</div>
+<h3 class="sec">Unidirectional</h3>
+<div class="code"><span class="ann">@Entity</span>
+<span class="kw">public class</span> <span class="cls">User</span> {
+    <span class="ann">@OneToOne</span>(cascade = <span class="cls">CascadeType</span>.ALL)
+    <span class="ann">@JoinColumn</span>(name = <span class="str">"address_id"</span>)  <span class="cm">// FK in user table</span>
+    <span class="kw">private</span> <span class="cls">Address</span> address;
+}</div>
+<h3 class="sec">Bidirectional</h3>
+<div class="code"><span class="ann">@Entity</span>
+<span class="kw">public class</span> <span class="cls">User</span> {
+    <span class="ann">@OneToOne</span>(cascade = <span class="cls">CascadeType</span>.ALL)
+    <span class="ann">@JoinColumn</span>(name = <span class="str">"address_id"</span>)  <span class="cm">// OWNER side — has FK</span>
+    <span class="kw">private</span> <span class="cls">Address</span> address;
+}
+<span class="ann">@Entity</span>
+<span class="kw">public class</span> <span class="cls">Address</span> {
+    <span class="ann">@OneToOne</span>(mappedBy = <span class="str">"address"</span>)   <span class="cm">// NON-OWNER — no FK here</span>
+    <span class="kw">private</span> <span class="cls">User</span> user;
+}</div>
+<h3 class="sec">Cascade Types</h3>
+<div class="tbl"><table>
+<tr><th>Type</th><th>Effect</th></tr>
+<tr><td>ALL</td><td>All operations cascade</td></tr>
+<tr><td>PERSIST</td><td>Save parent → auto-save child</td></tr>
+<tr><td>MERGE</td><td>Update parent → auto-update child</td></tr>
+<tr><td>REMOVE</td><td>Delete parent → auto-delete child</td></tr>
+<tr><td>DETACH</td><td>Detach parent → auto-detach child</td></tr>
+</table></div>`,
+        },
+
+        {
+          id: "jpa7",
+          cat: "JPA & Database",
+          num: "28",
+          title: "JPA — OneToMany, ManyToOne, ManyToMany",
+          pills: [
+            "p-sp:@OneToMany",
+            "p-blue:@ManyToMany",
+            "p-amber:Join Table",
+          ],
+          html: `
+<h3 class="sec">OneToMany / ManyToOne</h3>
+<div class="code"><span class="ann">@Entity</span>
+<span class="kw">public class</span> <span class="cls">User</span> {
+    <span class="ann">@OneToMany</span>(mappedBy = <span class="str">"user"</span>, cascade = <span class="cls">CascadeType</span>.ALL, fetch = <span class="cls">FetchType</span>.LAZY)
+    <span class="kw">private</span> <span class="cls">List</span>&lt;<span class="cls">Order</span>&gt; orders;
+}
+<span class="ann">@Entity</span>
+<span class="kw">public class</span> <span class="cls">Order</span> {
+    <span class="ann">@ManyToOne</span>
+    <span class="ann">@JoinColumn</span>(name = <span class="str">"user_id"</span>)   <span class="cm">// FK in order table (OWNER side)</span>
+    <span class="kw">private</span> <span class="cls">User</span> user;
+}</div>
+<h3 class="sec">ManyToMany</h3>
+<div class="code"><span class="ann">@Entity</span>
+<span class="kw">public class</span> <span class="cls">Student</span> {
+    <span class="ann">@ManyToMany</span>
+    <span class="ann">@JoinTable</span>(name = <span class="str">"student_course"</span>,
+        joinColumns = <span class="ann">@JoinColumn</span>(name = <span class="str">"student_id"</span>),
+        inverseJoinColumns = <span class="ann">@JoinColumn</span>(name = <span class="str">"course_id"</span>))
+    <span class="kw">private</span> <span class="cls">List</span>&lt;<span class="cls">Course</span>&gt; courses;
+}</div>
+<h3 class="sec">FetchType</h3>
+<div class="g2">
+<div class="card sp"><div class="cl cl-sp">LAZY (recommended)</div><p>Collection not loaded until accessed. SELECT only when you call getOrders(). Better performance.</p></div>
+<div class="card amber"><div class="cl cl-amber">EAGER</div><p>Collection always loaded with parent. Can cause performance issues — N+1 problem.</p></div>
+</div>`,
+        },
+
+        {
+          id: "jpa8",
+          cat: "JPA & Database",
+          num: "29",
+          title: "JPQL, Derived Query, N+1 Problem, Pagination",
+          pills: ["p-sp:JPQL", "p-blue:N+1 Problem", "p-amber:Pagination"],
+          html: `
+<h3 class="sec">Derived Query (auto-generated from method name)</h3>
+<div class="code"><span class="kw">public interface</span> <span class="cls">UserRepository</span> <span class="kw">extends</span> <span class="cls">JpaRepository</span>&lt;<span class="cls">User</span>, <span class="cls">Long</span>&gt; {
+    <span class="cls">List</span>&lt;<span class="cls">User</span>&gt; findByName(<span class="cls">String</span> name);
+    <span class="cls">List</span>&lt;<span class="cls">User</span>&gt; findByAgeGreaterThan(<span class="kw">int</span> age);
+    <span class="cls">Optional</span>&lt;<span class="cls">User</span>&gt; findByEmailAndActive(<span class="cls">String</span> email, <span class="kw">boolean</span> active);
+    <span class="kw">long</span> countByRole(<span class="cls">String</span> role);
+    <span class="kw">void</span> deleteByActive(<span class="kw">boolean</span> active);
+}</div>
+<h3 class="sec">JPQL (@Query)</h3>
+<div class="code"><span class="ann">@Query</span>(<span class="str">"SELECT u FROM User u WHERE u.name = :name AND u.active = true"</span>)
+<span class="cls">List</span>&lt;<span class="cls">User</span>&gt; findActiveByName(<span class="ann">@Param</span>(<span class="str">"name"</span>) <span class="cls">String</span> name);</div>
+<h3 class="sec">N+1 Problem & Fix</h3>
+<div class="callout red"><strong>N+1 Problem:</strong> Fetch 10 users → 10 separate SELECTs for each user's orders = 11 queries. LazyLoading causes this when iterating over collection.</div>
+<div class="code"><span class="cm">// Fix 1: JOIN FETCH in JPQL</span>
+<span class="ann">@Query</span>(<span class="str">"SELECT u FROM User u JOIN FETCH u.orders WHERE u.active = true"</span>)
+<span class="cls">List</span>&lt;<span class="cls">User</span>&gt; findAllWithOrders();
+
+<span class="cm">// Fix 2: @EntityGraph</span>
+<span class="ann">@EntityGraph</span>(attributePaths = {<span class="str">"orders"</span>})
+<span class="cls">List</span>&lt;<span class="cls">User</span>&gt; findAll();</div>
+<h3 class="sec">Pagination</h3>
+<div class="code"><span class="cls">Pageable</span> pageable = <span class="cls">PageRequest</span>.of(<span class="num">0</span>, <span class="num">10</span>, <span class="cls">Sort</span>.by(<span class="str">"name"</span>).ascending());
+<span class="cls">Page</span>&lt;<span class="cls">User</span>&gt; page = repo.findAll(pageable);
+page.getContent(); page.getTotalPages(); page.getTotalElements();</div>`,
+        },
+
+        {
+          id: "jpa9",
+          cat: "JPA & Database",
+          num: "30",
+          title: "Native Query & Criteria API",
+          pills: [
+            "p-sp:Native Query",
+            "p-blue:Criteria API",
+            "p-amber:Dynamic Queries",
+          ],
+          html: `
+<h3 class="sec">Native Query</h3>
+<div class="callout amber"><strong>Use when:</strong> Complex SQL (JSON columns, window functions), cross-entity JOINs without relation, DB-specific features. Trade-off: SQL is DB-specific, no JPA caching, no lifecycle management.</div>
+<div class="code"><span class="ann">@Query</span>(value = <span class="str">"SELECT * FROM users WHERE JSON_EXTRACT(metadata, '$.role') = :role"</span>,
+       nativeQuery = <span class="kw">true</span>)
+<span class="cls">List</span>&lt;<span class="cls">User</span>&gt; findByRole(<span class="ann">@Param</span>(<span class="str">"role"</span>) <span class="cls">String</span> role);</div>
+<h3 class="sec">Criteria API (Type-safe Dynamic Queries)</h3>
+<div class="callout blue"><strong>Criteria API:</strong> Build queries programmatically in Java. Type-safe, no string SQL. Good for dynamic queries where conditions change at runtime.</div>
+<div class="code"><span class="cls">CriteriaBuilder</span> cb = em.getCriteriaBuilder();
+<span class="cls">CriteriaQuery</span>&lt;<span class="cls">User</span>&gt; cq = cb.createQuery(<span class="cls">User</span>.<span class="kw">class</span>);
+<span class="cls">Root</span>&lt;<span class="cls">User</span>&gt; root = cq.from(<span class="cls">User</span>.<span class="kw">class</span>);
+<span class="cls">List</span>&lt;<span class="cls">Predicate</span>&gt; predicates = <span class="kw">new</span> <span class="cls">ArrayList</span>&lt;&gt;();
+<span class="kw">if</span> (name != <span class="kw">null</span>) predicates.add(cb.equal(root.get(<span class="str">"name"</span>), name));
+<span class="kw">if</span> (age != <span class="kw">null</span>) predicates.add(cb.gt(root.get(<span class="str">"age"</span>), age));
+cq.where(predicates.toArray(<span class="kw">new</span> <span class="cls">Predicate</span>[<span class="num">0</span>]));
+<span class="kw">return</span> em.createQuery(cq).getResultList();</div>`,
+        },
+
+        {
+          id: "jpa10",
+          cat: "JPA & Database",
+          num: "31",
+          title: "JPA Specification API",
+          pills: [
+            "p-sp:Specification",
+            "p-blue:Clean Code",
+            "p-amber:Reusable Predicates",
+          ],
+          html: `
+<div class="callout"><strong>Specification API = clean, reusable Criteria API.</strong> Solves: code duplication (same predicates scattered), boilerplate of Criteria API.</div>
+<div class="code"><span class="cm">// Create reusable specifications</span>
+<span class="kw">public class</span> <span class="cls">UserSpec</span> {
+    <span class="kw">public static</span> <span class="cls">Specification</span>&lt;<span class="cls">User</span>&gt; hasName(<span class="cls">String</span> name) {
+        <span class="kw">return</span> (root, query, cb) -> cb.equal(root.get(<span class="str">"name"</span>), name);
+    }
+    <span class="kw">public static</span> <span class="cls">Specification</span>&lt;<span class="cls">User</span>&gt; isActive() {
+        <span class="kw">return</span> (root, query, cb) -> cb.isTrue(root.get(<span class="str">"active"</span>));
+    }
+}
+
+<span class="cm">// Repository must extend JpaSpecificationExecutor</span>
+<span class="kw">public interface</span> <span class="cls">UserRepo</span> <span class="kw">extends</span> <span class="cls">JpaRepository</span>&lt;<span class="cls">User</span>,<span class="cls">Long</span>&gt;, <span class="cls">JpaSpecificationExecutor</span>&lt;<span class="cls">User</span>&gt; {}
+
+<span class="cm">// Compose and use:</span>
+<span class="cls">List</span>&lt;<span class="cls">User</span>&gt; users = repo.findAll(
+    <span class="cls">UserSpec</span>.hasName(<span class="str">"PK"</span>).and(<span class="cls">UserSpec</span>.isActive())
+);</div>`,
+        },
+
+        {
+          id: "security0",
+          cat: "Spring Security",
+          num: "32",
+          title: "Web Attacks — CSRF, XSS, CORS, SQL Injection",
+          pills: ["p-red:CSRF", "p-red:XSS", "p-red:SQL Injection"],
+          html: `
+<div class="callout red"><strong>Understand attacks BEFORE security.</strong> Spring Security protects against these.</div>
+<div class="tbl"><table>
+<tr><th>Attack</th><th>What happens</th><th>Prevention</th></tr>
+<tr><td>CSRF</td><td>Browser auto-sends cookies to authenticated site. Attacker tricks user to visit malicious link → unwanted request executes.</td><td>CSRF token (random token per session, validated server-side). SameSite cookie attribute.</td></tr>
+<tr><td>XSS</td><td>Inject malicious script via user input → script runs in victim's browser. Steal cookies, redirect.</td><td>HTML escape user input. Content Security Policy. Never insert unescaped user input in HTML.</td></tr>
+<tr><td>SQL Injection</td><td>User input embedded in SQL. Input = <code>'; DROP TABLE users; --</code> → executes malicious SQL.</td><td>Parameterized queries / PreparedStatement. NEVER concatenate user input into SQL.</td></tr>
+<tr><td>CORS</td><td>Browser blocks cross-origin requests by default. Misconfigured wildcard CORS allows malicious sites to read API responses.</td><td>Whitelist specific origins. Never use * for sensitive APIs. Spring Security handles this.</td></tr>
+</table></div>`,
+        },
+
+        {
+          id: "security1",
+          cat: "Spring Security",
+          num: "33",
+          title: "Spring Security Architecture",
+          pills: ["p-sp:Security Filter Chain", "p-blue:AuthenticationManager"],
+          html: `
+<div class="callout"><strong>Spring Security = a chain of Servlet Filters.</strong> Every request passes through SecurityFilterChain before reaching your controller.</div>
+<h3 class="sec">Key Components</h3>
+<div class="tbl"><table>
+<tr><th>Component</th><th>Role</th></tr>
+<tr><td>SecurityFilterChain</td><td>Ordered list of security filters. Configurable via @Bean.</td></tr>
+<tr><td>AuthenticationManager</td><td>Orchestrates authentication. Delegates to AuthenticationProvider.</td></tr>
+<tr><td>AuthenticationProvider</td><td>Does actual authentication (DaoAuthenticationProvider uses UserDetailsService).</td></tr>
+<tr><td>UserDetailsService</td><td>loadUserByUsername() — load user from DB. You implement this.</td></tr>
+<tr><td>SecurityContext</td><td>Stores Authentication (authenticated user) for current request thread.</td></tr>
+<tr><td>PasswordEncoder</td><td>Hash + verify passwords. Use BCryptPasswordEncoder.</td></tr>
+</table></div>
+<div class="flow"><span class="hi">Auth Flow:</span>
+Request → SecurityFilterChain → UsernamePasswordAuthFilter
+→ AuthenticationManager → AuthenticationProvider
+→ UserDetailsService.loadUserByUsername()
+→ PasswordEncoder.matches() → Authentication object
+→ stored in SecurityContextHolder</div>`,
+        },
+
+        {
+          id: "security2",
+          cat: "Spring Security",
+          num: "34",
+          title: "User Creation & Password Storage",
+          pills: [
+            "p-sp:UserDetailsService",
+            "p-blue:BCrypt",
+            "p-amber:InMemory vs DB",
+          ],
+          html: `
+<h3 class="sec">3 Ways to Store Users</h3>
+<div class="tbl"><table>
+<tr><th>Method</th><th>Use in</th></tr>
+<tr><td>InMemoryUserDetailsManager</td><td>Testing only. Users in application.properties/config.</td></tr>
+<tr><td>JdbcUserDetailsManager</td><td>Spring's built-in JDBC user management with specific schema.</td></tr>
+<tr><td>Custom UserDetailsService ✔</td><td>Production. You load user from any DB with any schema.</td></tr>
+</table></div>
+<div class="code"><span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="cls">CustomUserDetailsService</span> <span class="kw">implements</span> <span class="cls">UserDetailsService</span> {
+    <span class="ann">@Autowired</span> <span class="cls">UserRepository</span> userRepo;
+
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="cls">UserDetails</span> loadUserByUsername(<span class="cls">String</span> username) {
+        <span class="cls">User</span> user = userRepo.findByUsername(username)
+            .orElseThrow(() -> <span class="kw">new</span> <span class="cls">UsernameNotFoundException</span>(<span class="str">"User not found"</span>));
+        <span class="kw">return new</span> <span class="cls">org.springframework.security.core.userdetails.User</span>(
+            user.getUsername(), user.getPassword(),
+            <span class="cls">List</span>.of(<span class="kw">new</span> <span class="cls">SimpleGrantedAuthority</span>(<span class="str">"ROLE_"</span> + user.getRole()))
+        );
+    }
+}
+
+<span class="cm">// Always hash passwords!</span>
+<span class="ann">@Bean</span>
+<span class="kw">public</span> <span class="cls">PasswordEncoder</span> encoder() { <span class="kw">return new</span> <span class="cls">BCryptPasswordEncoder</span>(); }</div>`,
+        },
+
+        {
+          id: "security3",
+          cat: "Spring Security",
+          num: "35",
+          title: "Form-Based Authentication",
+          pills: ["p-sp:Session", "p-blue:Stateful", "p-amber:CSRF Token"],
+          html: `
+<div class="callout"><strong>Form-Based = Stateful authentication.</strong> Server creates session, stores authentication state. Client sends session cookie with each request.</div>
+<div class="flow"><span class="hi">First request:</span>
+User sends username + password → Server verifies → Creates session → Returns session cookie (JSESSIONID)
+
+<span class="hi">Subsequent requests:</span>
+Client sends JSESSIONID cookie → Server validates session → Processes request (no username/password needed)
+
+<span class="hi">Logout:</span>
+Server invalidates session → Cookie becomes invalid</div>
+<div class="code"><span class="ann">@Bean</span>
+<span class="kw">public</span> <span class="cls">SecurityFilterChain</span> filterChain(<span class="cls">HttpSecurity</span> http) <span class="kw">throws</span> <span class="cls">Exception</span> {
+    http
+        .formLogin(form -> form.loginPage(<span class="str">"/login"</span>).defaultSuccessUrl(<span class="str">"/home"</span>))
+        .csrf(<span class="cls">AbstractHttpConfigurer</span>::enable)   <span class="cm">// enabled by default for form auth</span>
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(<span class="str">"/login"</span>, <span class="str">"/register"</span>).permitAll()
+            .anyRequest().authenticated());
+    <span class="kw">return</span> http.build();
+}</div>
+<div class="callout amber"><strong>Form-based vs JWT:</strong> Form = stateful (session stored server-side, doesn't scale horizontally). JWT = stateless (no server storage, scales easily). Modern apps prefer JWT.</div>`,
+        },
+
+        {
+          id: "security4",
+          cat: "Spring Security",
+          num: "36",
+          title: "Basic Authentication",
+          pills: ["p-sp:Basic Auth", "p-blue:Stateless", "p-amber:Base64"],
+          html: `
+<div class="callout"><strong>Basic Auth = stateless.</strong> Client sends Base64(username:password) in Authorization header with EVERY request. Server verifies each time. No session.</div>
+<div class="flow"><span class="hi">Every request header:</span>
+Authorization: Basic dXNlcjpwYXNz   ← Base64("user:pass") — NOT encrypted!
+
+<span class="hi">Server:</span>
+Decode Base64 → extract username:password → verify against DB → allow/deny</div>
+<div class="callout red"><strong>Security warning:</strong> Base64 ≠ encryption. Anyone can decode it. ALWAYS use HTTPS with Basic Auth, NEVER HTTP. For APIs, prefer JWT over Basic Auth.</div>
+<div class="code"><span class="ann">@Bean</span>
+<span class="kw">public</span> <span class="cls">SecurityFilterChain</span> chain(<span class="cls">HttpSecurity</span> http) <span class="kw">throws</span> <span class="cls">Exception</span> {
+    http
+        .httpBasic(<span class="cls">Customizer</span>.withDefaults())
+        .csrf(<span class="cls">AbstractHttpConfigurer</span>::disable)    <span class="cm">// stateless — no CSRF needed</span>
+        .sessionManagement(s -> s.sessionCreationPolicy(<span class="cls">SessionCreationPolicy</span>.STATELESS))
+        .authorizeHttpRequests(a -> a.anyRequest().authenticated());
+    <span class="kw">return</span> http.build();
+}</div>`,
+        },
+
+        {
+          id: "jwt1",
+          cat: "Spring Security",
+          num: "37",
+          title: "JWT — Structure & Concepts",
+          pills: ["p-sp:JWT", "p-blue:Stateless", "p-amber:Claims"],
+          html: `
+<div class="callout"><strong>JWT = JSON Web Token. Stateless auth.</strong> Server doesn't store session. Verify signature = trust the claims inside. Used for authentication, authorization, SSO.</div>
+<h3 class="sec">JWT Structure (3 parts, base64url encoded)</h3>
+<div class="flow"><span class="hi">HEADER</span>.<span class="hi">PAYLOAD</span>.<span class="hi">SIGNATURE</span>
+
+HEADER:    { "alg": "HS256", "typ": "JWT" }
+PAYLOAD:   { "sub": "PK", "role": "ADMIN", "exp": 1700000000 }
+SIGNATURE: HMAC_SHA256(base64(header)+"."+base64(payload), secretKey)</div>
+<div class="callout amber"><strong>JWT ≠ encrypted!</strong> Payload is just base64 encoded — anyone can read it. Never put passwords/sensitive data in payload. HTTPS protects it in transit.</div>
+<h3 class="sec">Access Token vs Refresh Token</h3>
+<div class="g2">
+<div class="card sp"><div class="cl cl-sp">Access Token (short-lived)</div><p>15 min - 1 hour TTL. Sent in every API request (Authorization: Bearer &lt;token&gt;). Stateless verification.</p></div>
+<div class="card blue"><div class="cl cl-blue">Refresh Token (long-lived)</div><p>7-30 days TTL. Stored securely (httpOnly cookie). Used only to get new access token. Stored in DB for revocation.</p></div>
+</div>`,
+        },
+
+        {
+          id: "jwt2",
+          cat: "Spring Security",
+          num: "38",
+          title: "JWT Authentication Implementation",
+          pills: [
+            "p-sp:JWT Filter",
+            "p-blue:JwtService",
+            "p-amber:Implementation",
+          ],
+          html: `
+<h3 class="sec">JWT Auth Flow</h3>
+<div class="flow"><span class="hi">Login:</span>
+POST /auth/login (username+password) → verify → generate JWT → return token
+
+<span class="hi">Subsequent requests:</span>
+Request + "Authorization: Bearer &lt;token&gt;" header
+→ JwtAuthFilter extracts token → validates signature + expiry
+→ loads user → sets SecurityContext → controller executes</div>
+<h3 class="sec">Key Components</h3>
+<div class="tbl"><table>
+<tr><th>Component</th><th>Responsibility</th></tr>
+<tr><td>JwtService</td><td>generateToken(), validateToken(), extractUsername(), extractExpiry()</td></tr>
+<tr><td>JwtAuthFilter (OncePerRequestFilter)</td><td>Extract JWT from header, validate, set SecurityContext</td></tr>
+<tr><td>AuthController</td><td>/login endpoint — authenticate and return JWT</td></tr>
+<tr><td>SecurityConfig</td><td>Add JwtAuthFilter before UsernamePasswordAuthFilter</td></tr>
+</table></div>
+<div class="code"><span class="cm">// SecurityConfig key lines:</span>
+http.addFilterBefore(jwtAuthFilter, <span class="cls">UsernamePasswordAuthenticationFilter</span>.<span class="kw">class</span>)
+    .sessionManagement(s -> s.sessionCreationPolicy(<span class="cls">SessionCreationPolicy</span>.STATELESS))
+    .csrf(<span class="cls">AbstractHttpConfigurer</span>::disable);</div>`,
+        },
+
+        {
+          id: "oauth1",
+          cat: "Spring Security",
+          num: "39",
+          title: "OAuth 2.0 Explained",
+          pills: [
+            "p-sp:OAuth2",
+            "p-blue:Authorization Code",
+            "p-amber:Grant Types",
+          ],
+          html: `
+<div class="callout"><strong>OAuth 2.0 = authorization framework.</strong> Allows third-party apps to access user resources WITHOUT sharing password. "Sign in with Google/GitHub" = OAuth.</div>
+<h3 class="sec">4 Actors</h3>
+<div class="tbl"><table>
+<tr><th>Actor</th><th>Role</th><th>Example</th></tr>
+<tr><td>Resource Owner</td><td>User who owns data</td><td>You (Gmail user)</td></tr>
+<tr><td>Client</td><td>App requesting access</td><td>Instagram (wants your Gmail contacts)</td></tr>
+<tr><td>Authorization Server</td><td>Issues tokens after user consents</td><td>Google accounts.google.com</td></tr>
+<tr><td>Resource Server</td><td>Holds user data</td><td>Gmail API</td></tr>
+</table></div>
+<h3 class="sec">Authorization Code Flow</h3>
+<div class="flow"><span class="hi">1.</span> Client redirects user to Authorization Server with client_id, scope, redirect_uri
+<span class="hi">2.</span> User logs in + consents on Authorization Server
+<span class="hi">3.</span> Auth Server redirects back to client with authorization CODE
+<span class="hi">4.</span> Client backend exchanges CODE + client_secret → access token (server-to-server, secure!)
+<span class="hi">5.</span> Client uses access token to call Resource Server API</div>
+<div class="callout amber"><strong>Why code exchange and not direct token?</strong> Authorization code appears in browser URL (visible in history). Server-to-server exchange with client_secret keeps access token secure.</div>`,
+        },
+
+        {
+          id: "oauth2",
+          cat: "Spring Security",
+          num: "40",
+          title: "OAuth2 Implementation in Spring Boot",
+          pills: ["p-sp:Spring OAuth2", "p-blue:Client Registration"],
+          html: `
+<div class="code"><span class="cm"># application.properties for Google OAuth2</span>
+spring.security.oauth2.client.registration.google.client-id=YOUR_CLIENT_ID
+spring.security.oauth2.client.registration.google.client-secret=YOUR_SECRET
+spring.security.oauth2.client.registration.google.scope=email,profile
+
+<span class="cm">// SecurityConfig</span>
+http.oauth2Login(oauth2 -> oauth2
+    .loginPage(<span class="str">"/login"</span>)
+    .defaultSuccessUrl(<span class="str">"/home"</span>)
+    .userInfoEndpoint(info -> info.userService(customOAuth2UserService))
+);
+
+<span class="cm">// Custom OAuth2UserService (optional — for custom user handling)</span>
+<span class="ann">@Service</span>
+<span class="kw">public class</span> <span class="cls">CustomOAuth2UserService</span> <span class="kw">extends</span> <span class="cls">DefaultOAuth2UserService</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="cls">OAuth2User</span> loadUser(<span class="cls">OAuth2UserRequest</span> req) {
+        <span class="cls">OAuth2User</span> user = <span class="kw">super</span>.loadUser(req);
+        <span class="cm">// save to your DB, add custom roles, etc.</span>
+        <span class="kw">return</span> user;
+    }
+}</div>`,
+        },
+
+        {
+          id: "security5",
+          cat: "Spring Security",
+          num: "41",
+          title: "Method Security & Role-Based Authorization",
+          pills: ["p-sp:@PreAuthorize", "p-blue:RBAC", "p-amber:@Secured"],
+          html: `
+<div class="callout"><strong>Method-level security = define authorization at controller/service method level using annotations.</strong> Better than listing all APIs in SecurityFilterChain.</div>
+<div class="code"><span class="ann">@SpringBootApplication</span>
+<span class="ann">@EnableMethodSecurity</span>   <span class="cm">// enable method security</span>
+<span class="kw">public class</span> <span class="cls">App</span> { ... }
+
+<span class="cm">// Controller</span>
+<span class="ann">@GetMapping</span>(<span class="str">"/admin"</span>)
+<span class="ann">@PreAuthorize</span>(<span class="str">"hasRole('ADMIN')"</span>)   <span class="cm">// SpEL expression evaluated BEFORE method</span>
+<span class="kw">public</span> <span class="cls">String</span> adminPage() { ... }
+
+<span class="ann">@GetMapping</span>(<span class="str">"/user/{id}"</span>)
+<span class="ann">@PreAuthorize</span>(<span class="str">"hasRole('USER') or (hasRole('ADMIN') and #id == authentication.name)"</span>)
+<span class="kw">public</span> <span class="cls">User</span> getUser(<span class="ann">@PathVariable</span> <span class="cls">String</span> id) { ... }
+
+<span class="ann">@PostAuthorize</span>(<span class="str">"returnObject.name == authentication.name"</span>) <span class="cm">// check AFTER method returns</span>
+<span class="kw">public</span> <span class="cls">User</span> getCurrentUser() { ... }</div>
+<div class="tbl"><table>
+<tr><th>Annotation</th><th>When evaluates</th><th>Use when</th></tr>
+<tr><td>@PreAuthorize</td><td>Before method execution</td><td>Most common — block unauthorized access early</td></tr>
+<tr><td>@PostAuthorize</td><td>After method returns</td><td>Check if returned object belongs to caller</td></tr>
+<tr><td>@Secured</td><td>Before method</td><td>Simple role check only, no SpEL</td></tr>
+</table></div>`,
+        },
+
+        {
+          id: "resttemplate",
+          cat: "Microservices",
+          num: "42",
+          title: "RestTemplate — Microservice Communication",
+          pills: ["p-sp:RestTemplate", "p-blue:HTTP Client", "p-amber:Legacy"],
+          html: `
+<div class="callout"><strong>RestTemplate = Spring's synchronous HTTP client for calling other services.</strong> Blocking — thread waits for response. Being deprecated in favor of RestClient/WebClient.</div>
+<div class="code"><span class="ann">@Bean</span>
+<span class="kw">public</span> <span class="cls">RestTemplate</span> restTemplate() { <span class="kw">return new</span> <span class="cls">RestTemplate</span>(); }
+
+<span class="cm">// Usage</span>
+<span class="ann">@Autowired</span> <span class="cls">RestTemplate</span> restTemplate;
+
+<span class="cm">// GET</span>
+<span class="cls">Product</span> product = restTemplate.getForObject(
+    <span class="str">"http://product-service/api/products/{id}"</span>, <span class="cls">Product</span>.<span class="kw">class</span>, id);
+
+<span class="cm">// POST</span>
+<span class="cls">Order</span> order = restTemplate.postForObject(
+    <span class="str">"http://order-service/api/orders"</span>, orderRequest, <span class="cls">Order</span>.<span class="kw">class</span>);
+
+<span class="cm">// With ResponseEntity (for headers + status)</span>
+<span class="cls">ResponseEntity</span>&lt;<span class="cls">Product</span>&gt; response = restTemplate.getForEntity(
+    <span class="str">"http://product-service/api/products/{id}"</span>, <span class="cls">Product</span>.<span class="kw">class</span>, id);</div>
+<div class="callout amber"><strong>RestTemplate limitations:</strong> Many overloaded methods (hard to remember), no fluent API, blocking. Use RestClient (Spring 6+) for new code.</div>`,
+        },
+
+        {
+          id: "restclient",
+          cat: "Microservices",
+          num: "43",
+          title: "RestClient — Modern HTTP Client",
+          pills: ["p-sp:RestClient", "p-blue:Fluent API", "p-amber:Spring 6+"],
+          html: `
+<div class="callout"><strong>RestClient = modern, fluent, synchronous HTTP client (Spring 6+ / Boot 3+).</strong> Replaces RestTemplate. Chainable API. Much more readable.</div>
+<div class="code"><span class="ann">@Bean</span>
+<span class="kw">public</span> <span class="cls">RestClient</span> restClient() {
+    <span class="kw">return</span> <span class="cls">RestClient</span>.builder()
+        .baseUrl(<span class="str">"http://product-service"</span>)
+        .defaultHeader(<span class="str">"Content-Type"</span>, <span class="str">"application/json"</span>)
+        .build();
+}
+
+<span class="cm">// GET</span>
+<span class="cls">Product</span> product = restClient.get()
+    .uri(<span class="str">"/api/products/{id}"</span>, id)
+    .retrieve()
+    .body(<span class="cls">Product</span>.<span class="kw">class</span>);
+
+<span class="cm">// POST</span>
+<span class="cls">Order</span> order = restClient.post()
+    .uri(<span class="str">"/api/orders"</span>)
+    .body(orderRequest)
+    .retrieve()
+    .body(<span class="cls">Order</span>.<span class="kw">class</span>);
+
+<span class="cm">// With error handling</span>
+restClient.get().uri(<span class="str">"/api/users/{id}"</span>, id)
+    .retrieve()
+    .onStatus(<span class="cls">HttpStatusCode</span>::is4xxClientError, (req, res) -> { <span class="kw">throw new</span> ... })
+    .body(<span class="cls">User</span>.<span class="kw">class</span>);</div>`,
+        },
+
+        {
+          id: "feign",
+          cat: "Microservices",
+          num: "44",
+          title: "FeignClient — Declarative HTTP Client",
+          pills: [
+            "p-sp:FeignClient",
+            "p-blue:Declarative",
+            "p-amber:Spring Cloud",
+          ],
+          html: `
+<div class="callout"><strong>FeignClient = declarative HTTP client.</strong> Define interface, Spring Cloud creates implementation. You say WHAT to call — Feign handles HOW. Most used in Spring microservices.</div>
+<div class="code"><span class="cm"># pom.xml dependency</span>
+spring-cloud-starter-openfeign
+
+<span class="cm">// Enable</span>
+<span class="ann">@SpringBootApplication</span>
+<span class="ann">@EnableFeignClients</span>
+<span class="kw">public class</span> <span class="cls">App</span> { ... }
+
+<span class="cm">// Define client — that's it!</span>
+<span class="ann">@FeignClient</span>(name = <span class="str">"product-service"</span>)   <span class="cm">// name = service name in Eureka</span>
+<span class="kw">public interface</span> <span class="cls">ProductClient</span> {
+    <span class="ann">@GetMapping</span>(<span class="str">"/api/products/{id}"</span>)
+    <span class="cls">Product</span> getProduct(<span class="ann">@PathVariable</span> <span class="cls">Long</span> id);
+    
+    <span class="ann">@PostMapping</span>(<span class="str">"/api/products"</span>)
+    <span class="cls">Product</span> createProduct(<span class="ann">@RequestBody</span> <span class="cls">Product</span> product);
+}
+
+<span class="cm">// Use like any Spring bean</span>
+<span class="ann">@Autowired</span> <span class="cls">ProductClient</span> productClient;
+<span class="cls">Product</span> p = productClient.getProduct(<span class="num">1L</span>); <span class="cm">// Feign makes HTTP call automatically</span></div>
+<div class="callout amber"><strong>Feign + Service Discovery:</strong> Use service name (not URL) → Feign uses Eureka to find actual instance IP. Add Resilience4j for retry/circuit breaker on FeignClient.</div>`,
+        },
+
+        {
+          id: "discovery",
+          cat: "Microservices",
+          num: "45",
+          title: "Service Discovery — Eureka",
+          pills: [
+            "p-sp:Eureka",
+            "p-blue:Service Registry",
+            "p-amber:Dynamic Discovery",
+          ],
+          html: `
+<div class="callout"><strong>Service Discovery:</strong> Microservice instances scale up/down dynamically — can't hardcode URLs. Service registry = phonebook of running instances.</div>
+<h3 class="sec">Client-Side vs Server-Side Discovery</h3>
+<div class="g2">
+<div class="card sp"><div class="cl cl-sp">Client-Side (Eureka)</div><p>Client queries registry → gets list of instances → client picks one (load balancing inside client). Order service asks Eureka for Product service addresses, then calls one.</p></div>
+<div class="card blue"><div class="cl cl-blue">Server-Side (AWS ALB)</div><p>Client calls LB → LB queries registry → forwards to instance. Client knows nothing about discovery. AWS ALB + ECS works this way.</p></div>
+</div>
+<div class="code"><span class="cm"># Eureka Server</span>
+<span class="ann">@SpringBootApplication</span>
+<span class="ann">@EnableEurekaServer</span>
+<span class="kw">public class</span> <span class="cls">EurekaServerApp</span> { ... }
+
+<span class="cm"># application.properties (server)</span>
+server.port=8761
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+
+<span class="cm"># Client (Order Service, Product Service)</span>
+<span class="ann">@SpringBootApplication</span>
+<span class="ann">@EnableDiscoveryClient</span>
+<span class="kw">public class</span> <span class="cls">OrderApp</span> { ... }
+
+<span class="cm"># application.properties (client)</span>
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+spring.application.name=order-service</div>`,
+        },
+
+        {
+          id: "lb",
+          cat: "Microservices",
+          num: "46",
+          title: "Client-Side Load Balancer",
+          pills: [
+            "p-sp:Ribbon/LoadBalancer",
+            "p-blue:Round Robin",
+            "p-amber:Client-Side",
+          ],
+          html: `
+<div class="callout"><strong>Client-side load balancer = Spring Cloud LoadBalancer (replaced Ribbon).</strong> Built into Spring Cloud. Works with Eureka. FeignClient uses it automatically.</div>
+<div class="code"><span class="cm"># With FeignClient — load balancing is AUTOMATIC</span>
+<span class="cm"># Uses service name → Eureka returns multiple instances → LB picks one</span>
+<span class="ann">@FeignClient</span>(name = <span class="str">"product-service"</span>)  <span class="cm">// LB between all product-service instances</span>
+
+<span class="cm"># With RestClient — use @LoadBalanced</span>
+<span class="ann">@Bean</span>
+<span class="ann">@LoadBalanced</span>
+<span class="kw">public</span> <span class="cls">RestClient</span>.Builder restClientBuilder() {
+    <span class="kw">return</span> <span class="cls">RestClient</span>.builder();
+}
+<span class="cm">// Then use service name in URL: http://product-service/api/...</span></div>
+<h3 class="sec">Default LB Strategy</h3>
+<div class="callout blue"><strong>Round Robin:</strong> requests distributed evenly across instances 1→2→3→1→2→3. Can be configured to: Random, WeightedResponseTime, or custom ReactorLoadBalancer.</div>`,
+        },
+
+        {
+          id: "ratelimiter",
+          cat: "Microservices",
+          num: "47",
+          title: "Rate Limiter — Resilience4j",
+          pills: [
+            "p-sp:Rate Limiter",
+            "p-blue:Resilience4j",
+            "p-amber:Fault Tolerance",
+          ],
+          html: `
+<div class="callout"><strong>Rate Limiter = how many requests can be accepted in a time window.</strong> Protects YOUR service FROM clients. Prevents DDoS, resource exhaustion.</div>
+<div class="code"><span class="cm"># application.properties</span>
+resilience4j.ratelimiter.instances.productService.limitForPeriod=10
+resilience4j.ratelimiter.instances.productService.limitRefreshPeriod=1s
+resilience4j.ratelimiter.instances.productService.timeoutDuration=0
+
+<span class="cm">// Usage</span>
+<span class="ann">@GetMapping</span>(<span class="str">"/products/{id}"</span>)
+<span class="ann">@RateLimiter</span>(name = <span class="str">"productService"</span>, fallbackMethod = <span class="str">"rateLimitFallback"</span>)
+<span class="kw">public</span> <span class="cls">Product</span> getProduct(<span class="ann">@PathVariable</span> <span class="cls">Long</span> id) { ... }
+
+<span class="kw">public</span> <span class="cls">Product</span> rateLimitFallback(<span class="cls">Long</span> id, <span class="cls">RequestNotPermitted</span> e) {
+    <span class="kw">return new</span> <span class="cls">Product</span>(<span class="str">"Rate limited — try again"</span>);
+}</div>
+<div class="tbl"><table>
+<tr><th>Param</th><th>Meaning</th></tr>
+<tr><td>limitForPeriod</td><td>Max requests allowed per period</td></tr>
+<tr><td>limitRefreshPeriod</td><td>Window duration (1s, 1m, etc.)</td></tr>
+<tr><td>timeoutDuration</td><td>How long to wait for permission before failing (0 = fail immediately)</td></tr>
+</table></div>`,
+        },
+
+        {
+          id: "bulkhead",
+          cat: "Microservices",
+          num: "48",
+          title: "Bulkhead Pattern",
+          pills: [
+            "p-sp:Bulkhead",
+            "p-blue:Thread Isolation",
+            "p-amber:Noisy Neighbor",
+          ],
+          html: `
+<div class="callout"><strong>Bulkhead = controls concurrent calls going DOWNSTREAM.</strong> Protects one service from being starved by another slow service. Rate Limiter = limits incoming. Bulkhead = limits outgoing concurrency.</div>
+<div class="g2">
+<div class="card sp"><div class="cl cl-sp">ThreadPool Bulkhead</div><p>Dedicated thread pool per downstream service. SlowAPI2 uses its own 5 threads. FastAPI1 unaffected even if SlowAPI2 is saturated.</p></div>
+<div class="card blue"><div class="cl cl-blue">Semaphore Bulkhead</div><p>Limit concurrent calls without thread isolation. Lighter weight. Good for async/reactive.</p></div>
+</div>
+<div class="code"><span class="cm"># application.properties</span>
+resilience4j.bulkhead.instances.productService.maxConcurrentCalls=10
+resilience4j.bulkhead.instances.productService.maxWaitDuration=10ms
+
+<span class="ann">@GetMapping</span>(<span class="str">"/order/{id}"</span>)
+<span class="ann">@Bulkhead</span>(name = <span class="str">"productService"</span>, fallbackMethod = <span class="str">"bulkheadFallback"</span>)
+<span class="kw">public</span> <span class="cls">Order</span> getOrder(<span class="ann">@PathVariable</span> <span class="cls">Long</span> id) { ... }</div>`,
+        },
+
+        {
+          id: "retry",
+          cat: "Microservices",
+          num: "49",
+          title: "Retry Pattern",
+          pills: [
+            "p-sp:Retry",
+            "p-blue:Exponential Backoff",
+            "p-amber:Transient Failures",
+          ],
+          html: `
+<div class="callout"><strong>Retry: transient failures (network glitch, 503) → retry after delay → often succeeds.</strong> Don't retry 4xx (client error), non-idempotent POST (creates duplicates), when circuit breaker OPEN.</div>
+<div class="code"><span class="cm"># application.properties</span>
+resilience4j.retry.instances.productService.maxAttempts=3
+resilience4j.retry.instances.productService.waitDuration=1s
+resilience4j.retry.instances.productService.retryExceptions=java.io.IOException,java.util.concurrent.TimeoutException
+
+<span class="ann">@GetMapping</span>(<span class="str">"/products/{id}"</span>)
+<span class="ann">@Retry</span>(name = <span class="str">"productService"</span>, fallbackMethod = <span class="str">"retryFallback"</span>)
+<span class="kw">public</span> <span class="cls">Product</span> getProduct(<span class="ann">@PathVariable</span> <span class="cls">Long</span> id) { ... }</div>
+<h3 class="sec">Retry Strategies</h3>
+<div class="tbl"><table>
+<tr><th>Strategy</th><th>Delay</th><th>Issue</th></tr>
+<tr><td>Fixed interval</td><td>Always 1s</td><td>Thundering herd — all clients retry together</td></tr>
+<tr><td>Exponential backoff</td><td>1s, 2s, 4s, 8s...</td><td>Still synchronized</td></tr>
+<tr><td>Backoff + Jitter ✔</td><td>Random(0, 2^n × base)</td><td>Best — spreads retries randomly</td></tr>
+</table></div>`,
+        },
+
+        {
+          id: "cb",
+          cat: "Microservices",
+          num: "50",
+          title: "Circuit Breaker",
+          pills: [
+            "p-sp:Circuit Breaker",
+            "p-red:OPEN/CLOSED",
+            "p-amber:Fail Fast",
+          ],
+          html: `
+<div class="callout"><strong>Circuit Breaker = stop calling failing service. Fail fast. Prevent cascade failures.</strong> Three states: CLOSED → OPEN → HALF-OPEN.</div>
+<div class="g3">
+<div class="card sp"><div class="cl cl-sp">CLOSED (normal)</div><p>All calls pass through. Track failure rate. OPEN if failures > threshold.</p></div>
+<div class="card red"><div class="cl cl-red">OPEN (failing)</div><p>ALL calls blocked immediately. Return fallback. No waiting. After timeout → HALF-OPEN.</p></div>
+<div class="card amber"><div class="cl cl-amber">HALF-OPEN (testing)</div><p>Allow few test calls. If success → CLOSED. If fail → back to OPEN.</p></div>
+</div>
+<div class="code"><span class="cm"># application.properties</span>
+resilience4j.circuitbreaker.instances.productService.slidingWindowSize=10
+resilience4j.circuitbreaker.instances.productService.failureRateThreshold=50
+resilience4j.circuitbreaker.instances.productService.waitDurationInOpenState=10s
+resilience4j.circuitbreaker.instances.productService.permittedCallsInHalfOpenState=3
+
+<span class="ann">@GetMapping</span>(<span class="str">"/products/{id}"</span>)
+<span class="ann">@CircuitBreaker</span>(name = <span class="str">"productService"</span>, fallbackMethod = <span class="str">"fallback"</span>)
+<span class="kw">public</span> <span class="cls">Product</span> getProduct(<span class="ann">@PathVariable</span> <span class="cls">Long</span> id) { ... }
+
+<span class="kw">public</span> <span class="cls">Product</span> fallback(<span class="cls">Long</span> id, <span class="cls">Exception</span> e) {
+    <span class="kw">return new</span> <span class="cls">Product</span>(<span class="str">"Product service unavailable"</span>); <span class="cm">// cached/default response</span>
+}</div>`,
+        },
+
+        {
+          id: "gw1",
+          cat: "Microservices",
+          num: "51",
+          title: "API Gateway Part 1 — Routing & Load Balancing",
+          pills: [
+            "p-sp:Spring Cloud Gateway",
+            "p-blue:Routing",
+            "p-amber:Single Entry Point",
+          ],
+          html: `
+<div class="callout"><strong>API Gateway = single entry point for all microservices.</strong> Clients call one URL → Gateway routes to correct service. Handles: routing, LB, auth, rate limiting, circuit breaking.</div>
+<div class="code"><span class="cm"># application.yml — Gateway routing config</span>
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: order-service
+          uri: lb://order-service          <span class="cm"># lb:// = use load balancer</span>
+          predicates:
+            - Path=/api/orders/**
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/products/**
+          filters:
+            - StripPrefix=1               <span class="cm"># strip /api from path</span>
+            - AddRequestHeader=X-Source, gateway</div>
+<h3 class="sec">Gateway vs Load Balancer</h3>
+<div class="tbl"><table>
+<tr><th>Feature</th><th>API Gateway</th><th>Load Balancer</th></tr>
+<tr><td>Routing</td><td>By URL path → different services</td><td>Same service, multiple instances</td></tr>
+<tr><td>Auth</td><td>Yes — central JWT validation</td><td>No</td></tr>
+<tr><td>Rate limiting</td><td>Yes</td><td>No</td></tr>
+</table></div>`,
+        },
+
+        {
+          id: "gw2",
+          cat: "Microservices",
+          num: "52",
+          title: "API Gateway Part 2 — Auth, Circuit Breaker, Filters",
+          pills: [
+            "p-sp:Global Filter",
+            "p-blue:Route Filter",
+            "p-amber:JWT in Gateway",
+          ],
+          html: `
+<h3 class="sec">Filter Types</h3>
+<div class="g2">
+<div class="card sp"><div class="cl cl-sp">Global Filter</div><p>Applied to ALL routes. Good for: JWT validation, logging, request ID injection.</p></div>
+<div class="card blue"><div class="cl cl-blue">Route-Specific Filter</div><p>Applied to matched route only. Good for: circuit breaker, retry, rate limiter per service.</p></div>
+</div>
+<div class="code"><span class="cm"># Per-route: circuit breaker + retry</span>
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/products/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: productCB
+                fallbackUri: forward:/fallback/product
+            - name: Retry
+              args:
+                retries: 3
+                statuses: SERVICE_UNAVAILABLE
+
+<span class="cm">// Global JWT filter</span>
+<span class="ann">@Component</span>
+<span class="kw">public class</span> <span class="cls">JwtGlobalFilter</span> <span class="kw">implements</span> <span class="cls">GlobalFilter</span> {
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="cls">Mono</span>&lt;<span class="cls">Void</span>&gt; filter(<span class="cls">ServerWebExchange</span> exchange, <span class="cls">GatewayFilterChain</span> chain) {
+        <span class="cls">String</span> token = exchange.getRequest().getHeaders().getFirst(<span class="str">"Authorization"</span>);
+        <span class="kw">if</span> (!jwtService.isValid(token)) <span class="kw">return</span> unauthorized(exchange);
+        <span class="kw">return</span> chain.filter(exchange);
+    }
+}</div>`,
+        },
+
+        {
+          id: "config",
+          cat: "Microservices",
+          num: "53",
+          title: "Central Configuration — Spring Cloud Config",
+          pills: [
+            "p-sp:Config Server",
+            "p-blue:Config Client",
+            "p-amber:Centralized",
+          ],
+          html: `
+<div class="callout"><strong>Problem:</strong> Each microservice has its own application.properties. Config change = rebuild + redeploy ALL services. Central Config = one place for all configs.</div>
+<h3 class="sec">Spring Cloud Config Server</h3>
+<div class="code"><span class="ann">@SpringBootApplication</span>
+<span class="ann">@EnableConfigServer</span>
+<span class="kw">public class</span> <span class="cls">ConfigServerApp</span> { ... }
+
+<span class="cm"># application.properties (config server)</span>
+spring.cloud.config.server.git.uri=https://github.com/myorg/configs
+spring.cloud.config.server.git.default-label=main
+
+<span class="cm"># Config stored in Git repo:</span>
+<span class="cm"># order-service.properties, order-service-dev.properties, etc.</span></div>
+<h3 class="sec">Config Client</h3>
+<div class="code"><span class="cm"># bootstrap.properties (loads before application.properties)</span>
+spring.application.name=order-service
+spring.cloud.config.uri=http://config-server:8888
+spring.cloud.config.fail-fast=true</div>
+<h3 class="sec">Dynamic Config Refresh</h3>
+<div class="code"><span class="cm">// Add @RefreshScope on beans that use config values</span>
+<span class="ann">@RefreshScope</span>
+<span class="ann">@RestController</span>
+<span class="kw">public class</span> <span class="cls">AppController</span> {
+    <span class="ann">@Value</span>(<span class="str">"\${app.feature.enabled}"</span>) <span class="kw">private boolean</span> featureEnabled;
+}
+<span class="cm">// POST /actuator/refresh → reloads config without restart!</span></div>`,
+        },
+
+        {
+          id: "actuator",
+          cat: "Microservices",
+          num: "54",
+          title: "Spring Boot Actuator",
+          pills: ["p-sp:Actuator", "p-blue:Health Check", "p-amber:Metrics"],
+          html: `
+<div class="callout"><strong>Actuator = production-ready monitoring endpoints.</strong> Add dependency → get /health, /metrics, /env, /beans, /mappings and more out of the box.</div>
+<div class="code"><span class="cm"># application.properties</span>
+management.endpoints.web.exposure.include=*    <span class="cm"># expose all (use wisely in prod)</span>
+management.endpoint.health.show-details=always
+management.endpoints.web.base-path=/manage    <span class="cm"># default: /actuator</span></div>
+<h3 class="sec">Key Endpoints</h3>
+<div class="tbl"><table>
+<tr><th>Endpoint</th><th>What it shows</th></tr>
+<tr><td>/actuator/health</td><td>App health status: UP/DOWN. DB, disk, dependencies.</td></tr>
+<tr><td>/actuator/metrics</td><td>JVM metrics, HTTP metrics, custom metrics</td></tr>
+<tr><td>/actuator/env</td><td>All environment properties and their values</td></tr>
+<tr><td>/actuator/beans</td><td>All Spring beans in ApplicationContext</td></tr>
+<tr><td>/actuator/mappings</td><td>All @RequestMapping routes</td></tr>
+<tr><td>/actuator/loggers</td><td>View/change log levels at runtime</td></tr>
+<tr><td>/actuator/info</td><td>Custom app info (build version, git commit)</td></tr>
+<tr><td>/actuator/refresh</td><td>Refresh @RefreshScope beans (with Config Server)</td></tr>
+</table></div>
+<div class="callout amber"><strong>Security:</strong> Expose only /health and /info in production (management.endpoints.web.exposure.include=health,info). Protect actuator endpoints with Spring Security.</div>`,
+        },
+
+        {
+          id: "configprop",
+          cat: "Microservices",
+          num: "55",
+          title: "@ConfigurationProperties — Type-Safe Config",
+          pills: [
+            "p-sp:@ConfigurationProperties",
+            "p-blue:Type Safe",
+            "p-amber:Grouped Config",
+          ],
+          html: `
+<div class="callout"><strong>@ConfigurationProperties = bind a group of properties to a Java class.</strong> Better than @Value for multiple related properties. Type-safe, IDE support, validation.</div>
+<h3 class="sec">Problem with @Value for Groups</h3>
+<div class="callout amber"><strong>@Value limitation:</strong> 10 related DB properties = 10 @Value annotations. Verbose. No validation. No nested objects.</div>
+<h3 class="sec">Solution: @ConfigurationProperties</h3>
+<div class="code"><span class="cm"># application.properties</span>
+app.db.url=jdbc:mysql://localhost/mydb
+app.db.username=root
+app.db.password=secret
+app.db.pool.maxSize=10
+app.db.pool.timeout=30s
+
+<span class="cm">// Java POJO</span>
+<span class="ann">@Component</span>
+<span class="ann">@ConfigurationProperties</span>(prefix = <span class="str">"app.db"</span>)
+<span class="ann">@Validated</span>
+<span class="kw">public class</span> <span class="cls">DbProperties</span> {
+    <span class="ann">@NotEmpty</span>
+    <span class="kw">private</span> <span class="cls">String</span> url;
+    <span class="kw">private</span> <span class="cls">String</span> username;
+    <span class="kw">private</span> <span class="cls">String</span> password;
+    <span class="kw">private</span> <span class="cls">PoolConfig</span> pool;  <span class="cm">// nested object!</span>
+
+    <span class="kw">public static class</span> <span class="cls">PoolConfig</span> {
+        <span class="kw">private int</span> maxSize;
+        <span class="kw">private</span> <span class="cls">Duration</span> timeout;
+    }
+}
+
+<span class="cm">// Inject like any bean</span>
+<span class="ann">@Autowired</span> <span class="cls">DbProperties</span> dbProps;
+dbProps.getUrl();
+dbProps.getPool().getMaxSize();</div>
+<div class="callout blue"><strong>Benefits over @Value:</strong> Grouped properties, nested objects, type conversion (Duration, DataSize), Bean Validation (@NotEmpty, @Min), IDE autocompletion.</div>`,
+        },
+      ];
+
+      const CATS = [...new Set(T.map((t) => t.cat))];
+
+      function renderNav() {
+        const nav = document.getElementById("nav");
+        let h = "";
+        CATS.forEach((cat) => {
+          const items = T.filter((t) => t.cat === cat);
+          h += `<div class="cat-g" data-cat="${cat}"><div class="cat-hdr">${cat}</div>`;
+          items.forEach((t) => {
+            h += `<button class="nav-btn" data-id="${t.id}" onclick="show('${t.id}')">${t.num}. ${t.title}</button>`;
+          });
+          h += "</div>";
+        });
+        nav.innerHTML = h;
+      }
+
+      function renderContent() {
+        const mc = document.getElementById("mc");
+        let h = "";
+        T.forEach((t) => {
+          const pills = (t.pills || [])
+            .map((p) => {
+              const [c, l] = p.split(":");
+              return `<span class="pill ${c}">${l}</span>`;
+            })
+            .join("");
+          h += `<article class="topic" id="t-${t.id}">
+      <div class="topic-hero">
+        <div class="t-num">Topic ${t.num} — ${t.cat}</div>
+        <h1 class="t-title">${t.title}</h1>
+        <div class="t-pills">${pills}</div>
+      </div>${t.html}</article>`;
+        });
+        mc.innerHTML = h;
+      }
+
+      function show(id) {
+        document
+          .querySelectorAll(".topic")
+          .forEach((t) => t.classList.remove("visible"));
+        document
+          .querySelectorAll(".nav-btn")
+          .forEach((b) => b.classList.remove("active"));
+        const tp = document.getElementById("t-" + id);
+        const btn = document.querySelector(`.nav-btn[data-id="${id}"]`);
+        if (tp) tp.classList.add("visible");
+        if (btn) {
+          btn.classList.add("active");
+          btn.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function search(q) {
+        const l = q.toLowerCase();
+        document.querySelectorAll(".nav-btn").forEach((b) => {
+          b.style.display = b.textContent.toLowerCase().includes(l)
+            ? ""
+            : "none";
+        });
+        document.querySelectorAll(".cat-g").forEach((g) => {
+          g.style.display = [...g.querySelectorAll(".nav-btn")].some(
+            (b) => b.style.display !== "none",
+          )
+            ? ""
+            : "none";
+        });
+      }
+
+      renderNav();
+      renderContent();
+      show("intro");
+    </script>
+  </body>
+</html>
