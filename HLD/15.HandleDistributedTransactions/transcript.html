@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,11 +10,18 @@
         .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
         .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
         h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+            .copy-btn { text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; float: right; }
+        .copy-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        .copy-btn.success { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
     </style>
 </head>
 <body>
     <a href="../../index.html" class="btn">&larr; Back to Index</a>
     <a href="distributed_transactions_notes.html" class="btn">View Notes</a>
+        <button class="copy-btn" onclick="copyTranscript()">
+        <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1M19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5M19 21H8V7H19V21Z"/></svg>
+        Copy Transcript
+    </button>
     <h1>15.HandleDistributedTransactions</h1>
     <pre>
 Hello.
@@ -40,8 +47,8 @@ Then we'll jump into how to handle it.
 So transition is refers to a set of operations which need to be performed against the DB.
 Right.
 Or we can say that it's a simply say group of tasks which need to be performed against the DB, right?
-For example, this is your DB which has record for A and B, let's say A has ₹100, B has ₹50, and
-you are doing it from ₹100 credit to B ₹100.
+For example, this is your DB which has record for A and B, let's say A has â‚¹100, B has â‚¹50, and
+you are doing it from â‚¹100 credit to B â‚¹100.
 So here, if you see that this is one transaction, right?
 Let's say I can create one transaction and this is the set of operations inside it, right?
 This set of operation has been performing against the DB, right.
@@ -53,29 +60,29 @@ Asset property first is atomicity.
 Atomicity says that all operation in a single transaction should be success or all should fail.
 Let's say this is a transaction.
 It has two operation, right?
-Let's say first a debit a ₹100 is getting executed.
+Let's say first a debit a â‚¹100 is getting executed.
 This got success.
-Now credit B ₹200 to B.
+Now credit B â‚¹200 to B.
 Now let's say this got failed.
 So according to this one, this property, what will happen is even the A will get rollback because
 it will say that either all should be success or all should be fail, right?
 So if any transaction or any operation in a transaction get fail, all the success one will also get
 rolled back okay.
 Second is consistency.
-So before the transaction let's say this before the transaction, what is the state of the DB ₹100?
-B is ₹50.
+So before the transaction let's say this before the transaction, what is the state of the DB â‚¹100?
+B is â‚¹50.
 So this is before.
 After the transaction has been done, what should be the state?
 A should be debit from a 100.
 So it should become zero B credit.
-It should be ₹150.
+It should be â‚¹150.
 Okay, so what does consistency say is that DB should be in consistent state before and after the transaction.
 So this is a consistent state before the transaction after this transaction has been performed on it.
 This should be the state.
 So this is again a consistent state.
 But it should not be like A has been done 100.
 It makes zero but B got failed and nothing happened.
-So B is still let's say ₹50.
+So B is still let's say â‚¹50.
 This is inconsistent.
 It should not be like this.
 So before and after the transaction DB should be inconsistent.
@@ -83,9 +90,9 @@ State isolation.
 Isolation says that if there are more than one transaction that is running concurrently.
 It appears that they are running in a serialized manner, right?
 So it is possible that there are so many transaction happening.
-So this is one transaction debit from a ₹100 credit to be let's say ₹100.
-There could be another transaction running which says that debit from be let's say ₹150 credit to see
-₹150.
+So this is one transaction debit from a â‚¹100 credit to be let's say â‚¹100.
+There could be another transaction running which says that debit from be let's say â‚¹150 credit to see
+â‚¹150.
 Right.
 There could be more transaction happening.
 But isolation property says that even though they are multiple transaction happening concurrently because
@@ -127,9 +134,9 @@ Now let's say your DB name is T, right.
 So you are starting this transaction on t t db.
 This is the DB name.
 Right.
-So now withdrawal money from ₹100.
+So now withdrawal money from â‚¹100.
 So let's say this is all already has 100.
-This has or this is a has ₹200 B has ₹100.
+This has or this is a has â‚¹200 B has â‚¹100.
 So withdrawal withdraw money from a so it will.
 What it will do is it will put a lock here.
 It will put a lock here and update it to 100.
@@ -732,5 +739,23 @@ Okay guys.
 Thank you.
 Bye.
     </pre>
+    <script>
+        function copyTranscript() {
+            const pre = document.querySelector('pre');
+            const btn = document.querySelector('.copy-btn');
+            navigator.clipboard.writeText(pre.innerText).then(() => {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<span>âœ“</span> Copied';
+                btn.classList.add('success');
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('success');
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
+
+
+

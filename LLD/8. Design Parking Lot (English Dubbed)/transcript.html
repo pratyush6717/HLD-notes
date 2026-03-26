@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,14 +10,39 @@
         .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
         .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
         h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+            .copy-btn { text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; float: right; }
+        .copy-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        .copy-btn.success { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
     </style>
 </head>
 <body>
     <a href="../../index.html" class="btn">&larr; Back to Index</a>
     <a href="#" class="btn">View Notes</a>
+        <button class="copy-btn" onclick="copyTranscript()">
+        <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1M19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5M19 21H8V7H19V21Z"/></svg>
+        Copy Transcript
+    </button>
     <h1>8. Design Parking Lot (English Dubbed)</h1>
     <pre>
 [No transcript available for this lecture]
     </pre>
+    <script>
+        function copyTranscript() {
+            const pre = document.querySelector('pre');
+            const btn = document.querySelector('.copy-btn');
+            navigator.clipboard.writeText(pre.innerText).then(() => {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<span>âœ“</span> Copied';
+                btn.classList.add('success');
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('success');
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
+
+
+

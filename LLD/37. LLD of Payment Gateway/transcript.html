@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,11 +10,18 @@
         .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
         .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
         h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+            .copy-btn { text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; float: right; }
+        .copy-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        .copy-btn.success { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
     </style>
 </head>
 <body>
     <a href="../../index.html" class="btn">&larr; Back to Index</a>
     <a href="#" class="btn">View Notes</a>
+        <button class="copy-btn" onclick="copyTranscript()">
+        <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1M19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5M19 21H8V7H19V21Z"/></svg>
+        Copy Transcript
+    </button>
     <h1>37. LLD of Payment Gateway</h1>
     <pre>
 Hey guys.
@@ -64,7 +71,7 @@ My bank one, bank two, my card one.
 So I have two banks and one card.
 Now I have three instruments present.
 Now if I want to make a payment to anybody else.
-Some user two I can choose like okay, this ₹100 I want to fund from which particular instrument.
+Some user two I can choose like okay, this â‚¹100 I want to fund from which particular instrument.
 So okay, so when I say an instrument now you know that it's either your like either bank card balance.
 So what through which you can do fund or in which you can get or receive money.
 What all things we can do, we can what we can do is we can make a payment user one to user two payment
@@ -76,7 +83,7 @@ So let's say I'm searching user two either through email ID or phone number.
 Right.
 So I need a search functionality.
 And after that uh, I need to select the amount.
-Um, like, um, I want to transfer ₹100, ₹10 award.
+Um, like, um, I want to transfer â‚¹100, â‚¹10 award.
 And the funding instrument that I told you.
 Like from which instrument?
 I have to fund this amount.
@@ -163,7 +170,7 @@ So I am creating another bank and it will associate it with user two.
 Okay.
 So we have created an instruments also for this uh two users.
 Now I want to make a payment.
-Now let's say that user one wants to make a payments to user two of ₹10.
+Now let's say that user one wants to make a payments to user two of â‚¹10.
 What all the sequence can happen.
 So first let's say user one comes to an app.
 It will first search get user details, maybe through email ID, email ID or phone number.
@@ -195,7 +202,7 @@ Credit user two.
 It will also get amount right.
 And also it will get debit instrument ID right.
 But one thing is you never select credit like you only select that.
-Hey I want to transfer ₹10 right.
+Hey I want to transfer â‚¹10 right.
 And I will, I will I will make a payment through this instrument let's say bank and but you never select
 that.
 Hey for user to transfer here from the payment gateway?
@@ -701,7 +708,7 @@ So I am calling transaction controller get transaction history for the user ID u
 is for 73.
 So for 73 it is fetching user one transaction ID.
 So this is the transaction ID created for what amount?
-₹10.
+â‚¹10.
 And who is the receiver transaction dot receiver ID who is the receiver.
 The user two was 54 right now user was 17.
 This was bank card ID right.
@@ -738,5 +745,23 @@ Okay guys.
 Thank you.
 Bye.
     </pre>
+    <script>
+        function copyTranscript() {
+            const pre = document.querySelector('pre');
+            const btn = document.querySelector('.copy-btn');
+            navigator.clipboard.writeText(pre.innerText).then(() => {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<span>âœ“</span> Copied';
+                btn.classList.add('success');
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('success');
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
+
+
+

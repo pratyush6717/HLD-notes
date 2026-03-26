@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,10 +10,17 @@
         .back-btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; }
         .back-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
         h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+            .copy-btn { text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; float: right; }
+        .copy-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        .copy-btn.success { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
     </style>
 </head>
 <body>
     <a href="../../index.html" class="back-btn">&larr; Back to Index</a>
+    <button class="copy-btn" onclick="copyTranscript()">
+        <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1M19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5M19 21H8V7H19V21Z"/></svg>
+        Copy Transcript
+    </button>
     <h1>12. Spring boot @Transactional Annotation - Part1</h1>
     <pre>
 Is welcome to concept encoding.
@@ -52,10 +59,10 @@ We all have studied asset property in the DB right.
 So we just to remind you that the first A in the asset is atomicity.
 Atomicity says that in a transaction, if any operation fails, the entire transaction will get rollback.
 What does it mean quickly?
-Let's say that in a DB A has ₹10, B has ₹20.
+Let's say that in a DB A has â‚¹10, B has â‚¹20.
 Now this is your transaction in transaction.
-Let's say you want to debit a ₹5.
-You want to credit B ₹5.
+Let's say you want to debit a â‚¹5.
+You want to credit B â‚¹5.
 This is a particular, let's say transaction one.
 Okay.
 So now what?
@@ -64,40 +71,40 @@ Operation one.
 Operation two.
 Okay.
 So let's say the first operation executed, you debited a.
-So now it would be like ₹5.
+So now it would be like â‚¹5.
 Now during credit some failure happened and this operation got failed.
 The credit operation got failed.
 So as per the atomicity, if any operation fails, the entire transaction will get rollback.
 So entire transaction, whatever the operations are there previous operation will get rollback.
 So means this debit operation which got success will also get rollback.
-So this instead of ₹5 it will again goes back to ₹10.
+So this instead of â‚¹5 it will again goes back to â‚¹10.
 Okay.
 So that's what actually.
 Lead to consistency which says that before and after the transaction our DB should be consistent only.
 So my DB was inconsistent.
-State ₹10 and ₹20.
+State â‚¹10 and â‚¹20.
 Right?
 A and B after running the transaction.
 Right.
 Whether it's a successful or failure, doesn't matter, right?
-If it is a success, my DB state would be a would be, let's say ₹5 and B would be ₹25.
+If it is a success, my DB state would be a would be, let's say â‚¹5 and B would be â‚¹25.
 So this state of a DB is also consistent if there is a failure.
 So again my DB state would be consistent.
 Okay.
 So this property consistency says that no matter after and before the transaction my DB should be consistent
-only there should not be any inconsistency like okay the debit got successfully happen ₹5 but credit
+only there should not be any inconsistency like okay the debit got successfully happen â‚¹5 but credit
 doesn't happen.
-So credit is still ₹20.
+So credit is still â‚¹20.
 That is inconsistent state okay.
 So both are linked to each other.
 Then there is a something called isolation.
 Isolation says that even if multiple transactions are running in parallel, they do not interfere with
 each other.
 So this is just one operation, right?
-You need to debit a ₹5 credit B ₹5.
+You need to debit a â‚¹5 credit B â‚¹5.
 This is just a one transaction.
 There could be, let's say multiple transaction running in parallel.
-There could be another transaction like debit A ₹2, credit B ₹2.
+There could be another transaction like debit A â‚¹2, credit B â‚¹2.
 There could be another transaction credit a debit b something.
 Something x y something.
 So what I'm trying to say is that multiple transaction can run at the same time, but they will feel
@@ -398,5 +405,21 @@ And there we will cover all the remaining part of the transaction annotation.
 Thank you.
 Bye.
     </pre>
+    <script>
+        function copyTranscript() {
+            const pre = document.querySelector('pre');
+            const btn = document.querySelector('.copy-btn');
+            navigator.clipboard.writeText(pre.innerText).then(() => {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<span>âœ“</span> Copied';
+                btn.classList.add('success');
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('success');
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
+

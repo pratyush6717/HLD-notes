@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,11 +10,18 @@
         .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
         .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
         h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+            .copy-btn { text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; float: right; }
+        .copy-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        .copy-btn.success { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
     </style>
 </head>
 <body>
     <a href="../../index.html" class="btn">&larr; Back to Index</a>
     <a href="#" class="btn">View Notes</a>
+        <button class="copy-btn" onclick="copyTranscript()">
+        <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1M19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5M19 21H8V7H19V21Z"/></svg>
+        Copy Transcript
+    </button>
     <h1>21. LLD of Splitwise</h1>
     <pre>
 Hey guys.
@@ -28,7 +35,7 @@ Okay, so here, to anyone who don't know what is Splitwise app, right?
 So Splitwise is an app from which you can add expense.
 And split between your friends.
 Right.
-So let's say you have added an expense ₹400 for, let's say, lunch.
+So let's say you have added an expense â‚¹400 for, let's say, lunch.
 And then let's say you have four friends friend one, friend two, friend three, and yourself, let's
 say shreyansh.
 So you can split 100 hundred rupees or any unequal amount also.
@@ -103,9 +110,9 @@ That split can be of many types.
 So do we need a capability like equal split.
 Unequal split.
 Percentage wise split.
-What does it mean that let's say ₹400 can be equally split between four friends 100, 100, 100, 100?
+What does it mean that let's say â‚¹400 can be equally split between four friends 100, 100, 100, 100?
 Unequals means it is unequal amount.
-Let's say ₹50, ₹100, ₹50, ₹200.
+Let's say â‚¹50, â‚¹100, â‚¹50, â‚¹200.
 An equal amount, split percentage wise is, let's say 10%.
 And let's say this is 20%, then 5%.
 5%.
@@ -175,7 +182,7 @@ So we will little bit more deep dive into this tool.
 And this will help us in designing us the Splitwise.
 So let's say I'm creating an expense.
 So I am creating an expense let's say lunch.
-Okay so this is my title and I'm amount is ₹400 right.
+Okay so this is my title and I'm amount is â‚¹400 right.
 And paid by is let's say I am paying it Shreyansh.
 Now I want to split between my, uh equally between all my friends.
 Right?
@@ -207,7 +214,7 @@ Oh this amount.
 And that type is equal.
 Similarly, the percentage wise what will happen in the percentage if it was a percentage right.
 If it was a percentage there are two ways.
-Let's say again ₹400.
+Let's say again â‚¹400.
 But I choose a percentage wise.
 Then each friend you will assign a percentage 5%, 5%, something like 80%.
 So it should all be 100%.
@@ -247,13 +254,13 @@ Okay.
 Friend one.
 Friend two.
 Friend three.
-This is how much you have to give ₹100 to this friend, right?
+This is how much you have to give â‚¹100 to this friend, right?
 You have to give means.
-Oh, Shreyansh, get back from friend to ₹500.
+Oh, Shreyansh, get back from friend to â‚¹500.
 I get back from him.
-But for friend one I have to give ₹100.
+But for friend one I have to give â‚¹100.
 Shreyansh Shreyansh oh I also oh two.
-Friend three is like ₹100 like this.
+Friend three is like â‚¹100 like this.
 So now if you see that what I wanted to show you that each friend, each user has their own view, right?
 So most probably they might be storing that.
 Okay.
@@ -414,9 +421,9 @@ When I'm creating an expense, when I'm creating an expense I will get okay amoun
 Who paid this right.
 And the splits.
 His friends may not split.
-Friend one let's say ₹100.
-Friend two ₹200.
-Friend three ₹300.
+Friend one let's say â‚¹100.
+Friend two â‚¹200.
+Friend three â‚¹300.
 Let's say right.
 And also the split type.
 He equal unequal percentage.
@@ -627,7 +634,7 @@ This all information it has to maintain in a balance sheet and a drill down leve
 Okay.
 Total.
 Get back.
-I have ₹500.
+I have â‚¹500.
 But kiss kiss say.
 Then we need.
 Okay.
@@ -723,7 +730,7 @@ Get back whether I will get back.
 Total.
 Okay.
 Total chance.
-You get back ₹1,000.
+You get back â‚¹1,000.
 But if I want to drill down, I can iterate over this map.
 Okay, so this is.
 I put a high level total.
@@ -805,19 +812,19 @@ Get back.
 Total.
 Oh.
 Now let's take one example.
-Let's say user one made a payment of ₹500 and split.
+Let's say user one made a payment of â‚¹500 and split.
 Equally between user one and user two.
 Right.
 So now in this case what the data will come to expense.
 Expense amount.
-₹500 okay.
+â‚¹500 okay.
 Split type.
 Equally.
 And split details.
 Uh, split details.
 Split details will be like you.
-One, ₹250.
-You two ₹250.
+One, â‚¹250.
+You two â‚¹250.
 Right.
 Because 500 equally you.
 This is given by the UI of the expense controller.
@@ -833,16 +840,16 @@ User one is a total expense.
 Expense for user one is same.
 User one, user two, user two, or let's say paid by is paid by user one to user one.
 User two.
-User one is asking ₹250.
+User one is asking â‚¹250.
 So I will go to this user and see it's okay, get back the amount first is zero.
 I will increase it to 250 plus 250.
-Now I am asking ₹250 from the user.
+Now I am asking â‚¹250 from the user.
 Right?
 Total payment.
 Payment.
 This is.
 The payment is paid by me.
-So I have increased the total payment ₹500.
+So I have increased the total payment â‚¹500.
 Get back.
 Total mirror increase 250 000.
 Now O is zero.
@@ -888,7 +895,7 @@ User two and goes to the user one because he paid.
 Right.
 And what I'm updating I am updating the O balance.
 I am updating the O balance amount to plus O amount.
-₹250.
+â‚¹250.
 And also I will update its total.
 Uh, total your expense.
 Total o right.
@@ -924,5 +931,23 @@ If you if this has been asked in your interview or going to be asked in an inter
 Okay guys, have a nice day.
 Bye.
     </pre>
+    <script>
+        function copyTranscript() {
+            const pre = document.querySelector('pre');
+            const btn = document.querySelector('.copy-btn');
+            navigator.clipboard.writeText(pre.innerText).then(() => {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<span>âœ“</span> Copied';
+                btn.classList.add('success');
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('success');
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
+
+
+

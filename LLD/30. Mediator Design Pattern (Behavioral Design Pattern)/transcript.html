@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,11 +10,18 @@
         .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
         .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
         h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+            .copy-btn { text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; float: right; }
+        .copy-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        .copy-btn.success { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
     </style>
 </head>
 <body>
     <a href="../../index.html" class="btn">&larr; Back to Index</a>
     <a href="mediator_pattern_notes.html" class="btn">View Notes</a>
+        <button class="copy-btn" onclick="copyTranscript()">
+        <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1M19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5M19 21H8V7H19V21Z"/></svg>
+        Copy Transcript
+    </button>
     <h1>30. Mediator Design Pattern (Behavioral Design Pattern)</h1>
     <pre>
 Hey guys, welcome to the new LED video where we are going to design an online auction system using
@@ -59,9 +66,9 @@ And then we'll come to see it would be very very easy for you to grasp.
 So you know that what happens in the online auction system is in the online auction system.
 There are so many bidders, right?
 So they are bidders and they bid, they bid, they place bid.
-Let's say this person has placed a bid for ₹1,000.
+Let's say this person has placed a bid for â‚¹1,000.
 Now, whenever a person place a bid, other person knows that, okay, there is a bid which has been
-placed for ₹1,000.
+placed for â‚¹1,000.
 Now they have an option whether to increase it or whether to place a bet with a higher amount or not.
 Right.
 So now they can other person can place a bet with higher amount, right?
@@ -190,8 +197,8 @@ Now the second method which is place bid right.
 So now in this place bid right.
 If you now goes to the bidder class again there is one method right place bid.
 So I told you that whenever they have to place a bid, they have to tell to the mediator that hey,
-place a bid of, let's say ₹1,000.
-Place a bid of ₹2,000.
+place a bid of, let's say â‚¹1,000.
+Place a bid of â‚¹2,000.
 Nobody talked directly to each other, right?
 So what it does is whatever the mediator, auction, mediator is present object.
 We will call the place bid.
@@ -272,7 +279,7 @@ which they are participating.
 So they both are now participating in the same auction.
 So as they are part of the same auction mediator.
 Okay.
-Now bidder one is placed a bid of ₹2,000.
+Now bidder one is placed a bid of â‚¹2,000.
 So bidder one place a bid.
 So in the auction it will place a bid.
 Okay.
@@ -344,5 +351,23 @@ Okay okay guys.
 Thank you.
 Bye.
     </pre>
+    <script>
+        function copyTranscript() {
+            const pre = document.querySelector('pre');
+            const btn = document.querySelector('.copy-btn');
+            navigator.clipboard.writeText(pre.innerText).then(() => {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<span>âœ“</span> Copied';
+                btn.classList.add('success');
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('success');
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
+
+
+

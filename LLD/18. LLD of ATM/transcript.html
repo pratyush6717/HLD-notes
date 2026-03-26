@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,11 +10,18 @@
         .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
         .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
         h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+            .copy-btn { text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; float: right; }
+        .copy-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        .copy-btn.success { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
     </style>
 </head>
 <body>
     <a href="../../index.html" class="btn">&larr; Back to Index</a>
     <a href="#" class="btn">View Notes</a>
+        <button class="copy-btn" onclick="copyTranscript()">
+        <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1M19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5M19 21H8V7H19V21Z"/></svg>
+        Copy Transcript
+    </button>
     <h1>18. LLD of ATM</h1>
     <pre>
 Hello.
@@ -224,10 +231,10 @@ Let's little bit deep dive into the cash withdrawal.
 Cash withdrawal.
 So you know that right.
 Cash withdrawal always happen from descending order.
-So let's say we have three type of cash uh three type of nodes two keynote ₹500 note and ₹100 note.
+So let's say we have three type of cash uh three type of nodes two keynote â‚¹500 note and â‚¹100 note.
 So you know right.
-If you want to withdraw ₹3,000, if you have, let's say sufficient notes for this one, how what you
-will get, you will get 2K1 note and ₹500 two note.
+If you want to withdraw â‚¹3,000, if you have, let's say sufficient notes for this one, how what you
+will get, you will get 2K1 note and â‚¹500 two note.
 It's always in decreasing mode generally, right.
 So that's where we gonna use the chain of responsibility design pattern.
 So a chain of.
@@ -236,27 +243,27 @@ Request either amount.
 Withdraw amount.
 Withdraw amount is our request.
 Let's say it come 3000.
-So now you have one processor is ₹2.
+So now you have one processor is â‚¹2.
 Processor let's say then two K is linked with 500.
-After that ₹500 processor.
-And after that ₹100 processor.
+After that â‚¹500 processor.
+And after that â‚¹100 processor.
 Right.
 So it will go.
-Can you fulfill me ₹3,000?
-Two K will say I can only fulfill ₹2,000.
+Can you fulfill me â‚¹3,000?
+Two K will say I can only fulfill â‚¹2,000.
 I have only one node, right?
 So I will fulfill 2000.
-Can you check for ₹1,000 from next processor?
+Can you check for â‚¹1,000 from next processor?
 500 will say that.
 Okay.
 I have only one node.
 I can fulfill 500 out of your 1000, right?
-I can fulfill ₹500.
+I can fulfill â‚¹500.
 Right?
 So the remaining 500.
 Can you check from here?
 So let's say 100 has ten nodes.
-So it says yes, I can fulfill remaining ₹500.
+So it says yes, I can fulfill remaining â‚¹500.
 Right?
 So they will update themselves, right?
 Okay.
@@ -431,7 +438,7 @@ Those are all sour notes.
 So I have, uh, 2000, 2000.
 Uh, what I have taken is 2000 withdrawal processor.
 2000 withdrawal processor.
-₹500, uh, withdrawal processor.
+â‚¹500, uh, withdrawal processor.
 And hundred rupees withdrawal processor.
 And also it has an object of itself, cash withdrawal processor.
 And something like next.
@@ -476,7 +483,7 @@ Idle state or balance.
 Balance 3500 or ATM.
 Under.
 Many do not.
-So inside this I have put 2001 node, 502 nodes, ₹500, two nodes and 105 nodes.
+So inside this I have put 2001 node, 502 nodes, â‚¹500, two nodes and 105 nodes.
 Right.
 So these are the currencies I have in my ATM.
 And currently it is in idle and balance is 3500.
@@ -489,12 +496,12 @@ Right?
 So now what?
 Uh, I have created a card.
 I have created a bank account and user has a bank account, let's say 3000.
-So here I have created user bank card and the bank account has ₹3,000.
+So here I have created user bank card and the bank account has â‚¹3,000.
 For now let's say now I have initialized.
 Everything means I have a user.
 User has a card.
 User also has a bank account and his bank account.
-He has ₹3,000.
+He has â‚¹3,000.
 We have an ATM.
 ATM is currently in idle state ATM has 3500 balance and it has this kind of currency.
 So I have just done the initialization process.
@@ -588,22 +595,22 @@ So when I go to the cash withdrawal.
 So currently I'm with state cash withdrawal state.
 So I will go to this particular cash withdrawal state.
 So now I am doing a cash withdrawal of 2700.
-So ₹2,700 I need to withdraw.
+So â‚¹2,700 I need to withdraw.
 My ATM has 3500 and user has a bank account.
 And we have put.
-He has ₹3,000 in it.
+He has â‚¹3,000 in it.
 Right?
 In the initialize itself.
-Now I need to withdraw ₹2,700.
+Now I need to withdraw â‚¹2,700.
 So first validation I am doing is ATM has sufficient balance.
 Yes, ATM has sufficient balance.
-ATM has ₹3,500.
+ATM has â‚¹3,500.
 You want to withdraw less than it?
 Okay.
 But if it is not insufficient fund in the ATM and exit.
 Second is does user have sufficient balance?
 Yes, user has sufficient balance.
-User has ₹3,000 and he's tried to withdraw 2700.
+User has â‚¹3,000 and he's tried to withdraw 2700.
 That's okay.
 If not, then I will say that insufficient fund in the user balance bank account and then exit.
 If both are good, then I am good to withdraw.
@@ -629,9 +636,9 @@ So which one will get invoked?
 2001 will get invoked because first object is the 2001.
 So it will invoke 2000 withdrawal processor.
 Okay.
-So how much I need to withdraw I need to withdraw ₹2,700.
+So how much I need to withdraw I need to withdraw â‚¹2,700.
 Right.
-₹2,700.
+â‚¹2,700.
 I need to withdraw.
 And 2000 notes.
 How many?
@@ -643,7 +650,7 @@ So what I'm trying to do is like, uh, 2000 and 12K processor.
 It has one node.
 It is just try to see how much it can fulfill.
 So it can fulfill.
-It can fulfill ₹2,000 one node.
+It can fulfill â‚¹2,000 one node.
 It can give remaining is 700.
 Correct.
 So remaining goes 700.
@@ -668,7 +675,7 @@ With the balance amount now the same thing will do 500 has how many nodes.
 Five has 200 nodes.
 Right.
 So how many how many it can fulfill.
-It can fulfill only ₹500.
+It can fulfill only â‚¹500.
 Otherwise it will become larger.
 So with one node it can fulfill this ring.
 But it has balance.
@@ -689,7 +696,7 @@ Right.
 And they will update the balance also that okay 2700 has been withdraw and how much left.
 So it will be the updated amount it will have.
 Right.
-So it will have ₹800.
+So it will have â‚¹800.
 Left.
 And it's a bank account is a cash withdrawal.
 Right.
@@ -751,5 +758,23 @@ Thank you.
 Have a good day and good night.
 Bye.
     </pre>
+    <script>
+        function copyTranscript() {
+            const pre = document.querySelector('pre');
+            const btn = document.querySelector('.copy-btn');
+            navigator.clipboard.writeText(pre.innerText).then(() => {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<span>âœ“</span> Copied';
+                btn.classList.add('success');
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('success');
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
+
+
+

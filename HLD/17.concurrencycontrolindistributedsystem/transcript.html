@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,11 +10,18 @@
         .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
         .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
         h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+            .copy-btn { text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; float: right; }
+        .copy-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        .copy-btn.success { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
     </style>
 </head>
 <body>
     <a href="../../index.html" class="btn">&larr; Back to Index</a>
     <a href="concurrency_control_notes.html" class="btn">View Notes</a>
+        <button class="copy-btn" onclick="copyTranscript()">
+        <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1M19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5M19 21H8V7H19V21Z"/></svg>
+        Copy Transcript
+    </button>
     <h1>17.concurrencycontrolindistributedsystem</h1>
     <pre>
 Hey guys.
@@ -158,14 +165,14 @@ We have to debit the money from A and credit the money to B.
 Okay.
 So we have to debit from A credit to B.
 Okay.
-Let's say this is our DB A has let's say ₹100 B has let's say ₹50.
+Let's say this is our DB A has let's say â‚¹100 B has let's say â‚¹50.
 Okay.
 So let's say this is our transaction okay.
-So now let's say we wanted to debit the money from a let's say I want to debit ₹20.
+So now let's say we wanted to debit the money from a let's say I want to debit â‚¹20.
 So what this will do is debit the money.
-So let's say debited the money at ₹20.
-And now our DB has ₹80 for a.
-Now what we want to do is credit the money to B, which is ₹20.
+So let's say debited the money at â‚¹20.
+And now our DB has â‚¹80 for a.
+Now what we want to do is credit the money to B, which is â‚¹20.
 I need to credit the money to B, but let's say there is some failure happen, some failure happen.
 So when any failure happen, what we will do, we will do rollback.
 Right?
@@ -182,9 +189,9 @@ Okay.
 So that our DB is in consistent state.
 So let's say if you are not using the transaction, if you are not using the transaction and this logic
 is not there, you just doing the debit the money from A and credit the money to B, what will happen.
-So let's say A has ₹100, B has ₹50.
+So let's say A has â‚¹100, B has â‚¹50.
 Debit the money from A.
-Okay, I am able to debit the ₹20 from A and now A has ₹80.
+Okay, I am able to debit the â‚¹20 from A and now A has â‚¹80.
 Credit the money to B and now let's say certain failure happen and when certain any failure happens,
 it won't be able to credit the money to B.
 So what is the current amount present at B 50 only.
@@ -1048,5 +1055,23 @@ Uh, and any doubt, please feel free to ping me in the comment section.
 Thank you.
 Bye.
     </pre>
+    <script>
+        function copyTranscript() {
+            const pre = document.querySelector('pre');
+            const btn = document.querySelector('.copy-btn');
+            navigator.clipboard.writeText(pre.innerText).then(() => {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<span>âœ“</span> Copied';
+                btn.classList.add('success');
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('success');
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
+
+
+

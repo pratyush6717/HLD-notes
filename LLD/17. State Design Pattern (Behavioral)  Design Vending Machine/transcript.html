@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,11 +10,18 @@
         .btn { text-decoration: none; display: inline-flex; align-items: center; margin-bottom: 24px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; transition: all 0.2s; margin-right: 10px; }
         .btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
         h1 { color: #1e293b; margin-top: 0; margin-bottom: 24px; font-size: 2rem; }
+            .copy-btn { text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #ffffff; color: #2563eb; border: 1px solid #e2e8f0; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; float: right; }
+        .copy-btn:hover { border-color: #2563eb; box-shadow: 0 4px 6px rgba(37,99,235,0.1); transform: translateY(-1px); }
+        .copy-btn.success { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
     </style>
 </head>
 <body>
     <a href="../../index.html" class="btn">&larr; Back to Index</a>
     <a href="#" class="btn">View Notes</a>
+        <button class="copy-btn" onclick="copyTranscript()">
+        <svg style="width:16px;height:16px" viewBox="0 0 24 24"><path fill="currentColor" d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1M19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5M19 21H8V7H19V21Z"/></svg>
+        Copy Transcript
+    </button>
     <h1>17. State Design Pattern (Behavioral)  Design Vending Machine</h1>
     <pre>
 Hey guys and welcome back to the channel.
@@ -279,7 +286,7 @@ You can cancel or refund.
 Once it moves to selection state it can choose the product, you can return it.
 Return the change.
 Let's say user has.
-The product is for ₹12, but user has inserted ₹30.
+The product is for â‚¹12, but user has inserted â‚¹30.
 So certain change need to be done right so we can return the change here.
 If user wanted to get a full refund, it can also refund at this state also.
 Then the last state is dispensed product state and what all operation machine can do at this is like
@@ -491,11 +498,11 @@ So it moved to the has money state and it accepted the coins.
 Then I'm clicking on Product selection button okay.
 And as soon as you click on Product Selection button the machine state changed to selection state.
 Now here you can choose the product.
-Which product we choose 102102 was ₹1,212.
+Which product we choose 102102 was â‚¹1,212.
 And how many money we have given nickel and quarter, right nickel and quarter.
 So nickel is five and quarter is 25.
-So total ₹30 we have given and product is for ₹12.
-So it in the dispense tray it will give me refund back ₹18.
+So total â‚¹30 we have given and product is for â‚¹12.
+So it in the dispense tray it will give me refund back â‚¹18.
 Okay.
 So that logic I have put it here into this one.
 Okay.
@@ -523,5 +530,23 @@ And those states get changed based on certain behavior.
 If that is the case then state design pattern is the perfect solution.
 Okay guys, if there is any doubt, we can discuss further into the comment section by.
     </pre>
+    <script>
+        function copyTranscript() {
+            const pre = document.querySelector('pre');
+            const btn = document.querySelector('.copy-btn');
+            navigator.clipboard.writeText(pre.innerText).then(() => {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<span>âœ“</span> Copied';
+                btn.classList.add('success');
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('success');
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>
+
+
+
