@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -278,7 +306,7 @@
 
   <!-- CODE + TREE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// Expression interface
+    <pre class="code-block code-good"><code class="language-java">// Expression interface
 interface Expression { int interpret(Context ctx); }
 
 // Context — dictionary
@@ -309,9 +337,9 @@ class AddExpression implements Expression {
   public int interpret(Context ctx) {
     return left.interpret(ctx) + right.interpret(ctx);
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Build tree: (a * b) + (c * d)
+    <pre class="code-block code-good"><code class="language-java">// Build tree: (a * b) + (c * d)
 Context ctx = new Context();
 ctx.put("a", 2); ctx.put("b", 4);
 ctx.put("c", 5); ctx.put("d", 6);
@@ -328,10 +356,10 @@ Expression expr = new AddExpression(
 );
 
 System.out.println(expr.interpret(ctx));
-// (2*4) + (5*6) = 8 + 30 = 38</div>
+// (2*4) + (5*6) = 8 + 30 = 38</code></pre>
 
     <div class="highlight"><strong>Optimised variant — single BinaryExpression class:</strong> Trade extensibility for fewer classes. Use a switch on operator string. Good when operators are stable and few.</div>
-    <div class="code-block code-good">class BinaryExpression implements Expression {
+    <pre class="code-block code-good"><code class="language-java">class BinaryExpression implements Expression {
   Expression left, right;
   String operator;
   // ...
@@ -344,7 +372,7 @@ System.out.println(expr.interpret(ctx));
     }
     return 0;
   }
-}</div>
+}</code></pre>
   </div>
 
   <!-- COMPARE -->

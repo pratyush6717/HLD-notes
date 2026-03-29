@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -233,7 +261,7 @@
 
     <div class="section-title">Before vs after</div>
     <div class="grid">
-      <div class="code-block code-bad" style="margin-bottom:0">// BAD — class bloat
+      <pre class="code-block code-bad" style="margin-bottom:0"><code class="language-java">// BAD — class bloat
 class Room {
   void getPrice()   { ... } // op 1
   void maintain()   { ... } // op 2
@@ -241,8 +269,8 @@ class Room {
   void clean()      { ... } // op 4 (NEW)
   void calcTax()    { ... } // op 5 (NEW)
   // Room grows every time a new operation added
-}</div>
-      <div class="code-block code-good" style="margin-bottom:0">// GOOD — Visitor Pattern
+}</code></pre>
+      <pre class="code-block code-good" style="margin-bottom:0"><code class="language-java">// GOOD — Visitor Pattern
 class Room {
   void accept(RoomVisitor v) { v.visit(this); }
   // Room never changes. Operations = visitor classes.
@@ -250,13 +278,13 @@ class Room {
 
 class PricingVisitor   { visit(SingleRoom), visit(DoubleRoom) }
 class MaintenanceVisitor { ... }
-class CleaningVisitor   { ... } // new op — Room untouched</div>
+class CleaningVisitor   { ... } // new op — Room untouched</code></pre>
     </div>
   </div>
 
   <!-- STRUCTURE + CODE -->
   <div class="sub-panel" id="sub-structure">
-    <div class="code-block code-good">// 1. Element interface
+    <pre class="code-block code-good"><code class="language-java">// 1. Element interface
 interface Room {
   void accept(RoomVisitor visitor);
 }
@@ -271,9 +299,9 @@ class DoubleRoom implements Room {
   public void accept(RoomVisitor visitor) {
     visitor.visit(this);
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// 3. Visitor interface — all room types listed
+    <pre class="code-block code-good"><code class="language-java">// 3. Visitor interface — all room types listed
 interface RoomVisitor {
   void visit(SingleRoom room);
   void visit(DoubleRoom room);
@@ -294,7 +322,7 @@ class MaintenanceVisitor implements RoomVisitor {
 Room room = new SingleRoom();
 room.accept(new PricingVisitor());      // Single = ₹1000
 room.accept(new MaintenanceVisitor());  // Maintain single
-// Add new operation? Just add new Visitor class. Room unchanged.</div>
+// Add new operation? Just add new Visitor class. Room unchanged.</code></pre>
   </div>
 
   <!-- DOUBLE DISPATCH -->
@@ -305,17 +333,17 @@ room.accept(new MaintenanceVisitor());  // Maintain single
       <div class="box">
         <div class="box-label" style="color:#A32D2D">Single dispatch (normal Java)</div>
         <div class="box-sub" style="margin-bottom:8px">Method determined by ONE type — the object you call on.</div>
-        <div class="code-block code-bad" style="margin-bottom:6px">room.someOp(visitor);
+        <pre class="code-block code-bad" style="margin-bottom:6px"><code class="language-plaintext">room.someOp(visitor);
 // Only room's type decides the method
-// Visitor's type = ignored</div>
+// Visitor's type = ignored</code></pre>
         <div style="font-size:12px;color:#A32D2D">Can't vary behaviour based on both room AND visitor type simultaneously.</div>
       </div>
       <div class="box">
         <div class="box-label" style="color:#0F6E56">Double dispatch (Visitor)</div>
         <div class="box-sub" style="margin-bottom:8px">Step 1: room.accept(visitor) → calls based on room type. Step 2: visitor.visit(this) → calls based on visitor type.</div>
-        <div class="code-block code-good" style="margin-bottom:6px">room.accept(visitor);   // dispatch 1: room type
+        <pre class="code-block code-good" style="margin-bottom:6px"><code class="language-plaintext">room.accept(visitor);   // dispatch 1: room type
 // inside accept():
-visitor.visit(this);   // dispatch 2: visitor type</div>
+visitor.visit(this);   // dispatch 2: visitor type</code></pre>
         <div style="font-size:12px;color:#0F6E56">Method = f(room type) × f(visitor type)</div>
       </div>
     </div>

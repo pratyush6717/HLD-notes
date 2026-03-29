@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -212,16 +240,16 @@
 
     <div class="grid">
       <div>
-        <div class="code-block code-bad" style="margin-bottom:8px">// BAD — null check everywhere
+        <pre class="code-block code-bad" style="margin-bottom:8px"><code class="language-plaintext">// BAD — null check everywhere
 Vehicle v = factory.getVehicle("truck");
 if (v != null) {
   v.start(); // easy to miss → NPE
 }
-// Repeated in 50 places across codebase</div>
-        <div class="code-block code-good">// GOOD — Null Object Pattern
+// Repeated in 50 places across codebase</code></pre>
+        <pre class="code-block code-good"><code class="language-plaintext">// GOOD — Null Object Pattern
 Vehicle v = factory.getVehicle("truck");
 v.start(); // always safe — no null check needed
-// NullVehicle.start() just does nothing</div>
+// NullVehicle.start() just does nothing</code></pre>
       </div>
       <div>
         <div class="box" style="margin-bottom:10px">
@@ -250,7 +278,7 @@ v.start(); // always safe — no null check needed
 
   <!-- CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// Interface — same contract for all
+    <pre class="code-block code-good"><code class="language-java">// Interface — same contract for all
 interface Vehicle {
   void start();
   void stop();
@@ -267,9 +295,9 @@ class Bike implements Vehicle {
   public void start()   { System.out.println("Bike starting..."); }
   public void stop()    { System.out.println("Bike stopping..."); }
   public String getType() { return "Bike"; }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Null Object — safe dummy
+    <pre class="code-block code-good"><code class="language-java">// Null Object — safe dummy
 class NullVehicle implements Vehicle {
   public void start()  { /* do nothing — or log warning */ }
   public void stop()   { /* do nothing */ }
@@ -283,13 +311,13 @@ class VehicleFactory {
     if (type.equals("bike")) return new Bike();
     return new NullVehicle(); // 🔥 never return null
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Client — clean, no null checks ever
+    <pre class="code-block code-good"><code class="language-plaintext">// Client — clean, no null checks ever
 Vehicle v = VehicleFactory.getVehicle("truck");
 v.start();    // NullVehicle.start() — safe, no crash
 v.stop();     // NullVehicle.stop() — safe, no crash
-v.getType();  // "No vehicle" — meaningful default</div>
+v.getType();  // "No vehicle" — meaningful default</code></pre>
   </div>
 
   <!-- REAL EXAMPLES -->
@@ -300,24 +328,24 @@ v.getType();  // "No vehicle" — meaningful default</div>
       <div class="box">
         <div class="box-label" style="color:#185FA5">Logging — NullLogger</div>
         <div class="box-sub" style="margin-bottom:8px">In tests or environments where logging is disabled — instead of checking if logger is null, inject a NullLogger.</div>
-        <div class="code-block" style="margin-bottom:0;border-left:3px solid #1D9E75;font-size:11px">class NullLogger implements Logger {
+        <pre class="code-block" style="margin-bottom:0;border-left:3px solid #1D9E75;font-size:11px"><code class="language-java">class NullLogger implements Logger {
   log(msg) {} // silently ignore
-}</div>
+}</code></pre>
       </div>
       <div class="box">
         <div class="box-label" style="color:#0F6E56">Auth — GuestUser</div>
         <div class="box-sub" style="margin-bottom:8px">When user is not logged in — return GuestUser instead of null. All user.hasPermission() calls still work safely.</div>
-        <div class="code-block" style="margin-bottom:0;border-left:3px solid #1D9E75;font-size:11px">class GuestUser implements User {
+        <pre class="code-block" style="margin-bottom:0;border-left:3px solid #1D9E75;font-size:11px"><code class="language-java">class GuestUser implements User {
   boolean hasPermission(p) { return false; }
   String getName() { return "Guest"; }
-}</div>
+}</code></pre>
       </div>
       <div class="box">
         <div class="box-label" style="color:#854F0B">Payment — NullProcessor</div>
         <div class="box-sub" style="margin-bottom:8px">Free tier users — NullPaymentProcessor returns success for ₹0 without actually charging anything.</div>
-        <div class="code-block" style="margin-bottom:0;border-left:3px solid #1D9E75;font-size:11px">class NullPaymentProcessor {
+        <pre class="code-block" style="margin-bottom:0;border-left:3px solid #1D9E75;font-size:11px"><code class="language-java">class NullPaymentProcessor {
   process(amount) { return SUCCESS; }
-}</div>
+}</code></pre>
       </div>
     </div>
 
@@ -339,13 +367,13 @@ v.getType();  // "No vehicle" — meaningful default</div>
       <div class="box">
         <div class="box-label" style="color:#185FA5">Null Object vs Optional</div>
         <div class="box-sub" style="margin-bottom:10px">Optional = "I'm not sure if value exists — check before using."<br>Null Object = "Value always exists — just might do nothing."</div>
-        <div class="code-block" style="margin-bottom:0;font-size:11px">// Optional — caller must handle absence
+        <pre class="code-block" style="margin-bottom:0;font-size:11px"><code class="language-plaintext">// Optional — caller must handle absence
 Optional&lt;Vehicle&gt; v = factory.get("truck");
 v.ifPresent(x -> x.start()); // explicit check
 
 // Null Object — caller just calls
 Vehicle v = factory.get("truck");
-v.start(); // always safe, no check</div>
+v.start(); // always safe, no check</code></pre>
       </div>
       <div class="box">
         <div class="box-label" style="color:#0F6E56">When Null Object wins</div>

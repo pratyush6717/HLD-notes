@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -212,22 +240,22 @@
 
     <div class="grid">
       <div>
-        <div class="code-block code-bad" style="margin-bottom:8px">// BAD — client must know internals
+        <pre class="code-block code-bad" style="margin-bottom:8px"><code class="language-plaintext">// BAD — client must know internals
 if (collection is ArrayList) {
   for (int i = 0; i < list.size(); i++) ...
 }
 if (collection is LinkedList) { ... }
 if (collection is HashSet) { ... }
-// Different traversal for each type</div>
+// Different traversal for each type</code></pre>
       </div>
       <div>
-        <div class="code-block code-good">// GOOD — Iterator Pattern
+        <pre class="code-block code-good"><code class="language-plaintext">// GOOD — Iterator Pattern
 Iterator&lt;Book&gt; it = collection.iterator();
 
 while (it.hasNext()) {
   Book b = it.next();
   // Works for ANY collection type
-}</div>
+}</code></pre>
       </div>
     </div>
 
@@ -254,7 +282,7 @@ while (it.hasNext()) {
 
   <!-- COMPONENTS + CODE -->
   <div class="sub-panel" id="sub-components">
-    <div class="code-block code-good">// 1. Iterator interface
+    <pre class="code-block code-good"><code class="language-java">// 1. Iterator interface
 interface Iterator&lt;T&gt; {
   boolean hasNext();
   T next();
@@ -273,9 +301,9 @@ class Library implements Aggregate&lt;Book&gt; {
   public Iterator&lt;Book&gt; createIterator() {
     return new BookIterator(books); // gives out iterator
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// 4. Concrete Iterator
+    <pre class="code-block code-good"><code class="language-java">// 4. Concrete Iterator
 class BookIterator implements Iterator&lt;Book&gt; {
   List&lt;Book&gt; books;
   int index = 0;
@@ -295,7 +323,7 @@ lib.addBook(new Book("System Design"));
 Iterator&lt;Book&gt; it = lib.createIterator();
 while (it.hasNext()) {
   System.out.println(it.next().title);
-}</div>
+}</code></pre>
 
     <div class="highlight"><strong>Who creates the iterator?</strong> The Aggregate (Library) — not the client. This is important: collection knows its own structure best, so it creates the right iterator for itself.</div>
   </div>
@@ -308,27 +336,27 @@ while (it.hasNext()) {
       <div class="box">
         <div class="box-label" style="color:#185FA5">Forward iterator</div>
         <div class="box-sub" style="margin-bottom:6px">Normal — index starts at 0, increments.</div>
-        <div class="code-block" style="margin-bottom:0;border-left:3px solid #185FA5;font-size:11px">int index = 0;
+        <pre class="code-block" style="margin-bottom:0;border-left:3px solid #185FA5;font-size:11px"><code class="language-plaintext">int index = 0;
 hasNext() → index &lt; size
-next() → books.get(index++)</div>
+next() → books.get(index++)</code></pre>
       </div>
       <div class="box">
         <div class="box-label" style="color:#A32D2D">Reverse iterator</div>
         <div class="box-sub" style="margin-bottom:6px">Index starts at end, decrements. Same interface!</div>
-        <div class="code-block" style="margin-bottom:0;border-left:3px solid #A32D2D;font-size:11px">int index = size - 1;
+        <pre class="code-block" style="margin-bottom:0;border-left:3px solid #A32D2D;font-size:11px"><code class="language-plaintext">int index = size - 1;
 hasNext() → index &gt;= 0
-next() → books.get(index--)</div>
+next() → books.get(index--)</code></pre>
       </div>
       <div class="box">
         <div class="box-label" style="color:#0F6E56">Filtered iterator</div>
         <div class="box-sub" style="margin-bottom:6px">Skip items that don't match. Still same interface!</div>
-        <div class="code-block" style="margin-bottom:0;border-left:3px solid #1D9E75;font-size:11px">// Only return books with rating > 4
+        <pre class="code-block" style="margin-bottom:0;border-left:3px solid #1D9E75;font-size:11px"><code class="language-plaintext">// Only return books with rating > 4
 hasNext() → find next match
-next() → return matched item</div>
+next() → return matched item</code></pre>
       </div>
     </div>
 
-    <div class="code-block code-good">// All three used identically by client
+    <pre class="code-block code-good"><code class="language-java">// All three used identically by client
 Iterator&lt;Book&gt; forward  = lib.createForwardIterator();
 Iterator&lt;Book&gt; reverse  = lib.createReverseIterator();
 Iterator&lt;Book&gt; filtered = lib.createFilteredIterator(4.0);
@@ -336,7 +364,7 @@ Iterator&lt;Book&gt; filtered = lib.createFilteredIterator(4.0);
 // Same while loop works for all three!
 while (forward.hasNext()) { System.out.println(forward.next()); }
 while (reverse.hasNext()) { System.out.println(reverse.next()); }
-while (filtered.hasNext()) { System.out.println(filtered.next()); }</div>
+while (filtered.hasNext()) { System.out.println(filtered.next()); }</code></pre>
   </div>
 
   <!-- COMPARE -->

@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -293,7 +321,7 @@ void display(int x, int y);</div>
 
   <!-- CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// Flyweight object — stores only intrinsic data
+    <pre class="code-block code-good"><code class="language-java">// Flyweight object — stores only intrinsic data
 class Robot {
   String type;    // intrinsic — shared
   Sprite sprite;  // intrinsic — shared (heavy, 30KB)
@@ -307,9 +335,9 @@ class Robot {
     System.out.println(type + " at (" + x + "," + y + ")");
     // render sprite at position
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Flyweight Factory — cache + reuse
+    <pre class="code-block code-good"><code class="language-java">// Flyweight Factory — cache + reuse
 class RobotFactory {
   static Map&lt;String, Robot&gt; cache = new HashMap&lt;&gt;();
 
@@ -322,14 +350,14 @@ class RobotFactory {
     }
     return cache.get(type); // ✔ reuse existing
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Client — 10 lakh calls, only 2 objects created
+    <pre class="code-block code-good"><code class="language-plaintext">// Client — 10 lakh calls, only 2 objects created
 for (RobotData data : gameData) { // 10 lakh items
   Robot r = RobotFactory.getRobot(data.type); // cache hit after first
   r.display(data.x, data.y); // extrinsic passed each time
 }
-// Console shows: "Created: humanoid", "Created: robotic" — only 2 times!</div>
+// Console shows: "Created: humanoid", "Created: robotic" — only 2 times!</code></pre>
 
     <div class="highlight"><strong>Text editor version:</strong> <code style="font-family:var(--font-mono);font-size:11px">Letter l = LetterFactory.get('T');</code> <code style="font-family:var(--font-mono);font-size:11px">l.display(row, col);</code> — 1000 'T' characters in document → 1 Letter object, reused 1000 times with different row/col.</div>
   </div>

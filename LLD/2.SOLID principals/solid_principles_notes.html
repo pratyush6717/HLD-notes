@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -254,16 +282,16 @@
         </div>
       </div>
       <div class="principle-body">
-        <div class="code-block code-bad" style="margin-top:14px">// BAD — class doing 3 jobs
+        <pre class="code-block code-bad" style="margin-top:14px"><code class="language-java">// BAD — class doing 3 jobs
 class Invoice {
   calculate() {}   // business logic
   saveToDB()  {}   // persistence
   print()     {}   // presentation
-}</div>
-        <div class="code-block code-good">// GOOD — each class has 1 job
+}</code></pre>
+        <pre class="code-block code-good"><code class="language-java">// GOOD — each class has 1 job
 class Invoice      { calculate() {} }
 class InvoiceDAO   { saveToDB()  {} }
-class InvoicePrinter { print()   {} }</div>
+class InvoicePrinter { print()   {} }</code></pre>
         <div class="highlight" style="margin-bottom:0"><strong>Aha moment:</strong> Change notification logic → only NotificationService changes. DB logic change → only DAO changes. No ripple effects.<br><br><strong>Common confusion:</strong> 1 class = 1 responsibility, NOT 1 class = 1 method. A class can have many methods as long as they all serve the same single purpose.</div>
       </div>
     </div>
@@ -277,15 +305,15 @@ class InvoicePrinter { print()   {} }</div>
         </div>
       </div>
       <div class="principle-body">
-        <div class="code-block code-bad" style="margin-top:14px">// BAD — add DB2? Must modify existing code
+        <pre class="code-block code-bad" style="margin-top:14px"><code class="language-plaintext">// BAD — add DB2? Must modify existing code
 if (type == "DB")   saveDB();
-if (type == "FILE") saveFile();</div>
-        <div class="code-block code-good">// GOOD — add new behaviour via extension
+if (type == "FILE") saveFile();</code></pre>
+        <pre class="code-block code-good"><code class="language-java">// GOOD — add new behaviour via extension
 interface InvoiceDAO { save(); }
 
 class DBInvoiceDAO   implements InvoiceDAO { save(){...} }
 class FileInvoiceDAO implements InvoiceDAO { save(){...} }
-// Add S3InvoiceDAO? Zero changes to existing code.</div>
+// Add S3InvoiceDAO? Zero changes to existing code.</code></pre>
         <div class="highlight" style="margin-bottom:0"><strong>Aha moment:</strong> Old code never touched. New feature = new class. Existing system untouched = existing tests still pass.</div>
       </div>
     </div>
@@ -302,17 +330,17 @@ class FileInvoiceDAO implements InvoiceDAO { save(){...} }
         </div>
       </div>
       <div class="principle-body">
-        <div class="code-block code-bad" style="margin-top:14px">// BAD — Bicycle breaks the contract
+        <pre class="code-block code-bad" style="margin-top:14px"><code class="language-java">// BAD — Bicycle breaks the contract
 class Vehicle { turnOnEngine() {} }
 class Bike extends Vehicle    { turnOnEngine() { /* works */ } }
 class Bicycle extends Vehicle { turnOnEngine() { throw Exception; } }
-// Replace Vehicle with Bicycle → code explodes</div>
-        <div class="code-block code-good">// GOOD — separate hierarchies
+// Replace Vehicle with Bicycle → code explodes</code></pre>
+        <pre class="code-block code-good"><code class="language-java">// GOOD — separate hierarchies
 class EngineVehicle { turnOnEngine() {} }
 class Bike extends EngineVehicle { ... }
 
 class Vehicle { accelerate() {} }
-class Bicycle extends Vehicle { ... } // No engine — no problem</div>
+class Bicycle extends Vehicle { ... } // No engine — no problem</code></pre>
         <div class="highlight" style="margin-bottom:0"><strong>Aha moment:</strong> Anywhere you use a parent class, you should be able to swap it with a child class and nothing breaks. Child class should only add behaviour, never contradict parent's contract.</div>
       </div>
     </div>
@@ -326,20 +354,20 @@ class Bicycle extends Vehicle { ... } // No engine — no problem</div>
         </div>
       </div>
       <div class="principle-body">
-        <div class="code-block code-bad" style="margin-top:14px">// BAD — Waiter forced to implement cook()
+        <pre class="code-block code-bad" style="margin-top:14px"><code class="language-java">// BAD — Waiter forced to implement cook()
 interface RestaurantWorker {
   serve();
   cook();   // Waiter doesn't cook!
   clean();  // Waiter doesn't clean!
 }
-class Waiter implements RestaurantWorker { cook() { /* useless */ } }</div>
-        <div class="code-block code-good">// GOOD — each interface is focused
+class Waiter implements RestaurantWorker { cook() { /* useless */ } }</code></pre>
+        <pre class="code-block code-good"><code class="language-java">// GOOD — each interface is focused
 interface Servable { serve(); }
 interface Cookable { cook();  }
 interface Cleanable { clean(); }
 
 class Waiter implements Servable { serve() {...} }
-class Chef  implements Cookable  { cook()  {...} }</div>
+class Chef  implements Cookable  { cook()  {...} }</code></pre>
         <div class="highlight" style="margin-bottom:0"><strong>Aha moment:</strong> No class should be forced to implement methods it doesn't use. Small, focused interfaces = better composition and no "empty" or "throws UnsupportedOperation" methods.</div>
       </div>
     </div>
@@ -356,12 +384,12 @@ class Chef  implements Cookable  { cook()  {...} }</div>
         </div>
       </div>
       <div class="principle-body">
-        <div class="code-block code-bad" style="margin-top:14px">// BAD — MacBook locked to WiredKeyboard
+        <pre class="code-block code-bad" style="margin-top:14px"><code class="language-java">// BAD — MacBook locked to WiredKeyboard
 class MacBook {
   WiredKeyboard keyboard = new WiredKeyboard(); // hardcoded
   // Can NEVER use wireless keyboard without changing MacBook
-}</div>
-        <div class="code-block code-good">// GOOD — MacBook depends on interface
+}</code></pre>
+        <pre class="code-block code-good"><code class="language-java">// GOOD — MacBook depends on interface
 interface Keyboard { type(); }
 
 class WirelessKeyboard implements Keyboard { type() {...} }
@@ -370,7 +398,7 @@ class WiredKeyboard    implements Keyboard { type() {...} }
 class MacBook {
   Keyboard keyboard; // inject any keyboard
   MacBook(Keyboard k) { this.keyboard = k; }
-}</div>
+}</code></pre>
         <div class="highlight" style="margin-bottom:0"><strong>Aha moment:</strong> Loose coupling = flexibility. Change keyboard type without touching MacBook. This is the foundation of Dependency Injection in Spring — you inject interfaces, not concrete implementations.<br><br><strong>Connection to real code:</strong> <code style="font-family:var(--font-mono);font-size:11px">@Autowired</code> in Spring follows this — Spring injects the right implementation at runtime.</div>
       </div>
     </div>

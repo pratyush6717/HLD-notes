@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -269,7 +297,7 @@
   <div class="sub-panel" id="sub-code">
     <div class="highlight"><strong>Scenario:</strong> Weight machine returns pounds. Client only understands kilograms. Can't change the existing weight machine. Add an adapter.</div>
 
-    <div class="code-block code-good">// Adaptee — existing system, returns pounds
+    <pre class="code-block code-good"><code class="language-java">// Adaptee — existing system, returns pounds
 // Can't change this — it's an external/legacy product
 interface WeightMachine {
   double getWeightInPound();
@@ -279,9 +307,9 @@ class WeightMachineForBabies implements WeightMachine {
   public double getWeightInPound() {
     return 28.0; // always returns in pounds
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Adapter interface — what CLIENT expects
+    <pre class="code-block code-good"><code class="language-java">// Adapter interface — what CLIENT expects
 interface WeightMachineAdapter {
   double getWeightInKg();
 }
@@ -298,15 +326,15 @@ class WeightMachineAdapterImpl implements WeightMachineAdapter {
     double weightInPound = weightMachine.getWeightInPound(); // talk to adaptee
     return weightInPound * 0.45;  // translate — pounds to KG
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Client — only knows WeightMachineAdapter
+    <pre class="code-block code-good"><code class="language-java">// Client — only knows WeightMachineAdapter
 WeightMachineAdapter adapter = new WeightMachineAdapterImpl(
   new WeightMachineForBabies()
 );
 
 double weightInKg = adapter.getWeightInKg(); // ✔ gets KG
-// Client never knew pounds existed</div>
+// Client never knew pounds existed</code></pre>
   </div>
 
   <!-- REAL EXAMPLES -->

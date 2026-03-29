@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -319,12 +347,12 @@
     <div class="grid" style="margin-bottom:16px">
       <div class="box">
         <div class="box-label">Formula</div>
-        <div class="code-block">wait = base × 2^n
+        <pre class="code-block"><code class="language-plaintext">wait = base × 2^n
 
 retry1 = 200ms
 retry2 = 400ms
 retry3 = 800ms
-retry4 = 1600ms</div>
+retry4 = 1600ms</code></pre>
       </div>
       <div class="pain" style="margin-bottom:0;align-self:start">
         <div class="label">Problem with plain backoff</div>
@@ -336,11 +364,11 @@ retry4 = 1600ms</div>
     <div class="grid" style="margin-bottom:16px">
       <div class="box">
         <div class="box-label">Formula</div>
-        <div class="code-block">retry_time = random(0, base × 2^n)
+        <pre class="code-block"><code class="language-plaintext">retry_time = random(0, base × 2^n)
 
 Client 1 → retry in 300ms
 Client 2 → retry in 450ms
-Client 3 → retry in 120ms</div>
+Client 3 → retry in 120ms</code></pre>
         <div style="font-size:12px;color:#0F6E56;margin-top:6px">Traffic spreads → no synchronized spike → system recovers</div>
       </div>
       <div class="box" style="display:flex;flex-direction:column;gap:6px">
@@ -372,13 +400,13 @@ Client 3 → retry in 120ms</div>
       <div class="box">
         <div class="box-label">Token bucket algorithm</div>
         <div class="box-sub" style="margin-bottom:8px">Bucket has fixed tokens (= system capacity). Each request consumes one token. When bucket empty — excess requests wait or are rejected.</div>
-        <div class="code-block">Capacity: 5000 req/sec
+        <pre class="code-block"><code class="language-plaintext">Capacity: 5000 req/sec
 
 12:00:00 → 1M requests arrive
 Token bucket: allows 5000
 Remaining 995,000 → wait / reject
 
-Backend is protected.</div>
+Backend is protected.</code></pre>
       </div>
       <div class="cure">
         <div class="label">Why rate limiter works</div>

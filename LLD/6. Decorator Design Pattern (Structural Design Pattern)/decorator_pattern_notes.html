@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -298,17 +326,17 @@
     </div>
 
     <div class="section-title">Step-by-step wrapping</div>
-    <div class="code-block code-good">Pizza p = new Farmhouse();         // Step 1: base
+    <pre class="code-block code-good"><code class="language-java">Pizza p = new Farmhouse();         // Step 1: base
 p = new Cheese(p);                 // Step 2: wrap with cheese
 p = new Mushroom(p);               // Step 3: wrap with mushroom
 
 p.getCost();   // Mushroom(Cheese(Farmhouse)) → 260
-p.getDesc();   // "Farmhouse, Cheese, Mushroom"</div>
+p.getDesc();   // "Farmhouse, Cheese, Mushroom"</code></pre>
   </div>
 
   <!-- CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// Base interface
+    <pre class="code-block code-good"><code class="language-java">// Base interface
 interface Pizza {
   String getDesc();
   int getCost();
@@ -322,9 +350,9 @@ class Margherita implements Pizza {
 class Farmhouse implements Pizza {
   public String getDesc() { return "Farmhouse"; }
   public int getCost() { return 200; }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Abstract Decorator — IS-A Pizza + HAS-A Pizza
+    <pre class="code-block code-good"><code class="language-java">// Abstract Decorator — IS-A Pizza + HAS-A Pizza
 abstract class ToppingDecorator implements Pizza {
   protected Pizza pizza; // HAS-A
   ToppingDecorator(Pizza pizza) { this.pizza = pizza; }
@@ -340,15 +368,15 @@ class Mushroom extends ToppingDecorator {
   Mushroom(Pizza pizza) { super(pizza); }
   public String getDesc() { return pizza.getDesc() + ", Mushroom"; }
   public int getCost() { return pizza.getCost() + 40; }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Usage — stacking at runtime
+    <pre class="code-block code-good"><code class="language-java">// Usage — stacking at runtime
 Pizza p = new Farmhouse();  // 200
 p = new Cheese(p);          // 220
 p = new Mushroom(p);        // 260
 
 System.out.println(p.getDesc()); // Farmhouse, Cheese, Mushroom
-System.out.println(p.getCost()); // 260</div>
+System.out.println(p.getCost()); // 260</code></pre>
 
     <div class="highlight"><strong>Java real example:</strong> <code style="font-family:var(--font-mono);font-size:11px">new BufferedReader(new FileReader("file.txt"))</code> — BufferedReader wraps FileReader. That IS the Decorator pattern in Java's standard library.</div>
   </div>

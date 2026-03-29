@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -253,7 +281,7 @@
 
   <!-- CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// Originator — decides what to save and restore
+    <pre class="code-block code-good"><code class="language-java">// Originator — decides what to save and restore
 class Configuration {
   int height, width;
 
@@ -288,9 +316,9 @@ class Caretaker {
     if (!history.isEmpty()) return history.pop();
     return null;
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Client — save + undo flow
+    <pre class="code-block code-good"><code class="language-java">// Client — save + undo flow
 Configuration config = new Configuration();
 Caretaker caretaker = new Caretaker();
 
@@ -312,7 +340,7 @@ System.out.println(config.height); // 7
 
 // UNDO again — back to state 1
 config.restore(caretaker.undo());
-System.out.println(config.height); // 5</div>
+System.out.println(config.height); // 5</code></pre>
 
     <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px">
       <div style="flex:1">
@@ -373,22 +401,22 @@ System.out.println(config.height); // 5</div>
       <div class="box" style="border-color:#185FA5">
         <div class="box-label" style="color:#185FA5">Memento — stores STATE</div>
         <div class="box-sub" style="margin-bottom:8px">Takes a snapshot of the object's state. Restoring reverses to that snapshot.</div>
-        <div class="code-block" style="border-left:3px solid #185FA5;margin-bottom:6px">// What's stored:
+        <pre class="code-block" style="border-left:3px solid #185FA5;margin-bottom:6px"><code class="language-plaintext">// What's stored:
 Memento { height=5, width=10 }
 
 // Undo = restore snapshot
 config.height = 5
-config.width = 10</div>
+config.width = 10</code></pre>
         <div style="font-size:12px;color:var(--color-text-tertiary)">State-based undo</div>
       </div>
       <div class="box" style="border-color:#0F6E56">
         <div class="box-label" style="color:#0F6E56">Command — stores ACTION</div>
         <div class="box-sub" style="margin-bottom:8px">Records what action was taken. Undo = reverse that action.</div>
-        <div class="code-block" style="border-left:3px solid #1D9E75;margin-bottom:6px">// What's stored:
+        <pre class="code-block" style="border-left:3px solid #1D9E75;margin-bottom:6px"><code class="language-plaintext">// What's stored:
 TurnOnACCommand { execute(), undo() }
 
 // Undo = call reverse action
-ac.turnOff()</div>
+ac.turnOff()</code></pre>
         <div style="font-size:12px;color:var(--color-text-tertiary)">Action-based undo</div>
       </div>
     </div>

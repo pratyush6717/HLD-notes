@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -298,10 +326,10 @@
 
     <div class="section-title">DNS zones — load distribution</div>
     <div class="highlight"><strong>Problem:</strong> <code style="font-family:var(--font-mono);font-size:11px">mail.example.com</code>, <code style="font-family:var(--font-mono);font-size:11px">blog.example.com</code>, <code style="font-family:var(--font-mono);font-size:11px">api.example.com</code> all on one server = overload. <strong>Solution:</strong> Zone splitting — delegate each subdomain to a separate server.</div>
-    <div class="code-block">example.com       → Server 1 (main authoritative)
+    <pre class="code-block"><code class="language-plaintext">example.com       → Server 1 (main authoritative)
 mail.example.com  → Server 2 (mail zone)
 blog.example.com  → Server 3 (blog zone)
-api.example.com   → Server 4 (API zone)</div>
+api.example.com   → Server 4 (API zone)</code></pre>
   </div>
 
   <!-- DNS RESOLUTION -->

@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -275,38 +303,38 @@
   <div class="sub-panel" id="sub-structure">
     <div class="highlight"><strong>JWT = 3 base64-encoded parts separated by dots.</strong> <code style="font-family:var(--font-mono);font-size:11px">HEADER.PAYLOAD.SIGNATURE</code> — Encoded, NOT encrypted. Payload is readable by anyone (paste on jwt.io). Never store passwords in JWT.</div>
 
-    <div class="code-block" style="word-break:break-all;font-size:11px">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+    <pre class="code-block" style="word-break:break-all;font-size:11px"><code class="language-plaintext">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 .<span style="color:#1D9E75">eyJzdWIiOiIxMjM0NTY3ODkwIiwiZXhwIjoxNzAwMDAwfQ</span>
-.<span style="color:#7F77DD">SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</span></div>
+.<span style="color:#7F77DD">SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</span></code></pre>
 
     <div class="jwt-part" style="background:#E6F1FB;border:1px solid #B5D4F4">
       <div style="font-size:11px;font-weight:500;color:#0C447C;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Part 1 — Header</div>
-      <div class="code-block" style="background:var(--color-background-primary);margin-bottom:6px">{
+      <pre class="code-block" style="background:var(--color-background-primary);margin-bottom:6px"><code class="language-json">{
   "alg": "HS256",   ← signing algorithm
   "typ": "JWT"      ← token type
-}</div>
+}</code></pre>
       <div style="font-size:12px;color:#185FA5">Metadata only. Which algorithm was used to sign.</div>
     </div>
 
     <div class="jwt-part" style="background:#E1F5EE;border:1px solid #9FE1CB">
       <div style="font-size:11px;font-weight:500;color:#085041;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Part 2 — Payload (claims)</div>
-      <div class="code-block" style="background:var(--color-background-primary);margin-bottom:6px">{
+      <pre class="code-block" style="background:var(--color-background-primary);margin-bottom:6px"><code class="language-json">{
   "sub": "12345",          ← subject (user id)
   "email": "pk@gmail.com", ← public claim
   "role": "admin",         ← public claim
   "iss": "auth.myapp.com", ← issuer
   "exp": 1710000000,       ← expiry timestamp
   "iat": 1709990000        ← issued at
-}</div>
+}</code></pre>
       <div style="font-size:12px;color:#0F6E56">Readable by anyone — base64 not encrypted. Never put passwords here.</div>
     </div>
 
     <div class="jwt-part" style="background:#EEEDFE;border:1px solid #AFA9EC">
       <div style="font-size:11px;font-weight:500;color:#3C3489;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Part 3 — Signature</div>
-      <div class="code-block" style="background:var(--color-background-primary);margin-bottom:6px">HMACSHA256(
+      <pre class="code-block" style="background:var(--color-background-primary);margin-bottom:6px"><code class="language-plaintext">HMACSHA256(
   base64(header) + "." + base64(payload),
   secret_key
-)</div>
+)</code></pre>
       <div style="font-size:12px;color:#3C3489">Ensures token wasn't tampered. If payload changes → signature breaks → server rejects. Only server with the secret_key can create valid signatures.</div>
     </div>
   </div>

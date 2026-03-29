@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -315,7 +343,7 @@
 
   <!-- CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// Subject interface
+    <pre class="code-block code-good"><code class="language-java">// Subject interface
 interface EmployeeDao {
   void create(String role, Employee emp);
   void delete(String role, int id);
@@ -329,9 +357,9 @@ class EmployeeDaoImpl implements EmployeeDao {
   public void delete(String role, int id) {
     // actual DB delete
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Proxy — Protection proxy with RBAC
+    <pre class="code-block code-good"><code class="language-java">// Proxy — Protection proxy with RBAC
 class EmployeeDaoProxy implements EmployeeDao {
   private EmployeeDaoImpl realDao = new EmployeeDaoImpl();
 
@@ -355,7 +383,7 @@ class EmployeeDaoProxy implements EmployeeDao {
 // Client — talks only to proxy, never to real object
 EmployeeDao dao = new EmployeeDaoProxy();
 dao.delete("ADMIN", 101);   // ✔ allowed
-dao.delete("USER", 101);    // ✗ exception</div>
+dao.delete("USER", 101);    // ✗ exception</code></pre>
 
     <div class="highlight"><strong>IS-A + HAS-A combo:</strong> EmployeeDaoProxy IS-A EmployeeDao (implements interface — transparent to client). EmployeeDaoProxy HAS-A EmployeeDaoImpl (holds reference, delegates when allowed).</div>
   </div>

@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -280,7 +308,7 @@
 
   <!-- CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-bad">// BAD — runtime NPE guaranteed
+    <pre class="code-block code-bad"><code class="language-java">// BAD — runtime NPE guaranteed
 class Vehicle {
   String hasEngine() { return null; } // Bicycle returns null
 }
@@ -289,9 +317,9 @@ class Bicycle extends Vehicle {
 }
 
 Vehicle v = new Bicycle();
-v.hasEngine().toString(); // NullPointerException at runtime 💥</div>
+v.hasEngine().toString(); // NullPointerException at runtime 💥</code></pre>
 
-    <div class="code-block code-good">// GOOD — hierarchy matches reality
+    <pre class="code-block code-good"><code class="language-java">// GOOD — hierarchy matches reality
 class Vehicle {
   int getNumberOfWheels() { ... } // ALL vehicles have this
 }
@@ -302,24 +330,24 @@ class EngineVehicle extends Vehicle {
   boolean hasEngine() { return true; } // SPECIFIC to engine vehicles
 }
 class Car extends EngineVehicle { ... }        // ✔
-class Motorcycle extends EngineVehicle { ... } // ✔</div>
+class Motorcycle extends EngineVehicle { ... } // ✔</code></pre>
 
     <div class="grid" style="margin-bottom:16px">
       <div class="box">
         <div class="box-label" style="color:#0F6E56">Safe substitutions</div>
-        <div class="code-block code-good" style="margin-top:6px;margin-bottom:0">Vehicle v = new Bicycle();
+        <pre class="code-block code-good" style="margin-top:6px;margin-bottom:0"><code class="language-java">Vehicle v = new Bicycle();
 v.getNumberOfWheels(); // ✔
 
 EngineVehicle e = new Car();
-e.hasEngine(); // ✔</div>
+e.hasEngine(); // ✔</code></pre>
       </div>
       <div class="box">
         <div class="box-label" style="color:#185FA5">Compile-time protection</div>
-        <div class="code-block" style="margin-top:6px;border-left:3px solid #185FA5;margin-bottom:0">EngineVehicle e = new Bicycle();
+        <pre class="code-block" style="margin-top:6px;border-left:3px solid #185FA5;margin-bottom:0"><code class="language-java">EngineVehicle e = new Bicycle();
 // ❌ Compile error!
 // Bicycle is not an EngineVehicle
 
-// Runtime error became compile error 🔥</div>
+// Runtime error became compile error 🔥</code></pre>
       </div>
     </div>
 

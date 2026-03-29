@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -255,11 +283,11 @@
     <div class="grid">
       <div class="box">
         <div class="box-label" style="color:#185FA5">Single server — easy</div>
-        <div class="code-block">synchronized(bookSeat) {
+        <pre class="code-block"><code class="language-plaintext">synchronized(bookSeat) {
   if(seat == FREE) {
     seat = BOOKED;
   }
-}</div>
+}</code></pre>
         <div class="box-sub">One JVM — synchronized block works. User2 and User3 wait while User1 is inside.</div>
       </div>
       <div class="box">
@@ -347,9 +375,9 @@
         <div class="flow-chain">
           <span class="flow-node node-gray" style="font-size:12px">Both read: seat A1, version=1</span>
           <span class="flow-down" style="font-size:12px">↓ User1 commits first</span>
-          <div class="code-block" style="margin:4px 0">UPDATE seat SET status='BOOKED',
+          <pre class="code-block" style="margin:4px 0"><code class="language-plaintext">UPDATE seat SET status='BOOKED',
 version=2 WHERE id=A1
-AND version=1</div>
+AND version=1</code></pre>
           <span class="flow-node node-green" style="font-size:12px">version=1 matches → success ✔</span>
           <span class="flow-down" style="font-size:12px">↓ DB now version=2</span>
         </div>
@@ -358,9 +386,9 @@ AND version=1</div>
         <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:10px">User2 fails (conflict detected)</div>
         <div class="flow-chain">
           <span class="flow-node node-gray" style="font-size:12px">User2 tries same update</span>
-          <div class="code-block" style="margin:4px 0">UPDATE seat SET status='BOOKED',
+          <pre class="code-block" style="margin:4px 0"><code class="language-plaintext">UPDATE seat SET status='BOOKED',
 version=2 WHERE id=A1
-AND version=1</div>
+AND version=1</code></pre>
           <span class="flow-node node-red" style="font-size:12px">version=1 no longer matches → 0 rows updated ✗</span>
           <span class="flow-down" style="font-size:12px">↓</span>
           <span class="flow-node node-amber" style="font-size:12px">User2 retries with fresh read</span>
@@ -389,9 +417,9 @@ AND version=1</div>
       <div class="arch-flow">
         <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);margin-bottom:10px">SELECT FOR UPDATE</div>
         <div class="flow-chain">
-          <div class="code-block">SELECT * FROM seat
+          <pre class="code-block"><code class="language-sql">SELECT * FROM seat
 WHERE id = 'A1'
-FOR UPDATE;</div>
+FOR UPDATE;</code></pre>
           <span class="flow-node node-blue" style="font-size:12px">User1 acquires row lock</span>
           <span class="flow-down" style="font-size:12px">↓</span>
           <span class="flow-node node-red" style="font-size:12px">User2 → blocked (waits)</span>

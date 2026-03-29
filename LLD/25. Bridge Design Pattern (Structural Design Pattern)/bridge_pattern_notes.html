@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -275,7 +303,7 @@
   <div class="sub-panel" id="sub-solution">
     <div class="highlight"><strong>Extract the implementation into its own interface. Abstraction holds a reference to it.</strong> Both hierarchies now grow independently.</div>
 
-    <div class="code-block code-good">// Implementation hierarchy — grows independently
+    <pre class="code-block code-good"><code class="language-java">// Implementation hierarchy — grows independently
 interface BreatheImplementer {
   void breathe();
 }
@@ -288,9 +316,9 @@ class WaterBreathe implements BreatheImplementer {
 class TreeBreathe implements BreatheImplementer {
   public void breathe() { System.out.println("Leaves → CO2 in, O2 out"); }
 }
-// Add XYZBreathe? Add independently. No animal changes needed.</div>
+// Add XYZBreathe? Add independently. No animal changes needed.</code></pre>
 
-    <div class="code-block code-good">// Abstraction hierarchy — holds reference to implementer
+    <pre class="code-block code-good"><code class="language-java">// Abstraction hierarchy — holds reference to implementer
 abstract class LivingThing {
   BreatheImplementer breatheImpl; // HAS-A implementer
 
@@ -307,9 +335,9 @@ class Dog extends LivingThing {
 class Fish extends LivingThing {
   Fish(BreatheImplementer impl) { super(impl); }
   public void breatheProcess() { breatheImpl.breathe(); }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Client — injects the right implementer
+    <pre class="code-block code-good"><code class="language-java">// Client — injects the right implementer
 LivingThing fish = new Fish(new WaterBreathe());
 fish.breatheProcess(); // "Gills → absorb O2 from water"
 
@@ -317,7 +345,7 @@ LivingThing dog = new Dog(new LandBreathe());
 dog.breatheProcess();  // "Nose → O2 in, CO2 out"
 
 // Change breathe method at runtime — same as Strategy!
-LivingThing tree = new Tree(new XYZBreathe()); // new process, no Tree changes</div>
+LivingThing tree = new Tree(new XYZBreathe()); // new process, no Tree changes</code></pre>
   </div>
 
   <!-- BRIDGE vs STRATEGY -->

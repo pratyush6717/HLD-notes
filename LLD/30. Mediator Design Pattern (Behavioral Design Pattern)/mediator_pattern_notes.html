@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -285,7 +313,7 @@
 
   <!-- CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// 1. Mediator interface
+    <pre class="code-block code-good"><code class="language-java">// 1. Mediator interface
 interface AuctionMediator {
   void addBidder(Colleague bidder);
   void placeBid(Colleague bidder, int amount);
@@ -304,9 +332,9 @@ class Auction implements AuctionMediator {
       }
     }
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// 3. Colleague interface
+    <pre class="code-block code-good"><code class="language-java">// 3. Colleague interface
 interface Colleague {
   void placeBid(int amount);
   void receiveBidNotification(String bidder, int amount);
@@ -334,9 +362,9 @@ class Bidder implements Colleague {
   }
 
   public String getName() { return name; }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// 5. Client
+    <pre class="code-block code-good"><code class="language-java">// 5. Client
 AuctionMediator auction = new Auction();
 
 Bidder alice = new Bidder("Alice", auction);
@@ -351,7 +379,7 @@ alice.placeBid(1000);
 bob.placeBid(2000);
 // Output: Bob placed bid: 2000
 //         Alice notified: Bob bid 2000
-//         Carol notified: Bob bid 2000</div>
+//         Carol notified: Bob bid 2000</code></pre>
   </div>
 
   <!-- COMPARE -->

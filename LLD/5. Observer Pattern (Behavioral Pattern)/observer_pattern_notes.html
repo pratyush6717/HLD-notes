@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -317,13 +345,13 @@
       <div class="box" style="border-color:#1D9E75">
         <div class="box-label" style="color:#0F6E56">Push model — eager</div>
         <div class="box-sub" style="margin-bottom:10px">Publisher sends data directly in the update call.</div>
-        <div class="code-block code-good" style="margin-bottom:8px">// Publisher pushes data
+        <pre class="code-block code-good" style="margin-bottom:8px"><code class="language-java">// Publisher pushes data
 notifyObservers(temp, humidity, pressure);
 
 // Observer receives it
 void update(float temp, float humidity, float pressure) {
   display(temp); // uses what it needs
-}</div>
+}</code></pre>
         <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.7">
           <span style="color:#0F6E56">✔</span> Simple — one call, data delivered<br>
           <span style="color:#0F6E56">✔</span> Fast — no extra round trip<br>
@@ -333,13 +361,13 @@ void update(float temp, float humidity, float pressure) {
       <div class="box" style="border-color:#185FA5">
         <div class="box-label" style="color:#185FA5">Pull model — lazy</div>
         <div class="box-sub" style="margin-bottom:10px">Publisher just signals a change. Observer fetches what it needs.</div>
-        <div class="code-block" style="border-left:3px solid #185FA5;margin-bottom:8px">// Publisher signals only
+        <pre class="code-block" style="border-left:3px solid #185FA5;margin-bottom:8px"><code class="language-java">// Publisher signals only
 notifyObservers(); // no data
 
 // Observer pulls what it needs
 void update() {
   float temp = weatherStation.getTemp(); // fetch only this
-}</div>
+}</code></pre>
         <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.7">
           <span style="color:#0F6E56">✔</span> Flexible — observer fetches only what it needs<br>
           <span style="color:#A32D2D">✗</span> Extra method calls<br>
@@ -360,7 +388,7 @@ void update() {
 
   <!-- CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// Observer interface
+    <pre class="code-block code-good"><code class="language-java">// Observer interface
 interface Observer {
   void update(float temp, float humidity);
 }
@@ -370,9 +398,9 @@ interface Observable {
   void addObserver(Observer o);
   void removeObserver(Observer o);
   void notifyObservers();
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Concrete Observable
+    <pre class="code-block code-good"><code class="language-java">// Concrete Observable
 class WeatherStation implements Observable {
   List&lt;Observer&gt; observers = new ArrayList&lt;&gt;();
   float temp, humidity;
@@ -391,9 +419,9 @@ class WeatherStation implements Observable {
     this.humidity = humidity;
     notifyObservers(); // triggers automatically
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Concrete Observers
+    <pre class="code-block code-good"><code class="language-java">// Concrete Observers
 class TVDisplay implements Observer {
   public void update(float temp, float humidity) {
     System.out.println("TV: Temp=" + temp);
@@ -410,7 +438,7 @@ WeatherStation ws = new WeatherStation();
 ws.addObserver(new TVDisplay());
 ws.addObserver(new MobileApp());
 
-ws.setWeather(38.0f, 75.0f); // → both observers notified</div>
+ws.setWeather(38.0f, 75.0f); // → both observers notified</code></pre>
 
     <div class="highlight"><strong>removeObserver() is critical.</strong> Always unsubscribe when observer is no longer needed. Forgotten observers = memory leak — observable holds reference forever.</div>
   </div>

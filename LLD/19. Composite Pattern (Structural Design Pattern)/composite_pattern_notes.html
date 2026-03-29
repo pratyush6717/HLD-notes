@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -211,17 +239,17 @@
 
     <div class="grid">
       <div>
-        <div class="code-block code-bad" style="margin-bottom:8px">// BAD — instanceof everywhere
+        <pre class="code-block code-bad" style="margin-bottom:8px"><code class="language-plaintext">// BAD — instanceof everywhere
 if (obj instanceof File) {
   obj.showFile();
 } else if (obj instanceof Directory) {
   for (Object child : dir.children) {
     // repeat for each child type...
   }
-}</div>
-        <div class="code-block code-good">// GOOD — Composite Pattern
+}</code></pre>
+        <pre class="code-block code-good"><code class="language-plaintext">// GOOD — Composite Pattern
 obj.ls(); // works for File AND Directory
-// No instanceof. Polymorphism handles it.</div>
+// No instanceof. Polymorphism handles it.</code></pre>
       </div>
       <div>
         <div class="arch-flow">
@@ -264,7 +292,7 @@ obj.ls(); // works for File AND Directory
   <div class="sub-panel" id="sub-filesystem">
     <div class="highlight"><strong>The key line that makes Composite powerful:</strong> Directory.ls() just calls child.ls() for each child — it doesn't care if the child is a File or another Directory. Recursion is automatic.</div>
 
-    <div class="code-block code-good">// Component interface — the contract
+    <pre class="code-block code-good"><code class="language-java">// Component interface — the contract
 interface FileSystem {
   void ls();
 }
@@ -277,9 +305,9 @@ class File implements FileSystem {
   public void ls() {
     System.out.println("📄 " + name);
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Composite — contains children, delegates
+    <pre class="code-block code-good"><code class="language-java">// Composite — contains children, delegates
 class Directory implements FileSystem {
   String name;
   List&lt;FileSystem&gt; children = new ArrayList&lt;&gt;();
@@ -294,9 +322,9 @@ class Directory implements FileSystem {
       child.ls(); // 🔥 no instanceof — just call
     }
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Usage — builds the tree
+    <pre class="code-block code-good"><code class="language-java">// Usage — builds the tree
 Directory root = new Directory("root");
 Directory docs = new Directory("Documents");
 docs.add(new File("resume.pdf"));
@@ -305,7 +333,7 @@ docs.add(new File("cover.docx"));
 root.add(docs);
 root.add(new File("notes.txt"));
 
-root.ls(); // recursively prints entire tree</div>
+root.ls(); // recursively prints entire tree</code></pre>
 
     <div class="highlight"><strong>HAS-A insight:</strong> Directory IS-A FileSystem (implements interface) + HAS-A list of FileSystem objects. The children can be Files or Directories — it doesn't care. Same IS-A + HAS-A combo as Decorator and Proxy.</div>
   </div>
@@ -327,7 +355,7 @@ root.ls(); // recursively prints entire tree</div>
         <div style="margin-top:10px;font-size:12px;color:var(--color-text-tertiary)">evaluate() on root → 2 × (1+7) = 2 × 8 = 16</div>
       </div>
       <div>
-        <div class="code-block code-good">// Interface
+        <pre class="code-block code-good"><code class="language-java">// Interface
 interface Expression {
   int evaluate();
 }
@@ -364,7 +392,7 @@ Expression expr = new Multiply(
   new Number(2),
   new Add(new Number(1), new Number(7))
 );
-System.out.println(expr.evaluate()); // 16</div>
+System.out.println(expr.evaluate()); // 16</code></pre>
       </div>
     </div>
   </div>

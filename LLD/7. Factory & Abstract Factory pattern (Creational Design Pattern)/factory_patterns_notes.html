@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -243,11 +271,11 @@
 
     <div class="grid">
       <div>
-        <div class="code-block code-bad" style="margin-bottom:12px">// BAD — creation everywhere
+        <pre class="code-block code-bad" style="margin-bottom:12px"><code class="language-java">// BAD — creation everywhere
 Shape s1 = new Circle();
 Shape s2 = new Square();
-// Change Circle → update 50 places</div>
-        <div class="code-block code-good">// GOOD — Simple Factory
+// Change Circle → update 50 places</code></pre>
+        <pre class="code-block code-good"><code class="language-java">// GOOD — Simple Factory
 Shape s = ShapeFactory.getShape("CIRCLE");
 
 class ShapeFactory {
@@ -256,7 +284,7 @@ class ShapeFactory {
     if(type.equals("SQUARE"))  return new Square();
     throw new IllegalArgEx();
   }
-}</div>
+}</code></pre>
       </div>
       <div>
         <div class="box" style="margin-bottom:12px">
@@ -286,7 +314,7 @@ class ShapeFactory {
 
     <div class="grid">
       <div>
-        <div class="code-block code-good">// Interface
+        <pre class="code-block code-good"><code class="language-java">// Interface
 interface ShapeFactory {
   Shape createShape();
 }
@@ -301,7 +329,7 @@ class SquareFactory implements ShapeFactory {
 
 // Usage
 ShapeFactory factory = new CircleFactory();
-Shape s = factory.createShape();</div>
+Shape s = factory.createShape();</code></pre>
       </div>
       <div>
         <div class="arch-flow" style="margin-bottom:12px">
@@ -347,7 +375,7 @@ Shape s = factory.createShape();</div>
         </div>
       </div>
       <div>
-        <div class="code-block code-good" style="margin-bottom:12px">// Abstract Factory interface
+        <pre class="code-block code-good" style="margin-bottom:12px"><code class="language-java">// Abstract Factory interface
 interface CarFactory {
   Interior createInterior();
   Exterior createExterior();
@@ -366,7 +394,7 @@ class LuxuryCarFactory implements CarFactory {
 CarFactory factory = new LuxuryCarFactory();
 Interior i = factory.createInterior(); // Luxury
 Exterior e = factory.createExterior(); // Luxury
-// Mismatch impossible</div>
+// Mismatch impossible</code></pre>
         <div class="box">
           <div class="box-label" style="color:#854F0B">Real-world: UI toolkit</div>
           <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-top:4px">

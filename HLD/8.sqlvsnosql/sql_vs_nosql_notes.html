@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -313,7 +341,7 @@
     <div class="highlight"><strong>The social media scale problem:</strong> Facebook has billions of posts. SQL JOINs across billions of rows = painfully slow. NoSQL stores data denormalized — reads are instant, no JOINs needed.</div>
 
     <div class="section-title">How NoSQL data looks (MongoDB)</div>
-    <div class="code-block">
+    <pre class="code-block"><code class="language-json">
 {
   "id": 1,
   "name": "PK",
@@ -326,7 +354,7 @@
   "name": "Rahul"
   ← no "city" or "hobbies", also fine!
 }
-    </div>
+    </code></pre>
     <div class="highlight"><strong>Flexible schema:</strong> Each document can have different fields. New fields can be added without migrating the whole DB. Perfect when data shape changes often.</div>
 
     <div class="section-title">4 types of NoSQL</div>

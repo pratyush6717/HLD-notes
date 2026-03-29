@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -331,8 +359,8 @@
           Dog IS-A Animal<br>
           Admin IS-A User
         </div>
-        <div class="code-block" style="margin-bottom:0">class Vehicle {}
-class Car extends Vehicle {}</div>
+        <pre class="code-block" style="margin-bottom:0"><code class="language-java">class Vehicle {}
+class Car extends Vehicle {}</code></pre>
         <div style="margin-top:8px;font-size:12px;color:var(--color-text-tertiary)">When: child has all parent properties + adds more. "Is a kind of" relationship.</div>
       </div>
       <div class="rel-card">
@@ -343,9 +371,9 @@ class Car extends Vehicle {}</div>
           Library HAS-A Books<br>
           Order HAS-A Payment
         </div>
-        <div class="code-block" style="margin-bottom:0">class Car {
+        <pre class="code-block" style="margin-bottom:0"><code class="language-java">class Car {
   Engine engine; // HAS-A
-}</div>
+}</code></pre>
         <div style="margin-top:8px;font-size:12px;color:var(--color-text-tertiary)">When: one object uses/contains another. "Is made of" or "uses" relationship.</div>
       </div>
     </div>
@@ -374,9 +402,9 @@ class Car extends Vehicle {}</div>
           Library closes → books still exist<br>
           Books can belong to another library
         </div>
-        <div class="code-block" style="margin-bottom:8px">class Library {
+        <pre class="code-block" style="margin-bottom:8px"><code class="language-java">class Library {
   List&lt;Book&gt; books; // Books exist independently
-}</div>
+}</code></pre>
         <div style="font-size:12px;color:#0F6E56">Loose relation. Objects have independent lifecycles.</div>
       </div>
       <div class="rel-card">
@@ -387,10 +415,10 @@ class Car extends Vehicle {}</div>
           House demolished → rooms gone too<br>
           Rooms can't exist without the house
         </div>
-        <div class="code-block" style="margin-bottom:8px">class House {
+        <pre class="code-block" style="margin-bottom:8px"><code class="language-java">class House {
   Room room = new Room(); // Created inside House
   // Room dies when House dies
-}</div>
+}</code></pre>
         <div style="font-size:12px;color:#A32D2D">Tight relation. Child's lifecycle is fully controlled by parent.</div>
       </div>
     </div>

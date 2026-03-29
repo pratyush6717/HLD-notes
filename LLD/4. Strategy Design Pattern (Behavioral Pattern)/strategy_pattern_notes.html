@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -316,7 +344,7 @@
 
   <!-- CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// Step 1 — Strategy interface
+    <pre class="code-block code-good"><code class="language-java">// Step 1 — Strategy interface
 interface DriveStrategy {
   void drive();
 }
@@ -327,9 +355,9 @@ class NormalDriveStrategy implements DriveStrategy {
 }
 class SportsDriveStrategy implements DriveStrategy {
   public void drive() { System.out.println("Sports drive"); }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Step 3 — Context (Vehicle) holds strategy
+    <pre class="code-block code-good"><code class="language-java">// Step 3 — Context (Vehicle) holds strategy
 class Vehicle {
   DriveStrategy driveStrategy;
   
@@ -352,15 +380,15 @@ class GoodsVehicle extends Vehicle {
   GoodsVehicle() {
     super(new NormalDriveStrategy()); // ← different strategy
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Step 5 — Usage (and runtime swap!)
+    <pre class="code-block code-good"><code class="language-java">// Step 5 — Usage (and runtime swap!)
 SportsVehicle sv = new SportsVehicle();
 sv.drive(); // → "Sports drive"
 
 // Runtime swap — change strategy after creation
 sv.driveStrategy = new NormalDriveStrategy();
-sv.drive(); // → "Normal drive" — same object, new behaviour</div>
+sv.drive(); // → "Normal drive" — same object, new behaviour</code></pre>
 
     <div class="highlight"><strong>Runtime swap = the magic.</strong> No new subclass. No class modification. Just inject a different strategy object and behaviour changes instantly.</div>
   </div>

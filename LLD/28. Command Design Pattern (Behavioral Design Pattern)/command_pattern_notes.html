@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -329,7 +357,7 @@
         </div>
       </div>
       <div>
-        <div class="code-block code-good">// In Invoker
+        <pre class="code-block code-good"><code class="language-java">// In Invoker
 Stack&lt;Command&gt; history = new Stack&lt;&gt;();
 Stack&lt;Command&gt; redoStack = new Stack&lt;&gt;();
 
@@ -353,7 +381,7 @@ void redo() {
     cmd.execute();
     history.push(cmd);
   }
-}</div>
+}</code></pre>
       </div>
     </div>
 
@@ -362,7 +390,7 @@ void redo() {
 
   <!-- FULL CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// 1. Receiver
+    <pre class="code-block code-good"><code class="language-java">// 1. Receiver
 class AirConditioner {
   public void turnOn()  { System.out.println("AC ON");  }
   public void turnOff() { System.out.println("AC OFF"); }
@@ -386,9 +414,9 @@ class TurnOffACCommand implements Command {
   TurnOffACCommand(AirConditioner ac) { this.ac = ac; }
   public void execute() { ac.turnOff(); }
   public void undo()    { ac.turnOn();  }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// 4. Invoker
+    <pre class="code-block code-good"><code class="language-java">// 4. Invoker
 class RemoteControl {
   Command command;
   Stack&lt;Command&gt; history = new Stack&lt;&gt;();
@@ -418,7 +446,7 @@ remote.setCommand(new TurnOffACCommand(ac));
 remote.pressButton(); // AC OFF
 
 remote.pressUndo(); // AC ON  (undo TurnOff)
-remote.pressUndo(); // AC OFF (undo TurnOn)</div>
+remote.pressUndo(); // AC OFF (undo TurnOn)</code></pre>
   </div>
 
   <!-- INTERVIEW GUIDE -->

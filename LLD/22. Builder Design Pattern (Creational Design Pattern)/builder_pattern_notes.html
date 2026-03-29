@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -212,16 +240,16 @@
 
     <div class="grid">
       <div>
-        <div class="code-block code-bad" style="margin-bottom:8px">// BAD — messy constructor
+        <pre class="code-block code-bad" style="margin-bottom:8px"><code class="language-java">// BAD — messy constructor
 new Student(1, "PK", 25, "Dad name",
   "Mom name", null, null, "address", ...);
-// Which param is what? No idea.</div>
-        <div class="code-block code-good">// GOOD — Builder Pattern
+// Which param is what? No idea.</code></pre>
+        <pre class="code-block code-good"><code class="language-java">// GOOD — Builder Pattern
 Student s = new Student.Builder(1)
     .setName("PK")
     .setAge(25)
     .build();
-// Readable. Only set what you need.</div>
+// Readable. Only set what you need.</code></pre>
       </div>
       <div>
         <div class="pain" style="margin-bottom:10px">
@@ -248,16 +276,16 @@ Student s = new Student.Builder(1)
     <div class="highlight"><strong>Method chaining aha:</strong> Each setter returns <code style="font-family:var(--font-mono);font-size:11px">this</code> (the Builder) — that's what enables fluent chaining. build() at the end assembles and returns the final object.</div>
 
     <div class="section-title">Real Java example — StringBuilder IS Builder</div>
-    <div class="code-block code-good">new StringBuilder()
+    <pre class="code-block code-good"><code class="language-java">new StringBuilder()
     .append("Hello")   // step
     .append(" PK")     // step
     .append("!")        // step
-    .toString();        // build() — returns final string</div>
+    .toString();        // build() — returns final string</code></pre>
   </div>
 
   <!-- CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// Product — private constructor
+    <pre class="code-block code-good"><code class="language-java">// Product — private constructor
 class Student {
   int roll;      // mandatory
   String name;   // optional
@@ -302,9 +330,9 @@ class Student {
       return new Student(this); // assemble
     }
   }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Client — clean, readable, flexible
+    <pre class="code-block code-good"><code class="language-java">// Client — clean, readable, flexible
 Student s1 = new Student.Builder(1)
     .setName("PK")
     .setAge(25)
@@ -314,7 +342,7 @@ Student s1 = new Student.Builder(1)
 Student s2 = new Student.Builder(2)
     .setName("Rahul")
     .setFather("Mr. Sharma")
-    .build(); // age not set — fine!</div>
+    .build(); // age not set — fine!</code></pre>
 
     <div class="highlight"><strong>Key design decision:</strong> Mandatory fields go in Builder's constructor (can't skip). Optional fields are setters (skip freely). build() creates a valid object regardless of which optionals were set.</div>
   </div>
@@ -327,25 +355,25 @@ Student s2 = new Student.Builder(2)
       <div class="box" style="border-color:#185FA5">
         <div class="box-label" style="color:#185FA5">Builder — Construction</div>
         <div class="box-sub" style="margin-bottom:10px">Creates a new object step by step. Once built, object is fixed. Used at object creation time.</div>
-        <div class="code-block code-good" style="margin-bottom:6px">// Static structure — set at build time
+        <pre class="code-block code-good" style="margin-bottom:6px"><code class="language-java">// Static structure — set at build time
 Pizza p = new Pizza.Builder()
     .size("large")
     .cheese(true)
     .mushroom(true)
     .build();
-// Pizza is now immutable</div>
+// Pizza is now immutable</code></pre>
         <div style="font-size:12px;color:#A32D2D">Problem: PizzaWithCheese + PizzaWithMushroom + PizzaWithCheeseAndMushroom = class explosion</div>
       </div>
       <div class="box" style="border-color:#0F6E56">
         <div class="box-label" style="color:#0F6E56">Decorator — Enhancement</div>
         <div class="box-sub" style="margin-bottom:10px">Adds features to an existing object dynamically at runtime. Object keeps its interface. Infinite combinations.</div>
-        <div class="code-block code-good" style="margin-bottom:6px">// Dynamic stacking — flexible
+        <pre class="code-block code-good" style="margin-bottom:6px"><code class="language-java">// Dynamic stacking — flexible
 Pizza p = new Mushroom(
     new Cheese(
         new BasePizza()
     )
 );
-p.getCost(); // 200+20+40 = 260</div>
+p.getCost(); // 200+20+40 = 260</code></pre>
         <div style="font-size:12px;color:#0F6E56">Add any combination without new classes</div>
       </div>
     </div>
@@ -374,15 +402,15 @@ p.getCost(); // 200+20+40 = 260</div>
       <div class="box">
         <div class="box-label" style="color:#185FA5">Factory — One-shot creation</div>
         <div class="box-sub" style="margin-bottom:8px">Hides which class is created. Simple objects. Client passes type, gets object.</div>
-        <div class="code-block code-good" style="margin-bottom:0">Shape s = ShapeFactory.getShape("CIRCLE");
-// Done in one call. No steps.</div>
+        <pre class="code-block code-good" style="margin-bottom:0"><code class="language-plaintext">Shape s = ShapeFactory.getShape("CIRCLE");
+// Done in one call. No steps.</code></pre>
       </div>
       <div class="box">
         <div class="box-label" style="color:#0F6E56">Builder — Step-by-step creation</div>
         <div class="box-sub" style="margin-bottom:8px">Handles complex objects with many optional fields. Client controls every step.</div>
-        <div class="code-block code-good" style="margin-bottom:0">Student s = new Student.Builder(1)
+        <pre class="code-block code-good" style="margin-bottom:0"><code class="language-java">Student s = new Student.Builder(1)
     .setName("PK").setAge(25).build();
-// Multiple steps, full control.</div>
+// Multiple steps, full control.</code></pre>
       </div>
     </div>
 

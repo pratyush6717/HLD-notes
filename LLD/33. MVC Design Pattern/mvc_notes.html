@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -256,30 +284,30 @@
     <div class="layer-card" style="background:#E6F1FB;border:1px solid #B5D4F4">
       <div style="font-size:13px;font-weight:500;color:#0C447C;margin-bottom:8px">Model = Data Layer — "WHAT data is"</div>
       <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:8px">Entities / POJOs, DB logic, Repository / DAO. No business logic here.</div>
-      <div class="code-block" style="background:var(--color-background-primary);margin-bottom:0">class ParkingSpot {
+      <pre class="code-block" style="background:var(--color-background-primary);margin-bottom:0"><code class="language-java">class ParkingSpot {
   int id;
   boolean occupied;
 }
-class Car { String number; }</div>
+class Car { String number; }</code></pre>
     </div>
 
     <div class="layer-card" style="background:#FAEEDA;border:1px solid #DEBB8E">
       <div style="font-size:13px;font-weight:500;color:#633806;margin-bottom:8px">Controller = Brain — "WHAT to do"</div>
       <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:8px">Business logic, validation, flow control. Receives request, processes, calls Model, returns to View.</div>
-      <div class="code-block" style="background:var(--color-background-primary);margin-bottom:0">void parkCar(Car car) {
+      <pre class="code-block" style="background:var(--color-background-primary);margin-bottom:0"><code class="language-java">void parkCar(Car car) {
   validate(car);        // validation
   ParkingSpot s = assignSpot(car);  // logic
   spotRepo.save(s);     // calls Model
   return spotResponse(s); // sends to View
-}</div>
+}</code></pre>
     </div>
 
     <div class="layer-card" style="background:#EEEDFE;border:1px solid #AFA9EC">
       <div style="font-size:13px;font-weight:500;color:#3C3489;margin-bottom:8px">View = UI Layer — "HOW it is shown"</div>
       <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:8px">Frontend HTML/React OR JSON API response in backend. No logic — just display.</div>
-      <div class="code-block" style="background:var(--color-background-primary);margin-bottom:0">{ "spotId": 10, "status": "occupied" }
+      <pre class="code-block" style="background:var(--color-background-primary);margin-bottom:0"><code class="language-json">{ "spotId": 10, "status": "occupied" }
 // In backend = JSON response
-// In frontend = React component</div>
+// In frontend = React component</code></pre>
     </div>
   </div>
 
@@ -340,7 +368,7 @@ class Car { String number; }</div>
       <tr><td>View</td><td>JSON response body</td><td>Auto-serialised by Jackson</td></tr>
     </table>
 
-    <div class="code-block code-good">// Spring MVC in action
+    <pre class="code-block code-good"><code class="language-java">// Spring MVC in action
 @RestController
 class UserController {                          // Controller layer
   @Autowired UserService userService;
@@ -358,7 +386,7 @@ class UserService {                             // Business logic (Controller in
 }
 
 @Entity class User { ... }                      // Model (data)
-@Repository interface UserRepository { ... }    // Model (DB)</div>
+@Repository interface UserRepository { ... }    // Model (DB)</code></pre>
 
     <div class="highlight"><strong>MVC vs Layered (Spring nuance):</strong> Spring's Controller → Service → Repository is <em>layered architecture</em> that fits inside MVC. Service layer = more granular Controller. Repository = Model's DB access layer. Both work together.</div>
   </div>

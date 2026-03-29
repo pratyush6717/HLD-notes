@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -263,11 +291,11 @@
 
     <div style="padding:16px;border-radius:10px;border:2px solid #A32D2D;background:var(--color-background-secondary);margin-bottom:16px">
       <div style="font-size:14px;font-weight:500;color:#A32D2D;margin-bottom:8px">❌ Wrong implementation</div>
-      <div class="code-block code-bad" style="margin-bottom:8px">// Multiple pool managers — uncontrolled resources
+      <pre class="code-block code-bad" style="margin-bottom:8px"><code class="language-java">// Multiple pool managers — uncontrolled resources
 Pool pool1 = new Pool(); // 3 connections
 Pool pool2 = new Pool(); // 3 more connections
 Pool pool3 = new Pool(); // 3 more connections
-// Total: 9 connections — no control</div>
+// Total: 9 connections — no control</code></pre>
       <div style="font-size:12px;color:#A32D2D">Also wrong: no thread safety → two threads get same connection → data corruption</div>
     </div>
 
@@ -275,7 +303,7 @@ Pool pool3 = new Pool(); // 3 more connections
       <div style="padding:16px;border-radius:10px;border:2px solid #1D9E75;background:var(--color-background-secondary)">
         <div style="font-size:14px;font-weight:500;color:#0F6E56;margin-bottom:8px">✔ Must-have 1 — Singleton Pool Manager</div>
         <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:8px">Only ONE pool exists globally. Prevents uncontrolled resource multiplication.</div>
-        <div class="code-block code-good" style="margin-bottom:0">class ConnectionPool {
+        <pre class="code-block code-good" style="margin-bottom:0"><code class="language-java">class ConnectionPool {
   private static ConnectionPool instance; // singleton
   private Queue&lt;Connection&gt; freePool = new LinkedList&lt;&gt;();
 
@@ -289,13 +317,13 @@ Pool pool3 = new Pool(); // 3 more connections
     if (instance == null) instance = new ConnectionPool(5);
     return instance;
   }
-}</div>
+}</code></pre>
       </div>
 
       <div style="padding:16px;border-radius:10px;border:2px solid #185FA5;background:var(--color-background-secondary)">
         <div style="font-size:14px;font-weight:500;color:#185FA5;margin-bottom:8px">✔ Must-have 2 — Thread Safety</div>
         <div style="font-size:13px;color:var(--color-text-secondary);line-height:1.8;margin-bottom:8px">Without it: Thread A and Thread B both see the same connection as "free" → both borrow it → data corruption.</div>
-        <div class="code-block code-good" style="margin-bottom:0">public synchronized Connection getConnection() {
+        <pre class="code-block code-good" style="margin-bottom:0"><code class="language-java">public synchronized Connection getConnection() {
   if (freePool.isEmpty()) return null; // or block
   Connection c = freePool.poll();
   inUse.add(c);
@@ -305,14 +333,14 @@ Pool pool3 = new Pool(); // 3 more connections
 public synchronized void releaseConnection(Connection c) {
   inUse.remove(c);
   freePool.add(c);
-}</div>
+}</code></pre>
       </div>
     </div>
   </div>
 
   <!-- CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// Full Object Pool — Singleton + Thread-safe
+    <pre class="code-block code-good"><code class="language-java">// Full Object Pool — Singleton + Thread-safe
 class ConnectionPool {
   private static ConnectionPool instance;
   private Queue&lt;Connection&gt; freePool = new LinkedList&lt;&gt;();
@@ -355,7 +383,7 @@ class ConnectionPool {
 ConnectionPool pool = ConnectionPool.getInstance(5);
 Connection conn = pool.getConnection();
 // use conn...
-pool.releaseConnection(conn); // MUST return — or leak</div>
+pool.releaseConnection(conn); // MUST return — or leak</code></pre>
   </div>
 
   <!-- ADVANCED -->

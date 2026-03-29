@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -264,16 +292,16 @@
     <div class="section-title">Order system — the real power</div>
     <div class="grid" style="margin-bottom:16px">
       <div>
-        <div class="code-block code-bad" style="margin-bottom:8px">// BAD — client knows everything
+        <pre class="code-block code-bad" style="margin-bottom:8px"><code class="language-plaintext">// BAD — client knows everything
 productService.getProduct(id);
 paymentService.pay(amount);
 invoiceService.generate(order);
 notificationService.send(email);
-// Client coupled to 4 services + their sequence</div>
+// Client coupled to 4 services + their sequence</code></pre>
         <div style="font-size:12px;color:#A32D2D;margin-top:4px">Payment service changes? Client updates. Invoice logic changes? Client updates. Any service changes → client breaks.</div>
       </div>
       <div>
-        <div class="code-block code-good">// GOOD — Facade hides complexity + flow
+        <pre class="code-block code-good"><code class="language-java">// GOOD — Facade hides complexity + flow
 class OrderFacade {
   void createOrder(int id, double amount) {
     productService.getProduct(id);   // step 1
@@ -284,13 +312,13 @@ class OrderFacade {
 }
 
 // Client
-orderFacade.createOrder(1, 999.0); // that's it</div>
+orderFacade.createOrder(1, 999.0); // that's it</code></pre>
         <div style="font-size:12px;color:#0F6E56;margin-top:4px">Facade hides BOTH: complexity and sequence. Client is decoupled from all 4 services.</div>
       </div>
     </div>
 
     <div class="section-title">DAO facade example</div>
-    <div class="code-block code-good">// Without facade — client calls 5 DAO methods directly
+    <pre class="code-block code-good"><code class="language-java">// Without facade — client calls 5 DAO methods directly
 dao.insert(); dao.updateName(); dao.updateAddress();
 dao.getById(); dao.getByEmail();
 
@@ -307,7 +335,7 @@ class EmployeeFacade {
 
 // Client
 facade.createEmployee(emp);    // ✔ clean
-facade.getEmployee(101);       // ✔ clean</div>
+facade.getEmployee(101);       // ✔ clean</code></pre>
 
     <div class="highlight"><strong>Facade hides two things:</strong> (1) How many services/classes are involved. (2) In what sequence they must be called. Client just calls one method.</div>
   </div>

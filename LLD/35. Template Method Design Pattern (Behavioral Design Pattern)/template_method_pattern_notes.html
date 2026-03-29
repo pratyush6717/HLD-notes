@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -243,7 +271,7 @@
 
   <!-- CODE -->
   <div class="sub-panel" id="sub-code">
-    <div class="code-block code-good">// Abstract class — owns the template
+    <pre class="code-block code-good"><code class="language-java">// Abstract class — owns the template
 abstract class PaymentFlow {
 
   // TEMPLATE METHOD — final, child can NEVER override
@@ -260,9 +288,9 @@ abstract class PaymentFlow {
   abstract void debit();
   abstract void calculateFees();
   abstract void credit();
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Concrete class 1 — Pay to Friend
+    <pre class="code-block code-good"><code class="language-java">// Concrete class 1 — Pay to Friend
 class PayToFriend extends PaymentFlow {
   void validate()       { System.out.println("Basic validation"); }
   void debit()          { System.out.println("Debit full amount"); }
@@ -276,9 +304,9 @@ class PayToMerchant extends PaymentFlow {
   void debit()          { System.out.println("Debit amount"); }
   void calculateFees()  { System.out.println("Apply 2% fee"); }
   void credit()         { System.out.println("Credit after fee deduction"); }
-}</div>
+}</code></pre>
 
-    <div class="code-block code-good">// Client — same interface, different behaviour
+    <pre class="code-block code-good"><code class="language-java">// Client — same interface, different behaviour
 PaymentFlow p1 = new PayToFriend();
 p1.sendMoney();
 // Basic validation → Debit full amount → No fees → Credit full amount
@@ -287,7 +315,7 @@ PaymentFlow p2 = new PayToMerchant();
 p2.sendMoney();
 // Strict KYC → Debit amount → 2% fee → Credit after deduction
 
-// Both follow: validate → debit → fees → credit. Always.</div>
+// Both follow: validate → debit → fees → credit. Always.</code></pre>
   </div>
 
   <!-- KEY DESIGN POINTS -->
@@ -336,22 +364,22 @@ p2.sendMoney();
       <div class="box" style="border-color:#185FA5">
         <div class="box-label" style="color:#185FA5">Template Method — Inheritance</div>
         <div class="box-sub" style="margin-bottom:8px">Parent defines the flow. Subclasses fill in steps. Flow is fixed. Decided at compile time.</div>
-        <div class="code-block" style="border-left:3px solid #185FA5;margin-bottom:6px">abstract class PaymentFlow {
+        <pre class="code-block" style="border-left:3px solid #185FA5;margin-bottom:6px"><code class="language-java">abstract class PaymentFlow {
   final void sendMoney() {
     validate(); debit(); credit();
   }
   abstract void validate(); // child fills in
-}</div>
+}</code></pre>
         <div style="font-size:12px;color:var(--color-text-tertiary)">Inheritance-based. Parent controls flow.</div>
       </div>
       <div class="box" style="border-color:#0F6E56">
         <div class="box-label" style="color:#0F6E56">Strategy — Composition</div>
         <div class="box-sub" style="margin-bottom:8px">Client injects algorithm object. Algorithm is interchangeable. Flow NOT enforced.</div>
-        <div class="code-block" style="border-left:3px solid #1D9E75;margin-bottom:6px">class Context {
+        <pre class="code-block" style="border-left:3px solid #1D9E75;margin-bottom:6px"><code class="language-java">class Context {
   Strategy strategy; // injected
   void execute() { strategy.run(); }
   // Client can change strategy anytime
-}</div>
+}</code></pre>
         <div style="font-size:12px;color:var(--color-text-tertiary)">Composition-based. Client controls algorithm.</div>
       </div>
     </div>
@@ -382,19 +410,19 @@ p2.sendMoney();
     </div>
 
     <div class="section-title">Common mistake</div>
-    <div class="code-block code-bad" style="margin-bottom:12px">// WRONG — child overrides the whole method
+    <pre class="code-block code-bad" style="margin-bottom:12px"><code class="language-java">// WRONG — child overrides the whole method
 class PayToFriend extends PaymentFlow {
   @Override
   void sendMoney() { // ❌ defeats the pattern
     credit(); // skips validate + debit!
   }
-}</div>
-    <div class="code-block code-good" style="margin-bottom:16px">// CORRECT — template method is final, child overrides only steps
+}</code></pre>
+    <pre class="code-block code-good" style="margin-bottom:16px"><code class="language-java">// CORRECT — template method is final, child overrides only steps
 class PayToFriend extends PaymentFlow {
   void validate() { ... }  // ✔ only steps
   void debit()    { ... }  // ✔
   // sendMoney() is final — can't override
-}</div>
+}</code></pre>
 
     <table class="compare-table">
       <tr><th>Concept</th><th>One-liner</th></tr>

@@ -137,6 +137,34 @@
             }
         }
     </style>
+    <!-- highlight.js syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("pre.code-block code").forEach(function (el) {
+          hljs.highlightElement(el);
+        });
+      });
+    </script>
+    <style>
+      :root { --font-mono: 'Fira Code', Consolas, 'Courier New', monospace; }
+      pre.code-block {
+        white-space: pre;
+        overflow-x: auto;
+        margin: 0;
+      }
+      pre.code-block code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+        border: none !important;
+        border-radius: 0 !important;
+        line-height: inherit !important;
+      }
+      /* Let hljs colours show but keep our background */
+      pre.code-block .hljs { background: transparent !important; padding: 0 !important; }
+    </style>
 </head>
 <body>
 <div class="container" style="padding: 0 !important; max-width: 900px; margin: 0 auto; text-align: left;">
@@ -307,20 +335,20 @@
     <div class="grid" style="margin-bottom:16px">
       <div class="box">
         <div class="box-label" style="color:#A32D2D">The deadlock scenario</div>
-        <div class="code-block">T1: lock(A) → wants lock(B)
+        <pre class="code-block"><code class="language-plaintext">T1: lock(A) → wants lock(B)
 T2: lock(B) → wants lock(A)
 
 T1 waiting for T2
 T2 waiting for T1
-→ forever blocked</div>
+→ forever blocked</code></pre>
         <div style="font-size:12px;color:var(--color-text-tertiary)">Neither can proceed — system stuck.</div>
       </div>
       <div class="box">
         <div class="box-label" style="color:#185FA5">Detection — wait-for graph</div>
         <div class="box-sub" style="margin-bottom:8px">DB builds a directed graph of who is waiting for whom.</div>
-        <div class="code-block">T1 → T2
+        <pre class="code-block"><code class="language-plaintext">T1 → T2
 T2 → T3
-T3 → T1  ← cycle detected!</div>
+T3 → T1  ← cycle detected!</code></pre>
         <div style="font-size:12px;color:var(--color-text-tertiary)">Cycle in graph = deadlock. DB aborts one transaction (the victim) and retries it.</div>
       </div>
     </div>
@@ -330,7 +358,7 @@ T3 → T1  ← cycle detected!</div>
     <div class="grid">
       <div class="box">
         <div class="box-label" style="color:#A32D2D">The cascading abort scenario</div>
-        <div class="code-block">T1: lock(A) → update A = 11
+        <pre class="code-block"><code class="language-sql">T1: lock(A) → update A = 11
 T1: unlock(A)           ← releases early
 
 T2: lock(A) → reads A = 11
@@ -339,16 +367,16 @@ T1: ROLLBACK (A back to 10)
 
 T2 has read A = 11
 which no longer exists
-→ T2 must also abort</div>
+→ T2 must also abort</code></pre>
       </div>
       <div class="box">
         <div class="box-label" style="color:#0F6E56">Why Strict 2PL fixes this</div>
         <div class="box-sub" style="margin-bottom:8px">In Strict 2PL, T1 holds all locks until commit. T2 cannot read A until T1 commits.</div>
-        <div class="code-block">T1: lock(A) → update A = 11
+        <pre class="code-block"><code class="language-sql">T1: lock(A) → update A = 11
 T1: commit → unlock(A)  ← only now
 
 T2: lock(A) → reads A = 11 ✔
-(committed value — safe)</div>
+(committed value — safe)</code></pre>
         <div style="font-size:12px;color:var(--color-text-tertiary)">No dirty reads possible → no cascading abort.</div>
       </div>
     </div>
@@ -362,38 +390,38 @@ T2: lock(A) → reads A = 11 ✔
       <div class="box">
         <div class="box-label" style="color:#185FA5">Basic 2PL</div>
         <div class="box-sub" style="margin-bottom:10px">Growing then shrinking. Locks can be released before commit.</div>
-        <div class="code-block" style="font-size:11px">lock(A)
+        <pre class="code-block" style="font-size:11px"><code class="language-sql">lock(A)
 lock(B)
 update A
 update B
 unlock(A) ← before commit
 unlock(B)
-commit</div>
+commit</code></pre>
         <div style="font-size:12px;color:#A32D2D">✗ Deadlock possible<br>✗ Cascading abort possible</div>
       </div>
       <div class="box">
         <div class="box-label" style="color:#854F0B">Conservative 2PL</div>
         <div class="box-sub" style="margin-bottom:10px">Acquire ALL locks before transaction starts. If any unavailable — wait, don't start.</div>
-        <div class="code-block" style="font-size:11px">lock(A, B, C)  ← all upfront
+        <pre class="code-block" style="font-size:11px"><code class="language-sql">lock(A, B, C)  ← all upfront
 update A
 update B
 unlock(A)
 unlock(B)
 unlock(C)
-commit</div>
+commit</code></pre>
         <div style="font-size:12px;color:#0F6E56">✔ No deadlock possible</div>
         <div style="font-size:12px;color:#A32D2D">✗ Low concurrency — holds locks longer<br>✗ Must know all resources upfront</div>
       </div>
       <div class="box">
         <div class="box-label" style="color:#0F6E56">Strict 2PL (most used)</div>
         <div class="box-sub" style="margin-bottom:10px">Hold ALL locks until commit. Release only after transaction completes.</div>
-        <div class="code-block" style="font-size:11px">lock(A)
+        <pre class="code-block" style="font-size:11px"><code class="language-sql">lock(A)
 lock(B)
 update A
 update B
 commit
 unlock(A) ← only after commit
-unlock(B)</div>
+unlock(B)</code></pre>
         <div style="font-size:12px;color:#0F6E56">✔ No cascading abort<br>✔ Strong consistency</div>
         <div style="font-size:12px;color:#A32D2D">✗ Deadlock still possible (DB detects it)</div>
       </div>
