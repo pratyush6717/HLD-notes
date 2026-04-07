@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Coding Intuition Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f11;
+  --bg2:#16161a;
+  --bg3:#1e1e24;
+  --bg4:#26262e;
+  --border:#2e2e38;
+  --text:#e8e8f0;
+  --text2:#9898b0;
+  --text3:#5a5a72;
+  --accent:#7c6af7;
+  --accent2:#a78bfa;
+  --green:#4ade80;
+  --red:#f87171;
+  --amber:#fbbf24;
+  --teal:#2dd4bf;
+  --pink:#f472b6;
+  --blue:#60a5fa;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Syne',sans-serif;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6}
+
+/* Layout */
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:24px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.main{padding:40px 48px;max-width:900px}
+
+/* Sidebar */
+.sidebar-title{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);padding:0 20px 12px}
+.sidebar-section{margin-bottom:24px}
+.sidebar-cat{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);padding:8px 20px 4px}
+.sidebar-link{display:block;padding:7px 20px;font-size:13px;color:var(--text2);cursor:pointer;border-left:2px solid transparent;transition:all 0.15s;font-family:var(--sans)}
+.sidebar-link:hover{color:var(--text);background:var(--bg3);border-left-color:var(--border)}
+.sidebar-link.active{color:var(--accent2);background:rgba(124,106,247,0.08);border-left-color:var(--accent)}
+
+/* Header */
+.page-header{margin-bottom:48px}
+.page-tag{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.page-title{font-size:36px;font-weight:800;line-height:1.15;color:var(--text);margin-bottom:12px}
+.page-sub{font-size:15px;color:var(--text2);max-width:560px}
+
+/* Section */
+.section{margin-bottom:64px;scroll-margin-top:32px}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;font-family:var(--mono);flex-shrink:0}
+.section-title{font-size:20px;font-weight:700;color:var(--text)}
+.section-count{font-size:11px;font-weight:600;color:var(--text3);margin-left:auto;font-family:var(--mono)}
+
+/* Pattern card */
+.pattern-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:16px;overflow:hidden;transition:border-color 0.2s}
+.pattern-card:hover{border-color:var(--bg4)}
+.card-header{padding:16px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;user-select:none}
+.card-header:hover .card-expand{opacity:1}
+.card-smell{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px}
+.card-signal{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.card-action{font-size:13px;color:var(--text2);line-height:1.5}
+.card-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.tag{font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;font-family:var(--mono)}
+.tag-solid{background:rgba(96,165,250,0.12);color:var(--blue)}
+.tag-iface{background:rgba(167,139,250,0.12);color:var(--accent2)}
+.tag-compose{background:rgba(45,212,191,0.12);color:var(--teal)}
+.tag-pattern{background:rgba(251,191,36,0.12);color:var(--amber)}
+.tag-data{background:rgba(244,114,182,0.12);color:var(--pink)}
+.tag-test{background:rgba(74,222,128,0.12);color:var(--green)}
+.card-expand{font-size:11px;color:var(--text3);margin-left:auto;flex-shrink:0;opacity:0.5;transition:opacity 0.15s;padding-top:2px;font-family:var(--mono)}
+.card-body{display:none;border-top:1px solid var(--border)}
+.card-body.open{display:block}
+
+/* Code tabs */
+.code-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg3)}
+.code-tab{font-size:11px;font-weight:600;padding:10px 16px;cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;transition:all 0.15s;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.06em}
+.code-tab.active{color:var(--text);border-bottom-color:var(--accent)}
+.code-tab:hover:not(.active){color:var(--text2)}
+.code-panel{display:none;padding:20px}
+.code-panel.active{display:block}
+.code-badge{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:12px;font-family:var(--mono)}
+.badge-bad{background:rgba(248,113,113,0.12);color:var(--red)}
+.badge-good{background:rgba(74,222,128,0.12);color:var(--green)}
+.code-note{font-size:13px;color:var(--text2);margin-top:12px;padding:10px 14px;background:var(--bg4);border-radius:6px;border-left:2px solid var(--accent);line-height:1.5}
+pre{font-family:var(--mono);font-size:12px;line-height:1.7;background:var(--bg);padding:16px;border-radius:8px;overflow-x:auto;border:1px solid var(--border)}
+.kw{color:var(--blue)}
+.cl{color:var(--accent2)}
+.fn{color:var(--amber)}
+.str{color:var(--green)}
+.cm{color:var(--text3)}
+.bad-line{background:rgba(248,113,113,0.08);display:block;margin:0 -16px;padding:0 16px}
+.good-line{background:rgba(74,222,128,0.06);display:block;margin:0 -16px;padding:0 16px}
+
+/* Search */
+.search-wrap{padding:0 20px 16px}
+.search-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--text);font-family:var(--sans);outline:none;transition:border-color 0.15s}
+.search-input::placeholder{color:var(--text3)}
+.search-input:focus{border-color:var(--accent)}
+
+/* Stats bar */
+.stats-bar{display:flex;gap:24px;margin-bottom:40px;padding:16px 20px;background:var(--bg2);border-radius:10px;border:1px solid var(--border)}
+.stat{text-align:center}
+.stat-num{font-size:22px;font-weight:800;font-family:var(--mono)}
+.stat-label{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-top:2px}
+
+/* Responsive */
+@media(max-width:768px){
+  .app{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .main{padding:24px 20px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<nav class="sidebar">
+  <div class="sidebar-title">Coding Intuition</div>
+  <div class="search-wrap">
+    <input class="search-input" placeholder="Search patterns..." oninput="searchCards(this.value)" id="search"/>
+  </div>
+  <div id="sidebar-links"></div>
+</nav>
+<main class="main" id="main">
+  <div class="page-header">
+    <div class="page-tag">Reference Guide</div>
+    <h1 class="page-title">Coding Intuition<br/>Cheatsheet</h1>
+    <p class="page-sub">Spot the smell. Know the fix. Write better code every time.</p>
+  </div>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num" style="color:var(--blue)">5</div><div class="stat-label">SOLID</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--accent2)">4</div><div class="stat-label">Interfaces</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--teal)">4</div><div class="stat-label">Composition</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--amber)">6</div><div class="stat-label">Patterns</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--pink)">5</div><div class="stat-label">Data Structures</div></div>
+    <div class="stat"><div class="stat-num" style="color:var(--green)">3</div><div class="stat-label">Testing</div></div>
+  </div>
+  <div id="content"></div>
+</main>
+</div>
+
+<script>
+const sections = [
+  {
+    id:'solid', label:'SOLID Principles', icon:'S', iconColor:'rgba(96,165,250,0.2)', iconTextColor:'var(--blue)', tagCls:'tag-solid',
+    cards:[
+      {
+        signal:'Class does 2+ unrelated things',
+        action:'Split into separate classes. One class = one job only.',
+        principle:'Single Responsibility Principle',
+        tags:['solid'],
+        bad:{label:'Problem',code:`<span class="cm">// One class doing 2 jobs — user data AND email</span>
+<span class="kw">class</span> <span class="cl">User</span> {
+<span class="bad-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">saveToDatabase</span>() { ... }</span>
+<span class="bad-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">sendWelcomeEmail</span>() { ... }</span>
+  <span class="cm">// ^^ unrelated! DB logic + email logic in same class</span>
+}`,note:'If you change email template, you touch User class. That\'s wrong — they\'re unrelated concerns.'},
+        good:{label:'Fixed',code:`<span class="cm">// Each class has one job</span>
+<span class="kw">class</span> <span class="cl">User</span> {
+<span class="good-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">saveToDatabase</span>() { ... }</span>
+}
+
+<span class="kw">class</span> <span class="cl">EmailService</span> {
+<span class="good-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">sendWelcomeEmail</span>(<span class="cl">User</span> user) { ... }</span>
+}
+
+<span class="cm">// Usage</span>
+<span class="cl">User</span> u = <span class="kw">new</span> <span class="cl">User</span>();
+u.<span class="fn">saveToDatabase</span>();
+<span class="kw">new</span> <span class="cl">EmailService</span>().<span class="fn">sendWelcomeEmail</span>(u);`,note:'Change email logic? Touch only EmailService. Change DB logic? Touch only User. Completely isolated.'}
+      },
+      {
+        signal:'Adding feature breaks old working code',
+        action:'Add new class/method. Don\'t edit old code. Old code stays frozen.',
+        principle:'Open/Closed Principle',
+        tags:['solid'],
+        bad:{label:'Problem',code:`<span class="kw">class</span> <span class="cl">DiscountCalculator</span> {
+  <span class="kw">public</span> <span class="kw">double</span> <span class="fn">calculate</span>(<span class="cl">String</span> type, <span class="kw">double</span> price) {
+<span class="bad-line">    <span class="kw">if</span> (type.equals(<span class="str">"student"</span>)) <span class="kw">return</span> price * 0.8;</span>
+<span class="bad-line">    <span class="kw">if</span> (type.equals(<span class="str">"senior"</span>))  <span class="kw">return</span> price * 0.7;</span>
+    <span class="cm">// Add "vip"? Must edit this class. Risky!</span>
+    <span class="kw">return</span> price;
+  }
+}`,note:'Every new discount type means editing this class. You can accidentally break "student" while adding "vip".'},
+        good:{label:'Fixed',code:`<span class="kw">interface</span> <span class="cl">Discount</span> {
+  <span class="kw">double</span> <span class="fn">apply</span>(<span class="kw">double</span> price);
+}
+
+<span class="kw">class</span> <span class="cl">StudentDiscount</span> <span class="kw">implements</span> <span class="cl">Discount</span> {
+  <span class="kw">public</span> <span class="kw">double</span> <span class="fn">apply</span>(<span class="kw">double</span> price) { <span class="kw">return</span> price * 0.8; }
+}
+<span class="kw">class</span> <span class="cl">SeniorDiscount</span> <span class="kw">implements</span> <span class="cl">Discount</span> {
+  <span class="kw">public</span> <span class="kw">double</span> <span class="fn">apply</span>(<span class="kw">double</span> price) { <span class="kw">return</span> price * 0.7; }
+}
+<span class="cm">// Add VIP? Just add new class — don't touch old ones!</span>
+<span class="kw">class</span> <span class="cl">VipDiscount</span> <span class="kw">implements</span> <span class="cl">Discount</span> {
+<span class="good-line">  <span class="kw">public</span> <span class="kw">double</span> <span class="fn">apply</span>(<span class="kw">double</span> price) { <span class="kw">return</span> price * 0.5; }</span>
+}
+
+<span class="kw">class</span> <span class="cl">DiscountCalculator</span> {
+  <span class="kw">public</span> <span class="kw">double</span> <span class="fn">calculate</span>(<span class="cl">Discount</span> d, <span class="kw">double</span> price) {
+    <span class="kw">return</span> d.<span class="fn">apply</span>(price); <span class="cm">// open for extension</span>
+  }
+}`,note:'Old classes are never touched. New feature = new class only. Zero risk of breaking existing logic.'}
+      },
+      {
+        signal:'Child class throws "not supported" error or overrides to do nothing',
+        action:'Child should fully replace parent. If not — wrong inheritance. Use composition.',
+        principle:'Liskov Substitution Principle',
+        tags:['solid'],
+        bad:{label:'Problem',code:`<span class="kw">class</span> <span class="cl">Bird</span> {
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">fly</span>() { System.out.println(<span class="str">"flying"</span>); }
+}
+
+<span class="kw">class</span> <span class="cl">Penguin</span> <span class="kw">extends</span> <span class="cl">Bird</span> {
+<span class="bad-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">fly</span>() {</span>
+<span class="bad-line">    <span class="kw">throw new</span> <span class="cl">UnsupportedOperationException</span>(<span class="str">"Can't fly!"</span>);</span>
+<span class="bad-line">  }</span>
+  <span class="cm">// Penguin IS-A Bird but cannot fly. LSP violated!</span>
+}`,note:'Code using Bird.fly() will crash when given a Penguin. You can\'t freely swap Penguin for Bird.'},
+        good:{label:'Fixed',code:`<span class="kw">interface</span> <span class="cl">Bird</span> { <span class="kw">void</span> <span class="fn">eat</span>(); }
+
+<span class="kw">interface</span> <span class="cl">FlyingBird</span> <span class="kw">extends</span> <span class="cl">Bird</span> {
+<span class="good-line">  <span class="kw">void</span> <span class="fn">fly</span>();</span>
+}
+
+<span class="kw">class</span> <span class="cl">Sparrow</span> <span class="kw">implements</span> <span class="cl">FlyingBird</span> {
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">eat</span>() { ... }
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">fly</span>() { System.out.println(<span class="str">"Sparrow flying"</span>); }
+}
+
+<span class="kw">class</span> <span class="cl">Penguin</span> <span class="kw">implements</span> <span class="cl">Bird</span> {
+<span class="good-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">eat</span>() { System.out.println(<span class="str">"Penguin eating"</span>); }</span>
+  <span class="cm">// No fly() — and that's correct!</span>
+}`,note:'Penguin is still a Bird, just not a FlyingBird. Each interface describes only what the class can actually do.'}
+      },
+      {
+        signal:'Interface has methods I don\'t need — forced to implement empty/dummy methods',
+        action:'Split fat interface into small focused ones. Each class picks only what it needs.',
+        principle:'Interface Segregation Principle',
+        tags:['solid','iface'],
+        bad:{label:'Problem',code:`<span class="kw">interface</span> <span class="cl">Worker</span> {
+  <span class="kw">void</span> <span class="fn">work</span>();
+<span class="bad-line">  <span class="kw">void</span> <span class="fn">eat</span>();   <span class="cm">// Robot doesn't eat!</span></span>
+<span class="bad-line">  <span class="kw">void</span> <span class="fn">sleep</span>(); <span class="cm">// Robot doesn't sleep!</span></span>
+}
+
+<span class="kw">class</span> <span class="cl">Robot</span> <span class="kw">implements</span> <span class="cl">Worker</span> {
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">work</span>() { System.out.println(<span class="str">"working"</span>); }
+<span class="bad-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">eat</span>() {}   <span class="cm">// forced empty method</span></span>
+<span class="bad-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">sleep</span>() {} <span class="cm">// forced empty method</span></span>
+}`,note:'Robot is forced to implement methods it doesn\'t use. Fat interfaces create unnecessary couplings.'},
+        good:{label:'Fixed',code:`<span class="kw">interface</span> <span class="cl">Workable</span>  { <span class="kw">void</span> <span class="fn">work</span>(); }
+<span class="kw">interface</span> <span class="cl">Eatable</span>   { <span class="kw">void</span> <span class="fn">eat</span>(); }
+<span class="kw">interface</span> <span class="cl">Sleepable</span> { <span class="kw">void</span> <span class="fn">sleep</span>(); }
+
+<span class="cm">// Robot only implements what it needs</span>
+<span class="kw">class</span> <span class="cl">Robot</span> <span class="kw">implements</span> <span class="cl">Workable</span> {
+<span class="good-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">work</span>() { System.out.println(<span class="str">"working"</span>); }</span>
+}
+
+<span class="cm">// Human implements all three</span>
+<span class="kw">class</span> <span class="cl">Human</span> <span class="kw">implements</span> <span class="cl">Workable</span>, <span class="cl">Eatable</span>, <span class="cl">Sleepable</span> {
+<span class="good-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">work</span>()  { ... }</span>
+<span class="good-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">eat</span>()   { ... }</span>
+<span class="good-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">sleep</span>() { ... }</span>
+}`,note:'Small interfaces. Each class picks exactly what it needs. No empty implementations. Clean and honest.'}
+      },
+      {
+        signal:'High-level class imports low-level class directly',
+        action:'Create interface between them. Both depend on interface, not each other.',
+        principle:'Dependency Inversion Principle',
+        tags:['solid','iface'],
+        bad:{label:'Problem',code:`<span class="kw">class</span> <span class="cl">MySQLDatabase</span> {
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">save</span>(<span class="cl">String</span> data) { ... }
+}
+
+<span class="kw">class</span> <span class="cl">OrderService</span> {
+<span class="bad-line">  <span class="kw">private</span> <span class="cl">MySQLDatabase</span> db = <span class="kw">new</span> <span class="cl">MySQLDatabase</span>();</span>
+  <span class="cm">// ^^ hardcoded! Can't swap to MongoDB etc.</span>
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">placeOrder</span>(<span class="cl">String</span> order) { db.<span class="fn">save</span>(order); }
+}`,note:'OrderService is glued to MySQL. Want MongoDB? Must rewrite OrderService. Both classes change together.'},
+        good:{label:'Fixed',code:`<span class="kw">interface</span> <span class="cl">Database</span> { <span class="kw">void</span> <span class="fn">save</span>(<span class="cl">String</span> data); }
+
+<span class="kw">class</span> <span class="cl">MySQLDatabase</span> <span class="kw">implements</span> <span class="cl">Database</span> {
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">save</span>(<span class="cl">String</span> data) { ... }
+}
+<span class="kw">class</span> <span class="cl">MongoDatabase</span> <span class="kw">implements</span> <span class="cl">Database</span> {
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">save</span>(<span class="cl">String</span> data) { ... }
+}
+
+<span class="kw">class</span> <span class="cl">OrderService</span> {
+<span class="good-line">  <span class="kw">private</span> <span class="cl">Database</span> db; <span class="cm">// knows only the interface</span></span>
+<span class="good-line">  <span class="kw">public</span> <span class="cl">OrderService</span>(<span class="cl">Database</span> db) { <span class="kw">this</span>.db = db; }</span>
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">placeOrder</span>(<span class="cl">String</span> o) { db.<span class="fn">save</span>(o); }
+}
+
+<span class="cm">// Swap DB without touching OrderService!</span>
+<span class="kw">new</span> <span class="cl">OrderService</span>(<span class="kw">new</span> <span class="cl">MySQLDatabase</span>()).<span class="fn">placeOrder</span>(<span class="str">"Laptop"</span>);
+<span class="kw">new</span> <span class="cl">OrderService</span>(<span class="kw">new</span> <span class="cl">MongoDatabase</span>()).<span class="fn">placeOrder</span>(<span class="str">"Phone"</span>);`,note:'Constructor Injection — the most common DIP pattern. OrderService never changes when DB changes.'}
+      }
+    ]
+  },
+  {
+    id:'interfaces', label:'Interface Design', icon:'I', iconColor:'rgba(167,139,250,0.2)', iconTextColor:'var(--accent2)', tagCls:'tag-iface',
+    cards:[
+      {
+        signal:'Want to swap implementations later',
+        action:'Define interface now. Code against interface, not concrete class.',
+        principle:'Program to interface',
+        tags:['iface','solid'],
+        bad:{label:'Problem',code:`<span class="cm">// Coding directly against concrete class</span>
+<span class="bad-line"><span class="cl">ArrayList</span>&lt;<span class="cl">String</span>&gt; names = <span class="kw">new</span> <span class="cl">ArrayList</span>&lt;&gt;();</span>
+names.<span class="fn">add</span>(<span class="str">"Ravi"</span>);
+<span class="cm">// Now you're stuck with ArrayList everywhere</span>`,note:'If you later need LinkedList for performance, you must change every variable declaration in the codebase.'},
+        good:{label:'Fixed',code:`<span class="cm">// Code against the interface List</span>
+<span class="good-line"><span class="cl">List</span>&lt;<span class="cl">String</span>&gt; names = <span class="kw">new</span> <span class="cl">ArrayList</span>&lt;&gt;();</span>
+names.<span class="fn">add</span>(<span class="str">"Ravi"</span>);
+
+<span class="cm">// Swap to LinkedList in ONE place only</span>
+<span class="good-line"><span class="cl">List</span>&lt;<span class="cl">String</span>&gt; names = <span class="kw">new</span> <span class="cl">LinkedList</span>&lt;&gt;();</span>`,note:'Variable type is List (interface). Only the constructor changes. All other code stays identical.'}
+      },
+      {
+        signal:'2+ classes have same method signature but different logic',
+        action:'Extract common contract into interface. Callers use interface type.',
+        principle:'Common interface extraction',
+        tags:['iface'],
+        bad:{label:'Problem',code:`<span class="kw">class</span> <span class="cl">PDFExporter</span>  { <span class="kw">void</span> <span class="fn">exportPDF</span>() { ... } }
+<span class="kw">class</span> <span class="cl">ExcelExporter</span>{ <span class="kw">void</span> <span class="fn">exportExcel</span>() { ... } }
+
+<span class="kw">void</span> <span class="fn">runExport</span>(<span class="cl">Object</span> exporter) {
+<span class="bad-line">  <span class="kw">if</span> (exporter <span class="kw">instanceof</span> <span class="cl">PDFExporter</span>)   ((PDFExporter)exporter).<span class="fn">exportPDF</span>();</span>
+<span class="bad-line">  <span class="kw">if</span> (exporter <span class="kw">instanceof</span> <span class="cl">ExcelExporter</span>) ((ExcelExporter)exporter).<span class="fn">exportExcel</span>();</span>
+}`,note:'Every new exporter requires editing runExport. instanceof checks are always a warning sign.'},
+        good:{label:'Fixed',code:`<span class="kw">interface</span> <span class="cl">Exporter</span> { <span class="kw">void</span> <span class="fn">export</span>(); }
+
+<span class="kw">class</span> <span class="cl">PDFExporter</span>   <span class="kw">implements</span> <span class="cl">Exporter</span> { <span class="kw">public</span> <span class="kw">void</span> <span class="fn">export</span>() { ... } }
+<span class="kw">class</span> <span class="cl">ExcelExporter</span> <span class="kw">implements</span> <span class="cl">Exporter</span> { <span class="kw">public</span> <span class="kw">void</span> <span class="fn">export</span>() { ... } }
+
+<span class="good-line"><span class="kw">void</span> <span class="fn">runExport</span>(<span class="cl">Exporter</span> exporter) { exporter.<span class="fn">export</span>(); }</span>
+<span class="cm">// New exporter? Just implement Exporter. Done.</span>`,note:'Caller doesn\'t know which exporter it has. Just calls export(). New types never break old code.'}
+      },
+      {
+        signal:'Deep inheritance chain (3+ levels)',
+        action:'Flatten it. Use interfaces + composition. Deep chains break easily.',
+        principle:'Flatten inheritance',
+        tags:['iface','compose'],
+        bad:{label:'Problem',code:`<span class="cm">// 3-level chain — very fragile</span>
+<span class="kw">class</span> <span class="cl">Vehicle</span> { ... }
+<span class="bad-line"><span class="kw">class</span> <span class="cl">Car</span> <span class="kw">extends</span> <span class="cl">Vehicle</span> { ... }</span>
+<span class="bad-line"><span class="kw">class</span> <span class="cl">ElectricCar</span> <span class="kw">extends</span> <span class="cl">Car</span> { ... }</span>
+<span class="bad-line"><span class="kw">class</span> <span class="cl">AutonomousElectricCar</span> <span class="kw">extends</span> <span class="cl">ElectricCar</span> { ... }</span>
+<span class="cm">// Change Vehicle → breaks everything below</span>`,note:'Change anything in the base class and you risk breaking every single subclass. Impossible to test in isolation.'},
+        good:{label:'Fixed',code:`<span class="kw">interface</span> <span class="cl">Drivable</span>   { <span class="kw">void</span> <span class="fn">drive</span>(); }
+<span class="kw">interface</span> <span class="cl">Electric</span>    { <span class="kw">void</span> <span class="fn">charge</span>(); }
+<span class="kw">interface</span> <span class="cl">Autonomous</span>  { <span class="kw">void</span> <span class="fn">selfDrive</span>(); }
+
+<span class="cm">// Compose only what you need</span>
+<span class="good-line"><span class="kw">class</span> <span class="cl">TeslaModel3</span> <span class="kw">implements</span> <span class="cl">Drivable</span>, <span class="cl">Electric</span>, <span class="cl">Autonomous</span> {</span>
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">drive</span>()     { ... }
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">charge</span>()    { ... }
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">selfDrive</span>() { ... }
+}`,note:'Flat. Explicit. Each capability is a separate interface. Mix and match freely. No fragile chain.'}
+      },
+      {
+        signal:'instanceof check in if-else to decide what to do',
+        action:'That\'s polymorphism missing. Create interface. Move logic into the class.',
+        principle:'Replace instanceof with polymorphism',
+        tags:['iface'],
+        bad:{label:'Problem',code:`<span class="kw">void</span> <span class="fn">makeSound</span>(<span class="cl">Animal</span> a) {
+<span class="bad-line">  <span class="kw">if</span> (a <span class="kw">instanceof</span> <span class="cl">Dog</span>) System.out.println(<span class="str">"Woof"</span>);</span>
+<span class="bad-line">  <span class="kw">if</span> (a <span class="kw">instanceof</span> <span class="cl">Cat</span>) System.out.println(<span class="str">"Meow"</span>);</span>
+  <span class="cm">// Add Cow? Edit this method again.</span>
+}`,note:'instanceof is a code smell 90% of the time. It means you\'re doing type checking instead of trusting polymorphism.'},
+        good:{label:'Fixed',code:`<span class="kw">interface</span> <span class="cl">Animal</span> { <span class="kw">void</span> <span class="fn">makeSound</span>(); }
+
+<span class="kw">class</span> <span class="cl">Dog</span> <span class="kw">implements</span> <span class="cl">Animal</span> {
+<span class="good-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">makeSound</span>() { System.out.println(<span class="str">"Woof"</span>); }</span>
+}
+<span class="kw">class</span> <span class="cl">Cat</span> <span class="kw">implements</span> <span class="cl">Animal</span> {
+<span class="good-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">makeSound</span>() { System.out.println(<span class="str">"Meow"</span>); }</span>
+}
+
+<span class="cm">// No instanceof anywhere!</span>
+<span class="good-line"><span class="kw">void</span> <span class="fn">makeSound</span>(<span class="cl">Animal</span> a) { a.<span class="fn">makeSound</span>(); }</span>`,note:'Logic lives inside each class. Add Cow? Create Cow class. Never touch makeSound() method again.'}
+      }
+    ]
+  },
+  {
+    id:'composition', label:'Composition', icon:'C', iconColor:'rgba(45,212,191,0.2)', iconTextColor:'var(--teal)', tagCls:'tag-compose',
+    cards:[
+      {
+        signal:'"Is-a" vs "Has-a" confusion',
+        action:'Dog IS-A animal → inheritance ok. Car HAS-A engine → composition.',
+        principle:'Favor composition over inheritance',
+        tags:['compose'],
+        bad:{label:'Problem — wrong inheritance',code:`<span class="cm">// Engine IS-A Car? No! Has-a!</span>
+<span class="bad-line"><span class="kw">class</span> <span class="cl">Engine</span> <span class="kw">extends</span> <span class="cl">Car</span> { ... }</span>
+<span class="cm">// This is nonsensical — Engine is not a type of Car</span>`,note:'Using inheritance when you should use composition makes the relationship semantically wrong and breaks substitutability.'},
+        good:{label:'Fixed — use composition',code:`<span class="cm">// Engine is a component OF Car (has-a)</span>
+<span class="kw">class</span> <span class="cl">Engine</span> {
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">start</span>() { System.out.println(<span class="str">"Vroom"</span>); }
+}
+
+<span class="kw">class</span> <span class="cl">Car</span> {
+<span class="good-line">  <span class="kw">private</span> <span class="cl">Engine</span> engine = <span class="kw">new</span> <span class="cl">Engine</span>(); <span class="cm">// Has-a</span></span>
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">start</span>() { engine.<span class="fn">start</span>(); }
+}`,note:'Car has an Engine. Dog is an Animal. Get this distinction right before writing any class.'}
+      },
+      {
+        signal:'Same code copy-pasted in 2+ places',
+        action:'Extract to a shared method/class. DRY principle. One change fixes everywhere.',
+        principle:'Don\'t Repeat Yourself (DRY)',
+        tags:['compose'],
+        bad:{label:'Problem',code:`<span class="kw">class</span> <span class="cl">UserService</span> {
+  <span class="kw">public</span> <span class="kw">boolean</span> <span class="fn">isValidEmail</span>(<span class="cl">String</span> email) {
+<span class="bad-line">    <span class="kw">return</span> email != <span class="kw">null</span> && email.contains(<span class="str">"@"</span>) && email.length() > 5;</span>
+  }
+}
+
+<span class="kw">class</span> <span class="cl">OrderService</span> {
+  <span class="kw">public</span> <span class="kw">boolean</span> <span class="fn">isValidEmail</span>(<span class="cl">String</span> email) {
+<span class="bad-line">    <span class="kw">return</span> email != <span class="kw">null</span> && email.contains(<span class="str">"@"</span>) && email.length() > 5;</span>
+  }
+}
+<span class="cm">// Exact same logic in 2 places — DRY violated</span>`,note:'Bug in email validation? Must fix in 2 places. Tomorrow someone adds a 3rd copy. Chaos.'},
+        good:{label:'Fixed',code:`<span class="cm">// Extract to shared utility class</span>
+<span class="kw">class</span> <span class="cl">EmailValidator</span> {
+<span class="good-line">  <span class="kw">public static boolean</span> <span class="fn">isValid</span>(<span class="cl">String</span> email) {</span>
+<span class="good-line">    <span class="kw">return</span> email != <span class="kw">null</span> && email.contains(<span class="str">"@"</span>) && email.length() > 5;</span>
+<span class="good-line">  }</span>
+}
+
+<span class="kw">class</span> <span class="cl">UserService</span>  { <span class="cm">/* use EmailValidator.isValid() */</span> }
+<span class="kw">class</span> <span class="cl">OrderService</span> { <span class="cm">/* use EmailValidator.isValid() */</span> }`,note:'Fix email logic once. All callers get the fix automatically. Rule of 3: see it 3 times → extract it.'}
+      },
+      {
+        signal:'Method is doing too many steps in sequence',
+        action:'Break into smaller private methods. Each step = one method. Compose them.',
+        principle:'Method decomposition',
+        tags:['compose'],
+        bad:{label:'Problem',code:`<span class="kw">public void</span> <span class="fn">processOrder</span>(<span class="cl">Order</span> order) {
+<span class="bad-line">  <span class="cm">// validate</span></span>
+<span class="bad-line">  <span class="kw">if</span> (order.items.<span class="fn">isEmpty</span>()) <span class="kw">throw new</span> <span class="cl">Exception</span>(<span class="str">"empty"</span>);</span>
+<span class="bad-line">  <span class="kw">if</span> (order.user == <span class="kw">null</span>)   <span class="kw">throw new</span> <span class="cl">Exception</span>(<span class="str">"no user"</span>);</span>
+<span class="bad-line">  <span class="cm">// calculate</span></span>
+<span class="bad-line">  <span class="kw">double</span> total = 0; <span class="kw">for</span> (<span class="kw">var</span> i : order.items) total += i.price;</span>
+<span class="bad-line">  <span class="cm">// save + notify — 30 more lines...</span></span>
+}`,note:'Long method = hard to read, test, and reuse. Any single step buried inside cannot be called independently.'},
+        good:{label:'Fixed',code:`<span class="kw">public void</span> <span class="fn">processOrder</span>(<span class="cl">Order</span> order) {
+<span class="good-line">  <span class="fn">validate</span>(order);</span>
+<span class="good-line">  <span class="kw">double</span> total = <span class="fn">calculateTotal</span>(order);</span>
+<span class="good-line">  <span class="fn">save</span>(order, total);</span>
+<span class="good-line">  <span class="fn">notifyUser</span>(order);</span>
+}
+
+<span class="kw">private void</span> <span class="fn">validate</span>(<span class="cl">Order</span> o) { ... }
+<span class="kw">private double</span> <span class="fn">calculateTotal</span>(<span class="cl">Order</span> o) { ... }
+<span class="kw">private void</span> <span class="fn">save</span>(<span class="cl">Order</span> o, <span class="kw">double</span> t) { ... }
+<span class="kw">private void</span> <span class="fn">notifyUser</span>(<span class="cl">Order</span> o) { ... }`,note:'processOrder reads like plain English now. Each step testable in isolation. Clean, composable, obvious.'}
+      },
+      {
+        signal:'Same logic with tiny variation repeated — only one thing differs',
+        action:'Extract to method with parameter for the varying part.',
+        principle:'Parameterize the variation',
+        tags:['compose'],
+        bad:{label:'Problem',code:`<span class="kw">void</span> <span class="fn">sendEmailToAdmin</span>(<span class="cl">String</span> msg) {
+<span class="bad-line">  <span class="cl">String</span> to = <span class="str">"admin@site.com"</span>;</span>
+  emailClient.<span class="fn">send</span>(to, msg);
+}
+<span class="kw">void</span> <span class="fn">sendEmailToSupport</span>(<span class="cl">String</span> msg) {
+<span class="bad-line">  <span class="cl">String</span> to = <span class="str">"support@site.com"</span>;</span>
+  emailClient.<span class="fn">send</span>(to, msg); <span class="cm">// identical except 'to'</span>
+}`,note:'Only the recipient differs. Two methods doing 95% the same thing is a DRY violation.'},
+        good:{label:'Fixed',code:`<span class="cm">// The variation becomes a parameter</span>
+<span class="good-line"><span class="kw">void</span> <span class="fn">sendEmail</span>(<span class="cl">String</span> to, <span class="cl">String</span> msg) {</span>
+  emailClient.<span class="fn">send</span>(to, msg);
+}
+
+<span class="cm">// Call sites — readable and flexible</span>
+<span class="fn">sendEmail</span>(<span class="str">"admin@site.com"</span>, msg);
+<span class="fn">sendEmail</span>(<span class="str">"support@site.com"</span>, msg);
+<span class="fn">sendEmail</span>(<span class="str">"user@gmail.com"</span>, msg); <span class="cm">// free!</span>`,note:'One method. Infinite flexibility. The varying thing = parameter. The fixed thing = method body.'}
+      }
+    ]
+  },
+  {
+    id:'patterns', label:'Design Patterns', icon:'P', iconColor:'rgba(251,191,36,0.2)', iconTextColor:'var(--amber)', tagCls:'tag-pattern',
+    cards:[
+      {
+        signal:'Need only ONE instance globally (DB connection, config, logger)',
+        action:'Singleton pattern — private constructor, static instance.',
+        principle:'Singleton',
+        tags:['pattern'],
+        bad:{label:'Problem — multiple instances',code:`<span class="cm">// Creating DB connection everywhere — wasteful</span>
+<span class="kw">class</span> <span class="cl">OrderService</span>  {
+<span class="bad-line">  <span class="cl">DBConnection</span> db = <span class="kw">new</span> <span class="cl">DBConnection</span>(); <span class="cm">// instance 1</span></span>
+}
+<span class="kw">class</span> <span class="cl">UserService</span>  {
+<span class="bad-line">  <span class="cl">DBConnection</span> db = <span class="kw">new</span> <span class="cl">DBConnection</span>(); <span class="cm">// instance 2</span></span>
+}
+<span class="cm">// 10 services = 10 DB connections. Expensive!</span>`,note:'Each service creates its own DB connection. This is wasteful and can exhaust the connection pool.'},
+        good:{label:'Fixed — Singleton',code:`<span class="kw">class</span> <span class="cl">DBConnection</span> {
+<span class="good-line">  <span class="kw">private static</span> <span class="cl">DBConnection</span> instance = <span class="kw">null</span>;</span>
+<span class="good-line">  <span class="kw">private</span> <span class="cl">DBConnection</span>() {} <span class="cm">// private! can't do new</span></span>
+
+<span class="good-line">  <span class="kw">public static</span> <span class="cl">DBConnection</span> <span class="fn">getInstance</span>() {</span>
+    <span class="kw">if</span> (instance == <span class="kw">null</span>) instance = <span class="kw">new</span> <span class="cl">DBConnection</span>();
+    <span class="kw">return</span> instance;
+  }
+}
+
+<span class="cm">// Every caller gets the SAME instance</span>
+<span class="cl">DBConnection</span> db = <span class="cl">DBConnection</span>.<span class="fn">getInstance</span>();`,note:'getInstance() always returns the same object. One connection shared by all. Use for: loggers, config, cache, thread pools.'}
+      },
+      {
+        signal:'Object creation logic is getting complex or varies by condition',
+        action:'Factory pattern — hide "new" behind a method. Caller doesn\'t know what it gets.',
+        principle:'Factory Method',
+        tags:['pattern'],
+        bad:{label:'Problem',code:`<span class="cm">// Caller must know all concrete classes</span>
+<span class="kw">if</span> (type.equals(<span class="str">"pdf"</span>))   report = <span class="kw">new</span> <span class="cl">PDFReport</span>();
+<span class="kw">if</span> (type.equals(<span class="str">"excel"</span>)) report = <span class="kw">new</span> <span class="cl">ExcelReport</span>();
+<span class="kw">if</span> (type.equals(<span class="str">"html"</span>))  report = <span class="kw">new</span> <span class="cl">HTMLReport</span>();
+<span class="cm">// Duplicated everywhere this code is called</span>`,note:'Every place that creates a report must know all types. New type = hunt and update every caller.'},
+        good:{label:'Fixed — Factory',code:`<span class="kw">interface</span> <span class="cl">Report</span> { <span class="kw">void</span> <span class="fn">generate</span>(); }
+
+<span class="kw">class</span> <span class="cl">PDFReport</span>   <span class="kw">implements</span> <span class="cl">Report</span> { ... }
+<span class="kw">class</span> <span class="cl">ExcelReport</span> <span class="kw">implements</span> <span class="cl">Report</span> { ... }
+
+<span class="good-line"><span class="kw">class</span> <span class="cl">ReportFactory</span> {</span>
+<span class="good-line">  <span class="kw">public static</span> <span class="cl">Report</span> <span class="fn">create</span>(<span class="cl">String</span> type) {</span>
+<span class="good-line">    <span class="kw">if</span> (type.equals(<span class="str">"pdf"</span>))   <span class="kw">return new</span> <span class="cl">PDFReport</span>();</span>
+<span class="good-line">    <span class="kw">if</span> (type.equals(<span class="str">"excel"</span>)) <span class="kw">return new</span> <span class="cl">ExcelReport</span>();</span>
+    <span class="kw">throw new</span> <span class="cl">Exception</span>(<span class="str">"Unknown type"</span>);
+  }
+}
+
+<span class="cm">// Caller knows nothing about concrete classes</span>
+<span class="cl">Report</span> r = <span class="cl">ReportFactory</span>.<span class="fn">create</span>(<span class="str">"pdf"</span>);`,note:'Creation logic in ONE place. Callers just call create(). New type? Add one line in factory. Nothing else changes.'}
+      },
+      {
+        signal:'Many objects need same event update (UI, notifications, live data)',
+        action:'Observer pattern — one publisher, many subscribers. Subscribers register themselves.',
+        principle:'Observer',
+        tags:['pattern'],
+        bad:{label:'Problem',code:`<span class="kw">class</span> <span class="cl">StockPrice</span> {
+  <span class="kw">private</span> <span class="cl">EmailAlert</span> email = <span class="kw">new</span> <span class="cl">EmailAlert</span>();
+  <span class="kw">private</span> <span class="cl">SMSAlert</span>   sms   = <span class="kw">new</span> <span class="cl">SMSAlert</span>();
+
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">priceChanged</span>(<span class="kw">double</span> price) {
+<span class="bad-line">    email.<span class="fn">notify</span>(price); <span class="cm">// hardcoded!</span></span>
+<span class="bad-line">    sms.<span class="fn">notify</span>(price);   <span class="cm">// hardcoded!</span></span>
+  }
+}
+<span class="cm">// Add PushNotification? Edit StockPrice again.</span>`,note:'Publisher knows every subscriber by name. Adding a new subscriber means editing the publisher. Wrong.'},
+        good:{label:'Fixed — Observer',code:`<span class="kw">interface</span> <span class="cl">Observer</span> { <span class="kw">void</span> <span class="fn">update</span>(<span class="kw">double</span> price); }
+
+<span class="kw">class</span> <span class="cl">EmailAlert</span> <span class="kw">implements</span> <span class="cl">Observer</span> { <span class="kw">public void</span> <span class="fn">update</span>(<span class="kw">double</span> p) { ... } }
+<span class="kw">class</span> <span class="cl">SMSAlert</span>   <span class="kw">implements</span> <span class="cl">Observer</span> { <span class="kw">public void</span> <span class="fn">update</span>(<span class="kw">double</span> p) { ... } }
+
+<span class="kw">class</span> <span class="cl">StockPrice</span> {
+<span class="good-line">  <span class="kw">private</span> <span class="cl">List</span>&lt;<span class="cl">Observer</span>&gt; observers = <span class="kw">new</span> <span class="cl">ArrayList</span>&lt;&gt;();</span>
+<span class="good-line">  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">subscribe</span>(<span class="cl">Observer</span> o) { observers.<span class="fn">add</span>(o); }</span>
+  <span class="kw">public</span> <span class="kw">void</span> <span class="fn">priceChanged</span>(<span class="kw">double</span> p) {
+    observers.<span class="fn">forEach</span>(o -> o.<span class="fn">update</span>(p)); <span class="cm">// notify all</span>
+  }
+}`,note:'Publisher knows nothing about specific subscribers. New subscriber? Just call subscribe(). Publisher code never changes.'}
+      },
+      {
+        signal:'Same steps but different algorithm/behavior needed at runtime',
+        action:'Strategy pattern — pass the algorithm as an object. Swap at runtime.',
+        principle:'Strategy',
+        tags:['pattern','iface'],
+        bad:{label:'Problem',code:`<span class="kw">class</span> <span class="cl">Sorter</span> {
+  <span class="kw">void</span> <span class="fn">sort</span>(<span class="kw">int</span>[] data, <span class="cl">String</span> algo) {
+<span class="bad-line">    <span class="kw">if</span> (algo.equals(<span class="str">"bubble"</span>)) { <span class="cm">/* bubble sort */</span> }</span>
+<span class="bad-line">    <span class="kw">if</span> (algo.equals(<span class="str">"quick"</span>))  { <span class="cm">/* quick sort */</span>  }</span>
+    <span class="cm">// Add merge sort? Edit this class.</span>
+  }
+}`,note:'All algorithms crammed into one class. Adding or changing one algorithm risks breaking others.'},
+        good:{label:'Fixed — Strategy',code:`<span class="kw">interface</span> <span class="cl">SortStrategy</span> { <span class="kw">void</span> <span class="fn">sort</span>(<span class="kw">int</span>[] data); }
+
+<span class="kw">class</span> <span class="cl">BubbleSort</span> <span class="kw">implements</span> <span class="cl">SortStrategy</span> { <span class="kw">public void</span> <span class="fn">sort</span>(<span class="kw">int</span>[] d) { ... } }
+<span class="kw">class</span> <span class="cl">QuickSort</span>  <span class="kw">implements</span> <span class="cl">SortStrategy</span> { <span class="kw">public void</span> <span class="fn">sort</span>(<span class="kw">int</span>[] d) { ... } }
+
+<span class="kw">class</span> <span class="cl">Sorter</span> {
+<span class="good-line">  <span class="kw">private</span> <span class="cl">SortStrategy</span> strategy;</span>
+<span class="good-line">  <span class="kw">public</span> <span class="cl">Sorter</span>(<span class="cl">SortStrategy</span> s) { <span class="kw">this</span>.strategy = s; }</span>
+  <span class="kw">public void</span> <span class="fn">sort</span>(<span class="kw">int</span>[] data) { strategy.<span class="fn">sort</span>(data); }
+}
+
+<span class="cm">// Swap algorithm at runtime</span>
+<span class="kw">new</span> <span class="cl">Sorter</span>(<span class="kw">new</span> <span class="cl">QuickSort</span>()).<span class="fn">sort</span>(data);`,note:'Sorter doesn\'t know which algorithm it has. Just calls sort(). Swap strategies without touching Sorter.'}
+      },
+      {
+        signal:'Need to add features to an object without touching its class',
+        action:'Decorator pattern — wrap object in new object that adds behavior.',
+        principle:'Decorator',
+        tags:['pattern','compose'],
+        bad:{label:'Problem',code:`<span class="cm">// Adding logging by subclassing — explosion of classes</span>
+<span class="bad-line"><span class="kw">class</span> <span class="cl">LoggingOrderService</span> <span class="kw">extends</span> <span class="cl">OrderService</span> { ... }</span>
+<span class="bad-line"><span class="kw">class</span> <span class="cl">CachingOrderService</span> <span class="kw">extends</span> <span class="cl">OrderService</span> { ... }</span>
+<span class="bad-line"><span class="kw">class</span> <span class="cl">LoggingCachingOrderService</span> <span class="kw">extends</span> <span class="cl">OrderService</span> { ... }</span>
+<span class="cm">// Combinatorial explosion of subclasses!</span>`,note:'Every combination of features needs its own subclass. 3 features = up to 8 subclasses. Unmaintainable.'},
+        good:{label:'Fixed — Decorator',code:`<span class="kw">interface</span> <span class="cl">OrderService</span> { <span class="kw">void</span> <span class="fn">placeOrder</span>(<span class="cl">String</span> o); }
+
+<span class="kw">class</span> <span class="cl">BasicOrderService</span> <span class="kw">implements</span> <span class="cl">OrderService</span> {
+  <span class="kw">public void</span> <span class="fn">placeOrder</span>(<span class="cl">String</span> o) { System.out.println(<span class="str">"Order: "</span>+o); }
+}
+
+<span class="good-line"><span class="kw">class</span> <span class="cl">LoggingDecorator</span> <span class="kw">implements</span> <span class="cl">OrderService</span> {</span>
+<span class="good-line">  <span class="kw">private</span> <span class="cl">OrderService</span> wrapped;</span>
+<span class="good-line">  <span class="kw">public</span> <span class="cl">LoggingDecorator</span>(<span class="cl">OrderService</span> s) { wrapped = s; }</span>
+  <span class="kw">public void</span> <span class="fn">placeOrder</span>(<span class="cl">String</span> o) {
+    System.out.println(<span class="str">"LOG: placing"</span>);
+<span class="good-line">    wrapped.<span class="fn">placeOrder</span>(o); <span class="cm">// delegate</span></span>
+  }
+}
+<span class="cm">// Stack decorators like layers</span>
+<span class="cl">OrderService</span> svc = <span class="kw">new</span> <span class="cl">LoggingDecorator</span>(<span class="kw">new</span> <span class="cl">BasicOrderService</span>());`,note:'Wrap any combination at runtime. Add logging, caching, validation — layer them. No subclass explosion.'}
+      },
+      {
+        signal:'Action needs to be queued, undone, logged, or replayed',
+        action:'Command pattern — encapsulate action as object. Store, replay, or undo it.',
+        principle:'Command',
+        tags:['pattern'],
+        bad:{label:'Problem',code:`<span class="cm">// Action directly called — can't undo, can't queue</span>
+<span class="kw">class</span> <span class="cl">TextEditor</span> {
+<span class="bad-line">  <span class="kw">public void</span> <span class="fn">bold</span>()   { <span class="cm">/* apply bold */</span> }  <span class="cm">// can't undo!</span></span>
+<span class="bad-line">  <span class="kw">public void</span> <span class="fn">italic</span>() { <span class="cm">/* apply italic */</span> } <span class="cm">// can't queue!</span></span>
+}`,note:'Direct method calls can\'t be stored, queued, or reversed. No way to implement Ctrl+Z.'},
+        good:{label:'Fixed — Command',code:`<span class="kw">interface</span> <span class="cl">Command</span> { <span class="kw">void</span> <span class="fn">execute</span>(); <span class="kw">void</span> <span class="fn">undo</span>(); }
+
+<span class="kw">class</span> <span class="cl">BoldCommand</span> <span class="kw">implements</span> <span class="cl">Command</span> {
+  <span class="kw">public void</span> <span class="fn">execute</span>() { <span class="cm">/* apply bold */</span> }
+  <span class="kw">public void</span> <span class="fn">undo</span>()    { <span class="cm">/* remove bold */</span> }
+}
+
+<span class="kw">class</span> <span class="cl">CommandHistory</span> {
+<span class="good-line">  <span class="cl">Stack</span>&lt;<span class="cl">Command</span>&gt; history = <span class="kw">new</span> <span class="cl">Stack</span>&lt;&gt;();</span>
+  <span class="kw">public void</span> <span class="fn">execute</span>(<span class="cl">Command</span> c) { c.<span class="fn">execute</span>(); history.<span class="fn">push</span>(c); }
+<span class="good-line">  <span class="kw">public void</span> <span class="fn">undo</span>() { history.<span class="fn">pop</span>().<span class="fn">undo</span>(); }</span>
+}`,note:'Commands are objects — store them in a list, replay them, undo them. Ctrl+Z is just history.pop().undo().'}
+      }
+    ]
+  },
+  {
+    id:'data', label:'Data Structures', icon:'D', iconColor:'rgba(244,114,182,0.2)', iconTextColor:'var(--pink)', tagCls:'tag-data',
+    cards:[
+      {
+        signal:'Need fast lookup by key (O(1))',
+        action:'HashMap / Dictionary. Key → Value. Average O(1) get/put.',
+        principle:'HashMap',
+        tags:['data'],
+        bad:{label:'Slow — linear search',code:`<span class="cm">// Finding user by id in a list — O(n)</span>
+<span class="cl">List</span>&lt;<span class="cl">User</span>&gt; users = <span class="kw">new</span> <span class="cl">ArrayList</span>&lt;&gt;();
+<span class="cl">User</span> found = <span class="kw">null</span>;
+<span class="bad-line"><span class="kw">for</span> (<span class="cl">User</span> u : users) {</span>
+<span class="bad-line">  <span class="kw">if</span> (u.id.equals(<span class="str">"u123"</span>)) { found = u; <span class="kw">break</span>; }</span>
+<span class="bad-line">}</span>
+<span class="cm">// 1M users? Checks up to 1M records!</span>`,note:'Linear scan is O(n). With 1 million users and the user is at the end, you check 1 million records.'},
+        good:{label:'Fast — HashMap O(1)',code:`<span class="cm">// Build a map once — O(n) one time</span>
+<span class="cl">Map</span>&lt;<span class="cl">String</span>, <span class="cl">User</span>&gt; userMap = <span class="kw">new</span> <span class="cl">HashMap</span>&lt;&gt;();
+users.<span class="fn">forEach</span>(u -> userMap.<span class="fn">put</span>(u.id, u));
+
+<span class="cm">// Now every lookup is O(1)</span>
+<span class="good-line"><span class="cl">User</span> found = userMap.<span class="fn">get</span>(<span class="str">"u123"</span>); <span class="cm">// instant!</span></span>
+<span class="cm">// 1M users? Still instant. Same speed.</span>`,note:'HashMap uses hashing. Any key lookup is O(1) average. Best for: caches, frequency counts, deduplication, indexes.'}
+      },
+      {
+        signal:'Need fast insert/delete anywhere in the list',
+        action:'LinkedList — O(1) insert at any position. O(n) random access.',
+        principle:'LinkedList vs ArrayList',
+        tags:['data'],
+        bad:{label:'Wrong choice — ArrayList for frequent inserts',code:`<span class="cl">List</span>&lt;<span class="cl">String</span>&gt; queue = <span class="kw">new</span> <span class="cl">ArrayList</span>&lt;&gt;();
+<span class="bad-line">queue.<span class="fn">add</span>(0, <span class="str">"urgent task"</span>); <span class="cm">// insert at front</span></span>
+<span class="cm">// ArrayList shifts ALL elements right — O(n)!</span>`,note:'ArrayList insert at front/middle shifts all elements. If you do this frequently with large lists, performance tanks.'},
+        good:{label:'Right choice — LinkedList',code:`<span class="cm">// Use LinkedList when inserting/deleting often</span>
+<span class="good-line"><span class="cl">LinkedList</span>&lt;<span class="cl">String</span>&gt; queue = <span class="kw">new</span> <span class="cl">LinkedList</span>&lt;&gt;();</span>
+<span class="good-line">queue.<span class="fn">addFirst</span>(<span class="str">"urgent task"</span>); <span class="cm">// O(1)!</span></span>
+queue.<span class="fn">addLast</span>(<span class="str">"normal task"</span>);  <span class="cm">// O(1)!</span>
+queue.<span class="fn">removeFirst</span>();           <span class="cm">// O(1)!</span>
+
+<span class="cm">// Rule of thumb:</span>
+<span class="cm">// Read a lot → ArrayList (O(1) index access)</span>
+<span class="cm">// Insert/delete a lot → LinkedList (O(1) insert)</span>`,note:'LinkedList: each node knows next/prev. Insert = just update pointers. No shifting. Perfect for queues and task lists.'}
+      },
+      {
+        signal:'Need Last-In-First-Out — undo, back-button, recursion',
+        action:'Stack — push to top, pop from top.',
+        principle:'Stack',
+        tags:['data'],
+        bad:{label:'Wrong — List used as stack',code:`<span class="cl">List</span>&lt;<span class="cl">String</span>&gt; history = <span class="kw">new</span> <span class="cl">ArrayList</span>&lt;&gt;();
+history.<span class="fn">add</span>(<span class="str">"page1"</span>);
+history.<span class="fn">add</span>(<span class="str">"page2"</span>);
+<span class="cm">// "undo" = remove last — works but unclear intent</span>
+<span class="bad-line">history.<span class="fn">remove</span>(history.<span class="fn">size</span>()-1); <span class="cm">// fragile</span></span>`,note:'Using ArrayList as a stack works but signals wrong intent to readers and is error-prone.'},
+        good:{label:'Right — Stack',code:`<span class="cl">Stack</span>&lt;<span class="cl">String</span>&gt; history = <span class="kw">new</span> <span class="cl">Stack</span>&lt;&gt;();
+history.<span class="fn">push</span>(<span class="str">"page1"</span>);
+history.<span class="fn">push</span>(<span class="str">"page2"</span>);
+history.<span class="fn">push</span>(<span class="str">"page3"</span>);
+
+<span class="good-line"><span class="cl">String</span> prev = history.<span class="fn">pop</span>();  <span class="cm">// "page3" — back!</span></span>
+<span class="cl">String</span> top  = history.<span class="fn">peek</span>(); <span class="cm">// "page2" — see top</span>
+
+<span class="cm">// Use for: undo, browser back, call stack, parenthesis matching</span>`,note:'Stack = LIFO. The last thing you pushed is the first thing you get back. Perfect mental model for undo.'}
+      },
+      {
+        signal:'Need First-In-First-Out — task queue, print jobs, rate limiting',
+        action:'Queue — add to back, remove from front.',
+        principle:'Queue',
+        tags:['data'],
+        bad:{label:'Wrong — ArrayList as queue',code:`<span class="cl">List</span>&lt;<span class="cl">String</span>&gt; tasks = <span class="kw">new</span> <span class="cl">ArrayList</span>&lt;&gt;();
+tasks.<span class="fn">add</span>(<span class="str">"task1"</span>);
+tasks.<span class="fn">add</span>(<span class="str">"task2"</span>);
+<span class="bad-line"><span class="cl">String</span> next = tasks.<span class="fn">remove</span>(0); <span class="cm">// O(n)! shifts all</span></span>`,note:'ArrayList.remove(0) shifts every element left — O(n). Disaster for high-throughput queues.'},
+        good:{label:'Right — Queue',code:`<span class="cl">Queue</span>&lt;<span class="cl">String</span>&gt; tasks = <span class="kw">new</span> <span class="cl">LinkedList</span>&lt;&gt;();
+tasks.<span class="fn">offer</span>(<span class="str">"task1"</span>); <span class="cm">// add to back</span>
+tasks.<span class="fn">offer</span>(<span class="str">"task2"</span>);
+tasks.<span class="fn">offer</span>(<span class="str">"task3"</span>);
+
+<span class="good-line"><span class="cl">String</span> next = tasks.<span class="fn">poll</span>(); <span class="cm">// "task1" — O(1)!</span></span>
+<span class="cm">// Use for: job queues, API rate limiting,</span>
+<span class="cm">// BFS graph traversal, print spooler</span>`,note:'Queue = FIFO. First task in = first task processed. Fair ordering. Essential for any background job system.'}
+      },
+      {
+        signal:'Need to always process highest/lowest priority item next',
+        action:'Priority Queue / Min-Heap. Highest priority always at top. O(log n) insert.',
+        principle:'Priority Queue',
+        tags:['data'],
+        bad:{label:'Wrong — sort every time',code:`<span class="cl">List</span>&lt;<span class="cl">Task</span>&gt; tasks = <span class="kw">new</span> <span class="cl">ArrayList</span>&lt;&gt;();
+tasks.<span class="fn">add</span>(<span class="kw">new</span> <span class="cl">Task</span>(<span class="str">"low"</span>, 3));
+tasks.<span class="fn">add</span>(<span class="kw">new</span> <span class="cl">Task</span>(<span class="str">"urgent"</span>, 1));
+<span class="bad-line"><span class="cl">Collections</span>.<span class="fn">sort</span>(tasks); <span class="cm">// O(n log n) every time!</span></span>
+<span class="cl">Task</span> next = tasks.<span class="fn">remove</span>(0);`,note:'Sorting the whole list every time you add a task is O(n log n). Very wasteful if tasks are added frequently.'},
+        good:{label:'Fixed — Priority Queue',code:`<span class="cm">// Automatically keeps highest priority at head</span>
+<span class="cl">PriorityQueue</span>&lt;<span class="cl">Task</span>&gt; pq = <span class="kw">new</span> <span class="cl">PriorityQueue</span>&lt;&gt;(
+  (<span class="fn">a</span>, <span class="fn">b</span>) -> a.priority - b.priority <span class="cm">// min-heap</span>
+);
+
+pq.<span class="fn">offer</span>(<span class="kw">new</span> <span class="cl">Task</span>(<span class="str">"low"</span>, 3));
+pq.<span class="fn">offer</span>(<span class="kw">new</span> <span class="cl">Task</span>(<span class="str">"urgent"</span>, 1));
+pq.<span class="fn">offer</span>(<span class="kw">new</span> <span class="cl">Task</span>(<span class="str">"medium"</span>, 2));
+
+<span class="good-line"><span class="cl">Task</span> next = pq.<span class="fn">poll</span>(); <span class="cm">// "urgent" — O(log n)</span></span>`,note:'PriorityQueue uses a heap internally. Insert = O(log n). Get min/max = O(1). Perfect for Dijkstra, schedulers, event processing.'}
+      }
+    ]
+  },
+  {
+    id:'testing', label:'Testing', icon:'T', iconColor:'rgba(74,222,128,0.2)', iconTextColor:'var(--green)', tagCls:'tag-test',
+    cards:[
+      {
+        signal:'Method has no side effects — same input always gives same output',
+        action:'Pure function — easiest to test. No mocking needed. Write unit test directly.',
+        principle:'Test pure functions directly',
+        tags:['test'],
+        bad:{label:'Hard to test — impure',code:`<span class="kw">class</span> <span class="cl">TaxCalculator</span> {
+<span class="bad-line">  <span class="kw">public double</span> <span class="fn">calculate</span>(<span class="kw">double</span> price) {</span>
+<span class="bad-line">    <span class="kw">double</span> rate = db.<span class="fn">getTaxRate</span>(); <span class="cm">// external call!</span></span>
+<span class="bad-line">    <span class="kw">return</span> price * rate;</span>
+<span class="bad-line">  }</span>
+}
+<span class="cm">// To test: need DB running. Slow and brittle.</span>`,note:'This function depends on a DB call. You can\'t test it without a running DB or complex mocking setup.'},
+        good:{label:'Easy to test — pure',code:`<span class="kw">class</span> <span class="cl">TaxCalculator</span> {
+<span class="good-line">  <span class="kw">public double</span> <span class="fn">calculate</span>(<span class="kw">double</span> price, <span class="kw">double</span> rate) {</span>
+<span class="good-line">    <span class="kw">return</span> price * rate; <span class="cm">// pure! no side effects</span></span>
+<span class="good-line">  }</span>
+}
+
+<span class="cm">// Test is trivial — no mocking, no DB, no setup</span>
+<span class="fn">assertEquals</span>(120.0, calc.<span class="fn">calculate</span>(100.0, 1.2));
+<span class="fn">assertEquals</span>(0.0,   calc.<span class="fn">calculate</span>(0.0, 1.2));`,note:'Pass rate as parameter. Same input = same output always. Test runs in milliseconds. No external dependencies.'}
+      },
+      {
+        signal:'Method calls DB, API, or file system internally',
+        action:'Mock the external dependency. Test your logic only, not the external service.',
+        principle:'Mock external dependencies',
+        tags:['test'],
+        bad:{label:'No mocking — brittle test',code:`<span class="kw">class</span> <span class="cl">UserServiceTest</span> {
+  <span class="fn">@Test</span>
+  <span class="kw">void</span> <span class="fn">testGetUser</span>() {
+<span class="bad-line">    <span class="cl">UserService</span> svc = <span class="kw">new</span> <span class="cl">UserService</span>(); <span class="cm">// uses real DB!</span></span>
+<span class="bad-line">    <span class="cl">User</span> u = svc.<span class="fn">getUser</span>(<span class="str">"u1"</span>); <span class="cm">// fails if DB down</span></span>
+    <span class="fn">assertNotNull</span>(u);
+  }
+}`,note:'Test fails if DB is down, slow, or empty. You\'re testing the DB, not your service logic.'},
+        good:{label:'With mock — reliable',code:`<span class="fn">@Test</span>
+<span class="kw">void</span> <span class="fn">testGetUser</span>() {
+<span class="good-line">  <span class="cm">// Mock the DB — controls what it returns</span></span>
+<span class="good-line">  <span class="cl">UserRepository</span> mockRepo = <span class="fn">mock</span>(<span class="cl">UserRepository</span>.<span class="kw">class</span>);</span>
+<span class="good-line">  <span class="fn">when</span>(mockRepo.<span class="fn">findById</span>(<span class="str">"u1"</span>)).<span class="fn">thenReturn</span>(<span class="kw">new</span> <span class="cl">User</span>(<span class="str">"u1"</span>, <span class="str">"Ravi"</span>));</span>
+
+  <span class="cl">UserService</span> svc = <span class="kw">new</span> <span class="cl">UserService</span>(mockRepo);
+  <span class="cl">User</span> u = svc.<span class="fn">getUser</span>(<span class="str">"u1"</span>);
+
+<span class="good-line">  <span class="fn">assertEquals</span>(<span class="str">"Ravi"</span>, u.name); <span class="cm">// tests OUR logic</span></span>
+}`,note:'Mock returns exactly what you tell it. DB can be down, offline, anything — test still passes. Fast and deterministic.'}
+      },
+      {
+        signal:'Class is hard to test — too many dependencies, can\'t instantiate it easily',
+        action:'Code smell! Inject dependencies via constructor. Then mock them in tests.',
+        principle:'Constructor injection for testability',
+        tags:['test','solid'],
+        bad:{label:'Hard to test — internal "new"',code:`<span class="kw">class</span> <span class="cl">OrderService</span> {
+<span class="bad-line">  <span class="kw">private</span> <span class="cl">EmailSender</span>    email = <span class="kw">new</span> <span class="cl">EmailSender</span>();</span>
+<span class="bad-line">  <span class="kw">private</span> <span class="cl">PaymentGateway</span> pay   = <span class="kw">new</span> <span class="cl">PaymentGateway</span>();</span>
+<span class="bad-line">  <span class="kw">private</span> <span class="cl">MySQLDatabase</span>  db    = <span class="kw">new</span> <span class="cl">MySQLDatabase</span>();</span>
+  <span class="cm">// Can't test without real email server, payment API, DB!</span>
+}`,note:'Every dependency is created internally. You cannot replace them with mocks. Testing this class requires the real world.'},
+        good:{label:'Easy to test — inject all',code:`<span class="kw">class</span> <span class="cl">OrderService</span> {
+<span class="good-line">  <span class="kw">private final</span> <span class="cl">EmailSender</span>    email;</span>
+<span class="good-line">  <span class="kw">private final</span> <span class="cl">PaymentGateway</span> pay;</span>
+<span class="good-line">  <span class="kw">private final</span> <span class="cl">Database</span>       db;</span>
+
+<span class="good-line">  <span class="kw">public</span> <span class="cl">OrderService</span>(<span class="cl">EmailSender</span> e, <span class="cl">PaymentGateway</span> p, <span class="cl">Database</span> d) {</span>
+    <span class="kw">this</span>.email = e; <span class="kw">this</span>.pay = p; <span class="kw">this</span>.db = d;
+  }
+}
+
+<span class="cm">// In test: inject mocks for all three</span>
+<span class="cl">OrderService</span> svc = <span class="kw">new</span> <span class="cl">OrderService</span>(
+  <span class="fn">mock</span>(<span class="cl">EmailSender</span>.<span class="kw">class</span>),
+  <span class="fn">mock</span>(<span class="cl">PaymentGateway</span>.<span class="kw">class</span>),
+  <span class="fn">mock</span>(<span class="cl">Database</span>.<span class="kw">class</span>)
+);`,note:'All dependencies injected. In tests, inject mocks. In production, inject real ones. Same class, different context.'}
+      }
+    ]
+  }
+];
+
+function buildSidebar() {
+  const container = document.getElementById('sidebar-links');
+  sections.forEach(sec => {
+    const catDiv = document.createElement('div');
+    catDiv.className = 'sidebar-section';
+    catDiv.innerHTML = `<div class="sidebar-cat">${sec.label}</div>`;
+    sec.cards.forEach((card, i) => {
+      const link = document.createElement('div');
+      link.className = 'sidebar-link';
+      link.textContent = card.signal.length > 36 ? card.signal.slice(0,36)+'…' : card.signal;
+      link.onclick = () => {
+        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        document.getElementById(`card-${sec.id}-${i}`).scrollIntoView({behavior:'smooth', block:'start'});
+      };
+      catDiv.appendChild(link);
+    });
+    container.appendChild(catDiv);
+  });
+}
+
+function buildContent() {
+  const container = document.getElementById('content');
+  sections.forEach(sec => {
+    const secEl = document.createElement('div');
+    secEl.className = 'section';
+    secEl.id = sec.id;
+    secEl.innerHTML = `
+      <div class="section-header">
+        <div class="section-icon" style="background:${sec.iconColor};color:${sec.iconTextColor}">${sec.icon}</div>
+        <div class="section-title">${sec.label}</div>
+        <div class="section-count">${sec.cards.length} patterns</div>
+      </div>`;
+    sec.cards.forEach((card, i) => {
+      const tagHtml = card.tags.map(t => {
+        const map = {solid:'tag-solid',iface:'tag-iface',compose:'tag-compose',pattern:'tag-pattern',data:'tag-data',test:'tag-test'};
+        const labels = {solid:'SOLID',iface:'Interface',compose:'Composition',pattern:'Pattern',data:'Data structure',test:'Testing'};
+        return `<span class="tag ${map[t]}">${labels[t]}</span>`;
+      }).join('');
+      const cardEl = document.createElement('div');
+      cardEl.className = 'pattern-card';
+      cardEl.id = `card-${sec.id}-${i}`;
+      cardEl.innerHTML = `
+        <div class="card-header" onclick="toggleCard(this)">
+          <div style="flex:1">
+            <div class="card-smell" style="color:${sec.iconTextColor}">Smell / Signal</div>
+            <div class="card-signal">${card.signal}</div>
+            <div class="card-action">${card.action}</div>
+            <div style="margin-top:6px;font-size:11px;color:var(--text3);font-family:var(--mono)">${card.principle}</div>
+            <div class="card-tags">${tagHtml}</div>
+          </div>
+          <div class="card-expand">▼ code</div>
+        </div>
+        <div class="card-body">
+          <div class="code-tabs">
+            <div class="code-tab active" onclick="switchTab(this,'bad-${sec.id}-${i}','${sec.id}-${i}')">Problem</div>
+            <div class="code-tab" onclick="switchTab(this,'good-${sec.id}-${i}','${sec.id}-${i}')">Fixed</div>
+          </div>
+          <div class="code-panel active" id="bad-${sec.id}-${i}">
+            <span class="code-badge badge-bad">${card.bad.label}</span>
+            <pre>${card.bad.code}</pre>
+            <div class="code-note">${card.bad.note}</div>
+          </div>
+          <div class="code-panel" id="good-${sec.id}-${i}">
+            <span class="code-badge badge-good">${card.good.label}</span>
+            <pre>${card.good.code}</pre>
+            <div class="code-note">${card.good.note}</div>
+          </div>
+        </div>`;
+      secEl.appendChild(cardEl);
+    });
+    container.appendChild(secEl);
+  });
+}
+
+function toggleCard(header) {
+  const body = header.nextElementSibling;
+  const expand = header.querySelector('.card-expand');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open');
+  expand.textContent = isOpen ? '▼ code' : '▲ hide';
+}
+
+function switchTab(tab, panelId, groupId) {
+  const card = tab.closest('.pattern-card');
+  card.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+  card.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+  tab.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+function searchCards(query) {
+  const q = query.toLowerCase();
+  document.querySelectorAll('.pattern-card').forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = (!q || text.includes(q)) ? 'block' : 'none';
+  });
+  document.querySelectorAll('.section').forEach(sec => {
+    const visible = [...sec.querySelectorAll('.pattern-card')].some(c => c.style.display !== 'none');
+    sec.style.display = visible ? 'block' : 'none';
+  });
+}
+
+buildSidebar();
+buildContent();
+</script>
+</body>
+</html>
