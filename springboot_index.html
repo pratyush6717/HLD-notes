@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spring Boot - Notes</title>
+    <style>
+      :root {
+        --primary-color: #2563eb;
+        --hover-color: #1d4ed8;
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+      }
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        margin: 0;
+        padding: 2rem 1rem;
+        line-height: 1.5;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: var(--card-bg);
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+      .header-area {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 1rem;
+      }
+      h1 {
+        color: var(--text-main);
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+      }
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background-color: var(--bg-color);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        color: var(--text-main);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+      .back-btn:hover {
+        background-color: var(--border-color);
+        transform: translateX(-4px);
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+      }
+      li { margin: 0; }
+      a.topic-link {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.25rem;
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-main);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease-in-out;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      a.topic-link:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        transform: translateY(-2px);
+        color: var(--primary-color);
+      }
+      .number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background-color: #eff6ff;
+        color: var(--primary-color);
+        border-radius: 50%;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-right: 1rem;
+        flex-shrink: 0;
+      }
+      .featured-link {
+        grid-column: 1 / -1;
+        margin-bottom: 1rem;
+      }
+      .featured-link a {
+        background-color: #f0fdf4;
+        border-color: #bbf7d0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+      @media (max-width: 600px) {
+        ul { grid-template-columns: 1fr; }
+        .container { padding: 1.5rem; }
+        .header-area { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-area">
+        <h1>Spring Boot Notes</h1>
+        <a href="index.html" class="back-btn">← Back to Dashboard</a>
+      </div>
+
+      <ul>
+        <li class="featured-link">
+          <a class="topic-link" href="SpringBoot/springboot_complete_notes.html">
+            <span class="number" style="background-color: #dcfce7; color: #166534">🍃</span>
+            <strong>Complete Spring Boot Revision Notes</strong> (All Topics Combined)
+          </a>
+        </li>
+        <li>
+          <a class="topic-link" href="SpringBoot/01. Spring boot Introduction/transcript.html"
+            ><span class="number">01</span> Spring boot Introduction</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/02. Spring boot Project Setup and Layered Architecture/transcript.html"
+            ><span class="number">02</span> Project Setup &amp; Architecture</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="SpringBoot/03. Maven and its Lifecycle/transcript.html"
+            ><span class="number">03</span> Maven &amp; its Lifecycle</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/04. Spring boot Controller Layer Annotations/transcript.html"
+            ><span class="number">04</span> Controller Annotations</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/05. Spring boot Bean and its Lifecycle - Inversion of Control/transcript.html"
+            ><span class="number">05</span> Bean &amp; Lifecycle (IoC)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="SpringBoot/06. Dependency Injection/transcript.html"
+            ><span class="number">06</span> Dependency Injection</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/07. Bean Scopes - Singleton, Prototype, Request and Session Bean Scope/transcript.html"
+            ><span class="number">07</span> Bean Scopes</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/08. Spring boot- Dynamically Initialized Beans - Value Annotation/transcript.html"
+            ><span class="number">08</span> @Value Annotation</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/09. Spring boot @ConditionalOnProperty Annotation/transcript.html"
+            ><span class="number">09</span> @ConditionalOnProperty</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/10. Spring boot Profiling and @Profile Annotation/transcript.html"
+            ><span class="number">10</span> Spring Profiling</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/11. Spring boot AOP (Aspect Oriented Programming)/transcript.html"
+            ><span class="number">11</span> Spring Boot AOP</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/12. Spring boot @Transactional Annotation - Part1/transcript.html"
+            ><span class="number">12</span> @Transactional - Part 1</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/13. @Transactional Part-2 - Declarative, Programmatic Approach & Propagation Types/transcript.html"
+            ><span class="number">13</span> @Transactional - Part 2</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/14. @Transactional Annotation - Part3 - Isolation Level and its different Types/transcript.html"
+            ><span class="number">14</span> @Transactional - Part 3</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/15. Spring boot @Async Annotation - Part1 - ThreadPoolExecutor/transcript.html"
+            ><span class="number">15</span> @Async Annotation - Part 1</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/16. @Async Annotation - Important Interview questions/transcript.html"
+            ><span class="number">16</span> @Async Interview Qs</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/17. Spring boot- Custom Interceptors/transcript.html"
+            ><span class="number">17</span> Custom Interceptors</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/18. Spring boot- Filters Vs Interceptors/transcript.html"
+            ><span class="number">18</span> Filters Vs Interceptors</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="SpringBoot/19. HATEOAS for REST APIs/transcript.html"
+            ><span class="number">19</span> HATEOAS for REST APIs</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/20. ResponseEntity & Response Codes - 1xx, 2xx, 3xx, 4xx and 5xx Return Codes/transcript.html"
+            ><span class="number">20</span> ResponseEntity &amp; Response Codes</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/21. Spring boot Exception Handling/transcript.html"
+            ><span class="number">21</span> Exception Handling</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="SpringBoot/22. Spring boot - JPA (Part-1)/transcript.html"
+            ><span class="number">22</span> Spring Boot JPA - Part 1</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/23. Spring boot- JPA - JPA Setup, Architecture and Entity Lifecycle/transcript.html"
+            ><span class="number">23</span> JPA Architecture &amp; Lifecycle</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/24. Spring boot- JPA - First Level Caching/transcript.html"
+            ><span class="number">24</span> JPA First Level Caching</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/25. Spring boot- JPA - Second Level Caching/transcript.html"
+            ><span class="number">25</span> JPA Second Level Caching</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/26. Spring boot- JPA - Map DTO to Table/transcript.html"
+            ><span class="number">26</span> Map DTO to Table</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/27. Spring boot- JPA - OneToOne Mapping Unidirectional and Bidirectional/transcript.html"
+            ><span class="number">27</span> OneToOne Mapping</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/28. Spring boot- JPA - OneToMany, ManyToOne and ManyToMany/transcript.html"
+            ><span class="number">28</span> Many-to-Many &amp; other Mappings</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/29. Spring boot- JPA - JPQL, Derived Query, N+1 Problem, Joins, Pagination/transcript.html"
+            ><span class="number">29</span> JPQL &amp; N+1 Problem</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/30. Spring boot- JPA - Native Query and Criteria API/transcript.html"
+            ><span class="number">30</span> Native Query &amp; Criteria API</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/31. Spring boot- JPA - Specification API/transcript.html"
+            ><span class="number">31</span> Specification API</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/32. Attacks with Demo - Spring Security - CSRF, CORS, XSS, SQL Injection/transcript.html"
+            ><span class="number">32</span> Security Attacks &amp; Demos</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/33. Spring Boot Security - Part1 - Architecture/transcript.html"
+            ><span class="number">33</span> Security Architecture</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/34. Spring Boot Security - Part2 - User Creation and Storing Username and Password/transcript.html"
+            ><span class="number">34</span> User Creation &amp; Storage</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/35. Spring Boot Security - Part3 - Form Based Authentication/transcript.html"
+            ><span class="number">35</span> Form Based Authentication</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/36. Spring Boot Security - Part4 - Basic Authentication/transcript.html"
+            ><span class="number">36</span> Basic Authentication</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/37. Spring Boot Security - What is JWT and its Structure/transcript.html"
+            ><span class="number">37</span> what is JWT?</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/38. Spring Boot Security - JWT Authentication Implementation/transcript.html"
+            ><span class="number">38</span> JWT Implementation</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="SpringBoot/39. What is OAuth 2.0- Explained/transcript.html"
+            ><span class="number">39</span> OAuth 2.0 Explained</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/40. Spring Boot Security - OAUTH2 Authentication Implementation/transcript.html"
+            ><span class="number">40</span> OAuth2 Implementation</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/41. Spring Boot Security - Method Security - Role based Authorization/transcript.html"
+            ><span class="number">41</span> Method Security &amp; Roles</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/42. RestTemplate - Communication between Microservices/transcript.html"
+            ><span class="number">42</span> RestTemplate</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/43. RestClient - Communication between Microservices/transcript.html"
+            ><span class="number">43</span> RestClient</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/44. FeignClient in Spring Boot Microservices - Declarative HTTP Client/transcript.html"
+            ><span class="number">44</span> FeignClient</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/45. Service Discovery and its Implementation/transcript.html"
+            ><span class="number">45</span> Service Discovery</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/46. Client Side Load Balancer and its Implementation/transcript.html"
+            ><span class="number">46</span> Load Balancer</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="SpringBoot/47. Rate Limiter/transcript.html"
+            ><span class="number">47</span> Rate Limiter</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="SpringBoot/48. Bulkhead Pattern/transcript.html"
+            ><span class="number">48</span> Bulkhead Pattern</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="SpringBoot/49. Retry Pattern/transcript.html"
+            ><span class="number">49</span> Retry Pattern</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="SpringBoot/50. Circuit Breaker/transcript.html"
+            ><span class="number">50</span> Circuit Breaker</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/51. ApiGateway in Microservices - Part1 - Routing and Load Balancing/transcript.html"
+            ><span class="number">51</span> API Gateway - Part 1</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/52. ApiGateway in Microservices - Part2 - Authentication JWT, Circuit Breaker etc/transcript.html"
+            ><span class="number">52</span> API Gateway - Part 2</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="SpringBoot/53. Central Configuration/transcript.html"
+            ><span class="number">53</span> Central Configuration</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="SpringBoot/54. Actuator/transcript.html"
+            ><span class="number">54</span> Spring Boot Actuator</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="SpringBoot/55. ConfigurationProperties in-depth/transcript.html"
+            ><span class="number">55</span> @ConfigurationProperties</a
+          >
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

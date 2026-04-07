@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Low-Level Design (LLD) - Notes</title>
+    <style>
+      :root {
+        --primary-color: #2563eb;
+        --hover-color: #1d4ed8;
+        --bg-color: #f8fafc;
+        --card-bg: #ffffff;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+      }
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        margin: 0;
+        padding: 2rem 1rem;
+        line-height: 1.5;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: var(--card-bg);
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+      .header-area {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 1rem;
+      }
+      h1 {
+        color: var(--text-main);
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+      }
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background-color: var(--bg-color);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        color: var(--text-main);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+      .back-btn:hover {
+        background-color: var(--border-color);
+        transform: translateX(-4px);
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+      }
+      li { margin: 0; }
+      a.topic-link {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.25rem;
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        color: var(--text-main);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease-in-out;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      a.topic-link:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        transform: translateY(-2px);
+        color: var(--primary-color);
+      }
+      .number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background-color: #eff6ff;
+        color: var(--primary-color);
+        border-radius: 50%;
+        font-size: 0.875rem;
+        font-weight: 600;
+        margin-right: 1rem;
+        flex-shrink: 0;
+      }
+      @media (max-width: 600px) {
+        ul { grid-template-columns: 1fr; }
+        .container { padding: 1.5rem; }
+        .header-area { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-area">
+        <h1>Low-Level Design</h1>
+        <a href="index.html" class="back-btn">← Back to Dashboard</a>
+      </div>
+
+      <ul>
+        <li>
+          <a class="topic-link" href="LLD/0.Coding Intution/coding-notes.html"
+            ><span class="number">0</span> Coding Intuition</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/1.What is LLD/lld_intro_notes.html"
+            ><span class="number">1</span> What is LLD</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/2.SOLID principals/solid_principles_notes.html"
+            ><span class="number">2</span> SOLID principals</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/3.LSP/lsp_deep_dive.html"
+            ><span class="number">3</span> LSP</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/4. Strategy Design Pattern (Behavioral Pattern)/strategy_pattern_notes.html"
+            ><span class="number">4</span> Strategy Design Pattern (Behavioral
+            Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/5. Observer Pattern (Behavioral Pattern)/observer_pattern_notes.html"
+            ><span class="number">5</span> Observer Pattern (Behavioral
+            Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/6. Decorator Design Pattern (Structural Design Pattern)/decorator_pattern_notes.html"
+            ><span class="number">6</span> Decorator Design Pattern (Structural
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/7. Factory & Abstract Factory pattern (Creational Design Pattern)/factory_patterns_notes.html"
+            ><span class="number">7</span> Factory & Abstract Factory pattern
+            (Creational Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/8. Design Parking Lot (English Dubbed)/transcript.html"
+            ><span class="number">8</span> Design Parking Lot</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/9. Design Tic-Tac-Toe Game/transcript.html"
+            ><span class="number">9</span> Design Tic-Tac-Toe Game</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/10. LLD of Elevator System/transcript.html"
+            ><span class="number">10</span> LLD of Elevator System</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/11. LLD of Car Rental System/transcript.html"
+            ><span class="number">11</span> LLD of Car Rental System</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/12. Chain Of Responsibility Design Pattern (Behavioral Design Pattern)/chain_of_responsibility_notes.html"
+            ><span class="number">12</span> Chain Of Responsibility Design
+            Pattern (Behavioral Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/13. LLD of Snake n Ladder Game/transcript.html"
+            ><span class="number">13</span> LLD of Snake n Ladder Game</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/14. Proxy Design Pattern (Structural Pattern)/proxy_pattern_notes.html"
+            ><span class="number">14</span> Proxy Design Pattern (Structural
+            Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/15. LLD of BookMyShow  Design Movie Ticket Booking App/transcript.html"
+            ><span class="number">15</span> LLD of BookMyShow</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/16. Null Object Design Pattern (Behavioral Pattern)/null_object_pattern_notes.html"
+            ><span class="number">16</span> Null Object Design Pattern
+            (Behavioral Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/17. State Design Pattern (Behavioral)  Design Vending Machine/transcript.html"
+            ><span class="number">17</span> State Design Pattern (Vending
+            Machine)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/18. LLD of ATM/transcript.html"
+            ><span class="number">18</span> LLD of ATM</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/19. Composite Pattern (Structural Design Pattern)/composite_pattern_notes.html"
+            ><span class="number">19</span> Composite Pattern (Structural Design
+            Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/20. Adapter Pattern (Structural Design Pattern)/adapter_pattern_notes.html"
+            ><span class="number">20</span> Adapter Pattern (Structural Design
+            Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/21. LLD of Splitwise/transcript.html"
+            ><span class="number">21</span> LLD of Splitwise</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/22. Builder Design Pattern (Creational Design Pattern)/builder_pattern_notes.html"
+            ><span class="number">22</span> Builder Design Pattern (Creational
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/23. LLD of Cricbuzz/transcript.html"
+            ><span class="number">23</span> LLD of Cricbuzz</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/24. Facade Design Pattern (Structural Design Pattern)/facade_pattern_notes.html"
+            ><span class="number">24</span> Facade Design Pattern (Structural
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/25. Bridge Design Pattern (Structural Design Pattern)/bridge_pattern_notes.html"
+            ><span class="number">25</span> Bridge Design Pattern (Structural
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/26. LLD of Inventory Management System/transcript.html"
+            ><span class="number">26</span> LLD of Inventory Management System</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/27. Flyweight Design Pattern (Structural Design Pattern)/flyweight_pattern_notes.html"
+            ><span class="number">27</span> Flyweight Design Pattern (Structural
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/28. Command Design Pattern (Behavioral Design Pattern)/command_pattern_notes.html"
+            ><span class="number">28</span> Command Design Pattern (Behavioral
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/29. Iterator Design Pattern (Behavioral Design Pattern)/iterator_pattern_notes.html"
+            ><span class="number">29</span> Iterator Design Pattern (Behavioral
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/30. Mediator Design Pattern (Behavioral Design Pattern)/mediator_pattern_notes.html"
+            ><span class="number">30</span> Mediator Design Pattern (Behavioral
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/31. LLD of Apply Coupons on Shopping Cart Products/transcript.html"
+            ><span class="number">31</span> LLD of Apply Coupons</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/32. Visitor Design Pattern (Behavioral Design Pattern)/visitor_pattern_notes.html"
+            ><span class="number">32</span> Visitor Design Pattern (Behavioral
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/33. MVC Design Pattern/mvc_notes.html"
+            ><span class="number">33</span> MVC Design Pattern</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/34. Memento Design Pattern (Behavioral Design Pattern)/memento_pattern_notes.html"
+            ><span class="number">34</span> Memento Design Pattern (Behavioral
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/35. Template Method Design Pattern (Behavioral Design Pattern)/template_method_pattern_notes.html"
+            ><span class="number">35</span> Template Method Design Pattern
+            (Behavioral Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/36. Interpreter Pattern (Behavioral Design Pattern)/interpreter_pattern_notes.html"
+            ><span class="number">36</span> Interpreter Pattern (Behavioral
+            Design Pattern)</a
+          >
+        </li>
+        <li>
+          <a class="topic-link" href="LLD/37. LLD of Payment Gateway/transcript.html"
+            ><span class="number">37</span> LLD of Payment Gateway</a
+          >
+        </li>
+        <li>
+          <a class="topic-link"
+            href="LLD/38. Object Pool Design Pattern (Creational Design Pattern)/object_pool_pattern_notes.html"
+            ><span class="number">38</span> Object Pool Design Pattern
+            (Creational Design Pattern)</a
+          >
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
