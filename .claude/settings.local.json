@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -1d /c/Users/praty/Coding/HLD-notes/HLD/*/)",
+      "Bash(ls -1d /c/Users/praty/Coding/HLD-notes/JAVA/*/)",
+      "Bash(ls -1d /c/Users/praty/Coding/HLD-notes/LLD/*/)",
+      "Bash(ls -1d /c/Users/praty/Coding/HLD-notes/SpringBoot/*/)"
+    ]
+  }
+}

@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Revision Notes — HLD · LLD · Java · Spring Boot</title>
+  <style>
+    :root {
+      --primary:#6366f1;--secondary:#a855f7;
+      --bg-dark:#0f172a;--card-bg:#1e293b;--card-hover:#263248;
+      --text-main:#f8fafc;--text-muted:#94a3b8;--text-dim:#64748b;
+      --accent-hld:#3b82f6;--accent-lld:#10b981;--accent-java:#f59e0b;--accent-sb:#22c55e;
+      --border:rgba(255,255,255,0.08);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg-dark);color:var(--text-main);min-height:100vh}
+    /* HEADER */
+    .page-header{text-align:center;padding:2.5rem 1rem 1rem;background:linear-gradient(180deg,rgba(99,102,241,.15) 0%,transparent 100%)}
+    .page-header h1{font-size:2.2rem;font-weight:800;background:linear-gradient(to right,#6366f1,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.4rem}
+    .page-header p{color:var(--text-muted);font-size:.95rem}
+    /* SEARCH */
+    .search-bar{display:flex;justify-content:center;padding:1rem;position:sticky;top:0;z-index:100;background:rgba(15,23,42,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+    .search-bar input{width:100%;max-width:560px;padding:.6rem 1rem;border-radius:12px;border:1px solid var(--border);background:#1e293b;color:var(--text-main);font-size:.95rem;outline:none}
+    .search-bar input:focus{border-color:var(--primary)}
+    /* TABS */
+    .tabs{display:flex;justify-content:center;gap:.5rem;padding:.8rem 1rem;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+    .tab{padding:.45rem 1.2rem;border-radius:20px;cursor:pointer;font-size:.85rem;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text-muted);transition:all .2s}
+    .tab.active,.tab:hover{color:#fff}
+    .tab[data-tab="all"].active{background:var(--primary);border-color:var(--primary)}
+    .tab[data-tab="hld"].active{background:var(--accent-hld);border-color:var(--accent-hld)}
+    .tab[data-tab="lld"].active{background:var(--accent-lld);border-color:var(--accent-lld)}
+    .tab[data-tab="java"].active{background:var(--accent-java);border-color:var(--accent-java)}
+    .tab[data-tab="sb"].active{background:var(--accent-sb);border-color:var(--accent-sb)}
+    /* STATS */
+    .stats{display:flex;justify-content:center;gap:1.5rem;padding:.6rem 1rem;flex-wrap:wrap}
+    .stat-pill{font-size:.78rem;padding:.25rem .8rem;border-radius:20px;font-weight:600}
+    .stat-pill.hld{background:rgba(59,130,246,.2);color:var(--accent-hld)}
+    .stat-pill.lld{background:rgba(16,185,129,.2);color:var(--accent-lld)}
+    .stat-pill.java{background:rgba(245,158,11,.2);color:var(--accent-java)}
+    .stat-pill.sb{background:rgba(34,197,94,.2);color:var(--accent-sb)}
+    /* SECTIONS */
+    .section{padding:1rem 1.5rem 2rem;display:none}
+    .section.visible{display:block}
+    .section-title{font-size:1.3rem;font-weight:700;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:.6rem}
+    /* GRID */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem}
+    /* TOPIC CARD */
+    .topic-card{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:1rem 1.1rem;transition:all .2s;position:relative}
+    .topic-card:hover{background:var(--card-hover);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+    .topic-card.done{opacity:.5}
+    .card-top{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.6rem}
+    .card-num{font-size:.7rem;color:var(--text-dim);font-weight:700;padding:.2rem .5rem;background:rgba(255,255,255,.06);border-radius:6px;white-space:nowrap;margin-top:.1rem}
+    .card-title{font-size:.92rem;font-weight:700;color:var(--text-main);line-height:1.3;flex:1}
+    .check{width:18px;height:18px;border-radius:50%;border:2px solid var(--text-dim);cursor:pointer;flex-shrink:0;margin-top:.1rem;transition:all .2s;display:flex;align-items:center;justify-content:center}
+    .check.checked{background:var(--primary);border-color:var(--primary)}
+    .check.checked::after{content:'✓';font-size:.65rem;color:#fff}
+    .topic-card ul{list-style:none;padding:0}
+    .topic-card ul li{font-size:.8rem;color:var(--text-muted);padding:.2rem 0 .2rem .8rem;border-left:2px solid rgba(255,255,255,.07);margin-bottom:.18rem;line-height:1.4}
+    .topic-card ul li strong{color:#c4b5fd;font-weight:600}
+    .topic-card ul li code{background:rgba(255,255,255,.08);padding:.05rem .3rem;border-radius:4px;font-family:monospace;font-size:.75rem;color:#a5f3fc}
+    .card-link{display:inline-block;margin-top:.6rem;font-size:.72rem;color:var(--primary);text-decoration:none;opacity:.7}
+    .card-link:hover{opacity:1}
+    .tag{display:inline-block;font-size:.65rem;padding:.1rem .45rem;border-radius:10px;font-weight:700;margin-bottom:.4rem}
+    .tag.hld{background:rgba(59,130,246,.15);color:var(--accent-hld)}
+    .tag.lld{background:rgba(16,185,129,.15);color:var(--accent-lld)}
+    .tag.java{background:rgba(245,158,11,.15);color:var(--accent-java)}
+    .tag.sb{background:rgba(34,197,94,.15);color:var(--accent-sb)}
+    /* NO RESULTS */
+    .no-results{text-align:center;padding:3rem;color:var(--text-dim);display:none}
+    .no-results.visible{display:block}
+    /* PROGRESS BAR */
+    .progress-bar{height:3px;background:var(--primary);width:0%;transition:width .4s;position:fixed;top:0;left:0;z-index:200}
+    /* BACK BTN */
+    .back-btn{display:inline-block;margin:.8rem 1.5rem;font-size:.82rem;color:var(--text-muted);text-decoration:none;border:1px solid var(--border);padding:.3rem .9rem;border-radius:8px}
+    .back-btn:hover{color:var(--text-main)}
+  </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<a href="index.html" class="back-btn">← Dashboard</a>
+
+<div class="page-header">
+  <h1>Daily Revision Notes</h1>
+  <p>182 topics · HLD · LLD · Java · Spring Boot — scan daily to keep concepts fresh</p>
+</div>
+
+<div class="stats">
+  <span class="stat-pill hld">HLD: 37 topics</span>
+  <span class="stat-pill lld">LLD: 39 topics</span>
+  <span class="stat-pill java">Java: 51 topics</span>
+  <span class="stat-pill sb">Spring Boot: 55 topics</span>
+</div>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Search any topic or concept..."/>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-tab="all">All</button>
+  <button class="tab" data-tab="hld">HLD</button>
+  <button class="tab" data-tab="lld">LLD</button>
+  <button class="tab" data-tab="java">Java</button>
+  <button class="tab" data-tab="sb">Spring Boot</button>
+</div>
+
+<div class="no-results" id="noResults">No topics found. Try a different search.</div>
+
+<!-- ═══════════════════════════════ HLD ═══════════════════════════════ -->
+<div class="section visible" id="sec-all">
+<div class="section visible" id="sec-hld">
+<h2 class="section-title"><span style="color:var(--accent-hld)">■</span> High-Level Design</h2>
+<div class="grid" id="grid-hld">
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 1</span><span class="card-title">Network Protocols</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>OSI 7 layers:</strong> Physical → Data Link → Network → Transport → Session → Presentation → Application</li>
+    <li><strong>TCP:</strong> reliable, ordered, 3-way handshake (SYN→SYN-ACK→ACK); <strong>UDP:</strong> fast, unreliable, connectionless</li>
+    <li><strong>HTTP/1.1:</strong> persistent conn; <strong>HTTP/2:</strong> multiplexing, header compression; <strong>HTTP/3:</strong> QUIC (UDP-based)</li>
+    <li><strong>TLS:</strong> asymmetric handshake → negotiate symmetric session key → encrypt traffic</li>
+    <li>Use TCP for reliability (web, email); UDP for speed (gaming, video, DNS)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 2</span><span class="card-title">CAP Theorem</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Only 2 of 3 guaranteed: <strong>C</strong>onsistency, <strong>A</strong>vailability, <strong>P</strong>artition Tolerance</li>
+    <li>Network partitions always happen → must choose C or A</li>
+    <li><strong>CP:</strong> MongoDB, ZooKeeper, HBase — consistent, may be unavailable during partition</li>
+    <li><strong>AP:</strong> Cassandra, DynamoDB, CouchDB — always available, eventually consistent</li>
+    <li><strong>PACELC:</strong> extends CAP → adds Latency vs Consistency tradeoff when no partition</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 3</span><span class="card-title">Microservices</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>vs Monolith:</strong> Monolith = single deploy unit; Microservices = independent services with own DBs</li>
+    <li><strong>Pros:</strong> independent deploy, scale, tech diversity, fault isolation</li>
+    <li><strong>Cons:</strong> network latency, distributed tracing, eventual consistency, complex ops</li>
+    <li><strong>Sync comm:</strong> REST/gRPC; <strong>Async comm:</strong> Kafka/RabbitMQ (decoupled)</li>
+    <li>Each service owns its DB — no shared database</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 4</span><span class="card-title">Microservices Patterns</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Saga:</strong> distributed txn via chain of local transactions + compensating txns on failure</li>
+    <li><strong>CQRS:</strong> separate read model and write model</li>
+    <li><strong>Event Sourcing:</strong> store events, not current state; rebuild state by replaying events</li>
+    <li><strong>Outbox Pattern:</strong> write to DB + outbox table atomically; relay publishes to Kafka</li>
+    <li><strong>Strangler Fig:</strong> gradually replace monolith by routing traffic to new microservices</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 5</span><span class="card-title">Scaling (0 to 1M Users)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Vertical:</strong> bigger machine (SPOF, limits); <strong>Horizontal:</strong> more machines (need LB + stateless)</li>
+    <li>Read scaling: read replicas; Write scaling: sharding (partition by key)</li>
+    <li>CDN for static assets; Redis cache to reduce DB load</li>
+    <li>Stateless app servers → store session in Redis, not server memory</li>
+    <li>Async jobs for heavy tasks (email, reports) → message queue</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 6</span><span class="card-title">Consistent Hashing</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Hash ring: servers placed at hash positions; request → nearest clockwise server</li>
+    <li><strong>Virtual nodes:</strong> each server has multiple ring positions → balanced load distribution</li>
+    <li>Adding/removing server → only K/N keys remapped (vs all keys in naive hashing)</li>
+    <li>Used by: Cassandra, DynamoDB, Memcached, Chord DHT</li>
+    <li>Benefits: minimal key movement on topology changes</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 7</span><span class="card-title">Back-of-Envelope Estimation</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Storage:</strong> char=1B, int=4B, long=8B, UUID=16B, image=~300KB, video=~10MB/min</li>
+    <li><strong>Throughput:</strong> 1Gbps=125MB/s; 10K QPS × 1KB = 10MB/s traffic</li>
+    <li><strong>Latency:</strong> L1=1ns, RAM=100ns, SSD=100μs, Network=1-10ms, HDD=10ms</li>
+    <li>Peak QPS ≈ 2-3× average; 10M DAU → ~116 QPS average</li>
+    <li>1 day = 86,400s ≈ 100K; 1 month = 2.5M; 1 year = 30M seconds</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 8</span><span class="card-title">SQL vs NoSQL</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>SQL:</strong> ACID, schema-fixed, joins, vertical scale (PostgreSQL, MySQL)</li>
+    <li><strong>NoSQL types:</strong> Document (MongoDB), Key-Value (Redis/DynamoDB), Column (Cassandra), Graph (Neo4j)</li>
+    <li><strong>BASE:</strong> Basically Available, Soft state, Eventual consistency</li>
+    <li>Use SQL: financial, relational, complex queries; Use NoSQL: unstructured, high velocity, massive scale</li>
+    <li>NoSQL: horizontal scale, flexible schema, partition-friendly</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 9</span><span class="card-title">Idempotent API</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Same request N times = same result (no side effects on repeat)</li>
+    <li><strong>Idempotent by default:</strong> GET, PUT, DELETE; <strong>Not idempotent:</strong> POST</li>
+    <li>Make POST idempotent: client sends <code>Idempotency-Key</code> header</li>
+    <li>Server stores key→result in DB; if key seen before, return cached result</li>
+    <li>Critical for payment APIs, order creation to prevent duplicate charges</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 10</span><span class="card-title">High Availability</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>99.9% = 8.7h downtime/yr; 99.99% = 52min; 99.999% = 5min</li>
+    <li><strong>Active-Passive:</strong> standby takes over on failure; <strong>Active-Active:</strong> both serve traffic</li>
+    <li>Replication: leader-follower or multi-leader; avoid SPOF at every layer</li>
+    <li>Health checks + auto-failover (LB marks unhealthy, stops routing)</li>
+    <li>Geographic distribution for disaster recovery</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 11</span><span class="card-title">Kafka (Distributed Messaging Queue)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Topic → Partitions → Offsets;</strong> consumer tracks its own offset</li>
+    <li>Producer → Broker cluster → Consumer Groups (each partition → one consumer per group)</li>
+    <li>Messages retained for configurable time (not deleted on consume)</li>
+    <li><strong>Guarantees:</strong> at-least-once (default), exactly-once (transactions), at-most-once</li>
+    <li>Use cases: event streaming, log aggregation, decoupling, CDC</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 12</span><span class="card-title">Proxy vs Reverse Proxy</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Forward Proxy:</strong> sits in front of clients; hides client IP (VPN, content filtering)</li>
+    <li><strong>Reverse Proxy:</strong> sits in front of servers; hides servers (Nginx, HAProxy)</li>
+    <li>Reverse proxy features: load balancing, SSL termination, caching, compression, A/B testing</li>
+    <li>Clients see one IP; reverse proxy routes internally to many servers</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 13</span><span class="card-title">Load Balancer Algorithms</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Round Robin:</strong> rotate equally; <strong>Weighted:</strong> by server capacity</li>
+    <li><strong>Least Connections:</strong> route to server with fewest active connections</li>
+    <li><strong>IP Hash:</strong> same client → same server (session affinity/sticky sessions)</li>
+    <li><strong>L4 (transport):</strong> route by IP/port; <strong>L7 (application):</strong> route by URL, headers, content</li>
+    <li>Health checks: remove unhealthy backends from rotation</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 14</span><span class="card-title">Distributed Cache & Strategy</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Cache-Aside (Lazy):</strong> app checks cache → miss → DB → populate cache</li>
+    <li><strong>Write-Through:</strong> write cache + DB together; consistent but slower writes</li>
+    <li><strong>Write-Behind:</strong> write cache; async write to DB; risk of data loss</li>
+    <li><strong>Eviction:</strong> LRU (least recently used), LFU (least frequently used), TTL</li>
+    <li><strong>Redis:</strong> single-threaded, in-memory, pub/sub, persistence (RDB snapshots / AOF log)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 15</span><span class="card-title">Distributed Transactions</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>2PC:</strong> prepare → commit; coordinator failure = blocking; not suitable for microservices</li>
+    <li><strong>Saga (Choreography):</strong> each service emits event; next service listens; compensate on failure</li>
+    <li><strong>Saga (Orchestration):</strong> central orchestrator tells each service what to do</li>
+    <li><strong>Outbox Pattern:</strong> write to DB + outbox atomically; relay (CDC/Debezium) publishes to Kafka</li>
+    <li>Eventual consistency is the practical answer for microservices</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 16</span><span class="card-title">Database Indexing</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>B-Tree:</strong> balanced, good for range queries; default in most DBs</li>
+    <li><strong>Hash index:</strong> exact match only, O(1); no range queries</li>
+    <li><strong>Composite index (a,b,c):</strong> usable for queries on (a), (a,b), (a,b,c) — leftmost prefix rule</li>
+    <li><strong>Covering index:</strong> all columns in index → no table lookup needed</li>
+    <li>Over-indexing slows writes + increases storage; index selectively</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 17</span><span class="card-title">Concurrency Control (Distributed)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Optimistic:</strong> no lock; check version before commit; good for low-conflict</li>
+    <li><strong>Pessimistic:</strong> lock before access; good for high-conflict; risk of deadlock</li>
+    <li><strong>MVCC:</strong> readers don't block writers; each txn sees snapshot (PostgreSQL, MySQL InnoDB)</li>
+    <li><strong>Vector clocks:</strong> track causality in distributed systems; detect concurrent writes</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 18</span><span class="card-title">Two Phase Locking (2PL)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Growing phase:</strong> acquire locks only (no releases)</li>
+    <li><strong>Shrinking phase:</strong> release locks only (no new acquires)</li>
+    <li><strong>Strict 2PL:</strong> hold all locks until transaction commits/aborts</li>
+    <li>Prevents dirty reads + non-repeatable reads; but can cause deadlocks</li>
+    <li>Deadlock prevention: timeout, wait-die, wound-wait schemes</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 19</span><span class="card-title">OAuth 2.0</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Auth Code Flow:</strong> most secure; for web apps with backend server</li>
+    <li><strong>Client Credentials:</strong> machine-to-machine; no user involved</li>
+    <li><strong>PKCE:</strong> for mobile/SPA (proof key for code exchange); prevents code interception</li>
+    <li><strong>OAuth = Authorization;</strong> OpenID Connect = Authentication (adds ID token)</li>
+    <li>Implicit flow deprecated; never put tokens in URL</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 20</span><span class="card-title">Encryption (Symmetric & Asymmetric)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Symmetric (AES):</strong> same key for encrypt/decrypt; fast; key distribution problem</li>
+    <li><strong>Asymmetric (RSA):</strong> public key encrypts, private key decrypts; slow</li>
+    <li><strong>TLS:</strong> asymmetric handshake → agree on symmetric session key → encrypt with AES</li>
+    <li><strong>Hashing:</strong> one-way, no key (SHA-256); bcrypt/Argon2 for passwords (with salt)</li>
+    <li>Digital signature: sign with private key, verify with public key</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 21</span><span class="card-title">JWT (JSON Web Token)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Structure:</strong> <code>header.payload.signature</code> (each Base64URL encoded)</li>
+    <li>Signed with secret (HS256) or RSA private key (RS256); anyone can verify with public key</li>
+    <li><strong>Stateless:</strong> server doesn't store sessions; any server can verify</li>
+    <li><strong>Downside:</strong> can't invalidate before expiry → use short-lived access + refresh token</li>
+    <li>Claims: <code>iss, sub, exp, iat, aud</code>; never put passwords in payload</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 22</span><span class="card-title">Thundering Herd Problem</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Many clients request same resource simultaneously (cache expires / server restarts)</li>
+    <li><strong>Mutex/lock:</strong> only one thread queries DB; others wait for result</li>
+    <li><strong>Probabilistic early expiry:</strong> randomly refresh before actual TTL expires</li>
+    <li><strong>Jitter on TTL:</strong> add random offset so caches don't expire simultaneously</li>
+    <li><strong>Cache warming:</strong> pre-populate cache before expected spike</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 23</span><span class="card-title">API Gateway</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Single entry point for all microservices</li>
+    <li>Features: auth, rate limiting, routing, load balancing, SSL termination, request aggregation</li>
+    <li><strong>BFF (Backend for Frontend):</strong> separate gateway per client type (mobile/web)</li>
+    <li>Examples: AWS API Gateway, Kong, Netflix Zuul, Spring Cloud Gateway</li>
+    <li>Logging, tracing, and monitoring at one place</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 24</span><span class="card-title">Service Mesh</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Dedicated infra layer for service-to-service communication</li>
+    <li><strong>Sidecar proxy (Envoy)</strong> injected alongside each service container</li>
+    <li>Features: load balancing, retries, circuit breaking, mTLS, distributed tracing</li>
+    <li><strong>Control plane (Istio):</strong> manages config; <strong>Data plane:</strong> handles actual traffic</li>
+    <li>Moves cross-cutting concerns out of application code</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 25</span><span class="card-title">How DNS Works</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Browser cache → OS cache → Recursive Resolver → Root NS → TLD NS → Authoritative NS</li>
+    <li><strong>Records:</strong> A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail), TXT (verification/SPF)</li>
+    <li>TTL determines how long records are cached by resolvers</li>
+    <li>DNS load balancing: multiple A records (round-robin); Geo DNS for routing by region</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 26</span><span class="card-title">Monolith to Microservices</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Strangler Fig:</strong> gradually route new functionality to microservices; coexist with monolith</li>
+    <li>Decompose by business capability or DDD bounded contexts</li>
+    <li><strong>Anti-corruption layer:</strong> translator between old and new models</li>
+    <li>Start with 2-pizza team rule: team should be fed by 2 pizzas = right service size</li>
+    <li>Avoid micro-monolith: too granular = chatty services, worse than monolith</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 27</span><span class="card-title">Security Attacks</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>SQL Injection:</strong> use prepared statements / parameterized queries</li>
+    <li><strong>XSS:</strong> encode output, Content-Security-Policy header, sanitize input</li>
+    <li><strong>CSRF:</strong> CSRF tokens, SameSite cookie attribute, check Origin/Referer header</li>
+    <li><strong>CORS:</strong> server sets <code>Access-Control-Allow-Origin</code>; browser enforces</li>
+    <li>HTTPS everywhere; input validation at boundaries; least privilege principle</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 28</span><span class="card-title">Dual Write Problem</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Writing to two systems (DB + Kafka) atomically is impossible without coordination</li>
+    <li><strong>Outbox Pattern:</strong> write to DB + outbox table in same transaction; relay picks up</li>
+    <li><strong>CDC (Change Data Capture):</strong> Debezium reads DB transaction log → publishes to Kafka</li>
+    <li>Never write to Kafka then DB (or vice versa) without outbox — risk of partial failure</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 29</span><span class="card-title">Service Discovery</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Client-side:</strong> client queries registry (Eureka), picks server, calls directly</li>
+    <li><strong>Server-side:</strong> load balancer queries registry, routes (AWS ALB + Route53)</li>
+    <li>Services self-register on startup; send heartbeats; deregister on shutdown</li>
+    <li>Registry removes instances that miss heartbeats</li>
+    <li>Examples: Eureka, Consul, etcd, ZooKeeper</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 30</span><span class="card-title">Rate Limiter Algorithms</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Token Bucket:</strong> tokens added at fixed rate; burst allowed up to bucket capacity</li>
+    <li><strong>Leaky Bucket:</strong> queue requests; process at fixed rate; overflow = drop</li>
+    <li><strong>Fixed Window:</strong> count per window; edge case: 2× traffic at window boundary</li>
+    <li><strong>Sliding Window Log:</strong> accurate, stores all timestamps; memory-intensive</li>
+    <li><strong>Sliding Window Counter:</strong> fixed window + weighted previous window; balanced</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 31</span><span class="card-title">Bulkhead Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Isolate failures to prevent cascading (like ship bulkhead compartments)</li>
+    <li><strong>Thread pool bulkhead:</strong> each downstream service gets dedicated thread pool</li>
+    <li><strong>Semaphore bulkhead:</strong> limit concurrent calls to a service</li>
+    <li>Prevents one slow service from exhausting all threads/resources</li>
+    <li>Combine with circuit breaker for full resilience</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 32</span><span class="card-title">Retry Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Retry failed requests: fixed delay, exponential backoff, jitter</li>
+    <li><strong>Exponential backoff:</strong> delay = base × 2^n + random jitter</li>
+    <li>Only retry idempotent operations (GET, PUT); not POST without idempotency key</li>
+    <li>Set max retries + max timeout to prevent infinite loops</li>
+    <li>Jitter prevents thundering herd on retry storms</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 33</span><span class="card-title">Circuit Breaker</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>CLOSED:</strong> normal; requests pass through; track failure rate</li>
+    <li><strong>OPEN:</strong> failure threshold exceeded; reject all requests immediately; return fallback</li>
+    <li><strong>HALF-OPEN:</strong> after timeout, let test requests through; if success → CLOSED, else → OPEN</li>
+    <li>Prevents cascading failures; gives failing service time to recover</li>
+    <li>Libraries: Resilience4j (Java), Polly (.NET), Hystrix (deprecated)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 34</span><span class="card-title">Design: URL Shortener</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Key generation: Base62(auto-increment ID) or first 7 chars of MD5 hash</li>
+    <li>Storage: DB (id, short_key, long_url, created_at) + Redis cache for hot URLs</li>
+    <li><strong>301</strong> (permanent, browser caches) vs <strong>302</strong> (temporary, always hits server)</li>
+    <li>Pre-generate keys with KGS (Key Generation Service) for high throughput</li>
+    <li>Expiry, analytics, custom alias as extensions</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 35</span><span class="card-title">Design: WhatsApp</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>WebSocket for persistent real-time connection; fallback to long-polling</li>
+    <li>Message queue per user; messages stored until delivered + acknowledged</li>
+    <li>Group messages: fanout-on-write (small groups) vs fanout-on-read (large groups)</li>
+    <li>E2E encryption: Signal Protocol (double ratchet algorithm)</li>
+    <li>Media: upload to object storage (S3), send CDN URL in message</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 36</span><span class="card-title">Design: Rate Limiter</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Centralized: Redis <code>INCR + EXPIRE</code> per user/IP per time window</li>
+    <li>Atomic with Lua script; sliding window via Redis Sorted Sets (<code>ZADD / ZCOUNT</code>)</li>
+    <li>Response headers: <code>X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset</code></li>
+    <li>Return 429 (Too Many Requests) with Retry-After header</li>
+    <li>Distribute across nodes: each node tracks locally + sync via Redis</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="hld">
+  <div class="card-top"><span class="card-num">HLD 37</span><span class="card-title">Design: Key-Value Store</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Consistent hashing for key distribution across nodes</li>
+    <li>Replication factor N; data replicated to N consecutive nodes on ring</li>
+    <li><strong>Quorum:</strong> W + R > N for strong consistency; W=1,R=1 for availability</li>
+    <li>Gossip protocol for failure detection and membership changes</li>
+    <li>Versioning with vector clocks; conflict resolution: last-write-wins or merge</li>
+  </ul>
+</div>
+
+</div><!-- grid-hld -->
+</div><!-- sec-hld -->
+
+<!-- ═══════════════════════════════ LLD ═══════════════════════════════ -->
+<div class="section visible" id="sec-lld">
+<h2 class="section-title"><span style="color:var(--accent-lld)">■</span> Low-Level Design</h2>
+<div class="grid" id="grid-lld">
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 1</span><span class="card-title">SOLID Principles</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>S</strong>ingle Responsibility: one class = one reason to change</li>
+    <li><strong>O</strong>pen/Closed: open for extension, closed for modification (use abstraction)</li>
+    <li><strong>L</strong>iskov Substitution: subclass must be usable wherever superclass is used</li>
+    <li><strong>I</strong>nterface Segregation: no client forced to depend on unused methods; prefer small interfaces</li>
+    <li><strong>D</strong>ependency Inversion: depend on abstractions (interfaces), not concretions</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 2</span><span class="card-title">Strategy Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Behavioral; define family of algorithms, encapsulate each, make interchangeable at runtime</li>
+    <li>Context holds reference to Strategy interface; swap strategy without changing Context</li>
+    <li>Example: <code>PaymentStrategy</code> (CreditCard/UPI/PayPal), <code>SortStrategy</code></li>
+    <li>Prefer over if-else/switch chains that grow with each new algorithm</li>
+    <li>Enables Open/Closed principle: add strategy without modifying context</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 3</span><span class="card-title">Observer Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Behavioral; one-to-many: Subject notifies all Observers on state change</li>
+    <li>Subject: <code>addObserver(), removeObserver(), notifyObservers()</code></li>
+    <li>Example: stock ticker, notification service, Java <code>EventListener</code></li>
+    <li>Push vs Pull model: push sends data; pull observer fetches from subject</li>
+    <li>Beware: memory leaks if observers not deregistered (weak references help)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 4</span><span class="card-title">Decorator Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Structural; add behavior to objects dynamically without subclassing</li>
+    <li>Wraps original object; implements same interface; chains decorators</li>
+    <li>Example: <code>Coffee → MilkDecorator → SugarDecorator</code>; Java I/O streams</li>
+    <li>Alternative to inheritance explosion (many feature combinations)</li>
+    <li>Each decorator adds one responsibility (SRP-friendly)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 5</span><span class="card-title">Factory & Abstract Factory</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Factory Method:</strong> subclass decides which object to create; encapsulates instantiation</li>
+    <li><strong>Abstract Factory:</strong> creates families of related objects without specifying concrete classes</li>
+    <li>Example: <code>ShapeFactory.create("CIRCLE")</code>; <code>UIFactory</code> → WindowsUI or MacUI</li>
+    <li>Hides <code>new</code> keyword; makes code open to extension</li>
+    <li>Use when: object creation logic is complex or varies by config/platform</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 6</span><span class="card-title">Parking Lot Design</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Classes: <code>ParkingLot, ParkingFloor, ParkingSpot, Vehicle, Ticket, Payment</code></li>
+    <li>Spot types: Compact, Large, Handicapped, Motorcycle</li>
+    <li>Strategy for spot assignment; observer for spot availability updates</li>
+    <li>Ticket holds: spot, vehicle, entry time; Payment calculates fee by duration</li>
+    <li>Singleton ParkingLot; concurrent access with locks on spots</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 7</span><span class="card-title">Chain of Responsibility</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Behavioral; pass request along handler chain; each handler decides to process or pass</li>
+    <li>Decouples sender from receivers; handler has reference to next handler</li>
+    <li>Example: Logger levels (DEBUG→INFO→ERROR), ATM cash dispenser, middleware</li>
+    <li>Request stops at first handler that handles it, OR passes through all</li>
+    <li>Easy to add/remove handlers without changing client</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 8</span><span class="card-title">Proxy Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Structural; placeholder/surrogate controls access to another object</li>
+    <li><strong>Virtual Proxy:</strong> lazy initialization (Hibernate lazy loading)</li>
+    <li><strong>Protection Proxy:</strong> access control (check permissions before forwarding)</li>
+    <li><strong>Caching Proxy:</strong> cache results of expensive operations</li>
+    <li><strong>Remote Proxy:</strong> represents object in different address space (RMI, gRPC stub)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 9</span><span class="card-title">State Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Behavioral; object changes behavior based on internal state</li>
+    <li>State interface; ConcreteState classes; Context delegates behavior to current state</li>
+    <li>Example: VendingMachine (IdleState, HasMoneyState, DispenseState, OutOfStockState)</li>
+    <li>Eliminates large if-else/switch for state-dependent behavior</li>
+    <li>States can transition to other states; Context unaware of specific state logic</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 10</span><span class="card-title">Composite Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Structural; tree structure; Leaf and Composite treated uniformly via Component interface</li>
+    <li>Component interface; Leaf (no children); Composite (has list of Components)</li>
+    <li>Example: FileSystem (File/Folder), UI component tree, org chart</li>
+    <li>Client calls same operation on leaf or composite transparently</li>
+    <li>Makes recursive tree operations simple and elegant</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 11</span><span class="card-title">Adapter Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Structural; convert one interface to another that client expects</li>
+    <li><strong>Object Adapter:</strong> wraps adaptee via composition (preferred)</li>
+    <li><strong>Class Adapter:</strong> extends adaptee (requires multiple inheritance)</li>
+    <li>Example: XML→JSON adapter, legacy payment adapter, Java <code>InputStreamReader</code></li>
+    <li>Use when: integrating incompatible legacy or third-party code</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 12</span><span class="card-title">Builder Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Creational; construct complex objects step by step; separate construction from representation</li>
+    <li>Builder interface; ConcreteBuilder; Director (optional); Product</li>
+    <li>Example: <code>Pizza.builder().size("L").cheese(true).build()</code></li>
+    <li>Solves telescoping constructor problem; makes optional params explicit</li>
+    <li>Lombok <code>@Builder</code> auto-generates builder for POJOs</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 13</span><span class="card-title">Facade Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Structural; simplified interface to complex subsystem; single entry point</li>
+    <li>Hides complexity of multiple classes behind one clean API</li>
+    <li>Example: <code>HomeTheatreFacade</code> (controls TV, Sound, Lights together)</li>
+    <li>Spring's <code>JdbcTemplate</code> is a facade over JDBC boilerplate</li>
+    <li>Does NOT prevent direct access to subsystem; just provides convenience</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 14</span><span class="card-title">Bridge Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Structural; decouple abstraction from implementation; both vary independently</li>
+    <li>Abstraction holds reference to Implementor interface</li>
+    <li>Example: <code>Shape</code> (abstraction) + <code>Color</code> (implementor); <code>Device + RemoteControl</code></li>
+    <li>Prevents Cartesian product of subclasses (e.g., RedCircle, BlueCircle, RedSquare...)</li>
+    <li>Use when both abstraction and implementation should be extensible</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 15</span><span class="card-title">Flyweight Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Structural; share common state among many fine-grained objects to reduce memory</li>
+    <li><strong>Intrinsic state:</strong> shared, stored in flyweight; <strong>Extrinsic state:</strong> unique, passed in by client</li>
+    <li>Example: character glyphs in text editor, trees in forest game</li>
+    <li>FlyweightFactory caches and reuses existing flyweights</li>
+    <li>Use when: many similar objects consume too much memory</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 16</span><span class="card-title">Command Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Behavioral; encapsulate request as object; supports undo/redo, queuing, logging</li>
+    <li>Command interface: <code>execute()</code> + <code>undo()</code>; Invoker; Receiver</li>
+    <li>Example: text editor undo/redo, remote control buttons, transaction log replay</li>
+    <li>Invoker doesn't know what Receiver does; just calls execute()</li>
+    <li>Macro commands: composite of multiple commands executed together</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 17</span><span class="card-title">Iterator Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Behavioral; sequential access to collection without exposing internal structure</li>
+    <li>Iterator: <code>hasNext(), next()</code>; Iterable: <code>iterator()</code></li>
+    <li>Java: <code>Iterable</code> + <code>Iterator</code>, enables enhanced for-each loop</li>
+    <li>Can have multiple iterators on same collection simultaneously</li>
+    <li>Fail-fast iterator throws <code>ConcurrentModificationException</code> on structural modification</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 18</span><span class="card-title">Mediator Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Behavioral; central mediator handles communication; objects don't reference each other directly</li>
+    <li>Reduces many-to-many → one-to-many relationships; centralizes coordination</li>
+    <li>Example: ATC (Air Traffic Control), ChatRoom mediator, EventBus</li>
+    <li>Objects call mediator.notify(); mediator decides who to inform</li>
+    <li>Risk: mediator can become a God Object if over-used</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 19</span><span class="card-title">Visitor Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Behavioral; add new operations to existing object structure without modifying it</li>
+    <li>Visitor: <code>visit(ConcreteElement)</code>; Element: <code>accept(Visitor)</code> — double dispatch</li>
+    <li>Example: AST traversal, tax calculation on different item types, export (JSON/XML)</li>
+    <li>Adding new operation = new Visitor class; adding new element = update all visitors</li>
+    <li>Use when: many unrelated operations on stable object structure</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 20</span><span class="card-title">Template Method Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Behavioral; define algorithm skeleton in base class; subclasses fill in specific steps</li>
+    <li>Base class calls abstract methods in fixed order; subclass implements them</li>
+    <li>Hook methods: optional steps subclass may override (with default impl)</li>
+    <li>Example: <code>DataMiner</code> (openFile→extractData→parseData→analyzeData→report)</li>
+    <li>Hollywood Principle: "Don't call us, we'll call you" — base calls subclass</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 21</span><span class="card-title">Memento Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Behavioral; capture and restore object state without violating encapsulation</li>
+    <li>Originator creates Memento; Caretaker stores list of Mementos; Memento is opaque</li>
+    <li>Example: text editor undo, game save states, transaction rollback</li>
+    <li>Memento only exposes state to Originator (narrow interface to others)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 22</span><span class="card-title">MVC Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Model:</strong> data + business logic; <strong>View:</strong> UI rendering; <strong>Controller:</strong> handles input, updates model/view</li>
+    <li><strong>MVP:</strong> Presenter between Model and View; View is passive</li>
+    <li><strong>MVVM:</strong> ViewModel exposes data bindings; View auto-updates (Angular, SwiftUI)</li>
+    <li>Spring MVC: <code>@Controller → @Service → @Repository</code></li>
+    <li>Separation of concerns; testability of Model/Controller independent of UI</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 23</span><span class="card-title">Object Pool Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Creational; reuse expensive objects instead of creating/destroying repeatedly</li>
+    <li>Pool manages: available objects, borrowed objects, max size</li>
+    <li>Client borrows from pool, uses, then returns (not discards)</li>
+    <li>Example: DB connection pool, thread pool, HTTP connection pool</li>
+    <li>HikariCP is a high-performance JDBC connection pool</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 24</span><span class="card-title">Null Object Pattern</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Return NullObject instead of null; NullObject implements interface but does nothing</li>
+    <li>Eliminates null checks; client treats null and real object uniformly</li>
+    <li>Example: <code>NullLogger</code> implements <code>Logger</code> but logs nowhere</li>
+    <li>Reduces <code>NullPointerException</code> risk; cleaner client code</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 25</span><span class="card-title">Design: BookMyShow</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Classes: <code>Theatre, Screen, Show, Seat, Booking, User, Payment</code></li>
+    <li>Seat states: AVAILABLE, LOCKED (TTL), BOOKED</li>
+    <li>Concurrent booking: optimistic locking on seat; only one booking succeeds</li>
+    <li>Payment timeout releases seat lock back to AVAILABLE</li>
+    <li>Observer for seat availability notifications; strategy for pricing</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 26</span><span class="card-title">Design: Splitwise</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Classes: <code>User, Group, Expense, Split (Equal/Exact/Percentage), Balance, Settlement</code></li>
+    <li>Split strategies: Equal, Exact amount, Percentage (Strategy Pattern)</li>
+    <li>Balance graph: who owes whom; simplify debts (greedy: max creditor ← max debtor)</li>
+    <li>Observer for expense added → update all member balances</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 27</span><span class="card-title">Design: Elevator System</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Classes: <code>Elevator, Request (floor, direction), ElevatorController, Door</code></li>
+    <li>States: IDLE, MOVING_UP, MOVING_DOWN; transitions via State Pattern</li>
+    <li>Scheduling: SCAN (go up/down servicing all floors) or LOOK algorithm</li>
+    <li>Multiple elevators: dispatcher assigns based on direction + proximity</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="lld">
+  <div class="card-top"><span class="card-num">LLD 28</span><span class="card-title">Design: ATM</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Classes: <code>ATM, Card, Account, Transaction, CashDispenser, Receipt</code></li>
+    <li>State Pattern: IdleState → CardInsertedState → PINVerifiedState → TransactionState → EjectCardState</li>
+    <li>Chain of Responsibility for cash dispensing (₹500 → ₹200 → ₹100 handlers)</li>
+    <li>Singleton ATM; thread-safe withdrawal with account balance locking</li>
+  </ul>
+</div>
+
+</div><!-- grid-lld -->
+</div><!-- sec-lld -->
+
+<!-- ═══════════════════════════════ JAVA ═══════════════════════════════ -->
+<div class="section visible" id="sec-java">
+<h2 class="section-title"><span style="color:var(--accent-java)">■</span> Java Core</h2>
+<div class="grid" id="grid-java">
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 1</span><span class="card-title">OOPs — 4 Pillars</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Encapsulation:</strong> bundle data + methods; expose via getters/setters; hide internals</li>
+    <li><strong>Inheritance:</strong> is-a relationship; <code>extends</code>; single inheritance (use interfaces for multiple)</li>
+    <li><strong>Polymorphism:</strong> compile-time (overloading by signature) vs runtime (overriding + dynamic dispatch)</li>
+    <li><strong>Abstraction:</strong> hide implementation; expose contract via abstract class or interface</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 2</span><span class="card-title">JVM, JRE, JDK</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>JDK</strong> = JRE + dev tools (javac, javadoc, jdb); needed for development</li>
+    <li><strong>JRE</strong> = JVM + standard libraries; needed to run Java apps</li>
+    <li><strong>JVM:</strong> Class Loader → Bytecode Verifier → Interpreter + JIT Compiler + GC</li>
+    <li><strong>JIT:</strong> identifies hot code paths, compiles to native machine code for performance</li>
+    <li>Write once, run anywhere: .java → .class (bytecode) → JVM executes</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 3</span><span class="card-title">Primitive & Reference Types</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Primitives: <code>byte(1), short(2), int(4), long(8), float(4), double(8), char(2), boolean</code></li>
+    <li>References stored on stack; objects on heap; GC manages heap</li>
+    <li>Autoboxing: <code>int → Integer</code>; Unboxing: <code>Integer → int</code>; beware NullPointerException</li>
+    <li>String pool: literals interned; <code>"abc"=="abc"</code> true; <code>new String("abc")=="abc"</code> false</li>
+    <li>Use <code>.equals()</code> for value comparison; <code>==</code> compares references</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 4</span><span class="card-title">Memory & Garbage Collection</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Stack:</strong> method frames, local variables (LIFO, thread-private); <strong>Heap:</strong> objects (shared, GC-managed)</li>
+    <li><strong>Young Gen:</strong> Eden → Survivor (S0/S1) → <strong>Old Gen</strong> (after N minor GCs)</li>
+    <li>Minor GC = Young Gen; Major GC = Old Gen; Full GC = entire heap (stop-the-world)</li>
+    <li>Algorithms: Serial, Parallel, G1 (default Java 9+), ZGC, Shenandoah (low-latency)</li>
+    <li>GC roots: static fields, local vars, active threads; unreachable objects collected</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 5</span><span class="card-title">Singleton & Immutable Classes</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Singleton: private constructor + static instance + <code>getInstance()</code></li>
+    <li>Thread-safe: double-checked locking with <code>volatile</code>, OR enum singleton (safest)</li>
+    <li><strong>Enum singleton:</strong> <code>enum Singleton { INSTANCE; }</code> — handles serialization + reflection</li>
+    <li>Immutable: <code>final</code> class, <code>final</code> fields, no setters, defensive copy in constructor/getters</li>
+    <li><code>String, Integer</code> are immutable; safe to share across threads without synchronization</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 6</span><span class="card-title">Interfaces (Java 8+)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>All methods public+abstract by default (before Java 8)</li>
+    <li><strong>Default methods (Java 8):</strong> concrete methods in interface; can be overridden</li>
+    <li><strong>Static methods (Java 8):</strong> belong to interface; called via <code>InterfaceName.method()</code></li>
+    <li><strong>Private methods (Java 9):</strong> helper methods not exposed outside interface</li>
+    <li>Class can implement multiple interfaces; interface can extend multiple interfaces</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 7</span><span class="card-title">Functional Interfaces & Lambdas</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>@FunctionalInterface</code>: exactly one abstract method</li>
+    <li>Built-in: <code>Function&lt;T,R&gt;, Predicate&lt;T&gt;, Consumer&lt;T&gt;, Supplier&lt;T&gt;, BiFunction&lt;T,U,R&gt;</code></li>
+    <li>Lambda: <code>(params) -&gt; expr</code>; captures effectively-final variables from enclosing scope</li>
+    <li>Method reference: <code>Class::staticMethod, instance::method, Class::new</code></li>
+    <li>Enables functional programming style; used heavily in Streams API</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 8</span><span class="card-title">Exception Handling</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Checked:</strong> must handle (IOException); extends <code>Exception</code></li>
+    <li><strong>Unchecked:</strong> runtime exceptions (NPE, IndexOutOfBounds); extends <code>RuntimeException</code></li>
+    <li><strong>Error:</strong> JVM errors (OutOfMemoryError); don't catch</li>
+    <li>try-with-resources: auto-closes <code>AutoCloseable</code>; <code>finally</code> always runs even with exception</li>
+    <li>Multi-catch: <code>catch(IOException | SQLException e)</code>; exception variable is effectively final</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 9</span><span class="card-title">Collections Hierarchy</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>Collection → List</code> (ArrayList, LinkedList), <code>Set</code> (HashSet, TreeSet), <code>Queue</code> (PriorityQueue, ArrayDeque)</li>
+    <li><code>Map</code>: HashMap, TreeMap, LinkedHashMap — NOT a Collection</li>
+    <li>Fail-fast iterators throw <code>ConcurrentModificationException</code>; fail-safe (CopyOnWrite) don't</li>
+    <li>Unmodifiable: <code>List.of(), Map.of(), Collections.unmodifiableList()</code></li>
+    <li>Thread-safe: <code>ConcurrentHashMap, CopyOnWriteArrayList, Collections.synchronizedList()</code></li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 10</span><span class="card-title">HashMap Internal Working</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Array of buckets; <code>key.hashCode()</code> → bucket index; linked list for collisions</li>
+    <li><strong>Java 8+:</strong> bucket > 8 entries → convert to TreeMap (O(log n) vs O(n))</li>
+    <li>Load factor 0.75; resizes (doubles + rehashes) when 75% full</li>
+    <li><code>null</code> key allowed (always goes to bucket 0); <code>null</code> value allowed</li>
+    <li>Contract: if <code>a.equals(b)</code> then <code>a.hashCode() == b.hashCode()</code> (reverse not required)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 11</span><span class="card-title">Streams API (Java 8)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Lazy evaluation: intermediate ops not executed until terminal op called</li>
+    <li><strong>Intermediate:</strong> <code>filter, map, flatMap, sorted, distinct, limit, skip, peek</code></li>
+    <li><strong>Terminal:</strong> <code>collect, forEach, reduce, count, min, max, findFirst, anyMatch, allMatch</code></li>
+    <li>Collectors: <code>toList(), groupingBy(), joining(), counting(), partitioningBy(), toMap()</code></li>
+    <li>Parallel: <code>.parallel()</code> → uses ForkJoinPool.commonPool(); good for CPU-bound, large data</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 12</span><span class="card-title">Multithreading Basics</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>Thread.start()</code> → JVM creates OS thread; <code>run()</code> executes in new thread</li>
+    <li><code>Runnable</code> (no return), <code>Callable&lt;T&gt;</code> (returns Future&lt;T&gt;)</li>
+    <li><code>synchronized</code>: intrinsic lock (monitor); method or block level</li>
+    <li><code>volatile</code>: visibility guarantee (no CPU cache); NOT atomicity for compound ops</li>
+    <li>Problems: race condition, deadlock, livelock, starvation, memory visibility</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 13</span><span class="card-title">Thread Lifecycle</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>States: NEW → RUNNABLE → {BLOCKED | WAITING | TIMED_WAITING} → TERMINATED</li>
+    <li><code>wait()</code> releases lock; <code>notify()/notifyAll()</code> wakes waiting threads (inside synchronized)</li>
+    <li><code>join()</code>: calling thread waits for target thread to finish</li>
+    <li><code>interrupt()</code>: sets interrupt flag; thread checks with <code>isInterrupted()</code></li>
+    <li>BLOCKED: waiting for monitor lock; WAITING: waiting for signal (wait/join/park)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 14</span><span class="card-title">Locks & Conditions</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>ReentrantLock:</code> same thread can lock multiple times; <code>tryLock(), lockInterruptibly()</code></li>
+    <li><code>ReadWriteLock:</code> multiple concurrent readers OR one exclusive writer</li>
+    <li><code>StampedLock (Java 8):</code> optimistic read → validate stamp after read; best performance</li>
+    <li><code>Condition:</code> <code>await() / signal() / signalAll()</code> — more flexible than wait/notify</li>
+    <li>Always unlock in <code>finally</code> block: <code>lock.lock(); try{...} finally{lock.unlock();}</code></li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 15</span><span class="card-title">Atomic & Lock-Free (CAS)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>CAS (Compare-And-Swap): atomic HW instruction; no lock needed</li>
+    <li><code>AtomicInteger, AtomicLong, AtomicReference</code>: CAS-based, lock-free</li>
+    <li><code>AtomicInteger.incrementAndGet()</code> is atomic; <code>volatile int i++</code> is NOT (3 ops)</li>
+    <li><code>volatile</code>: ensures visibility (no CPU register caching); not compound atomicity</li>
+    <li>ABA problem with CAS: use <code>AtomicStampedReference</code> to track version</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 16</span><span class="card-title">Thread Pools (ExecutorService)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>newFixedThreadPool(n)</code>: n threads, unbounded queue</li>
+    <li><code>newCachedThreadPool()</code>: unlimited threads; idle 60s; good for short I/O tasks</li>
+    <li><code>newSingleThreadExecutor()</code>: one thread; sequential task execution</li>
+    <li><code>ThreadPoolExecutor</code>: configure corePool, maxPool, keepAlive, queue, RejectionPolicy</li>
+    <li>Rejection policies: AbortPolicy(throw), CallerRunsPolicy, DiscardPolicy, DiscardOldestPolicy</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 17</span><span class="card-title">CompletableFuture</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Async computation: <code>supplyAsync(() -&gt; result), runAsync(() -&gt; void)</code></li>
+    <li>Chain: <code>thenApply</code> (transform), <code>thenAccept</code> (consume), <code>thenCompose</code> (flatMap), <code>thenCombine</code></li>
+    <li>Error handling: <code>exceptionally(ex -&gt; fallback), handle((r,ex) -&gt; ...), whenComplete</code></li>
+    <li><code>allOf()</code>: wait for all; <code>anyOf()</code>: first to complete</li>
+    <li>Non-blocking alternative to <code>Future.get()</code>; uses ForkJoinPool by default</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 18</span><span class="card-title">Virtual Threads (Java 21)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>JVM-managed lightweight threads; millions possible (vs thousands for OS threads)</li>
+    <li><code>Thread.ofVirtual().start(runnable)</code> or <code>Executors.newVirtualThreadPerTaskExecutor()</code></li>
+    <li>Mounted on platform (carrier) threads; unmounted on blocking I/O</li>
+    <li>Best for I/O-bound tasks (web servers, DB calls); NOT CPU-bound tasks</li>
+    <li>Don't pool virtual threads; create as needed — pooling defeats the purpose</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 19</span><span class="card-title">ThreadLocal</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Per-thread variable; each thread has own independent copy</li>
+    <li><code>get() / set(value) / remove()</code>; override <code>initialValue()</code> for defaults</li>
+    <li>Use cases: request context in web apps, transaction management, <code>SimpleDateFormat</code></li>
+    <li><strong>Always call <code>remove()</code> in finally</strong> — thread pools reuse threads; stale data persists</li>
+    <li>InheritableThreadLocal: child threads inherit parent's value</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 20</span><span class="card-title">Records & Sealed Classes</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Records (Java 16):</strong> immutable data carrier; auto-generates constructor, getters, equals, hashCode, toString</li>
+    <li><code>record Point(int x, int y) {}</code> → <code>point.x(), point.y()</code></li>
+    <li><strong>Sealed Classes (Java 17):</strong> restrict which classes can extend</li>
+    <li><code>sealed class Shape permits Circle, Rectangle</code>; subclasses: final/sealed/non-sealed</li>
+    <li>Enable exhaustive pattern matching in switch</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 21</span><span class="card-title">Pattern Matching & Switch Expressions</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>instanceof pattern (Java 16):</strong> <code>if (obj instanceof String s) { s.length() }</code></li>
+    <li><strong>Switch expression (Java 14):</strong> <code>switch(x) { case A -&gt; ...; }</code> — no fall-through</li>
+    <li><strong>Pattern switch (Java 21):</strong> <code>case Integer i when i &gt; 0 -&gt; ...</code></li>
+    <li><code>yield</code> to return value from a block in switch expression</li>
+    <li>Sealed classes + pattern switch = exhaustiveness checking by compiler</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 22</span><span class="card-title">Optional (Java 8)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Container that may or may not contain a value; avoids null returns</li>
+    <li>Create: <code>Optional.of(val), Optional.ofNullable(val), Optional.empty()</code></li>
+    <li>Use: <code>orElse(), orElseGet(), orElseThrow(), map(), flatMap(), filter(), ifPresent()</code></li>
+    <li>Don't use as field type or parameter; only as return type</li>
+    <li><code>orElse()</code> always evaluates arg; <code>orElseGet(() -&gt; ...)</code> is lazy — prefer it for expensive defaults</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 23</span><span class="card-title">Generics & Wildcards</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Type safety at compile time; type erasure at runtime</li>
+    <li>Bounded: <code>&lt;T extends Number&gt;</code> (upper bound), <code>&lt;? super Integer&gt;</code> (lower bound)</li>
+    <li>Wildcard <code>&lt;?&gt;</code>: unknown type; read-only (can't add elements except null)</li>
+    <li><strong>PECS:</strong> Producer Extends (<code>&lt;? extends T&gt;</code> for reading), Consumer Super (<code>&lt;? super T&gt;</code> for writing)</li>
+    <li>Covariant: <code>List&lt;Dog&gt;</code> is NOT a subtype of <code>List&lt;Animal&gt;</code> — use <code>List&lt;? extends Animal&gt;</code></li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 24</span><span class="card-title">Comparator & Comparable</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>Comparable</code>: natural ordering; <code>compareTo()</code> in class itself; one sort order</li>
+    <li><code>Comparator</code>: external; <code>compare(a,b)</code>; multiple sort strategies</li>
+    <li><code>Comparator.comparing(Person::getName).thenComparing(Person::getAge).reversed()</code></li>
+    <li>Return negative (a&lt;b), zero (a==b), positive (a&gt;b)</li>
+    <li>TreeMap/TreeSet use Comparable/Comparator for ordering</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="java">
+  <div class="card-top"><span class="card-num">Java 25</span><span class="card-title">Java Annotations</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Metadata on code elements; processed at compile-time (APT) or runtime (Reflection)</li>
+    <li>Meta-annotations: <code>@Target</code> (where), <code>@Retention</code> (SOURCE/CLASS/RUNTIME), <code>@Inherited, @Repeatable</code></li>
+    <li>Custom: <code>public @interface MyAnno { String value() default ""; }</code></li>
+    <li>Used by: Spring (DI), JUnit (test discovery), Lombok (code gen), JPA (ORM)</li>
+    <li>Runtime annotations readable via Reflection: <code>class.getAnnotation(MyAnno.class)</code></li>
+  </ul>
+</div>
+
+</div><!-- grid-java -->
+</div><!-- sec-java -->
+
+<!-- ═══════════════════════════════ SPRING BOOT ═══════════════════════════════ -->
+<div class="section visible" id="sec-sb">
+<h2 class="section-title"><span style="color:var(--accent-sb)">■</span> Spring Boot</h2>
+<div class="grid" id="grid-sb">
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 1</span><span class="card-title">Spring Boot Fundamentals</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>@SpringBootApplication</code> = <code>@Configuration + @EnableAutoConfiguration + @ComponentScan</code></li>
+    <li>Auto-configuration: detects classpath, configures beans automatically (e.g., DataSource if H2 present)</li>
+    <li>Embedded server (Tomcat/Jetty/Undertow); no WAR deployment needed</li>
+    <li>Starter POMs: <code>spring-boot-starter-web, spring-boot-starter-data-jpa</code> etc.</li>
+    <li>Convention over configuration; opinionated defaults; override with <code>application.properties</code></li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 2</span><span class="card-title">Layered Architecture</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Controller (HTTP) → Service (business logic) → Repository (data access) → DB</li>
+    <li><strong>DTO:</strong> Data Transfer Object (between Controller/Service; not entity)</li>
+    <li><strong>Entity:</strong> JPA-managed DB object; maps to table</li>
+    <li>Controller should be thin; business logic in Service</li>
+    <li>Repository extends <code>JpaRepository&lt;Entity, Id&gt;</code> for CRUD + pagination</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 3</span><span class="card-title">IoC & Bean Lifecycle</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>IoC container instantiates, assembles, and manages beans</li>
+    <li>Lifecycle: Instantiate → Inject Dependencies → <code>@PostConstruct</code> → Ready → <code>@PreDestroy</code> → Destroy</li>
+    <li>Stereotypes: <code>@Component, @Service, @Repository, @Controller</code> (all create beans)</li>
+    <li><code>@Bean</code> in <code>@Configuration</code> class: explicit bean definition</li>
+    <li><code>@Repository</code> adds exception translation (SQL → Spring exceptions)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 4</span><span class="card-title">Dependency Injection</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Constructor injection (preferred):</strong> immutable fields, easy to test, explicit dependencies</li>
+    <li><strong>Setter injection:</strong> for optional dependencies</li>
+    <li><strong>Field injection:</strong> <code>@Autowired</code> on field — avoid (hard to test, hidden deps)</li>
+    <li><code>@Qualifier("beanName")</code>: disambiguate when multiple beans of same type</li>
+    <li><code>@Primary</code>: default bean; <code>@Lazy</code>: initialize on first use</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 5</span><span class="card-title">Bean Scopes</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Singleton (default):</strong> one instance per ApplicationContext; shared</li>
+    <li><strong>Prototype:</strong> new instance per injection/lookup; Spring doesn't destroy it</li>
+    <li><strong>Request:</strong> one per HTTP request (web only)</li>
+    <li><strong>Session:</strong> one per HTTP session (web only)</li>
+    <li>Injecting prototype/request bean into singleton: use <code>proxyMode = ScopedProxyMode.TARGET_CLASS</code></li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 6</span><span class="card-title">Controller Annotations</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>@RestController</code> = <code>@Controller + @ResponseBody</code></li>
+    <li>Mapping: <code>@GetMapping, @PostMapping, @PutMapping, @DeleteMapping, @PatchMapping</code></li>
+    <li>Params: <code>@PathVariable, @RequestParam, @RequestBody, @RequestHeader, @CookieValue</code></li>
+    <li><code>@ResponseStatus(HttpStatus.CREATED)</code> sets default response code</li>
+    <li><code>@Valid</code> on <code>@RequestBody</code> triggers Bean Validation (<code>@NotNull, @Size</code>, etc.)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 7</span><span class="card-title">AOP (Aspect-Oriented Programming)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Cross-cutting concerns: logging, security, transactions, auditing</li>
+    <li><code>@Aspect, @Pointcut</code>; advice types: <code>@Before, @After, @AfterReturning, @AfterThrowing, @Around</code></li>
+    <li>Pointcut expression: <code>execution(* com.example.service.*.*(..))</code></li>
+    <li><code>@Around</code>: most powerful; call <code>pjp.proceed()</code> to execute method; wrap with try-catch</li>
+    <li>Works via proxy (JDK or CGLIB); self-invocation bypasses proxy = no AOP</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 8</span><span class="card-title">@Transactional</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Auto-rollback on <code>RuntimeException</code>; use <code>rollbackFor=Exception.class</code> for checked</li>
+    <li><strong>Propagation:</strong> REQUIRED (default, joins existing), REQUIRES_NEW (new txn), NESTED, NOT_SUPPORTED</li>
+    <li><strong>Isolation:</strong> READ_UNCOMMITTED, READ_COMMITTED (default), REPEATABLE_READ, SERIALIZABLE</li>
+    <li><code>readOnly=true</code>: hints JPA to skip dirty checking → performance boost</li>
+    <li>Self-invocation doesn't work (proxy issue) — call from another bean</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 9</span><span class="card-title">@Async & Async Config</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>@EnableAsync</code> on config; <code>@Async</code> on method → runs in separate thread</li>
+    <li>Return <code>void</code> or <code>CompletableFuture&lt;T&gt;</code> from async methods</li>
+    <li>Default executor: <code>SimpleAsyncTaskExecutor</code> (creates new thread per call)</li>
+    <li>Configure <code>ThreadPoolTaskExecutor</code> bean named <code>taskExecutor</code> for pooling</li>
+    <li>Self-invocation doesn't work; must be called from different bean</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 10</span><span class="card-title">Filters vs Interceptors</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>Filter (Servlet level):</strong> runs before DispatcherServlet; implement <code>javax.servlet.Filter</code></li>
+    <li><strong>Interceptor (Spring MVC):</strong> inside DispatcherServlet; has access to Handler + ModelAndView</li>
+    <li>Filter: <code>doFilter(req, res, chain)</code>; call <code>chain.doFilter()</code> to continue</li>
+    <li>Interceptor: <code>preHandle()</code> (before), <code>postHandle()</code> (after), <code>afterCompletion()</code> (cleanup)</li>
+    <li>Use Filter for: auth, encoding, CORS; Interceptor for: logging, role-checking</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 11</span><span class="card-title">Exception Handling</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>@ExceptionHandler</code> in controller or <code>@ControllerAdvice</code> (global)</li>
+    <li><code>@RestControllerAdvice</code> = <code>@ControllerAdvice + @ResponseBody</code></li>
+    <li>Return <code>ResponseEntity</code> with appropriate HTTP status code</li>
+    <li><code>ProblemDetail</code> (RFC 7807 / Spring 6): standardized error response structure</li>
+    <li>Order: local <code>@ExceptionHandler</code> wins over global <code>@ControllerAdvice</code></li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 12</span><span class="card-title">JPA — Entity Lifecycle & Caching</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Lifecycle: Transient → Managed (persist/find) → Detached (close/detach) → Removed (remove)</li>
+    <li><strong>1st level cache:</strong> per EntityManager (within same transaction); automatic</li>
+    <li>Calling <code>find()</code> twice → 2nd call hits cache; no DB query</li>
+    <li><strong>2nd level cache:</strong> shared across EntityManagers; configure with Ehcache/Redis</li>
+    <li>Dirty checking: JPA detects changed managed entities → auto-updates on flush</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 13</span><span class="card-title">JPA Relationships & Fetch</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Annotations: <code>@OneToOne, @OneToMany, @ManyToOne, @ManyToMany</code></li>
+    <li>Default fetch: <code>@ManyToOne/@OneToOne</code> = EAGER; <code>@OneToMany/@ManyToMany</code> = LAZY</li>
+    <li><strong>N+1 problem:</strong> 1 query for parents + N queries for each child collection</li>
+    <li>Fix N+1: <code>JOIN FETCH</code> in JPQL, <code>@EntityGraph</code>, or <code>@BatchSize</code></li>
+    <li>CascadeType: PERSIST, MERGE, REMOVE, ALL; orphanRemoval=true for child cleanup</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 14</span><span class="card-title">Spring Security Architecture</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Filter chain: ordered <code>SecurityFilter</code>s process each request</li>
+    <li><code>AuthenticationManager → AuthenticationProvider → UserDetailsService</code></li>
+    <li><code>SecurityContextHolder</code> stores <code>Authentication</code> (thread-local)</li>
+    <li>Configure via <code>SecurityFilterChain</code> bean (lambda DSL)</li>
+    <li><code>@EnableWebSecurity</code>; CSRF enabled by default (disable for stateless REST)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 15</span><span class="card-title">JWT Authentication</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Extend <code>OncePerRequestFilter</code>: extract token → validate → set SecurityContext</li>
+    <li>Generate: <code>Jwts.builder().subject(user).expiration(date).signWith(key).compact()</code></li>
+    <li>Validate: parse → check expiry → check signature; return <code>UsernamePasswordAuthenticationToken</code></li>
+    <li>Set in SecurityContext: <code>SecurityContextHolder.getContext().setAuthentication(auth)</code></li>
+    <li>Stateless: <code>sessionCreationPolicy(STATELESS)</code>; no JSESSIONID</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 16</span><span class="card-title">Method Security</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>@EnableMethodSecurity</code> on config class</li>
+    <li><code>@PreAuthorize("hasRole('ADMIN')")</code>: before method; most used</li>
+    <li><code>@PostAuthorize("returnObject.owner == principal.username")</code>: after method</li>
+    <li><code>@Secured("ROLE_ADMIN")</code>: simple role check; no SpEL</li>
+    <li>SpEL in @PreAuthorize: <code>hasAnyRole(), isAuthenticated(), #param == principal.id</code></li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 17</span><span class="card-title">FeignClient</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Declarative REST client; annotate interface, Spring generates implementation</li>
+    <li><code>@FeignClient(name="user-service", url="${user.service.url}")</code></li>
+    <li>Methods mirror REST API with <code>@GetMapping, @PostMapping</code> etc.</li>
+    <li>Integrates with Eureka (by name), Resilience4j (circuit breaker), load balancer</li>
+    <li><code>@EnableFeignClients</code> on config class; add <code>spring-cloud-starter-openfeign</code></li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 18</span><span class="card-title">Resilience4j Patterns</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><strong>CircuitBreaker:</strong> <code>@CircuitBreaker(name="svc", fallbackMethod="fb")</code>; CLOSED→OPEN→HALF_OPEN</li>
+    <li><strong>Retry:</strong> <code>@Retry(name="svc")</code>; config: maxAttempts, waitDuration, retryExceptions</li>
+    <li><strong>RateLimiter:</strong> <code>@RateLimiter(name="svc")</code>; config: limitForPeriod, limitRefreshPeriod</li>
+    <li><strong>Bulkhead:</strong> <code>@Bulkhead(name="svc", type=SEMAPHORE)</code>; maxConcurrentCalls</li>
+    <li>Compose: CircuitBreaker + Retry + RateLimiter; order matters in annotation stack</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 19</span><span class="card-title">API Gateway (Spring Cloud)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Routes: predicates (Path, Host, Header, Method) + filters (AddHeader, StripPrefix, RewritePath)</li>
+    <li>Global filters: auth filter, rate limiter (Redis), circuit breaker</li>
+    <li>Config: <code>spring.cloud.gateway.routes[0].id/uri/predicates/filters</code></li>
+    <li>Reactive (WebFlux-based); non-blocking; high throughput</li>
+    <li>Integrates with Eureka for service discovery routing (<code>lb://service-name</code>)</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 20</span><span class="card-title">Actuator & Config</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Endpoints: <code>/health, /metrics, /info, /env, /beans, /loggers, /httptrace</code></li>
+    <li>Expose: <code>management.endpoints.web.exposure.include=health,metrics,info</code></li>
+    <li>Custom health: implement <code>HealthIndicator</code>; return <code>Health.up()/down()</code></li>
+    <li><code>@ConfigurationProperties(prefix="app")</code>: type-safe property binding to POJO</li>
+    <li>Spring Cloud Config: centralized config server; <code>/actuator/refresh</code> + <code>@RefreshScope</code> for live reload</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 21</span><span class="card-title">Service Discovery (Eureka)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Server: <code>@EnableEurekaServer</code>; provides dashboard at <code>/eureka</code></li>
+    <li>Client: <code>@EnableEurekaClient</code> (or <code>spring.cloud.discovery.enabled=true</code>)</li>
+    <li>Services register on startup with metadata (host, port, health check URL)</li>
+    <li>Heartbeat every 30s; registry removes instances missing 3 heartbeats</li>
+    <li>Self-preservation mode: doesn't remove instances during network issues</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 22</span><span class="card-title">@Transactional Propagation Deep Dive</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>REQUIRED</code>: use existing txn; create new if none (default)</li>
+    <li><code>REQUIRES_NEW</code>: always new txn; suspends existing; independent commit/rollback</li>
+    <li><code>NESTED</code>: savepoint in existing txn; rollback to savepoint on failure</li>
+    <li><code>SUPPORTS</code>: join if exists; no txn if none; <code>NOT_SUPPORTED</code>: suspend existing, run without</li>
+    <li><code>NEVER</code>: throw if txn exists; <code>MANDATORY</code>: throw if NO txn exists</li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 23</span><span class="card-title">JPA Queries (JPQL & Spec)</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Derived queries: <code>findByNameAndAgeGreaterThan(String name, int age)</code></li>
+    <li>JPQL: <code>@Query("SELECT u FROM User u WHERE u.name = :name")</code> (entity/field names)</li>
+    <li>Native: <code>@Query(value="SELECT * FROM users", nativeQuery=true)</code></li>
+    <li>Specification API: dynamic queries; implement <code>Specification&lt;T&gt;</code>; combine with and/or</li>
+    <li>Criteria API: type-safe programmatic queries via <code>CriteriaBuilder</code></li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 24</span><span class="card-title">OAuth2 & Spring Security</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li><code>oauth2Login()</code>: redirects to OAuth provider; handles callback code exchange</li>
+    <li>Custom <code>OAuth2UserService</code>: fetch additional user details after OAuth2 login</li>
+    <li>Resource server: <code>oauth2ResourceServer(jwt())</code>; validates JWT from auth server</li>
+    <li><code>spring-boot-starter-oauth2-client</code> for login; <code>-resource-server</code> for API validation</li>
+    <li>Roles from JWT claims: configure <code>JwtAuthenticationConverter</code></li>
+  </ul>
+</div>
+
+<div class="topic-card" data-cat="sb">
+  <div class="card-top"><span class="card-num">SB 25</span><span class="card-title">Maven & Build Lifecycle</span><div class="check" onclick="toggle(this)"></div></div>
+  <ul>
+    <li>Phases: validate → compile → test → package → verify → install → deploy</li>
+    <li><code>mvn clean install</code>: clean target, compile, test, package JAR, install to ~/.m2</li>
+    <li>Spring Boot parent POM: dependency management, plugin config, version alignment</li>
+    <li>Profiles: <code>&lt;profiles&gt;</code> with activation conditions; <code>mvn install -Pprod</code></li>
+    <li><code>mvn spring-boot:run</code>: run without packaging; <code>java -jar app.jar</code>: run packaged jar</li>
+  </ul>
+</div>
+
+</div><!-- grid-sb -->
+</div><!-- sec-sb -->
+</div><!-- sec-all -->
+
+<script>
+// ── Toggle check ──────────────────────────────────────────────────────
+const STORAGE_KEY = 'dr_checked';
+let checked = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+function toggle(el) {
+  el.classList.toggle('checked');
+  const card = el.closest('.topic-card');
+  const title = card.querySelector('.card-title').textContent;
+  checked[title] = el.classList.contains('checked');
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+  updateProgress();
+}
+
+function restoreChecks() {
+  document.querySelectorAll('.topic-card').forEach(card => {
+    const title = card.querySelector('.card-title').textContent;
+    const ch = card.querySelector('.check');
+    if (checked[title]) { ch.classList.add('checked'); card.classList.add('done'); }
+  });
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = document.querySelectorAll('.topic-card').length;
+  const done = document.querySelectorAll('.check.checked').length;
+  document.getElementById('progressBar').style.width = (done/total*100) + '%';
+}
+
+// ── Tabs ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const cat = tab.dataset.tab;
+    filterCards(cat, document.getElementById('searchInput').value);
+  });
+});
+
+// ── Search ────────────────────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', e => {
+  const active = document.querySelector('.tab.active').dataset.tab;
+  filterCards(active, e.target.value);
+});
+
+function filterCards(cat, query) {
+  const q = query.toLowerCase();
+  let anyVisible = false;
+  document.querySelectorAll('.topic-card').forEach(card => {
+    const catMatch = cat === 'all' || card.dataset.cat === cat;
+    const textMatch = !q || card.textContent.toLowerCase().includes(q);
+    const show = catMatch && textMatch;
+    card.style.display = show ? '' : 'none';
+    if (show) anyVisible = true;
+  });
+  // Show/hide section headers
+  document.querySelectorAll('.section-title').forEach(h => {
+    const section = h.nextElementSibling;
+    if (!section) return;
+    const visible = [...section.querySelectorAll('.topic-card')].some(c => c.style.display !== 'none');
+    h.style.display = visible ? '' : 'none';
+  });
+  document.getElementById('noResults').classList.toggle('visible', !anyVisible);
+}
+
+// ── Init ─────────────────────────────────────────────────────────────
+restoreChecks();
+</script>
+</body>
+</html>
