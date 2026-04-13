@@ -1,0 +1,109 @@
+🔥 1. L2 Cache kya hai?
+
+👉 Simple line:
+
+L2 Cache = data memory me store hota hai aur sab requests share karte hain
+
+🔹 2. Difference from L1 (pehle clear karo)
+Feature	L1 Cache	L2 Cache
+Scope	per request	app-wide
+Shared?	❌ No	✔ Yes
+Setup	automatic	manual
+Life	request tak	app chalne tak
+🔥 3. Real Example (sabse important)
+🟢 Request 1
+GET /products/1
+
+👉 Flow:
+
+L1 miss
+↓
+L2 miss
+↓
+DB hit ✔
+↓
+Data L1 + L2 me store ✔
+🟡 Request 2 (new request)
+GET /products/1
+
+👉 Flow:
+
+L1 miss (new request)
+↓
+L2 HIT ✔
+↓
+DB nahi jayega ❌
+🔥 Result
+DB hit sirf pehli baar ✔
+Baaki sab cache se ✔
+🔹 4. Easy analogy
+L1 Cache
+Tumhari notebook 📒 (personal)
+L2 Cache
+Class ka whiteboard 🧑‍🏫 (sab use karte hain)
+🔥 5. Kab useful hai?
+
+👉 Jab data:
+
+- frequently read hota hai
+- rarely change hota hai
+
+Example:
+
+product catalog
+country list
+config data
+🔹 6. Setup samjho (simple)
+
+👉 L2 cache by default ON nahi hota ❌
+
+Step 1: dependency
+hibernate-ehcache
+Step 2: enable
+hibernate.cache.use_second_level_cache=true
+Step 3: entity pe enable
+@Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Product { }
+
+👉 Tabhi kaam karega ✔
+
+🔥 7. Cache strategies (easy samajh)
+🟢 READ_ONLY
+Data kabhi change nahi hota
+
+👉 Fastest ✔
+
+🟡 READ_WRITE
+Kabhi-kabhi change hota hai
+
+👉 Safe + balanced ✔
+
+🟠 NONSTRICT_READ_WRITE
+Rare updates, thoda inconsistency chalega
+🔴 TRANSACTIONAL
+Full transaction support (rare use)
+🔹 8. Important understanding
+
+👉 L2 cache:
+
+Hibernate level pe hota hai
+
+👉 DB ko avoid karta hai ✔
+
+🔥 9. Final flow (combined)
+Request
+↓
+L1 Cache
+↓
+L2 Cache
+↓
+DB
+⚡ Final ek line
+
+👉 L2 Cache = application-wide memory jo DB hits reduce karta hai
+
+🧠 Interview one-liner
+
+Second-level cache in Hibernate is shared across sessions 
+and stores entities at the SessionFactory level to reduce database hits for frequently accessed data.

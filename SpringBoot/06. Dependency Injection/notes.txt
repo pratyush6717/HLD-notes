@@ -1,0 +1,236 @@
+Dependency Injection = object khud mat banao,
+Spring se banwao
+⚙️ Code samajh (simple)
+❌ Without DI
+class User {
+    Order order = new Order();
+}
+
+👉 tight coupling
+
+✅ With DI
+@Component
+class User {
+
+    @Autowired
+    Order order;
+}
+
+👉 Spring bolega:
+
+"Order chahiye? lo bana ke de diya"
+🔥 DI ke 3 types (super simple)
+1️⃣ Field Injection (easy but bad)
+@Autowired
+Order order;
+
+👉 directly inject
+
+2️⃣ Setter Injection
+@Autowired
+public void setOrder(Order order) {
+    this.order = order;
+}
+
+👉 baad me set kar sakte ho
+
+3️⃣ Constructor Injection ⭐ (BEST)
+public User(Order order) {
+    this.order = order;
+}
+
+👉 object banate time dependency aa jati hai
+
+🤯 Sab bolte constructor best kyun?
+
+👉 simple reason:
+
+Object bina dependency ke ban hi nahi sakta
+
+👉 safe + clean + testable
+
+⚠️ Important problems (jo file me bataya)
+1. Tight Coupling
+change Order → User toot gaya
+2. Circular Dependency
+Order → Invoice
+Invoice → Order
+
+👉 loop ban gaya → app crash
+
+3. Multiple Beans Problem
+OnlineOrder
+OfflineOrder
+
+👉 Spring confuse: konsa use karu?
+
+Solution:
+@Primary
+
+or
+
+@Qualifier("online")
+🧠 ONE SHOT REVISION
+
+👉 bas ye yaad rakh:
+
+Without DI → class khud object banati hai (bad)
+
+With DI → Spring object deta hai (good)
+🔥 3 LINE INTERVIEW ANSWER
+Dependency Injection is a design pattern
+where object dependencies are provided
+by Spring instead of creating them manually.
+
+
+
+
+
+
+
+
+
+
+
+//DOUBT 
+Object bina dependency ke ban hi nahi sakta ye samjha nai constructor best kyun 
+Multiple Beans Problem OnlineOrder OfflineOrder but ye dono bean toh alag hai
+
+
+
+🧩 1. "Object bina dependency ke ban hi nahi sakta" (Constructor best kyun?)
+🔴 Pehle problem samajh
+Field Injection me kya hota hai:
+class User {
+    @Autowired
+    Order order;
+}
+
+👉 Tum ye kar sakte ho:
+
+User u = new User();   // ❌ valid hai
+
+👉 Ab problem:
+
+u.process(); // order = null 😵
+
+💥 NullPointerException
+
+🟢 Constructor Injection me kya hota hai
+class User {
+
+    Order order;
+
+    public User(Order order) {
+        this.order = order;
+    }
+}
+
+👉 Ab try karo:
+
+User u = new User(); ❌ ERROR
+
+👉 Java bolega:
+
+"bhai order diye bina object bana hi nahi sakta"
+🔥 Simple Line
+
+👉 Constructor injection enforce karta hai:
+
+Dependency mandatory hai
+🧠 Real Life Example
+
+Socho:
+
+Car ko engine chahiye
+❌ Field injection style:
+Car ban gayi… baad me engine dalenge
+
+👉 kabhi bhool gaye → useless car
+
+✅ Constructor style:
+Car ban hi tab sakti hai jab engine ho
+
+👉 safe design ✅
+
+🎯 Conclusion
+
+👉 Constructor Injection = fail fast + safe
+
+object tabhi banega jab sab dependency mile
+🧩 2. Multiple Beans Problem (confusion kyun?)
+
+Tu bola:
+
+"ye dono bean toh alag hai"
+
+👉 100% correct 👏
+Par problem yahan hai 👇
+
+Scenario
+interface Order {}
+
+class OnlineOrder implements Order {}
+class OfflineOrder implements Order {}
+
+👉 Dono beans Spring me register ho gaye
+
+Ab User class:
+@Autowired
+Order order;
+
+👉 Spring sochta hai:
+
+"Order chahiye… par kaunsa?? 🤔"
+🔥 Confusion point
+
+👉 Spring ko sirf type pata hai:
+
+Order
+
+👉 par uske paas 2 option:
+
+OnlineOrder
+OfflineOrder
+🧠 Real Life Example
+
+Restaurant me bolte ho:
+
+"mujhe chai chahiye"
+
+Waiter bole:
+
+Green tea?
+Black tea?
+Masala tea?
+
+👉 same confusion 😄
+
+✅ Solution 1: @Primary
+@Primary
+class OnlineOrder implements Order {}
+
+👉 Spring bolega:
+
+"default ye use karo"
+✅ Solution 2: @Qualifier
+@Autowired
+@Qualifier("onlineOrder")
+Order order;
+
+👉 ab clearly bola:
+
+"mujhe online wala chahiye"
+🔁 FINAL SIMPLE SUMMARY
+🔹 Constructor Injection
+Object bina dependency ke ban hi nahi sakta
+→ safe, no null, best practice
+🔹 Multiple Beans
+Spring confuse ho jata hai
+→ kaunsa object inject kare?
+🔹 Fix
+@Primary → default select
+@Qualifier → exact select
+🔥 Ek line me yaad rakh
+Constructor = compulsory dependency
+Qualifier = correct dependency

@@ -1,0 +1,135 @@
+halo isko seedha + visual + real use-case se samajhte hain 👇
+(yahi topic interview me bahut aata hai)
+
+🔥 1. Sabse simple difference
+
+👉 Filter = bahar ka gate
+👉 Interceptor = andar ka guard
+
+🔹 2. Full Request Flow (most important)
+Client 
+  ↓
+Filter (before Spring)       👈 outer layer
+  ↓
+DispatcherServlet
+  ↓
+Interceptor (preHandle)      👈 Spring layer
+  ↓
+Controller
+  ↓
+Interceptor (post/after)
+  ↓
+DispatcherServlet
+  ↓
+Filter (after)
+  ↓
+Client
+🔥 3. Real-life analogy
+🏢 Office building
+Gate security (Filter) → Reception (DispatcherServlet) → Floor security (Interceptor) → Manager (Controller)
+Layer	Role
+Gate security	sabko check kare (Filter)
+Floor security	specific room check (Interceptor)
+🔹 4. Filter kya karta hai?
+
+👉 Spring ke bahar kaam karta hai
+
+Use cases
+CORS headers
+Request logging (all requests)
+Security headers
+Compression
+Limitation
+
+👉 Ye nahi jaanta:
+
+Kaunsa controller call hone wala hai ❌
+🔹 5. Interceptor kya karta hai?
+
+👉 Spring ke andar, controller ke paas
+
+Use cases
+Auth check (JWT token)
+Controller-specific logging
+Model modification
+Advantage
+
+👉 Ye jaanta hai:
+
+Kaunsa controller + method call ho raha hai ✔
+🔥 6. Side-by-side difference
+Feature	Filter	Interceptor
+Runs before	DispatcherServlet	Controller
+Layer	Servlet (low level)	Spring MVC
+Controller info	❌ No	✔ Yes
+Spring beans	❌ Limited	✔ Full
+Use case	generic processing	business logic
+🔹 7. Example samajh lo
+Scenario: Auth check
+❌ Filter use karo
+Sab requests pe lagega (even static files)
+
+👉 Overkill ho sakta hai
+
+✅ Interceptor use karo
+Sirf /api/** pe auth check
+
+👉 Better control ✔
+
+🔥 8. Easy rule (yaad rakhna)
+
+👉 Agar question aaye:
+
+🧠 Kab Filter use kare?
+Jab Spring se pehle kaam karna ho
+
+Examples:
+
+CORS
+Encoding
+global logging
+🧠 Kab Interceptor use kare?
+Jab controller ke around kaam ho
+
+Examples:
+
+Auth
+Request validation
+Model data
+🔹 9. Ek line me difference
+
+👉 Filter = low-level (before Spring)
+👉 Interceptor = Spring-aware (before controller)
+
+⚡ Final memory trick
+Filter → "ALL requests"
+Interceptor → "Controller requests"
+🧠 Interview one-liner
+
+Filters operate at the servlet level before DispatcherServlet, while Interceptors operate within Spring MVC and can access controller-specific information.
+
+Agar next chaho:
+
+👉 main Filter + Interceptor + Spring Security ka exact combined flow bana ke dikhaunga (very high interview value 🔥)
+
+
+
+
+
+
+
+👉 Tumne bola:
+
+filter apan sabpe laga sakte hai
+
+✔ Correct — but better wording:
+
+👉 Filter = global request processing (before Spring)
+
+👉 Tumne bola:
+
+interceptor spring ka part hai jo controller ke lifecycle mein rehta hai
+
+✔ Correct — better wording:
+
+👉 Interceptor = Spring MVC component that runs before/after controller

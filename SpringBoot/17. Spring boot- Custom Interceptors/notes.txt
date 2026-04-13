@@ -1,0 +1,82 @@
+🔥 Imagine this situation
+
+Tum ek API call karte ho:
+
+GET /api/user
+🔹 Without Interceptor
+Request → Controller → Response
+
+👉 Seedha controller pe jaata hai
+
+🔹 With Interceptor (simple samajh)
+Request → Interceptor → Controller → Interceptor → Response
+
+👉 Interceptor beech me checkpost jaisa kaam karta hai
+
+🔥 Real-life analogy
+
+👉 Society gate 🚪
+
+Guest → Security Guard → Ghar
+Guard check karega
+Allowed → andar
+Not allowed → entry band
+
+👉 Guard = Interceptor
+
+🔹 3 Important methods (easy language)
+✅ 1. preHandle (sabse important)
+
+👉 Controller se pehle chalta hai
+
+public boolean preHandle(...) {
+    if (token missing) {
+        return false; // ❌ yahi rok diya
+    }
+    return true; // ✔ aage jao
+}
+🧠 Simple:
+Entry allow ya block karna
+✅ 2. postHandle
+
+👉 Controller ke baad chalta hai
+
+Controller run ho gaya
+↓
+Interceptor kuch extra kaam kare
+✅ 3. afterCompletion
+
+👉 Sab kuch khatam hone ke baad
+
+Response bhej diya
+↓
+Cleanup / logging
+🔥 Ek simple flow yaad kar lo
+1. preHandle → check karo
+2. Controller → main kaam
+3. postHandle → modify karo
+4. afterCompletion → cleanup
+🔹 Real example (tumhara code)
+String token = req.getHeader("Authorization");
+
+if (token == null) {
+    res.setStatus(401);
+    return false; // ❌ block
+}
+🧠 Meaning
+
+👉 Agar token nahi hai:
+
+Request yahi ruk gaya ❌
+Controller tak gaya hi nahi
+Agar token hai:
+Interceptor allow karega ✔
+↓
+Controller chalega
+🔥 Ekdum short samajh
+
+👉 Interceptor = gatekeeper before controller
+
+⚡ One-line yaad rakhna
+
+👉 Controller ke pehle check karna ho → Interceptor use karo

@@ -1,0 +1,121 @@
+🔥 1. Most Important Concept (Interview starter)
+
+@Async works using Spring AOP proxy
+
+👉 Agar proxy use nahi hua → async nahi chalega
+👉 Aur error bhi nahi aayega ❌ (silent failure)
+
+🔹 2. 2 Mandatory Conditions (VERY IMPORTANT ⚠️)
+✅ Condition 1: Different Class
+
+👉 @Async method same class me call nahi hona chahiye
+
+❌ Wrong (self-invocation)
+@Service
+public class NotificationService {
+
+    public void process() {
+        this.sendEmail(); // ❌ sync chalega
+    }
+
+    @Async
+    public void sendEmail() { }
+}
+🧠 Why fail?
+this.sendEmail() → direct call
+→ proxy bypass ❌
+✅ Correct
+@Autowired
+NotificationService service;
+
+public void process() {
+    service.sendEmail(); // ✔ proxy call
+}
+🔥 Interview line
+
+Self-invocation bypasses proxy, so @Async doesn’t work.
+
+🔹 3. Condition 2: Method must be Public
+❌ Wrong
+@Async
+private void sendEmail() { } // ❌
+🧠 Why fail?
+
+👉 Proxy method ko override/intercept karta hai
+👉 Private method override nahi hota
+
+✅ Correct
+@Async
+public void sendEmail() { }
+🔥 4. Silent Failure (VERY IMPORTANT)
+
+👉 Agar condition fail ho:
+
+Method sync chalega
+BUT error nahi aayega ❌
+
+👉 Isliye debugging tricky hoti hai
+
+🔹 5. Return Types (Interview Favourite)
+🟢 1. void
+@Async
+public void send() {}
+
+👉 Fire & forget
+👉 No result, no tracking
+
+🟡 2. Future<T>
+Future<String> f = service.send();
+f.get(); // blocking
+
+👉 Result milta hai
+👉 But blocking
+
+🔴 3. CompletableFuture<T> (BEST)
+@Async
+public CompletableFuture<String> send() {
+    return CompletableFuture.completedFuture("done");
+}
+🧠 Advantage
+service.send()
+       .thenApply(res -> res + " processed")
+       .exceptionally(ex -> "error");
+
+👉 Non-blocking ✔
+👉 Chainable ✔
+👉 Modern ✔
+
+🔹 6. Internal Flow (quick recall)
+Client
+  ↓
+Proxy
+  ↓
+TaskExecutor (thread pool)
+  ↓
+New Thread
+  ↓
+Method runs
+🔥 7. Quick Interview Q&A
+❓ Why @Async not working?
+
+👉 Possible reasons:
+
+Self-invocation ❌
+Method not public ❌
+@EnableAsync missing ❌
+❓ Does @Async always create new thread?
+
+👉 Yes (from thread pool)
+
+❓ Is it blocking?
+
+👉 No (unless you call .get())
+
+⚡ Final Cheat Sheet
+@Async works ONLY IF:
+✔ Called via Spring bean (proxy)
+✔ Method is public
+✔ @EnableAsync is present
+🧠 One-line memory trick
+
+👉 No proxy = No async

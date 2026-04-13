@@ -1,0 +1,88 @@
+🔥 1. L1 Cache kya hai?
+
+👉 Simple line:
+
+L1 Cache = request ke andar memory me data store hota hai (temporary)
+
+🔹 2. Easy samajh
+Ek request aayi
+↓
+Hibernate ne data DB se liya
+↓
+Memory me rakh liya
+↓
+Same request me dobara chahiye → DB nahi jayega ✔
+🔥 3. Real Example (step-by-step)
+🟢 Request 1
+GET /users/1
+Step 1
+User user1 = entityManager.find(User.class, 1);
+
+👉 Hibernate:
+
+DB query chalayega ✔
+User memory me store karega ✔ (L1 cache)
+Step 2 (same request)
+User user2 = entityManager.find(User.class, 1);
+
+👉 Hibernate:
+
+DB pe nahi jayega ❌
+Direct memory se dega ✔
+🔥 Result
+1st call → DB hit
+2nd call → cache hit ✔
+🔹 4. Important point
+
+👉 Ye cache sirf same request ke liye hota hai
+
+🟡 Request 2 (new request)
+GET /users/1
+
+👉 Kya hoga?
+
+Naya EntityManager
+↓
+Cache empty ❌
+↓
+DB call again ✔
+🔥 5. Easy analogy
+
+👉 Think:
+
+Same request
+Google search kiya
+↓
+Tab me memory me hai
+↓
+Dobara same search → fast ✔
+New request
+Browser band karke reopen
+↓
+Sab reset ❌
+↓
+Phir se search
+🔹 6. Important properties
+Feature	L1 Cache
+Scope	Per request
+Location	Memory (Persistence Context)
+Auto	Yes ✔
+Disable	❌ No
+🔥 7. Why useful?
+
+👉 Performance improve karta hai:
+
+Repeated DB calls avoid karta hai ✔
+🔹 8. Connection with lifecycle
+
+👉 Jab entity Managed state me hoti hai
+
+Tabhi L1 cache me hoti hai ✔
+⚡ Final ek line
+
+👉 L1 Cache = same request me same data baar-baar DB se nahi aata
+
+🧠 Interview one-liner
+
+First-level cache in JPA is the persistence context cache,
+ which is automatically maintained per EntityManager and avoids repeated database calls within the same transaction.

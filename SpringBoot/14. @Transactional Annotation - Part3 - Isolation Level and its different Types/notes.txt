@@ -1,0 +1,226 @@
+🔹 1. Isolation Level kya hota hai?
+
+👉 Simple line:
+
+“Ek transaction doosre transaction ke data ko kitna dekh sakta hai”
+
+🧠 Real-life example
+
+2 log same account use kar rahe:
+
+T1: update balance
+T2: read balance
+
+👉 Question:
+
+T2 ko kya dikhega?
+Old value? New value? Half-updated?
+
+👉 Ye decide karta hai Isolation Level
+
+🔹 2. 3 Main Problems (IMPORTANT)
+❌ 1. Dirty Read
+T1: balance = 100 → 50 (but NOT committed yet)
+T2: reads 50 ❌
+T1: rollback → actual = 100
+
+👉 T2 ne galat (dirty) data padha
+
+❌ 2. Non-Repeatable Read
+T2: reads balance = 100
+T1: updates → 200 (commit)
+T2: reads again → 200
+
+👉 Same query, different result 😵
+
+❌ 3. Phantom Read
+T2: SELECT count(*) = 5 rows
+T1: inserts new row
+T2: SELECT count(*) = 6 rows
+
+👉 New “phantom” row aa gaya 👻
+
+🔹 3. Isolation Levels (core concept)
+🟢 1. READ_UNCOMMITTED
+Sab kuch allowed 😬
+Dirty read ✔
+Non-repeatable ✔
+Phantom ✔
+
+👉 Fastest but unsafe
+
+🟡 2. READ_COMMITTED (very common)
+Sirf committed data dikhega
+Dirty read ❌
+Non-repeatable ✔
+Phantom ✔
+
+👉 Default in many DBs
+
+🟠 3. REPEATABLE_READ
+Same row baar-baar same hi dikhega
+Dirty read ❌
+Non-repeatable ❌
+Phantom ✔ (mostly)
+
+👉 MySQL default (InnoDB)
+
+🔴 4. SERIALIZABLE
+Ek time pe ek hi transaction 😅
+Dirty read ❌
+Non-repeatable ❌
+Phantom ❌
+
+👉 Safest but slowest
+
+🔥 4. Easy Table (yaad rakhne ke liye)
+Level	Dirty	Non-Repeat	Phantom	Speed
+READ_UNCOMMITTED	✔	✔	✔	Fastest
+READ_COMMITTED	❌	✔	✔	Fast
+REPEATABLE_READ	❌	❌	✔	Medium
+SERIALIZABLE	❌	❌	❌	Slow
+🔹 5. Spring me kaise use karte?
+@Transactional(
+    isolation = Isolation.READ_COMMITTED,
+    propagation = Propagation.REQUIRED,
+    rollbackFor = Exception.class,
+    timeout = 30
+)
+public void processOrder() {
+    // DB operations
+}
+🔹 6. Real-world understanding
+🧠 Kab kaunsa use kare?
+✅ READ_COMMITTED
+Normal apps
+Banking reads
+✅ REPEATABLE_READ
+Financial systems
+Consistent reads needed
+⚠️ SERIALIZABLE
+Rare
+Critical operations only
+🔥 7. Trade-off (VERY IMPORTANT)
+High Isolation → Safe but Slow
+Low Isolation → Fast but Risky
+🔹 8. Important Interview Point
+
+👉 Default depends on DB:
+
+MySQL → REPEATABLE_READ
+Postgres → READ_COMMITTED
+🔹 9. Combined understanding
+@Transactional =
+    Propagation → transaction join/create
+    Isolation → data visibility rules
+⚡ Final One-line
+
+👉 Isolation level controls what data a transaction can see when multiple transactions run together
+
+If you want next:
+👉 I can show real SQL-level timeline (T1 vs T2 step-by-step execution) — that makes Dirty/Phantom crystal clear 🔥
+
+READ_COMMITTED
+agar hum read comitted kar rhe hai toh non repetable aur phantom toh kabhi aayega hi nai , wo toh commit ke badd dikhega ye dono kaise different hai 
+
+Bahut solid question 🔥 — yahi jagah pe sab confuse hote hain.
+
+Tum sahi bol rahe ho partially 👍
+👉 READ_COMMITTED me dirty read nahi hota
+👉 BUT non-repeatable read & phantom still ho sakte hain
+
+Chalo ekdum clear karte hain 👇
+
+🔹 1. Core misunderstanding
+
+Tum soch rahe ho:
+
+"Commit ke baad hi dikhega → toh problem kaise?"
+
+👉 Problem ye nahi hai ki kab dikhega
+👉 Problem ye hai ki same transaction ke andar value change ho sakti hai
+
+🔥 2. Non-Repeatable Read (step-by-step)
+Scenario
+T2 starts
+T2: SELECT balance → 100   👈 (first read)
+
+T1: UPDATE balance → 200
+T1: COMMIT ✔
+
+T2: SELECT balance → 200   👈 (second read)
+🧠 Problem kya hai?
+
+👉 T2 ek hi transaction me hai
+👉 Same query 2 baar chalayi
+👉 Different result mila 😵
+
+100 → 200
+
+👉 Isko bolte hain Non-Repeatable Read
+
+🔹 3. Phantom Read (step-by-step)
+Scenario
+T2 starts
+T2: SELECT count(*) → 5 rows   👈
+
+T1: INSERT new row
+T1: COMMIT ✔
+
+T2: SELECT count(*) → 6 rows   👈
+🧠 Problem kya hai?
+
+👉 Rows ka set change ho gaya
+
+5 → 6 rows
+
+👉 New "phantom" row aa gaya 👻
+
+🔥 4. Difference samajh lo (MOST IMPORTANT)
+Problem	Kya change hota hai
+Non-Repeatable Read	Same row ka value change
+Phantom Read	Rows ka count/set change
+🔹 5. Tumhara doubt clear
+
+“Commit ke baad hi dikhega toh problem kya?”
+
+👉 Problem timing nahi hai
+👉 Problem consistency within same transaction hai
+
+🧠 READ_COMMITTED behavior
+Har query → latest committed data dekhegi
+
+👉 Isliye:
+
+Pehli query → old data
+Dusri query → updated data
+
+👉 Isliye inconsistency aati hai
+
+🔹 6. REPEATABLE_READ me kya hota?
+
+Same example:
+
+T2: SELECT balance → 100
+T1: update → 200 (commit)
+
+T2: SELECT balance → STILL 100 ✔
+
+👉 Same transaction me same result
+👉 Non-repeatable read fix ✔
+
+🔥 7. Ek line me crystal clear
+
+👉 READ_COMMITTED:
+
+"Har baar fresh committed data dikhega"
+
+👉 REPEATABLE_READ:
+
+"Jo pehli baar dekha, wahi baar-baar dikhega"
+⚡ Final intuition
+
+👉 READ_COMMITTED safe hai from dirty data
+👉 BUT consistent view guarantee nahi karta
+
+Agar chaho toh next main:

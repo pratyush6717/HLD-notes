@@ -1,0 +1,93 @@
+1. JWT kya hai?
+
+👉 Simple line:
+
+JWT = ek token jo batata hai “ye user kaun hai” (without DB check)
+
+🔹 2. Real flow (most important)
+🟢 Step 1: Login
+POST /login
+username + password
+
+👉 Server verify karta hai (DB se)
+
+🟡 Step 2: JWT milta hai
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+👉 Client isko save karta hai ✔
+
+🔵 Step 3: Next requests
+GET /users
+Authorization: Bearer <JWT>
+🟣 Step 4: Server
+✔ token verify karta hai
+✔ DB nahi jata
+✔ directly allow
+🔥 3. JWT structure (3 parts)
+HEADER.PAYLOAD.SIGNATURE
+🔹 4. Token tod ke samjho
+🟢 HEADER
+{ "alg": "HS256", "typ": "JWT" }
+
+👉 Kaunsa algorithm use ho raha
+
+🟡 PAYLOAD (important)
+{ "sub": "PK", "role": "ADMIN", "exp": 1700000000 }
+
+👉 Ye actual data hai:
+
+- user ka naam
+- role
+- expiry
+🔴 SIGNATURE
+Secret key se sign hota hai
+
+👉 Server verify karta hai:
+
+"Token genuine hai ya tampered?"
+🔥 5. Important warning ⚠️
+
+👉 JWT:
+
+Encrypted nahi hota ❌
+Sirf encoded hota hai
+
+👉 Matlab:
+
+Koi bhi payload read kar sakta hai 😵
+
+👉 Isliye:
+
+Password ya sensitive data mat daalo ❌
+🔹 6. Access vs Refresh Token
+🟢 Access Token
+Short life (15 min - 1 hour)
+Har request me use hota hai
+🔴 Refresh Token
+Long life (7-30 days)
+New access token generate karne ke liye
+🔥 7. Easy analogy
+
+👉 Think:
+
+Access Token
+Office entry pass (temporary)
+Refresh Token
+Permanent ID card
+🔹 8. JWT vs Session
+Feature	Session	JWT
+Storage	Server	Client
+DB check	yes	no
+Scalability	low	high ✔
+🔥 9. Real benefit
+✔ No session store
+✔ Fast
+✔ Scalable (microservices)
+⚡ Final ek line
+
+👉 JWT = stateless identity token (server ko user yaad rakhna nahi padta)
+
+🧠 Interview one-liner
+
+JWT is a stateless authentication mechanism where a signed token containing user claims is sent
+ with each request and verified by the server without maintaining session state.

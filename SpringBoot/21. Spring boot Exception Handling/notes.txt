@@ -1,0 +1,206 @@
+🔥 1. Problem kya hai?
+
+Tum API likhte ho:
+
+@GetMapping("/{id}")
+public User getUser(Long id) {
+    return service.getUser(id); // yaha exception aa sakta hai
+}
+
+👉 Agar error aaya:
+
+UserNotFoundException ❌
+
+👉 Without handling:
+
+500 Internal Server Error (ugly response)
+
+❌ Client ko proper message nahi milta
+
+🔹 2. Solution = Exception Handling
+
+👉 Tum decide karte ho:
+
+Kaunsa exception → kaunsa response
+🔥 3. Global Exception Handling (BEST PRACTICE)
+✅ Code
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(UserNotFoundException e) {
+
+        return ResponseEntity.status(404)
+                .body(new ErrorResponse(e.getMessage(), "USER_NOT_FOUND"));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleAll(Exception e) {
+
+        return ResponseEntity.internalServerError()
+                .body(new ErrorResponse("Internal error", "INTERNAL_ERROR"));
+    }
+}
+🔹 4. Flow samjho (VERY IMPORTANT)
+Client request
+   ↓
+Controller
+   ↓
+Exception thrown ❌
+   ↓
+Spring catches it
+   ↓
+GlobalExceptionHandler
+   ↓
+Custom response ✔
+🔥 5. Real Example
+Request
+GET /users/99
+Service
+if (user == null) {
+    throw new UserNotFoundException("User not found");
+}
+Response
+{
+  "message": "User not found",
+  "code": "USER_NOT_FOUND"
+}
+
+👉 Status:
+
+404 Not Found
+🔹 6. @ExceptionHandler kya karta hai?
+
+👉 Map karta hai:
+
+Exception → Response
+Example
+@ExceptionHandler(UserNotFoundException.class)
+
+👉 Sirf is exception ko handle karega
+
+🔥 7. Catch-all handler
+@ExceptionHandler(Exception.class)
+
+👉 Sab baaki errors yaha aayenge
+
+🔹 8. @ControllerAdvice vs @RestControllerAdvice
+🟡 @ControllerAdvice
+Global handler
+Response manually JSON banana padega
+🟢 @RestControllerAdvice (recommended)
+Global + JSON automatic ✔
+🔥 9. Internal working (interview level)
+DispatcherServlet
+   ↓
+HandlerExceptionResolverComposite
+   ↓
+3 resolvers try karte hain:
+3 resolvers
+Resolver	Kaam
+ExceptionHandlerExceptionResolver	@ExceptionHandler
+ResponseStatusExceptionResolver	@ResponseStatus
+DefaultHandlerExceptionResolver	Spring default errors
+🔹 10. Simple samajh
+
+👉 Jab exception aata hai:
+
+Spring dekhta hai:
+"Kya kisi ne isko handle kiya hai?"
+Haan → custom response ✔
+Nahi → default 500 ❌
+🔥 11. Real-world best practice
+Always use @RestControllerAdvice ✔
+Create custom error response ✔
+Avoid raw exceptions to client ✔
+⚡ Final one-line
+
+👉 Exception handling = error ko proper HTTP response me convert karna
+
+🧠 Interview one-liner
+
+Spring Boot uses HandlerExceptionResolvers to map exceptions to HTTP responses, and @RestControllerAdvice provides a centralized way to handle exceptions globally.
+
+
+
+
+. Basic idea
+
+👉 @RestControllerAdvice = @ControllerAdvice + @ResponseBody
+
+🔹 2. Pehle samjho @ControllerAdvice
+@ControllerAdvice
+public class GlobalHandler { }
+
+👉 Ye kya karta hai?
+
+Sab controllers ke liye global exception handling ✔
+BUT response automatically JSON nahi banata ❌
+
+👉 Tumhe manually likhna padta:
+
+@ResponseBody
+🔥 3. Problem
+@ControllerAdvice
+public class GlobalHandler {
+
+    @ExceptionHandler(Exception.class)
+    @ResponseBody   // har method pe likhna padega ❌
+    public ErrorResponse handle() {
+        return new ErrorResponse();
+    }
+}
+
+👉 Extra boilerplate 😵
+
+🔹 4. Solution = @RestControllerAdvice
+@RestControllerAdvice
+public class GlobalHandler {
+
+    @ExceptionHandler(Exception.class)
+    public ErrorResponse handle() {
+        return new ErrorResponse(); // auto JSON ✔
+    }
+}
+🧠 Kya change hua?
+
+👉 @ResponseBody automatically apply ho gaya
+
+🔥 5. Simple difference
+Feature	@ControllerAdvice	@RestControllerAdvice
+Global handling	✔	✔
+JSON auto response	❌	✔
+Boilerplate	More	Less
+🔹 6. Real example
+❌ Without RestControllerAdvice
+@ControllerAdvice
+public class GlobalHandler {
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseBody
+    public ErrorResponse handle() {
+        return new ErrorResponse("Not found");
+    }
+}
+✅ With RestControllerAdvice
+@RestControllerAdvice
+public class GlobalHandler {
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ErrorResponse handle() {
+        return new ErrorResponse("Not found");
+    }
+}
+🔥 7. Simple analogy
+
+👉 Think:
+
+@ControllerAdvice = normal controller
+@RestControllerAdvice = REST controller (auto JSON)
+⚡ Final one-line
+
+👉 @RestControllerAdvice = global exception handler + automatic JSON response
+
+🧠 Interview line
+
+@RestControllerAdvice is a convenience annotation that combines @ControllerAdvice and @ResponseBody, making it suitable for REST APIs by automatically serializing responses to JSON.

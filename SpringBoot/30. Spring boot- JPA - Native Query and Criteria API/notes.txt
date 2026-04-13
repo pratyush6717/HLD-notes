@@ -1,0 +1,167 @@
+Chalo isko bhi simple + real use-case + compare karke samajhte hain 👇
+(ye topic thoda confusing hota hai but easy banate hain)
+
+🔥 1. Native Query kya hota hai?
+
+👉 Simple line:
+
+Direct SQL likho (JPA bypass karke)
+
+Example
+@Query(value = "SELECT * FROM users WHERE age > 18", nativeQuery = true)
+List<User> findAdults();
+🧠 Meaning
+Tum khud SQL likh rahe ho ✔
+Hibernate bas execute karega ✔
+🔹 2. Kab use kare?
+
+👉 Jab JPA/JPQL se kaam nahi ho raha
+
+Examples
+JSON queries
+Window functions
+Complex joins
+DB-specific features
+🔥 3. Problem with Native Query
+❌ DB specific (MySQL vs Postgres problem)
+❌ JPA features kam milte hain
+❌ portability kam
+🔹 4. Easy analogy
+JPA = Swiggy (easy)
+Native SQL = khud cooking 🍳
+🔥 5. Criteria API kya hai?
+
+👉 Simple line:
+
+Query Java code se dynamically build karna
+
+Example
+if (name != null) {
+    predicates.add(cb.equal(root.get("name"), name));
+}
+🧠 Meaning
+Conditions runtime pe add kar rahe ho ✔
+🔹 6. Problem solve karta hai
+
+👉 Jab filters dynamic ho:
+
+- name ho sakta hai ya nahi
+- age ho sakta hai ya nahi
+- role ho sakta hai ya nahi
+🔥 7. Real example
+Scenario
+Search API:
+?name=PK
+?age=20
+?name=PK&age=20
+Criteria API
+if (name != null) add name condition
+if (age != null) add age condition
+
+👉 Dynamic query ✔
+
+🔹 8. Difference (clear table)
+Feature	Native Query	Criteria API
+Query type	SQL	Java code
+Flexibility	Medium	High
+Type-safe	❌ No	✔ Yes
+Use case	complex SQL	dynamic filters
+🔥 9. Simple samajh
+Native Query
+"Jo SQL chahiye wo directly likho"
+Criteria API
+"Condition ke hisaab se query build karo"
+🔹 10. Real-life analogy
+Native
+Menu se bahar ka order diya 🍛
+Criteria
+Custom pizza:
+- cheese add
+- onion remove
+- topping optional
+⚡ Final summary
+Native Query → raw SQL
+Criteria API → dynamic Java query
+🧠 Interview one-liner
+
+Native queries allow execution of raw SQL for complex database operations,
+ while the Criteria API provides a type-safe way to build dynamic queries programmatically in Java.
+
+
+ 1. Sabse simple difference
+JPQL → Entity pe kaam karta hai (Java world)
+Native → Table pe kaam karta hai (DB world)
+🔹 2. Same example dono me
+🎯 Goal: user by name
+✅ JPQL
+@Query("SELECT u FROM User u WHERE u.name = :name")
+
+👉 Ye kya hai?
+
+User = Java entity
+u.name = Java field
+
+👉 Hibernate convert karega SQL me
+
+✅ Native Query
+@Query(value = "SELECT * FROM users WHERE name = :name", nativeQuery = true)
+
+👉 Ye kya hai?
+
+users = DB table
+name = DB column
+
+👉 Direct DB ko bhej diya
+
+🔥 3. Major difference (easy table)
+Feature	JPQL	Native
+Works on	Entity	Table
+SQL likhna	❌ nahi	✔ haan
+DB independent	✔	❌
+Hibernate involved	✔ full	❌ limited
+Complex SQL	❌ limited	✔ full
+🔹 4. Internal flow
+JPQL
+JPQL → Hibernate → SQL → DB
+
+👉 Conversion hota hai ✔
+
+Native
+SQL → DB directly
+
+👉 No conversion ❌
+
+🔥 5. Easy analogy
+JPQL
+Tum English me bol rahe ho
+Translator (Hibernate) DB language me convert karega
+Native
+Tum directly DB ki language me bol rahe ho
+🔹 6. Kab kya use kare?
+JPQL use karo
+- normal queries
+- portability chahiye
+- clean code
+Native use karo
+- complex SQL
+- DB-specific features (JSON, window function)
+- performance tuning
+🔥 7. Tumhara confusion clear
+
+👉 Lagta same hai kyunki:
+
+Dono @Query me likhte ho ✔
+
+👉 But difference:
+
+JPQL → abstraction
+Native → raw SQL
+⚡ Final ek line
+
+👉 JPQL = object-oriented query
+👉 Native = SQL query
+
+🧠 Interview one-liner
+
+JPQL operates on entity objects and is database-independent, 
+while native queries use raw SQL and directly interact with database tables, making them database-specific.

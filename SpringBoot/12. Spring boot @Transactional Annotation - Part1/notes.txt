@@ -1,0 +1,352 @@
+🔹 1. What is @Transactional?
+
+👉 It means:
+
+“Run this method inside a DB transaction.”
+
+🧠 Simple meaning
+Start Transaction
+   ↓
+Run all DB operations
+   ↓
+If success → COMMIT
+If error → ROLLBACK
+🔹 2. Real-Life Example (Best way to understand)
+
+👉 Money transfer:
+
+Debit from A
+Credit to B
+❌ Problem (without transaction)
+A se paisa cut gaya ✔
+B ko mila hi nahi ❌
+
+👉 Data inconsistent 😵
+
+✅ With @Transactional
+Either BOTH succeed ✔
+OR BOTH fail (rollback) ✔
+🔹 3. Code Example
+@Service
+public class PaymentService {
+
+    @Transactional
+    public void transfer(Long from, Long to, double amount) {
+        debit(from, amount);
+        credit(to, amount);
+    }
+}
+🧠 What Spring does internally
+
+Because of AOP:
+
+Call method
+↓
+Proxy intercepts
+↓
+START TRANSACTION
+↓
+Run method
+↓
+If success → COMMIT
+If error → ROLLBACK
+🔥 4. ACID Properties (Interview MUST)
+🅰️ Atomicity
+
+👉 All or nothing
+
+Debit + Credit → both happen
+Else → none happen
+🅲 Consistency
+
+👉 DB always valid state me rahe
+
+Example:
+
+Balance negative nahi hona chahiye
+🅸 Isolation
+
+👉 Multiple transactions ek dusre ko disturb na kare
+
+Example:
+
+2 users ek hi account update kar rahe
+🅳 Durability
+
+👉 Once committed → permanent
+
+Even if system crash 💥
+
+🔹 5. Default Behavior (VERY IMPORTANT ⚠️)
+✅ Success case
+No exception → COMMIT
+❌ Failure case
+RuntimeException → ROLLBACK
+⚠️ BUT IMPORTANT
+
+👉 Checked exception pe rollback nahi hota
+
+Example
+@Transactional
+public void test() throws Exception {
+    debit();   // runs
+    throw new Exception("error"); // ❌ NO rollback by default
+}
+
+👉 Data commit ho jayega 😵
+
+🔹 6. Fix for Checked Exception
+@Transactional(rollbackFor = Exception.class)
+
+👉 Now:
+
+Any exception → rollback ✔
+🔹 7. Very Important Interview Point
+
+👉 Why only RuntimeException?
+
+Because:
+
+Spring follows EJB style default
+Checked exceptions = “expected business scenario”
+Runtime = “unexpected failure”
+🔥 8. Connection with AOP
+
+👉 Same concept you learned:
+
+@Transactional = AOP
+
+Spring internally:
+
+Proxy → Start Tx → Call method → Commit/Rollback
+🔹 9. Visual Flow
+Client
+  ↓
+Proxy (Transactional)
+  ↓
+Start Transaction
+  ↓
+Your Method
+  ↓
+Commit / Rollback
+⚡ Final Summary
+@Transactional = wraps method in DB transaction
+Success → commit
+RuntimeException → rollback
+Checked exception → no rollback (by default)
+Uses AOP internally (proxy-based)
+🧠 One-line understanding
+
+👉 @Transactional ensures either everything succeeds or nothing is saved.
+
+If you want next:
+👉 I can explain why @Transactional sometimes “does NOT work” (self-invocation, private methods, propagation issues) — very important in real debugging.
+
+proxy matlab kya keh rhe ho baar baar samjh nai paa rha
+
+Samajh gaya 👍 — “proxy” word hi confuse kar raha hai. Chalo isko ekdum simple language me todte hain.
+
+🔹 1. Proxy ka matlab (1 line)
+
+👉 Proxy = beech ka banda (middleman)
+
+🔹 2. Real-life example
+
+Tum directly manager se baat nahi karte
+👉 Pehle receptionist se baat hoti hai
+
+Tum → Receptionist → Manager
+
+👉 Receptionist = proxy
+
+🔹 3. Same thing in Spring
+
+Tum sochte ho:
+
+paymentService.transfer();
+
+👉 But actually:
+
+Tum → Proxy → Real PaymentService
+🔹 4. Proxy kya karta hai?
+
+Proxy ka kaam:
+
+1. Tumhara call intercept kare
+2. Extra kaam kare (logging, transaction)
+3. Fir original method call kare
+🔹 5. Transaction example (sabse important)
+
+Tum likhte ho:
+
+@Transactional
+public void transfer() {
+    debit();
+    credit();
+}
+🧠 Reality me kya hota hai
+Tum call karte ho
+↓
+Proxy intercept karta hai
+↓
+START TRANSACTION
+↓
+Real method run hota hai
+↓
+If success → COMMIT
+If error → ROLLBACK
+🔹 6. Without proxy kya hota?
+Tum → Direct method
+
+👉 No transaction
+👉 No logging
+👉 No security
+
+❌ Sab khatam
+
+🔹 7. Visual samajh lo (best)
+WITHOUT SPRING:
+You → Real Object
+
+WITH SPRING:
+You → Proxy → Real Object
+🔥 8. Super simple analogy
+
+👉 Think:
+
+Real object = burger 🍔
+Proxy = wrapper + delivery guy
+
+Tum directly burger nahi lete
+👉 Delivery guy (proxy) se aata hai
+
+🔹 9. Why Spring uses proxy?
+
+Because:
+
+👉 Tumhara original code touch nahi karega
+
+Instead:
+
+Extra behavior add karega OUTSIDE
+🔹 10. Important point (bahut important ⚠️)
+
+👉 AOP / @Transactional tabhi chalega jab:
+
+Call proxy ke through aaye
+❌ Ye kaam nahi karega
+this.transfer();   // direct call → no proxy ❌
+✅ Ye kaam karega
+@Autowired
+PaymentService service;
+
+service.transfer(); // proxy ke through ✔
+🔥 Final 1-line samajh
+
+👉 Proxy = ek wrapper object jo tumhare method call ke pehle/baad extra kaam karta hai
+
+Agar ab bhi doubt hai, bol 👇
+Main ek step-by-step execution trace (line by line kya hota hai) dikhaunga — uske baad 100% clear ho jayega.
+
+but hum toh code mein begintransaction committransaction rollback transaction likhte hai nah
+
+Bilkul sahi 👍 — normal JDBC ya old style me tum khud likhte ho.
+Par Spring ka magic yahi hai: tumhe likhna nahi padta.
+
+🔹 1. Tum jo bol rahe ho (Manual way)
+
+Agar Spring use na kare, toh tum aise likhoge:
+
+Connection con = dataSource.getConnection();
+
+try {
+    con.setAutoCommit(false);   // BEGIN TRANSACTION
+
+    debit(con);
+    credit(con);
+
+    con.commit();               // COMMIT
+} catch (Exception e) {
+    con.rollback();             // ROLLBACK
+}
+
+👉 Yahi tum keh rahe ho ✔
+
+🔹 2. Problem with this approach
+Har method me same boilerplate ❌
+Error handling complex ❌
+Code messy ❌
+Easy to forget rollback ❌
+🔹 3. Spring ka approach (@Transactional)
+
+Tum sirf ye likhte ho:
+
+@Transactional
+public void transfer() {
+    debit();
+    credit();
+}
+🧠 Behind the scenes kya hota hai
+
+👉 Spring internally EXACTLY wahi karta hai jo tum manually likh rahe the:
+
+Proxy intercepts
+↓
+BEGIN TRANSACTION
+↓
+Run your method
+↓
+If success → COMMIT
+If error → ROLLBACK
+🔥 4. Direct comparison
+Manual JDBC	Spring
+setAutoCommit(false)	Automatic
+commit()	Automatic
+rollback()	Automatic
+try-catch	Handled by Spring
+Boilerplate code	Clean code
+🔹 5. Important understanding
+
+👉 Tum transaction likh nahi rahe
+👉 Tum declare kar rahe ho
+
+"Is method ko transaction me chalao"
+
+Spring bolta hai:
+
+"Samajh gaya, baaki main handle karunga"
+
+🔹 6. Proxy ka role yahi hai
+
+Proxy hi internally ye karta hai:
+
+BEGIN → METHOD → COMMIT / ROLLBACK
+
+Tum directly nahi dekh pa rahe
+👉 isliye confusing lag raha hai
+
+🔥 7. Super simple analogy
+
+Manual:
+
+Tum khud gaadi chala rahe ho 🚗
+
+Spring:
+
+Tum Uber book kar rahe ho 🚕
+Driver sab handle karega
+🔹 8. Final clarity
+
+👉 Haan, transaction toh wahi hai:
+
+begin
+commit
+rollback
+
+👉 Bas difference:
+
+Tum likhte ho	Spring karta hai
+Explicit	Implicit (annotation se)
+⚡ One-line samajh
+
+👉 @Transactional = “Spring, tu mere liye begin/commit/rollback handle kar”

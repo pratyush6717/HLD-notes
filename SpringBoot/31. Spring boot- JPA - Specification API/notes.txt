@@ -1,0 +1,78 @@
+🔥 1. Problem samajh lo (why Specification?)
+
+Tumhari API:
+
+GET /users?name=PK&active=true
+
+👉 Kabhi:
+
+sirf name aata hai
+kabhi sirf active
+kabhi dono
+❌ Normal code (problem)
+if (name != null && active != null) { ... }
+if (name != null) { ... }
+if (active != null) { ... }
+
+👉 Code:
+
+Messy ❌
+Repeat ❌
+Confusing ❌
+🔥 2. Specification kya karta hai?
+
+👉 Simple line:
+
+Chhote-chhote filters banao, phir combine karo
+
+🔹 3. Ekdum simple example
+Step 1: Filter banao
+hasName("PK")   → name = PK
+isActive()      → active = true
+Step 2: Combine karo
+hasName("PK").and(isActive())
+
+👉 Meaning:
+
+name = PK AND active = true
+🔥 4. Real code
+List<User> users = repo.findAll(
+    UserSpec.hasName("PK").and(UserSpec.isActive())
+);
+🧠 Ye kya kar raha hai?
+2 filters combine kar raha hai ✔
+Final query bana raha hai ✔
+🔹 5. Real-life analogy
+
+👉 Pizza order 🍕
+
+Base → cheese → toppings
+
+👉 Tum combine kar rahe ho
+
+Specification
+Filter → Filter → combine → final query
+🔥 6. Sabse simple samajh
+Specification = filter function
+Example
+hasName("PK")   → filter 1
+isActive()      → filter 2
+Combine
+filter1 + filter2 → final result
+🔹 7. Why useful?
+
+👉 Kyunki:
+
+Conditions change hoti rehti hain ✔
+
+👉 Tum flexible ho:
+
+if (name != null) add name filter
+if (active != null) add active filter
+⚡ Final ek line
+
+👉 Specification = dynamic filter system
+
+🧠 Ultra simple yaad rakh
+Without Spec → if-else mess
+With Spec → combine filters cleanly

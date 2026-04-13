@@ -1,0 +1,95 @@
+🔥 1. Sabse pehle problem
+
+👉 User login kaise karega?
+
+Username + Password
+
+👉 System ko:
+
+- user DB se lana hai
+- password verify karna hai
+🔹 2. 3 ways to store users (simple)
+🟢 1. InMemory (testing)
+Code me hi user likh diya
+
+👉 Example:
+
+username=admin
+password=1234
+
+👉 ❌ Production me use nahi
+
+🟡 2. JDBC (fixed schema)
+Spring ka predefined DB structure
+
+👉 Limited flexibility
+
+🔴 3. Custom UserDetailsService (REAL WORLD ✔)
+
+👉 Tum apna DB use karte ho ✔
+
+🔥 3. CustomUserDetailsService samjho
+Code
+public UserDetails loadUserByUsername(String username)
+
+👉 Ye method kya karta hai?
+
+Username leke DB se user nikalta hai
+Step-by-step
+🟢 Step 1: DB se user lao
+User user = userRepo.findByUsername(username)
+🔴 Step 2: Agar nahi mila
+throw new UsernameNotFoundException
+🟡 Step 3: Spring ko object return karo
+return new User(username, password, roles)
+🧠 Meaning
+Spring ko bol rahe:
+"Ye user hai, ye password hai, ye roles hain"
+🔥 4. PasswordEncoder (VERY IMPORTANT)
+❌ Galat way
+password = "1234"
+
+👉 Plain text ❌ dangerous
+
+✅ Correct way
+
+👉 Use:
+
+new BCryptPasswordEncoder()
+🧠 Example
+Input password: 1234
+Stored password: $2a$10$abcxyz...
+
+👉 Hash store hota hai ✔
+
+🔥 5. Login ke time kya hota hai?
+User login karta hai
+↓
+PasswordEncoder.matches(raw, encoded)
+↓
+Match → success ✔
+🔹 6. Easy analogy
+
+👉 Password storing:
+
+Plain password = locker khula ❌
+Hashed password = encrypted locker ✔
+🔥 7. Important rule
+Kabhi bhi password plain text me store mat karo ❌
+🔹 8. Full flow
+Login request
+↓
+UserDetailsService (DB se user)
+↓
+PasswordEncoder (match)
+↓
+Success → login ✔
+⚡ Final ek line
+
+👉 CustomUserDetailsService = DB se user lana
+👉 PasswordEncoder = password secure rakhna
+
+🧠 Interview one-liner
+
+In production, a custom UserDetailsService is used to load users from the database,
+ and passwords are securely stored using hashing algorithms like BCryptPasswordEncoder.

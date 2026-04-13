@@ -1,0 +1,153 @@
+Chalo isko step-by-step, simple story + code intuition se samajhte hain 👇
+(Propagation tab samajh aata hai jab “outer method → inner method call” clear ho)
+
+🔹 1. Propagation kya hai?
+
+👉 Simple line:
+
+Jab ek @Transactional method doosre @Transactional method ko call kare — tab kya hoga?
+
+🧠 Basic Scenario
+@Transactional
+public void outer() {
+    inner();
+}
+
+👉 Ab question:
+
+Kya inner same transaction use karega?
+Ya naya transaction banega?
+
+👉 Ye decide karta hai Propagation
+
+🔹 2. Sabse Important: REQUIRED (default)
+@Transactional(propagation = Propagation.REQUIRED)
+🧠 Behavior
+Agar transaction already hai → join karo
+Agar nahi hai → new create karo
+Example
+@Transactional
+public void outer() {
+    inner();  // joins same transaction
+}
+
+@Transactional
+public void inner() {}
+
+👉 Flow:
+
+ONE transaction for both methods ✔
+🔥 3. REQUIRES_NEW (VERY IMPORTANT)
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+🧠 Behavior
+Hamesha NEW transaction banega
+Outer transaction temporarily pause ho jayega
+Example
+@Transactional
+public void outer() {
+    inner(); // new tx
+    throw new RuntimeException(); // outer fails
+}
+
+@Transactional(propagation = REQUIRES_NEW)
+public void inner() {
+    // commit ho jayega
+}
+Result:
+inner → COMMIT ✔
+outer → ROLLBACK ❌
+
+👉 Isliye use hota hai:
+
+Audit logs
+Notifications
+🔹 4. NESTED
+@Transactional(propagation = Propagation.NESTED)
+🧠 Behavior
+Same transaction ke andar "savepoint" banata hai
+Example
+outer tx start
+   ↓
+inner tx (savepoint)
+   ↓
+inner fail → rollback to savepoint
+outer still continues ✔
+
+👉 Difference vs REQUIRES_NEW:
+
+Feature	NESTED	REQUIRES_NEW
+Transaction	Same	New
+Rollback	Partial	Independent
+🔹 5. SUPPORTS
+@Transactional(propagation = SUPPORTS)
+🧠 Behavior
+Transaction hai → use karo
+Nahi hai → normal run karo
+
+👉 Use case:
+
+Read-only methods
+🔹 6. NOT_SUPPORTED
+@Transactional(propagation = NOT_SUPPORTED)
+🧠 Behavior
+Agar tx hai → suspend karo
+Method WITHOUT transaction chalega
+
+👉 Use:
+
+Heavy read operations
+Performance
+🔹 7. MANDATORY
+@Transactional(propagation = MANDATORY)
+🧠 Behavior
+Transaction hona hi chahiye
+Nahi hai → exception
+
+👉 Use:
+
+Internal strict methods
+🔹 8. NEVER
+@Transactional(propagation = NEVER)
+🧠 Behavior
+Transaction hona nahi chahiye
+Agar hai → exception
+🔥 9. Full Summary (easy table)
+Type	Simple Meaning
+REQUIRED	Join or create
+REQUIRES_NEW	Always new
+NESTED	Savepoint
+SUPPORTS	Optional
+NOT_SUPPORTED	Run without tx
+MANDATORY	Must have tx
+NEVER	Must NOT have tx
+🔹 10. Declarative vs Programmatic
+✅ Declarative (mostly used)
+@Transactional
+
+✔ Clean
+✔ Easy
+✔ AOP based
+
+⚙️ Programmatic
+transactionTemplate.execute(status -> {
+    // custom logic
+});
+
+👉 Use when:
+
+Complex control needed
+AOP not working (self-invocation)
+🔥 11. Most Important Interview Scenario
+
+👉 Default behavior:
+
+outer + inner → SAME transaction
+
+👉 Change to REQUIRES_NEW:
+
+outer fail but inner commit possible
+⚡ Final One-line Understanding
+
+👉 Propagation = decide karta hai inner method transaction ko join kare ya naya banaye
+
+Agar chaho toh next main ye explain karunga:

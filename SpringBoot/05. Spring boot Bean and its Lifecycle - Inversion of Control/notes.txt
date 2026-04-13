@@ -1,0 +1,153 @@
+🧠 1️⃣ Bean kya hota hai? (1 line)
+
+👉 Bean = object jo Spring bana ke deta hai
+
+💡 Example
+
+Normal Java:
+
+User user = new User();
+
+Spring:
+
+@Autowired
+User user;
+
+👉 Tumne new nahi likha
+👉 Spring ne object bana diya = Bean
+
+🧠 2️⃣ IOC kya hai? (1 line)
+
+👉 Object tum nahi banaoge → Spring banayega
+
+🧃 Real Life Example
+
+Tum chai banate ho → normal Java ☕
+Maa chai bana ke deti hai → Spring 😄
+
+🧠 3️⃣ @Component kya karta hai?
+
+👉 Spring ko bolta hai:
+
+"Is class ka object bana do"
+Example
+@Component
+class User {}
+
+👉 Bas itna likho → Spring object bana dega
+
+🧠 4️⃣ @Bean kab use karte hai?
+
+👉 Jab tum bolna chahte ho:
+
+"Object kaise banana hai main bataunga"
+Example
+@Bean
+public User createUser() {
+    return new User("pk", "email");
+}
+🔥 Difference (simple)
+@Component	@Bean
+Spring decide kare	Tum decide karo
+simple cases	complex cases
+🧠 5️⃣ Spring ko kaise pata chalta hai?
+
+👉 Ye sab scan karta hai:
+
+@Component
+@Service
+@Repository
+@Configuration
+
+👉 Matlab:
+
+Spring bolta hai:
+"Jahan ye annotation milega, wahan object banaunga"
+🧠 6️⃣ Bean kab banta hai?
+
+👉 Do case:
+
+1. Eager (default)
+App start hote hi object ban gaya
+2. Lazy
+Jab use hoga tab banega
+🧠 7️⃣ Lifecycle (sabse simple version)
+
+👉 Bean ka life cycle:
+
+1. Spring start hua
+2. Object bana
+3. Dependency inject hui
+4. Ready to use
+5. App band → object destroy
+Extra hooks
+@PostConstruct  → after creation
+@PreDestroy     → before destroy
+🧠 8️⃣ Dependency Injection kya hai?
+
+👉 Ek object ko dusra object dena
+
+Example
+@Component
+class User {
+    @Autowired
+    Order order;
+}
+
+👉 Spring bolega:
+
+User ko Order chahiye → lo ye Order object
+🧠 9️⃣ Real Life Analogy (BEST)
+
+Restaurant 🍽️
+
+Chef = Spring
+Dish = Bean
+Ingredients = Dependencies
+
+👉 Tum bolte ho:
+
+"Mujhe burger chahiye"
+
+👉 Chef:
+
+burger banata hai (bean create)
+sauce + cheese add karta hai (dependency inject)
+🔥 FINAL ONE-LINE SUMMARY
+Spring = object factory + manager
+🎯 Agar still confusion ho
+
+Main aur simple bana deta hoon 👇
+
+👉 Tu bas ye yaad rakh:
+
+@Component → object banwao
+@Autowired → dependency inject karwao
+@Bean → custom object banao
+
+
+
+
+//DOUBT
+
+Singleton Scope Problem
+
+
+The Cure: Singleton Scope (The Default)
+When Spring sees @Component, it creates exactly one instance of that class during startup and stores it in its 
+"Magic Box" (the IoC Container).
+
+The Mechanism: * Developer A asks for the EmailService (via @Autowired). Spring gives them the one in the box.
+
+Developer B asks for the EmailService. Spring gives them the exact same object.
+
+They are both holding a reference to the same memory address.
+
+3️⃣ The "What If" Sandbox: Changing the @Scope
+Sometimes, a Singleton is a bad idea. What if you need a fresh object every single time?
+
+The Prototype Scope
+If you label your class with @Scope("prototype"), Spring changes its behavior:
+
+The Mechanism: Every time someone asks for that bean, Spring says, 
+"Wait, let me make a fresh one for you." It runs the "new" logic specifically for that request.

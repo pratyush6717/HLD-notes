@@ -1,0 +1,113 @@
+🔥 1. OneToOne kya hota hai?
+
+👉 Simple line:
+
+1 User → 1 Address (exactly one)
+
+🧠 Example
+User (1) ↔ Address (1)
+
+👉 Ek user ka sirf ek address
+👉 Ek address ka sirf ek user
+
+🔹 2. Database me kaise dikhega?
+User Table
+-----------------
+id | name | address_id  👈 FK
+
+Address Table
+-----------------
+id | city
+
+👉 address_id = foreign key
+
+🔥 3. Unidirectional (easy case)
+
+👉 Sirf User ko pata hai Address ke baare me
+
+Code
+@Entity
+public class User {
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
+}
+🧠 Meaning
+User → Address ✔
+Address → User ❌ (pata nahi)
+Flow
+User object
+↓
+address bhi save ho jayega (cascade)
+🔥 4. Bidirectional (both sides know)
+
+👉 Dono ek dusre ko jaante hain
+
+Code
+@Entity
+public class User {
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")  // OWNER
+    private Address address;
+}
+@Entity
+public class Address {
+
+    @OneToOne(mappedBy = "address")  // NON-OWNER
+    private User user;
+}
+🔹 5. Owner vs Non-owner (IMPORTANT)
+🟢 Owner side
+@JoinColumn
+
+👉 Ye FK control karta hai ✔
+
+🔴 Non-owner side
+mappedBy = "address"
+
+👉 Sirf reference hai
+👉 DB me kuch control nahi ❌
+
+🔥 6. Easy analogy
+
+👉 Think:
+
+User = Aadhaar holder
+Address = Address record
+Owner
+User bol raha:
+"Mere paas address_id hai"
+Non-owner
+Address bol raha:
+"Main user ka hoon"
+🔹 7. Cascade samajh lo
+CascadeType.ALL
+User save → Address bhi save ✔
+User delete → Address bhi delete ✔
+Important types
+Type	Meaning
+PERSIST	save
+MERGE	update
+REMOVE	delete
+ALL	sab
+🔥 8. Real flow
+User save
+↓
+Address auto save (cascade)
+↓
+DB me FK set
+🔹 9. Ekdum simple summary
+OneToOne = ek object ka sirf ek relation
+@JoinColumn = FK create karta hai
+mappedBy = non-owner side
+cascade = auto operations
+⚡ Final one-line
+
+👉 OneToOne = 1 object ↔ 1 object relation
+
+🧠 Interview one-liner
+
+In JPA, a OneToOne relationship maps a single entity to exactly one associated entity,
+ where the owning side contains the foreign key and the non-owning side uses mappedBy.

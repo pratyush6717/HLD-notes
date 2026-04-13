@@ -1,0 +1,90 @@
+🔥 1. Derived Query (sabse easy)
+
+👉 Tum method ka naam likhte ho
+👉 Spring khud SQL bana deta hai
+
+Example
+List<User> findByName(String name);
+
+👉 Hibernate internally:
+
+SELECT * FROM users WHERE name = ?
+Aur examples
+findByAgeGreaterThan(18)
+findByEmailAndActive(email, true)
+countByRole("ADMIN")
+🧠 Simple samajh
+Method name → Query ban gayi ✔
+🔹 2. JPQL (thoda control)
+
+👉 Jab custom query chahiye
+
+Example
+@Query("SELECT u FROM User u WHERE u.name = :name AND u.active = true")
+List<User> findActiveByName(String name);
+🧠 Difference
+SQL → table names use karta hai
+JPQL → entity names use karta hai ✔
+🔥 3. N+1 Problem (VERY IMPORTANT)
+🧠 Scenario
+10 users fetch kiye
+↓
+Har user ke orders lazy load
+Result
+1 query → users
++ 10 queries → orders
+= 11 queries 😵
+
+👉 Isko bolte hain N+1 problem
+
+🔹 4. Example samjho
+List<User> users = repo.findAll();
+
+for (User u : users) {
+    u.getOrders(); // har user pe alag query ❌
+}
+🔥 5. Fix 1: JOIN FETCH
+@Query("SELECT u FROM User u JOIN FETCH u.orders")
+List<User> findAllWithOrders();
+Result
+Single query ✔
+JOIN laga ke data laata hai
+🔹 6. Fix 2: @EntityGraph
+@EntityGraph(attributePaths = {"orders"})
+List<User> findAll();
+
+👉 Same kaam (clean way)
+
+🔥 7. Pagination (real use)
+Example
+Pageable pageable = PageRequest.of(0, 10);
+Page<User> page = repo.findAll(pageable);
+🧠 Meaning
+Page 0 → first page
+Size 10 → 10 records
+Useful methods
+page.getContent();       // data
+page.getTotalPages();    // total pages
+page.getTotalElements(); // total count
+🔹 8. Sorting
+PageRequest.of(0, 10, Sort.by("name").ascending());
+🔥 9. Real-life analogy
+Derived query
+Google search → auto suggestion ✔
+JPQL
+Manual search query likhna ✔
+N+1
+Ek baar me sab order karne ke bajaye
+10 baar waiter ko bula rahe ho 😵
+Pagination
+Netflix → 10 movies per page ✔
+⚡ Final summary
+Derived Query → auto query
+JPQL → custom query
+N+1 → performance problem
+JOIN FETCH → fix
+Pagination → limited data load
+🧠 Interview one-liner
+
+Derived queries allow automatic query generation from method names, JPQL provides custom query control, 
+N+1 is a performance issue caused by lazy loading, and pagination helps fetch data in chunks.

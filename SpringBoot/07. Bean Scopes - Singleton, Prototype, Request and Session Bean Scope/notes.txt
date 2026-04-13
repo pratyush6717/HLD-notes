@@ -1,0 +1,110 @@
+Bean Scope = kya hota hai?
+
+👉 Spring kitne objects banayega
+
+1 bean → kitni baar new object banega
+🎯 5 Scopes (easy yaad rakh)
+1️⃣ Singleton (default)
+👉 Sirf 1 object poore app me
+
+Use:
+
+Service
+Repository
+
+👉 Example:
+
+@Service
+class UserService {}
+
+➡️ Same object har jagah use hoga
+
+2️⃣ Prototype
+👉 Har baar naya object
+@Scope("prototype")
+
+➡️ Har getBean() pe new instance
+
+🔥 Important Problem (INTERVIEW FAVORITE)
+❌ Singleton + Prototype issue
+@Service
+class OrderService {
+    @Autowired
+    private Order order; // prototype
+}
+
+👉 Tum sochoge:
+
+har baar new Order milega ❌
+
+👉 Reality:
+
+sirf ek baar inject hota hai (startup pe)
+
+👉 kyun?
+
+Singleton → ek baar banta hai
+→ us time prototype inject ho gaya
+→ baad me same use hota rahega
+✅ Fix kya hai?
+Option 1: ApplicationContext
+@Autowired
+private ApplicationContext context;
+
+public void createOrder() {
+    Order o = context.getBean(Order.class); // new each time
+}
+Option 2: @Lookup (clean way)
+@Lookup
+public Order getOrder() {
+    return null;
+}
+🌐 Web Scopes (sirf web app me)
+3️⃣ Request scope
+👉 Har HTTP request pe naya object
+@Scope("request")
+
+➡️ 1 API call = 1 object
+
+4️⃣ Session scope
+👉 Har user session ke liye 1 object
+
+➡️ Login user ke data ke liye
+
+5️⃣ Application scope
+👉 Pure app ke liye 1 object (ServletContext)
+
+➡️ Global shared data
+
+🧩 Easy Table (yaad rakhne ke liye)
+Singleton   → 1 object (default)
+Prototype   → har baar new
+Request     → per API call
+Session     → per user
+Application → poore app ke liye
+🔥 Sabse important 2 interview points
+⭐ Q1: Default scope kya hai?
+
+👉 Singleton
+
+⭐ Q2: Singleton + Prototype issue?
+
+👉 Prototype sirf ek baar inject hota hai
+👉 Fix → @Lookup ya getBean()
+
+🎯 One-line summary
+Scope = Spring kitni baar object banayega
+
+
+
+//DOUBT
+When Spring Boot starts up and sees the @Lookup annotation,
+ it uses a library called CGLIB to modify your class while it's being loaded into memory.
+
+Your Code: You write a method that returns null.
+
+Spring's Action: Spring creates a Proxy (a subclass) of your OrderService.
+ It overwrites your getOrderBean() method with its own internal logic.
+
+The Runtime Reality: When you call getOrderBean(), 
+you aren't calling your code; you are calling Spring's generated code,

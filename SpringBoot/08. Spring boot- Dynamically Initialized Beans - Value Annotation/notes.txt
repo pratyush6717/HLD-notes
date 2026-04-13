@@ -1,0 +1,77 @@
+2. Real Problem: Hardcoded Bean Selection
+@Autowired
+@Qualifier("onlineOrder")
+private OrderService orderService;
+
+❌ Issue:
+
+Hardcoded implementation
+Breaks Dependency Inversion Principle (DIP)
+🔹 3. Solution 1: @Value + @ConditionalOnProperty
+
+👉 Create beans dynamically based on config
+
+Example
+app.order.type=online
+Interface
+public interface OrderService {
+    void process();
+}
+Implementation 1
+@Component
+@ConditionalOnProperty(name = "app.order.type", havingValue = "online")
+public class OnlineOrderService implements OrderService {
+    public void process() {
+        System.out.println("Online Order");
+    }
+}
+Implementation 2
+@Component
+@ConditionalOnProperty(name = "app.order.type", havingValue = "offline")
+public class OfflineOrderService implements OrderService {
+    public void process() {
+        System.out.println("Offline Order");
+    }
+}
+Usage
+@Autowired
+private OrderService orderService;
+
+👉 Spring decides implementation at runtime based on config
+
+🧠 Why this is powerful
+No @Qualifier
+No hardcoding
+Fully config-driven
+Follows DIP properly
+🔹 4. Solution 2: @Profile
+
+👉 Load beans based on environment
+
+Example
+@Component
+@Profile("dev")
+public class DevOrderService implements OrderService {}
+@Component
+@Profile("prod")
+public class ProdOrderService implements OrderService {}
+Activate profile
+spring.profiles.active=dev
+🧠 When to use what?
+Feature	Use Case
+@Value	Inject config values
+@ConditionalOnProperty	Feature toggle / runtime behavior
+@Profile	Environment-specific beans (dev/test/prod)
+🔥 Interview-Level Understanding
+❓ Why not always use @Qualifier?
+
+Because:
+
+Tight coupling to implementation
+Violates DIP
+Not flexible
+❓ Best Practice
+Use @Value → for configs
+Use @ConditionalOnProperty → for feature switching
+Use @Profile → for environments
+Avoid @Qualifier unless absolutely needed
